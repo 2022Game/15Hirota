@@ -71,7 +71,7 @@ void CApplication::Update()
 	v1.Set(0.0f, 0.0f, 1.0f);
 	v2.Set(0.0f, -0.5f, 0.0f);
 	//ŽOŠpŒ`3‚Ì•`‰æ
-	glNormal3f(n.X(), n.Y(), n.Z());
+	glNormal3f(n.X(), n.Y(), n.Z()); 
 	glVertex3f(v0.X(), v0.Y(), v0.Z());
 	glVertex3f(v1.X(), v1.Y(), v1.Z());
 	glVertex3f(v2.X(), v2.Y(), v2.Z());
