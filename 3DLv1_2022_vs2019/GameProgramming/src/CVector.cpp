@@ -1,4 +1,5 @@
 #include "CVector.h"
+#include "CTriangle.h"
 
 //Set(Xç¿ïW,Yç¿ïW,Zç¿ïW)
 void CVector::Set(float x, float y, float z)
@@ -7,6 +8,12 @@ void CVector::Set(float x, float y, float z)
 	mY = y;
 	mZ = z;
 }
+
+CVector::CVector()
+	:mX(0.0f)
+	,mY(0.0f)
+	,mZ(0.0f)
+{}
 
 float CVector::X() const
 {
@@ -22,3 +29,9 @@ float CVector::Z() const
 {
 	return mZ;
 }
+
+CVector::CVector(float x, float y, float z)
+	:mX(x)
+	, mY(y)
+	, mZ(z)
+{}
