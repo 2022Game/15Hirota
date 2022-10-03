@@ -10,9 +10,9 @@
 #include "CMiss.h"
 #include <vector>
 #include "CCharacterManager.h"
-
 #include "CGame.h"
 #include "CSound.h"
+#include "CModel.h"
 
 class CApplication
 {
@@ -29,16 +29,18 @@ private:
 		EOVER,	//ゲームオーバー
 	};
 	EState mState;
-//	CCharacter mRectangle;
+    //CCharacter mRectangle;
 	CPlayer* mpPlayer;
 	static CTexture mTexture;
 	CEnemy* mpEnemy;
-//	CBullet* mpBullet;
+    //CBullet* mpBullet;
 	CInput mInput;
 	CFont mFont;
 	CMiss* mpMiss;
+	//モデルクラスのインスタンス作成
+	CModel mModel;
 	//CCharacterのポインタの可変長配列
-//	std::vector<CCharacter*> mCharacters;
+    //std::vector<CCharacter*> mCharacters;
 public:
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();
