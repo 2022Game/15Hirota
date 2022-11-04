@@ -1,0 +1,28 @@
+#ifndef CMATERAL_H
+#define CMATERAL_H
+#define MATERIAL_NAME_LEN 64 //名前の長さ
+
+/*
+マテリアルクラス
+マテリアルのデータを扱う
+*/
+class CMaterial {
+public:
+	//デフォルトコンストラクタ
+	CMaterial();
+	//マテリアルを有効にする
+	void Enbled();
+	//マテリアルの名前の取得
+	char* Name();
+	//マテリアルの名前を設定する
+	//Name(マテリアルの名前)
+	void Name(char* name);
+	//mDiffusu配列の取得
+	float* Diffuse();
+private:
+	//マテリアル名
+	char mName[MATERIAL_NAME_LEN + 1];
+	//拡散光の色RGBA
+	float mDiffuse[4];
+};
+#endif
