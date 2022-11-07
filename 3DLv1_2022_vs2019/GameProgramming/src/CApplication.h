@@ -40,6 +40,7 @@ private:
 	//モデルクラスのインスタンス作成
 	CModel mModel;
 	//CCharacterのポインタの可変長配列
+	CModel mBackGround; //背景モデル
     //std::vector<CCharacter*> mCharacters;
 public:
 	static CCharacterManager* CharacterManager();
