@@ -53,7 +53,7 @@ void CPlayer::Collision()
 
 void CPlayer::Collision(CCharacter* m, CCharacter* o)
 {
-	float x, y;
+	float x, y,w,h;
 	switch (o->Tag())
 	{
 	case ETag::EPLAYER:
@@ -63,6 +63,8 @@ void CPlayer::Collision(CCharacter* m, CCharacter* o)
 		{
 			X(X() + x);
 			Y(Y() + y);
+			W(W() + w);
+			H(H() + h);
 			if (x == 0.0f)
 			{
 				mVy = 0.0f;

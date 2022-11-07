@@ -3,6 +3,10 @@
 
 //クラスのstatic変数
 CTexture CApplication::mTexture;
+CTexture CApplication::mTexture2;
+CTexture CApplication::mTexture3;
+CTexture CApplication::mTexture4;
+
 CCharacterManager CApplication::mCharacterManager;
 
 #define SOUND_BGM "res\\mario.wav" //BGM音声ファイル
@@ -17,6 +21,22 @@ CTexture* CApplication::Texture()
 {
 	return &mTexture;
 }
+
+CTexture* CApplication::Texture2()
+{
+	return &mTexture2;
+}
+
+CTexture* CApplication::Texture3()
+{
+	return &mTexture3;
+}
+
+CTexture* CApplication::Texture4()
+{
+	return &mTexture4;
+}
+
 
 void CApplication::Start()
 {

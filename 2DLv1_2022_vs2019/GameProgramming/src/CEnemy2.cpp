@@ -8,6 +8,8 @@
 #define TEXLEFT1 188,168,190,160	//左向き1
 #define TEXLEFT2 156,136,190,160	//左向き2
 
+#define HP 1
+
 int CEnemy2::sNum = 0;
 
 void CEnemy2::Num(int num)
@@ -56,8 +58,37 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 				}
 				mState = EState::ECRY;
 			}
+			if (o->State() == EState::EMOVE)
+			{
+				if (mState != EState::ECRY)
+				{
+					sNum--;
+				}
+				mState = EState::ECRY;
+			}
 		}
 		break;
+	case ETag::EBLOCK2:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			mVx = -mVx;
+		}
+	case ETag::EBLOCK3:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			mVx = -mVx;
+		}
+	case ETag::EDOKAN:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			mVx = -mVx;
+		}
 	}
 }
 
@@ -80,6 +111,9 @@ void CEnemy2::Update()
 		//泣く画像を設定
 		Texture(Texture(), TEXCRY);
 		break;
+	//case EState::EFALLING: //後から追加↓
+		//Texture(Texture(), TEXCRY);
+		//break;
 	case EState::EMOVE:
 		//X軸速度分、X座標を更新する
 		X(X() + mVx);

@@ -11,7 +11,7 @@ public:
 	//戻り値
 	//true:衝突している
 	//false;衝突していない
-	bool Collision(CRectangle* pRect, float* ax, float* ay);
+	bool Collision(CRectangle* pRect, float* ax, float* ay); //後ろ二つは後から変えた
 	CRectangle();
 	~CRectangle();
 	void Render();
@@ -23,6 +23,8 @@ public:
 	float H();
 	void Y(float y);
 	void X(float x);
+	void W(float w);
+	void H(float h);
 	//bool Collision(四角形のポインタ)
 	//戻り値
 	//true:衝突している

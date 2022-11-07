@@ -4,12 +4,12 @@
 #define TEXCOORD 168, 188, 158, 128	//テクスチャマッピング
 #define TEXCRY 196, 216, 158, 128	//テクスチャマッピング
 #define GRAVITY (TIPSIZE / 20.0f)	//重力加速度
-#define JUMPV0 (TIPSIZE / 1.4f)		//ジャンプの初速
+#define JUMPV0 (TIPSIZE / 1.2f)		//ジャンプの初速
 
 #define TEXCOORD2 136,156,158,128	//右向き2
 #define TEXLEFT1 188,168,158,128	//左向き1
 #define TEXLEFT2 156,136,158,128	//左向き2
-#define VELOCITY 4.0f	//移動速度
+#define VELOCITY 7.0f	//移動速度
 
 #define HP 3 //HPの初期値は3
 
@@ -29,7 +29,7 @@ void CPlayer2::Collision()
 
 void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 {
-	float x, y;
+	float x, y,w,h;
 	switch (o->Tag())
 	{
 	case ETag::EENEMY:
@@ -85,9 +85,77 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				{
 					mState = EState::EMOVE;
 				}
+
 			}
 		}
 		break;
+	case ETag::EDOKAN:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			//着地した時
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+		}
+		break;
+	case ETag::EBLOCK2:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			//着地した時
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+		}
+		break;
+	case ETag::EBLOCK3:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			//着地した時
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+		}
+		break;
+	case ETag::EBLOCK4:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			//着地した時
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+		}
 	}
 }
 
@@ -117,6 +185,11 @@ void CPlayer2::Update()
 			mSoundJump.Play(0.1f);
 			mVy = JUMPV0;
 			mState = EState::EJUMP;
+			if (mInput.Key('J') == 0)
+			{
+				(mInput.Key('J') == -1);
+					false;
+			}
 		}
 	}
 	if (mInput.Key('A'))

@@ -15,7 +15,9 @@ public:
 	//CEnemy2(X座標,Y座標,幅,高さ,テクスチャのポインタ)
 	CEnemy2(float x, float y, float w, float h, CTexture* pt);
 	//更新処理
+
 	void Update();
 private:
 	static int sNum;	//敵の数
+
 };
