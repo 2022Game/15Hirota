@@ -3,6 +3,7 @@
 #include "CVector.h"
 #include "CTriangle.h"
 #include "CModel.h"
+#include "CMatrix.h"
 //OpenGL
 #include "glut.h"
 
@@ -34,6 +35,8 @@ void CApplication::Start() {
 	//モデルファイルの入力
 	mModel.Load(MODEL_F14);
 	mBackGround.Load(MODEL_BACKGROUND);
+	CMatrix matrix;
+	matrix.Print();
 }
 
 void CApplication::Update()
