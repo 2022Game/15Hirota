@@ -9,9 +9,11 @@
 #define TEXCOORD2 136,156,158,128	//右向き2
 #define TEXLEFT1 188,168,158,128	//左向き1
 #define TEXLEFT2 156,136,158,128	//左向き2
-#define VELOCITY 7.0f	//移動速度
+#define VELOCITY 20.0f	//移動速度
+
 
 #define HP 3 //HPの初期値は3
+#define GOAL1 1//GOALの初期値は1
 
 #define SE_JUMP "res\\jump.wav" //ジャンプの音声ファイル
 
@@ -156,6 +158,22 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				}
 			}
 		}
+		break;
+	case ETag::EGOAL:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			sGoal1--;
+		}
+		break;
+	case ETag::EFALLING:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			sHp--;
+			{
+				
+			}
+			mState = EState::EMOVE;
+		}
 	}
 }
 
@@ -166,8 +184,25 @@ CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EPLAYER;
 	sHp = HP;
+	sGoal1 = GOAL1;
+	spInstance = this;
+
 	//ジャンプ音ロード
 	mSoundJump.Load(SE_JUMP);
+}
+
+CPlayer2* CPlayer2::spInstance = nullptr;
+
+CPlayer2* CPlayer2::Instance()
+{
+	return spInstance;
+}
+
+int CPlayer2::sGoal1 = 0; //ゴール
+
+int CPlayer2::Goal1()
+{
+	return sGoal1;
 }
 
 void CPlayer2::Update()
@@ -185,11 +220,6 @@ void CPlayer2::Update()
 			mSoundJump.Play(0.1f);
 			mVy = JUMPV0;
 			mState = EState::EJUMP;
-			if (mInput.Key('J') == 0)
-			{
-				(mInput.Key('J') == -1);
-					false;
-			}
 		}
 	}
 	if (mInput.Key('A'))
@@ -211,7 +241,10 @@ void CPlayer2::Update()
 
 	if (mInvincible > 0)
 	{
-		mState = EState::ECRY;
+		if (mState != EState::EJUMP)
+		{
+			mState = EState::ECRY;
+		}
 	}
 	if (mState == EState::ECRY)
 	{

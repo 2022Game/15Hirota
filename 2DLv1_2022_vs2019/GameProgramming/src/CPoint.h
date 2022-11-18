@@ -12,3 +12,13 @@ public:
 	void Update() {}	//何もしない
 	void Render() {}	//描画しない
 };
+
+class CFalling : public CCharacter
+{
+public:
+	//CPoint(X座標, Y座標, 幅, 高さ, タグ)
+	CFalling(float x, float y, float w, float h, ETag t);
+	void Update() {}	//何もしない
+	void Render() {}	//描画しない
+
+};

@@ -5,3 +5,9 @@ CPoint::CPoint(float x, float y, float w, float h, ETag t)
 	Set(x, y, w, h);
 	mTag = t;
 }
+
+CFalling::CFalling(float x, float y, float w, float h, ETag t)
+{
+	Set(x, y, w, h);
+	mTag = t;
+}

@@ -6,6 +6,8 @@ CTexture CApplication::mTexture;
 CTexture CApplication::mTexture2;
 CTexture CApplication::mTexture3;
 CTexture CApplication::mTexture4;
+CTexture CApplication::mTexture5;
+
 
 CCharacterManager CApplication::mCharacterManager;
 
@@ -35,6 +37,11 @@ CTexture* CApplication::Texture3()
 CTexture* CApplication::Texture4()
 {
 	return &mTexture4;
+}
+
+CTexture* CApplication::Texture5()
+{
+	return &mTexture5;
 }
 
 
@@ -102,6 +109,5 @@ void CApplication::Update()
 			mpGame = new CGame();
 			mState = EState::ESTART;
 		}
-		break;
 	}
 }

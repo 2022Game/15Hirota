@@ -8,6 +8,8 @@ class CPlayer2 : public CCharacter
 public:
 	//HPを取得
 	static int Hp();
+	//GOAL1を取得
+	static int Goal1();
 	//衝突処理2
 	void Collision();
 	//衝突処理4
@@ -16,9 +18,12 @@ public:
 	CPlayer2(float x, float y, float w, float h, CTexture* pt);
 	//更新処理
 	void Update();
+	static CPlayer2* Instance();
 private:
 	CSound mSoundJump;	//ジャンプSE
 	static int sHp;	//HP
+	static int sGoal1; //ゴール
 	int mInvincible; //無敵カウンタ
 	CInput mInput;
+	static CPlayer2* spInstance;
 };

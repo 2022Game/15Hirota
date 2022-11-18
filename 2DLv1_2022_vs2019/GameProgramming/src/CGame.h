@@ -11,9 +11,9 @@
 #define TIPSIZE_E1 35.0f
 
 #define TEXTURE_D "Dokan.png"
-#define TIPSIZE_D 70.0f
+#define TIPSIZE_D 80.0f
 
-#define TEXTURE_B "kindpng_2063012.png"
+#define TEXTURE_B1 "kindpng_2063012.png"
 #define TIPSIZE_B1 40.0f
 
 #define TEXTURE_B2 "kindpng_2063012.png"
@@ -21,6 +21,12 @@
 
 #define TEXTURE_B3 "kindpng_2063012.png"
 #define TIPSIZE_B3 35.0f
+
+#define TEXTURE_BACK "pixel-background-png-4.png"
+#define TIPSIZE_BACK 40.0f
+
+#define TEXTURE_GOAL "pngaaa.com-3726776.png"
+#define TIPSIZE_GOAL 500.0f
 
 /*
 * CGameƒNƒ‰ƒX

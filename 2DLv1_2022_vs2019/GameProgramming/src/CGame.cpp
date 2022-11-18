@@ -11,6 +11,9 @@
 #include "CBlock2.h"
 #include "CBlock3.h"
 #include "CBlock4.h"
+#include "BackGround.h"
+#include "CGoal.h"
+#include "CCharacter.h"
 
 void CGame::Start()
 {
@@ -39,6 +42,7 @@ void CGame::Over()
 	//UI処理
 	mpUi->Hp(CPlayer2::Hp());
 	mpUi->Enemy(CEnemy2::Num());
+	mpUi->Enemy(CEnemy3::Num());
 	mpUi->Render();
 	mpUi->Over();
 }
@@ -57,7 +61,8 @@ CGame::~CGame()
 
 bool CGame::IsClear()
 {
-	return CEnemy2::Num() <= 0;
+	return CPlayer2::Goal1() <= 0;
+	//return CPlayer2::Instance()->sGoal1<= 0;
 }
 
 void CGame::Clear()
@@ -69,9 +74,11 @@ void CGame::Clear()
 	//UI処理
 	mpUi->Hp(CPlayer2::Hp());
 	mpUi->Enemy(CEnemy2::Num());
+	mpUi->Enemy(CEnemy3::Num());
 	mpUi->Render();
 	mpUi->Clear();
 }
+
 
 CGame::CGame()
 	: mpUi(nullptr)
@@ -84,10 +91,13 @@ CGame::CGame()
 	//テクスチャの入力
 	CApplication::Texture()->Load(TEXTURE);
 	CApplication::Texture2()->Load(TEXTURE_D);
-	CApplication::Texture3()->Load(TEXTURE_B);
+	CApplication::Texture3()->Load(TEXTURE_B1);
 	CApplication::Texture3()->Load(TEXTURE_B2);
 	CApplication::Texture3()->Load(TEXTURE_B3);
 	CApplication::Texture4()->Load(TEXTURE_E1);
+	CApplication::Texture4()->Load(TEXTURE_GOAL);
+	CApplication::Texture5()->Load(TEXTURE_BACK);
+	
 
 	//定数の定義
 	const int ROWS = 12; //行数
@@ -95,20 +105,31 @@ CGame::CGame()
 	//2次元配列のマップ
 	int map[ROWS][COLS] =
 	{ 
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{6,0,0,0,0,0,4,0,3,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{6,0,0,0,0,6,0,7,7,8,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{6,0,0,0,0,6,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{6,0,0,2,0,6,0,0,0,0,0,0,0,0,6,0,0,0,3,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
-		{6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
-		{6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,0,0,0,0,0,0},
+		{0,0,0,0,0,0,4,0,3,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,7,7,8,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,6,0,0,0,0,0,0},
+		{0,0,0,2,0,0,0,0,0,4,0,9,0,4,6,0,0,0,3,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,6,6,6,6,6,6,0,0,0,0,10,0},
+		{6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,0,0,0,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
+		{6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,0,0,0,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
+		{6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,0,0,0,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	};
 
+	//背景を生成して、キャラクタマネージャに追加
+	CApplication::CharacterManager()->Add(
+		new CBackground(1400 * 2,
+			600 * -2,
+			1400 * 3, 1400 * 2, CApplication::Texture5()));
+	//背景を生成して、キャラクタマネージャに追加
+	CApplication::CharacterManager()->Add(
+		new CGoal( 2,
+			2 * 2,
+			2 * 2, 2 * 2, CApplication::Texture4()));
+	
 	//マップの作成
 	//行数分繰り返し
 	for (int row = 0; row < ROWS; row++)
@@ -130,8 +151,8 @@ CGame::CGame()
 			if (map[row][col] == 2)
 			{
 				//カメラ用差分
-				mCdx = WINDOW_WIDTH / 2 - (TIPSIZE + TIPSIZE * 1 * col);
-				mCdy = WINDOW_HEIGHT / -3.1 - (TIPSIZE + TIPSIZE * -2 * row);
+				mCdx = WINDOW_WIDTH / 1.5 - (TIPSIZE + TIPSIZE * 1 * col);
+				mCdy = WINDOW_HEIGHT / -3.69 - (TIPSIZE + TIPSIZE * 0 * row);
 				//プレイヤーを生成して、キャラクタマネージャに追加
 				CApplication::CharacterManager()->Add(
 					mpPlayer = new CPlayer2(TIPSIZE + TIPSIZE * 2 * col,
@@ -168,7 +189,7 @@ CGame::CGame()
 			//6の時、足場ブロックを生成
 			if (map[row][col] == 6)
 			{
-				//土管を生成して、キャラクタマネージャに追加
+				//足場を生成して、キャラクタマネージャに追加
 				CApplication::CharacterManager()->Add(
 					new CBlock2(TIPSIZE + TIPSIZE * 2 * col,
 						TIPSIZE + TIPSIZE * -2 * row,
@@ -177,7 +198,7 @@ CGame::CGame()
 			//7の時、上空ブロックを生成
 			if (map[row][col] == 7)
 			{
-				//土管を生成して、キャラクタマネージャに追加
+				//上空ブロックを生成して、キャラクタマネージャに追加
 				CApplication::CharacterManager()->Add(
 					new CBlock3(TIPSIZE + TIPSIZE * 2 * col,
 						TIPSIZE + TIPSIZE * -2 * row,
@@ -186,7 +207,7 @@ CGame::CGame()
 			//8の時、ハテナブロックを生成
 			if (map[row][col] == 8)
 			{
-				//土管を生成して、キャラクタマネージャに追加
+				//ハテナブロックを生成して、キャラクタマネージャに追加
 				CApplication::CharacterManager()->Add(
 					new CBlock4(TIPSIZE + TIPSIZE * 2 * col,
 						TIPSIZE + TIPSIZE * -2 * row,
@@ -195,13 +216,30 @@ CGame::CGame()
 			//9の時、敵2を生成
 			if (map[row][col] == 9)
 			{
-				//土管を生成して、キャラクタマネージャに追加
+				//敵2を生成して、キャラクタマネージャに追加
 				CApplication::CharacterManager()->Add(
 					new CEnemy3(TIPSIZE + TIPSIZE * 2 * col,
 						TIPSIZE + TIPSIZE * -2 * row,
 						TIPSIZE, TIPSIZE_E1, CApplication::Texture4()));
 			}
-			
+			//10の時、ゴールを生成
+			if (map[row][col] == 10)
+			{
+				//ゴールを生成して、キャラクタマネージャに追加
+				CApplication::CharacterManager()->Add(
+					new CGoal(TIPSIZE + TIPSIZE * 2 * col,
+						TIPSIZE + TIPSIZE * -0.6 * row,
+						TIPSIZE, TIPSIZE_GOAL, CApplication::Texture4()));
+			}
+			//11の時、落下死作成
+			if (map[row][col] == 11)
+			{
+				//折り返しポイントを生成して、キャラクタマネージャに追加
+				CApplication::CharacterManager()->Add(
+					new CFalling(TIPSIZE + TIPSIZE * 2 * col,
+						TIPSIZE + TIPSIZE * -2 * row,
+						TIPSIZE, TIPSIZE, CCharacter::ETag::EFALLING));
+			}
 		}
 	}
 }
@@ -219,16 +257,18 @@ void CGame::Update()
 	mpUi->Time(mTime++);
 	mpUi->Hp(CPlayer2::Hp());
 	mpUi->Enemy(CEnemy2::Num());
+	mpUi->Enemy(CEnemy3::Num());
 	mpUi->Render();
 }
 
 void CGame::CameraSet()
 {
 	float x = mpPlayer->X() + mCdx;
-	float y = mpPlayer->Y() + mCdy;
+	float y =  mCdy;
+	//float y = mpPlayer->Y() + mCdy;
 	CCamera::Start(x - WINDOW_WIDTH / 0.9 
 		, x + WINDOW_WIDTH / 0.9
-		, y - WINDOW_HEIGHT / 0.9
-		, y + WINDOW_HEIGHT / 0.9
+		, y - WINDOW_HEIGHT / 1
+		, y + WINDOW_HEIGHT / 1
 	);
 }

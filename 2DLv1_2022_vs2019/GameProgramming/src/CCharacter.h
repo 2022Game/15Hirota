@@ -20,6 +20,9 @@ public:
 		EBLOCK3,	//上空ブロック
 		EBLOCK4,	//ハテナブロック
 		EDOKAN,    //土管
+		EBACK,	   //背景
+		EGOAL,	  //ゴールブロック
+		EFALLING, //落下死
 	};
 	enum class EState	//状態
 	{
@@ -27,7 +30,6 @@ public:
 		ESTOP,	//停止
 		EJUMP,	//ジャンプ
 		ECRY,	//泣く
-		//EFALLING, //落下状態
 	};
 protected:
 	float mVx;	//X軸速度

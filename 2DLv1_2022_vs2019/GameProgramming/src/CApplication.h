@@ -27,6 +27,7 @@ private:
 		EPLAY,	//ゲーム中
 		ECLEAR,	//ゲームクリア
 		EOVER,	//ゲームオーバー
+		EINITIAL //初期値点
 	};
 	EState mState;
 //	CCharacter mRectangle;
@@ -35,6 +36,7 @@ private:
 	static CTexture mTexture2;
 	static CTexture mTexture3;
 	static CTexture mTexture4;
+	static CTexture mTexture5;
 
 
 	CEnemy* mpEnemy;
@@ -51,6 +53,7 @@ public:
 	static CTexture* Texture2();
 	static CTexture* Texture3();
 	static CTexture* Texture4();
+	static CTexture* Texture5();
 	
 	//最初に一度だけ実行するプログラム
 	void Start();
