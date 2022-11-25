@@ -15,6 +15,9 @@ public:
 	//Load(モデルファイル名、マテリアルファイル名)
 	void Load(char* obj, char* mtl);
 	//描画
+	//Render(行列)
+	void Render(const CMatrix& m);
+	//描画
 	void Render();
 
 	~CModel();

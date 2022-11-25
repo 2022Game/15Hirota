@@ -1,5 +1,6 @@
 #ifndef CVECTOR_H
 #define CVECTOR_H // CVECTOR_Hの定義
+#include "CMatrix.h"
 
 /*
 ベクトルクラス
@@ -30,6 +31,9 @@ public:
 	//-演算子のオーバーロード
 	//CVector - CVector の演算結果を返す
 	CVector operator-(const CVector& v)const;
+
+	//CVector * CMatrixの結果をCVectorで返す
+	CVector operator*(const CMatrix & m);
 
 private:
 	//3D各軸での値を設定
