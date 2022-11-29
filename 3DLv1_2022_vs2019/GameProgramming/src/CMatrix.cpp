@@ -99,3 +99,21 @@ float CMatrix::M(int r,int c)const {
 	return mM[r][c];
 }
 
+//ˆÚ“®s—ñ‚Ìì¬
+//Translate(ˆÚ“®—ÊX,ˆÚ“®—ÊY,ˆÚ“®—ÊZ)
+CMatrix CMatrix::Translate(float mx, float my, float mz)
+{
+	Identity();
+	mM[3][0] = mx;
+	mM[3][1] = my;
+	mM[3][2] = mz;
+
+	//‚±‚Ìs‚ğ•Ô‚·
+	return *this;
+}
+
+void CMatrix::M(int row, int col, float value)
+{
+	mM[row][col] = value;
+}
+
