@@ -13,6 +13,7 @@
 #include "CGame.h"
 #include "CSound.h"
 #include "CModel.h"
+#include "CCharacter3.h"
 
 class CApplication
 {
@@ -42,6 +43,8 @@ private:
 	//CCharacterのポインタの可変長配列
 	CModel mBackGround; //背景モデル
     //std::vector<CCharacter*> mCharacters;
+	CCharacter3 mCharacter;
+	CCharacter3 mPlayer;
 public:
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();
