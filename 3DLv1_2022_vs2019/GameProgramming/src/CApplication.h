@@ -44,7 +44,7 @@ private:
 	CModel mBackGround; //”wŒiƒ‚ƒfƒ‹
     //std::vector<CCharacter*> mCharacters;
 	CCharacter3 mCharacter;
-	CCharacter3 mPlayer;
+	CPlayer mPlayer;
 public:
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();
