@@ -19,10 +19,13 @@ public:
 	void Hp(int hp);
 	//Time(時間)
 	void Time(int time);
+	//スコア
+	void Score(int score);
 	void Render();
 private:
 	int mEnemy;	//敵の数
 	int mHp;
 	int mTime;	//経過時間
+	int mScore;	//スコア
 	CFont mFont;
 };

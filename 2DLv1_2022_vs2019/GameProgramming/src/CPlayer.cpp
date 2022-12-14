@@ -34,13 +34,14 @@ void CPlayer::Update()
 		X(x);
 	}
 
-	if (mInput.Key('J') 
+	if (mInput.Key('J')
 		&& mState != EState::EJUMP
 		&& mVy >= 0.0f)
 	{
 		mVy = JUMPV0;
 		mState = EState::EJUMP;
 	}
+
 
 	Y(Y() + mVy);
 	mVy -= GRAVITY;

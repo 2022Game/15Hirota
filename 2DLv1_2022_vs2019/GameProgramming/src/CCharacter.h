@@ -13,23 +13,26 @@ public:
 		EZERO,		//初期値
 		EBULLET,	//弾
 		EENEMY,		//敵
+		EITEM,		//アイテム
 		EPLAYER,	//プレイヤー
 		ETURN,		//折り返し
 		EBLOCK,		//ブロック
 		EBLOCK2,	//足場ブロック
 		EBLOCK3,	//上空ブロック
 		EBLOCK4,	//ハテナブロック
-		EDOKAN,    //土管
-		EBACK,	   //背景
-		EGOAL,	  //ゴールブロック
-		EFALLING, //落下死
+		EDOKAN,     //土管
+		EBACK,	    //背景
+		EGOAL,		//ゴールブロック
+		EMOVEBLOCK,	//移動ブロック
+		EFALLING,	//落下死
 	};
 	enum class EState	//状態
 	{
-		EMOVE,	//移動
-		ESTOP,	//停止
-		EJUMP,	//ジャンプ
-		ECRY,	//泣く
+		EMOVE,		//移動
+		EFALL,		//落下状態
+		ESTOP,		//停止
+		EJUMP,		//ジャンプ
+		ECRY,		//泣く
 	};
 protected:
 	float mVx;	//X軸速度
@@ -44,6 +47,7 @@ public:
 	EState State();	//状態を取得する
 	bool Enabled();
 	ETag Tag();
+	float Vx();	//	ブロックに乗った時のキャラクターのスピードを足す
 	//衝突処理２
 	virtual void Collision() {};
 	//衝突処理４

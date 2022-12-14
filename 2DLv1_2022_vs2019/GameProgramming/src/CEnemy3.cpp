@@ -10,8 +10,21 @@
 
 #define TEXCOORD2 218, 201, 900, 883
 
+#define HP 1
 
 int CEnemy3::sNum = 0;
+
+int CEnemy3::sScore = 0;
+
+void CEnemy3::Score(int score)
+{
+	sScore = score;
+}
+
+int CEnemy3::Score()
+{
+	return sScore;
+}
 
 void CEnemy3::Num(int num)
 {
@@ -55,7 +68,17 @@ void CEnemy3::Collision(CCharacter* m, CCharacter* o)
 				//“G”1Œ¸Z
 				if (mState != EState::ECRY)
 				{
+					sScore += 100;
 					sNum--;
+				}
+				if (o->State() == EState::EMOVE)
+				{
+					if (mState != EState::ECRY)
+					{
+						sScore += 100;
+						sNum--;
+					}
+					mState = EState::ECRY;
 				}
 				mState = EState::ECRY;
 			}
@@ -94,6 +117,8 @@ CEnemy3::CEnemy3(float x, float y, float w, float h, CTexture* pt)
 	mVx = VELOCITY;
 	//“G”‚É1‰ÁZ‚·‚é
 	sNum++;
+	//ƒXƒRƒA‚ğ‰ÁZ‚·‚é
+	sScore;
 }
 
 void CEnemy3::Update()

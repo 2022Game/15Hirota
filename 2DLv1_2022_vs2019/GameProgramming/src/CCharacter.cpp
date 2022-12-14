@@ -15,6 +15,11 @@ CCharacter::ETag CCharacter::Tag()
 	return mTag;
 }
 
+float CCharacter::Vx()
+{
+	return mVx;
+}
+
 CCharacter::CCharacter()
 	: mpTexture(nullptr)
 	, mLeft(0.0f), mRight(0.0f), mBottom(0.0f), mTop(0.0f)

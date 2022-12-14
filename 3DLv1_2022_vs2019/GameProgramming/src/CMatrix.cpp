@@ -99,6 +99,11 @@ float CMatrix::M(int r,int c)const {
 	return mM[r][c];
 }
 
+float* CMatrix::M() const
+{
+	return (float*)mM[0];
+}
+
 //移動行列の作成
 //Translate(移動量X,移動量Y,移動量Z)
 CMatrix CMatrix::Translate(float mx, float my, float mz)
@@ -116,6 +121,8 @@ void CMatrix::M(int row, int col, float value)
 {
 	mM[row][col] = value;
 }
+
+
 
 //*演算子のオーバーロード
 //CMatrix*CMatrixの演算結果を返す

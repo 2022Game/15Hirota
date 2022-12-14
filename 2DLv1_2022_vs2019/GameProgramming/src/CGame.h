@@ -28,6 +28,12 @@
 #define TEXTURE_GOAL "pngaaa.com-3726776.png"
 #define TIPSIZE_GOAL 500.0f
 
+#define TEXTURE_KINOKO "pngaaa.com-3726776.png"
+#define TIPSIZE_KINOKO 40.0f
+
+#define TEXTURE_MoveBlock "pngaaa.com-3726776.png"
+#define TIPSIZE_MoveBlock 20.0f
+
 /*
 * CGameクラス
 * ゲームクラス
@@ -56,5 +62,6 @@ private:
 	void CameraSet(); //カメラ設定
 	CPlayer2* mpPlayer; //プレイヤーのポインタ
 	int mTime; //経過時間
+	int mScore;	//スコア
 	CUi* mpUi; //UIクラスのポインタ
 };

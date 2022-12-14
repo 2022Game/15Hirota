@@ -28,6 +28,8 @@
     <ClCompile Include="src\CFont.cpp" />
     <ClCompile Include="src\CGame.cpp" />
     <ClCompile Include="src\CGoal.cpp" />
+    <ClCompile Include="src\CKinoko.cpp" />
+    <ClCompile Include="src\CMoveBlock.cpp" />
     <ClCompile Include="src\CPlayer.cpp" />
     <ClCompile Include="src\CPlayer2.cpp" />
     <ClCompile Include="src\CPoint.cpp" />
@@ -56,7 +58,9 @@
     <ClInclude Include="src\CFont.h" />
     <ClInclude Include="src\CGame.h" />
     <ClInclude Include="src\CGoal.h" />
+    <ClInclude Include="src\CKinoko.h" />
     <ClInclude Include="src\CMiss.h" />
+    <ClInclude Include="src\CMoveBlock.h" />
     <ClInclude Include="src\CPlayer.h" />
     <ClInclude Include="src\CPlayer2.h" />
     <ClInclude Include="src\CPoint.h" />

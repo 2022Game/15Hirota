@@ -28,7 +28,17 @@ public:
 	//UVİ’è
 	void UV(const CVector& v0, const CVector& v1, const CVector& v2);
 
-	
+	const CVector& V0() const;	//mV[0]‚ğ•Ô‚µ‚Ü‚·
+	const CVector& V1() const;	//mV[1]‚ğ•Ô‚µ‚Ü‚·
+	const CVector& V2() const;	//mV[2]‚ğ•Ô‚µ‚Ü‚·
+	//–@ü‚ğ“¾‚é
+	const CVector& N0() const;	//mN[0]‚ğ•Ô‚µ‚Ü‚·
+	const CVector& N1() const;	//mN[1]‚ğ•Ô‚µ‚Ü‚·
+	const CVector& N2() const;	//mN[2]‚ğ•Ô‚µ‚Ü‚·
+	//UV‚ğ“¾‚é
+	const CVector& U0() const;	//mUv[0]‚ğ•Ô‚µ‚Ü‚·
+	const CVector& U1() const;	//mUv[1]‚ğ•Ô‚µ‚Ü‚·
+	const CVector& U2() const;	//mUv[2]‚ğ•Ô‚µ‚Ü‚·
 
 	//•`‰æ
 	//Render(s—ñ)

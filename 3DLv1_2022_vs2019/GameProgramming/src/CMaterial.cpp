@@ -23,7 +23,9 @@ char* strcpy(char* str1, const char* str2, int len)
 }
 
 //デフォルトコンストラクタ
-CMaterial::CMaterial() {
+CMaterial::CMaterial() 
+	:mVertexNum(0)
+{
 	//名前を0で埋め
 	memset(mName, 0, sizeof(mName));
 	//0で埋める
@@ -81,3 +83,14 @@ void CMaterial::Disabled() {
 		glDisable(GL_TEXTURE_2D);
 	}
 }
+
+void CMaterial::VertexNum(int num)
+{
+	mVertexNum = (num);
+}
+
+int CMaterial::VertexNum()
+{
+	return mVertexNum;
+}
+

@@ -12,6 +12,18 @@
 
 int CEnemy2::sNum = 0;
 
+int CEnemy2::sScore = 0;
+
+void CEnemy2::Score(int score)
+{
+	sScore = score;
+}
+
+int CEnemy2::Score()
+{
+	return sScore;
+}
+
 void CEnemy2::Num(int num)
 {
 	sNum = num;
@@ -54,18 +66,11 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 				//“G”1Œ¸Z
 				if (mState != EState::ECRY)
 				{
+					sScore += 100;
 					sNum--;
 				}
-				mState = EState::ECRY;
 			}
-			if (o->State() == EState::EMOVE)
-			{
-				if (mState != EState::ECRY)
-				{
-					sNum--;
-				}
-				mState = EState::ECRY;
-			}
+			mState = EState::ECRY;
 		}
 		break;
 	case ETag::EBLOCK2:
@@ -101,6 +106,8 @@ CEnemy2::CEnemy2(float x, float y, float w, float h, CTexture* pt)
 	mVx = VELOCITY;
 	//“G”‚É1‰ÁZ‚·‚é
 	sNum++;
+	//ƒXƒRƒA‚ğ‰ÁZ‚·‚é
+	sScore;
 }
 
 void CEnemy2::Update()

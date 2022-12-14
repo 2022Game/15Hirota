@@ -1,5 +1,7 @@
 #include "CPlayer2.h"
 #include "CApplication.h"
+#include "CInput.h"
+#include "CMoveBlock.h"
 
 #define TEXCOORD 168, 188, 158, 128	//テクスチャマッピング
 #define TEXCRY 196, 216, 158, 128	//テクスチャマッピング
@@ -48,7 +50,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				mVy = 0.0f;
 				if (y > 0.0f)
 				{
-					mState = EState::EMOVE;
+					mState =EState::EMOVE;
 				}
 				else
 				{	//ジャンプでなければ泣く
@@ -159,6 +161,33 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			}
 		}
 		break;
+	case ETag::EMOVEBLOCK:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			//着地した時
+			if (y != 0.0f)
+			{
+				X(X() + o->Vx());
+				{
+					X(X() + o->Vx() + 2.0f);
+					mVx = -mVx;
+				}
+				X(X() + o->Vx());
+				{
+					X(X() + o->Vx() - 2.0f);
+					mVx = -mVx;
+				}
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+		}
+		break;
 	case ETag::EGOAL:
 		if (CRectangle::Collision(o, &x, &y))
 		{
@@ -170,9 +199,18 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 		{
 			sHp--;
 			{
-				
+				X(X() + o->Vx());
+				{
+					X(X() + o->Vx());
+				}
 			}
 			mState = EState::EMOVE;
+		}
+		break;
+	case ETag::EITEM:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			if (CPlayer2::Instance()->spInstance);
 		}
 	}
 }
@@ -206,7 +244,7 @@ int CPlayer2::Goal1()
 }
 
 void CPlayer2::Update()
-{
+{	
 	//無敵時間中はカウントを減少する
 	if (mInvincible > 0)
 	{
