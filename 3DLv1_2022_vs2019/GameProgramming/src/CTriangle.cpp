@@ -56,6 +56,7 @@ void CTriangle::UV(const CVector& v0, const CVector& v1, const CVector& v2)
 	mUv[2] = v2;
 }
 
+//í∏ì_ç¿ïW
 const CVector& CTriangle::V0() const
 {
 	return mV[0];
@@ -71,6 +72,7 @@ const CVector& CTriangle::V2() const
 	return mV[2];
 }
 
+//ñ@ê¸
 const CVector& CTriangle::N0() const
 {
 	return mN[0];
@@ -86,6 +88,7 @@ const CVector& CTriangle::N2() const
 	return mN[2];
 }
 
+//UV
 const CVector& CTriangle::U0() const
 {
 	return mUv[0];

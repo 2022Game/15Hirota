@@ -198,7 +198,7 @@ void CModel::CreateVertexBuffer()
 	int idx = 0;
 	for (int i = 0; i < mpMaterials.size(); i++)
 	{
-		for (int j = 0; j < mpMaterials.size(); j++)
+		for (int j = 0; j < mTriangles.size(); j++)
 		{
 			if (i == mTriangles[j].MaterialIdx())
 			{
@@ -244,7 +244,7 @@ void CModel::Render(const CMatrix &m)
 	glVertexPointer(3, GL_FLOAT, sizeof(CVertex), (void*)&mpVertexes[0].mPosition);
 	//法線ベクトルの位置を設定
 	glEnableClientState(GL_NORMAL_ARRAY);
-	glNormalPointer(GL_FLOAT, sizeof(CVertex), (void*)&mpVertexes[0].mTextureCoords);
+	glNormalPointer(GL_FLOAT, sizeof(CVertex), (void*)&mpVertexes[0].mNormal);
 	//テクスチャマッピングの位置を設定
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glTexCoordPointer(2, GL_FLOAT, sizeof(CVertex), (void*)&mpVertexes[0].mTextureCoords);
