@@ -43,7 +43,7 @@ private:
 	//CCharacterのポインタの可変長配列
 	CModel mBackGround; //背景モデル
     //std::vector<CCharacter*> mCharacters;
-	CCharacter3 mCharacter;
+	//CCharacter3 mCharacter;
 	CPlayer mPlayer;
 public:
 	static CCharacterManager* CharacterManager();
