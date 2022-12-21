@@ -4,6 +4,7 @@
 #include "CTriangle.h"
 #include "CModel.h"
 #include "CMatrix.h"
+#include "CBullet.h"
 //OpenGL
 #include "glut.h"
 
@@ -114,6 +115,8 @@ void CApplication::Update()
 	mPlayer.Update();
 	mPlayer.Render();
 
-	mBackGround.Render();
+	mPlayer.bullet.Update();
+	mPlayer.bullet.Render();
 
+	mBackGround.Render();
 }
