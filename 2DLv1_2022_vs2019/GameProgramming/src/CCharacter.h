@@ -20,10 +20,12 @@ public:
 		EBLOCK2,	//足場ブロック
 		EBLOCK3,	//上空ブロック
 		EBLOCK4,	//ハテナブロック
+		EBLOCK5,	//階段ブロック
 		EDOKAN,     //土管
 		EBACK,	    //背景
 		EGOAL,		//ゴールブロック
-		EMOVEBLOCK,	//移動ブロック
+		EMOVEBLOCK,	//移動ブロック横
+		EMOVEBLOCK2,//移動ブロック縦
 		EFALLING,	//落下死
 	};
 	enum class EState	//状態
@@ -47,7 +49,8 @@ public:
 	EState State();	//状態を取得する
 	bool Enabled();
 	ETag Tag();
-	float Vx();	//	ブロックに乗った時のキャラクターのスピードを足す
+	float Vx();	//	ブロックに乗った時のキャラクターのスピードを足す(x軸)
+	float Vy(); //	ブロックに乗った時のキャラクターのスピードを足す(y軸)
 	//衝突処理２
 	virtual void Collision() {};
 	//衝突処理４

@@ -1,7 +1,6 @@
 #include "CPlayer2.h"
 #include "CApplication.h"
 #include "CInput.h"
-#include "CMoveBlock.h"
 
 #define TEXCOORD 168, 188, 158, 128	//テクスチャマッピング
 #define TEXCRY 196, 216, 158, 128	//テクスチャマッピング
@@ -11,11 +10,11 @@
 #define TEXCOORD2 136,156,158,128	//右向き2
 #define TEXLEFT1 188,168,158,128	//左向き1
 #define TEXLEFT2 156,136,158,128	//左向き2
-#define VELOCITY 20.0f	//移動速度
+#define VELOCITY 10.0f	//移動速度
 
 
-#define HP 3 //HPの初期値は3
-#define GOAL1 1//GOALの初期値は1
+#define HP 3	//HPの初期値は3
+#define GOAL1 1	//GOALの初期値は1
 
 #define SE_JUMP "res\\jump.wav" //ジャンプの音声ファイル
 
@@ -33,7 +32,7 @@ void CPlayer2::Collision()
 
 void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 {
-	float x, y,w,h;
+	float x, y;
 	switch (o->Tag())
 	{
 	case ETag::EENEMY:
@@ -89,7 +88,6 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				{
 					mState = EState::EMOVE;
 				}
-
 			}
 		}
 		break;
@@ -132,7 +130,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 		{
 			X(X() + x);
 			Y(Y() + y);
-			//着地した時
+			//着地したとき
 			if (y != 0.0f)
 			{
 				//Y軸速度を0にする
@@ -161,6 +159,22 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			}
 		}
 		break;
+	case ETag::EBLOCK5:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			//着地した時
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+		}
 	case ETag::EMOVEBLOCK:
 		if (CRectangle::Collision(o, &x, &y))
 		{
@@ -188,6 +202,33 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			}
 		}
 		break;
+	case ETag::EMOVEBLOCK2:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			//着地した時
+			if (y != 0.0f)
+			{
+				X(X() + o->Vy());
+				{
+					X(X() + o->Vy() + 2.0f);
+					mVy = -mVy;
+				}
+				X(X() + o->Vy());
+				{
+					X(X() + o->Vy() - 2.0f);
+					mVy = -mVy;
+				}
+				//X軸速度を0にする
+				mVx = 0.0f;
+				if (x > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+		}
+		break;
 	case ETag::EGOAL:
 		if (CRectangle::Collision(o, &x, &y))
 		{
@@ -199,10 +240,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 		{
 			sHp--;
 			{
-				X(X() + o->Vx());
-				{
-					X(X() + o->Vx());
-				}
+
 			}
 			mState = EState::EMOVE;
 		}
@@ -210,8 +248,9 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 	case ETag::EITEM:
 		if (CRectangle::Collision(o, &x, &y))
 		{
-			if (CPlayer2::Instance()->spInstance);
+			//未定
 		}
+		break;
 	}
 }
 
@@ -252,12 +291,26 @@ void CPlayer2::Update()
 	}
 	if (mState != EState::EJUMP)
 	{
+		int flagJ = 0;
+
 		if (mInput.Key('J'))
 		{
-			//ジャンプ音
-			mSoundJump.Play(0.1f);
-			mVy = JUMPV0;
-			mState = EState::EJUMP;
+			if (flagJ == 0)
+			{
+				//ジャンプ音
+				mSoundJump.Play(0.1f);
+				mVy = JUMPV0;
+				mState = EState::EJUMP;
+				flagJ = 1;
+			}
+			else (!flagJ == 0);
+			{
+				flagJ =1;
+			}
+		}
+		else if (!mInput.Key('J'))
+		{
+			flagJ = 0;
 		}
 	}
 	if (mInput.Key('A'))

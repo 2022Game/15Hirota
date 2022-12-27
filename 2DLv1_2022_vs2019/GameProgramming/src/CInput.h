@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <iostream>
 
-
 class CInput
 {
 public:
@@ -18,7 +17,6 @@ public:
 	//true:文字のキーが押されている
 	//false:文字のキーが押されていない
 	bool Key(char key);
-	BOOL keyflg;
 private:
 	static GLFWwindow* spWindow;	//ウィンドウのポインタ
 };

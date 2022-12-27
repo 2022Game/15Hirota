@@ -105,6 +105,13 @@ void CEnemy3::Collision(CCharacter* m, CCharacter* o)
 			Y(Y() + y);
 			mVx = -mVx;
 		}
+	case ETag::EBLOCK5:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			mVx = -mVx;
+		}
 	}
 }
 
@@ -133,7 +140,7 @@ void CEnemy3::Update()
 		//X軸速度分、X座標を更新する
 		X(X() + mVx);
 		const int PITCH = 32;//画像を切り替える間隔
-		if ((int)X() % PITCH < PITCH / 2)
+		if ((int)X() % PITCH < PITCH / 3)
 		{
 			if (mVx < 0.0f) //左へ移動
 			{

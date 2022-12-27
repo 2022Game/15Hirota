@@ -1,7 +1,3 @@
-﻿  CPlayer2.cpp
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\2DLv1_2022_vs2019\GameProgramming\src\CPlayer2.cpp(14,1): warning C4005: 'VELOCITY': マクロが再定義されました。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\2DLv1_2022_vs2019\GameProgramming\src\CCharacter.h(6): message : 'VELOCITY' の以前の定義を確認してください
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\2DLv1_2022_vs2019\GameProgramming\src\CPlayer2.cpp(213,41): warning C4390: ';': 制御が空の文が見つかりました。意図した記述でしょうか?
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\2DLv1_2022_vs2019\GameProgramming\src\CPlayer2.cpp(36,15): warning C4101: 'h': ローカル変数は 1 度も使われていません。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\2DLv1_2022_vs2019\GameProgramming\src\CPlayer2.cpp(36,13): warning C4101: 'w': ローカル変数は 1 度も使われていません。
+﻿  CGame.cpp
+C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\2DLv1_2022_vs2019\GameProgramming\src\CGame.cpp(128,342): warning C4838: 'double' から 'int' への変換には縮小変換が必要です
   GameProgramming.vcxproj -> C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\2DLv1_2022_vs2019\Debug\GameProgramming.exe

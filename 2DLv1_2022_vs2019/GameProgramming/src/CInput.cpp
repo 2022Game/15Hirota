@@ -29,25 +29,5 @@ CInput::CInput()
 
 bool CInput::Key(char key)
 {
-	if (GetAsyncKeyState(key) & 0x8000) {
-		if (!keyflg) {
-			//キーを押した瞬間の処理
-			keyflg = true;
-		}
-		//キーを押している間の処理
-		false;
-	}
-	else {
-		//キーを離している間の処理
-		keyflg = false;
-	}
 	return GetAsyncKeyState(key) < 0;
 }
-
-
-//if (GetAsyncKeyState(key)) {
-//	cout << "押されてます" << endl;
-//}
-//else {
-//	cout << "押されていません" << endl;
-//}

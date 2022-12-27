@@ -54,8 +54,8 @@ void CUi::Render()
 	mFont.Draw(620, 580, 10, 20, str);
 	sprintf(str, "HP:%d", mHp);
 	mFont.Draw(20, 20, 10, 20, str);
-	sprintf(str, "ENEMY:%d", mEnemy);
-	mFont.Draw(20, 580, 10, 20, str);
+	/*sprintf(str, "ENEMY:%d", mEnemy);
+	mFont.Draw(20, 580, 10, 20, str);*/
 	sprintf(str, "SCORE:%04d", mScore);
 	mFont.Draw(400, 580, 10, 20, str);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "CUi.h"
 #include "CPlayer2.h"
+#include <Windows.h>
 
 //íËêîÇÃíËã`
 
@@ -11,7 +12,7 @@
 #define TIPSIZE_E1 35.0f
 
 #define TEXTURE_D "Dokan.png"
-#define TIPSIZE_D 80.0f
+#define TIPSIZE_D 130.0f
 
 #define TEXTURE_B1 "kindpng_2063012.png"
 #define TIPSIZE_B1 40.0f
@@ -21,6 +22,9 @@
 
 #define TEXTURE_B3 "kindpng_2063012.png"
 #define TIPSIZE_B3 35.0f
+
+#define TEXTURE_B4 "kindpng_2063012.png"
+#define TIPSIZE_B4 50.0f
 
 #define TEXTURE_BACK "pixel-background-png-4.png"
 #define TIPSIZE_BACK 40.0f
@@ -33,6 +37,9 @@
 
 #define TEXTURE_MoveBlock "pngaaa.com-3726776.png"
 #define TIPSIZE_MoveBlock 20.0f
+
+#define TEXTURE_MoveBlock2 "pngaaa.com-3726776.png"
+#define TIPSIZE_MoveBlock2 20.0f
 
 /*
 * CGameÉNÉâÉX
