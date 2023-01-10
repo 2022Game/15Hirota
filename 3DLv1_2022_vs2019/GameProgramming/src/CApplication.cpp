@@ -13,6 +13,7 @@ CVector mEye;
 //クラスのstatic変数
 CTexture CApplication::mTexture;
 CCharacterManager CApplication::mCharacterManager;
+CTaskManager CApplication::mTaskManager;
 
 #define SOUND_BGM "res\\mario.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル
@@ -29,6 +30,11 @@ CCharacterManager* CApplication::CharacterManager()
 CTexture* CApplication::Texture()
 {
 	return &mTexture;
+}
+
+CTaskManager* CApplication::TaskManager()
+{
+	return &mTaskManager;
 }
 
 void CApplication::Start() {
@@ -115,8 +121,8 @@ void CApplication::Update()
 	mPlayer.Update();
 	mPlayer.Render();
 
-	mPlayer.bullet.Update();
-	mPlayer.bullet.Render();
+	mTaskManager.Update();
+	mTaskManager.Render();
 
 	mBackGround.Render();
 }

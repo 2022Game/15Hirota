@@ -14,6 +14,7 @@
 #include "CSound.h"
 #include "CModel.h"
 #include "CCharacter3.h"
+#include "CTaskManager.h"
 
 class CApplication
 {
@@ -22,6 +23,7 @@ private:
 	CSound mSoundOver;	//ゲームオーバー
 	CGame* mpGame;
 	static CCharacterManager mCharacterManager;
+	static CTaskManager mTaskManager;
 	enum class EState
 	{
 		ESTART,	//ゲーム開始
@@ -48,6 +50,7 @@ private:
 public:
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();
+	static CTaskManager* TaskManager();
 	//最初に一度だけ実行するプログラム
 	void Start();
 	//繰り返し実行するプログラム
