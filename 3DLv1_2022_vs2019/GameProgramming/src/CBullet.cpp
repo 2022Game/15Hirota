@@ -1,6 +1,10 @@
 #include "CBullet.h"
 #define BULLET_VELOCITY CVector(0.0f,0.0f,1.0f)//弾の速度
 
+CBullet::CBullet()
+	:mLife(50)
+{}
+
 //幅と奥行きの設定
 //Set(幅、奥行き)
 void CBullet::Set(float w, float d) {
@@ -14,9 +18,16 @@ void CBullet::Set(float w, float d) {
 
 //更新
 void CBullet::Update() {
-	CTransform::Update();
-	//位置更新
-	mPosition = mPosition + BULLET_VELOCITY * mMatrixRotate;
+	//生存時間の判定
+	if (mLife-- > 0) {
+		CTransform::Update();
+		//位置更新
+		mPosition = mPosition + BULLET_VELOCITY * mMatrixRotate;
+	}
+	else {
+		//無効にする
+		mEnabled = false;
+	}
 }
 
 //描画

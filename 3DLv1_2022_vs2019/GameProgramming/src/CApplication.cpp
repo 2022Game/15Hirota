@@ -54,6 +54,8 @@ void CApplication::Start() {
 
 void CApplication::Update()
 {
+	mTaskManager.Update();
+
 	//頂点1、頂点2、頂点3、法線データの作成
 	CVector v0, v1, v2, n;
 	//法線を上向きで設定する
@@ -118,10 +120,12 @@ void CApplication::Update()
 	//カメラの設定
 	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 
-	mPlayer.Update();
-	mPlayer.Render();
+	//mPlayer.Update();
+	//mPlayer.Render();
 
-	mTaskManager.Update();
+	//タスクリストの削除
+	mTaskManager.Delete();
+	//タスクマネージャーの描画
 	mTaskManager.Render();
 
 	mBackGround.Render();

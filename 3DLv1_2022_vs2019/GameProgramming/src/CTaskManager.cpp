@@ -21,6 +21,28 @@ void CTaskManager::Add(CTask* addTask) {
 	//taskの前をaddTaskに
 	task->mpPrev = addTask;
 }
+
+void CTaskManager::Remove(CTask* task) {
+	//タスクの前の次を、タスクの次にする
+	task->mpPrev->mpNext = task->mpNext;
+	//タスクの次の前を、タスクの前にする
+	task->mpNext->mpPrev = task->mpPrev;
+}
+
+void CTaskManager::Delete() {
+	//先頭から最後まで繰り返し
+	CTask* task = mHead.mpNext;
+	while (task->mpNext) {
+		CTask* del = task;
+		//次へ
+		task = task->mpNext;
+		//mEnabledがjfalseなら削除
+		if (del->mEnabled == false) {
+			delete del;
+		}
+	}
+}
+
 //更新
 void CTaskManager::Update() {
 	//先頭から最後まで繰り返し
