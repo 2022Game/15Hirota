@@ -47,6 +47,8 @@ private:
     //std::vector<CCharacter*> mCharacters;
 	//CCharacter3 mCharacter;
 	CPlayer mPlayer;
+	//C5ƒ‚ƒfƒ‹
+	CModel mModelC5;
 public:
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();
