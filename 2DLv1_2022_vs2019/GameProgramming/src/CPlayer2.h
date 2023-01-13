@@ -24,6 +24,7 @@ private:
 	static int sHp;	//HP
 	static int sGoal1; //ゴール
 	int mInvincible; //無敵カウンタ
+	int mJumpcount;	//ジャンプカウンタ
 	CInput mInput;
 	static CPlayer2* spInstance;
 };

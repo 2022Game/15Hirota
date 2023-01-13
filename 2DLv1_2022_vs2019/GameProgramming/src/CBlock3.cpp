@@ -7,4 +7,5 @@ CBlock3::CBlock3(float x, float y, float w, float h, CTexture* pt)
 	Set(x, y, w, h);
 	Texture(pt, TEXCOORD);
 	mTag = ETag::EBLOCK3;
+	flag_B = true;
 }

@@ -2,7 +2,8 @@
 #define BULLET_VELOCITY CVector(0.0f,0.0f,1.0f)//弾の速度
 
 CBullet::CBullet()
-	:mLife(50)
+	:mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.1f)
+	,mLife(50)
 {}
 
 //幅と奥行きの設定
@@ -37,4 +38,5 @@ void CBullet::Render() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, c);
 	//三角形描画
 	mT.Render(mMatrix);
+	mCollider.Render();
 }

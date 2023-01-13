@@ -256,6 +256,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 
 CPlayer2::CPlayer2(float x, float y, float w, float h, CTexture* pt)
 	: mInvincible(0)
+	, mJumpcount(0)
 {
 	Set(x, y, w, h);
 	Texture(pt, TEXCOORD);
@@ -291,26 +292,24 @@ void CPlayer2::Update()
 	}
 	if (mState != EState::EJUMP)
 	{
-		int flagJ = 0;
-
 		if (mInput.Key('J'))
 		{
-			if (flagJ == 0)
+			if (mJumpcount == 0)
 			{
 				//ƒWƒƒƒ“ƒv‰¹
 				mSoundJump.Play(0.1f);
 				mVy = JUMPV0;
 				mState = EState::EJUMP;
-				flagJ = 1;
+				mJumpcount++;
 			}
-			else (!flagJ == 0);
+			if (mJumpcount > 1)
 			{
-				flagJ =1;
+				mVy = 0;
 			}
 		}
 		else if (!mInput.Key('J'))
 		{
-			flagJ = 0;
+			mJumpcount = 0;
 		}
 	}
 	if (mInput.Key('A'))
