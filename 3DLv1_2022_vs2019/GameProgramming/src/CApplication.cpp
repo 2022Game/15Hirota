@@ -5,6 +5,7 @@
 #include "CModel.h"
 #include "CMatrix.h"
 #include "CBullet.h"
+#include "CCollisionManager.h"
 //OpenGL
 #include "glut.h"
 
@@ -13,7 +14,7 @@ CVector mEye;
 //クラスのstatic変数
 CTexture CApplication::mTexture;
 CCharacterManager CApplication::mCharacterManager;
-CTaskManager CApplication::mTaskManager;
+//CTaskManager CApplication::mTaskManager;
 
 #define SOUND_BGM "res\\mario.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル
@@ -34,10 +35,10 @@ CTexture* CApplication::Texture()
 	return &mTexture;
 }
 
-CTaskManager* CApplication::TaskManager()
-{
-	return &mTaskManager;
-}
+//CTaskManager* CApplication::TaskManager()
+//{
+//	return &mTaskManager;
+//}
 
 void CApplication::Start() {
 	mEye = CVector(1.0f, 2.0f, 3.0f);
@@ -65,7 +66,7 @@ void CApplication::Start() {
 
 void CApplication::Update()
 {
-	mTaskManager.Update();
+	CTaskManager::Instance()->Update();
 
 	//頂点1、頂点2、頂点3、法線データの作成
 	CVector v0, v1, v2, n;
@@ -135,9 +136,11 @@ void CApplication::Update()
 	//mPlayer.Render();
 
 	//タスクリストの削除
-	mTaskManager.Delete();
+	CTaskManager::Instance()->Delete();
 	//タスクマネージャーの描画
-	mTaskManager.Render();
+	CTaskManager::Instance()->Render();
 
 	mBackGround.Render();
+
+	CCollisionManager::Instance()->Render();
 }

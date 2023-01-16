@@ -22,6 +22,22 @@ void CTaskManager::Add(CTask* addTask) {
 	task->mpPrev = addTask;
 }
 
+//タスクマネージャーのインスタンス
+CTaskManager* CTaskManager::mpInstance = nullptr;
+
+//インスタンスの取得
+CTaskManager* CTaskManager::Instance()
+{
+	//インスタンスが無ければ
+	if (mpInstance == nullptr)
+	{
+		//インスタンスを生成する
+		mpInstance = new CTaskManager();
+	}
+	return mpInstance;
+}
+
+
 void CTaskManager::Remove(CTask* task) {
 	//タスクの前の次を、タスクの次にする
 	task->mpPrev->mpNext = task->mpNext;
