@@ -23,6 +23,10 @@ public:
 		mCollider2.Render();
 		mCollider3.Render();
 	}*/
+public:
+	//衝突処理
+	//Collision(コライダ１、コライダ２)
+	void Collision(CCollider* m, CCollider* o);
 
 	//更新処理
 	void Update();

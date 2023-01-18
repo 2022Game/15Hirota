@@ -19,6 +19,16 @@ CEnemy::CEnemy(CModel* model, const CVector& position,
 
 }
 
+//衝突処理
+//Collision(コライダ１、コライダ２)
+void CEnemy::Collision(CCollider* m, CCollider* o) {
+	//コライダのmとoが衝突しているか判定
+	if (CCollider::Collision(m, o)) {
+		//衝突しているときは無効にする
+		mEnabled = false;
+	}
+}
+
 //更新処理
 void CEnemy::Update() {
 	//行列を更新

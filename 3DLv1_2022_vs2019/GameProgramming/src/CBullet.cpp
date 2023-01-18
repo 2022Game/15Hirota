@@ -17,6 +17,16 @@ void CBullet::Set(float w, float d) {
 	mT.Normal(CVector(0.0f, 1.0f, 0.0f));
 }
 
+//衝突処理
+//Collidsion(コライダ１、コライダ２)
+void CBullet::Collision(CCollider* m, CCollider* o) {
+	//コライダのmとoが衝突しているか判定
+	if (CCollider::Collision(m, o)) {
+		//衝突しているときは無効にする
+		mEnabled = false;
+	}
+}
+
 //更新
 void CBullet::Update() {
 	//生存時間の判定

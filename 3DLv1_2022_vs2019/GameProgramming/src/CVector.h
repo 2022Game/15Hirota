@@ -35,6 +35,9 @@ public:
 	//CVector * CMatrixの結果をCVectorで返す
 	CVector operator*(const CMatrix & m);
 
+	//ベクトルの長さを返す
+	float Length() const;
+
 private:
 	//3D各軸での値を設定
 	float mX, mY, mZ;

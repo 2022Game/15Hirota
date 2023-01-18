@@ -1,4 +1,5 @@
 #include "CTaskManager.h"
+
 //デフォルトコンストラクタ
 CTaskManager::CTaskManager()
 {

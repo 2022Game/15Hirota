@@ -17,6 +17,10 @@ public:
 	//Set(幅、奥行き)
 	void Set(float w, float d);
 
+	//衝突処理
+	//Collsion(コライダ1、コライダ2)
+	void Collision(CCollider* m, CCollider* o);
+
 	CBullet();
 
 	//更新

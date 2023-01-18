@@ -9,13 +9,11 @@
 */
 class CTaskManager {
 public:
-	//インスタンスの取得
-	static CTaskManager* Instance();
 	//デストラクタ
-	virtual~CTaskManager();
+	virtual ~CTaskManager();
 	//リストに追加
 	//Add(タスクのポインタ)
-	void Add(CTask* addTask);
+	void Add(CTask *addTask);
 	//更新
 	void Update();
 	//描画
@@ -25,11 +23,14 @@ public:
 	void Remove(CTask* task);
 	//タスクの削除
 	void Delete();
+	//インスタンスの取得
+	static CTaskManager* Instance();
 protected:
 	CTask mHead;	//先頭タスク
 	CTask mTail;	//最終タスク
 	//デフォルトコンストラクタ
 	CTaskManager();
+
 private:
 	//タスクマネージャーのインスタンス
 	static CTaskManager* mpInstance;
