@@ -5,7 +5,7 @@
 
 CRectangle::CRectangle()
 {
-	printf("インスタンスが生まれました\n");
+	//printf("インスタンスが生まれました\n");
 	//glBegin(GL_QUADS);
 	//glVertex2f(0.0f, 0.0f);
 	//glVertex2f(400.0f, 0.0f);
@@ -21,7 +21,7 @@ void CRectangle::Render()
 
 CRectangle::~CRectangle()
 {
-	printf("インスタンスが破棄されました\n");
+	//printf("インスタンスが破棄されました\n");
 	//glBegin(GL_QUADS);
 	//glVertex2f(400.0f, 300.0f);
 	//glVertex2f(800.0f, 300.0f);
@@ -100,6 +100,8 @@ bool CRectangle::Collision(CRectangle* r)
 		distY = -distY;
 	if (distY >= mH + r->mH)
 		return false;
+	if (distY > 0)    //後から変更
+		return false; //下側以外に当たらない
 	return true;
 }
 

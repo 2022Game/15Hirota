@@ -1,6 +1,5 @@
 #include "CPlayer2.h"
 #include "CApplication.h"
-#include "CInput.h"
 
 #define TEXCOORD 168, 188, 158, 128	//テクスチャマッピング
 #define TEXCRY 196, 216, 158, 128	//テクスチャマッピング
@@ -38,6 +37,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 	case ETag::EENEMY:
 		if (CRectangle::Collision(o, &x, &y))
 		{
+
 			//敵の衝突判定を実行
 			o->Collision(o, m);
 			X(X() + x);
@@ -49,7 +49,8 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 				mVy = 0.0f;
 				if (y > 0.0f)
 				{
-					mState =EState::EMOVE;
+					mState = EState::EMOVE;
+					mState = EState::EFALL;
 				}
 				else
 				{	//ジャンプでなければ泣く
@@ -147,18 +148,23 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 		{
 			X(X() + x);
 			Y(Y() + y);
-			//着地した時
 			if (y != 0.0f)
 			{
-				//Y軸速度を0にする
-				mVy = 0.0f;
 				if (y > 0.0f)
+				{
+					mVy = 0.0f;
+					mState = EState::EBLOCK_NOEITEM;
+				}
+				else
 				{
 					mState = EState::EMOVE;
 				}
 			}
+			else
+			{
+				mState = EState::EMOVE;
+			}
 		}
-		break;
 	case ETag::EBLOCK5:
 		if (CRectangle::Collision(o, &x, &y))
 		{
@@ -210,16 +216,6 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			//着地した時
 			if (y != 0.0f)
 			{
-				X(X() + o->Vy());
-				{
-					X(X() + o->Vy() + 2.0f);
-					mVy = -mVy;
-				}
-				X(X() + o->Vy());
-				{
-					X(X() + o->Vy() - 2.0f);
-					mVy = -mVy;
-				}
 				//X軸速度を0にする
 				mVx = 0.0f;
 				if (x > 0.0f)
@@ -238,7 +234,7 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 	case ETag::EFALLING:
 		if (CRectangle::Collision(o, &x, &y))
 		{
-			sHp--;
+			sHp =0;
 			{
 
 			}

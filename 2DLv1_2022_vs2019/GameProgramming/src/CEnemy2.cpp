@@ -8,6 +8,8 @@
 #define TEXLEFT1 188,168,190,160	//左向き1
 #define TEXLEFT2 156,136,190,160	//左向き2
 
+#define GRAVITY (TIPSIZE / 20.0f)	//重力加速度
+
 #define HP 1
 
 int CEnemy2::sNum = 0;
@@ -59,18 +61,24 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 	case ETag::EENEMY:
 		break;
 	case ETag::EPLAYER:
-		if (CRectangle::Collision(o))
+		if (CRectangle::Collision(o, &x, &y))
 		{
-			if (o->State() == EState::EJUMP)
+			//めり込まない位置まで戻す
+			X(X() + x);
+			Y(Y() + y);
+			//X軸速度を反転させる
+			mVx = -mVx;
+
+			if (o->State() == EState::EJUMP || o->State() == EState::EFALL)
 			{
 				//敵数1減算
 				if (mState != EState::ECRY)
 				{
 					sScore += 100;
 					sNum--;
+					mEnabled = false;
 				}
 			}
-			mState = EState::ECRY;
 		}
 		break;
 	case ETag::EBLOCK2:
@@ -78,26 +86,156 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 		{
 			X(X() + x);
 			Y(Y() + y);
-			mVx = -mVx;
+			//着地したとき
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+			if (x != 0.0f)
+			{
+				mVy = VELOCITY;
+				if (x > mVx)
+				{
+					mState = EState::EMOVE;
+					mVx = -mVx;
+				}
+				if (x < mVx)
+				{
+					mState = EState::EMOVE;
+					mVx = -mVx;
+				}
+			}
 		}
 	case ETag::EBLOCK3:
 		if (CRectangle::Collision(o, &x, &y))
 		{
 			X(X() + x);
 			Y(Y() + y);
-			mVx = -mVx;
+			//着地したとき
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+			/*if (x != 0.0f)
+			{
+				mVy = VELOCITY;
+				if (x > mVx)
+				{
+					mState = EState::EMOVE;
+					mVx = -mVx;
+				}
+				if (x < mVx)
+				{
+					mState = EState::EMOVE;
+					mVx = -mVx;
+				}
+			}*/
+		}
+	case ETag::EBLOCK4:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			//着地したとき
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;	
+				}
+			}
+			if (x != 0.0f)
+			{
+				mVy = VELOCITY;
+				if (x > mVx)
+				{
+					mState = EState::EMOVE;
+					mVx = -mVx;
+				}
+				if (x < mVx)
+				{
+					mState = EState::EMOVE;
+					mVx = -mVx;
+				}
+			}
+		}
+	case ETag::EBLOCK5:
+		if (CRectangle::Collision(o, &x, &y))
+		{
+			X(X() + x);
+			Y(Y() + y);
+			//着地したとき
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+			if (x != 0.0f)
+			{
+				mVy = VELOCITY;
+				if (x > mVx)
+				{
+					mState = EState::EMOVE;
+					mVx = -mVx;
+				}
+				if (x < mVx)
+				{
+					mState = EState::EMOVE;
+					mVx = -mVx;
+				}
+			}
 		}
 	case ETag::EDOKAN:
 		if (CRectangle::Collision(o, &x, &y))
 		{
 			X(X() + x);
 			Y(Y() + y);
-			mVx = -mVx;
+			//着地したとき
+			if (y != 0.0f)
+			{
+				//Y軸速度を0にする
+				mVy = 0.0f;
+				if (y > 0.0f)
+				{
+					mState = EState::EMOVE;
+				}
+			}
+			if (x != 0.0f)
+			{
+				mVy = VELOCITY;
+				if (x > mVx)
+				{
+					mState = EState::EMOVE;
+					mVx = -mVx;
+				}
+				if (x < mVx)
+				{
+					mState = EState::EMOVE;
+					mVx = -mVx;
+				}
+			}
 		}
 	}
 }
 
 CEnemy2::CEnemy2(float x, float y, float w, float h, CTexture* pt)
+	:sCount(0)
 {
 	Set(x, y, w, h);
 	Texture(pt, TEXCOORD);
@@ -118,12 +256,10 @@ void CEnemy2::Update()
 		//泣く画像を設定
 		Texture(Texture(), TEXCRY);
 		break;
-	//case EState::EFALLING: //後から追加↓
-		//Texture(Texture(), TEXCRY);
-		//break;
 	case EState::EMOVE:
 		//X軸速度分、X座標を更新する
 		X(X() + mVx);
+		
 		const int PITCH = 32;//画像を切り替える間隔
 		if ((int)X() % PITCH < PITCH / 2)
 		{
@@ -153,4 +289,8 @@ void CEnemy2::Update()
 		}
 		break;
 	}
+	//Y座標にY軸速度を加える
+	Y(Y() + mVy);
+	//Y軸速度に重力を減算する
+	mVy -= GRAVITY;
 }

@@ -9,3 +9,26 @@ CBlock3::CBlock3(float x, float y, float w, float h, CTexture* pt)
 	mTag = ETag::EBLOCK3;
 	flag_B = true;
 }
+
+void CBlock3::Collision()
+{
+	CApplication::CharacterManager()->Collision(this);
+}
+
+void CBlock3::Collision(CCharacter* m, CCharacter* o)
+{
+	//‚ß‚èž‚Ý’²®•Ï”‚ðéŒ¾‚·‚é
+	float x, y;
+	switch (o->Tag())
+	{
+	case ETag::EPLAYER:
+		if (CRectangle::Collision(o))
+		{
+			if (o->State() == EState::EJUMP)
+			{
+				mEnabled = false;
+			}
+		}
+		break;
+	}
+}

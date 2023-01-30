@@ -40,7 +40,9 @@ public:
 	const CMatrix operator*(const CMatrix& m)const;
 	//行列の取得
 	float* M()const;
-
+	//逆行列取得
+	CMatrix Transpose() const;
+	CMatrix Copy() const;
 private:
 	//4*4の行列データを設定
 	float mM[4][4];

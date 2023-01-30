@@ -23,8 +23,11 @@
 #define TEXTURE_B3 "kindpng_2063012.png"
 #define TIPSIZE_B3 35.0f
 
-#define TEXTURE_B4 "kindpng_2063012.png"
-#define TIPSIZE_B4 50.0f
+#define TEXTURE_B4 "pngaaa.com-3726776.png"
+#define TIPSIZE_B4 40.0f
+
+//#define TEXCOORD_NO_ITEM "pngaaa.com-3726776.png"
+//#define TIPSIZE_B4 35.0f
 
 #define TEXTURE_BACK "pixel-background-png-4.png"
 #define TIPSIZE_BACK 40.0f

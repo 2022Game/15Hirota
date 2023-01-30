@@ -30,11 +30,12 @@ public:
 	};
 	enum class EState	//状態
 	{
-		EMOVE,		//移動
-		EFALL,		//落下状態
-		ESTOP,		//停止
-		EJUMP,		//ジャンプ
-		ECRY,		//泣く
+		EMOVE,				//移動
+		EFALL,				//落下状態
+		ESTOP,				//停止
+		EJUMP,				//ジャンプ
+		ECRY,				//泣く
+		EBLOCK_NOEITEM,		//アイテム保有
 	};
 protected:
 	float mVx;	//X軸速度

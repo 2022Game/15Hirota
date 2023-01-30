@@ -15,6 +15,8 @@
 #include "CModel.h"
 #include "CCharacter3.h"
 #include "CTaskManager.h"
+#include "CBillBoard.h"
+#include "CVector.h"
 
 class CApplication
 {
@@ -23,6 +25,9 @@ private:
 	CSound mSoundOver;	//ゲームオーバー
 	CGame* mpGame;
 	static CCharacterManager mCharacterManager;
+	static CTexture mTexture;
+	//モデルビューの逆行列
+	static CMatrix mModelViewInverse;
 	//static CTaskManager mTaskManager;
 	enum class EState
 	{
@@ -34,7 +39,6 @@ private:
 	EState mState;
     //CCharacter mRectangle;
 	CPlayer* mpPlayer;
-	static CTexture mTexture;
 	CEnemy* mpEnemy;
     //CBullet* mpBullet;
 	CInput mInput;
@@ -52,6 +56,7 @@ private:
 public:
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();
+	static const CMatrix& ModelViewInverse();
 	//static CTaskManager* TaskManager();
 	//最初に一度だけ実行するプログラム
 	void Start();

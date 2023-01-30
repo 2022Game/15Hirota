@@ -122,8 +122,6 @@ void CMatrix::M(int row, int col, float value)
 	mM[row][col] = value;
 }
 
-
-
 //*演算子のオーバーロード
 //CMatrix*CMatrixの演算結果を返す
 const CMatrix CMatrix::operator*(const CMatrix& m)const
@@ -151,4 +149,32 @@ const CMatrix CMatrix::operator*(const CMatrix& m)const
 	t.mM[3][3] = mM[3][0] * m.mM[0][3] + mM[3][1] * m.mM[1][3] + mM[3][2] * m.mM[2][3] + mM[3][3] * m.mM[3][3];
 
 	return t;
+}
+
+CMatrix CMatrix::Transpose() const
+{
+	CMatrix tmp_t;
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			tmp_t.mM[i][j] = mM[j][i];
+		}
+	}
+	return tmp_t;
+}
+
+CMatrix CMatrix::Copy() const
+{
+	CMatrix tmp;
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			tmp.mM[i][j] = mM[i][j];
+		}
+	}
+	return tmp;
 }
