@@ -17,6 +17,7 @@
 #include "CTaskManager.h"
 #include "CBillBoard.h"
 #include "CVector.h"
+#include "CColliderTriangle.h"
 
 class CApplication
 {
@@ -53,6 +54,9 @@ private:
 	CPlayer mPlayer;
 	//C5モデル
 	CModel mModelC5;
+	//△コライダの作成
+	CColliderTriangle mColliderTriangle;
+	CColliderTriangle mColliderTriangle2;
 public:
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();

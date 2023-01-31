@@ -27,11 +27,21 @@ public:
 	//Collision(コライダ1、コライダ2)
 	//return:true(衝突している)false(衝突していない)
 	static bool Collision(CCollider* m, CCollider* o);
+	//コライダタイプ
+	enum EType {
+		ESPHERE,	//弾コライダ
+		ETRIANGLE,	//△コライダ
+	};
+	//デフォルトコンストラクタ
+	CCollider();
+
 	//描画
 	void Render();
 protected:
 	CCharacter3* mpParent;	//親
 	CMatrix* mpMatrix;		//親行列
 	float mRadius;			//半径
+	EType mType;	//コライダタイプ
+	CVector mV[3];
 };
 #endif
