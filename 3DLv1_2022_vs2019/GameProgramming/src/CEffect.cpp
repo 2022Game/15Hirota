@@ -33,7 +33,7 @@ void CEffect::Update() {
 		CVector(right, top, 0.0f));
 	mT[1].UV(CVector(left, top, 0.0f), CVector(left, bot, 0.0f),
 		CVector(right, top, 0.0f));
-	if (frame == (mRows * mCols) - 1.0f)
+	if (frame == (mRows * mCols) -mFps)
 		mEnabled = false;
 	//ビルボード更新
 	CBillBoard::Update();
