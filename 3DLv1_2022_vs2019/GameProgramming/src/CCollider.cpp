@@ -41,7 +41,7 @@ CCollider::~CCollider() {
 	CCollisionManager::Instance()->Remove(this);
 }
 
-CCharacter3* CCollider::parent()
+CCharacter3* CCollider::Parent()
 {
 	return mpParent;
 }

@@ -136,7 +136,11 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			{
 				//YŽ²‘¬“x‚ð0‚É‚·‚é
 				mVy = 0.0f;
-				if (y > 0.0f)
+				if (o->State() == EState::EJUMP)
+				{
+					mEnabled = false;
+				}
+				else
 				{
 					mState = EState::EMOVE;
 				}
@@ -150,9 +154,8 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			Y(Y() + y);
 			if (y != 0.0f)
 			{
-				if (y > 0.0f)
+				if (o->State() == EState::EJUMP && y > 0.0f)
 				{
-					mVy = 0.0f;
 					mState = EState::EBLOCK_NOEITEM;
 				}
 				else

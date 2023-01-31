@@ -1,4 +1,5 @@
 #include "CBillBoard.h"
+#include "CApplication.h"
 
 CBillBoard::CBillBoard()
 {

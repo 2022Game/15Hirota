@@ -100,8 +100,8 @@ bool CRectangle::Collision(CRectangle* r)
 		distY = -distY;
 	if (distY >= mH + r->mH)
 		return false;
-	if (distY > 0)    //Œã‚©‚ç•ÏX
-		return false; //‰º‘¤ˆÈŠO‚É“–‚½‚ç‚È‚¢
+	if (distY > 0.0f)		//Œã‚©‚ç•ÏX
+		return false; 
 	return true;
 }
 

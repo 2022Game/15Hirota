@@ -20,7 +20,7 @@ public:
 	CCollider(CCharacter3* parent, CMatrix* matrix,
 		const CVector& position, float radius);
 	//親ポインタの取得
-	CCharacter3* parent();
+	CCharacter3* Parent();
 	//デストラクタ
 	~CCollider();
 	//衝突判定
