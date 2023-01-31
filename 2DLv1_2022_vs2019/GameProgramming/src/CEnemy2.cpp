@@ -63,15 +63,19 @@ void CEnemy2::Collision(CCharacter* m, CCharacter* o)
 	case ETag::EPLAYER:
 		if (CRectangle::Collision(o, &x, &y))
 		{
-			//‚ß‚è‚Ü‚È‚¢ˆÊ’u‚Ü‚Å–ß‚·
-			X(X() + x);
-			Y(Y() + y);
-			//X²‘¬“x‚ğ”½“]‚³‚¹‚é
-			mVx = -mVx;
-
+			if (o->State() == EState::EMOVE || o->State() == EState::ESTOP)
+			{
+				if (mVx > x && mVy == 0.0f)
+				{
+					mVx = -mVx;
+				}
+				else
+				{
+					mVx = -mVx;
+				}
+			}
 			if (o->State() == EState::EJUMP || o->State() == EState::EFALL)
 			{
-				//“G”1Œ¸Z
 				if (mState != EState::ECRY)
 				{
 					sScore += 100;

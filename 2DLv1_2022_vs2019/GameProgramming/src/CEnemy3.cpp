@@ -65,6 +65,14 @@ void CEnemy3::Collision(CCharacter* m, CCharacter* o)
 		if (CRectangle::Collision(o, &x, &y))
 		{
 			mVx = -mVx;
+			if (mVx == VELOCITY)
+			{
+				mVx = -mVx;
+			}
+			else(mVx == -VELOCITY);
+			{
+				mVx = -mVx;
+			}
 			if (o->State() == EState::EJUMP || o->State() == EState::EFALL)
 			{
 				//“G”1Œ¸Z

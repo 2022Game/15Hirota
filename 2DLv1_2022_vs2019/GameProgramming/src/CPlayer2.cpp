@@ -156,15 +156,18 @@ void CPlayer2::Collision(CCharacter* m, CCharacter* o)
 			{
 				if (o->State() == EState::EJUMP && y > 0.0f)
 				{
+					mVy = 0.0f;
 					mState = EState::EBLOCK_NOEITEM;
 				}
 				else
 				{
+					mVy = 0.0f;
 					mState = EState::EMOVE;
 				}
 			}
 			else
 			{
+				mVy = 0.0f;
 				mState = EState::EMOVE;
 			}
 		}
