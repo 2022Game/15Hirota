@@ -19,7 +19,7 @@ CEffect::CEffect(const CVector& pos, float w, float h, char* texture,
 void CEffect::Update() {
 	//コマ数の計算
 	int frame = mFrame++ / mFps;
-	frame %= (mRows * mCols);	//ここだ
+	frame %= (mRows * mCols);	//ここだ28
 	//UV左
 	float left = 1.0f / mCols * (frame % mCols);
 	//UV右
@@ -33,7 +33,8 @@ void CEffect::Update() {
 		CVector(right, top, 0.0f));
 	mT[1].UV(CVector(left, top, 0.0f), CVector(left, bot, 0.0f),
 		CVector(right, top, 0.0f));
-	if (frame == (mRows * mCols) -mFps)
+
+	if (frame == (mRows * mCols) -1.0f) 
 		mEnabled = false;
 	//ビルボード更新
 	CBillBoard::Update();
