@@ -25,6 +25,8 @@ public:
 	~CCharacter3();
 	//コンストラクタ
 	CCharacter3();
+	//コンストラクタ
+	CCharacter3(int priority);
 	//衝突処理
 	virtual void Collision(CCollider *m,CCollider *o){}
 protected:
