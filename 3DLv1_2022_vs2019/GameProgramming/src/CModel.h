@@ -23,6 +23,8 @@ public:
 
 	~CModel();
 
+	std::vector<CTriangle> Triangles()const;
+
 private:
 	//ŽOŠpŒ`‚Ì‰Â•Ï’·”z—ñ
 	std::vector<CTriangle> mTriangles;

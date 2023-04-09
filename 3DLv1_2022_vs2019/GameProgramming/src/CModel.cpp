@@ -23,6 +23,11 @@ int strcmp(const char* s1, const char* s2)
 	return s1[i] - s2[i];
 }
 
+std::vector<CTriangle> CModel::Triangles()const
+{
+	return mTriangles;
+}
+
 //モデルファイルの入力
 //Load(モデルファイル名、マテリアルファイル名)
 void CModel::Load(char* obj, char* mtl) {

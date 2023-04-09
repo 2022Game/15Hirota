@@ -18,6 +18,7 @@
 #include "CBillBoard.h"
 #include "CVector.h"
 #include "CColliderTriangle.h"
+#include "CColliderMesh.h"
 
 class CApplication
 {
@@ -30,6 +31,8 @@ private:
 	//モデルビューの逆行列
 	static CMatrix mModelViewInverse;
 	//static CTaskManager mTaskManager;
+	//モデルからコライダを生成
+	CColliderMesh mColliderMesh;
 	enum class EState
 	{
 		ESTART,	//ゲーム開始
@@ -55,8 +58,8 @@ private:
 	//C5モデル
 	CModel mModelC5;
 	//△コライダの作成
-	CColliderTriangle mColliderTriangle;
-	CColliderTriangle mColliderTriangle2;
+	/*CColliderTriangle mColliderTriangle;
+	CColliderTriangle mColliderTriangle2;*/
 public:
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();

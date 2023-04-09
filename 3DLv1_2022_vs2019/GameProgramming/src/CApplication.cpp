@@ -55,6 +55,7 @@ void CApplication::Start() {
 	//C5モデルの読み込み
 	mModelC5.Load(MODEL_C5);
 	mBackGround.Load(MODEL_BACKGROUND);
+	mColliderMesh.Set(nullptr, nullptr, &mBackGround);
 	CMatrix matrix;
 	matrix.Print();
 	//mCharacter.Model(&mModel);
@@ -75,7 +76,7 @@ void CApplication::Start() {
 	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
 
 	//△コライダの確認
-	mColliderTriangle.Set(nullptr, nullptr
+	/*mColliderTriangle.Set(nullptr, nullptr
 		, CVector(-50.0f, 0.0f, -50.0f)
 		, CVector(-50.0f, 0.0f, 50.0f)
 		, CVector(50.0f, 0.0f, -50.0f));
@@ -83,7 +84,7 @@ void CApplication::Start() {
 	mColliderTriangle2.Set(nullptr, nullptr
 		, CVector(-50.0f, 0.0f, 50.0f)
 		, CVector(50.0f, 0.0f, 50.0f)
-		, CVector(50.0f, 0.0f, -50.0f));
+		, CVector(50.0f, 0.0f, -50.0f));*/
 }
 
 void CApplication::Update()
