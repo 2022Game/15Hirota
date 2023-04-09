@@ -58,6 +58,11 @@ CCharacter3* CCollider::Parent()
 	return mpParent;
 }
 
+CCollider::EType CCollider::Type()
+{
+	return mType;
+}
+
 void CCollider::Render() {
 	glPushMatrix();
 	//コライダの中心座標を計算
@@ -71,4 +76,34 @@ void CCollider::Render() {
 	//球描画
 	glutWireSphere(mRadius, 16, 16);
 	glPopMatrix();
+}
+
+bool CCollider::CollisionTriangleLine(CCollider* t, CCollider* l, CVector* a) {
+	CVector v[3], sv, ev;
+	//各コライダの頂点をワールド座標へ変換
+	v[0] = t->mV[0] * *t->mpMatrix;
+	v[1] = t->mV[1] * *t->mpMatrix;
+	v[2] = t->mV[2] * *t->mpMatrix;
+	sv = l->mV[0] * *l->mpMatrix;
+	ev = l->mV[1] * *l->mpMatrix;
+	//面の法線を、外積を正規化して求める
+	CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();
+	//三角の頂点から線分終点へのベクトル
+	CVector v0sv = sv - v[0];
+	//三角の頂点から終点へのベクトルを求める
+	CVector v0ev = ev - v[0];
+
+	//線分画面と交差しているか内積で確認する
+	float dots = v0sv.Dot(normal);
+	float dote = v0ev.Dot(normal);
+	//プラスは交差してない
+	if (dots * dote >= 0.0f) {
+		//衝突してない(調整不要)
+		*a = normal * -dots;
+	}
+	else {
+		//終点が裏面
+		*a = normal * -dote;
+	}
+	return true;
 }

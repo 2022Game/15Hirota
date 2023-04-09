@@ -18,6 +18,8 @@ public:
 	//CBullet bullet;
 	//更新処理
 	void Update();
+	//衝突処理
+	void Collision(CCollider* m, CCollider* o);
 private:
 	CInput mInput;
 	CColliderLine mLine;	//線分コライダ

@@ -35,6 +35,13 @@ public:
 	//デフォルトコンストラクタ
 	CCollider();
 
+	//CollisionTriangleLine(△コライダ、線分コライダ、調整値)
+	//return:true(衝突している)false(衝突していない)
+	//調整値：衝突していない位置まで戻す値
+	static bool CollisionTriangleLine(CCollider* triangle, CCollider* line, CVector* abjust);
+
+	EType Type();
+
 	//描画
 	void Render();
 protected:
