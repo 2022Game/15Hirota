@@ -6,7 +6,6 @@
 
 class CCollisionManager;
 
-
 /*
 コライダクラス
 衝突判定データ
@@ -31,6 +30,7 @@ public:
 	enum EType {
 		ESPHERE,	//弾コライダ
 		ETRIANGLE,	//△コライダ
+		ELINE,		//線分コライダ
 	};
 	//デフォルトコンストラクタ
 	CCollider();
