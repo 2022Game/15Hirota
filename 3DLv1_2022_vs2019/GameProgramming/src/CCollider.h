@@ -26,6 +26,10 @@ public:
 	//Collision(コライダ1、コライダ2)
 	//return:true(衝突している)false(衝突していない)
 	static bool Collision(CCollider* m, CCollider* o);
+	//CollisionTrianglrSphere(△コライダ、球コライダ、調整値)
+	//return:treu(衝突している)false(衝突していない)
+	//調整値:衝突しない位置まで戻す値
+	static bool CollisionTriangleSphere(CCollider* triangle, CCollider* sphere, CVector* abjust);
 	//コライダタイプ
 	enum EType {
 		ESPHERE,	//弾コライダ

@@ -22,11 +22,26 @@ CEnemy::CEnemy(CModel* model, const CVector& position,
 //衝突処理
 //Collision(コライダ１、コライダ２)
 void CEnemy::Collision(CCollider* m, CCollider* o) {
-	//コライダのmとoが衝突しているか判定
-	if (CCollider::Collision(m, o)) {
-		//エフェクト生成
-		new CEffect(o->Parent()->Position(), 1.0f, 1.0f,"exp.tga", 4, 4, 2);
-		//削除mEnabled = false;
+	//相手のコライダタイプの判定
+	switch (o->Type())
+	{
+	case CCollider::ESPHERE://球コライダの時
+		//コライダのmとyが衝突しているか判定
+		if (CCollider::Collision(m, o)) {
+			//エフェクト生成
+			new CEffect(o->Parent()->Position(), 1.0f, 1.0f, "exp.tga", 4, 4, 2);
+			//衝突しているときは無効にする
+			//mEnabled = false;
+		}
+		break;
+	case CCollider::ETRIANGLE://△コライダの時
+		CVector abjust;//調整値
+		//△コライダと球コライダの衝突判定
+		if (CCollider::CollisionTriangleSphere(o, m, &abjust))
+		{	//衝突しない位置まで戻す
+			mPosition = mPosition + abjust;
+		}
+		break;
 	}
 }
 
