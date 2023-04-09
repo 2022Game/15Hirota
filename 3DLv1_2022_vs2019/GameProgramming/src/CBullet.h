@@ -23,6 +23,8 @@ public:
 
 	CBullet();
 
+	void Collision();
+
 	//XV
 	void Update();
 	//•`‰æ

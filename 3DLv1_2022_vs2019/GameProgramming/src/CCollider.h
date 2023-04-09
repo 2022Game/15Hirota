@@ -48,6 +48,10 @@ public:
 
 	//描画
 	void Render();
+	//優先度の変更
+	void ChangePriority(int priority);
+	virtual void ChangePriority();
+
 protected:
 	CCharacter3* mpParent;	//親
 	CMatrix* mpMatrix;		//親行列

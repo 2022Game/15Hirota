@@ -30,6 +30,8 @@ public:
 	//Collision(コライダ１、コライダ２)
 	void Collision(CCollider* m, CCollider* o);
 
+	void Collision();
+
 	//更新処理
 	void Update();
 private:

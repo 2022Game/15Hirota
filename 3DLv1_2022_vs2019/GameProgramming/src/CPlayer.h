@@ -18,6 +18,8 @@ public:
 	//CBullet bullet;
 	//XVˆ—
 	void Update();
+
+	void Collision();
 	//Õ“Ëˆ—
 	void Collision(CCollider* m, CCollider* o);
 private:

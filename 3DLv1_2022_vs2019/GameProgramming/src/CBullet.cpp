@@ -41,6 +41,12 @@ void CBullet::Update() {
 	}
 }
 
+void CBullet::Collision()
+{
+	mCollider.ChangePriority();
+	CCollisionManager::Instance()->Collision(&mCollider, COLLISIONRANGE);
+}
+
 //•`‰æ
 void CBullet::Render() {
 	//DIFFUSE‰©Fİ’è
