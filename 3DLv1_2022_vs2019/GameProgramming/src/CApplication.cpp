@@ -16,6 +16,8 @@ CVector mEye;
 CTexture CApplication::mTexture;
 CCharacterManager CApplication::mCharacterManager;
 CMatrix CApplication::mModelViewInverse;
+CUi* CApplication::spUi = nullptr;
+
 
 //CTaskManager CApplication::mTaskManager;
 
@@ -48,6 +50,16 @@ const CMatrix& CApplication::ModelViewInverse()
 //	return &mTaskManager;
 //}
 
+CUi* CApplication::Ui()
+{
+	return spUi;	//インスタンスのポインタを返す
+}
+
+CApplication::~CApplication()
+{
+	delete spUi;	//インスタンスUiの削除
+}
+
 void CApplication::Start() {
 	mEye = CVector(1.0f, 2.0f, 3.0f);
 	//モデルファイルの入力
@@ -74,6 +86,8 @@ void CApplication::Start() {
 
 	//ビルボードの作成
 	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
+
+	spUi = new CUi();	//Uiクラスの生成
 
 	//△コライダの確認
 	/*mColliderTriangle.Set(nullptr, nullptr
@@ -173,10 +187,13 @@ void CApplication::Update()
 
 	//タスクリストの削除
 	CTaskManager::Instance()->Delete();
-	//タスクマネージャーの描画
-	CTaskManager::Instance()->Render();
 
 	mBackGround.Render();
 
+	//タスクマネージャーの描画
+	CTaskManager::Instance()->Render();
+
 	CCollisionManager::Instance()->Render();
+
+	spUi->Render();	//UIの描画
 }

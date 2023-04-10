@@ -1,5 +1,7 @@
 #ifndef CMATRIX_H
 #define CMATRIX_H
+
+class CVector;
 /*
 マトリクスクラス
 4行4列の行列データを扱います

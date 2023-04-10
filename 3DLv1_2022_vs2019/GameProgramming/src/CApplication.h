@@ -33,6 +33,7 @@ private:
 	//static CTaskManager mTaskManager;
 	//モデルからコライダを生成
 	CColliderMesh mColliderMesh;
+	static CUi* spUi;	//UIクラスのポインタ
 	enum class EState
 	{
 		ESTART,	//ゲーム開始
@@ -64,7 +65,9 @@ public:
 	static CCharacterManager* CharacterManager();
 	static CTexture* Texture();
 	static const CMatrix& ModelViewInverse();
+	static CUi* Ui();	//Uiクラスのインスタンスを取得
 	//static CTaskManager* TaskManager();
+	~CApplication();
 	//最初に一度だけ実行するプログラム
 	void Start();
 	//繰り返し実行するプログラム

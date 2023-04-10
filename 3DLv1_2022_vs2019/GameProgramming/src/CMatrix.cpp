@@ -6,6 +6,8 @@
 //数学関数のインクルード
 #include<math.h>
 
+#include "CVector.h"
+
 //回転行列(Y軸)の作成
 //RotateY(角度)
 CMatrix CMatrix::RotateY(float degree) {

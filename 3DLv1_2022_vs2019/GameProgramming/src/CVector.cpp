@@ -1,5 +1,4 @@
 #include "CVector.h"
-#include "CTriangle.h"
 #include <math.h>
 
 //Set(XÀ•W,YÀ•W,ZÀ•W)
