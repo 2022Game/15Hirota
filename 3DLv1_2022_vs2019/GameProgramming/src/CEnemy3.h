@@ -7,6 +7,8 @@
 #include "CCollider.h"
 //エフェクトクラスのインクルード
 #include "CEffect.h"
+
+#include "CPlayer.h"
 /*
 エネミークラス
 キャラクタクラスを継承

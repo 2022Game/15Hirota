@@ -29,8 +29,19 @@ public:
 	CCharacter3(int priority);
 	//衝突処理
 	virtual void Collision(CCollider *m,CCollider *o){}
+	enum ETag
+	{
+		EZERO,			//初期値
+		EPLAYER,		//プレイヤー
+		EENEMY,			//敵
+		EBULLETPLAYER,	//プレイヤー弾
+		EBULLETENEMY,	//敵弾
+	};
+	//タグの取得
+	ETag Tag();	//タグ
 protected:
 	CModel* mpModel;//モデルのポインタ
+	ETag mTag;	//タグ
 };
 
 #endif

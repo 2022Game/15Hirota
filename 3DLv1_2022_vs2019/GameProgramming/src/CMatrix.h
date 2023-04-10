@@ -11,6 +11,9 @@ public:
 	//表示確認用
 	//4*の行列を画面出力
 	void Print();
+	CVector VectorZ() const;	//Z軸ベクトルの取得
+	CVector VectorY() const;	//Y軸ベクトルの取得
+	CVector VectorX() const;	//X軸ベクトルの取得
 	//デフォルトコンストラクタ
 	CMatrix();
 	//単位行列の作成

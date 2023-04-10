@@ -22,11 +22,15 @@ public:
 	void Collision();
 	//衝突処理
 	void Collision(CCollider* m, CCollider* o);
+	//インスタンスのポインタの取得
+	static CPlayer* Instance();
 private:
 	CInput mInput;
 	CColliderLine mLine;	//線分コライダ
 	CColliderLine mLine2;	//線分コライダ２
 	CColliderLine mLine3;	//線分コライダ３
+	//プレイヤーのインスタンス
+	static CPlayer* spInstance;
 };
 
 #endif
