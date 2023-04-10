@@ -6,12 +6,15 @@
 //移動速度
 #define VELOCITY CVector(0.0f,0.0f,0.09f)
 
+#define HP 3	//耐久値
+
 
 CModel CEnemy3::sModel;	//モデルのデータ作成
 
-//デフォルトコンストラクタ
+//コンストラクタ
 CEnemy3::CEnemy3()
 	:CCharacter3(1)
+	,mHp(HP)
 	, mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.4)
 {
 	//モデルがないときは読み込む
@@ -49,6 +52,7 @@ void CEnemy3::Collision(CCollider* m, CCollider* o)
 			new CEffect(o->Parent()->Position(), 1.0f, 1.0f, "exp.tga", 4, 4, 2);
 			//衝突しているときは無効にする
 			//mEnagled = false;
+			mHp--;
 		}
 		break;
 	case CCollider::ETRIANGLE:	//△コライダの時
@@ -56,8 +60,11 @@ void CEnemy3::Collision(CCollider* m, CCollider* o)
 		//△コライダと球コライダの衝突判定
 		if (CCollider::CollisionTriangleSphere(o, m, &abjust))
 		{
-			//衝突しない位置まで戻す
-			mPosition = mPosition + abjust;
+			//撃破で地面に衝突すると無効
+			if (mHp <= 0)
+			{
+				mEnabled = false;
+			}
 		}
 		break;
 	}
@@ -104,6 +111,21 @@ void CEnemy3::Update()
 						bullet->Update();
 				}
 			}
+		}
+		//HPが0以下の時　撃破
+		if (mHp <= 0)
+		{
+			mHp--;
+			//15フレーム毎にエフェクト
+			if (mHp % 15 == 0)
+			{
+				//エフェクト生成
+				new CEffect(mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
+			}
+			//下降させる
+			mPosition = mPosition - CVector(0.0f, 0.03f, 0.0f);
+			CTransform::Update();
+			return;
 		}
 	}
 }
