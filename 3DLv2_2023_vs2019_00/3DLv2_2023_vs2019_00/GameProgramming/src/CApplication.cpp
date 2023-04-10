@@ -78,6 +78,18 @@ void CApplication::Update()
 	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 	//モデルビュー行列の取得
 	glGetFloatv(GL_MODELVIEW_MATRIX, mModelViewInverse.M());
+
 	//逆行列の取得
-	mModelViewInverse = 
+	mModelViewInverse = mModelViewInverse.Transpose();
+	mModelViewInverse.M(0, 3, 0);
+	mModelViewInverse.M(1, 3, 0);
+	mModelViewInverse.M(2, 3, 0);
+
+	//2D描画開始
+	CCamera::Start(0, 800, 0, 600);
+
+	mFont.Draw(20, 20, 10, 12, "3D PROGRAMMING");
+
+	//2Dの描画終了
+	CCamera::End();
 }
