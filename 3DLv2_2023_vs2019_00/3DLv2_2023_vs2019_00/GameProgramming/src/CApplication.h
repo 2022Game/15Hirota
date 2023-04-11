@@ -11,6 +11,7 @@
 
 #include "CVector.h"
 #include "CModel.h"
+#include "CModelX.h"
 
 #include "CTaskManager.h"
 
@@ -61,6 +62,7 @@ private:
 //	CBullet* mpBullet;
 	CInput mInput;
 	CFont mFont;
+	CModelX mModelX;
 	//CCharacterのポインタの可変長配列
 //	std::vector<CCharacter*> mCharacters;
 public:
