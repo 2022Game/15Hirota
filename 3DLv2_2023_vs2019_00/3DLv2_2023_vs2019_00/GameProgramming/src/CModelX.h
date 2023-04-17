@@ -1,6 +1,12 @@
 #ifndef CMODELX_H	//インクルード
 #define CMODELX_H
 
+#include <vector>		//ベクトルクラスのインクルード(動的配列)
+#include "CMatrix.h"	//マトリクスクラスのインクルード
+
+class CModelX;
+class CModelXFrame;
+
 /*
 IsDelimiter(c)
 cが\t \r \n スペースなどの空白文字
@@ -16,12 +22,33 @@ cが\t \r \n スペースなどの空白文字
 CModelX
 Xファイル形式の3Dモデルデータをプログラムで認識する
 */
-class CModelX {
+
+//CModelXFrameの定義
+class CModelXFrame {
+	friend CModelX;
 public:
+	//コンストラクタ
+	CModelXFrame(CModelX* model);
+	//デストラクタ
+	//~CModelXFrame();
+private:
+	std::vector<CModelXFrame*> mChild;	//子フレームの配列
+	CMatrix mTransformMatrix;	//変換行列
+	char* mpName;	//フレーム名前
+	int mIndex;	//フレーム番号
+};
+
+class CModelX {
+	friend CModelXFrame;
+public:
+	~CModelX();
+	//ノードの読み飛ばし
+	void SkipNode();
 	CModelX();
 	//ファイル読み込み
 	void Load(char* file);
 private:
+	std::vector<CModelXFrame*> mFrame;	//フレームの配列	
 	char* mpPointer;	//読み込み位置
 	char mToken[1024];	//取り出した単語の領域t
 	//単語の取り出し
