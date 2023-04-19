@@ -32,5 +32,6 @@ private:
 	//コライダ
 	CCollider mCollider;
 	int mHp;	//ヒットポイント
+	CVector mPoint;	//目標地点
 };
 #endif

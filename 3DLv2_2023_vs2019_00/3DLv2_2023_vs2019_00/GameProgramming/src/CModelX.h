@@ -4,8 +4,11 @@
 #include <vector>		//ベクトルクラスのインクルード(動的配列)
 #include "CMatrix.h"	//マトリクスクラスのインクルード
 
+//宣言
 class CModelX;
 class CModelXFrame;
+class CMesh;
+class CVector;
 
 /*
 IsDelimiter(c)
@@ -30,12 +33,13 @@ public:
 	//コンストラクタ
 	CModelXFrame(CModelX* model);
 	//デストラクタ
-	//~CModelXFrame();
+	~CModelXFrame();
 private:
 	std::vector<CModelXFrame*> mChild;	//子フレームの配列
-	CMatrix mTransformMatrix;	//変換行列
-	char* mpName;	//フレーム名前
-	int mIndex;	//フレーム番号
+	CMatrix mTransformMatrix;			//変換行列
+	char* mpName;						//フレーム名前
+	int mIndex;							//フレーム番号
+	CMesh* mpMesh;						//Meshデータ
 };
 
 class CModelX {
@@ -55,5 +59,22 @@ private:
 	char* GetToken();
 	//cが区切り文字ならtrueを返す
 	bool IsDelimiter(char c);
+};
+
+//CMeshクラスの定義を追加する
+class CMesh {
+	friend CModelX;
+	friend CModelXFrame;
+public:
+	//コンストラクタ
+	CMesh();
+	//デストラクタ
+	~CMesh();
+	//読み込み処理
+	void Init(CModelX* model);
+private:
+	int mVertexNum;		//頂点数
+	CVector* mpVertex;	//頂点データ
+	
 };
 #endif

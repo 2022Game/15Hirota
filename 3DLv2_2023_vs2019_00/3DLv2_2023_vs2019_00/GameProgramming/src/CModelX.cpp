@@ -19,6 +19,15 @@ CModelX::~CModelX()
 	}
 }
 
+//課題5
+CModelXFrame::~CModelXFrame()
+{
+	if (mpMesh != nullptr)
+	{
+		delete mpMesh;
+	}
+}
+
 void CModelX::Load(char* file) {
 	//
 	//ファイルサイズを取得する
@@ -149,6 +158,7 @@ model:CModelXインスタンスへのポインタ
 */
 CModelXFrame::CModelXFrame(CModelX* model)
 	:mpName(nullptr)
+	,mpMesh(nullptr)
 	, mIndex(0)
 {
 	//現在のフレーム配列の要素数を取得し設定する
