@@ -47,6 +47,10 @@ public:
 	//CVector * CMatrix‚ÌŒ‹‰Ê‚ğCVector‚Å•Ô‚·
 	CVector operator*(const CMatrix& m);
 
+	void X(float f);
+	void Y(float f);
+	void Z(float f);
+
 private:
 	//3DŠe²‚Å‚Ì’l‚ğİ’è
 	float mX, mY, mZ;

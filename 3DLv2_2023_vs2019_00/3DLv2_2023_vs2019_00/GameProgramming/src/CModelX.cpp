@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include "CModelX.h"
 #include "glut.h"
+#include "CVector.h"
 
 CModelX::CModelX()
 	:mpPointer(nullptr)
@@ -19,14 +20,58 @@ CModelX::~CModelX()
 	}
 }
 
-//課題5
 CModelXFrame::~CModelXFrame()
 {
 	if (mpMesh != nullptr)
 	{
 		delete mpMesh;
+		mpMesh = nullptr;
 	}
 }
+
+//コンストラクタ
+CMesh::CMesh()
+	:mVertexNum(0)
+	,mpVertex(nullptr)
+{}
+
+//デストラクタ
+CMesh::~CMesh(){
+	SAFE_DELETE_ARRAY(mpVertex);
+}
+
+char* CModelX::Token()
+{
+	return mToken;
+}
+
+/*
+Init
+Meshのデータを取り込む
+*/
+void CMesh::Init(CModelX* model){
+	model->GetToken();	//{ or 名前
+	if (!strchr(model->Token(), '{')) {
+		//名前の場合、つぎが{
+		model->GetToken();	//{
+	}
+
+	//頂点数の取得
+	mVertexNum = atoi(model->GetToken());
+	//頂点数分エリア確保
+	mpVertex = new CVector[mVertexNum];
+	// 頂点数をコンソールに出力
+	printf("VertexNum:%d\n", mVertexNum);
+	//頂点数分データを取り込む
+	for (int i = 0; i < mVertexNum; i++) {
+		mpVertex[i].X(atof(model->GetToken()));
+		mpVertex[i].Y(atof(model->GetToken()));
+		mpVertex[i].Z(atof(model->GetToken()));
+		printf(" %10f %10f %10f\n", mpVertex[i].X(), mpVertex[i].Y(), mpVertex[i].Z());
+	}
+}
+//mpVertex[i].X(), mpVertex[i].Y(), mpVertex[i].Z()
+//printf("VertexNum:%d(%f, %f, %f)\n",i, mpVertex[i].X(), mpVertex[i].Y(), mpVertex[i].Z());
 
 void CModelX::Load(char* file) {
 	//
@@ -158,7 +203,7 @@ model:CModelXインスタンスへのポインタ
 */
 CModelXFrame::CModelXFrame(CModelX* model)
 	:mpName(nullptr)
-	,mpMesh(nullptr)
+	, mpMesh(nullptr)
 	, mIndex(0)
 {
 	//現在のフレーム配列の要素数を取得し設定する
@@ -195,6 +240,10 @@ CModelXFrame::CModelXFrame(CModelX* model)
 				model->GetToken();
 			}
 		}
+		else if (strcmp(model->mToken, "Mesh") == 0) {
+			mpMesh = new CMesh();
+			mpMesh->Init(model);
+		}
 		else {
 			//上記以外の要素は読み飛ばす
 			model->SkipNode();
@@ -207,3 +256,4 @@ CModelXFrame::CModelXFrame(CModelX* model)
 	mTransformMatrix.Print();
 #endif
 }
+//printf("Vertex %d: (%f, %f, %f)\n", i, mpVertex[i].X(), mpVertex[i].Y(), mpVertex[i].Z());

@@ -51,12 +51,13 @@ public:
 	CModelX();
 	//ファイル読み込み
 	void Load(char* file);
+	//単語の取り出し
+	char* GetToken();
+	char* Token();
 private:
 	std::vector<CModelXFrame*> mFrame;	//フレームの配列	
 	char* mpPointer;	//読み込み位置
 	char mToken[1024];	//取り出した単語の領域t
-	//単語の取り出し
-	char* GetToken();
 	//cが区切り文字ならtrueを返す
 	bool IsDelimiter(char c);
 };
