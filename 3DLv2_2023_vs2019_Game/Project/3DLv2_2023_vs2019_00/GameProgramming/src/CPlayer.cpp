@@ -3,11 +3,16 @@
 #include "CApplication.h"
 #include "CCollisionManager.h"
 
+
+#define HP 100	//hp
+
 #define ROTATION_YV	CVector(0.0f, 1.0f, 0.0f) //回転速度
 #define VELOCITY CVector(0.0f, 0.0f, 0.1f) //移動速度
 #define ROTATION_XV	CVector(1.0f, 0.0f, 0.0f) //回転速度
 
 CPlayer* CPlayer::spInstance = nullptr;
+
+int CPlayer::sHp = 0;	//Hp
 
 CPlayer::CPlayer()
 	: mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
@@ -16,12 +21,18 @@ CPlayer::CPlayer()
 {
 	//インスタンスの設定
 	spInstance = this;
+	sHp = HP;
 }
 
 //CPlayer(位置, 回転, スケール)
 CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
 {
 	CTransform::Update(pos, rot, scale); //行列の更新
+}
+
+int CPlayer::Hp()
+{
+	return sHp;
 }
 
 //更新処理

@@ -24,11 +24,15 @@ public:
 	CPlayer();
 	//CPlayer(位置, 回転, スケール)
 	CPlayer(const CVector& pos, const CVector& rot, const CVector& scale);
+
+	static int Hp();
 	//更新処理
 	void Update();
 private:
 	//プレイヤーのインスタンス
 	static CPlayer* spInstance;
+
+	static int sHp;
 
 	CColliderLine mLine; //線分コライダ
 	CColliderLine mLine2; //線分コライダ

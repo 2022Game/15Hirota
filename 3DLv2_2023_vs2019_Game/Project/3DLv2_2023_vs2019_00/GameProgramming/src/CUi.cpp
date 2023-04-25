@@ -67,6 +67,12 @@ void CUi::Render()
 	//文字列編集エリアの作成
 	char buf[64];
 
+	//HPの表示
+	//文字列の表示
+	sprintf(buf, "HP:%10.0f", mHp);
+	//文字列の描画
+	mFont.Draw(550, 550, 8, 16, buf);
+
 	//Y座標の表示
 	//文字列の設定
 	sprintf(buf, "PY:%7.2f", mPosY);
