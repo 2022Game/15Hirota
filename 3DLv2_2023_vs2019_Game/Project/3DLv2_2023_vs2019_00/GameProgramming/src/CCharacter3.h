@@ -38,6 +38,8 @@ public:
 	void Model(CModel* m);
 	//描画処理
 	void Render();
+private:
+	
 protected:
 	ETag mTag;	//タグ
 	CModel* mpModel; //モデルのポインタ

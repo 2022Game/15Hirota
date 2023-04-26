@@ -29,7 +29,7 @@ CUi* CApplication::Ui()
 #define SOUND_BGM "res\\mario.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル
 //モデルデータの指定
-#define MODEL_OBJ "res\\f14.obj", "res\\f14.mtl"
+#define MODEL_OBJ "res\\ヒルちゃーる.obj", "res\\ヒルちゃーる.mtl"
 //敵輸送機モデル
 #define MODEL_C5 "res\\c5.obj", "res\\c5.mtl"
 
@@ -78,8 +78,8 @@ void CApplication::Start()
 	mEye = CVector(1.0f, 2.0f, 3.0f);
 
 	mPlayer.Model(&mModel);
-	mPlayer.Scale(CVector(0.1f, 0.1f, 0.1f));
-	mPlayer.Position(CVector(0.0f, 0.0f, -3.0f));
+	mPlayer.Scale(CVector(1.0f, 1.0f, 1.0f));
+	mPlayer.Position(CVector(0.0f, 0.0f, 0.0f));
 	mPlayer.Rotation(CVector(0.0f, 180.0f, 0.0f));
 
 	//C5モデルの読み込み
@@ -162,7 +162,7 @@ void CApplication::Update()
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
 	//視点を求める
-	e = mPlayer.Position() + CVector(-0.2f, 1.0f, -3.0f) * mPlayer.MatrixRotate();
+	e = mPlayer.Position() + CVector(-0.f, 3.0f, -3.0f) * mPlayer.MatrixRotate();
 	//注視点を求める
 	c = mPlayer.Position();
 	//上方向を求める

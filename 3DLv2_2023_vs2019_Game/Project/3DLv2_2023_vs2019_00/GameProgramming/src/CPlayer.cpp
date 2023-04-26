@@ -6,6 +6,8 @@
 
 #define HP 100	//hp
 
+
+
 #define ROTATION_YV	CVector(0.0f, 1.0f, 0.0f) //回転速度
 #define VELOCITY CVector(0.0f, 0.0f, 0.1f) //移動速度
 #define ROTATION_XV	CVector(1.0f, 0.0f, 0.0f) //回転速度
@@ -15,8 +17,8 @@ CPlayer* CPlayer::spInstance = nullptr;
 int CPlayer::sHp = 0;	//Hp
 
 CPlayer::CPlayer()
-	: mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
-	, mLine2(this, &mMatrix, CVector(0.0f, 5.0f, -8.0f), CVector(0.0f, -3.0f, -8.0f))
+	: mLine(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.8f, 0.0f))
+	, mLine2(this, &mMatrix, CVector(0.0f, 5.0f, -3.0f), CVector(0.0f, -3.0f, -8.0f))
 	, mLine3(this, &mMatrix, CVector(9.0f, 0.0f, -8.0f), CVector(-9.0f, 0.0f, -8.0f))
 {
 	//インスタンスの設定
@@ -33,6 +35,21 @@ CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
 int CPlayer::Hp()
 {
 	return sHp;
+}
+
+CVector CPlayer::gravity()
+{
+	CVector gravity(0.0f, -9.8f, 0.0f);
+}
+
+float CPlayer::mass()
+{
+	float mass = 1.0f;
+}
+
+float CPlayer::gravityScale()
+{
+	
 }
 
 //更新処理
@@ -62,17 +79,17 @@ void CPlayer::Update() {
 		//X軸の回転値を加算
 		mRotation = mRotation + ROTATION_XV;
 	}
-	//スペースキー入力で弾発射
+	//スペースキー入力でジャンプ
 	if (mInput.Key(VK_SPACE)) {
-		CBullet* bullet = new CBullet();
-		bullet->Set(0.1f, 1.5f);
-		bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
-		bullet->Rotation(mRotation);
-		bullet->Update();
-		//CApplication::TaskManager()->Add(bullet);
-		//bullet.Set(0.1f, 1.5f);
-		//bullet.Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
-		//bullet.Rotation(mRotation);
+		//CBullet* bullet = new CBullet();
+		//bullet->Set(0.1f, 1.5f);
+		//bullet->Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
+		//bullet->Rotation(mRotation);
+		//bullet->Update();
+		////CApplication::TaskManager()->Add(bullet);
+		////bullet.Set(0.1f, 1.5f);
+		////bullet.Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
+		////bullet.Rotation(mRotation);
 	}
 	//変換行列の更新
 	CTransform::Update();

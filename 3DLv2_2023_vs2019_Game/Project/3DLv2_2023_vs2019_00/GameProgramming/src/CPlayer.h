@@ -28,6 +28,9 @@ public:
 	static int Hp();
 	//更新処理
 	void Update();
+	CVector gravity();
+	float mass();
+	float gravityScale();
 private:
 	//プレイヤーのインスタンス
 	static CPlayer* spInstance;
