@@ -113,7 +113,7 @@ void CMesh::Init(CModelX* model){
 		int ni;
 		//頂点毎に法線データを設定する
 		mpNormal = new CVector[mNormalNum];
-		printf("NormalNum:%d\n", mNormalNum);
+		//printf("NormalNum:%d\n", mNormalNum);
 		for (int i = 0; i < mNormalNum; i += 3) {
 			model->GetToken();	//3
 			ni = atoi(model->GetToken());
@@ -126,10 +126,10 @@ void CMesh::Init(CModelX* model){
 			ni = atoi(model->GetToken());
 			mpNormal[i + 2] = pNormal[ni];
 			//課題...
-			printf(" %10f %10f %10f\n %10f %10f %10f\n %10f %10f %10f\n",
+			/*printf(" %10f %10f %10f\n %10f %10f %10f\n %10f %10f %10f\n",
 				mpNormal[i].X(), mpNormal[i].Y(), mpNormal[i].Z(),
 				mpNormal[i + 1].X(), mpNormal[i + 1].Y(), mpNormal[i + 1].Z(),
-				mpNormal[i + 2].X(), mpNormal[i + 2].Y(), mpNormal[i + 2].Z());
+				mpNormal[i + 2].X(), mpNormal[i + 2].Y(), mpNormal[i + 2].Z());*/
 		}
 		delete[] pNormal;
 		model->GetToken();	//}
@@ -319,4 +319,45 @@ CModelXFrame::CModelXFrame(CModelX* model)
 	//mTransformMatrix.Print();
 #endif
 }
-//printf("Vertex %d: (%f, %f, %f)\n", i, mpVertex[i].X(), mpVertex[i].Y(), mpVertex[i].Z());
+
+/*
+Render
+画面に描画する
+*/
+void CMesh::Render(){
+	/*頂点データ、法線データの配列を有効にする*/
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+
+	/*頂点データ、法線データの場所を指定する*/
+	glVertexPointer(3, GL_FLOAT, 0, mpVertex);
+	glNormalPointer(GL_FLOAT, 0, mpNormal);
+
+	/*頂点のインデックスの場所を指定して図形を描画する*/
+	glDrawElements(GL_TRIANGLES, 3 * mFaceNum,
+		GL_UNSIGNED_INT, mpVertexIndex);
+
+	/*頂点データ、法線データの配列を無効にする*/
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+
+}
+
+/*
+Render
+画面に描画する
+*/
+void CModelXFrame::Render(){
+	if (mpMesh != nullptr)
+		mpMesh->Render();
+}
+
+/*
+Render
+全てのフレームの描画処理を呼び出す
+*/
+void CModelX::Render() {
+	for (size_t i = 0; i < mFrame.size(); i++) {
+		mFrame[i]->Render();
+	}
+}

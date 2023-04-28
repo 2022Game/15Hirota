@@ -65,6 +65,7 @@ private:
 	CModelX mModelX;
 	//CCharacterのポインタの可変長配列
 //	std::vector<CCharacter*> mCharacters;
+	CMatrix mMatrix;	//3D課題8
 public:
 	~CApplication();
 	static CUi* Ui();	//UIクラスのインスタンスを取得
