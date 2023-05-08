@@ -9,6 +9,7 @@ class CModelX;
 class CModelXFrame;
 class CMesh;
 class CVector;
+class CMaterial;	//マテリアル宣言
 
 /*
 IsDelimiter(c)
@@ -56,6 +57,7 @@ public:
 	//単語の取り出し
 	char* GetToken();
 	char* Token();
+	bool EOT();	//トークンが無くなったらture
 private:
 	std::vector<CModelXFrame*> mFrame;	//フレームの配列	
 	char* mpPointer;	//読み込み位置
@@ -83,6 +85,10 @@ private:
 	int* mpVertexIndex;	//面を構成する頂点インデックス
 	int mNormalNum;		//法線
 	CVector* mpNormal;	//法線ベクトル
-	
+	int mMaterialNum;	//マテリアル数
+	int mMaterialIndexNum;	//マテリアル番号数(面数)
+	int* mpMaterialIndex;	//マテリアル番号
+
+	std::vector<CMaterial*> mMaterial;	//マテリアルデータ
 };
 #endif
