@@ -25,12 +25,11 @@ public:
 	//CPlayer(位置, 回転, スケール)
 	CPlayer(const CVector& pos, const CVector& rot, const CVector& scale);
 
+	const float GRAVITY = 9.8f;
+
 	static int Hp();
 	//更新処理
 	void Update();
-	CVector gravity();
-	float mass();
-	float gravityScale();
 private:
 	//プレイヤーのインスタンス
 	static CPlayer* spInstance;

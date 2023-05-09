@@ -26,6 +26,18 @@ public:
 	void Update();
 	//Update(位置, 回転, スケール)
 	void Update(const CVector& pos, const CVector& rot, const CVector& scale);
+
+	void GameObject(const CVector& position);
+
+	const CVector& getPosition() const;
+	void setPosition(const CVector& positon);
+
+	void move();
+private:
+	CVector mPosition;
+	CVector mVelocity;
+	bool mOnGround;
+
 protected: //子クラスはアクセス可能
 	CVector mPosition;	//位置
 	CVector mRotation;	//回転

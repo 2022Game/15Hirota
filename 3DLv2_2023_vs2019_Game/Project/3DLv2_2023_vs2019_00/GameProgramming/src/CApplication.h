@@ -52,6 +52,7 @@ private:
 	CSound mSoundBgm;	//BGM
 	CSound mSoundOver;	//ゲームオーバー
 	CGame* mpGame;
+
 	static CCharacterManager mCharacterManager;
 	enum class EState
 	{

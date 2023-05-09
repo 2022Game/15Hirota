@@ -52,3 +52,7 @@ void CTransform::Update(const CVector& pos, const CVector& rot, const CVector& s
 	mScale = scale;
 	Update();
 }
+
+void GameObject::move() {
+
+}
