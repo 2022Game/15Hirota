@@ -27,21 +27,14 @@ public:
 	//Update(位置, 回転, スケール)
 	void Update(const CVector& pos, const CVector& rot, const CVector& scale);
 
-	void GameObject(const CVector& position);
-
-	const CVector& getPosition() const;
-	void setPosition(const CVector& positon);
-
-	void move();
+	void Velosity(const CVector& v);
 private:
-	CVector mPosition;
-	CVector mVelocity;
-	bool mOnGround;
 
 protected: //子クラスはアクセス可能
 	CVector mPosition;	//位置
 	CVector mRotation;	//回転
 	CVector mScale;	//拡大縮小
+	CVector mVelocity;	//重力加速度
 	CMatrix mMatrixTranslate; //平行移動行列
 	CMatrix mMatrixRotate; //回転行列
 	CMatrix mMatrixScale; //拡大縮小行列

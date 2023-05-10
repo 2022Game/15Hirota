@@ -30,6 +30,11 @@ const CMatrix& CTransform::MatrixRotate() const
 	return mMatrixRotate;
 }
 
+void CTransform::Velosity(const CVector& v)
+{
+	mVelocity = v;
+}
+
 //行列更新処理
 void CTransform::Update() {
 	//拡大縮小行列の設定
@@ -51,8 +56,4 @@ void CTransform::Update(const CVector& pos, const CVector& rot, const CVector& s
 	mRotation = rot;
 	mScale = scale;
 	Update();
-}
-
-void GameObject::move() {
-
 }

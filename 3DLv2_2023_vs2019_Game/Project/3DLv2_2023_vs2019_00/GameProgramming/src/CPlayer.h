@@ -25,11 +25,11 @@ public:
 	//CPlayer(位置, 回転, スケール)
 	CPlayer(const CVector& pos, const CVector& rot, const CVector& scale);
 
-	const float GRAVITY = 9.8f;
-
 	static int Hp();
 	//更新処理
 	void Update();
+
+	double GetAppTime();
 private:
 	//プレイヤーのインスタンス
 	static CPlayer* spInstance;
@@ -40,6 +40,8 @@ private:
 	CColliderLine mLine2; //線分コライダ
 	CColliderLine mLine3; //線分コライダ
 	CInput mInput;
+	
+	int mJumpcount;	//ジャンプの回数処理
 };
 
 #endif
