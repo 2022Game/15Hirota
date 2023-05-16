@@ -5,9 +5,7 @@
 #include "CTriangle.h"
 #include "CMatrix.h"
 #include "CTransform.h"
-
 #include "CCollisionManager.h"
-
 #include "CBillBoard.h"
 #include "CEnemy3.h"
 
@@ -32,6 +30,8 @@ CUi* CApplication::Ui()
 #define MODEL_OBJ "res\\Hirutya-ru3.obj", "res\\Hirutya-ru3.mtl"
 //敵輸送機モデル
 #define MODEL_C5 "res\\c5.obj", "res\\c5.mtl"
+//アイテム1のモデル
+#define MODEL_ITEM1 "res\\12190_Heart_v1_L3.obj","res\\12190_Heart_v1_L3.mtl"
 
 //背景モデルデータの指定
 #define MODEL_BACKGROUND  "res\\sky.obj", "res\\sky.mtl"
@@ -70,10 +70,11 @@ void CApplication::Start()
 {
 	spUi = new CUi();	//UIクラスの生成
 	//モデルファイルの入力
-	mModel.Load(MODEL_OBJ);
+	mModel.Load(MODEL_OBJ);		//プレイヤー
+	mModel1.Load(MODEL_ITEM1);	//アイテム1
 	mBackGround.Load(MODEL_BACKGROUND);
 	CMatrix matrix;
-	matrix.Print();
+	//matrix.Print();	//表示確認用
 
 	mEye = CVector(1.0f, 2.0f, 3.0f);
 
@@ -81,6 +82,12 @@ void CApplication::Start()
 	mPlayer.Scale(CVector(0.25f, 0.25f, 0.25f));
 	mPlayer.Position(CVector(0.0f, 0.0f, 0.0f));
 	mPlayer.Rotation(CVector(0.0f, 180.0f, 0.0f));
+
+	//ITEM1のモデルの読み込み
+	mItem1.Model(&mModel1);
+	mItem1.Scale(CVector(0.5f, 0.5f, 0.5f));
+	mItem1.Position(CVector(0.0f, 10.0f, 10.0f));
+	mItem1.Rotation(CVector(0.0f, 0.0f, 0.0f));
 
 	//C5モデルの読み込み
 	mModelC5.Load(MODEL_C5);

@@ -10,6 +10,7 @@ class CModelXFrame;
 class CMesh;
 class CVector;
 class CMaterial;	//マテリアル宣言
+class CSkinWeights;	//スキンウェイトクラス
 
 /*
 IsDelimiter(c)
@@ -46,6 +47,7 @@ private:
 
 class CModelX {
 	friend CModelXFrame;
+	friend CSkinWeights;
 public:
 	~CModelX();
 	//ノードの読み飛ばし
@@ -90,5 +92,27 @@ private:
 	int* mpMaterialIndex;	//マテリアル番号
 
 	std::vector<CMaterial*> mMaterial;	//マテリアルデータ
+	std::vector<CSkinWeights*>mSkinWeights;	//スキンウェイト
+};
+
+/*
+CSkinWeights
+スキンウェイトクラス
+*/
+class CSkinWeights {
+	friend CModelX;
+	friend CMesh;
+public:
+	CSkinWeights(CModelX* model);
+	~CSkinWeights();
+	const int& FrameIndex();
+	const CMatrix& Offset();
+private:
+	char* mpFrameName;	//フレーム名
+	int mFrameIndex;	//フレーム番号
+	int mIndexNum;		//頂点番号数
+	int* mpIndex;		//頂点番号配列
+	float* mpWeight;	//頂点ウェイト配列
+	CMatrix mOffset;	//オフセットマトリックス
 };
 #endif

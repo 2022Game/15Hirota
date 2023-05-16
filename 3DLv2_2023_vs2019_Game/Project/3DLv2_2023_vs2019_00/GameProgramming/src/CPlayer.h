@@ -29,7 +29,6 @@ public:
 	//更新処理
 	void Update();
 
-	double GetAppTime();
 private:
 	//プレイヤーのインスタンス
 	static CPlayer* spInstance;

@@ -58,6 +58,18 @@ CMesh::~CMesh(){
 	SAFE_DELETE_ARRAY(mpVertexIndex);
 	SAFE_DELETE_ARRAY(mpNormal);
 	SAFE_DELETE_ARRAY(mpMaterialIndex);
+	//スキウェイトの削除
+	for (size_t i = 0; i < mSkinWeights.size(); i++)
+	{
+		delete mSkinWeights[i];
+	}
+}
+
+CSkinWeights::~CSkinWeights()
+{
+	SAFE_DELETE_ARRAY(mpFrameName);
+	SAFE_DELETE_ARRAY(mpIndex);
+	SAFE_DELETE_ARRAY(mpWeight);
 }
 
 char* CModelX::Token()
@@ -170,7 +182,61 @@ void CMesh::Init(CModelX* model){
 			}
 			model->GetToken();	//} //End of MeshMaterialLest
 		}//End of MeshMaterialList
+		//SkinWeightsの時
+		else if (strcmp(model->Token(), "SkinWeights") == 0) {
+			//CSkinWeightsクラスのインスタンスを作成し、配列に追加
+			mSkinWeights.push_back(new CSkinWeights(model));
+		}
+		else {
+			//以外のノードは読み飛ばし
+			model->SkipNode();
+		}
 	}
+}
+
+/*
+CSkinWeights
+スキンウェイトの読み込み
+*/
+CSkinWeights::CSkinWeights(CModelX* model)
+	:mpFrameName(0)
+	, mFrameIndex(0)
+	, mIndexNum(0)
+	, mpIndex(nullptr)
+	, mpWeight(nullptr)
+{
+	model->GetToken();	//{
+	model->GetToken();	//FrameName
+	//フレーム名エリア確保、設定
+	mpFrameName = new char[strlen(model->Token()) + 1];
+	strcpy(mpFrameName, model->Token());
+	printf("SkinWeights %s\n", mpFrameName);
+
+	//頂点番号取得
+	mIndexNum = atoi(model->GetToken());
+	printf("%d\n", mIndexNum);
+
+	//頂点番号数が0を越える
+	if (mIndexNum > 0) {
+		//頂点数と頂点ウェイトのエリア確保
+		mpIndex = new int[mIndexNum];
+		mpWeight = new float[mIndexNum];
+
+		//頂点番号取得
+		for (int i = 0; i < mIndexNum; i++)
+			mpIndex[i] = atoi(model->GetToken());
+		
+		//頂点ウェイト取得
+		for (int i = 0; i < mIndexNum; i++)
+			mpWeight[i] = atof(model->GetToken());
+
+	}
+	printf("%d\n", mpIndex);
+	//オフセット行列取得
+	for (int i = 0; i < 16; i++) {
+		mOffset.M()[i] = atof(model->GetToken());
+	}
+	model->GetToken();	//}
 }
 
 void CModelX::Load(char* file) {
@@ -320,7 +386,7 @@ CModelXFrame::CModelXFrame(CModelX* model)
 	strcpy(mpName, model->mToken);
 	//次の単語({の予定)を取得する
 	model->GetToken();	//{
-	
+
 	//文字がなくなったら終わり
 	while (*model->mpPointer != '\0') {
 		//次の単語取得

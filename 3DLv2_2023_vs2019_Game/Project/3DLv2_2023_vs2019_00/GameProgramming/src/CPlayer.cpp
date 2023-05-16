@@ -5,37 +5,17 @@
 #include "CRectangle.h"
 
 #define HP 100	//hp
-#define GRAVITY CVector(0.0f,-0.1f,0.0f)	//重力加速度
+
+#define GRAVITY CVector(0.0f,-0.2f,0.0f)	//重力加速度
 
 #define ROTATION_YV	CVector(0.0f, 2.0f, 0.0f) //回転速度
-#define VELOCITY CVector(0.0f, 0.0f, 0.5f) //移動速度
+#define VELOCITY CVector(0.0f, 0.0f, 0.3f) //移動速度
 #define ROTATION_XV	CVector(2.0f, 0.0f, 0.0f) //回転速度
 
 CPlayer* CPlayer::spInstance = nullptr;
 
 int CPlayer::sHp = 0;	//Hp
 
-double CPlayer::GetAppTime()
-{
-	static bool initialized = false;
-	static double secondsPerCount;
-	static __int64 initialTime;
-	__int64 currenetTime;
-
-	if (!initialized)
-	{
-		__int64 countsPerSec;
-		QueryPerformanceFrequency((LARGE_INTEGER*)&countsPerSec);
-		secondsPerCount = 1.0 / (double)countsPerSec;
-
-		QueryPerformanceCounter((LARGE_INTEGER*)&initialTime);
-	}
-	QueryPerformanceCounter((LARGE_INTEGER*)&currenetTime);
-
-	double time = (currenetTime - initialTime) * secondsPerCount;
-
-	return time;
-}
 
 CPlayer::CPlayer()
 	: mLine(this, &mMatrix, CVector(0.0f, 3.5f, 2.5f), CVector(0.0f, 3.5f, -2.5f))		//前後
@@ -50,6 +30,7 @@ CPlayer::CPlayer()
 
 //CPlayer(位置, 回転, スケール)
 CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
+	:mJumpcount(0)
 {
 	CTransform::Update(pos, rot, scale); //行列の更新
 }
@@ -74,13 +55,25 @@ void CPlayer::Update() {
 	}
 	//Sキー入力で後退
 	if (mInput.Key('S')) {
-		//Z軸方向の値を回転させ移動させる
+		//後ろに下がる
 		mPosition = mPosition - VELOCITY * mMatrixRotate;
 	}
 	//Wキー入力で前進
 	if (mInput.Key('W')) {
-		//Z軸方向の値を回転させ移動させる
+		//前方向に進む
 		mPosition = mPosition + VELOCITY * mMatrixRotate;
+	}
+	if (mInput.Key(VK_SHIFT))
+	{
+		if (mInput.Key('W') || mInput.Key('A') || mInput.Key('D'))
+		{
+			mPosition = mPosition + CVector(0.0f, 0.0f, 0.33f) * mMatrixRotate;
+		}
+		else
+		{
+			//何もしないであってるか？
+		}
+
 	}
 	//スペースキー入力でジャンプ
 	if (mInput.Key(VK_SPACE)) {
@@ -88,7 +81,11 @@ void CPlayer::Update() {
 		if (mJumpcount == 0)
 		{
 			//ジャンプ処理
-			mVelocity = CVector(0.0f, 1.0f, 0.0f);
+			mVelocity = CVector(0.0f, 1.4f, 0.0f);
+			mJumpcount++;
+		}
+		else if(mJumpcount < 1)	//ジャンプの高さを制限
+		{
 			mJumpcount++;
 		}
 	}
@@ -121,7 +118,10 @@ void CPlayer::Update() {
 	CApplication::Ui()->RotX(mRotation.X());
 	CApplication::Ui()->RotY(mRotation.Y());
 
-	//移動処理
+
+
+	//重力処理
+	mVelocity = mVelocity + GRAVITY;
 	mPosition = mPosition + mVelocity;	
 
 	//移動処理
@@ -132,10 +132,10 @@ void CPlayer::Update() {
 	//地面に接触している場合は、位置を地面の上に固定する
 	if (mPosition.Y() <= 0.0f) {
 		mPosition = CVector(mPosition.X(), 0.0f, mPosition.Z());
-		mVelocity = CVector(mPosition.X(), 0.0f, mPosition.Z());
+		mVelocity = CVector(mVelocity.X(), 0.0f, mVelocity.Z());
 	}
 
-	mVelocity = mVelocity + GRAVITY;
+
 
 	//復活処理に使える
 	

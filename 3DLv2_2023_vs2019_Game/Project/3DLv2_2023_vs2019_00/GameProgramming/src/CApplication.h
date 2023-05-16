@@ -24,6 +24,7 @@
 #include "CColliderMesh.h"
 
 #include "CUi.h"
+#include "CItem1.h"
 
 class CApplication
 {
@@ -42,11 +43,15 @@ private:
 	//C5モデル
 	CModel mModelC5;
 
+	//アイテム(仮)
+	CItem1 mItem1;
+
 	//static CTaskManager mTaskManager;
 	CPlayer mPlayer;
 
 	CModel mBackGround; //背景モデル
 	CModel mModel;
+	CModel mModel1;
 	CVector mEye;
 
 	CSound mSoundBgm;	//BGM

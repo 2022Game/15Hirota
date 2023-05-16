@@ -22,6 +22,10 @@ public:
 		EBULLETPLAYER,	//プレイヤー弾
 		EBULLETENEMY,	//敵弾
 	};
+	enum class EState
+	{
+		EJUMP,	//ジャンプ
+	};
 	//タグの取得
 	ETag Tag();
 
@@ -46,4 +50,3 @@ protected:
 };
 
 #endif
-
