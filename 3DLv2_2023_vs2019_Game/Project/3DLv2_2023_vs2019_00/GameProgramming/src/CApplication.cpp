@@ -85,9 +85,9 @@ void CApplication::Start()
 
 	//ITEM1ÇÃÉÇÉfÉãÇÃì«Ç›çûÇ›
 	mItem1.Model(&mModel1);
-	mItem1.Scale(CVector(0.5f, 0.5f, 0.5f));
-	mItem1.Position(CVector(0.0f, 10.0f, 10.0f));
-	mItem1.Rotation(CVector(0.0f, 0.0f, 0.0f));
+	mItem1.Scale(CVector(0.2f, 0.2f, 0.2f));
+	mItem1.Position(CVector(0.0f, 0.0f, 10.0f));
+	mItem1.Rotation(CVector(270.0f, 0.0f, -90.0f));
 
 	//C5ÉÇÉfÉãÇÃì«Ç›çûÇ›
 	mModelC5.Load(MODEL_C5);

@@ -213,25 +213,25 @@ CSkinWeights::CSkinWeights(CModelX* model)
 	printf("SkinWeights %s\n", mpFrameName);
 
 	//頂点番号取得
-	mIndexNum = atoi(model->GetToken());
+	mIndexNum = atoi(model->GetToken());	//GetTokenとTokenを書き間違えないようにする
 	printf("%d\n", mIndexNum);
 
 	//頂点番号数が0を越える
 	if (mIndexNum > 0) {
-		//頂点数と頂点ウェイトのエリア確保
+		//頂点番号と頂点ウェイトのエリア確保
 		mpIndex = new int[mIndexNum];
 		mpWeight = new float[mIndexNum];
 
 		//頂点番号取得
 		for (int i = 0; i < mIndexNum; i++)
-			mpIndex[i] = atoi(model->GetToken());
+			mpIndex[i] = atoi(model->GetToken()),printf("%d",mpIndex[i]);
 		
 		//頂点ウェイト取得
 		for (int i = 0; i < mIndexNum; i++)
-			mpWeight[i] = atof(model->GetToken());
+			mpWeight[i] = atof(model->GetToken()),printf("%10f",mpWeight[i]);
 
 	}
-	printf("%d\n", mpIndex);
+	printf("%\n");
 	//オフセット行列取得
 	for (int i = 0; i < 16; i++) {
 		mOffset.M()[i] = atof(model->GetToken());

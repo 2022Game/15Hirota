@@ -32,6 +32,7 @@ private:
 	static CUi* spUi;	//UIクラスのポインタ
 	//モデルからコライダを生成
 	CColliderMesh mColliderMesh;
+	CColliderMesh mColliderMesh1;
 
 	//三角コライダの作成
 	//CColliderTriangle mColliderTriangle;

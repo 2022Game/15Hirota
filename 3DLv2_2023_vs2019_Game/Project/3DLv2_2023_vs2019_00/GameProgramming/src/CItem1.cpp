@@ -12,7 +12,7 @@
 #define VELOCITY CVector(0.0f, 0.0f, 0.3f) //移動速度
 #define ROTATION_XV	CVector(2.0f, 0.0f, 0.0f) //回転速度
 
-CItem1* CItem1::spInstance = nullptr;
+//CItem1* CItem1::spInstance = nullptr;
 
 int CItem1::sHp = 0;	//Hp
 
@@ -22,8 +22,8 @@ CItem1::CItem1()
 	//, mLine2(this, &mMatrix, CVector(0.0f, 6.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f))		//上下
 	//, mLine3(this, &mMatrix, CVector(2.5f, 3.5f, 0.0f), CVector(-2.5f, 3.5f, 0.0f))	//左右
 {
-	//インスタンスの設定
-	spInstance = this;
+	////インスタンスの設定
+	//spInstance = this;
 	sHp = HP;
 }
 
@@ -40,7 +40,6 @@ int CItem1::Hp()
 
 //更新処理
 void CItem1::Update() {
-
 	//変換行列の更新
 	CTransform::Update();
 	//UI設定
@@ -75,10 +74,10 @@ void CItem1::Update() {
 	//}
 }
 
-CItem1* CItem1::Instance()
-{
-	return spInstance;
-}
+//CItem1* CItem1::Instance()
+//{
+//	return spInstance;
+//}
 
 void CItem1::Collision()
 {

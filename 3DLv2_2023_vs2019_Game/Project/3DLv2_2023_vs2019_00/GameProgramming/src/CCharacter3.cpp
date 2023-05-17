@@ -4,6 +4,7 @@
 CCharacter3::CCharacter3()
 	:mpModel(nullptr)
 	, mTag(EZERO)
+	
 {
 	//タスクリストに追加
 //	CApplication::TaskManager()->Add(this);

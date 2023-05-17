@@ -11,15 +11,14 @@
 */
 class CItem1 : public CCharacter3 {
 public:
-	//インスタンスのポインタの取得
-	static CItem1* Instance();
+	////インスタンスのポインタの取得
+	//static CItem1* Instance();
 	//衝突処理
 	void Collision();
 
 	//衝突処理
 	void Collision(CCollider* m, CCollider* o);
 
-	//CBullet bullet;
 	CItem1();
 	//CPlayer(位置, 回転, スケール)
 	CItem1(const CVector& pos, const CVector& rot, const CVector& scale);
@@ -29,8 +28,8 @@ public:
 	void Update();
 
 private:
-	//プレイヤーのインスタンス
-	static CItem1* spInstance;
+	////プレイヤーのインスタンス
+	//static CItem1* spInstance;
 
 	static int sHp;
 
@@ -38,7 +37,6 @@ private:
 	CColliderLine mLine2; //線分コライダ
 	CColliderLine mLine3; //線分コライダ
 	CInput mInput;
-
 };
 
 #endif

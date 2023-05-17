@@ -6,7 +6,11 @@
 
 #define HP 100	//hp
 
-#define GRAVITY CVector(0.0f,-0.2f,0.0f)	//重力加速度
+#define GRAVITY CVector(0.0f,-0.09f,0.0f)	//重力加速度
+#define JUMP_HGIT CVector(0.0f,3.0f,0.0f)	//ジャンプの高さ
+#define JUMP_SHOKI CVector(0.0f,0.5f,0.0f)	//ジャンプの初速
+#define JUMP_OWARI CVector(0.0f,-0.5f,0.0f)	//ジャンプの終わりの速度
+#define AIR_RESISTANCE CVector(0.0f,-0.5f,0.0f)	//空気抵抗
 
 #define ROTATION_YV	CVector(0.0f, 2.0f, 0.0f) //回転速度
 #define VELOCITY CVector(0.0f, 0.0f, 0.3f) //移動速度
@@ -30,7 +34,6 @@ CPlayer::CPlayer()
 
 //CPlayer(位置, 回転, スケール)
 CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
-	:mJumpcount(0)
 {
 	CTransform::Update(pos, rot, scale); //行列の更新
 }
@@ -67,7 +70,7 @@ void CPlayer::Update() {
 	{
 		if (mInput.Key('W') || mInput.Key('A') || mInput.Key('D'))
 		{
-			mPosition = mPosition + CVector(0.0f, 0.0f, 0.33f) * mMatrixRotate;
+			mPosition = mPosition + CVector(0.0f, 0.0f, 0.22f) * mMatrixRotate;
 		}
 		else
 		{
@@ -76,15 +79,35 @@ void CPlayer::Update() {
 
 	}
 	//スペースキー入力でジャンプ
-	if (mInput.Key(VK_SPACE)) {
+	if (mInput.PushKey(VK_SPACE)) {
 
 		if (mJumpcount == 0)
 		{
-			//ジャンプ処理
-			mVelocity = CVector(0.0f, 1.4f, 0.0f);
+			// ジャンプ開始時の処理
+			mPosition = mPosition + JUMP_SHOKI + JUMP_HGIT * mMatrixRotate;
+			mPosition = mPosition + JUMP_HGIT + JUMP_OWARI * mMatrixRotate;
 			mJumpcount++;
 		}
-		else if(mJumpcount < 1)	//ジャンプの高さを制限
+		if (mJumpcount > 0)
+		{
+			mVelocity = mVelocity - AIR_RESISTANCE;
+			mJumpcount++;
+		}
+		//// ジャンプ中の処理
+		//if (mJumpcount > 0)
+		//{
+		//	mJumpcount++;
+		//	// 空気抵抗を適用
+		//	mVelocity = mVelocity - AIR_RESISTANCE;
+		//	//// ジャンプ終了判定
+		//	//if (mPosition.Y() <= 0.0f) {
+		//	//	// ジャンプが終了した場合の処理
+		//	//	mPosition = CVector(mPosition.X(), 0.0f, mPosition.Z());
+		//	//	mVelocity = CVector(mVelocity.X(), 0.0f, mVelocity.Z());
+		//	//	mJumpcount--; // ジャンプカウントのリセット
+		//	//}
+		//}
+		else if(mJumpcount < 1)	//押していない状態
 		{
 			mJumpcount++;
 		}
@@ -119,7 +142,6 @@ void CPlayer::Update() {
 	CApplication::Ui()->RotY(mRotation.Y());
 
 
-
 	//重力処理
 	mVelocity = mVelocity + GRAVITY;
 	mPosition = mPosition + mVelocity;	
@@ -134,8 +156,6 @@ void CPlayer::Update() {
 		mPosition = CVector(mPosition.X(), 0.0f, mPosition.Z());
 		mVelocity = CVector(mVelocity.X(), 0.0f, mVelocity.Z());
 	}
-
-
 
 	//復活処理に使える
 	
