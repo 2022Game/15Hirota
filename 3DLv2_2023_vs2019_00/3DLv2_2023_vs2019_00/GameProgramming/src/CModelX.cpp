@@ -19,6 +19,10 @@ CModelX::~CModelX()
 	{
 		delete mFrame[0];
 	}
+	for (size_t i = 0; i < mAnimationSet.size(); i++)
+	{
+		delete mAnimationSet[i];
+	}
 }
 
 CModelXFrame::~CModelXFrame()
@@ -82,6 +86,11 @@ bool CModelX::EOT()
 	return (*mpPointer == '\0');
 }
 
+CAnimationSet::~CAnimationSet()
+{
+	SAFE_DELETE_ARRAY(mpName);
+}
+
 /*
 Init
 Meshのデータを取り込む
@@ -121,11 +130,11 @@ void CMesh::Init(CModelX* model){
 	//単語がある間繰り返し
 	while (!model->EOT()) {
 		model->GetToken();	//MeshNormals
+			//}の場合は終了
+		if (strchr(model->Token(), '}'))
+			break;
 		if (strcmp(model->Token(), "MeshNormals") == 0) {
 			model->GetToken();	//{
-			//}の場合は終了
-			if (strchr(model->Token(), '}'))
-				break;
 			//法線データを取得
 			mNormalNum = atoi(model->GetToken());
 			//法線のデータを配列に取り込む
@@ -210,7 +219,7 @@ CSkinWeights::CSkinWeights(CModelX* model)
 	//フレーム名エリア確保、設定
 	mpFrameName = new char[strlen(model->Token()) + 1];
 	strcpy(mpFrameName, model->Token());
-	printf("SkinWeights %s\n", mpFrameName);
+	//printf("SkinWeights %s\n", mpFrameName);
 
 	//頂点番号取得
 	mIndexNum = atoi(model->GetToken());	//GetTokenとTokenを書き間違えないようにする
@@ -227,16 +236,39 @@ CSkinWeights::CSkinWeights(CModelX* model)
 		
 		//頂点ウェイト取得
 		for (int i = 0; i < mIndexNum; i++)
-			mpWeight[i] = atof(model->GetToken()),
-			printf("%2d %10f\n",mpIndex[i],mpWeight[i]);
-
+			mpWeight[i] = atof(model->GetToken());//printf("%2d %10f\n",mpIndex[i],mpWeight[i])
 	}
 	//オフセット行列取得
 	for (int i = 0; i < 16; i++) {
 		mOffset.M()[i] = atof(model->GetToken());
 	}
-	mOffset.Print();
+	//mOffset.Print();
 	model->GetToken();	//}
+}
+
+/*
+CAnimationSet
+*/
+CAnimationSet::CAnimationSet(CModelX* model)
+	:mpName(nullptr)
+{
+	model->mAnimationSet.push_back(this);
+	model->GetToken();	//AnimationName
+	//アニメーションセット名を退避
+	mpName = new char[strlen(model->Token()) + 1];
+	strcpy(mpName, model->Token());
+	model->GetToken();	//}
+	while (!model->EOT()) {
+		model->GetToken();	//} or Animation
+		if (strchr(model->Token(), '}'))break;
+		if (strcmp(model->Token(), "Animation") == 0) {
+			//とりあえず読み飛ばし
+			model->SkipNode();
+		}
+	}
+#ifdef _DEBUG
+	printf("AnimationSet:%s\n", mpName);
+#endif
 }
 
 void CModelX::Load(char* file) {
@@ -273,6 +305,10 @@ void CModelX::Load(char* file) {
 		if (strcmp(mToken, "Frame") == 0) {
 			//フレームを作成する
 			new CModelXFrame(this);
+		}
+		//単語がAnimationSetの場合
+		else if (strcmp(mToken, "AnimationSet") == 0) {
+			new CAnimationSet(this);
 		}
 	}
 

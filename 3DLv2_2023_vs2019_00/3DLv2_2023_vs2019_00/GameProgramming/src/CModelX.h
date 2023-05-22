@@ -11,6 +11,7 @@ class CMesh;
 class CVector;
 class CMaterial;	//マテリアル宣言
 class CSkinWeights;	//スキンウェイトクラス
+class CAnimationSet;	//アニメーションセットクラス
 
 /*
 IsDelimiter(c)
@@ -27,6 +28,8 @@ cが\t \r \n スペースなどの空白文字
 CModelX
 Xファイル形式の3Dモデルデータをプログラムで認識する
 */
+
+
 
 //CModelXFrameの定義
 class CModelXFrame {
@@ -48,6 +51,7 @@ private:
 class CModelX {
 	friend CModelXFrame;
 	friend CSkinWeights;
+	friend CAnimationSet;
 public:
 	~CModelX();
 	//ノードの読み飛ばし
@@ -61,7 +65,8 @@ public:
 	char* Token();
 	bool EOT();	//トークンが無くなったらture
 private:
-	std::vector<CModelXFrame*> mFrame;	//フレームの配列	
+	std::vector<CModelXFrame*> mFrame;	//フレームの配列
+	std::vector<CAnimationSet*> mAnimationSet;	//アニメーションセットの配列
 	char* mpPointer;	//読み込み位置
 	char mToken[1024];	//取り出した単語の領域t
 	//cが区切り文字ならtrueを返す
@@ -115,4 +120,18 @@ private:
 	float* mpWeight;	//頂点ウェイト配列
 	CMatrix mOffset;	//オフセットマトリックス
 };
+
+/*
+CAnimationSet
+アニメーションセット
+*/
+class CAnimationSet {
+public:
+	CAnimationSet(CModelX* model);
+	~CAnimationSet();
+private:
+	//アニメーションセット名
+	char* mpName;
+};
+
 #endif
