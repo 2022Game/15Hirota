@@ -245,5 +245,8 @@
     <ClInclude Include="src\CItem1.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="src\CColliderMesh_shougaibutu.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

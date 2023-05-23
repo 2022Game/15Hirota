@@ -12,6 +12,7 @@ class CVector;
 class CMaterial;	//マテリアル宣言
 class CSkinWeights;	//スキンウェイトクラス
 class CAnimationSet;	//アニメーションセットクラス
+class CAnimation;		//アニメーションクラス
 
 /*
 IsDelimiter(c)
@@ -34,12 +35,14 @@ Xファイル形式の3Dモデルデータをプログラムで認識する
 //CModelXFrameの定義
 class CModelXFrame {
 	friend CModelX;
+	friend CAnimation;
 public:
 	//コンストラクタ
 	CModelXFrame(CModelX* model);
 	//デストラクタ
 	~CModelXFrame();
 	void Render();
+	bool Index();
 private:
 	std::vector<CModelXFrame*> mChild;	//子フレームの配列
 	CMatrix mTransformMatrix;			//変換行列
@@ -52,6 +55,7 @@ class CModelX {
 	friend CModelXFrame;
 	friend CSkinWeights;
 	friend CAnimationSet;
+	friend CAnimation;
 public:
 	~CModelX();
 	//ノードの読み飛ばし
@@ -64,6 +68,8 @@ public:
 	char* GetToken();
 	char* Token();
 	bool EOT();	//トークンが無くなったらture
+	//フレーム名に該当するフレームのアドレスを返す
+	CModelXFrame* FindFrame(char* name);
 private:
 	std::vector<CModelXFrame*> mFrame;	//フレームの配列
 	std::vector<CAnimationSet*> mAnimationSet;	//アニメーションセットの配列
@@ -132,6 +138,21 @@ public:
 private:
 	//アニメーションセット名
 	char* mpName;
+	std::vector<CAnimation*> mAnimation;
+};
+
+/*
+CAnimation
+アニメーションクラス
+*/
+class CAnimation {
+	friend CAnimationSet;
+public:
+	CAnimation(CModelX* model);
+	~CAnimation();
+private:
+	char *mpFrameName;	//フレーム名
+	int mFrameIndex;	//フレーム番号
 };
 
 #endif
