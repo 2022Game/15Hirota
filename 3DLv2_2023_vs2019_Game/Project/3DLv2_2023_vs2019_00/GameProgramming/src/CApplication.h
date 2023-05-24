@@ -25,6 +25,8 @@
 
 #include "CUi.h"
 #include "CItem1.h"
+#include "CShougaibutuA.h"
+#include "CAlien.h"
 
 class CApplication
 {
@@ -38,19 +40,26 @@ private:
 	//CColliderTriangle mColliderTriangle;
 	//CColliderTriangle mColliderTriangle2;
 
+	CShougaibutuA mColliderTriangle;
+	CShougaibutuA mColliderTriangle1;
+
 	//モデルビューの逆行列
 	static CMatrix mModelViewInverse;
 
 	//C5モデル
 	CModel mModelC5;
 
+	//エイリアン
+	CModel mModelAlien;
+
 	//アイテム(仮)
-	CItem1 mItem1;
+	CModel mModel_Item;
 
 	//static CTaskManager mTaskManager;
 	CPlayer mPlayer;
 
 	CModel mBackGround; //背景モデル
+
 	CModel mModel;
 	CModel mModel1;
 	CVector mEye;
@@ -68,11 +77,11 @@ private:
 		EOVER,	//ゲームオーバー
 	};
 	EState mState;
-//	CCharacter mRectangle;
+	//	CCharacter mRectangle;
 	CPlayer* mpPlayer;
 	static CTexture mTexture;
 	CEnemy* mpEnemy;
-//	CBullet* mpBullet;
+	//	CBullet* mpBullet;
 	CInput mInput;
 	CFont mFont;
 	CMiss* mpMiss;

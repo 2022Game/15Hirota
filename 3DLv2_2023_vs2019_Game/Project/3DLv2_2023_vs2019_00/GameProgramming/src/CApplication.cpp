@@ -33,9 +33,11 @@ CUi* CApplication::Ui()
 //アイテム1のモデル
 #define MODEL_ITEM1 "res\\12190_Heart_v1_L3.obj","res\\12190_Heart_v1_L3.mtl"
 
+//エイリアンモデル
+#define MODEL_ALIEN "res\\Alien Animal.obj","res\\Alien Animal.mtl"
+
 //背景モデルデータの指定
 #define MODEL_BACKGROUND  "res\\sky.obj", "res\\sky.mtl"
-
 
 //CTaskManager CApplication::mTaskManager;
 
@@ -84,10 +86,10 @@ void CApplication::Start()
 	mPlayer.Rotation(CVector(0.0f, 180.0f, 0.0f));
 
 	//ITEM1のモデルの読み込み
-	mItem1.Model(&mModel1);
-	mItem1.Scale(CVector(0.2f, 0.2f, 0.2f));
-	mItem1.Position(CVector(0.0f, 0.0f, 10.0f));
-	mItem1.Rotation(CVector(270.0f, 0.0f, -90.0f));
+	mModel_Item.Load(MODEL_ITEM1);
+	new CItem1(&mModel_Item, CVector(0.0f, 0.0f, 50.0f),
+		CVector(270.0f, 0.0f, -90.0f), CVector(0.09f, 0.09f, 0.09f));
+	
 
 	//C5モデルの読み込み
 	mModelC5.Load(MODEL_C5);
@@ -95,6 +97,11 @@ void CApplication::Start()
 	new CEnemy(&mModelC5, CVector(0.0f, 10.0f, -100.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy(&mModelC5, CVector(20.0f, 10.0f, -130.0f),
+		CVector(), CVector(0.1f, 0.1f, 0.1f));
+
+	//エイリアンモデルの読み込み
+	mModelAlien.Load(MODEL_ALIEN);
+	new CAlien(&mModelAlien, CVector(100.0f, 0.0f, 0.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 
 	//ビルボードの生成
@@ -109,10 +116,20 @@ void CApplication::Start()
 	//	, CVector(-50.0f, 0.0f, 50.0f)
 	//	, CVector(50.0f, 0.0f, 50.0f)
 	//	, CVector(50.0f, 0.0f, -50.0f));
+	mColliderTriangle.Set(nullptr, nullptr
+		, CVector(-100.0f, 1.5f, -100.0f)
+		, CVector(-100.0f, 1.5f, 100.0f)
+		, CVector(100.0f, 1.5f, -100.0f));
+
+	mColliderTriangle1.Set(nullptr,nullptr
+		, CVector(-100.0f, 1.5f, 100.0f)
+		, CVector(100.0f, 1.5f, 100.0f)
+		, CVector(100.0f, 1.5f, -100.0f));
 
 	//背景モデルから三角コライダを生成
 	//親インスタンスと親行列はなし
 	mColliderMesh.Set(nullptr, nullptr, &mBackGround);
+	//mColliderMesh1.Set(nullptr, nullptr, &mModel_Item);
 
 	new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
@@ -154,7 +171,7 @@ void CApplication::Update()
 	if (mInput.Key('K'))
 	{
 		mEye = mEye + CVector(0.0f, 0.0f, 0.1f);
-	}	
+	}
 	if (mInput.Key('O'))
 	{
 		mEye = mEye - CVector(0.0f, 0.1f, 0.0f);
@@ -169,7 +186,7 @@ void CApplication::Update()
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
 	//視点を求める
-	e = mPlayer.Position() + CVector(-0.5f, 1.5f, -2.5f) * mPlayer.MatrixRotate();
+	e = mPlayer.Position() + CVector(0.0f, 1.5f, -3.5f) * mPlayer.MatrixRotate();
 	//注視点を求める
 	c = mPlayer.Position();
 	//上方向を求める
