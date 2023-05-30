@@ -191,3 +191,37 @@ CMatrix CMatrix::Quaternion(float x, float y, float z, float w)
 	mM[3][3] = 1;
 	return *this;
 }
+
+CMatrix CMatrix::operator*(const float& x)
+{
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+		{
+			mM[i][j] * x;
+		}
+	return *this;
+}
+
+CMatrix CMatrix::operator+(const CMatrix& m)
+{
+	CMatrix NewMatrix;
+
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+		{
+			NewMatrix.mM[i][j] = mM[i][j] + m.mM[i][j];
+		}
+	return NewMatrix;
+}
+
+void CMatrix::operator+=(const CMatrix& m)
+{
+	CMatrix NewMatrix1;
+
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+		{
+
+		}
+
+}

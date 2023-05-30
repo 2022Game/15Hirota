@@ -52,6 +52,18 @@ public:
 	int Size();
 	//クオータニオンで回転行列を設定する
 	CMatrix Quaternion(float x, float y, float z, float w);
+
+	//*演算子のオーバーロード
+	//CMatrix * float の演算結果を返す
+	CMatrix operator*(const float& x);
+
+	//+演算子のオーバーロード
+	//CMatrix1 + CMatrix2 の演算結果を返す
+	CMatrix operator+(const CMatrix& m);
+
+	//+=演算子のオーバーロード
+	//CMatrix1 += CMatrix2　の演算を行う
+	void operator+=(const CMatrix& m);
 private:
 	//4×4の行列データを設定
 	float mM[4][4];

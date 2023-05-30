@@ -13,6 +13,16 @@ CColliderMesh::~CColliderMesh()
 	}
 }
 
+//優先度の変更
+void CColliderMesh::ChangePriority()
+{
+	for (int i = 0; i < mTrianglesCount; i++)
+	{
+		//三角コライダの設定
+		mpColliderTriangles[i].ChangePriority();
+	}
+}
+
 //Set(親, 親行列, モデル)
 //モデルから三角コライダの生成
 void CColliderMesh::Set(CCharacter3* parent, CMatrix* matrix, CModel* model)

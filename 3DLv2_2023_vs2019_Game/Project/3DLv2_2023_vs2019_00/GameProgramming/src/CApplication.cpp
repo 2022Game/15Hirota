@@ -39,6 +39,9 @@ CUi* CApplication::Ui()
 //背景モデルデータの指定
 #define MODEL_BACKGROUND  "res\\sky.obj", "res\\sky.mtl"
 
+//芝生
+#define MODEL_SIBAFU "res\\Low Poly Mill.obj","res\\Low Poly Mill.mtl"
+
 //CTaskManager CApplication::mTaskManager;
 
 //CTaskManager* CApplication::TaskManager()
@@ -94,10 +97,10 @@ void CApplication::Start()
 	//C5モデルの読み込み
 	mModelC5.Load(MODEL_C5);
 	//敵機のインスタンス作成
-	new CEnemy(&mModelC5, CVector(0.0f, 10.0f, -100.0f),
+	/*new CEnemy(&mModelC5, CVector(0.0f, 10.0f, -100.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy(&mModelC5, CVector(20.0f, 10.0f, -130.0f),
-		CVector(), CVector(0.1f, 0.1f, 0.1f));
+		CVector(), CVector(0.1f, 0.1f, 0.1f));*/
 
 	//エイリアンモデルの読み込み
 	mModelAlien.Load(MODEL_ALIEN);
@@ -116,23 +119,17 @@ void CApplication::Start()
 	//	, CVector(-50.0f, 0.0f, 50.0f)
 	//	, CVector(50.0f, 0.0f, 50.0f)
 	//	, CVector(50.0f, 0.0f, -50.0f));
-	mColliderTriangle.Set(nullptr, nullptr
-		, CVector(-100.0f, 1.5f, -100.0f)
-		, CVector(-100.0f, 1.5f, 100.0f)
-		, CVector(100.0f, 1.5f, -100.0f));
-
-	mColliderTriangle1.Set(nullptr,nullptr
-		, CVector(-100.0f, 1.5f, 100.0f)
-		, CVector(100.0f, 1.5f, 100.0f)
-		, CVector(100.0f, 1.5f, -100.0f));
 
 	//背景モデルから三角コライダを生成
 	//親インスタンスと親行列はなし
 	mColliderMesh.Set(nullptr, nullptr, &mBackGround);
 	//mColliderMesh1.Set(nullptr, nullptr, &mModel_Item);
 
-	new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
+	/*new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));*/
+
+	//障害物ギミック
+	mpShougaibutuGimmick = new CShougaibutuGimmick();
 
 }
 

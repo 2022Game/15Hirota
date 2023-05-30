@@ -21,6 +21,8 @@
 
 #include "CUi.h"
 
+#include "CModelX.h"
+
 class CApplication
 {
 private:

@@ -27,6 +27,8 @@
 #include "CItem1.h"
 #include "CShougaibutuA.h"
 #include "CAlien.h"
+#include "CShougaibutuGimmick.h"
+#include "CShougaibutuA.h"
 
 class CApplication
 {
@@ -34,14 +36,10 @@ private:
 	static CUi* spUi;	//UIクラスのポインタ
 	//モデルからコライダを生成
 	CColliderMesh mColliderMesh;
-	CColliderMesh mColliderMesh1;
 
 	//三角コライダの作成
 	//CColliderTriangle mColliderTriangle;
 	//CColliderTriangle mColliderTriangle2;
-
-	CShougaibutuA mColliderTriangle;
-	CShougaibutuA mColliderTriangle1;
 
 	//モデルビューの逆行列
 	static CMatrix mModelViewInverse;
@@ -87,6 +85,7 @@ private:
 	CMiss* mpMiss;
 	//CCharacterのポインタの可変長配列
 //	std::vector<CCharacter*> mCharacters;
+	CShougaibutuGimmick* mpShougaibutuGimmick;
 public:
 	~CApplication();
 	static CUi* Ui();	//UIクラスのインスタンスを取得

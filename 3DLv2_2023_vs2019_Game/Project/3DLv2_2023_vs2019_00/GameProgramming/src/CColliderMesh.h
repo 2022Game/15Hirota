@@ -8,6 +8,7 @@
 class CColliderMesh
 {
 public:
+	void ChangePriority();
 	CColliderMesh();
 	~CColliderMesh();
 	//Set(親, 親行列, モデル)
@@ -16,5 +17,7 @@ public:
 private:
 	//三角コライダの配列作成
 	CColliderTriangle* mpColliderTriangles;
+	//三角コライダの配列の要素数
+	int mTrianglesCount;
 };
 #endif
