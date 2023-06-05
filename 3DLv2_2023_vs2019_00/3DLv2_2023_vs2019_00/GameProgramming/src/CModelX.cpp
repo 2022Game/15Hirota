@@ -285,7 +285,7 @@ CAnimationSet
 */
 CAnimationSet::CAnimationSet(CModelX* model)
 	:mpName(nullptr)
-	,mTime(0)
+	,mTime(45)
 	,mWeight(0)
 	,mMaxTime(0)
 {
@@ -436,8 +436,8 @@ CAnimation::CAnimation(CModelX* model)
 		SAFE_DELETE_ARRAY(key[i]);
 	}
 #ifdef _DEBUG
-	printf("Animation:%s\n",mpFrameName);
-	mpKey[0].mMatrix.Print();
+	/*printf("Animation:%s\n",mpFrameName);
+	mpKey[0].mMatrix.Print();*/
 #endif
 }
 
@@ -453,7 +453,7 @@ void CAnimationSet::AnimateMatrix(CModelX* model)
 		if (animation->mpKey == nullptr) continue;
 		//該当するフレームの取得
 		CModelXFrame* frame = model->mFrame[animation->mFrameIndex];
-		//最初の事案より小さい場良い
+		//最初の時間より小さい場良い
 		if (mTime < animation->mpKey[0].mTime) {
 			//変換行列を0コマ目の行列で更新
 			frame->mTransformMatrix += animation->mpKey[0].mMatrix * mWeight;
@@ -481,16 +481,13 @@ void CAnimationSet::AnimateMatrix(CModelX* model)
 			}
 		}
 	}
-#ifdef _DEBUG
-
-#endif
 }
 
 /*
 AnimateFrame
 フレームの変換行列をアニメーションデータで更新する
 */
-void CModelX::AnimateFrame() {
+void CModelX::AnimateFrame(){
 	//アニメーションで適用されるフレームの
 	//変換行列をゼロクリアする
 	for (size_t i = 0; i < mAnimationSet.size(); i++) {
@@ -503,7 +500,7 @@ void CModelX::AnimateFrame() {
 			j < animSet->Animation().size(); j++)
 		{
 			CAnimation* animation =
-				animSet->Animation()[i];
+				animSet->Animation()[j];
 			//該当するフレームの変換行列をゼロクリアする
 			memset(
 				&mFrame[animation->mFrameIndex]
@@ -519,6 +516,13 @@ void CModelX::AnimateFrame() {
 		if (animSet->mWeight == 0)continue;
 		animSet->AnimateMatrix(this);
 	}
+#ifdef _DEBUG
+	for (size_t i = 0; i < mFrame.size(); i++) {
+		mFrame[i]->mpName;
+		printf("Frame:%s\n", mFrame[i]->mpName);
+		mFrame[i]->mTransformMatrix.Print();
+	}
+#endif
 }
 
 void CModelX::Load(char* file) {

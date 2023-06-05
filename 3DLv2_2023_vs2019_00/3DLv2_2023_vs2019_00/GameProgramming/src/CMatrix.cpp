@@ -194,34 +194,34 @@ CMatrix CMatrix::Quaternion(float x, float y, float z, float w)
 
 CMatrix CMatrix::operator*(const float& x)
 {
+	CMatrix NewMatrix1;
 	for (int i = 0; i < 4; i++)
 		for (int j = 0; j < 4; j++)
 		{
-			mM[i][j] * x;
+			NewMatrix1.mM[i][j] = mM[i][j] * x;
 		}
-	return *this;
+	return NewMatrix1;
 }
 
 CMatrix CMatrix::operator+(const CMatrix& m)
 {
-	CMatrix NewMatrix;
+	CMatrix NewMatrix2;
 
 	for (int i = 0; i < 4; i++)
 		for (int j = 0; j < 4; j++)
 		{
-			NewMatrix.mM[i][j] = mM[i][j] + m.mM[i][j];
+			NewMatrix2.mM[i][j] = mM[i][j] + m.mM[i][j];
 		}
-	return NewMatrix;
+	return NewMatrix2;
 }
 
 void CMatrix::operator+=(const CMatrix& m)
 {
-	CMatrix NewMatrix1;
-
 	for (int i = 0; i < 4; i++)
+	{
 		for (int j = 0; j < 4; j++)
 		{
-
+			mM[i][j] += m.mM[i][j];
 		}
-
+	}
 }

@@ -73,7 +73,7 @@ void CApplication::Update()
 	//最初のアニメーションの重みを1.0(100%)にする
 	mModelX.AnimationSet()[0]->Weight(1.0f);
 	//フレームの変換行列をアニメーションで更新する
-	mModelX.AnimationSet();
+	mModelX.AnimateFrame();
 
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向

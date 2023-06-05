@@ -149,6 +149,7 @@ public:
 private:
 	//アニメーションセット名
 	char* mpName;
+	//アニメーション
 	std::vector<CAnimation*> mAnimation;
 	float mTime;	//現在時間
 	float mWeight;	//重み
