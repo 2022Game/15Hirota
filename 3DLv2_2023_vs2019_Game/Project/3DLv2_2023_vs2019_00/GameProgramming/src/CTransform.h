@@ -35,6 +35,7 @@ protected: //子クラスはアクセス可能
 	CVector mRotation;	//回転
 	CVector mScale;	//拡大縮小
 	CVector mVelocity;	//重力加速度
+
 	CMatrix mMatrixTranslate; //平行移動行列
 	CMatrix mMatrixRotate; //回転行列
 	CMatrix mMatrixScale; //拡大縮小行列

@@ -8,9 +8,9 @@
 
 #define GRAVITY CVector(0.0f,-0.09f,0.0f)	//重力加速度
 
-#define JUMP_HGIT CVector(0.0f,5.0f,0.0f)	//ジャンプの高さ
-#define AIR_RESISTANCE CVector(0.0f,-1.5f,0.0f)	//空気抵抗
-#define JUMP_INITIAL_VELOCITY  CVector(0.0f,1.0f,0.0f)
+#define JUMP_START CVector(0.0f,2.0f,0.0f)	//ジャンプ初速
+#define JUMP_FORCE CVector(0.0f,4.0f,0.0f)	//ジャンプ力
+//#define AIR_RESISTANCE CVector(0.0f,-2.5f,0.0f)	//空気抵抗
 
 #define ROTATION_YV	CVector(0.0f, 2.0f, 0.0f) //回転速度
 #define VELOCITY CVector(0.0f, 0.0f, 0.3f) //移動速度
@@ -20,11 +20,11 @@ CPlayer* CPlayer::spInstance = nullptr;
 
 int CPlayer::sHp = 0;	//Hp
 
-
 CPlayer::CPlayer()
-	: mLine(this, &mMatrix, CVector(0.0f, 3.5f, 5.5f), CVector(0.0f, 3.5f, -5.5f))		//前後
+	: mLine(this, &mMatrix, CVector(0.0f, 3.5f, 5.0f), CVector(0.0f, 3.5f, -5.0f))		//前後
 	, mLine2(this, &mMatrix, CVector(0.0f, 6.0f, 0.0f), CVector(0.0f, 0.5f, 0.0f))		//上下
 	, mLine3(this, &mMatrix, CVector(3.5f, 3.5f, 0.0f), CVector(-3.5f, 3.5f, 0.0f))	//左右
+	//, mLine4(this,&mMatrix,CVector(3.5f,0.0f,0.0f),CVector(-3.5f,0.0f,0.0f))
 	,mJumpcount(0)
 {
 	//インスタンスの設定
@@ -42,6 +42,7 @@ int CPlayer::Hp()
 {
 	return sHp;
 }
+
 
 //更新処理
 void CPlayer::Update() {
@@ -77,24 +78,34 @@ void CPlayer::Update() {
 			//何もしないであってるか？
 		}
 	}
-	//スペースキー入力でジャンプ
-	if (mInput.PushKey(VK_SPACE)) {
-
-		if (mJumpcount == 0 && mPosition.Y() <= 0.0f)
-		{
-			//// ジャンプ処理
-			mVelocity = JUMP_HGIT + AIR_RESISTANCE * mMatrixRotate;
-			mJumpcount++;
+	bool isGrounded = mPosition.Y() <= 0.0f;
+	bool isJumpKeyPressed = mInput.PushKey(VK_SPACE);
+	if (isJumpKeyPressed) {
+		if (mJumpcount == 0 && isGrounded) {
+			// ジャンプ処理
+			mVelocity = JUMP_START + JUMP_FORCE * mMatrixRotate;
+			mJumpcount = 1;
 		}
-		else if (mJumpcount > 0 && !mInput.PushKey(VK_SPACE) && mPosition.Y() > 4.5f) {
-
-			 mVelocity = mVelocity + GRAVITY - AIR_RESISTANCE;
+		else if (mJumpcount == 1 && isGrounded) {
+			// 空中に浮いている地面に着地した場合の処理
+			// ジャンプカウントをリセット
+			mJumpcount = 0;
 		}
 	}
-	else if (!mInput.Key(VK_SPACE) && !(mPosition.Y() <= 0.0f))
-	{
-		mJumpcount = 0;
-	}
+	//if (mInput.PushKey(VK_SPACE)) {
+
+	//	if ((mJumpcount == 0 && isGrounded))
+	//	{
+	//		// ジャンプ処理
+	//		mVelocity = JUMP_START + JUMP_FORCE * mMatrixRotate;
+	//		mJumpcount = 1;
+	//	}
+	//	else if (mJumpcount == 1 && isGrounded) {
+	//		// 空中に浮いている地面に着地した場合の処理
+	//		// ジャンプカウントをリセット
+	//		mJumpcount = 0;
+	//	}
+	//}
 	if (GetKeyState(VK_LBUTTON) & 0x80) {
 		CBullet* bullet = new CBullet();
 		bullet->Set(0.1f, 1.5f);
@@ -120,32 +131,34 @@ void CPlayer::Update() {
 	CApplication::Ui()->RotX(mRotation.X());
 	CApplication::Ui()->RotY(mRotation.Y());
 
-
-	//重力処理
-	mVelocity = mVelocity + GRAVITY;
-	//移動量を反映
-	mPosition = mPosition + mVelocity;	
-
-	//移動処理
-	if (mPosition.Y() > 0.0f) {	//地面に接触していない
-		mPosition = mPosition + mVelocity;
+	// 重力処理
+	//mVelocity = mVelocity + GRAVITY;
+	if (!isGrounded) {
 		mVelocity = mVelocity + GRAVITY;
 	}
-	//地面に接触している場合は、位置を地面の上に固定する
-	if (mPosition.Y() <= 0.0f) {
+
+	// 移動処理
+	mPosition = mPosition + mVelocity;
+
+	if (isGrounded && mPosition.Y() <= 0.0f) {
 		mPosition = CVector(mPosition.X(), 0.0f, mPosition.Z());
 		mVelocity = CVector(mVelocity.X(), 0.0f, mVelocity.Z());
-		mJumpcount = 0;
+		mJumpcount = 0; // 地面に着地したらジャンプカウントをリセット
 	}
-
-	//復活処理に使える
-	
-	////位置が画面外に出た場合は初期位置に戻す
-	//if (mPosition.Y() < -10.0f)
+	//if (isGrounded)
 	//{
-	//	mPosition = CVector(0.0f, 0.0f, 0.0f);
-	//	mVelocity = CVector(0.0f, 0.0f, 0.0f);
+	//	mPosition = CVector(mPosition.X(), 0.0f, mPosition.Z());
+	//	mVelocity = CVector(mVelocity.X(), 0.0f, mVelocity.Z());
+	//	mJumpcount = 0; // 地面に着地したらジャンプカウントをリセット
 	//}
+
+	//復活処理に使えるかも？
+	//位置が画面外に出た場合は初期位置に戻す
+	/*if (mPosition.Y() < -10.0f)
+	{
+		mPosition = CVector(0.0f, 0.0f, 0.0f);
+		mVelocity = CVector(0.0f, 0.0f, 0.0f);
+	}*/
 }
 
 CPlayer* CPlayer::Instance()
@@ -159,10 +172,12 @@ void CPlayer::Collision()
 	mLine.ChangePriority();
 	mLine2.ChangePriority();
 	mLine3.ChangePriority();
+	//mLine4.ChangePriority();
 	//衝突処理を実行
 	CCollisionManager::Instance()->Collision(&mLine, COLLISIONRANGE);
 	CCollisionManager::Instance()->Collision(&mLine2, COLLISIONRANGE);
 	CCollisionManager::Instance()->Collision(&mLine3, COLLISIONRANGE);
+	//CCollisionManager::Instance()->Collision(&mLine4, COLLISIONRANGE);
 }
 
 void CPlayer::Collision(CCollider* m, CCollider* o) {
@@ -177,7 +192,7 @@ void CPlayer::Collision(CCollider* m, CCollider* o) {
 			{
 				//位置の更新(mPosition + adjust)
 				mPosition = mPosition + adjust;
-				mVelocity = CVector(0.0f, 0.0f, 0.0f);
+				//mVelocity = CVector(0.0f, 0.0f, 0.0f);
 
 				//行列の更新
 				CTransform::Update();
@@ -185,7 +200,7 @@ void CPlayer::Collision(CCollider* m, CCollider* o) {
 			else
 			{
 				//重力処理
-				mVelocity =  GRAVITY;
+				mVelocity = GRAVITY;
 			}
 		}
 		break;

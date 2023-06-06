@@ -40,7 +40,7 @@ CUi* CApplication::Ui()
 #define MODEL_BACKGROUND  "res\\sky.obj", "res\\sky.mtl"
 
 //芝生
-#define MODEL_SIBAFU "res\\Low Poly Mill.obj","res\\Low Poly Mill.mtl"
+#define MODEL_SIBAFU "res\\20265_Hexagonal_prism_v1.obj","res\\Blank.mtl"
 
 //CTaskManager CApplication::mTaskManager;
 
@@ -128,8 +128,8 @@ void CApplication::Start()
 	/*new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));*/
 
-	//障害物ギミック
-	mpShougaibutuGimmick = new CShougaibutuGimmick();
+	//四角ギミックはCSikakuGimmick内にまとめる
+	mpSikakuGimmick = new CSikakuGimmick();
 
 }
 
@@ -183,7 +183,7 @@ void CApplication::Update()
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
 	//視点を求める
-	e = mPlayer.Position() + CVector(0.0f, 1.5f, -3.5f) * mPlayer.MatrixRotate();
+	e = mPlayer.Position() + CVector(0.2f, 1.5f, -3.5f) * mPlayer.MatrixRotate();
 	//注視点を求める
 	c = mPlayer.Position();
 	//上方向を求める

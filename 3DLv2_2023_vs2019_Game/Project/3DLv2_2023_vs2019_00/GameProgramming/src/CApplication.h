@@ -25,10 +25,8 @@
 
 #include "CUi.h"
 #include "CItem1.h"
-#include "CShougaibutuA.h"
 #include "CAlien.h"
-#include "CShougaibutuGimmick.h"
-#include "CShougaibutuA.h"
+#include "CSikakuGimmick.h"
 
 class CApplication
 {
@@ -85,7 +83,7 @@ private:
 	CMiss* mpMiss;
 	//CCharacterのポインタの可変長配列
 //	std::vector<CCharacter*> mCharacters;
-	CShougaibutuGimmick* mpShougaibutuGimmick;
+	CSikakuGimmick* mpSikakuGimmick;
 public:
 	~CApplication();
 	static CUi* Ui();	//UIクラスのインスタンスを取得

@@ -126,13 +126,13 @@
     <ClCompile Include="src\CItem1.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\CShougaibutuA.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="src\CAlien.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\CShougaibutuGimmick.cpp">
+    <ClCompile Include="src\CSikaku.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSikakuGimmick.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -254,13 +254,13 @@
     <ClInclude Include="src\CItem1.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\CShougaibutuA.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="src\CAlien.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\CShougaibutuGimmick.h">
+    <ClInclude Include="src\CSikaku.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSikakuGimmick.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
