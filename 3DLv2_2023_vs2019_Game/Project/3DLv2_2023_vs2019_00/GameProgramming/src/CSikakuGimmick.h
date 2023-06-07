@@ -16,8 +16,6 @@ private:
 	//リストに追加
 	void CreateSikaku(CVector& pos, CVector& rot, CVector& scale);
 
-	bool playerGrounded = false; // プレイヤーが接地しているかどうかを表すフラグ
-
 	CVector mPosition;	//位置
 	CVector mVelocity;	//重力加速度
 

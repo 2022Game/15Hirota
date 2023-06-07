@@ -22,14 +22,16 @@ void CSikakuGimmick::Init()
 	mpSikakuModel = new CModel();
 	mpSikakuModel->Load(MODEL_SIKAKU);
 
-	CreateSikaku(CVector(-20.0f, 2.0f, 20.0f), CVector(), CVector(0.8f, 0.8f, 0.8f));
+	CreateSikaku(CVector(-20.0f, 2.0f, 20.0f), CVector(), CVector(0.8f, 0.8f, 0.9f));
+	CreateSikaku(CVector(-30.0f, 2.0f, 20.0f), CVector(), CVector(0.8f, 0.8f, 0.9f));
+	CreateSikaku(CVector(-40.0f, 2.0f, 20.0f), CVector(), CVector(0.8f, 0.8f, 0.9f));
 }
 
 void CSikakuGimmick::CreateSikaku(CVector& pos, CVector& rot, CVector& scale)
 {
 	if (mpSikakuModel == nullptr) return;
 
-	// コインを生成してリストに追加
+	// 四角を生成してリストに追加
 	CSikaku* sikaku = new CSikaku(mpSikakuModel, pos, rot, scale);
 	mSikakus.push_back(sikaku);
 }
@@ -45,13 +47,13 @@ CSikakuGimmick::CSikakuGimmick()
 
 CSikakuGimmick::~CSikakuGimmick()
 {
-	// コインのモデルデータを破棄
+	// 四角のモデルデータを破棄
 	if (mpSikakuModel != nullptr)
 	{
 		delete mpSikakuModel;
 	}
 
-	// コインを破棄
+	// 四角を破棄
 	for (int i = 0; i < mSikakus.size(); i++)
 	{
 		delete mSikakus[i];
@@ -69,8 +71,7 @@ void CSikakuGimmick::Update()
 	for (int i = 0; i < mSikakus.size(); i++) {
 		CSikaku* sikaku = mSikakus[i];
 		if (sikaku != nullptr) {
-			/*if (sikaku->IsPlayerOnTop()) {*/
-				playerGrounded = true;
+
 				break;
 			}
 		}

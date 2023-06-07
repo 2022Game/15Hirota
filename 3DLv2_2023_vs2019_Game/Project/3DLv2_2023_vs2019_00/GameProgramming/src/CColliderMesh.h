@@ -2,6 +2,8 @@
 #define CCOLLIDERMESH_H
 #include "CModel.h"
 #include "CColliderTriangle.h"
+#include "CColliderTriangle.h"
+#include "CCollider.h"
 /*
 モデルデータから三角コライダの生成
 */
