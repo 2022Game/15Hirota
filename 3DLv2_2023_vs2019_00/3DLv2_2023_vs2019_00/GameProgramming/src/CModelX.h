@@ -47,12 +47,15 @@ public:
 	~CModelXFrame();
 	void Render();
 	int Index();
+	//合成行列の作成
+	void AnimateCombined(CMatrix* parent);
 private:
 	std::vector<CModelXFrame*> mChild;	//子フレームの配列
 	CMatrix mTransformMatrix;			//変換行列
 	char* mpName;						//フレーム名前
 	int mIndex;							//フレーム番号
 	CMesh* mpMesh;						//Meshデータ
+	CMatrix mCombinedMatrix;			//合成行列
 };
 
 class CModelX {
@@ -76,6 +79,7 @@ public:
 	CModelXFrame* FindFrame(char* name);
 	std::vector<CAnimationSet*>& AnimationSet();
 	void AnimateFrame();
+	std::vector<CModelXFrame*>& Frames();
 private:
 	std::vector<CModelXFrame*> mFrame;	//フレームの配列
 	std::vector<CAnimationSet*> mAnimationSet;	//アニメーションセットの配列

@@ -125,6 +125,11 @@ std::vector<CAnimation*>& CAnimationSet::Animation()
 	return mAnimation;
 }
 
+std::vector<CModelXFrame*>& CModelX::Frames()
+{
+	return mFrame;
+}
+
 /*
 Init
 Meshのデータを取り込む
@@ -285,7 +290,7 @@ CAnimationSet
 */
 CAnimationSet::CAnimationSet(CModelX* model)
 	:mpName(nullptr)
-	,mTime(45)
+	,mTime(0)
 	,mWeight(0)
 	,mMaxTime(0)
 {
@@ -517,11 +522,28 @@ void CModelX::AnimateFrame(){
 		animSet->AnimateMatrix(this);
 	}
 #ifdef _DEBUG
-	for (size_t i = 0; i < mFrame.size(); i++) {
+	/*for (size_t i = 0; i < mFrame.size(); i++) {
 		mFrame[i]->mpName;
 		printf("Frame:%s\n", mFrame[i]->mpName);
 		mFrame[i]->mTransformMatrix.Print();
+	}*/
+#endif
+}
+
+/*
+AnimateCombined
+合成行列の作成
+*/
+void CModelXFrame::AnimateCombined(CMatrix* parent){
+	//自分の変換行列に、親からの変換行列を掛ける
+	mCombinedMatrix = mTransformMatrix * (*parent);
+	//子フレームの合成行列を作成する
+	for (size_t i = 0; i < mChild.size(); i++) {
+		mChild[i]->AnimateCombined(&mCombinedMatrix);
 	}
+#ifdef _DEBUG
+	printf("Frame:%s\n", mpName);
+	mCombinedMatrix.Print();
 #endif
 }
 
