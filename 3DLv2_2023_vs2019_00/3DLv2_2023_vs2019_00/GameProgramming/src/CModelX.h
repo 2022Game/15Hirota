@@ -46,7 +46,7 @@ public:
 	//デストラクタ
 	~CModelXFrame();
 	void Render();
-	bool Index();
+	int Index();
 private:
 	std::vector<CModelXFrame*> mChild;	//子フレームの配列
 	CMatrix mTransformMatrix;			//変換行列

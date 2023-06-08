@@ -86,7 +86,7 @@ bool CModelX::EOT()
 	return (*mpPointer == '\0');
 }
 
-bool CModelXFrame::Index()
+int CModelXFrame::Index()
 {
 	return mIndex;
 }
