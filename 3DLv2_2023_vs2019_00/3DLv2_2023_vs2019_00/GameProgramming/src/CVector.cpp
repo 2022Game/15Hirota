@@ -93,3 +93,10 @@ void CVector::Z(float f)
 {
 	mZ = f;
 }
+
+void CVector::operator+=(const CVector& v)
+{
+	mX += v.mX;
+	mY += v.mY;
+	mZ += v.mZ;
+}

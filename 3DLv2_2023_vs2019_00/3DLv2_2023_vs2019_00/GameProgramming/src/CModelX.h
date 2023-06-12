@@ -49,6 +49,7 @@ public:
 	int Index();
 	//合成行列の作成
 	void AnimateCombined(CMatrix* parent);
+	const CMatrix& CombinedMatrix();
 private:
 	std::vector<CModelXFrame*> mChild;	//子フレームの配列
 	CMatrix mTransformMatrix;			//変換行列
@@ -80,6 +81,10 @@ public:
 	std::vector<CAnimationSet*>& AnimationSet();
 	void AnimateFrame();
 	std::vector<CModelXFrame*>& Frames();
+	//スキンウェイトのフレーム番号設定
+	void SetSkinWeightFrameIndex();
+	//頂点アニメーションを適用
+	void AnimateVertex();
 private:
 	std::vector<CModelXFrame*> mFrame;	//フレームの配列
 	std::vector<CAnimationSet*> mAnimationSet;	//アニメーションセットの配列
@@ -101,6 +106,10 @@ public:
 	//読み込み処理
 	void Init(CModelX* model);
 	void Render();
+	//スキンウェイトにフレーム番号を設定する
+	void SetSkinWeightFrameIndex(CModelX* model);
+	//頂点にアニメーション適用
+	void AnimateVertex(CModelX* model);
 private:
 	int mVertexNum;		//頂点数
 	CVector* mpVertex;	//頂点データ
@@ -114,6 +123,9 @@ private:
 
 	std::vector<CMaterial*> mMaterial;	//マテリアルデータ
 	std::vector<CSkinWeights*>mSkinWeights;	//スキンウェイト
+
+	CVector* mpAnimateVertex;	//アニメーション用頂点
+	CVector* mpAnimateNormal;	//アニメーション用法線
 };
 
 /*
@@ -150,6 +162,8 @@ public:
 	void Weight(float weight);	//重みの設定
 	void AnimateMatrix(CModelX* model);
 	std::vector<CAnimation*>& Animation();
+	float Time();
+	float MaxTime();
 private:
 	//アニメーションセット名
 	char* mpName;
