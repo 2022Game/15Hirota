@@ -24,7 +24,7 @@ cが\t \r \n スペースなどの空白文字
 区切り文字としてtrueを返す
 */
 
-#define MODEL_FILE "res\\sample.blend.x"	//入力ファイル名
+#define MODEL_FILE "res\\ラグナ.x"	//入力ファイル名
 
 //了以域開放をマクロ化
 #define SAFE_DELETE_ARRAY(a) {if(a)delete[]a;a = nullptr;}
@@ -85,9 +85,15 @@ public:
 	void SetSkinWeightFrameIndex();
 	//頂点アニメーションを適用
 	void AnimateVertex();
+	//マテリアル配列の取得
+	std::vector<CMaterial*>& Material();
+	//マテリアルの検索
+	CMaterial* FindMaterial(char* name);
 private:
 	std::vector<CModelXFrame*> mFrame;	//フレームの配列
 	std::vector<CAnimationSet*> mAnimationSet;	//アニメーションセットの配列
+	//マテリアル配列
+	std::vector<CMaterial*> mMaterial;
 	char* mpPointer;	//読み込み位置
 	char mToken[1024];	//取り出した単語の領域t
 	//cが区切り文字ならtrueを返す

@@ -25,6 +25,7 @@ void CSikakuGimmick::Init()
 	CreateSikaku(CVector(-20.0f, 2.0f, 20.0f), CVector(), CVector(0.8f, 0.8f, 0.9f));
 	CreateSikaku(CVector(-30.0f, 2.0f, 20.0f), CVector(), CVector(0.8f, 0.8f, 0.9f));
 	CreateSikaku(CVector(-40.0f, 2.0f, 20.0f), CVector(), CVector(0.8f, 0.8f, 0.9f));
+	CreateSikaku(CVector(-100.0f, 4.0f, 20.0f), CVector(), CVector(5.0f, 5.0f, 5.0f));
 }
 
 void CSikakuGimmick::CreateSikaku(CVector& pos, CVector& rot, CVector& scale)

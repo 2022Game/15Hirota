@@ -38,7 +38,6 @@ private:
 	CColliderLine mLine; //線分コライダ
 	CColliderLine mLine2; //線分コライダ
 	CColliderLine mLine3; //線分コライダ
-	//CColliderLine mLine4;	//線分コライダ
 	CInput mInput;
 	
 	int mJumpcount;	//ジャンプの回数処理

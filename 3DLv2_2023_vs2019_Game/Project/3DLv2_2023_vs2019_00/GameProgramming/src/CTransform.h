@@ -27,7 +27,7 @@ public:
 	//Update(位置, 回転, スケール)
 	void Update(const CVector& pos, const CVector& rot, const CVector& scale);
 
-	void Velosity(const CVector& v);
+	void Velocity(const CVector& v);
 private:
 
 protected: //子クラスはアクセス可能

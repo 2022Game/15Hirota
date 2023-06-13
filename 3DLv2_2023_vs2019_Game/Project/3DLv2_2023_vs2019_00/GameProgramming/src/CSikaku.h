@@ -14,9 +14,6 @@
 class CSikaku :public CCharacter3 {
 private:
 	//ƒRƒ‰ƒCƒ_
-	CCollider mCollider1;
-	CCollider mCollider2;
-	CCollider mCollider3;
 	CColliderMesh mColliderMesh1;
 
 public:

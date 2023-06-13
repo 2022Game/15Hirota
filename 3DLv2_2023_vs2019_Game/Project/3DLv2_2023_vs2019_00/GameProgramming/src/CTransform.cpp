@@ -30,7 +30,7 @@ const CMatrix& CTransform::MatrixRotate() const
 	return mMatrixRotate;
 }
 
-void CTransform::Velosity(const CVector& v)
+void CTransform::Velocity(const CVector& v)
 {
 	mVelocity = v;
 }

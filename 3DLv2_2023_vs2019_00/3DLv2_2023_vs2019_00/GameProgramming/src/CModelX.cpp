@@ -23,6 +23,10 @@ CModelX::~CModelX()
 	{
 		delete mAnimationSet[i];
 	}
+	//マテリアルの解放
+	for (size_t i = 0; i < mMaterial.size(); i++) {
+		delete mMaterial[i];
+	}
 }
 
 CModelXFrame::~CModelXFrame()
@@ -149,6 +153,11 @@ float CAnimationSet::MaxTime()
 	return mMaxTime;
 }
 
+std::vector<CMaterial*>& CModelX::Material()
+{
+	return mMaterial;
+}
+
 /*
 Init
 Meshのデータを取り込む
@@ -247,6 +256,13 @@ void CMesh::Init(CModelX* model){
 				model->GetToken();	//Material
 				if (strcmp(model->GetToken(), "Material") == 0) {
 					mMaterial.push_back(new CMaterial(model));
+				}
+				else {
+					//既出
+					model->GetToken();	//MaterialName
+					mMaterial.push_back(
+						model->FindMaterial(model->Token()));
+					model->GetToken();	//}
 				}
 			}
 			model->GetToken();	//} //End of MeshMaterialLest
@@ -565,8 +581,8 @@ void CModelXFrame::AnimateCombined(CMatrix* parent){
 		mChild[i]->AnimateCombined(&mCombinedMatrix);
 	}
 #ifdef _DEBUG
-	printf("Frame:%s\n", mpName);
-	mCombinedMatrix.Print();
+	/*printf("Frame:%s\n", mpName);
+	mCombinedMatrix.Print();*/
 #endif
 }
 
@@ -636,6 +652,21 @@ void CModelX::AnimateVertex(){
 	}
 }
 
+CMaterial* CModelX::FindMaterial(char* name){
+
+	//マテリアル配列のイテレータ作成
+	std::vector<CMaterial*>::iterator itr;
+	//マテリアル配列のイテレータ作成
+	for (itr = mMaterial.begin(); itr != mMaterial.end(); itr++) {
+		//名前が一致すればマテリアルのポインタを返却
+		if (strcmp(name, (*itr)->Name()) == 0) {
+			return *itr;
+		}
+	}
+	//無いときはnullptrを返却
+	return nullptr;
+}
+
 void CModelX::Load(char* file) {
 	//
 	//ファイルサイズを取得する
@@ -666,8 +697,16 @@ void CModelX::Load(char* file) {
 	//文字列の最後まで繰り返し
 	while (*mpPointer != '\0') {
 		GetToken();
+		//trmpate読み飛ばし
+		if (strcmp(mToken, "template") == 0) {
+			SkipNode();
+		}
+		//Materialの時
+		else if (strcmp(mToken, "Material") == 0) {
+			new CMaterial(this);
+		}
 		//単語がFrameの場合
-		if (strcmp(mToken, "Frame") == 0) {
+		else if (strcmp(mToken, "Frame") == 0) {
 			//フレームを作成する
 			new CModelXFrame(this);
 		}
@@ -731,6 +770,9 @@ bool CModelX::IsDelimiter(char c)
 	//cが空白なら0以外を返す
 	if (isspace(c) != 0)
 		return true;
+	else if (c < 0)
+		return false;
+
 	/*
 	strchr(文字列、文字)
 	見つかった文字へのポインタを返す
