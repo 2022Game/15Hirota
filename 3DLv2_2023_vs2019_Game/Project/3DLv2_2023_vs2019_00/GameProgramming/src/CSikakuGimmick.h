@@ -24,7 +24,7 @@ public:
 	~CSikakuGimmick();
 
 	const CVector& Position();
-	void Velosity(const CVector& v);
+	void Velocity(const CVector& v);
 
 	//XVˆ—
 	void Update();

@@ -11,7 +11,7 @@ const CVector& CSikakuGimmick::Position()
 	return mPosition;
 }
 
-void CSikakuGimmick::Velosity(const CVector& v)
+void CSikakuGimmick::Velocity(const CVector& v)
 {
 	mVelocity = v;
 }
@@ -22,10 +22,7 @@ void CSikakuGimmick::Init()
 	mpSikakuModel = new CModel();
 	mpSikakuModel->Load(MODEL_SIKAKU);
 
-	CreateSikaku(CVector(-20.0f, 2.0f, 20.0f), CVector(), CVector(0.8f, 0.8f, 0.9f));
-	CreateSikaku(CVector(-30.0f, 2.0f, 20.0f), CVector(), CVector(0.8f, 0.8f, 0.9f));
-	CreateSikaku(CVector(-40.0f, 2.0f, 20.0f), CVector(), CVector(0.8f, 0.8f, 0.9f));
-	CreateSikaku(CVector(-100.0f, 4.0f, 20.0f), CVector(), CVector(5.0f, 5.0f, 5.0f));
+	CreateSikaku(CVector(-100.0f, 4.0f, 20.0f), CVector(), CVector(6.0f, 4.0f, 6.0f));
 }
 
 void CSikakuGimmick::CreateSikaku(CVector& pos, CVector& rot, CVector& scale)
@@ -73,10 +70,10 @@ void CSikakuGimmick::Update()
 		CSikaku* sikaku = mSikakus[i];
 		if (sikaku != nullptr) {
 
-				break;
-			}
+			break;
 		}
 	}
+}
 
 	//// プレイヤーが四角に接地している場合の処理
 	//if (playerGrounded) {

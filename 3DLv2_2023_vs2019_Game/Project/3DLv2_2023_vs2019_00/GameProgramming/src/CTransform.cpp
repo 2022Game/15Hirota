@@ -10,6 +10,16 @@ void CTransform::Position(const CVector& v)
 	mPosition = v;
 }
 
+void CTransform::Velocity(const CVector& v)
+{
+	mVelocity = v;
+}
+
+const CVector& CTransform::Velocity() const
+{
+	return mVelocity;
+}
+
 void CTransform::Rotation(const CVector& v)
 {
 	mRotation = v;
@@ -28,11 +38,6 @@ const CMatrix& CTransform::Matrix() const
 const CMatrix& CTransform::MatrixRotate() const
 {
 	return mMatrixRotate;
-}
-
-void CTransform::Velocity(const CVector& v)
-{
-	mVelocity = v;
 }
 
 //çsóÒçXêVèàóù

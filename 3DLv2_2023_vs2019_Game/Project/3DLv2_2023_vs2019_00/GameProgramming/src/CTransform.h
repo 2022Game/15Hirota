@@ -9,6 +9,7 @@ class CTransform {
 public:
 	//位置の取得
 	const CVector& Position() const;
+	const CVector& Velocity() const;
 	//位置の設定
 	//Position(位置)
 	void Position(const CVector& v);
@@ -26,7 +27,7 @@ public:
 	void Update();
 	//Update(位置, 回転, スケール)
 	void Update(const CVector& pos, const CVector& rot, const CVector& scale);
-
+	//重力加速度
 	void Velocity(const CVector& v);
 private:
 

@@ -41,6 +41,7 @@ private:
 	CInput mInput;
 	
 	int mJumpcount;	//ジャンプの回数処理
+	bool isOnObstacle;	//障害物に乗っているかどうかのフラグ
 };
 
 #endif
