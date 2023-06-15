@@ -4,6 +4,8 @@
 #include <vector>		//ベクトルクラスのインクルード(動的配列)
 #include "CMatrix.h"	//マトリクスクラスのインクルード
 
+#define MODEL_FILE "res\\ラグナ.x"	//入力ファイル名
+
 //宣言
 class CModelX;
 class CModelXFrame;
@@ -23,8 +25,6 @@ cが\t \r \n スペースなどの空白文字
 または,;などの文字であれば
 区切り文字としてtrueを返す
 */
-
-#define MODEL_FILE "res\\ラグナ.x"	//入力ファイル名
 
 //了以域開放をマクロ化
 #define SAFE_DELETE_ARRAY(a) {if(a)delete[]a;a = nullptr;}

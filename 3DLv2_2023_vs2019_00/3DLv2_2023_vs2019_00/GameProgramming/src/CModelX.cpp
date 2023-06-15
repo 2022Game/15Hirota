@@ -254,7 +254,7 @@ void CMesh::Init(CModelX* model){
 			//マテリアルデータの作成
 			for (int i = 0; i < mMaterialNum; i++) {
 				model->GetToken();	//Material
-				if (strcmp(model->GetToken(), "Material") == 0) {
+				if (strcmp(model->Token(), "Material") == 0) {
 					mMaterial.push_back(new CMaterial(model));
 				}
 				else {
@@ -697,7 +697,7 @@ void CModelX::Load(char* file) {
 	//文字列の最後まで繰り返し
 	while (*mpPointer != '\0') {
 		GetToken();
-		//trmpate読み飛ばし
+		//trmplate読み飛ばし
 		if (strcmp(mToken, "template") == 0) {
 			SkipNode();
 		}
@@ -766,12 +766,20 @@ char* CModelX::GetToken() {
 
 bool CModelX::IsDelimiter(char c)
 {
+
+	//c < 0
+	if (c < 0)
+		return false;
+
 	//isspace(c)
 	//cが空白なら0以外を返す
 	if (isspace(c) != 0)
-		return true;
-	else if (c < 0)
-		return false;
+		return true; 
+
+	
+
+	/*if (isspace(c) < 0)
+		return false;*/
 
 	/*
 	strchr(文字列、文字)
