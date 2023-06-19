@@ -126,6 +126,8 @@ private:
 	int mMaterialNum;	//マテリアル数
 	int mMaterialIndexNum;	//マテリアル番号数(面数)
 	int* mpMaterialIndex;	//マテリアル番号
+	//テクスチャ座標データ
+	float* mpTextureCoords;
 
 	std::vector<CMaterial*> mMaterial;	//マテリアルデータ
 	std::vector<CSkinWeights*>mSkinWeights;	//スキンウェイト
