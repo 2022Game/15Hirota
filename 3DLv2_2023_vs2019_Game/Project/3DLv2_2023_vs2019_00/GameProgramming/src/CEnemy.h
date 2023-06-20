@@ -30,10 +30,13 @@ public:
 	//更新処理
 	void Update();
 private:
-	//コライダ
+
 	CCollider mCollider1;
 	CCollider mCollider2;
 	CCollider mCollider3;
+
+	//プレイヤーを見つけたかどうか
+	bool IsFoundPlayer() const;
 
 };
 
