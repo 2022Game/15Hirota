@@ -102,10 +102,17 @@ void CApplication::Start()
 	new CEnemy(&mModelC5, CVector(20.0f, 10.0f, -130.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));*/
 
-	//エイリアンモデルの読み込み
+	
 	mModelAlien.Load(MODEL_ALIEN);
-	new CAlien(&mModelAlien, CVector(100.0f, 0.0f, 0.0f),
+	new CEnemy3(&mModelAlien, CVector(50.0f, 0.0f, 0.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
+
+	new CEnemy3(&mModelAlien, CVector(100.0f, 0.0f, 0.0f),
+		CVector(), CVector(0.1f, 0.1f, 0.1f));
+	//エイリアンモデルの読み込み
+	/*mModelAlien.Load(MODEL_ALIEN);
+	new CEnemy3(&mModelAlien, CVector(100.0f, 0.0f, 0.0f),
+		CVector(0.0f,0.0f,0.0f), CVector(0.1f, 0.1f, 0.1f));*/
 
 	//ビルボードの生成
 	//new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);

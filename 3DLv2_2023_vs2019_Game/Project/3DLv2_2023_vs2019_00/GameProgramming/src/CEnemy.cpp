@@ -2,14 +2,10 @@
 #include "CEffect.h"
 #include "CCollisionManager.h"
 #include "CPlayer.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
-//#define M_PI        3.14159265358979323846264338327950288
 
-//移動速度
-#define VELOCITY CVector(0.0f, 0.0f, 0.09f)
-#define FOV_ANGLE 45.0f //視野の角度(ー角度+角度も出)
-#define FOV_LENGTH 5.0f//視野の角度
+//#define M_PI        3.14159265358979323846264338327950288
+#define VELOCITY 0.11f	//速度
+#define HP 3	//耐久値
 
 void CEnemy::Collision()
 {
@@ -56,6 +52,7 @@ CEnemy::CEnemy(CModel* model, const CVector& position,
 	: mCollider1(this, &mMatrix, CVector(0.0f, 5.0f, 0.0f), 0.8f)
 	, mCollider2(this, &mMatrix, CVector(0.0f, 5.0f, 20.0f), 0.8f)
 	, mCollider3(this, &mMatrix, CVector(0.0f, 5.0f, -20.0f), 0.8f)
+	,mHp(HP)
 {
 
 	//モデル、位置、回転、拡縮を設定する
@@ -65,97 +62,95 @@ CEnemy::CEnemy(CModel* model, const CVector& position,
 	mScale = scale;	//拡縮の設定
 }
 
-//プレイヤーを見つけたかどうか
-bool CEnemy::IsFoundPlayer() const
-{
-	CVector playerPos = CPlayer::Instance()->Position();
-	CVector enemyPos = Position();
-
-	//視野の角度の判定
-	//自身からプレイヤーまでのベクトルを取得(要正規化)
-	CVector EP = (playerPos - enemyPos).Normalize();
-
-	//敵自身の正面方向のベクトルを取得(要正規化)
-	CVector forwrd = MatrixRotate().VectorZ().Normalize();
-
-	//正面方向のベクトルとプレイヤーまでのベクトルの
-	//内積空角度を求める
-	float dot = forwrd.Dot(EP);
-	//求めた角度が視野角度外であれば、falseを返す
-	if (dot < cosf(FOV_ANGLE * M_PI / 180.0f)) return false;
-
-	//視野の距離の判定
-	//自身からプレイヤーまでの距離を求める
-	float distance = (playerPos - enemyPos).Length();
-
-	//求めた距離菓子や距離より遠いならば,falseを返す
-	if (distance > FOV_LENGTH) return false;
-
-	//視野角度都市や距離の判定を通ったのでtrueを返す
-	return true;
-}
-
 //更新処理
 void CEnemy::Update() {
 
-	//
-
-	//視野角の実装
-	//実装するときはエネミーに実装
-	//浪指先生のコード
-	CVector a,bVector;
-	float b = a.Dot(bVector);
-
-	CVector playerPos = CPlayer::Instance()->Position();	//プレイヤー座標
-	CVector enemyPos = Position();	//エネミー座標
-
-	//エネミーからプレイヤーまでのベクトルを求める
-	//目的地までのベクトル = 目的地 - 開始位置
-	CVector EP = (playerPos - enemyPos).Normalize();
-
-	//エネミーの正面方向のベクトル
-	CVector forward = MatrixRotate().VectorZ().Normalize();
-
-	//正面方向のベクトルとプレイヤーまでのベクトルの
-	//内積を取り、角度を求める
-	float dot = forward.Dot(EP);
-	if (dot >= cosf(45.0f * (M_PI / 180.0f)))	//45度は調整可能
+	//プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+	if (player != nullptr)
 	{
-		M_PI;
-		//プレイヤー -45度～45度の範囲にいる
-		//ディグリー　　　　ラジアン
-		//180度 　　　= 　　3.14ラジアン(π)
-		//360度	　　　= 　　6.28ラジアン(2π)
-		//1度		  =     0.0174ラジアン
-
-		//大きかったらその範囲に居る
-
-		//敵からプレイヤーまでの距離
-		float distance = (playerPos - enemyPos).Length();
-		if (distance <= 5.0f) //調整可能
+		//プレイヤーまでのベクトルを求める
+		CVector vp = player->Position() - mPosition;
+		//左ベクトルとの内積を求める
+		float dx = vp.Dot(mMatrixRotate.VectorX());
+		//上ベクトルとの内積を求める
+		float dy = vp.Dot(mMatrixRotate.VectorY());
+		//前ベクトルとの内積を求める
+		float dz = vp.Dot(mMatrixRotate.VectorZ());
+		//X軸のズレが2.0以下
+		if (-2.0f < dx && dx < 2.0f && 0.0f < dz && dz <= 30.0f)
 		{
-			//敵からプレイヤーまでの距離が範囲内
-
+			//Y軸のズレが2.0以下
+			if (-2.0f < dy && dy < 2.0f)
+			{
+				//弾を発射します
+				CBullet* bullet = new CBullet();
+				bullet->Set(0.1f, 1.5f);
+				bullet->Position(
+					CVector(0.0f, 0.0f, 10.0f) * mMatrix);
+				bullet->Rotation(mRotation);
+				bullet->Update();
+			}
 		}
 	}
-
-	//角度をディグリーからラジアンに変換
-	//radian = degree * (M_PI / 180.0f)
-
-	//角度をラジアンからディグリーに変換
-	//degree = radian * (180.0f / M_PI)
-	//[180 / M_PI]は
-	//1ラジアンの時のディグリーの角度を求めている
-
-	//
-
-	if (IsFoundPlayer())
+	//HPが0以下の時　撃破
+	if (mHp <= 0)
 	{
-		printf("FoundPlayer:%s\n",IsFoundPlayer()?"true":"false");
+		mHp--;
+		//15フレーム毎にエフェクト
+		if (mHp % 15 == 0)
+		{
+			//エフェクト生成
+			new CEffect(mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
+		}
+		//下降させる
+		mPosition = mPosition - CVector(0.0f, 0.03f, 0.0f);
+		CTransform::Update();
+		return;
 	}
 
-	//行列を更新
-	CTransform::Update();
-	//位置を移動
-	mPosition = mPosition + VELOCITY * mMatrixRotate;
+	//目標地点までのベクトルを求める
+	CVector vp = mPoint - mPosition;
+	//課題
+	float dx = vp.Dot(mMatrixRotate.VectorX());	//左ベクトルとの内積を求める
+	float dy = vp.Dot(mMatrixRotate.VectorY());	//上ベクトルとの内積を求める
+	const float margin = 0.1f;
+	//左右方向へ回転
+	if (dx > margin)
+	{
+		mRotation = mRotation + CVector(0.0f, 1.0f, 0.0f); //左へ回転
+	}
+	else if (dx < -margin)
+	{
+		//課題
+		mRotation = mRotation + CVector(0.0f, -1.0f, 0.0f); //右へ回転
+	}
+	//上下方向へ回転
+	if (dy > margin)
+	{
+		mRotation = mRotation + CVector(-1.0f, 0.0f, 0.0f); //上へ回転
+	}
+	else if (dy < -margin)
+	{
+		//課題
+		mRotation = mRotation + CVector(1.0f, 0.0f, 0.0f); //下へ回転
+	}
+	//機体前方へ移動する						//*
+	Position(Position() + MatrixRotate().VectorZ() * VELOCITY);
+	CTransform::Update();	//行列更新
+
+	//およそ3秒毎に目標地点を更新
+	int r = rand() % 180;	//rand()は整数の乱数を返す
+	//% 180 は180で割った余りを求める
+	if (r == 0)
+	{
+		if (player != nullptr)
+		{
+			mPoint = player->Position();
+		}
+		else
+		{
+			mPoint = mPoint * CMatrix().RotateY(45);
+		}
+	}
 }

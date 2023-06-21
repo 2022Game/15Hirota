@@ -35,6 +35,11 @@ void CVector::Set(float x, float y, float z)
 	mZ = z;
 }
 
+void CVector::SetY(float y)
+{
+	mY = y;
+}
+
 float CVector::X() const
 {
 	return mX;
@@ -80,3 +85,28 @@ CVector CVector::operator*(const CMatrix& m)
 	);
 }
 
+float CVector::DotProduct(const CVector& v1, const CVector& v2)
+{
+	return v1.X() * v2.X() + v1.Y() * v2.Y() + v1.Z() * v2.Z();
+}
+
+void CVector::operator+=(const CVector& v)
+{
+	mX += v.mX;
+	mY += v.mY;
+	mZ += v.mZ;
+}
+
+void CVector::operator-=(const CVector& v)
+{
+	mX -= v.mX;
+	mY -= v.mY;
+	mZ -= v.mZ;
+}
+
+void CVector::operator*=(const float& f)
+{
+	mX *= f;
+	mY *= f;
+	mZ *= f;
+}

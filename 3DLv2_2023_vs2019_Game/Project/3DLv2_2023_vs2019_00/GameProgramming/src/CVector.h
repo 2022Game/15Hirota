@@ -27,6 +27,8 @@ public:
 	//各軸での値の設定
 	//Set(X座標, Y座標, Z座標)
 	void Set(float x, float y, float z);
+
+	void SetY(float y);
 	//Xの値を得る
 	float X() const;
 	//Yの値を得る
@@ -39,9 +41,17 @@ public:
 	//CVector(X座標, Y座標, Z座標)
 	CVector(float x, float y, float z);
 
+	float DotProduct(const CVector& v1, const CVector& v2);
+
 	//+演算子のオーバーロード
 	//CVector + CVector の演算結果を返す
 	CVector operator+(const CVector& v) const;
+	//+-演算子
+	void operator+=(const CVector& v);
+	//-=演算子
+	void operator-=(const CVector& v);
+	//*=演算子
+	void operator *= (const float & f);
 	//-演算子のオーバーロード
 	//CVector - CVector の演算結果を返す
 	CVector operator-(const CVector& v) const;

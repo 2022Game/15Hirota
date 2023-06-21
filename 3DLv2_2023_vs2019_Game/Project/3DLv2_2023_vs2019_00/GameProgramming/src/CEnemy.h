@@ -24,6 +24,7 @@ public:
 	//}
 
 	//コンストラクタ
+	//コンストラクタ
 	//CEnemy(モデル, 位置, 回転, 拡縮)
 	CEnemy(CModel* model, const CVector& position,
 		const CVector& rotation, const CVector& scale);
@@ -31,12 +32,13 @@ public:
 	void Update();
 private:
 
+	int mHp;	//ヒットポイント
+
 	CCollider mCollider1;
 	CCollider mCollider2;
 	CCollider mCollider3;
 
-	//プレイヤーを見つけたかどうか
-	bool IsFoundPlayer() const;
+	CVector mPoint;	//目標地点
 
 };
 

@@ -8,11 +8,12 @@
 #include <math.h>
 #define M_PI        3.14159265358979323846264338327950288
 
-const CVector GRAVITY(0.0f, -0.009f, 0.0f);
+const CVector GRAVITY(0.0f, -0.007f, 0.0f);
 
 #define HP 100	//hp
 
-#define JUMP_START CVector(0.0f,0.25f,0.0f)	//ジャンプ初速
+#define JUMP_START CVector(0.0f,0.35f,0.0f)	//ジャンプ初速
+#define JUMP_FORCE CVector(0.0f,0.35f,0.0f)
 
 #define ROTATION_YV	CVector(0.0f, 2.0f, 0.0f) //回転速度
 #define VELOCITY CVector(0.0f, 0.0f, 0.3f) //移動速度
@@ -80,17 +81,20 @@ void CPlayer::Update() {
 			//何もしないであってる？
 		}
 	}
-	bool isOnObstacle = false;	//障害物に乗っているかどうかのフラグ
-	bool isGrounded = Position().Y() <= 0.0f || Velocity().Y() == 0.0f;	//接地しているか
+	bool isGrounded = Position().Y() <= 0.0f;//|| Velocity().Y() == 0.0f;	//接地しているか
 	bool isJumpKeyPressed = mInput.PushKey(VK_SPACE);	//押しているか
 	bool isJumping = false;	//ジャンプ判定
 	//ジャンプ処理
 	if (isJumpKeyPressed) {
-		if ((mJumpcount == 0 && isGrounded) || (Velocity().Y() <= 0.0f && isGrounded)) {
+		if ((mJumpcount == 0 && isGrounded) || (Velocity().Y() <= 0.0f && isGrounded) || Velocity().Y() == 0.0f) {
 				// ジャンプ処理
-				mVelocity = JUMP_START * MatrixRotate();
+				Velocity(Velocity() + JUMP_START * MatrixRotate());
 				mJumpcount = 1;
 				isJumping = true;
+			}
+		if (isOnObstacle && isGrounded) {
+			// ジャンプ処理
+			Velocity(Velocity() + JUMP_FORCE * MatrixRotate());
 			}
 		}
 	if (GetKeyState(VK_LBUTTON) & 0x80) {	//マウス左　攻撃
@@ -118,13 +122,13 @@ void CPlayer::Update() {
 	CApplication::Ui()->RotX(mRotation.X());
 	CApplication::Ui()->RotY(mRotation.Y());
 
-	//移動処理
-	Position(Position() + Velocity());
-
 	// 重力を常に加算する
 	Velocity(Velocity() + GRAVITY);
+	/*if (!isOnObstacle && !isGrounded) {
+		Velocity(Velocity() + GRAVITY);
+	}*/
 
-	// 移動処理
+	//移動処理
 	Position(Position() + Velocity());
 
 	// 上昇中または着地した場合の処理
@@ -134,10 +138,13 @@ void CPlayer::Update() {
 
 	if (isGrounded && Velocity().Y() <= 0.0f) {
 		Position(CVector(Position().X(), 0.0f, Position().Z()));
-		mVelocity = CVector(Velocity().X(), 0.0f, Velocity().Z());
+		Velocity(CVector(Velocity().X(), 0.0f, Velocity().Z()));
 		if (isGrounded) {
 			mJumpcount = 0; //地面に着地したらジャンプカウントをリセット
 		}
+	}
+	if (isOnObstacle) {
+		mJumpcount = 1;
 	}
 
 	/*if (Position().Y() > 0.0f && Velocity().Y() < 0.0f) {
@@ -175,22 +182,45 @@ void CPlayer::Collision(CCollider* m, CCollider* o) {
 		if (o->Type() == CCollider::ETRIANGLE) {2;
 			CVector adjust;//調整用ベクトル
 			//三角形と線分の衝突判定
-			if (CCollider::CollisionTriangleLine(o, m, &adjust)){
+			if (CCollider::CollisionTriangleLine(o, m, &adjust)) {
 
-				//位置の更新(mPosition + adjust)
+				bool isGrounded = Position().Y() <= 0.0f;
+
+				// 位置の更新
 				Position(Position() + adjust);
 
-				Velocity(Velocity() + adjust * MatrixRotate());
+				if (!isOnObstacle) {
+					// 移動ベクトルを調整
+					CVector velocity = Velocity();
+					velocity.SetY(0.0f);
+					Velocity(velocity);
 
-				// 行列の更新
-				CTransform::Update();
+					// 移動処理
+					Position(Position() - Velocity());
 
-				////位置の更新(mPosition + adjust)
-				Position(Position() + adjust);
-
-				isOnObstacle = true;
+					isOnObstacle = true;
+				}
+				else {
+					isOnObstacle = false;
+				}
 			}
 		}
 		break;
 	}
 }
+//	//位置の更新(mPosition + adjust)
+			//	Position(Position() + adjust);
+
+			//	/*Velocity(Velocity() + adjust);*/
+
+			//	// 行列の更新
+			//	CTransform::Update();
+
+			//	//位置の更新(mPosition + adjust)
+			//	Position(Position() + adjust);
+
+			//	if (!isOnObstacle) {
+			//		//移動処理
+			//		Position(Position() + Velocity());
+			//	}
+			//}
