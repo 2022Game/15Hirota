@@ -23,6 +23,8 @@
 
 #include "CModelX.h"
 
+#include "CXCharacter.h"
+
 class CApplication
 {
 private:
@@ -68,6 +70,8 @@ private:
 	//CCharacterのポインタの可変長配列
 //	std::vector<CCharacter*> mCharacters;
 	CMatrix mMatrix;	//3D課題8
+	//キャラクタクラスのインスタンス
+	CXCharacter mCharacter;
 public:
 	~CApplication();
 	static CUi* Ui();	//UIクラスのインスタンスを取得
