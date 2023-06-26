@@ -69,7 +69,6 @@ void CSikakuGimmick::Update()
 	for (int i = 0; i < mSikakus.size(); i++) {
 		CSikaku* sikaku = mSikakus[i];
 		if (sikaku != nullptr) {
-
 			break;
 		}
 	}

@@ -324,7 +324,9 @@ bool CEnemy3::IsFoundPlayer() const
 	const float chaseRenge = 100.0f;
 
 	//‹‚ß‚½‹——£‰Ùq‚â‹——£‚æ‚è‰“‚¢‚È‚ç‚Î,false‚ğ•Ô‚·
-	if (distance > FOV_LENGTH) return false;
+	/*if (distance > FOV_LENGTH) return false;*/
+	if (distance > chaseRenge)
+		return false;
 
 	//‹–ìŠp“x“ss‚â‹——£‚Ì”»’è‚ğ’Ê‚Á‚½‚Ì‚Åtrue‚ğ•Ô‚·
 	return true;

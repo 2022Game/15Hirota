@@ -12,7 +12,7 @@ const CVector GRAVITY(0.0f, -0.007f, 0.0f);
 
 #define HP 100	//hp
 
-#define JUMP_START CVector(0.0f,0.35f,0.0f)	//ジャンプ初速
+#define JUMP_START CVector(0.0f,0.3f,0.0f)	//ジャンプ初速
 #define JUMP_FORCE CVector(0.0f,0.35f,0.0f)
 
 #define ROTATION_YV	CVector(0.0f, 2.0f, 0.0f) //回転速度
@@ -81,9 +81,12 @@ void CPlayer::Update() {
 			//何もしないであってる？
 		}
 	}
-	bool isGrounded = Position().Y() <= 0.0f;//|| Velocity().Y() == 0.0f;	//接地しているか
+	bool isGrounded = Position().Y() <= 0.0f;
+	//接地しているか
 	bool isJumpKeyPressed = mInput.PushKey(VK_SPACE);	//押しているか
 	bool isJumping = false;	//ジャンプ判定
+	bool wasOnObstacle = false; // 前フレームで障害物に乗っていたかを示すフラグ
+
 	//ジャンプ処理
 	if (isJumpKeyPressed) {
 		if ((mJumpcount == 0 && isGrounded) || (Velocity().Y() <= 0.0f && isGrounded) || Velocity().Y() == 0.0f) {
@@ -121,6 +124,10 @@ void CPlayer::Update() {
 	CApplication::Ui()->PosY(mPosition.Y());
 	CApplication::Ui()->RotX(mRotation.X());
 	CApplication::Ui()->RotY(mRotation.Y());
+
+	if (!isOnObstacle && !isGrounded) {
+		Velocity(Velocity() + GRAVITY);
+	}
 
 	// 重力を常に加算する
 	Velocity(Velocity() + GRAVITY);
