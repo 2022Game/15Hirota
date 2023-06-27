@@ -22,5 +22,16 @@ void CXPlayer::Update()
 	{
 		ChangeAnimation(0, true, 60);
 	}
+	if (mInput.Key(VK_SPACE))
+	{
+		if (AnimationIndex() == 0)
+		{
+			if (IsAnimationFinished() == false)
+			{
+				ChangeAnimation(3, false, 30);
+				ChangeAnimation(4, false, 30);
+			}
+		}
+	}
 	CXCharacter::Update();
 }

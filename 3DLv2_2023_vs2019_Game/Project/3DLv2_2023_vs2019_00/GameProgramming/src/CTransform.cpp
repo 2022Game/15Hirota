@@ -42,6 +42,7 @@ const CMatrix& CTransform::MatrixRotate() const
 
 //行列更新処理
 void CTransform::Update() {
+
 	//拡大縮小行列の設定
 	mMatrixScale.Scale(mScale.X(), mScale.Y(), mScale.Z());
 	//回転行列の設定
@@ -55,10 +56,11 @@ void CTransform::Update() {
 	mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
 }
 
-void CTransform::Update(const CVector& pos, const CVector& rot, const CVector& scale)
+void CTransform::Update(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& velocity)
 {
 	mPosition = pos;
 	mRotation = rot;
 	mScale = scale;
+	mVelocity = velocity;
 	Update();
 }

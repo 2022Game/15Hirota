@@ -26,7 +26,7 @@ public:
 	//行列更新処理
 	void Update();
 	//Update(位置, 回転, スケール)
-	void Update(const CVector& pos, const CVector& rot, const CVector& scale);
+	void Update(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& velocity);
 	//重力加速度
 	void Velocity(const CVector& v);
 private:

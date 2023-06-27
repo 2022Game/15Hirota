@@ -8,12 +8,12 @@
 #include <math.h>
 #define M_PI        3.14159265358979323846264338327950288
 
-const CVector GRAVITY(0.0f, -0.007f, 0.0f);
+const CVector GRAVITY(0.0f, -0.01f, 0.0f);
 
 #define HP 100	//hp
 
-#define JUMP_START CVector(0.0f,0.3f,0.0f)	//ジャンプ初速
-#define JUMP_FORCE CVector(0.0f,0.35f,0.0f)
+#define JUMP_START CVector(0.0f,0.5f,0.0f)	//ジャンプ初速
+#define JUMP_FORCE CVector(0.0f,500.0f,0.0f)
 
 #define ROTATION_YV	CVector(0.0f, 2.0f, 0.0f) //回転速度
 #define VELOCITY CVector(0.0f, 0.0f, 0.3f) //移動速度
@@ -36,9 +36,9 @@ CPlayer::CPlayer()
 }
 
 //CPlayer(位置, 回転, スケール)
-CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
+CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& velocity)
 {
-	CTransform::Update(pos, rot, scale); //行列の更新
+	CTransform::Update(pos, rot, scale, velocity); //行列の更新
 }
 
 int CPlayer::Hp()	//HP
@@ -85,21 +85,44 @@ void CPlayer::Update() {
 	//接地しているか
 	bool isJumpKeyPressed = mInput.PushKey(VK_SPACE);	//押しているか
 	bool isJumping = false;	//ジャンプ判定
-	bool wasOnObstacle = false; // 前フレームで障害物に乗っていたかを示すフラグ
+	bool wasOnObstacle = isOnObstacle; // 前フレームで障害物に乗っていたかを示すフラグ
+	bool disableGravity = false; // 障害物上で重力を無効化するためのフラグ
+	bool isOnObstacleJump = false;
 
-	//ジャンプ処理
+	////ジャンプ処理
+	//if (isJumpKeyPressed) {
+	//	if ((mJumpcount == 0 && isGrounded) || (Velocity().Y() <= 0.0f && isGrounded) || Velocity().Y() == 0.0f) {
+	//		// ジャンプ処理
+	//		Velocity(Velocity() + JUMP_START * MatrixRotate());
+	//		mJumpcount = 1;
+	//		isJumping = true;
+	//		isOnObstacle = false;
+	//	}
+	//	if (isOnObstacle && isGrounded && !wasOnObstacle) {
+	//		// 障害物上でのジャンプ処理
+	//		Velocity(Velocity() + JUMP_FORCE * MatrixRotate());
+	//		mJumpcount = 0;
+	//		isOnObstacleJump = true; // 障害物上でのジャンプフラグをセット
+	//	}
+	//}
+	// ジャンプ処理
 	if (isJumpKeyPressed) {
-		if ((mJumpcount == 0 && isGrounded) || (Velocity().Y() <= 0.0f && isGrounded) || Velocity().Y() == 0.0f) {
-				// ジャンプ処理
-				Velocity(Velocity() + JUMP_START * MatrixRotate());
-				mJumpcount = 1;
-				isJumping = true;
-			}
-		if (isOnObstacle && isGrounded) {
-			// ジャンプ処理
+		if (isOnObstacle && isGrounded && !wasOnObstacle) {
+			// 障害物上でのジャンプ処理
 			Velocity(Velocity() + JUMP_FORCE * MatrixRotate());
-			}
+			mJumpcount = 0;
+			isOnObstacleJump = true; // 障害物上でのジャンプフラグをセット
 		}
+		else if ((mJumpcount == 0 && isGrounded) || (Velocity().Y() <= 0.0f && isGrounded) || Velocity().Y() == 0.0f) {
+			// 地面からのジャンプ処理
+			Velocity(Velocity() + JUMP_START * MatrixRotate());
+			mJumpcount = 1;
+			isJumping = true;
+			isOnObstacle = false;
+			isOnObstacleJump = false; // 障害物上でのジャンプフラグをリセット
+		}
+	}
+
 	if (GetKeyState(VK_LBUTTON) & 0x80) {	//マウス左　攻撃
 		CBullet* bullet = new CBullet();
 		bullet->Set(0.1f, 1.5f);
@@ -125,17 +148,32 @@ void CPlayer::Update() {
 	CApplication::Ui()->RotX(mRotation.X());
 	CApplication::Ui()->RotY(mRotation.Y());
 
-	if (!isOnObstacle && !isGrounded) {
-		Velocity(Velocity() + GRAVITY);
-	}
-
-	// 重力を常に加算する
-	Velocity(Velocity() + GRAVITY);
 	/*if (!isOnObstacle && !isGrounded) {
 		Velocity(Velocity() + GRAVITY);
 	}*/
 
 	//移動処理
+	Position(Position() + Velocity());
+
+	//if (isOnObstacle) 
+	//{
+	//	//障害物上にいる場合は重力を無効化
+	//	Velocity(CVector(Velocity().X(), 0.0f, Velocity().Z()));
+	//}
+	//else if (!isGrounded && !disableGravity)
+	//{
+	//	//障害物上に居ない場合は重力を適用
+	//	Velocity(Velocity() + GRAVITY);
+	//}
+	if (!isOnObstacle && !isGrounded && !isOnObstacleJump) {
+		Velocity(Velocity() + GRAVITY);
+	}
+	else if (!isGrounded && !disableGravity)
+	{
+		Velocity(Velocity() + GRAVITY);
+	}
+
+
 	Position(Position() + Velocity());
 
 	// 上昇中または着地した場合の処理
@@ -150,9 +188,8 @@ void CPlayer::Update() {
 			mJumpcount = 0; //地面に着地したらジャンプカウントをリセット
 		}
 	}
-	if (isOnObstacle) {
-		mJumpcount = 1;
-	}
+	// 重力を常に加算する
+	//Velocity(Velocity() + GRAVITY);
 
 	/*if (Position().Y() > 0.0f && Velocity().Y() < 0.0f) {
 		Position(CVector(Position().X(), 0.0f, Position().Z()));
@@ -190,6 +227,7 @@ void CPlayer::Collision(CCollider* m, CCollider* o) {
 			CVector adjust;//調整用ベクトル
 			//三角形と線分の衝突判定
 			if (CCollider::CollisionTriangleLine(o, m, &adjust)) {
+				bool disableGravity = false; // 障害物上で重力を無効化するためのフラグ
 
 				bool isGrounded = Position().Y() <= 0.0f;
 
@@ -197,37 +235,36 @@ void CPlayer::Collision(CCollider* m, CCollider* o) {
 				Position(Position() + adjust);
 
 				if (!isOnObstacle) {
+					isOnObstacle = true;
+					disableGravity = true;
 					// 移動ベクトルを調整
 					CVector velocity = Velocity();
 					velocity.SetY(0.0f);
 					Velocity(velocity);
-
-					// 移動処理
-					Position(Position() - Velocity());
-
-					isOnObstacle = true;
+					mJumpcount = 0;
 				}
-				else {
-					isOnObstacle = false;
-				}
+			}
+			else {
+				isOnObstacle = false;
 			}
 		}
 		break;
 	}
 }
-//	//位置の更新(mPosition + adjust)
-			//	Position(Position() + adjust);
-
-			//	/*Velocity(Velocity() + adjust);*/
-
-			//	// 行列の更新
-			//	CTransform::Update();
-
-			//	//位置の更新(mPosition + adjust)
-			//	Position(Position() + adjust);
-
-			//	if (!isOnObstacle) {
-			//		//移動処理
-			//		Position(Position() + Velocity());
-			//	}
-			//}
+//// 移動処理
+					//Position(Position() + Velocity());
+					////ジャンプ力を低下させないように修正
+					//if (velocity.Y() < 0.0f) {
+					//	velocity.SetY(0.0f);
+					//	Velocity(velocity);
+					//}
+				//	bool isJumping = false;	//ジャンプ判定
+				//	if (!isJumping) {
+				//		// 移動処理
+				//		Position(Position() - Velocity());
+				//	}
+				//	isOnObstacle = true;
+				//}
+				//else {
+				//	isOnObstacle = false;
+				//}

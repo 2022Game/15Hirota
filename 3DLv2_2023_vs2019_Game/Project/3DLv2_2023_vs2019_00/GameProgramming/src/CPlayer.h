@@ -23,7 +23,7 @@ public:
 	//CBullet bullet;
 	CPlayer();
 	//CPlayer(位置, 回転, スケール)
-	CPlayer(const CVector& pos, const CVector& rot, const CVector& scale);
+	CPlayer(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& volocity);
 
 	static int Hp();
 	//更新処理
@@ -42,7 +42,6 @@ private:
 	
 	int mJumpcount;	//ジャンプの回数処理
 	bool isOnObstacle;	//障害物に乗っているかどうかのフラグ
-
 };
 
 #endif
