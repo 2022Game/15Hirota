@@ -1,5 +1,10 @@
 #include "CXCharacter.h"
 
+CXCharacter::CXCharacter()
+{
+	mScale = CVector(1.0f, 1.0f, 1.0f);
+}
+
 /*
 Init
 初期化処理
@@ -96,4 +101,12 @@ bool CXCharacter::IsAnimationFinished() {
 int CXCharacter::AnimationIndex() {
 
 	return mAnimationIndex;
+}
+
+void CXCharacter::Update()
+{
+	//変換行列の更新
+	CTransform::Update();
+	//アニメーションを更新する
+	Update(mMatrix);
 }

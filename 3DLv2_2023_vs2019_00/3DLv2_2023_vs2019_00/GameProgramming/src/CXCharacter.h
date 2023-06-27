@@ -3,8 +3,9 @@
 
 #include "CModelX.h"
 #include "CMatrix.h"
+#include "CCharacter3.h"
 
-class CXCharacter {
+class CXCharacter : public CCharacter3{
 public:
 	//初期化処理
 	void Init(CModelX* model);
@@ -19,6 +20,9 @@ public:
 	bool IsAnimationFinished();
 	//アニメーション番号の取得
 	int AnimationIndex();
+	void CXCharacter::Update();
+	//デフォルトコンストラクタ
+	CXCharacter();
 protected:
 	CModelX* mpModel;	//モデルデータ
 	int mAnimationIndex;	//アニメーション番号

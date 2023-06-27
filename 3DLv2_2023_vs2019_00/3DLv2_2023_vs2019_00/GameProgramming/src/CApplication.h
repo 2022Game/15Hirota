@@ -25,6 +25,8 @@
 
 #include "CXCharacter.h"
 
+#include "CXPlayer.h"
+
 class CApplication
 {
 private:
@@ -71,7 +73,9 @@ private:
 //	std::vector<CCharacter*> mCharacters;
 	CMatrix mMatrix;	//3D課題8
 	//キャラクタクラスのインスタンス
-	CXCharacter mCharacter;
+	//CXCharacter mCharacter;
+	//キャラクタクラスのインスタンス
+	CXPlayer mXPlayer;
 public:
 	~CApplication();
 	static CUi* Ui();	//UIクラスのインスタンスを取得
