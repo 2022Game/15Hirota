@@ -29,12 +29,19 @@ public:
 	void Set(float x, float y, float z);
 
 	void SetY(float y);
+	void SetX(float x);
+
+	void X(float x);
+	void Y(float y);
+	void Z(float z);
+
 	//Xの値を得る
 	float X() const;
 	//Yの値を得る
 	float Y() const;
 	//Zの値を得る
 	float Z() const;
+
 	//デフォルトコンストラクタ
 	CVector();
 	//コンストラクタ

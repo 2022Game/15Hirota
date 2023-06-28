@@ -40,6 +40,11 @@ void CVector::SetY(float y)
 	mY = y;
 }
 
+void CVector::SetX(float x)
+{
+	mX = x;
+}
+
 float CVector::X() const
 {
 	return mX;
@@ -54,6 +59,20 @@ float CVector::Z() const
 {
 	return mZ;
 }
+
+void CVector::X(float x)
+{
+	mX = x;
+}
+
+void CVector::Y(float y)
+{
+	mY = y;
+}
+void CVector::Z(float z)
+{
+	mZ = z;
+ }
 
 CVector::CVector()
 	: mX(0.0f), mY(0.0f), mZ(0.0f)
