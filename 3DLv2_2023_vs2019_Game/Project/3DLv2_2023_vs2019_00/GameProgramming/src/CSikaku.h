@@ -15,7 +15,8 @@ class CSikaku :public CCharacter3 {
 private:
 	//コライダ
 	CColliderMesh mColliderMesh1;
-
+protected:
+	bool mReversed;	//反転フラグ
 public:
 	//static int mD;
 	//衝突処理

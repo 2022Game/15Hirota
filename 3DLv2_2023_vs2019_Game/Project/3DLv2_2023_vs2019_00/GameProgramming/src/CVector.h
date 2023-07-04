@@ -31,9 +31,12 @@ public:
 	void SetY(float y);
 	void SetX(float x);
 
-	void X(float x);
+	float GetY() const;
+	float GetX() const;
+
+	/*void X(float x);
 	void Y(float y);
-	void Z(float z);
+	void Z(float z);*/
 
 	//X‚Ì’l‚ð“¾‚é
 	float X() const;

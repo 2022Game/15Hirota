@@ -25,14 +25,14 @@ int CPlayer::sHp = 0;	//Hp
 
 CPlayer::CPlayer()
 	: mLine(this, &mMatrix, CVector(0.0f, 3.5f, 5.0f), CVector(0.0f, 3.5f, -5.0f))		//前後
-	, mLine2(this, &mMatrix, CVector(0.0f, 6.0f, 0.0f), CVector(0.0f,0.0f, 0.0f))		//上下
+	, mLine2(this, &mMatrix, CVector(0.0f, 6.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f))		//上下
 	, mLine3(this, &mMatrix, CVector(3.5f, 3.5f, 0.0f), CVector(-3.5f, 3.5f, 0.0f))	//左右
 	, mJumpcount(0)
-	,isOnObstacle(false)
-	,disableGravity(false)
-	,isOnObstacleJump(false)
-	,isJumping(false)
-	,isDodging(false)
+	, isOnObstacle(false)
+	, disableGravity(false)
+	, isOnObstacleJump(false)
+	, isJumping(false)
+	, isDodging(false)
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -52,7 +52,7 @@ int CPlayer::Hp()	//HP
 
 //更新処理
 void CPlayer::Update() {
-	
+
 	//Dキー入力で回転
 	if (mInput.Key('D')) {
 		//Y軸の回転値を減少
@@ -78,7 +78,7 @@ void CPlayer::Update() {
 		if (mInput.Key('W') || mInput.Key('A') || mInput.Key('D'))
 		{
 			Position(Position() + CVector(0.0f, 0.0f, 0.20f) * MatrixRotate());
-			
+
 		}
 		else
 		{
@@ -143,6 +143,8 @@ void CPlayer::Update() {
 	else if (!isGrounded && !disableGravity && !isOnObstacleJump)
 	{
 		Velocity(Velocity() + GRAVITY);
+		//// 障害物上にいる場合や障害物上でのジャンプ中は重力を無効化
+		//Velocity(CVector(Velocity().X(), 0.0f, Velocity().Z()));
 	}
 
 	//移動処理
@@ -189,23 +191,24 @@ void CPlayer::Collision(CCollider* m, CCollider* o) {
 	switch (m->Type()) {
 	case CCollider::ELINE://線分コライダ
 		//相手のコライダが三角コライダの時
-		if (o->Type() == CCollider::ETRIANGLE) {2;
+		if (o->Type() == CCollider::ETRIANGLE) {
+			2;
 			CVector adjust;//調整用ベクトル
 			//三角形と線分の衝突判定
 			if (CCollider::CollisionTriangleLine(o, m, &adjust)) {
 				disableGravity = true; // 障害物上で重力を無効化
-				// 位置の更新を保持する変数
-				//CVector nextPosition = Position() + adjust;
+			// 位置の更新を保持する変数
+			//CVector nextPosition = Position() + adjust;
 
 				if (!isOnObstacle) {
 					isOnObstacle = true;
 					disableGravity = true;
 					// 移動ベクトルを調整
-					CVector velocity = Velocity().Normalize();
+					CVector velocity = Velocity();
 					velocity.SetY(0.0f);
 					Velocity(velocity);
 					mJumpcount = 0;
-					
+
 					//位置の更新
 					Position(Position() + adjust);
 				}
@@ -216,11 +219,15 @@ void CPlayer::Collision(CCollider* m, CCollider* o) {
 		}
 		break;
 	}
-	//変換行列の更新
-	CTransform::Update();
 }
-
-//// 移動ベクトルを調整
-//CVector velocity = Velocity();
-//velocity.SetY(0.0f);
-//Velocity(velocity);
+//if (!isOnObstacle) {
+				//	isOnObstacle = true;
+				//	disableGravity = true;
+				//	// 移動ベクトルを調整
+				//	CVector velocity = Velocity();
+				//	velocity.SetY(0.0f);
+				//	Velocity(velocity);
+				//	mJumpcount = 0;
+				//}
+				//位置の更新
+//Position(Position() + adjust);

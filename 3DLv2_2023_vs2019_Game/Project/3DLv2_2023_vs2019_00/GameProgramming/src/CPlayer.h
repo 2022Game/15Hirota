@@ -43,7 +43,7 @@ private:
 	int mJumpcount;	//ジャンプの回数処理
 	bool isOnObstacle;	//障害物に乗っているかどうかのフラグ
 	bool disableGravity; // 障害物上で重力を無効化するためのフラグ
-	bool isOnObstacleJump;
+	bool isOnObstacleJump;	//障害物に乗っているか
 	bool isJumping;	//ジャンプ判定
 	bool isDodging;	//回避中かどうかのフラグ
 };

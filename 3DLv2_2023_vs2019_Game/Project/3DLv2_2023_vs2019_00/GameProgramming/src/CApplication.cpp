@@ -90,7 +90,7 @@ void CApplication::Start()
 
 	//ITEM1のモデルの読み込み
 	mModel_Item.Load(MODEL_ITEM1);
-	new CItem1(&mModel_Item, CVector(0.0f, 0.0f, 50.0f),
+	new CItem1(&mModel_Item, CVector(-50.0f, 0.0f, -10.0f),
 		CVector(270.0f, 0.0f, -90.0f), CVector(0.09f, 0.09f, 0.09f));
 	
 
@@ -104,10 +104,10 @@ void CApplication::Start()
 
 	
 	mModelAlien.Load(MODEL_ALIEN);
-	new CEnemy3(&mModelAlien, CVector(50.0f, 0.0f, 0.0f),
+	new CEnemy3(&mModelAlien, CVector(-50.0f, 0.0f, 2.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 
-	new CEnemy3(&mModelAlien, CVector(100.0f, 0.0f, 0.0f),
+	new CEnemy3(&mModelAlien, CVector(-100.0f, 0.0f, -50.0f),
 		CVector(), CVector(0.1f, 0.1f, 0.1f));
 	//エイリアンモデルの読み込み
 	/*mModelAlien.Load(MODEL_ALIEN);

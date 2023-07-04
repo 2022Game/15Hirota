@@ -60,19 +60,29 @@ float CVector::Z() const
 	return mZ;
 }
 
-void CVector::X(float x)
+float CVector::GetY() const
 {
-	mX = x;
+	return mY;
 }
 
-void CVector::Y(float y)
+float CVector::GetX() const
 {
-	mY = y;
+	return mX;
 }
-void CVector::Z(float z)
-{
-	mZ = z;
- }
+
+//void CVector::X(float x)
+//{
+//	mX = x;
+//}
+//
+//void CVector::Y(float y)
+//{
+//	mY = y;
+//}
+//void CVector::Z(float z)
+//{
+//	mZ = z;
+// }
 
 CVector::CVector()
 	: mX(0.0f), mY(0.0f), mZ(0.0f)

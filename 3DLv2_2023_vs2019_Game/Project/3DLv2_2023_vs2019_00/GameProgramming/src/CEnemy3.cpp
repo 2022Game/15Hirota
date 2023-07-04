@@ -2,6 +2,8 @@
 #include "CCollisionManager.h"
 #include "CEffect.h"
 #include "CPlayer.h"
+#include "CVector.h"
+#include <vector>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -11,6 +13,8 @@
 
 #define HP 3	//耐久値
 #define VELOCITY 0.11f	//速度
+#define GRAVITY -0.09f
+
 //移動速度
 #define FOV_ANGLE 45.0f //視野の角度(ー角度+角度も出)
 #define FOV_LENGTH 5.0f//視野の角度
@@ -172,6 +176,8 @@ void CEnemy3::Update()
 		UpdateAttack();
 		break;
 	}
+
+	VELOCITY + GRAVITY;
 
 	
 	//HPが0以下の時　撃破

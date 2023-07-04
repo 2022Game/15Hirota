@@ -27,6 +27,7 @@ void CSikakuGimmick::Init()
 	CreateSikaku(CVector(-150.0f, 12.0f, 40.0f), CVector(), CVector(6.0f, 4.0f, 6.0f));
 	CreateSikaku(CVector(-190.0f, 17.0f, 60.0f), CVector(), CVector(5.0f, 3.0f, 3.0f));
 	CreateSikaku(CVector(-150.0f, 20.0f, 40.0f), CVector(), CVector(5.0f, 3.0f, 3.0f));
+	CreateSikaku(CVector(-60.0f, 2.0f, 20.0f), CVector(0.0f,0.0f,-15.0f), CVector(6.0f, 4.0f, 6.0f));
 
 }
 
