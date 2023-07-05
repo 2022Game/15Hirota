@@ -6,9 +6,15 @@
 
 #define MODEL_SIKAKU "res\\aoiro sikaku1.obj","res\\aoiro sikaku.mtl"
 
-const CVector& CSikakuGimmick::Position()
+#define MOVE CVector(0.1f,0.0f,0.0f)
+
+const CVector& CSikakuGimmick::Position() const
 {
 	return mPosition;
+}
+void CSikakuGimmick::Position(const CVector& v)
+{
+	mPosition = v;
 }
 
 void CSikakuGimmick::Velocity(const CVector& v)
@@ -22,12 +28,44 @@ void CSikakuGimmick::Init()
 	mpSikakuModel = new CModel();
 	mpSikakuModel->Load(MODEL_SIKAKU);
 
+	//CreateSikaku(CVector(-100.0f, 4.0f, 20.0f), CVector(), CVector(6.0f, 4.0f, 6.0f));
 	CreateSikaku(CVector(-100.0f, 4.0f, 20.0f), CVector(), CVector(6.0f, 4.0f, 6.0f));
+	mMovingSikakus.push_back(mSikakus.back());
 	CreateSikaku(CVector(-120.0f, 8.0f, 20.0f), CVector(), CVector(6.0f, 4.0f, 6.0f));
+	mMovingSikakus.push_back(mSikakus.back());
 	CreateSikaku(CVector(-150.0f, 12.0f, 40.0f), CVector(), CVector(6.0f, 4.0f, 6.0f));
+	mMovingSikakus.push_back(mSikakus.back());
 	CreateSikaku(CVector(-190.0f, 17.0f, 60.0f), CVector(), CVector(5.0f, 3.0f, 3.0f));
+	mMovingSikakus.push_back(mSikakus.back());
 	CreateSikaku(CVector(-150.0f, 20.0f, 40.0f), CVector(), CVector(5.0f, 3.0f, 3.0f));
+	mMovingSikakus.push_back(mSikakus.back());
 	CreateSikaku(CVector(-60.0f, 2.0f, 20.0f), CVector(0.0f,0.0f,-15.0f), CVector(6.0f, 4.0f, 6.0f));
+	mMovingSikakus.push_back(mSikakus.back());
+
+	// 特定の四角のみを移動対象に設定
+	mMovingSikakus.clear();
+	mMovingSikakus.push_back(mSikakus[0]);
+	mMovingSikakus.push_back(mSikakus[3]);
+
+	CreateSikaku(CVector(0.0f, 0.0f, 0.0f), CVector(), CVector(6.0f, 3.0f, 6.0f));
+	CreateSikaku(CVector(0.0f, 0.0f, 52.75f), CVector(), CVector(6.0f, 3.0f, 6.0f));
+	CreateSikaku(CVector(0.0f, 0.0f, 52.75f*2), CVector(), CVector(6.0f, 3.0f, 6.0f));
+
+	// 移動させたい四角をmMovingSikakuに設定
+	//mMovingSikaku = mSikakus[0];
+	 // すべての四角を移動対象に設定
+	for (int i = 0; i < mSikakus.size(); i++) {
+		mMovingSikakus.push_back(mSikakus[i]);
+	}
+
+	// 特定の四角の移動方向を反転させる
+	for (int i = 0; i < mMovingSikakus.size(); i++) {
+		if (i == 0 || i == 3) {  // 反対方向に移動させたい四角のインデックスを指定
+			CVector velocity = mMovingSikakus[i]->Velocity();
+			mMovingSikakus[i]->Position(mMovingSikakus[i]->Position() - (velocity * 100));  // 初期位置を反対方向に移動
+			mMovingSikakus[i]->Velocity(CVector(-velocity.X(), -velocity.Y(), -velocity.Z()));  // 移動方向を反転させる
+		}
+	}
 
 }
 
@@ -41,6 +79,9 @@ void CSikakuGimmick::CreateSikaku(CVector& pos, CVector& rot, CVector& scale)
 }
 
 CSikakuGimmick::CSikakuGimmick()
+	:mMoveCounter(0)
+	, mMoveDirection(1)
+	,mReverseMove(false)
 {
 	// 初期処理
 	Init();
@@ -71,6 +112,31 @@ CSikakuGimmick::~CSikakuGimmick()
 
 void CSikakuGimmick::Update()
 {
+	// 追加: カウンターのチェック
+	if (mMoveCounter < 100) {
+		for (int i = 0; i < mMovingSikakus.size(); i++) {
+			CSikaku* sikaku = mMovingSikakus[i];
+			if (sikaku != nullptr) {
+				sikaku->Position(sikaku->Position() + (MOVE * mMoveDirection)); // 位置を直接変更する
+			}
+		}
+		mMoveCounter++;
+	}
+	else {
+		mMoveDirection *= -1; // 移動方向を反転させる
+		mMoveCounter = 0; // カウンターをリセット
+	}
+
+	//// 追加: カウンターのチェック
+	//if (mMoveCounter < 100) {
+	//	Position(Position() + (MOVE * mMoveDirection)); // 通常の移動
+	//	mMoveCounter++;
+	//}
+	//else {
+	//	mMoveDirection *= -1; // 移動方向を反転させる
+	//	mMoveCounter = 0; // カウンターをリセット
+	//}
+
 	// プレイヤーが四角に接地したかどうかの判定
 	for (int i = 0; i < mSikakus.size(); i++) {
 		CSikaku* sikaku = mSikakus[i];

@@ -16,7 +16,7 @@ private:
 	//コライダ
 	CColliderMesh mColliderMesh1;
 protected:
-	bool mReversed;	//反転フラグ
+	
 public:
 	//static int mD;
 	//衝突処理
@@ -28,7 +28,6 @@ public:
 	//CEnemy(モデル,位置,回転,拡縮）
 	CSikaku(CModel* model, const CVector& position,
 		const CVector& rotation, const CVector& scale);
-
 
 	/*bool IsPlayerOnTop() const;*/
 
