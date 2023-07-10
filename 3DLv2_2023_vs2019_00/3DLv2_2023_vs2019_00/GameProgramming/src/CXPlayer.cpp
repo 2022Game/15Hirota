@@ -72,7 +72,7 @@ void CXPlayer::Update()
 	{
 		if (AnimationIndex() != 3 && AnimationIndex() != 4)
 		{
-			ChangeAnimation(3, false, 30);	//アニメーション3
+			ChangeAnimation(3, false, 30);  //アニメーション3
 		}
 	}
 	if (AnimationIndex() == 3 || AnimationIndex() == 4)
@@ -82,11 +82,11 @@ void CXPlayer::Update()
 		{
 			if (AnimationIndex() == 3)
 			{
-				ChangeAnimation(4, false, 30);  // アニメーション4に切り替える
+				ChangeAnimation(4, false, 30);  // アニメーション4
 			}
 			else if (AnimationIndex() == 4)
 			{
-				ChangeAnimation(0, true, 60);  // アニメーション0に切り替える
+				ChangeAnimation(0, true, 60);  // アニメーション0
 			}
 		}
 		return;
@@ -108,7 +108,7 @@ void CXPlayer::Update()
 	{
 		if (AnimationIndex() != 3 && AnimationIndex() != 4)
 		{
-			ChangeAnimation(0, true, 60);
+			ChangeAnimation(0, true, 60);	//アニメーション0
 		}
 	}
 	CXCharacter::Update();
