@@ -85,7 +85,7 @@ void CApplication::Start()
 
 	mPlayer.Model(&mModel);
 	mPlayer.Scale(CVector(0.25f, 0.25f, 0.25f));
-	mPlayer.Position(CVector(0.0f, 0.0f, 0.0f));
+	mPlayer.Position(CVector(0.0f, 2.0f, 0.0f));
 	mPlayer.Rotation(CVector(0.0f, 180.0f, 0.0f));
 
 	//ITEM1ÇÃÉÇÉfÉãÇÃì«Ç›çûÇ›

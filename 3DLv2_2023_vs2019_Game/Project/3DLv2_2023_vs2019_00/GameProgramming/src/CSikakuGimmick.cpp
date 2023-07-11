@@ -30,40 +30,25 @@ void CSikakuGimmick::Init()
 
 	//CreateSikaku(CVector(-100.0f, 4.0f, 20.0f), CVector(), CVector(6.0f, 4.0f, 6.0f));
 	CreateSikaku(CVector(-100.0f, 4.0f, 20.0f), CVector(), CVector(6.0f, 4.0f, 6.0f));
-	mMovingSikakus.push_back(mSikakus.back());
 	CreateSikaku(CVector(-120.0f, 8.0f, 20.0f), CVector(), CVector(6.0f, 4.0f, 6.0f));
-	mMovingSikakus.push_back(mSikakus.back());
 	CreateSikaku(CVector(-150.0f, 12.0f, 40.0f), CVector(), CVector(6.0f, 4.0f, 6.0f));
-	mMovingSikakus.push_back(mSikakus.back());
 	CreateSikaku(CVector(-190.0f, 17.0f, 60.0f), CVector(), CVector(5.0f, 3.0f, 3.0f));
-	mMovingSikakus.push_back(mSikakus.back());
 	CreateSikaku(CVector(-150.0f, 20.0f, 40.0f), CVector(), CVector(5.0f, 3.0f, 3.0f));
-	mMovingSikakus.push_back(mSikakus.back());
-	CreateSikaku(CVector(-60.0f, 2.0f, 20.0f), CVector(0.0f,0.0f,-15.0f), CVector(6.0f, 4.0f, 6.0f));
-	mMovingSikakus.push_back(mSikakus.back());
+	CreateSikaku(CVector(-60.0f, 2.0f, 20.0f), CVector(0.0f, 0.0f, -15.0f), CVector(6.0f, 4.0f, 6.0f));
 
-	// 特定の四角のみを移動対象に設定
+	//ベクターを空にする
 	mMovingSikakus.clear();
+
 	mMovingSikakus.push_back(mSikakus[0]);
-	mMovingSikakus.push_back(mSikakus[3]);
 
 	CreateSikaku(CVector(0.0f, 0.0f, 0.0f), CVector(), CVector(6.0f, 3.0f, 6.0f));
 	CreateSikaku(CVector(0.0f, 0.0f, 52.75f), CVector(), CVector(6.0f, 3.0f, 6.0f));
-	CreateSikaku(CVector(0.0f, 0.0f, 52.75f*2), CVector(), CVector(6.0f, 3.0f, 6.0f));
+	CreateSikaku(CVector(0.0f, 0.0f, 52.75f * 2), CVector(), CVector(6.0f, 3.0f, 6.0f));
 
-	// 移動させたい四角をmMovingSikakuに設定
-	//mMovingSikaku = mSikakus[0];
-	 // すべての四角を移動対象に設定
+	// すべての四角を移動対象に設定
 	for (int i = 0; i < mSikakus.size(); i++) {
-		mMovingSikakus.push_back(mSikakus[i]);
-	}
-
-	// 特定の四角の移動方向を反転させる
-	for (int i = 0; i < mMovingSikakus.size(); i++) {
-		if (i == 0 || i == 3) {  // 反対方向に移動させたい四角のインデックスを指定
-			CVector velocity = mMovingSikakus[i]->Velocity();
-			mMovingSikakus[i]->Position(mMovingSikakus[i]->Position() - (velocity * 100));  // 初期位置を反対方向に移動
-			mMovingSikakus[i]->Velocity(CVector(-velocity.X(), -velocity.Y(), -velocity.Z()));  // 移動方向を反転させる
+		if (i != 0) { // 先頭の四角形を除外
+			mMovingSikakus.push_back(mSikakus[i]);
 		}
 	}
 

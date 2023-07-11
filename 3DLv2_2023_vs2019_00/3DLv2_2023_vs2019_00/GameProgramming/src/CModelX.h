@@ -89,6 +89,7 @@ public:
 	std::vector<CMaterial*>& Material();
 	//マテリアルの検索
 	CMaterial* FindMaterial(char* name);
+	void AnimateVertex(CMatrix*);
 private:
 	std::vector<CModelXFrame*> mFrame;	//フレームの配列
 	std::vector<CAnimationSet*> mAnimationSet;	//アニメーションセットの配列
@@ -116,6 +117,7 @@ public:
 	void SetSkinWeightFrameIndex(CModelX* model);
 	//頂点にアニメーション適用
 	void AnimateVertex(CModelX* model);
+	void AnimateVertex(CMatrix*);
 private:
 	int mVertexNum;		//頂点数
 	CVector* mpVertex;	//頂点データ

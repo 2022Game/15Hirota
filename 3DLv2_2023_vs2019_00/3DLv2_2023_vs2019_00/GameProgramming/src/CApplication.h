@@ -27,6 +27,8 @@
 
 #include "CXPlayer.h"
 
+#include "CXEnemy.h"
+
 class CApplication
 {
 private:
@@ -76,6 +78,8 @@ private:
 	//CXCharacter mCharacter;
 	//キャラクタクラスのインスタンス
 	CXPlayer mXPlayer;
+	//敵のインスタンス
+	CXEnemy mXEnemy;
 public:
 	~CApplication();
 	static CUi* Ui();	//UIクラスのインスタンスを取得

@@ -1,7 +1,6 @@
 ﻿  CSikakuGimmick.cpp
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\GameProgramming\src\CSikakuGimmick.cpp(57,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\GameProgramming\src\CSikakuGimmick.cpp(62,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\GameProgramming\src\CSikakuGimmick.cpp(102,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\GameProgramming\src\CSikakuGimmick.cpp(117,21): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\GameProgramming\src\CSikakuGimmick.cpp(141,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\GameProgramming\src\CSikakuGimmick.cpp(52,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\GameProgramming\src\CSikakuGimmick.cpp(90,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\GameProgramming\src\CSikakuGimmick.cpp(105,21): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\GameProgramming\src\CSikakuGimmick.cpp(129,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
   GameProgramming.vcxproj -> C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\Debug\GameProgramming.exe
