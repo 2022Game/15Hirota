@@ -5,6 +5,8 @@
 //モデルクラスのインクルード
 #include "CModel.h"
 #include "CTask.h"
+#include "TaskPauseType.h"
+#include "TaskPriority.h"
 //コライダクラスの宣言
 class CCollider;
 

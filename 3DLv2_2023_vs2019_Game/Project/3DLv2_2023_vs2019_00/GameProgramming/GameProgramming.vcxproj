@@ -29,8 +29,11 @@
     <ClCompile Include="src\CEnemy.cpp" />
     <ClCompile Include="src\CEnemy2.cpp" />
     <ClCompile Include="src\CEnemy3.cpp" />
+    <ClCompile Include="src\CField.cpp" />
     <ClCompile Include="src\CFont.cpp" />
     <ClCompile Include="src\CGame.cpp" />
+    <ClCompile Include="src\CGameScene.cpp" />
+    <ClCompile Include="src\CImage.cpp" />
     <ClCompile Include="src\CItem1.cpp" />
     <ClCompile Include="src\CMaterial.cpp" />
     <ClCompile Include="src\CMatrix.cpp" />
@@ -39,16 +42,21 @@
     <ClCompile Include="src\CPlayer2.cpp" />
     <ClCompile Include="src\CPoint.cpp" />
     <ClCompile Include="src\CRectangle.cpp" />
+    <ClCompile Include="src\CSceneBase.cpp" />
+    <ClCompile Include="src\CSceneManager.cpp" />
     <ClCompile Include="src\CSikaku.cpp" />
     <ClCompile Include="src\CSikakuGimmick.cpp" />
     <ClCompile Include="src\CSound.cpp" />
+    <ClCompile Include="src\CTask.cpp" />
     <ClCompile Include="src\CTaskManager.cpp" />
     <ClCompile Include="src\CTexture.cpp" />
     <ClCompile Include="src\CInput.cpp" />
+    <ClCompile Include="src\CTitleScene.cpp" />
     <ClCompile Include="src\CTransform.cpp" />
     <ClCompile Include="src\CTriangle.cpp" />
     <ClCompile Include="src\CUi.cpp" />
     <ClCompile Include="src\CVector.cpp" />
+    <ClCompile Include="src\GamePause.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -70,8 +78,11 @@
     <ClInclude Include="src\CEnemy.h" />
     <ClInclude Include="src\CEnemy2.h" />
     <ClInclude Include="src\CEnemy3.h" />
+    <ClInclude Include="src\CField.h" />
     <ClInclude Include="src\CFont.h" />
     <ClInclude Include="src\CGame.h" />
+    <ClInclude Include="src\CGameScene.h" />
+    <ClInclude Include="src\CImage.h" />
     <ClInclude Include="src\CItem1.h" />
     <ClInclude Include="src\CMaterial.h" />
     <ClInclude Include="src\CMatrix.h" />
@@ -81,6 +92,8 @@
     <ClInclude Include="src\CPlayer2.h" />
     <ClInclude Include="src\CPoint.h" />
     <ClInclude Include="src\CRectangle.h" />
+    <ClInclude Include="src\CSceneBase.h" />
+    <ClInclude Include="src\CSceneManager.h" />
     <ClInclude Include="src\CSikaku.h" />
     <ClInclude Include="src\CSikakuGimmick.h" />
     <ClInclude Include="src\CSound.h" />
@@ -88,12 +101,17 @@
     <ClInclude Include="src\CTaskManager.h" />
     <ClInclude Include="src\CTexture.h" />
     <ClInclude Include="src\CInput.h" />
+    <ClInclude Include="src\CTitleScene.h" />
     <ClInclude Include="src\CTransform.h" />
     <ClInclude Include="src\CTriangle.h" />
     <ClInclude Include="src\CUi.h" />
     <ClInclude Include="src\CVector.h" />
     <ClInclude Include="src\CVertex.h" />
+    <ClInclude Include="src\GamePause.h" />
     <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\SceneType.h" />
+    <ClInclude Include="src\TaskPauseType.h" />
+    <ClInclude Include="src\TaskPriority.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8802AF2F-2920-4700-89F2-CA6778727283}</ProjectGuid>

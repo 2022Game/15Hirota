@@ -8,6 +8,7 @@
 #include "CCollisionManager.h"
 #include "CBillBoard.h"
 #include "CEnemy3.h"
+#include "CSceneManager.h"
 
 //クラスのstatic変数
 CTexture CApplication::mTexture;
@@ -23,6 +24,8 @@ CUi* CApplication::Ui()
 {
 	return spUi;
 }
+
+//後で削除する↓
 
 #define SOUND_BGM "res\\mario.wav" //BGM音声ファイル
 #define SOUND_OVER "res\\mdai.wav" //ゲームオーバー音声ファイル
@@ -73,71 +76,10 @@ CTexture* CApplication::Texture()
 
 void CApplication::Start()
 {
+	//ゲームシーン読み込み
+	CSceneManager::Instance()->LoadScene(EScene::eTitle);
+
 	spUi = new CUi();	//UIクラスの生成
-	//モデルファイルの入力
-	mModel.Load(MODEL_OBJ);		//プレイヤー
-	mModel1.Load(MODEL_ITEM1);	//アイテム1
-	mBackGround.Load(MODEL_BACKGROUND);
-	CMatrix matrix;
-	//matrix.Print();	//表示確認用
-
-	mEye = CVector(1.0f, 2.0f, 3.0f);
-
-	mPlayer.Model(&mModel);
-	mPlayer.Scale(CVector(0.25f, 0.25f, 0.25f));
-	mPlayer.Position(CVector(0.0f, 2.0f, 0.0f));
-	mPlayer.Rotation(CVector(0.0f, 180.0f, 0.0f));
-
-	//ITEM1のモデルの読み込み
-	mModel_Item.Load(MODEL_ITEM1);
-	new CItem1(&mModel_Item, CVector(-50.0f, 0.0f, -10.0f),
-		CVector(270.0f, 0.0f, -90.0f), CVector(0.09f, 0.09f, 0.09f));
-	
-
-	//C5モデルの読み込み
-	mModelC5.Load(MODEL_C5);
-	//敵機のインスタンス作成
-	/*new CEnemy(&mModelC5, CVector(0.0f, 10.0f, -100.0f),
-		CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy(&mModelC5, CVector(20.0f, 10.0f, -130.0f),
-		CVector(), CVector(0.1f, 0.1f, 0.1f));*/
-
-	
-	mModelAlien.Load(MODEL_ALIEN);
-	new CEnemy3(&mModelAlien, CVector(-50.0f, 0.0f, 2.0f),
-		CVector(), CVector(0.1f, 0.1f, 0.1f));
-
-	new CEnemy3(&mModelAlien, CVector(-100.0f, 0.0f, -50.0f),
-		CVector(), CVector(0.1f, 0.1f, 0.1f));
-	//エイリアンモデルの読み込み
-	/*mModelAlien.Load(MODEL_ALIEN);
-	new CEnemy3(&mModelAlien, CVector(100.0f, 0.0f, 0.0f),
-		CVector(0.0f,0.0f,0.0f), CVector(0.1f, 0.1f, 0.1f));*/
-
-	//ビルボードの生成
-	//new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
-
-	////三角コライダの確認
-	//mColliderTriangle.Set(nullptr, nullptr
-	//	, CVector(-50.0f, 0.0f, -50.0f)
-	//	, CVector(-50.0f, 0.0f, 50.0f)
-	//	, CVector(50.0f, 0.0f, -50.0f));
-	//mColliderTriangle2.Set(nullptr, nullptr
-	//	, CVector(-50.0f, 0.0f, 50.0f)
-	//	, CVector(50.0f, 0.0f, 50.0f)
-	//	, CVector(50.0f, 0.0f, -50.0f));
-
-	//背景モデルから三角コライダを生成
-	//親インスタンスと親行列はなし
-	mColliderMesh.Set(nullptr, nullptr, &mBackGround);
-	//mColliderMesh1.Set(nullptr, nullptr, &mModel_Item);
-
-	/*new CEnemy3(CVector(-5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy3(CVector(5.0f, 1.0f, -10.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));*/
-
-	//四角ギミックはCSikakuGimmick内にまとめる
-	mpSikakuGimmick = new CSikakuGimmick();
-
 }
 
 void CApplication::Update()
@@ -149,18 +91,18 @@ void CApplication::Update()
 	//削除	CCollisionManager::Instance()->Collision();
 	CTaskManager::Instance()->Collision();
 
-	//頂点1､頂点2､頂点3,法線データの作成
-	CVector v0, v1, v2, n;
-	//法線を上向きで設定する
-	n.Set(0.0f, 1.0f, 0.0f);
-	//頂点1の座標を設定する
-	v0.Set(0.0f, 0.0f, 0.5f);
-	//頂点2の座標を設定する
-	v1.Set(1.0f, 0.0f, 0.0f);
-	//頂点3の座標を設定する
-	v2.Set(0.0f, 0.0f, -0.5f);
+	////頂点1､頂点2､頂点3,法線データの作成
+	//CVector v0, v1, v2, n;
+	////法線を上向きで設定する
+	//n.Set(0.0f, 1.0f, 0.0f);
+	////頂点1の座標を設定する
+	//v0.Set(0.0f, 0.0f, 0.5f);
+	////頂点2の座標を設定する
+	//v1.Set(1.0f, 0.0f, 0.0f);
+	////頂点3の座標を設定する
+	//v2.Set(0.0f, 0.0f, -0.5f);
 
-	if (mInput.Key('J'))
+	/*if (mInput.Key('J'))
 	{
 		mEye = mEye - CVector(0.1f, 0.0f, 0.0f);
 	}
@@ -183,20 +125,14 @@ void CApplication::Update()
 	if (mInput.Key('M'))
 	{
 		mEye = mEye + CVector(0.0f, 0.1f, 0.0f);
-	}
+	}*/
 
 	//mPlayer.Update();
 
-	//カメラのパラメータを作成する
-	CVector e, c, u;//視点、注視点、上方向
-	//視点を求める
-	e = mPlayer.Position() + CVector(0.2f, 1.5f, -3.5f) * mPlayer.MatrixRotate();
-	//注視点を求める
-	c = mPlayer.Position();
-	//上方向を求める
-	u = CVector(0.0f, 1.0f, 0.0f) * mPlayer.MatrixRotate();
-	//カメラの設定
-	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
+	//シーンマネージャーの更新　
+	CSceneManager::Instance()->Update();
+
+
 	//モデルビュー行列の取得
 	glGetFloatv(GL_MODELVIEW_MATRIX, mModelViewInverse.M());
 	//逆行列の取得
@@ -207,7 +143,7 @@ void CApplication::Update()
 
 	//mPlayer.Render();
 
-	mBackGround.Render();
+	//mBackGround.Render();
 
 	//タスクリストの削除
 	CTaskManager::Instance()->Delete();

@@ -14,6 +14,8 @@ public:
 	static CTaskManager* Instance();
 	//タスクの削除
 	void Delete();
+	//シーン内のタスクをすべて削除
+	void DeleteInScene(EScene scene);
 	//リストから削除
 	//Remove(タスクのポインタ)
 	void Remove(CTask* task);
@@ -26,6 +28,13 @@ public:
 	void Update();
 	//描画
 	void Render();
+
+	//ポーズする
+	void Pause(int pauseBit);
+	//ポーズを解除する
+	void UnPause(int pauseBit);
+	//ポーズ中かどうか
+	bool IsPaused(int pauseBit = 0) const;
 protected:
 	//デフォルトコンストラクタ
 	CTaskManager();
@@ -34,6 +43,8 @@ protected:
 private:
 	//タスクマネージャのインスタンス
 	static CTaskManager* mpInstance;
+	//ポーズのビットフラグ
+	int mPauseBit;
 };
 
 #endif

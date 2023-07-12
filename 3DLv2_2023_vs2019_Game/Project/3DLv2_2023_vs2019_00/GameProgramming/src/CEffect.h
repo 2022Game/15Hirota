@@ -2,6 +2,7 @@
 #define CEFFECT_H
 //ビルボードクラスのインクルード
 #include "CBillBoard.h"
+#include "TaskPauseType.h"
 /*
 エフェクトクラス
 テクスチャのアニメーション

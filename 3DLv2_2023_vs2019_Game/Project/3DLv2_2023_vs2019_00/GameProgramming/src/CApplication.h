@@ -1,31 +1,13 @@
 #pragma once
-#include "CRectangle.h"
-#include "CTexture.h"
-#include "CCharacter3.h"
-#include "CBullet.h"
-#include "CEnemy.h"
-#include "CPlayer.h"
-#include "CInput.h"
-#include "CFont.h"
-#include "CMiss.h"
-#include <vector>
-#include "CCharacterManager.h"
 
+#include "CTexture.h"
+#include "CCharacterManager.h"
 #include "CGame.h"
 #include "CSound.h"
-
 #include "CVector.h"
 #include "CModel.h"
-
 #include "CTaskManager.h"
-
-#include "CColliderTriangle.h"
-
-#include "CColliderMesh.h"
-
 #include "CUi.h"
-#include "CItem1.h"
-#include "CAlien.h"
 #include "CSikakuGimmick.h"
 
 class CApplication
@@ -33,7 +15,7 @@ class CApplication
 private:
 	static CUi* spUi;	//UIクラスのポインタ
 	//モデルからコライダを生成
-	CColliderMesh mColliderMesh;
+	//CColliderMesh mColliderMesh;
 
 	//三角コライダの作成
 	//CColliderTriangle mColliderTriangle;
@@ -43,47 +25,47 @@ private:
 	static CMatrix mModelViewInverse;
 
 	//C5モデル
-	CModel mModelC5;
+	//CModel mModelC5;
 
 	//エイリアン
-	CModel mModelAlien;
+	//CModel mModelAlien;
 
 	//アイテム(仮)
-	CModel mModel_Item;
+	//CModel mModel_Item;
 
 	//static CTaskManager mTaskManager;
-	CPlayer mPlayer;
+	//CPlayer mPlayer;
 
-	CModel mBackGround; //背景モデル
+	//CModel mBackGround; //背景モデル
 
-	CModel mModel;
-	CModel mModel1;
-	CVector mEye;
+	//CModel mModel;
+	//CModel mModel1;
+	//CVector mEye;
 
 	CSound mSoundBgm;	//BGM
 	CSound mSoundOver;	//ゲームオーバー
 	CGame* mpGame;
 
 	static CCharacterManager mCharacterManager;
-	enum class EState
-	{
-		ESTART,	//ゲーム開始
-		EPLAY,	//ゲーム中
-		ECLEAR,	//ゲームクリア
-		EOVER,	//ゲームオーバー
-	};
-	EState mState;
+	//enum class EState
+	//{
+	//	ESTART,	//ゲーム開始
+	//	EPLAY,	//ゲーム中
+	//	ECLEAR,	//ゲームクリア
+	//	EOVER,	//ゲームオーバー
+	//};
+	//EState mState;
 	//	CCharacter mRectangle;
-	CPlayer* mpPlayer;
+	//CPlayer* mpPlayer;
 	static CTexture mTexture;
-	CEnemy* mpEnemy;
+	//CEnemy* mpEnemy;
 	//	CBullet* mpBullet;
-	CInput mInput;
-	CFont mFont;
-	CMiss* mpMiss;
+	//CInput mInput;
+	//CFont mFont;
+	//CMiss* mpMiss;
 	//CCharacterのポインタの可変長配列
-//	std::vector<CCharacter*> mCharacters;
-	CSikakuGimmick* mpSikakuGimmick;
+	//std::vector<CCharacter*> mCharacters;
+	//CSikakuGimmick* mpSikakuGimmick;
 public:
 	~CApplication();
 	static CUi* Ui();	//UIクラスのインスタンスを取得

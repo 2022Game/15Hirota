@@ -21,6 +21,9 @@ const CVector GRAVITY(0.0f, -0.03f, 0.0f);
 
 CPlayer* CPlayer::spInstance = nullptr;
 
+mpModel = new CModel();
+mpModel->Load("プレイヤーのモデル")
+
 int CPlayer::sHp = 0;	//Hp
 
 CPlayer::CPlayer()

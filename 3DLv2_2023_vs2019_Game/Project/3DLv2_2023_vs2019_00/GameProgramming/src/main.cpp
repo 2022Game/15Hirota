@@ -5,6 +5,7 @@
 #include "main.h"
 #include "CApplication.h"
 #include "CInput.h"
+#include "CSceneManager.h"
 
 CApplication gApplication;
 
@@ -65,6 +66,13 @@ void idle() {
 
 	//描画する関数を呼ぶ
 	display();
+}
+
+//ゲームの終了処理
+void release()
+{
+	//シーンマネージャー破棄
+	CSceneManager::ClearInstance();
 }
 
 int main(void)
@@ -143,6 +151,8 @@ int main(void)
 			break;
 		}
 	}
+	//ゲーム中に生成したものを破棄
+	release();
 
 	glfwTerminate();
 	return 0;
