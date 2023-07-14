@@ -15,7 +15,6 @@ void CXPlayer::Update()
 	}
 	if (AnimationIndex() == 3 || AnimationIndex() == 4)
 	{
-		CXCharacter::Update();
 		if (IsAnimationFinished())
 		{
 			if (AnimationIndex() == 3)
@@ -27,6 +26,7 @@ void CXPlayer::Update()
 				ChangeAnimation(0, true, 60);  // アニメーション0
 			}
 		}
+		CXCharacter::Update();
 		return;
 	}
 	if (mInput.Key('A'))
