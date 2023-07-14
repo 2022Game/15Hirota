@@ -23,7 +23,8 @@ public:
 	void CXCharacter::Update();
 	//デフォルトコンストラクタ
 	CXCharacter();
-	virtual~CXCharacter() {
+
+	virtual ~CXCharacter() {
 		SAFE_DELETE_ARRAY(mpCombinedMatrix);
 	}
 protected:

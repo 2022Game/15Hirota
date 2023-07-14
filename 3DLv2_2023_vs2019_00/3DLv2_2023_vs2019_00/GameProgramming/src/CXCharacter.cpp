@@ -1,6 +1,7 @@
 #include "CXCharacter.h"
 
 CXCharacter::CXCharacter()
+	:mpCombinedMatrix(nullptr)
 {
 	mScale = CVector(1.0f, 1.0f, 1.0f);
 }
@@ -83,12 +84,12 @@ void CXCharacter::Update(CMatrix& matrix) {
 	mpModel->AnimateFrame();
 	//フレームの合成行列を計算する
 	mpModel->Frames()[0]->AnimateCombined(&matrix);
+	//アニメーションの重みを0.0(0%)にする
+	mpModel->AnimationSet()[mAnimationIndex]->Weight(0.0f);
 	//合成行列を計算する
 	for (size_t i = 0; i < mpModel->Frames().size(); i++) {
 		mpCombinedMatrix[i] =
 			mpModel->Frames()[i]->CombinedMatrix();
-		//アニメーションの重みを0.0(0%)にする
-		mpModel->AnimationSet()[mAnimationIndex]->Weight(0.0f);
 	}
 	//頂点にアニメーションを適用する
 	//mpModel->AnimateVertex();
