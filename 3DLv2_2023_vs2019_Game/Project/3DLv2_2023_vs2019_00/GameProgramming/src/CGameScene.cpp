@@ -3,9 +3,9 @@
 #include "CAlien.h"
 #include "CSikakuGimmick.h"
 #include "CItem1.h"
-#include "CEnemy3.h"
 #include "CColliderMesh.h"
 #include "CField.h"
+#include "CSceneManager.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -34,7 +34,7 @@ void CGameScene::Load()
 	player->Rotation(CVector(0.0f, 180.0f, 0.0f));
 
 	//アイテム作成
-	AddTask(new CAlien(CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f)));
+	AddTask(new CAlien());
 
 
 
@@ -120,4 +120,9 @@ void CGameScene::Update()
 	u = CVector(0.0f, 1.0f, 0.0f) * player->MatrixRotate();
 	//カメラの設定
 	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
+
+	if (player->IsDeath())
+	{
+		CSceneManager::Instance()->LoadScene(EScene::eTitle);
+	}
 }

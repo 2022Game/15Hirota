@@ -44,3 +44,19 @@ void CCharacter3::Render()
 {
 	mpModel->Render(mMatrix);
 }
+
+void CCharacter3::TakeDamage(int damege)
+{
+	//与えられたダメージ分、HPを減らす
+	mHp -= damege;
+	{
+		//キャラクターを殺す処理
+		mEnabled = false;
+	}
+}
+
+bool CCharacter3::IsDeath()
+{
+	//HPが0以下なら死んでいる
+	return mHp <= 0;;
+}

@@ -44,11 +44,18 @@ public:
 	void Model(CModel* m);
 	//描画処理
 	void Render();
+	//ダメージを与える
+	virtual void TakeDamage(int damege);
+	//キャラクターが死んでいるかどうか
+	bool IsDeath();
 private:
 	
 protected:
 	ETag mTag;	//タグ
 	CModel* mpModel; //モデルのポインタ
+
+	int mHp;
+	int mStamina;
 };
 
 #endif

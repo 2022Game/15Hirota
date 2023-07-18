@@ -2,7 +2,10 @@
 #include "CPlayer.h"
 #include "CApplication.h"
 #include "CCollisionManager.h"
-#include "CRectangle.h"
+#include "CEnemyManager.h"
+
+#define OBJ "res\\ひるちゃーる.obj"	//モデルのファイル
+#define MTL "res\\ひるちゃーる.mtl"	//モデルのマテリアルファイル
 
 //エネミークラスにインクルードする
 #include <math.h>
@@ -21,9 +24,6 @@ const CVector GRAVITY(0.0f, -0.03f, 0.0f);
 
 CPlayer* CPlayer::spInstance = nullptr;
 
-mpModel = new CModel();
-mpModel->Load("プレイヤーのモデル")
-
 int CPlayer::sHp = 0;	//Hp
 
 CPlayer::CPlayer()
@@ -37,9 +37,19 @@ CPlayer::CPlayer()
 	, isJumping(false)
 	, isDodging(false)
 {
+	mpModel = new CModel();
+	mpModel->Load(OBJ, MTL);
+
 	//インスタンスの設定
 	spInstance = this;
 	sHp = HP;
+
+	//プレイヤーの武器を生成
+	mpWeapon = new CWeapon();
+	mpWeapon->SetParent(this);
+	mpWeapon->Scale(CVector(1.0f, 1.0f, 1.0f));
+	mpWeapon->Position(CVector(1.575f, 3.15f, 0.0f)); //位置の設定
+	mpWeapon->Rotation(CVector(0.0f, 0.0f, 0.0f));
 }
 
 //CPlayer(位置, 回転, スケール)
@@ -128,7 +138,22 @@ void CPlayer::Update() {
 		bullet.Rotation(mRotation);*/
 	}
 	if (GetKeyState(VK_RBUTTON) & 0x80) {
-		//未定
+		//攻撃
+		//全てのエネミーと距離で攻撃のヒット判定を行う
+		auto enemyList = CEnemyManager::Instance()->GetEnemyList();
+		for (int i = 0; i < enemyList.size(); i++)
+		{
+			CEnemy* enemy = enemyList[i];
+			CVector enemyPos = enemy->Position();
+			//エネミーとの距離を求める
+			float distance = (enemyPos - mPosition).Length();
+			//エネミーとの距離が3.5以下であれば
+			if (distance <= 3.5f)
+			{
+				//ダメージを与える
+				enemy->TakeDamage(1);
+			}
+		}
 	}
 	if (GetKeyState(VK_MBUTTON) & 0x80) {
 		//未定

@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CAlien.cpp" />
+    <ClCompile Include="src\CAlien1.cpp" />
     <ClCompile Include="src\CApplication.cpp" />
     <ClCompile Include="src\CBillBoard.cpp" />
     <ClCompile Include="src\CBlock.cpp" />
@@ -28,7 +29,7 @@
     <ClCompile Include="src\CEffect.cpp" />
     <ClCompile Include="src\CEnemy.cpp" />
     <ClCompile Include="src\CEnemy2.cpp" />
-    <ClCompile Include="src\CEnemy3.cpp" />
+    <ClCompile Include="src\CEnemyManager.cpp" />
     <ClCompile Include="src\CField.cpp" />
     <ClCompile Include="src\CFont.cpp" />
     <ClCompile Include="src\CGame.cpp" />
@@ -56,11 +57,13 @@
     <ClCompile Include="src\CTriangle.cpp" />
     <ClCompile Include="src\CUi.cpp" />
     <ClCompile Include="src\CVector.cpp" />
+    <ClCompile Include="src\CWeapon.cpp" />
     <ClCompile Include="src\GamePause.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CAlien.h" />
+    <ClInclude Include="src\CAlien1.h" />
     <ClInclude Include="src\CApplication.h" />
     <ClInclude Include="src\CBillBoard.h" />
     <ClInclude Include="src\CBlock.h" />
@@ -77,7 +80,7 @@
     <ClInclude Include="src\CEffect.h" />
     <ClInclude Include="src\CEnemy.h" />
     <ClInclude Include="src\CEnemy2.h" />
-    <ClInclude Include="src\CEnemy3.h" />
+    <ClInclude Include="src\CEnemyManager.h" />
     <ClInclude Include="src\CField.h" />
     <ClInclude Include="src\CFont.h" />
     <ClInclude Include="src\CGame.h" />
@@ -107,6 +110,7 @@
     <ClInclude Include="src\CUi.h" />
     <ClInclude Include="src\CVector.h" />
     <ClInclude Include="src\CVertex.h" />
+    <ClInclude Include="src\CWeapon.h" />
     <ClInclude Include="src\GamePause.h" />
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\SceneType.h" />

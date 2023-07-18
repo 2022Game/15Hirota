@@ -5,6 +5,7 @@
 #include "CInput.h"
 #include "CBullet.h"
 #include "CColliderLine.h"
+#include"CWeapon.h"
 
 /*
 プレイヤークラス
@@ -39,6 +40,8 @@ private:
 	CColliderLine mLine2; //線分コライダ
 	CColliderLine mLine3; //線分コライダ
 	CInput mInput;
+	//プレイヤーの持っている武器
+	CWeapon* mpWeapon;
 	
 	int mJumpcount;	//ジャンプの回数処理
 	bool isOnObstacle;	//障害物に乗っているかどうかのフラグ

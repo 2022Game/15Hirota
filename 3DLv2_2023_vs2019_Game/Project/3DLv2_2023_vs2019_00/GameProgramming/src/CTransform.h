@@ -7,6 +7,8 @@
 */
 class CTransform {
 public:
+	//コンストラクタ
+	CTransform();
 	//位置の取得
 	const CVector& Position() const;
 	const CVector& Velocity() const;
@@ -21,8 +23,14 @@ public:
 	void Scale(const CVector& v);
 	//合成行列の取得
 	const CMatrix& Matrix() const;
+	//平行移動行列の取得
+	const CMatrix& MatrixTranslate() const;
 	//回転行列の取得
 	const CMatrix& MatrixRotate() const;
+	//拡大縮小行列の取得
+	const CMatrix& MatrixScale() const;
+	//親のTransformを設定
+	void SetParent(CTransform* parent);
 	//行列更新処理
 	void Update();
 	//Update(位置, 回転, スケール)
@@ -32,15 +40,22 @@ public:
 private:
 
 protected: //子クラスはアクセス可能
+	CVector mVelocity;	//重力加速度
 	CVector mPosition;	//位置
 	CVector mRotation;	//回転
 	CVector mScale;	//拡大縮小
-	CVector mVelocity;	//重力加速度
 
-	CMatrix mMatrixTranslate; //平行移動行列
-	CMatrix mMatrixRotate; //回転行列
-	CMatrix mMatrixScale; //拡大縮小行列
-	CMatrix mMatrix; //合成行列
+	CMatrix mMatrixTranslate; //平行移動行列(グローバル)
+	CMatrix mMatrixRotate; //回転行列(グローバル)
+	CMatrix mMatrixScale; //拡大縮小行列(グローバル)
+	CMatrix mMatrix; //合成行列(グローバル)
+
+	CMatrix mLocalMatrixTranslate; //平行移動行列(ローカル)
+	CMatrix mLocalMatrixRotate; //回転行列(ローカル)
+	CMatrix mLocalMatrixScale; //拡大縮小行列(ローカル)
+	CMatrix mLocalMatrix; //合成行列(ローカル)
+
+	CTransform* mpParent;	//親のTransform
 };
 
 #endif
