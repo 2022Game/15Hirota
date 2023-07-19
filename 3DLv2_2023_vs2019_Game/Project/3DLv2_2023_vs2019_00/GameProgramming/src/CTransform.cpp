@@ -1,4 +1,5 @@
 #include "CTransform.h"
+#include "CMatrix.h"
 
 CTransform::CTransform()
 	: mpParent(nullptr)
@@ -96,11 +97,10 @@ void CTransform::Update() {
 	}
 }
 
-void CTransform::Update(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& velocity)
+void CTransform::Update(const CVector& pos, const CVector& rot, const CVector& scale)
 {
 	mPosition = pos;
 	mRotation = rot;
 	mScale = scale;
-	mVelocity = velocity;
 	Update();
 }

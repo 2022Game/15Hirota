@@ -18,8 +18,6 @@ private:
 	//リストに追加
 	void CreateSikaku(CVector& pos, CVector& rot, CVector& scale);
 
-	CVector mVelocity;	//重力加速度
-
 protected:
 	CVector mPosition;	//位置
 
@@ -35,9 +33,6 @@ public:
 	const CVector& Position() const;
 	//Position(位置)
 	void Position(const CVector& v);
-
-	//const CVector& Position();
-	void Velocity(const CVector& v);
 
 	//更新処理
 	void Update();

@@ -21,10 +21,10 @@ CWeapon::CWeapon()
 }
 
 //CWeapon(位置, 回転, スケール)
-CWeapon::CWeapon(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& vel)
+CWeapon::CWeapon(const CVector& pos, const CVector& rot, const CVector& scale)
 	: CWeapon()
 {
-	CTransform::Update(pos, rot, scale,vel); //行列の更新
+	CTransform::Update(pos, rot, scale); //行列の更新
 }
 
 //衝突判定の更新処理

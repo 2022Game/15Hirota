@@ -1,5 +1,6 @@
 #include "CVector.h"
 #include <math.h>
+class CMatrix;
 
 float CVector::Dot(const CVector& v) const
 {
@@ -23,11 +24,6 @@ CVector CVector::Normalize() const {
 CVector CVector::Cross(const CVector& v) const
 {
 	return CVector(mY * v.mZ - mZ * v.mY, mZ * v.mX - mX * v.mZ, mX * v.mY - mY * v.mX);
-}
-
-CVector CVector::operator*(const float& f) const
-{
-	return CVector(mX*f, mY*f, mZ*f);
 }
 
 //Set(Xç¿ïW, Yç¿ïW, Zç¿ïW)
@@ -100,16 +96,6 @@ CVector::CVector(float x, float y, float z)
 float CVector::DotProduct(const CVector& v1, const CVector& v2)
 {
 	return v1.X() * v2.X() + v1.Y() * v2.Y() + v1.Z() * v2.Z();
-}
-
-bool CVector::operator==(const CVector& v) const
-{
-	return mX == v.mX && mY == v.mY && mZ == v.mZ;
-}
-
-bool CVector::operator!=(const CVector& v) const
-{
-	return mX != v.mX || mY != v.mY && mZ != v.mZ;
 }
 
 bool CVector::operator==(const CVector& v) const

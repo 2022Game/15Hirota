@@ -13,7 +13,7 @@ class CWeapon : public CCharacter3 {
 public:
 	CWeapon();
 	//CWeapon(位置, 回転, スケール)
-	CWeapon(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& vel);
+	CWeapon(const CVector& pos, const CVector& rot, const CVector& scale);
 
 	//衝突判定の更新処理
 	void Collision();

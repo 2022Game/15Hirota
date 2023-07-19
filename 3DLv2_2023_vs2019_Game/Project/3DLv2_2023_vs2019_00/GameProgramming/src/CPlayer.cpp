@@ -4,8 +4,8 @@
 #include "CCollisionManager.h"
 #include "CEnemyManager.h"
 
-#define OBJ "res\\ひるちゃーる.obj"	//モデルのファイル
-#define MTL "res\\ひるちゃーる.mtl"	//モデルのマテリアルファイル
+#define OBJ "res\\Hirutya-ru3.obj"	//モデルのファイル
+#define MTL "res\\Hirutya-ru3.mtl"	//モデルのマテリアルファイル
 
 //エネミークラスにインクルードする
 #include <math.h>
@@ -53,9 +53,9 @@ CPlayer::CPlayer()
 }
 
 //CPlayer(位置, 回転, スケール)
-CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& velocity)
+CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
 {
-	CTransform::Update(pos, rot, scale, velocity); //行列の更新
+	CTransform::Update(pos, rot, scale); //行列の更新
 }
 
 int CPlayer::Hp()	//HP

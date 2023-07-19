@@ -12,7 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CAlien.cpp" />
-    <ClCompile Include="src\CAlien1.cpp" />
     <ClCompile Include="src\CApplication.cpp" />
     <ClCompile Include="src\CBillBoard.cpp" />
     <ClCompile Include="src\CBlock.cpp" />
@@ -63,7 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CAlien.h" />
-    <ClInclude Include="src\CAlien1.h" />
     <ClInclude Include="src\CApplication.h" />
     <ClInclude Include="src\CBillBoard.h" />
     <ClInclude Include="src\CBlock.h" />

@@ -24,7 +24,7 @@ public:
 	//CBullet bullet;
 	CPlayer();
 	//CPlayer(位置, 回転, スケール)
-	CPlayer(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& volocity);
+	CPlayer(const CVector& pos, const CVector& rot, const CVector& scale);
 
 	static int Hp();
 	//更新処理

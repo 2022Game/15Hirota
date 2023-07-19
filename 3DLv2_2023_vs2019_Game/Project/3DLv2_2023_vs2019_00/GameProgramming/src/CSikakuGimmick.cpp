@@ -17,11 +17,6 @@ void CSikakuGimmick::Position(const CVector& v)
 	mPosition = v;
 }
 
-void CSikakuGimmick::Velocity(const CVector& v)
-{
-	mVelocity = v;
-}
-
 void CSikakuGimmick::Init()
 {
 	//ƒ‚ƒfƒ‹“Ç‚İ‚İ

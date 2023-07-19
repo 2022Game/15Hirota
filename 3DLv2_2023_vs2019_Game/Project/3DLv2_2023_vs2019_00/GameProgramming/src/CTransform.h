@@ -1,6 +1,7 @@
 #ifndef CTRANSFORM_H
 #define CTRANSFORM_H
 #include "CVector.h"
+
 /*
 トランスフォームクラス
 位置、回転、拡縮、変換行列の基本クラス
@@ -34,7 +35,7 @@ public:
 	//行列更新処理
 	void Update();
 	//Update(位置, 回転, スケール)
-	void Update(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& velocity);
+	void Update(const CVector& pos, const CVector& rot, const CVector& scale);
 	//重力加速度
 	void Velocity(const CVector& v);
 private:

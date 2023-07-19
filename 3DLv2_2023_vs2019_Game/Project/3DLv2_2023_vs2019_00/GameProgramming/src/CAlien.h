@@ -20,7 +20,7 @@ public:
 	void Collision(CCollider* m, CCollider* o);
 	CAlien();
 	//CEnemy(モデル, 位置, 回転, 拡縮)
-	CAlien(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& vel);
+	CAlien(const CVector& pos, const CVector& rot, const CVector& scale);
 	//更新処理
 	void Update();
 private:

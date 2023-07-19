@@ -2,6 +2,7 @@
 #include "CAlien.h"
 #include "CApplication.h"
 #include "CCollisionManager.h"
+#include "CItem1.h"
 
 #define OBJ "res\\Alien Animal.obj"	//モデルのファイル
 #define MTL "res\\Alien Animal.mtl"	//モデルのマテリアルファイル
@@ -22,14 +23,14 @@ CAlien::CAlien()
 	mpModel = new CModel();
 	mpModel->Load(OBJ, MTL);
 
-	//ドラゴンのHPを設定する
+	//エイリアンのHPを設定する
 	mHp = HP;
 }
 
 //CDragon(位置, 回転, スケール)
-CAlien::CAlien(const CVector& pos, const CVector& rot, const CVector& scale, const CVector& vel)
+CAlien::CAlien(const CVector& pos, const CVector& rot, const CVector& scale)
 {
-	CTransform::Update(pos, rot, scale,vel);
+	CTransform::Update(pos, rot, scale);
 }
 
 //更新処理
