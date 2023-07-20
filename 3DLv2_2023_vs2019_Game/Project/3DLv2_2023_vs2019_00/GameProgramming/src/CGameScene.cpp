@@ -37,13 +37,13 @@ void CGameScene::Load()
 	player->Rotation(CVector(0.0f, 180.0f, 0.0f));
 
 	//アイテム作成
-	AddTask(new CAlien(CVector(10.0f,0.0f,0.0f),CVector(),CVector(1.0f,1.0f,1.0f)));
+	AddTask(new CAlien(CVector(10.0f, 0.0f, 0.0f), CVector(), CVector(1.0f, 1.0f, 1.0f)));
 
 	//プレイヤー作成
-	AddTask(new CPlayer(CVector(0.0f,5.0f,0.0f), CVector(), CVector(1.0f,1.0f,1.0f)));
+	//AddTask(new CPlayer(CVector(0.0f, 5.0f, 0.0f), CVector(), CVector(1.0f, 1.0f, 1.0f)));
 
 	//アイテム作成
-	AddTask(new CItem1(CVector(20.0f,0.0f,0.0f), CVector(), CVector(1.0f,1.0f,1.0f)));
+	AddTask(new CItem1(CVector(20.0f, 0.0f, 0.0f), CVector(), CVector(1.0f, 1.0f, 1.0f)));
 
 	//ビルボードの生成
 	//new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);

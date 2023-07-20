@@ -48,6 +48,8 @@ public:
 	CCharacter3* Parent();
 	//描画
 	void Render();
+
+	void CCollider::Matrix(CMatrix* m);
 protected:
 	EType mType;//コライダタイプ
 	//頂点

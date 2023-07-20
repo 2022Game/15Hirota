@@ -24,9 +24,13 @@ const CVector GRAVITY(0.0f, -0.03f, 0.0f);
 
 CPlayer* CPlayer::spInstance = nullptr;
 
-int CPlayer::sHp = 0;	//Hp
-
 CPlayer::CPlayer()
+	:CPlayer(CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f))
+{
+}
+
+//CPlayer(位置, 回転, スケール)
+CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
 	: mLine(this, &mMatrix, CVector(0.0f, 3.5f, 5.0f), CVector(0.0f, 3.5f, -5.0f))		//前後
 	, mLine2(this, &mMatrix, CVector(0.0f, 6.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f))		//上下
 	, mLine3(this, &mMatrix, CVector(3.5f, 3.5f, 0.0f), CVector(-3.5f, 3.5f, 0.0f))	//左右
@@ -37,12 +41,14 @@ CPlayer::CPlayer()
 	, isJumping(false)
 	, isDodging(false)
 {
+	CTransform::Update(pos, rot, scale); //行列の更新
+
 	mpModel = new CModel();
 	mpModel->Load(OBJ, MTL);
 
 	//インスタンスの設定
 	spInstance = this;
-	sHp = HP;
+	mHp = HP;
 
 	//プレイヤーの武器を生成
 	mpWeapon = new CWeapon();
@@ -52,15 +58,10 @@ CPlayer::CPlayer()
 	mpWeapon->Rotation(CVector(0.0f, 0.0f, 0.0f));
 }
 
-//CPlayer(位置, 回転, スケール)
-CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
-{
-	CTransform::Update(pos, rot, scale); //行列の更新
-}
-
 int CPlayer::Hp()	//HP
 {
-	return sHp;
+	if (spInstance == nullptr) return 0;
+	return spInstance->mHp;
 }
 
 //更新処理

@@ -13,24 +13,26 @@
 #define HP 3 //HPの初期値は3
 
 CAlien::CAlien()
-//奥行き
+	:CAlien(CVector(0.0f,0.0f,0.0f),CVector(0.0f,0.0f,0.0f),CVector(1.0f,1.0f,1.0f))
+{
+}
+
+//alien(位置, 回転, スケール)
+CAlien::CAlien(const CVector& pos, const CVector& rot, const CVector& scale)
+	//奥行き
 	: mLine(this, &mMatrix, CVector(0.0f, 15.0f, 18.0f), CVector(0.0f, 15.0f, -65.0f))
 	//縦
 	, mLine2(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 11.0f, 0.0f))
 	//横
 	, mLine3(this, &mMatrix, CVector(10.0f, 15.0f, 0.0f), CVector(-10.0f, 15.0f, 0.0f))
 {
+	CTransform::Update(pos, rot, scale);
+
 	mpModel = new CModel();
 	mpModel->Load(OBJ, MTL);
 
 	//エイリアンのHPを設定する
 	mHp = HP;
-}
-
-//CDragon(位置, 回転, スケール)
-CAlien::CAlien(const CVector& pos, const CVector& rot, const CVector& scale)
-{
-	CTransform::Update(pos, rot, scale);
 }
 
 //更新処理

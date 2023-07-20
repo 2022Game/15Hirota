@@ -177,3 +177,13 @@ void CCollider::ChangePriority()
 	//CCollisionManager::Instance()->Remove(this); //一旦削除
 	//CCollisionManager::Instance()->Add(this); //追加
 }
+
+void CCollider::Matrix(CMatrix* m)
+{
+	glPushMatrix();
+	//コライダの中心座標を計算
+	//自分の座標×親の変換行列を掛ける
+	CVector pos = mPosition * *mpMatrix;
+	//中心座標へ移動
+	glMultMatrixf(CMatrix().Translate(pos.X(), pos.Y(), pos.Z()).M());
+}
