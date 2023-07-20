@@ -25,9 +25,14 @@ private:
 	//デストラクタ
 	~CSceneManager();
 
+	//次のシーンを読み込み
+	void LoadNextScene();
+
 	//CSceneManagerのインスタンス
 	static CSceneManager* mpInstance;
 	//現在読み込んでいるシーン
 	CSceneBase* mpScene;
+	//次に読み込むシーン
+	EScene mNextScene;
 };
 #endif

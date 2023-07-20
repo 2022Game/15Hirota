@@ -1,2 +1,7 @@
-﻿  CTitleScene.cpp
+﻿  CApplication.cpp
+  CGameScene.cpp
+  CSceneManager.cpp
+  CTitleScene.cpp
+  main.cpp
+  コードを生成中...
   GameProgramming.vcxproj -> C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_Game\Project\3DLv2_2023_vs2019_00\Debug\GameProgramming.exe
