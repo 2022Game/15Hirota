@@ -4,9 +4,10 @@
 #include "CTask.h"
 #include "CModel.h"
 #include "CColliderMesh.h"
+#include"CCharacter3.h"
 
 //Fieldクラス
-class CField :public CTask
+class CField :public CCharacter3
 {
 public:
 	//コンストラクタ
@@ -16,11 +17,8 @@ public:
 
 	//更新処理
 	void Update();
-	//描画処理
-	void Render();
 
 private:
-	CModel* mModel;	//Fieldのモデルデータ	
 	CColliderMesh mColliderMesh;	//Fieldの当たり判定用コライダ
 };
 #endif
