@@ -1,2 +1,16 @@
-﻿  CCollider.cpp
+﻿  CApplication.cpp
+  CBillBoard.cpp
+  CCharacter3.cpp
+  CPlayer.cpp
+  CXEnemy.cpp
+  main.cpp
+  コードを生成中...
+LINK : warning LNK4098: defaultlib 'MSVCRT' は他のライブラリの使用と競合しています。/NODEFAULTLIB:library を使用してください。
+LINK : warning LNK4098: defaultlib 'LIBCMT' は他のライブラリの使用と競合しています。/NODEFAULTLIB:library を使用してください。
+CUi.obj : warning LNK4099: PDB 'vc142.pdb' が 'CUi.obj' で、または 'C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_00\3DLv2_2023_vs2019_00\Debug\vc142.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+CTexture.obj : warning LNK4099: PDB 'vc142.pdb' が 'CTexture.obj' で、または 'C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_00\3DLv2_2023_vs2019_00\Debug\vc142.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+CTaskManager.obj : warning LNK4099: PDB 'vc142.pdb' が 'CTaskManager.obj' で、または 'C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_00\3DLv2_2023_vs2019_00\Debug\vc142.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+CSound.obj : warning LNK4099: PDB '' が 'CSound.obj' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+CFont.obj : warning LNK4099: PDB 'vc142.pdb' が 'CFont.obj' で、または 'C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_00\3DLv2_2023_vs2019_00\Debug\vc142.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+CCamera.obj : warning LNK4099: PDB 'vc142.pdb' が 'CCamera.obj' で、または 'C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_00\3DLv2_2023_vs2019_00\Debug\vc142.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
   GameProgramming.vcxproj -> C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_00\3DLv2_2023_vs2019_00\Debug\GameProgramming.exe

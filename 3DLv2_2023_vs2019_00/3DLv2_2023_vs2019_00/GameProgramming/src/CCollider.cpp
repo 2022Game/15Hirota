@@ -1,6 +1,7 @@
 #include "CCollider.h"
 #include "CCollisionManager.h"
 #include "CColliderLine.h"
+#include "CXPlayer.h"
 
 void CCollider::ChangePriority(int priority)
 {
@@ -169,8 +170,9 @@ bool CCollider::CollisionTriangleLine(CCollider* t, CCollider* l, CVector* a) {
 //優先度の変更
 void CCollider::ChangePriority()
 {
-	//自分の座標×親の変換行列を掛けてワールド座標を求める
-	CVector pos = mPosition * *mpMatrix;
+	//ボーンからの相対位置
+	//コライダの位置 = ボーンからの相対位置 * ボーンの合成行列
+	CVector pos = mPosition ;
 	//ベクトルの長さが優先度
 	ChangePriority(pos.Length());
 	//mPriority = pos.Length();
@@ -180,10 +182,5 @@ void CCollider::ChangePriority()
 
 void CCollider::Matrix(CMatrix* m)
 {
-	glPushMatrix();
-	//コライダの中心座標を計算
-	//自分の座標×親の変換行列を掛ける
-	CVector pos = mPosition * *mpMatrix;
-	//中心座標へ移動
-	glMultMatrixf(CMatrix().Translate(pos.X(), pos.Y(), pos.Z()).M());
+	mpMatrix = m;
 }

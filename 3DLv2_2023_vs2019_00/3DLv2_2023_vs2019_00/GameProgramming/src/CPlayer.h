@@ -30,9 +30,9 @@ private:
 	//プレイヤーのインスタンス
 	static CPlayer* spInstance;
 
-	CColliderLine mLine; //線分コライダ
-	CColliderLine mLine2; //線分コライダ
-	CColliderLine mLine3; //線分コライダ
+	//CColliderLine mLine; //線分コライダ
+	//CColliderLine mLine2; //線分コライダ
+	//CColliderLine mLine3; //線分コライダ
 	CInput mInput;
 };
 

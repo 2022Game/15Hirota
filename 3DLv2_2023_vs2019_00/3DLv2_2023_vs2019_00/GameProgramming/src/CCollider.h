@@ -46,10 +46,11 @@ public:
 		const CVector& position, float radius);
 	//親ポインタの取得
 	CCharacter3* Parent();
-	//描画
-	void Render();
 
 	void CCollider::Matrix(CMatrix* m);
+
+	//描画
+	void Render();
 protected:
 	EType mType;//コライダタイプ
 	//頂点

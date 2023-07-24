@@ -10,9 +10,9 @@
 CPlayer* CPlayer::spInstance = nullptr;
 
 CPlayer::CPlayer()
-	: mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
+	/*: mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
 	, mLine2(this, &mMatrix, CVector(0.0f, 5.0f, -8.0f), CVector(0.0f, -3.0f, -8.0f))
-	, mLine3(this, &mMatrix, CVector(9.0f, 0.0f, -8.0f), CVector(-9.0f, 0.0f, -8.0f))
+	, mLine3(this, &mMatrix, CVector(9.0f, 0.0f, -8.0f), CVector(-9.0f, 0.0f, -8.0f))*/
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -78,14 +78,14 @@ CPlayer* CPlayer::Instance()
 
 void CPlayer::Collision()
 {
-	//コライダの優先度変更
-	mLine.ChangePriority();
-	mLine2.ChangePriority();
-	mLine3.ChangePriority();
-	//衝突処理を実行
-	CCollisionManager::Instance()->Collision(&mLine, COLLISIONRANGE);
-	CCollisionManager::Instance()->Collision(&mLine2, COLLISIONRANGE);
-	CCollisionManager::Instance()->Collision(&mLine3, COLLISIONRANGE);
+	////コライダの優先度変更
+	//mLine.ChangePriority();
+	//mLine2.ChangePriority();
+	//mLine3.ChangePriority();
+	////衝突処理を実行
+	//CCollisionManager::Instance()->Collision(&mLine, COLLISIONRANGE);
+	//CCollisionManager::Instance()->Collision(&mLine2, COLLISIONRANGE);
+	//CCollisionManager::Instance()->Collision(&mLine3, COLLISIONRANGE);
 }
 
 void CPlayer::Collision(CCollider* m, CCollider* o) {
