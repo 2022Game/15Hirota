@@ -69,7 +69,7 @@ void CUi::Render()
 
 	//HP‚Ì•\Ž¦
 	//•¶Žš—ñ‚Ì•\Ž¦
-	sprintf(buf, "HP:%10.0f", mHp);
+	sprintf(buf, "HP:%d", mHp);
 	//•¶Žš—ñ‚Ì•`‰æ
 	mFont.Draw(550, 550, 8, 16, buf);
 

@@ -11,9 +11,11 @@ CField::CField()
 
 	//背景のモデルデータ読み込み
 	mpModel = new CModel;
-	mpModel->Load("res\\sky,obj", "res\\sky.mtl");
+	mpModel->Load("res\\sky.obj", "res\\sky.mtl");
 	//読み込んだ背景のモデルデータでコライダを作成
 	mColliderMesh.Set(this, &mMatrix, mpModel);
+
+	mScale = CVector(1.0f, 1.0f, 1.0f);
 }
 
 //デストラクタ

@@ -10,6 +10,7 @@
 //コンストラクタ
 CGameScene::CGameScene()
 	:CSceneBase(EScene::eGame)
+	//,mRemainTime(10.0f)
 {
 }
 
@@ -36,14 +37,14 @@ void CGameScene::Load()
 	player->Position(CVector(0.0f, 2.0f, 0.0f));
 	player->Rotation(CVector(0.0f, 180.0f, 0.0f));
 
-	//アイテム作成
+	//エイリアン作成
 	AddTask(new CAlien(CVector(10.0f, 0.0f, 0.0f), CVector(), CVector(1.0f, 1.0f, 1.0f)));
 
 	//プレイヤー作成
 	//AddTask(new CPlayer(CVector(0.0f, 5.0f, 0.0f), CVector(), CVector(1.0f, 1.0f, 1.0f)));
 
 	//アイテム作成
-	AddTask(new CItem1(CVector(20.0f, 0.0f, 0.0f), CVector(), CVector(1.0f, 1.0f, 1.0f)));
+	AddTask(new CItem1(CVector(50.0f, 0.0f, 0.0f), CVector(270.0f,0.0f,90.0f), CVector(0.5f, 0.5f, 0.5f)));
 
 	//ビルボードの生成
 	//new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
@@ -79,6 +80,17 @@ void CGameScene::Update()
 	u = CVector(0.0f, 1.0f, 0.0f) * player->MatrixRotate();
 	//カメラの設定
 	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
+
+	//デルタタイム
+	//前のフレームの処理でかかった時間
+	//60fpsだったら、処理落ちしていなければ、0.016秒
+	//1秒/60フレーム=0.01666...秒(1フレームにかかる時間)
+	//mRemainTime -= 0.016f;
+	//残り時間が無くなれば、タイトル画面へ遷移
+	/*if(mRemainTime<=0.0f)
+	{
+		CSceneManager::Instance()->LoadScene(EScene::eTitle);
+	}*/
 
 	if (player->IsDeath())
 	{

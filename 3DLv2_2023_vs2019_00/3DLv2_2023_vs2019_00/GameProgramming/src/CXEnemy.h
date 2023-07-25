@@ -9,6 +9,12 @@ public:
 	CXEnemy();
 
 	void Init(CModelX *model);
+
+	//衝突処理
+	void Collision(CCollider* m, CCollider* o);
+
+	//更新処理
+	void Update();
 private:
 	//コライダ宣言
 	CCollider mColSpherBody;	//体

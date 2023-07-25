@@ -6,6 +6,7 @@
 #include "CBullet.h"
 #include "CColliderLine.h"
 #include"CWeapon.h"
+#include "CSound.h"
 
 /*
 プレイヤークラス
@@ -33,6 +34,8 @@ public:
 private:
 	//プレイヤーのインスタンス
 	static CPlayer* spInstance;
+
+	CSound mSoundJump1;	//ジャンプSE
 
 	CColliderLine mLine; //線分コライダ
 	CColliderLine mLine2; //線分コライダ

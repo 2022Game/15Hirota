@@ -9,6 +9,7 @@ CXPlayer::CXPlayer()
 	, mColSpherHead(this, nullptr, CVector(0.0f, 5.0f, -3.0f), 0.5f)
 	,mColspherSword(this,nullptr,CVector(-10.0f,10.0f,50.0f),0.3f)
 {
+	mTag = EPLAYER;
 }
 
 void CXPlayer::Init(CModelX* model)

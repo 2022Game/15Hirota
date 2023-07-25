@@ -29,7 +29,7 @@ private:
 	float mRotX;	//ピッチ　X回転値
 	float mRotY;	//Y回転値
 	int mEnemy;	//敵の数
-	int mHp;
+	int mHp;	//プレイヤーのHP
 	int mTime;	//経過時間
 	CFont mFont;
 };

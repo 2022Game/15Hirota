@@ -3,7 +3,6 @@
 #include "CApplication.h"
 #include "CCollisionManager.h"
 
-
 #define OBJ "res\\12190_Heart_v1_L3.obj"	//モデルのファイル
 #define MTL "res\\12190_Heart_v1_L3.mtl"	//モデルのマテリアルファイル
 #define VELOCITY CVector(0.0f, 0.0f, 0.5f)	//移動速度
@@ -12,18 +11,18 @@
 #define HP 3 //HPの初期値は3
 
 CItem1::CItem1()
-	:CItem1(CVector(0.0f,0.0f,0.0f),CVector(0.0f,0.0f,0.0f),CVector(1.0f,1.0f,1.0f))
+	:CItem1(CVector(0.0f,0.0f,0.0f),CVector(0.0f,0.0f,0.0f),CVector(0.0f,1.0f,1.0f))
 {
 }
 
 //CItem1(位置, 回転, スケール)
 CItem1::CItem1(const CVector& pos, const CVector& rot, const CVector& scale)
 	//奥行き
-	: mLine(this, &mMatrix, CVector(0.0f, 15.0f, 18.0f), CVector(0.0f, 15.0f, -65.0f))
+	: mLine(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f))
 	//縦
-	, mLine2(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 11.0f, 0.0f))
+	, mLine2(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f))
 	//横
-	, mLine3(this, &mMatrix, CVector(10.0f, 15.0f, 0.0f), CVector(-10.0f, 15.0f, 0.0f))
+	, mLine3(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f))
 {
 	CTransform::Update(pos, rot, scale);
 

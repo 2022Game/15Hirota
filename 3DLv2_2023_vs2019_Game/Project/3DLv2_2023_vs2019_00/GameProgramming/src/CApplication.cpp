@@ -8,6 +8,7 @@
 #include "CCollisionManager.h"
 #include "CBillBoard.h"
 #include "CSceneManager.h"
+#include "GamePause.h"
 
 //クラスのstatic変数
 CTexture CApplication::mTexture;
@@ -15,13 +16,15 @@ CCharacterManager CApplication::mCharacterManager;
 //CCamera CApplication::mCamera;
 
 CUi* CApplication::spUi = nullptr;
+
+CUi* CApplication::Ui()
+{
+	return spUi;	//インスタンスを返す
+}
+
 CApplication::~CApplication()
 {
 	delete spUi;	//インスタンスUiの削除
-}
-CUi* CApplication::Ui()
-{
-	return spUi;
 }
 
 //後で削除する↓
@@ -49,6 +52,9 @@ CTexture* CApplication::Texture()
 
 void CApplication::Start()
 {
+	//ゲームポーズ用のクラスを生成
+	new GamePause();
+
 	//ゲームシーン読み込み
 	CSceneManager::Instance()->LoadScene(EScene::eTitle);
 
@@ -83,5 +89,4 @@ void CApplication::Update()
 	CCollisionManager::Instance()->Render();
 
 	spUi->Render();	//UIの描画
-
 }

@@ -7,6 +7,8 @@
 #define OBJ "res\\Hirutya-ru3.obj"	//モデルのファイル
 #define MTL "res\\Hirutya-ru3.mtl"	//モデルのマテリアルファイル
 
+#define SE_JUMP "res\\8bitjump2.wav" //ジャンプの音声ファイル
+
 //エネミークラスにインクルードする
 #include <math.h>
 #define M_PI        3.14159265358979323846264338327950288
@@ -16,7 +18,6 @@ const CVector GRAVITY(0.0f, -0.03f, 0.0f);
 #define HP 100	//hp
 
 #define JUMP_START CVector(0.0f,0.7f,0.0f)	//ジャンプ初速
-//#define JUMP_FORCE CVector(0.0f,500.0f,0.0f)
 
 #define ROTATION_YV	CVector(0.0f, 2.0f, 0.0f) //回転速度
 #define VELOCITY CVector(0.0f, 0.0f, 0.3f) //移動速度
@@ -49,13 +50,15 @@ CPlayer::CPlayer(const CVector& pos, const CVector& rot, const CVector& scale)
 	//インスタンスの設定
 	spInstance = this;
 	mHp = HP;
+	//ジャンプ音ロード
+	mSoundJump1.Load(SE_JUMP);
 
 	//プレイヤーの武器を生成
-	mpWeapon = new CWeapon();
-	mpWeapon->SetParent(this);
-	mpWeapon->Scale(CVector(1.0f, 1.0f, 1.0f));
-	mpWeapon->Position(CVector(1.575f, 3.15f, 0.0f)); //位置の設定
-	mpWeapon->Rotation(CVector(0.0f, 0.0f, 0.0f));
+	//mpWeapon = new CWeapon();
+	//mpWeapon->SetParent(this);
+	//mpWeapon->Scale(CVector(1.0f, 1.0f, 1.0f));
+	//mpWeapon->Position(CVector(1.575f, 3.15f, 0.0f)); //位置の設定
+	//mpWeapon->Rotation(CVector(0.0f, 0.0f, 0.0f));
 }
 
 int CPlayer::Hp()	//HP
@@ -116,10 +119,14 @@ void CPlayer::Update() {
 			Velocity(Velocity() + JUMP_START * MatrixRotate());
 			mJumpcount = 0;
 			isOnObstacleJump = true; // 障害物上でのジャンプフラグをセット
+			//ジャンプ音
+			mSoundJump1.Play(0.1f);
 		}
 		else if ((mJumpcount == 0 && isGrounded) || (Velocity().Y() <= 0.0f && isGrounded) || Velocity().Y() == 0.0f) {
 			// 地面からのジャンプ処理
 			Velocity(Velocity() + JUMP_START * MatrixRotate());
+			//ジャンプ音
+			mSoundJump1.Play(0.1f);
 			mJumpcount = 1;
 			isJumping = true;
 			isOnObstacle = false;
@@ -133,10 +140,6 @@ void CPlayer::Update() {
 		bullet->Position(CVector(0.0f, 0.0f, 10.0f) * Matrix());
 		bullet->Rotation(mRotation);
 		bullet->Update();
-		/*CApplication::TaskManager()->Add(bullet);
-		bullet.Set(0.1f, 1.5f);
-		bullet.Position(CVector(0.0f, 0.0f, 10.0f) * mMatrix);
-		bullet.Rotation(mRotation);*/
 	}
 	if (GetKeyState(VK_RBUTTON) & 0x80) {
 		//攻撃
@@ -194,6 +197,9 @@ void CPlayer::Update() {
 	}
 	//変換行列の更新
 	CTransform::Update();
+
+	//UI設定
+	CApplication::Ui()->Hp(mHp);
 }
 
 //プレイヤーのインスタンス

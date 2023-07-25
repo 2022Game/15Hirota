@@ -78,6 +78,8 @@ void CApplication::Update()
 	mXPlayer.Update();
 	//敵の更新
 	mXEnemy.Update();
+	//衝突処理
+	CCollisionManager::Instance()->Collision();
 	////最初のアニメーションの現在時間を45にする
 	//mModelX.AnimationSet()[0]->Time(
 	//	mModelX.AnimationSet()[0]->Time() + 1.0f);
