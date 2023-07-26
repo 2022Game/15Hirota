@@ -30,7 +30,21 @@ CSikaku::CSikaku(CModel* model, const CVector& position, const CVector& rotation
 	mRotation = rotation; //回転の設定
 	mScale = scale; //拡縮の設定
 
+	//タスクの優先度を設定
+	mPriority = (int)TaskPriority::eBackground;
+
+	//背景のモデルデータ読み込み
+	mpModel = new CModel;
+	mpModel->Load("res\\aoiro sikaku1.obj", "res\\aoiro sikaku.mtl");
+
+	//読み込んだ背景のモデルデータでコライダを作成
 	mColliderMesh1.Set(this, &mMatrix, mpModel);
+}
+
+CSikaku::~CSikaku()
+{
+	delete mpModel;
+	mpModel = nullptr;
 }
 
 void CSikaku::Update()

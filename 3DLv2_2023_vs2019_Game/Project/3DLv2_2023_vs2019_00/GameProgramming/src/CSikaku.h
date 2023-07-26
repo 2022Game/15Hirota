@@ -28,6 +28,7 @@ public:
 	//CEnemy(ƒ‚ƒfƒ‹,ˆÊ’u,‰ñ“],Šgkj
 	CSikaku(CModel* model, const CVector& position,
 		const CVector& rotation, const CVector& scale);
+	~CSikaku();
 
 	/*bool IsPlayerOnTop() const;*/
 

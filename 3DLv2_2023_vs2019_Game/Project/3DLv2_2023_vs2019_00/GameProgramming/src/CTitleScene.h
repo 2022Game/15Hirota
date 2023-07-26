@@ -21,5 +21,6 @@ public:
 private:
 	CInput mInput;	//“ü—Í”»’è—p
 	CImage* mBgImage;//”wŒi‰æ‘œ
+	CImage* mBgImage1;
 };
 #endif

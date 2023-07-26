@@ -29,7 +29,7 @@ void CGameScene::Load()
 	AddTask(new CField());
 
 	//四角ギミックはCSikakuGimmick内にまとめる
-	//AddTask(new CSikakuGimmick());
+	AddTask(new CSikakuGimmick());
 
 	//プレイヤー作成
 	CPlayer* player = new CPlayer();
@@ -38,7 +38,8 @@ void CGameScene::Load()
 	player->Rotation(CVector(0.0f, 180.0f, 0.0f));
 
 	//エイリアン作成
-	AddTask(new CAlien(CVector(10.0f, 0.0f, 0.0f), CVector(), CVector(1.0f, 1.0f, 1.0f)));
+	AddTask(new CAlien(CVector(10.0f, 0.0f, 0.0f), CVector(), CVector(0.5f, 0.5f, 0.5f)));
+	AddTask(new CAlien(CVector(30.0f, 0.0f, 0.0f), CVector(), CVector(0.5f, 0.5f, 0.5f)));
 
 	//プレイヤー作成
 	//AddTask(new CPlayer(CVector(0.0f, 5.0f, 0.0f), CVector(), CVector(1.0f, 1.0f, 1.0f)));

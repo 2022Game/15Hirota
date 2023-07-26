@@ -5,7 +5,7 @@
 #include "CInput.h"
 #include "CColliderLine.h"
 
-class CEnemy;
+//class CEnemy;
 
 /*
 エイリアンクラス
@@ -28,6 +28,28 @@ private:
 	CColliderLine mLine2; //線分コライダ
 	CColliderLine mLine3; //線分コライダ
 	CInput mInput;
+
+	CVector mPoint;	//目標地点
+	int mHp;	//ヒットポイント
+	CCollider mCollider;	//コライダ
+	bool IsFoundPlayer() const;	//プレイヤーを見つけたか
+	std::vector<CAlien*> mCAlien;	//リスト
+
+	//敵の状態
+	enum class EState
+	{
+		EIDLE,	//待機
+		ECHASE,	//追跡
+		EATTACK,//攻撃
+	};
+	//現在の状態
+	EState mState;
+	//待機
+	void UpdateIdle();
+	//追跡
+	void UpdateChase();
+	//攻撃
+	void UpdateAttack();
 };
 #endif
 

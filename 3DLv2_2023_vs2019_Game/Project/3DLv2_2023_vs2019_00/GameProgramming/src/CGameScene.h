@@ -17,6 +17,6 @@ public:
 	//シーンの更新処理
 	void Update();
 private:
-	//float mRemainTime;	//残り時間　実装するかは未定
+	float mRemainTime;	//残り時間　実装するかは未定
 };
 #endif
