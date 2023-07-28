@@ -23,7 +23,7 @@ void CXEnemy::Init(CModelX *model)
 void CXEnemy::Collision(CCollider* m, CCollider* o)
 {
     switch (m->Type()) {
-    case CCollider::ESPHERE:
+	case CCollider::ESPHERE:
 		if (m->Type() == CCollider::EType::ESPHERE &&
 			o->Type() == CCollider::EType::ESPHERE &&
 			o->Parent()->Tag() == CCharacter3::EPLAYER &&
@@ -32,8 +32,8 @@ void CXEnemy::Collision(CCollider* m, CCollider* o)
 			CCollider::Collision(m, o))
 		{
 			ChangeAnimation(11, false, 30);
+			CXCharacter::Update();
 		}
-
 		break;
     }
 }
