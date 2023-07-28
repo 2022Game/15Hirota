@@ -62,7 +62,7 @@ CCollider::~CCollider() {
 }
 
 CCollider::CCollider(CCharacter3* parent, CMatrix* matrix,
-	const CVector& position, float radius,ETag tag) 
+	const CVector& position, float radius, ETag tag) 
 	: CCollider() 
 {
 	//êeê›íË

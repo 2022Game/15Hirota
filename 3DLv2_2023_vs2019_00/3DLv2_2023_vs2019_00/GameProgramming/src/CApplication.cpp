@@ -78,29 +78,7 @@ void CApplication::Update()
 	mXPlayer.Update();
 	//敵の更新
 	mXEnemy.Update();
-	//衝突処理
-	CCollisionManager::Instance()->Collision();
-	////最初のアニメーションの現在時間を45にする
-	//mModelX.AnimationSet()[0]->Time(
-	//	mModelX.AnimationSet()[0]->Time() + 1.0f);
-	//mModelX.AnimationSet()[0]->Time(
-	//	(int)mModelX.AnimationSet()[0]->Time() %
-	//	(int)(mModelX.AnimationSet()[0]->MaxTime() + 1));
-	////最初のアニメーションの重みを1.0(100%)にする
-	//mModelX.AnimationSet()[0]->Weight(1.0f);
-	////フレームの変換行列をアニメーションで更新する
-	//mModelX.AnimateFrame();
-	////フレームの合成行列を計算する
-	//mModelX.Frames()[0]->AnimateCombined(&mMatrix);
-
-	//歩くアニメーションに切り替える
-	//mCharacter.ChangeAnimation(1, true, 60);
-
-	/*if (mCharacter.IsAnimationFinished()) {
-		int index = (mCharacter.AnimationIndex() + 1) % mModelX.AnimationSet().size();
-		mCharacter.ChangeAnimation(index, true, 60);
-	}*/
-
+	
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
 	//視点を求める
@@ -144,10 +122,13 @@ void CApplication::Update()
 	//モデル描画
 	//mModelX.Render();
 	mXPlayer.Render();
-	//コライダの描画
-	CCollisionManager::Instance()->Render();
 	//敵描画
 	mXEnemy.Render();
+	//コライダの描画
+	CCollisionManager::Instance()->Render();
+	//衝突処理
+	CCollisionManager::Instance()->Collision();
+
 
 	//2D描画開始
 	CCamera::Start(0, 800, 0, 600);

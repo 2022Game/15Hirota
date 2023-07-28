@@ -1,4 +1,2 @@
-﻿LINK : warning LNK4098: defaultlib 'MSVCRT' は他のライブラリの使用と競合しています。/NODEFAULTLIB:library を使用してください。
-LINK : warning LNK4098: defaultlib 'LIBCMT' は他のライブラリの使用と競合しています。/NODEFAULTLIB:library を使用してください。
-CEnemy.obj : error LNK2019: 未解決の外部シンボル "public: __thiscall CCollider::CCollider(class CCharacter3 *,class CMatrix *,class CVector const &,float)" (??0CCollider@@QAE@PAVCCharacter3@@PAVCMatrix@@ABVCVector@@M@Z) が関数 "public: __thiscall CEnemy::CEnemy(class CModel *,class CVector const &,class CVector const &,class CVector const &)" (??0CEnemy@@QAE@PAVCModel@@ABVCVector@@11@Z) で参照されました
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_00\3DLv2_2023_vs2019_00\Debug\GameProgramming.exe : fatal error LNK1120: 1 件の未解決の外部参照
+﻿  CXPlayer.cpp
+  GameProgramming.vcxproj -> C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv2_2023_vs2019_00\3DLv2_2023_vs2019_00\Debug\GameProgramming.exe
