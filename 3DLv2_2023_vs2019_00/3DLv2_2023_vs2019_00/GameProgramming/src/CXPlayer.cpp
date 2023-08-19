@@ -17,11 +17,11 @@ void CXPlayer::Init(CModelX* model)
 	CXCharacter::Init(model);
 	//‡¬s—ñ
 	//‘Ì
-	mColSpherBody.Matrix(&mpCombinedMatrix[8]);
+	mColSpherBody.Matrix(&mpCombinedMatrix[9]);
 	//“ª
-	mColSpherHead.Matrix(&mpCombinedMatrix[11]);
+	mColSpherHead.Matrix(&mpCombinedMatrix[12]);
 	//Œ•
-	mColspherSword.Matrix(&mpCombinedMatrix[21]);
+	mColspherSword.Matrix(&mpCombinedMatrix[22]);
 }
 
 void CXPlayer::Update()

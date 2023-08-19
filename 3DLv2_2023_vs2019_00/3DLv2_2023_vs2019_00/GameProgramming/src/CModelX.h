@@ -6,6 +6,8 @@
 
 #define MODEL_FILE "res\\ラグナ.x"	//入力ファイル名
 
+#define MODEL_KNIGHT "res\\knight_low.x"	//ナイトモデル
+
 //宣言
 class CModelX;
 class CModelXFrame;
@@ -45,6 +47,8 @@ public:
 	CModelXFrame(CModelX* model);
 	//デストラクタ
 	~CModelXFrame();
+	//デフォルトコンストラクタ
+	CModelXFrame();
 	void Render();
 	int Index();
 	//合成行列の作成
