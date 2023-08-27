@@ -19,6 +19,8 @@ private:
 	//ƒRƒ‰ƒCƒ_éŒ¾
 	CCollider mColSpherBody;	//‘Ì
 	CCollider mColSpherHead;	//“ª
-	CCollider mColspherSword;	//Œ•
+	CCollider mColspherSword0;	//Œ•
+	CCollider mColspherSword1;	//Œ•
+	CCollider mColspherSword2;	//Œ•
 };
 #endif

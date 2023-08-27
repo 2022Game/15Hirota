@@ -80,6 +80,7 @@ public:
 	char* GetToken();
 	char* Token();
 	bool EOT();	//トークンが無くなったらture
+	
 	//フレーム名に該当するフレームのアドレスを返す
 	CModelXFrame* FindFrame(char* name);
 	std::vector<CAnimationSet*>& AnimationSet();
@@ -94,6 +95,17 @@ public:
 	//マテリアルの検索
 	CMaterial* FindMaterial(char* name);
 	void AnimateVertex(CMatrix*);
+
+	/*
+	アニメーションを抜き出す
+	idx:分割する対アニメーションセットの番号
+	start:分割したいアニメーションの開始時間
+	end:分割したいアニメーションの終了時間
+	name:追加するアニメーションセットの名前
+	*/
+	void CModelX::SeparateAnimationSet(
+		int idx, int start, int end, char* name);
+	
 private:
 	std::vector<CModelXFrame*> mFrame;	//フレームの配列
 	std::vector<CAnimationSet*> mAnimationSet;	//アニメーションセットの配列
@@ -172,6 +184,7 @@ class CAnimationSet {
 public:
 	CAnimationSet(CModelX* model);
 	~CAnimationSet();
+	CAnimationSet();
 	void Time(float time);	//時間の設定
 	void Weight(float weight);	//重みの設定
 	void AnimateMatrix(CModelX* model);
@@ -198,6 +211,8 @@ class CAnimation {
 public:
 	CAnimation(CModelX* model);
 	~CAnimation();
+	CAnimation();
+	
 private:
 	char *mpFrameName;	//フレーム名
 	int mFrameIndex;	//フレーム番号
@@ -212,6 +227,8 @@ CAnimationKey
 class CAnimationKey {
 	friend CAnimation;
 	friend CAnimationSet;
+	friend CModelX;
+public:
 private:
 	//時間
 	float mTime;

@@ -1,9 +1,11 @@
 #include "CXEnemy.h"
 
 CXEnemy::CXEnemy()
-	:mColSpherBody(this, nullptr, CVector(), 0.5f,CCollider::ETag::EBODY)
-	, mColSpherHead(this, nullptr, CVector(0.0f, 5.0f, -3.0f), 0.5f)
-	, mColspherSword(this, nullptr, CVector(-10.0f, 10.0f, 50.0f), 0.3f)
+	:mColSpherBody(this, nullptr, CVector(0.5f, -1.0f, 0.0f), 0.0f)
+	, mColSpherHead(this, nullptr, CVector(0.0f, 1.0f, 0.0f), 1.5f)
+	, mColspherSword0(this, nullptr, CVector(0.7f, 3.5f, -0.2f), 0.5f)
+	, mColspherSword1(this, nullptr, CVector(0.5f, 2.5f, -0.2f), 0.5f)
+	, mColspherSword2(this, nullptr, CVector(0.3f, 1.5f, -0.2f), 0.5f)
 {
 	mTag = EENEMY;
 }
@@ -13,11 +15,13 @@ void CXEnemy::Init(CModelX *model)
 	CXCharacter::Init(model);
 	//çáê¨çsóÒ
 	//ëÃ
-	mColSpherBody.Matrix(&mpCombinedMatrix[8]);
+	mColSpherBody.Matrix(&mpCombinedMatrix[1]);
 	//ì™
-	mColSpherHead.Matrix(&mpCombinedMatrix[11]);
+	mColSpherHead.Matrix(&mpCombinedMatrix[1]);
 	//åï
-	mColspherSword.Matrix(&mpCombinedMatrix[21]);
+	mColspherSword0.Matrix(&mpCombinedMatrix[26]);
+	mColspherSword1.Matrix(&mpCombinedMatrix[26]);
+	mColspherSword2.Matrix(&mpCombinedMatrix[26]);
 }
 
 void CXEnemy::Collision(CCollider* m, CCollider* o)
