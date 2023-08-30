@@ -105,6 +105,11 @@ public:
 	*/
 	void CModelX::SeparateAnimationSet(
 		int idx, int start, int end, char* name);
+
+	bool IsLoaded();
+
+	//アニメーションセットの追加
+	void AddAnimationSet(const char* file);
 	
 private:
 	std::vector<CModelXFrame*> mFrame;	//フレームの配列
@@ -115,6 +120,7 @@ private:
 	char mToken[1024];	//取り出した単語の領域t
 	//cが区切り文字ならtrueを返す
 	bool IsDelimiter(char c);
+	bool mLoaded;
 };
 
 //CMeshクラスの定義を追加する

@@ -76,6 +76,10 @@ void CApplication::Start()
 	mKnight.SeparateAnimationSet(0, 10, 80, "walk");		//10:ダミー
 	mKnight.SeparateAnimationSet(0, 1160, 1260, "death1");	//11:ダウン
 
+	mpPaladin = new CPaladin();
+	mpPaladin->Position(CVector(-1.0f, 0.0f, 5.0f));
+	mpPaladin->ChangeAnimation(1, true, 100);
+
 	//キャラクターにモデルを設定
 	mXPlayer.Init(&mModelX);
 	mFont.Load("FontG.png", 1, 4096 / 64);
@@ -93,6 +97,8 @@ void CApplication::Update()
 	mXPlayer.Update();
 	//敵の更新
 	mXEnemy.Update();
+	//パラディンの更新
+	mpPaladin->Update();
 	
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
@@ -141,6 +147,8 @@ void CApplication::Update()
 	mXPlayer.Render();
 	//敵描画
 	mXEnemy.Render();
+	//パラディン描画
+	mpPaladin->Render();
 	//コライダの描画
 	CCollisionManager::Instance()->Render();
 	//衝突処理

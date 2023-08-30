@@ -29,6 +29,8 @@
 
 #include "CXEnemy.h"
 
+#include "CPaladin.h"
+
 class CApplication
 {
 private:
@@ -82,6 +84,8 @@ private:
 	CXEnemy mXEnemy;
 	//ナイトのインスタンス
 	CModelX mKnight;
+	//パラディン ポインタ
+	CPaladin* mpPaladin;
 	
 public:
 	~CApplication();
