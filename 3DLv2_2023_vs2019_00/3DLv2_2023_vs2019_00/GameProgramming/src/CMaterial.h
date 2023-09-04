@@ -1,7 +1,9 @@
 #ifndef CMATERIAL_H
 #define CMATERIAL_H
+//#include "glew.h"
 #include "CTexture.h"
 #include "CModelX.h"
+#include "CMyShader.h"
 #define MATERIAL_NAME_LEN 64 //名前の長さ
 
 /*
@@ -9,6 +11,7 @@
 マテリアルのデータを扱う
 */
 class CMaterial {
+	friend CMyShader;
 public:
 	//テクスチャの取得
 	CTexture* Texture();

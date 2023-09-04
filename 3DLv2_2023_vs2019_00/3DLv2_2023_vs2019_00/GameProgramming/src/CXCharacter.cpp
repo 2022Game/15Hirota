@@ -1,3 +1,4 @@
+#include "glew.h"
 #include "CXCharacter.h"
 
 CXCharacter::CXCharacter()
@@ -99,9 +100,10 @@ void CXCharacter::Update(CMatrix& matrix) {
 描画する
 */
 void CXCharacter::Render() {
-	//頂点アニメーションを適用する
-	mpModel->AnimateVertex(mpCombinedMatrix);
-	mpModel->Render();
+	////頂点アニメーションを適用する
+	//mpModel->AnimateVertex(mpCombinedMatrix);
+	//mpModel->Render();
+	mpModel->RenderShader(mpCombinedMatrix);
 }
 
 //アニメーション終了時の定義
