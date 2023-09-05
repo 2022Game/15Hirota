@@ -6,7 +6,7 @@
 #include "glut.h"
 #include "CVector.h"
 #include "CMaterial.h"
-#include "CVertexX.h"
+#include "CVertex.h"
 
 CModelX::CModelX()
 	:mpPointer(nullptr)
