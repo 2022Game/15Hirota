@@ -61,6 +61,9 @@ CTexture* CApplication::Texture()
 
 void CApplication::Start()
 {
+	//カメラの設定
+	mActionCamera.Set(5.0f, -15.0f, 180.0f);
+
 	//3Dモデルファイルの読み込み
 	mModelX.Load(MODEL_FILE);
 	mKnight.Load(MODEL_KNIGHT);
@@ -100,16 +103,20 @@ void CApplication::Update()
 	//パラディンの更新
 	mpPaladin->Update();
 	
-	//カメラのパラメータを作成する
-	CVector e, c, u;//視点、注視点、上方向
-	//視点を求める
-	e = CVector(1.0f, 2.0f, 10.f);
-	//注視点を求める
-	c = CVector();
-	//上方向を求める
-	u = CVector(0.0f,1.0f,0.0f);
-	//カメラの設定
-	gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
+	////カメラのパラメータを作成する
+	//CVector e, c, u;//視点、注視点、上方向
+	////視点を求める
+	//e = CVector(1.0f, 2.0f, 10.f);
+	////注視点を求める
+	//c = CVector();
+	////上方向を求める
+	//u = CVector(0.0f,1.0f,0.0f);
+	////カメラの設定
+	//gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
+	//カメラ設定
+	mActionCamera.Position(mXPlayer.Position() + CVector(0.0f, 2.0f, 0.0f));
+	mActionCamera.Update();
+	mActionCamera.Render();
 	//モデルビュー行列の取得
 	glGetFloatv(GL_MODELVIEW_MATRIX, mModelViewInverse.M());
 
@@ -119,24 +126,24 @@ void CApplication::Update()
 	mModelViewInverse.M(1, 3, 0);
 	mModelViewInverse.M(2, 3, 0);
 
-	//X軸＋回転
-	if (mInput.Key('K')) {
-		mMatrix = mMatrix * CMatrix().RotateX(1);
-	}
-	//Y軸＋回転
-	if (mInput.Key('L')) {
-		mMatrix = mMatrix * CMatrix().RotateY(1);
-	}
-	//X軸-回転
-	if (mInput.Key('I')) {
-		mMatrix = mMatrix * CMatrix().RotateX(-1);
-	}
-	//Y軸-回転
-	if (mInput.Key('J')) {
-		mMatrix = mMatrix * CMatrix().RotateY(-1);
-	}
-	//行列設定
-	glMultMatrixf(mMatrix.M());
+	////X軸＋回転
+	//if (mInput.Key('K')) {
+	//	mMatrix = mMatrix * CMatrix().RotateX(1);
+	//}
+	////Y軸＋回転
+	//if (mInput.Key('L')) {
+	//	mMatrix = mMatrix * CMatrix().RotateY(1);
+	//}
+	////X軸-回転
+	//if (mInput.Key('I')) {
+	//	mMatrix = mMatrix * CMatrix().RotateX(-1);
+	//}
+	////Y軸-回転
+	//if (mInput.Key('J')) {
+	//	mMatrix = mMatrix * CMatrix().RotateY(-1);
+	//}
+	////行列設定
+	//glMultMatrixf(mMatrix.M());
 
 	//頂点にアニメーションを適用する
 	mModelX.AnimateVertex();

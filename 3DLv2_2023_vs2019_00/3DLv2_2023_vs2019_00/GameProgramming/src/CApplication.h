@@ -31,6 +31,8 @@
 
 #include "CPaladin.h"
 
+#include "CActionCamera.h"
+
 class CApplication
 {
 private:
@@ -86,6 +88,8 @@ private:
 	CModelX mKnight;
 	//パラディン ポインタ
 	CPaladin* mpPaladin;
+	//CActionCamera
+	CActionCamera mActionCamera;
 	
 public:
 	~CApplication();
