@@ -57,6 +57,7 @@ void CActionCamera::Update()
 			mRotation.X(80.0f);
 		}
 	}
+
 	CTransform::Update();
 	mCenter = mPosition;
 	mEye = mPosition + mMatrixRotate.VectorZ() * mScale.Z();
@@ -69,4 +70,14 @@ void CActionCamera::Render()
 		mUp.X(), mUp.Y(), mUp.Z());
 	//モデルビュー行列の取得
 	glGetFloatv(GL_MODELVIEW_MATRIX, mModelView.M());
+}
+
+CVector CActionCamera::VectorX()
+{
+	return CVector(-mModelView.M(0, 0), -mModelView.M(1, 0), -mModelView.M(2, 0));
+}
+
+CVector CActionCamera::VectorZ()
+{
+	return CVector(-mModelView.M(0, 2), -mModelView.M(1, 2), -mModelView.M(2, 2));
 }

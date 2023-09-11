@@ -5,6 +5,7 @@
 #include "CTransform.h"
 #include "CMatrix.h"
 #include "CInput.h"
+#include "CXCharacter.h"
 
 /*
 カメラクラス
@@ -23,6 +24,10 @@ public:
 	//カメラ適用
 	void Render();
 
+	//カメラのX軸取得
+	CVector VectorX();
+	//カメラのZ軸取得
+	CVector VectorZ();
 private:
 	//インスタンス
 	static CActionCamera* spInstance;
@@ -36,5 +41,6 @@ private:
 	CMatrix mModelView;
 	//入力クラス
 	CInput mInput;
+
 };
 #endif

@@ -102,7 +102,7 @@ void CApplication::Update()
 	mXEnemy.Update();
 	//パラディンの更新
 	mpPaladin->Update();
-	
+
 	////カメラのパラメータを作成する
 	//CVector e, c, u;//視点、注視点、上方向
 	////視点を求める
@@ -114,6 +114,7 @@ void CApplication::Update()
 	////カメラの設定
 	//gluLookAt(e.X(), e.Y(), e.Z(), c.X(), c.Y(), c.Z(), u.X(), u.Y(), u.Z());
 	//カメラ設定
+
 	mActionCamera.Position(mXPlayer.Position() + CVector(0.0f, 2.0f, 0.0f));
 	mActionCamera.Update();
 	mActionCamera.Render();
