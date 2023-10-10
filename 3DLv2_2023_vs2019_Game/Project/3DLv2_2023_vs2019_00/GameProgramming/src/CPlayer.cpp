@@ -4,8 +4,8 @@
 #include "CCollisionManager.h"
 #include "CEnemyManager.h"
 
-#define OBJ "res\\fu-tao.obj"	//モデルのファイル
-#define MTL "res\\fu-tao.mtl"	//モデルのマテリアルファイル
+#define OBJ "res\\Unityちゃん.obj"	//モデルのファイル
+#define MTL "res\\Unityちゃん.mtl"	//モデルのマテリアルファイル
 
 #define SE_JUMP "res\\8bitjump2.wav" //ジャンプの音声ファイル
 

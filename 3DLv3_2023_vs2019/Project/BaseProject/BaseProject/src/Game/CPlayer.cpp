@@ -7,7 +7,7 @@
 CPlayer* CPlayer::spInstance = nullptr;
 
 // プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Player\\player.x"
+#define MODEL_PATH "Character\\Player\\Monster1.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =

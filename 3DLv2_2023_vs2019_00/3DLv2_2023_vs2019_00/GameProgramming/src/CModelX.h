@@ -5,7 +5,7 @@
 #include "CMatrix.h"	//マトリクスクラスのインクルード
 #include "CMyShader.h"	//シェーダークラスのインクルード
 
-#define MODEL_FILE "res\\ラグナ.x"	//入力ファイル名
+#define MODEL_FILE "res\\.x"	//入力ファイル名
 
 #define MODEL_KNIGHT "res\\knight\\knight_low.x"	//ナイトモデル
 
