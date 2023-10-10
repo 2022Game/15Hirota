@@ -22,7 +22,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 };
 
 #define PLAYER_HEIGHT 16.0f
-#define MOVE_SPEED 0.375f
+#define MOVE_SPEED 1.0f
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f

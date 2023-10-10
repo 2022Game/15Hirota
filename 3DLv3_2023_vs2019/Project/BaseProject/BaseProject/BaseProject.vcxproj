@@ -58,6 +58,7 @@
     <ClCompile Include="src\Game\CTitleScene.cpp" />
     <ClCompile Include="src\Game\CXCharacter.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\CMaria.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CBillBoard.h" />
@@ -114,6 +115,7 @@
     <ClInclude Include="src\Game\CRotateFloor.h" />
     <ClInclude Include="src\Game\CTitleScene.h" />
     <ClInclude Include="src\Game\CXCharacter.h" />
+    <ClInclude Include="src\CMaria.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8802AF2F-2920-4700-89F2-CA6778727283}</ProjectGuid>

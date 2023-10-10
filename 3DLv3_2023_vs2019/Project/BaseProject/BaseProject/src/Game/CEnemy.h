@@ -15,8 +15,6 @@ public:
 	CEnemy();
 	// XVˆ—
 	void Update();
-
-	void Render();
 private:
 };
 

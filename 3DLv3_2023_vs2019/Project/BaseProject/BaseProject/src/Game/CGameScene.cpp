@@ -2,7 +2,9 @@
 #include "CSceneManager.h"
 #include "CField.h"
 #include "CPlayer.h"
+#include "CEnemy.h"
 #include "CCamera.h"
+#include "CMaria.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -25,6 +27,10 @@ void CGameScene::Load()
 
 	CPlayer* player = new CPlayer();
 	player->Scale(1.0f, 1.0f, 1.0f);
+
+	CMaria* maria = new CMaria();
+	maria->Scale(1.5f, 1.5f, 1.5f);
+	maria->Position(100.0f, 5.0f, 100.0f);
 
 	CCamera* mainCamera = new CCamera
 	(

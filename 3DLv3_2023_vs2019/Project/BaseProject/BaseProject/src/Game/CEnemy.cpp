@@ -3,7 +3,7 @@
 #include "CCollisionManager.h"
 
 //敵1のモデル
-#define MODEL_Enemy "Character\\Player\\Squid.Model.x"
+//#define MODEL_Enemy "Character\\Player\\Maria.Model.x"
 
 // コンストラクタ
 CEnemy::CEnemy()
@@ -11,15 +11,10 @@ CEnemy::CEnemy()
 {
 	// モデルデータ読み込み
 	CModelX* model = new CModelX();
-	model->Load(MODEL_Enemy);
+	//model->Load();
 }
 
 //更新処理
 void CEnemy::Update()
 {
-}
-
-void CEnemy::Render()
-{
-	CCharaBase::Render();
 }
