@@ -6,7 +6,7 @@
 CMaria* CMaria::spInstance = nullptr;
 
 // プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Player\\Maria.Model.x"
+#define MODEL_PATH "Character\\Maria\\Maria.Model.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CMaria::AnimData CMaria::ANIM_DATA[] =

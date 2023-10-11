@@ -7,18 +7,18 @@
 CPlayer* CPlayer::spInstance = nullptr;
 
 // プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Player\\UnityChan.Model7.x"
+#define MODEL_PATH "Character\\UnityChan\\UnityChan.Model9.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 {
 	{ "",										true,	0.0f	},	// Tポーズ
-	{ "Character\\Player\\anim\\idle.x",		true,	153.0f	},	// 待機
-	{ "Character\\Player\\anim\\walk.x",		true,	66.0f	},	// 歩行
-	{ "Character\\Player\\anim\\attack.x",		false,	91.0f	},	// 攻撃
-	{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
-	{ "Character\\Player\\anim\\jump.x",		true,	1.0f	},	// ジャンプ中
-	{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
+	{ "Character\\UnityChan\\anim\\UnityChan_Animation_Pose1.x",		true,	153.0f	},	// 待機
+	//{ "Character\\Player\\anim\\walk.x",		true,	66.0f	},	// 歩行
+	//{ "Character\\Player\\anim\\attack.x",		false,	91.0f	},	// 攻撃
+	//{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
+	//{ "Character\\Player\\anim\\jump.x",		true,	1.0f	},	// ジャンプ中
+	//{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
 };
 
 #define PLAYER_HEIGHT 16.0f
@@ -40,14 +40,14 @@ CPlayer::CPlayer()
 	CModelX* model = new CModelX();
 	model->Load(MODEL_PATH);
 
-	//// テーブル内のアニメーションデータを読み込み
-	//int size = ARRAY_SIZE(ANIM_DATA);
-	//for (int i = 0; i < size; i++)
-	//{
-	//	const AnimData& data = ANIM_DATA[i];
-	//	if (data.path.empty()) continue;
-	//	model->AddAnimationSet(data.path.c_str());
-	//}
+	// テーブル内のアニメーションデータを読み込み
+	int size = ARRAY_SIZE(ANIM_DATA);
+	for (int i = 0; i < size; i++)
+	{
+		const AnimData& data = ANIM_DATA[i];
+		if (data.path.empty()) continue;
+		model->AddAnimationSet(data.path.c_str());
+	}
 	// CXCharacterの初期化
 	Init(model);
 
