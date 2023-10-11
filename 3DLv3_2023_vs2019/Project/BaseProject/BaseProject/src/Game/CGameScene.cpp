@@ -30,7 +30,7 @@ void CGameScene::Load()
 
 	CMaria* maria = new CMaria();
 	maria->Scale(1.5f, 1.5f, 1.5f);
-	maria->Position(100.0f, 5.0f, 100.0f);
+	maria->Position(0.0f, 10.0f, 0.0f);
 
 	CCamera* mainCamera = new CCamera
 	(

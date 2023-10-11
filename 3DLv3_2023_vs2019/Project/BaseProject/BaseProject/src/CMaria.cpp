@@ -6,7 +6,7 @@
 CMaria* CMaria::spInstance = nullptr;
 
 // プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Player\\Monster1.x"
+#define MODEL_PATH "Character\\Player\\Maria.Model.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CMaria::AnimData CMaria::ANIM_DATA[] =
@@ -39,14 +39,14 @@ CMaria::CMaria()
 	CModelX* model = new CModelX();
 	model->Load(MODEL_PATH);
 
-	// テーブル内のアニメーションデータを読み込み
-	int size = ARRAY_SIZE(ANIM_DATA);
-	for (int i = 0; i < size; i++)
-	{
-		const AnimData& data = ANIM_DATA[i];
-		if (data.path.empty()) continue;
-		model->AddAnimationSet(data.path.c_str());
-	}
+	//// テーブル内のアニメーションデータを読み込み
+	//int size = ARRAY_SIZE(ANIM_DATA);
+	//for (int i = 0; i < size; i++)
+	//{
+	//	const AnimData& data = ANIM_DATA[i];
+	//	if (data.path.empty()) continue;
+	//	model->AddAnimationSet(data.path.c_str());
+	//}
 	// CXCharacterの初期化
 	Init(model);
 

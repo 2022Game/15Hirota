@@ -7,7 +7,7 @@ CField::CField()
 	: CObjectBase(ETag::eField, ETaskPriority::eBackground)
 {
 	mpModel = new CModel();
-	mpModel->Load("Field\\field.obj", "Field\\field.mtl");
+	mpModel->Load("Field\\ステージ(仮).obj", "Field\\ステージ(仮).mtl");
 
 	mpColliderMesh = new CColliderMesh();
 	mpColliderMesh->Set(this, ELayer::eField, mpModel);

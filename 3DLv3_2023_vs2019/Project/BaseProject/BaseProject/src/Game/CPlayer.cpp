@@ -7,7 +7,7 @@
 CPlayer* CPlayer::spInstance = nullptr;
 
 // プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Player\\Monster1.x"
+#define MODEL_PATH "Character\\Player\\UnityChan.Model7.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
@@ -40,14 +40,14 @@ CPlayer::CPlayer()
 	CModelX* model = new CModelX();
 	model->Load(MODEL_PATH);
 
-	// テーブル内のアニメーションデータを読み込み
-	int size = ARRAY_SIZE(ANIM_DATA);
-	for (int i = 0; i < size; i++)
-	{
-		const AnimData& data = ANIM_DATA[i];
-		if (data.path.empty()) continue;
-		model->AddAnimationSet(data.path.c_str());
-	}
+	//// テーブル内のアニメーションデータを読み込み
+	//int size = ARRAY_SIZE(ANIM_DATA);
+	//for (int i = 0; i < size; i++)
+	//{
+	//	const AnimData& data = ANIM_DATA[i];
+	//	if (data.path.empty()) continue;
+	//	model->AddAnimationSet(data.path.c_str());
+	//}
 	// CXCharacterの初期化
 	Init(model);
 
