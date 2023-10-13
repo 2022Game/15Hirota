@@ -9,8 +9,7 @@ CField::CField()
 	mpModel = new CModel();
 	mpModel->Load("Field\\ステージ1(仮)3.obj", "Field\\ステージ1(仮)3.mtl");
 
-	mpColliderMesh = new CColliderMesh();
-	mpColliderMesh->Set(this, ELayer::eField, mpModel);
+	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel);
 
 	CreateFieldObjects();
 }

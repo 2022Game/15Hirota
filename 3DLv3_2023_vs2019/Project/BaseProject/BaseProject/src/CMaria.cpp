@@ -1,3 +1,4 @@
+//
 #include "CMaria.h"
 //#include "CInput.h"
 #include "CCamera.h"
@@ -6,7 +7,7 @@
 CMaria* CMaria::spInstance = nullptr;
 
 // プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Maria\\Maria.Model.x"
+#define MODEL_PATH "Character\\Monster1\\Monster_1.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CMaria::AnimData CMaria::ANIM_DATA[] =
@@ -39,14 +40,14 @@ CMaria::CMaria()
 	CModelX* model = new CModelX();
 	model->Load(MODEL_PATH);
 
-	//// テーブル内のアニメーションデータを読み込み
-	//int size = ARRAY_SIZE(ANIM_DATA);
-	//for (int i = 0; i < size; i++)
-	//{
-	//	const AnimData& data = ANIM_DATA[i];
-	//	if (data.path.empty()) continue;
-	//	model->AddAnimationSet(data.path.c_str());
-	//}
+	// テーブル内のアニメーションデータを読み込み
+	int size = ARRAY_SIZE(ANIM_DATA);
+	for (int i = 0; i < size; i++)
+	{
+		const AnimData& data = ANIM_DATA[i];
+		if (data.path.empty()) continue;
+		model->AddAnimationSet(data.path.c_str());
+	}
 	// CXCharacterの初期化
 	Init(model);
 
@@ -251,14 +252,14 @@ void CMaria::Update()
 }
 
 // 衝突処理
-void CMaria::Collision(CCollider* self, CCollider* other, const CVector& adjust)
+void CMaria::Collision(CCollider* self, CCollider* other, const const CHitInfo& hit)
 {
 	if (self == mpColliderLine)
 	{
 		if (other->Layer() == ELayer::eField)
 		{
 			mMoveSpeed.Y(0.0f);
-			Position(Position() + adjust);
+			Position(Position() + hit.adjust);
 			mIsGrounded = true;
 
 			if (other->Tag() == ETag::eRideableObject)

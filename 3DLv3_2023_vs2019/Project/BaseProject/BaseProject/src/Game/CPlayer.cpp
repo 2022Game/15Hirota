@@ -7,13 +7,13 @@
 CPlayer* CPlayer::spInstance = nullptr;
 
 // プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\UnityChan\\UnityChan.Model9.x"
+#define MODEL_PATH "Character\\UnityChan\\UnityChan_Model_9.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 {
 	{ "",										true,	0.0f	},	// Tポーズ
-	{ "Character\\UnityChan\\anim\\UnityChan_Animation_Pose1.x",		true,	153.0f	},	// 待機
+	{ "Character\\UnityChan\\anim1\\UnityChan_Animation_仮.x",		true,	145.0f	},	//待機
 	//{ "Character\\Player\\anim\\walk.x",		true,	66.0f	},	// 歩行
 	//{ "Character\\Player\\anim\\attack.x",		false,	91.0f	},	// 攻撃
 	//{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
@@ -252,14 +252,14 @@ void CPlayer::Update()
 }
 
 // 衝突処理
-void CPlayer::Collision(CCollider* self, CCollider* other, const CVector& adjust)
+void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	if (self == mpColliderLine)
 	{
 		if (other->Layer() == ELayer::eField)
 		{
 			mMoveSpeed.Y(0.0f);
-			Position(Position() + adjust);
+			Position(Position() + hit.adjust);
 			mIsGrounded = true;
 
 			if (other->Tag() == ETag::eRideableObject)
