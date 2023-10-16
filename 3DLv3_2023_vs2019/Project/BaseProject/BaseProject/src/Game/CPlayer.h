@@ -31,6 +31,12 @@ public:
 	void UpdateJump();
 	// ジャンプ終了
 	void UpdateJumpEnd();
+	//ダッシュ開始
+	void UpdateDashStart();
+	//ダッシュ中
+	void UpdateDash();
+	//ダッシュ終了
+	void UpdateDashEnd();
 
 	// 更新
 	void Update();
@@ -59,6 +65,8 @@ private:
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
 		eJumpEnd,	// ジャンプ終了
+		eDash,		//ダッシュ
+		eDashStop,	//ダッシュ終了
 
 		Num
 	};
@@ -87,6 +95,9 @@ private:
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
 		eJumpEnd,	// ジャンプ終了
+		eDashStart,	//ダッシュ開始
+		eDash,		//ダッシュ中
+		eDashEnd,	//ダッシュ終了
 	};
 	EState mState;	// プレイヤーの状態
 
@@ -95,4 +106,5 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
+	float mRemainTime;	//残り時間
 };

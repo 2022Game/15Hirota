@@ -7,18 +7,20 @@
 CPlayer* CPlayer::spInstance = nullptr;
 
 // プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\UnityChan\\UnityChan_Model_9.x"
+#define MODEL_PATH "Character\\Monster1\\Monster_1.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 {
 	{ "",										true,	0.0f	},	// Tポーズ
-	{ "Character\\UnityChan\\anim1\\UnityChan_Animation_仮.x",		true,	145.0f	},	//待機
-	//{ "Character\\Player\\anim\\walk.x",		true,	66.0f	},	// 歩行
-	//{ "Character\\Player\\anim\\attack.x",		false,	91.0f	},	// 攻撃
-	//{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
-	//{ "Character\\Player\\anim\\jump.x",		true,	1.0f	},	// ジャンプ中
-	//{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
+	{ "Character\\Player\\anim\\idle.x",		true,	153.0f	},	//待機
+	{ "Character\\Player\\anim\\walk.x",		true,	66.0f	},	// 歩行
+	{ "Character\\Player\\anim\\attack.x",		false,	91.0f	},	// 攻撃
+	{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
+	{ "Character\\Player\\anim\\jump.x",		true,	1.0f	},	// ジャンプ中
+	{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
+	{ "Character\\Player\\anim\\Dash.x",		false,	23.0f	},	// ダッシュ
+	{ "Character\\Player\\anim\\Dash_Stop.x",	false,	27.0f	},	// ダッシュ終了
 };
 
 #define PLAYER_HEIGHT 16.0f
@@ -26,12 +28,14 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f
+#define DASH	0.5f
 
 // コンストラクタ
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
+	,mRemainTime(5.0f)
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -139,6 +143,11 @@ void CPlayer::UpdateIdle()
 		{
 			mState = EState::eJumpStart;
 		}
+		// SHIFTキーでダッシュ開始
+		else if (CInput::Key(VK_SHIFT))
+		{
+			mState = EState::eDashStart;
+		}
 	}
 	else
 	{
@@ -165,6 +174,35 @@ void CPlayer::UpdateAttackWait()
 		// 待機状態へ移行
 		mState = EState::eIdle;
 		ChangeAnimation(EAnimType::eIdle);
+	}
+}
+
+//ダッシュ開始
+void CPlayer::UpdateDashStart()
+{
+	if(CInput::Key('W'||'A'||'S'||'D'));
+	ChangeAnimation(EAnimType::eDash);
+	mState = EState::eDashStart;
+
+	mMoveSpeed += CVector(DASH, 0.0f, 0.0f);
+}
+
+//ダッシュ中
+void CPlayer::UpdateDash()
+{
+	if (CInput::PullKey(VK_SHIFT))
+	{
+		ChangeAnimation(EAnimType::eDashStop);
+		mState = EState::eDashEnd;
+	}
+}
+
+//ダッシュ終了
+void CPlayer::UpdateDashEnd()
+{
+	if (IsAnimationFinished())
+	{
+		mState = EState::eIdle;
 	}
 }
 
@@ -229,6 +267,18 @@ void CPlayer::Update()
 		// ジャンプ終了
 		case EState::eJumpEnd:
 			UpdateJumpEnd();
+			break;
+		//ダッシュ開始
+		case EState::eDashStart:
+			UpdateDashStart();
+			break;
+		//ダッシュ状態
+		case EState::eDash:
+			UpdateDash();
+			break;
+		//ダッシュ終了
+		case EState::eDashEnd:
+			UpdateDashEnd();
 			break;
 	}
 
