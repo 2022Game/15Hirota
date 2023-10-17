@@ -19,7 +19,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
 	{ "Character\\Player\\anim\\jump.x",		true,	1.0f	},	// ジャンプ中
 	{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
-	{ "Character\\Player\\anim\\Dash.x",		false,	23.0f	},	// ダッシュ
+	{ "Character\\Player\\anim\\Dash.x",		true,	23.0f	},	// ダッシュ
 	{ "Character\\Player\\anim\\Dash_Stop.x",	false,	27.0f	},	// ダッシュ終了
 };
 
@@ -28,14 +28,13 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f
-#define DASH	0.5f
 
 // コンストラクタ
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
-	,mRemainTime(5.0f)
+	, mRemainTime(20)
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -143,9 +142,11 @@ void CPlayer::UpdateIdle()
 		{
 			mState = EState::eJumpStart;
 		}
-		// SHIFTキーでダッシュ開始
-		else if (CInput::Key(VK_SHIFT))
+		// SHIFTキーでダッシュ開始へ移行
+		else if (CInput::Key(VK_SHIFT) && (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D')))
 		{
+			mRemainTime -= 1;
+			mMoveSpeed.Y(0.0f);
 			mState = EState::eDashStart;
 		}
 	}
@@ -180,17 +181,32 @@ void CPlayer::UpdateAttackWait()
 //ダッシュ開始
 void CPlayer::UpdateDashStart()
 {
-	if(CInput::Key('W'||'A'||'S'||'D'));
 	ChangeAnimation(EAnimType::eDash);
-	mState = EState::eDashStart;
-
-	mMoveSpeed += CVector(DASH, 0.0f, 0.0f);
+	mState = EState::eDash;
 }
 
 //ダッシュ中
 void CPlayer::UpdateDash()
 {
-	if (CInput::PullKey(VK_SHIFT))
+	// ダッシュの速度倍率を設定
+	const float dashSpeedMultiplier = 2.0f; // ダッシュ速度は通常の速度の2倍
+
+	// 移動処理
+	CVector input;
+	if (CInput::Key('W')) input.Z(-0.5f);
+	else if (CInput::Key('S')) input.Z(0.5f);
+	if (CInput::Key('A')) input.X(-0.5f);
+	else if (CInput::Key('D')) input.X(0.5f);
+
+	// ダッシュ中の速度適用
+	if (mState == EState::eDash) {
+		input *= dashSpeedMultiplier; // ダッシュ速度倍率を適用
+	}
+
+	Position(Position() + mMoveSpeed + input);
+
+
+	if (mRemainTime <= 0.0f || !CInput::Key(VK_SHIFT) && (!CInput::Key('W') && !CInput::Key('A') && !CInput::Key('S') && !CInput::Key('D')))
 	{
 		ChangeAnimation(EAnimType::eDashStop);
 		mState = EState::eDashEnd;
@@ -203,6 +219,7 @@ void CPlayer::UpdateDashEnd()
 	if (IsAnimationFinished())
 	{
 		mState = EState::eIdle;
+		mRemainTime = 30;
 	}
 }
 
@@ -325,3 +342,27 @@ void CPlayer::Render()
 {
 	CXCharacter::Render();
 }
+
+//float mDashSpeed = 0.1f; // ダッシュ速度を適切な値に設定
+//
+//CVector input;
+//
+////値を入れる
+//if (CInput::Key('W')) input.Z(-0.0001f);
+//if (CInput::Key('S')) input.Z(0.0001f);
+//if (CInput::Key('A')) input.X(-0.0001f);
+//if (CInput::Key('D')) input.X(0.0001f);
+//
+////速度ベクトルを正規化
+//input.Normalize();
+//
+////移動
+//Position(Position() + mMoveSpeed * mDashSpeed + input);
+//
+////プレイヤーを移動方向へ向ける
+//CVector current = VectorZ();
+//CVector target = mMoveSpeed * mDashSpeed + input;
+//target.Y(0.0f);
+//target.Normalize();
+//CVector forward = CVector::Slerp(current, target, 0.125f);
+//Rotation(CQuaternion::LookRotation(forward));

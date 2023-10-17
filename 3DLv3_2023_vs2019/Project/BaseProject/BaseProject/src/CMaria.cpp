@@ -7,18 +7,13 @@
 CMaria* CMaria::spInstance = nullptr;
 
 // プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Monster1\\Monster_1.x"
+#define MODEL_PATH "Character\\UnityChan\\unitychan.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CMaria::AnimData CMaria::ANIM_DATA[] =
 {
-	{ "",										true,	0.0f	},	// Tポーズ
-	{ "Character\\Player\\anim\\idle.x",		true,	153.0f	},	// 待機
-	{ "Character\\Player\\anim\\walk.x",		true,	66.0f	},	// 歩行
-	{ "Character\\Player\\anim\\attack.x",		false,	91.0f	},	// 攻撃
-	{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
-	{ "Character\\Player\\anim\\jump.x",		true,	1.0f	},	// ジャンプ中
-	{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
+	//{ "",										true,	0.0f	},	// Tポーズ
+	{ "Character\\UnityChan\\anim1\\UnityChan_Animation_Pose1.x",		true,	25.0f	},	// ポーズ
 };
 
 #define PLAYER_HEIGHT 16.0f
@@ -252,7 +247,7 @@ void CMaria::Update()
 }
 
 // 衝突処理
-void CMaria::Collision(CCollider* self, CCollider* other, const const CHitInfo& hit)
+void CMaria::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	if (self == mpColliderLine)
 	{

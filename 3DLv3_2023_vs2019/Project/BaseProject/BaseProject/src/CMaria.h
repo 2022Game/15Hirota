@@ -52,7 +52,7 @@ private:
 	{
 		None = -1,
 
-		eTPose,		// Tポーズ
+
 		eIdle,		// 待機
 		eWalk,		// 歩行
 		eAttack,	// 攻撃

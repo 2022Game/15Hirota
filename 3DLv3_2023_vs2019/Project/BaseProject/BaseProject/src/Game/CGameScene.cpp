@@ -26,10 +26,10 @@ void CGameScene::Load()
 	new CField();
 
 	CPlayer* player = new CPlayer();
-	player->Scale(1.0f, 1.0f, 1.0f);	//ƒ‚ƒfƒ‹‚Ì‘å‚«‚³‚ðŒã‚Å‘å‚«‚­‚µ‚Ä‚¨‚­
+	player->Scale(1.0f, 1.0f, 1.0f);
 
 	CMaria* maria = new CMaria();
-	maria->Scale(1.0f, 1.0f, 1.0f);	//ƒ‚ƒfƒ‹‚Ì‘å‚«‚³‚ðŒã‚Å‘å‚«‚­‚µ‚Ä‚¨‚­
+	maria->Scale(1.0f, 1.0f, 1.0f);
 	maria->Position(0.0f, 20.0f, 0.0f);
 
 	CCamera* mainCamera = new CCamera

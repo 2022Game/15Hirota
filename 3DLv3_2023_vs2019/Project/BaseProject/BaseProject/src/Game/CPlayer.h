@@ -106,5 +106,5 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
-	float mRemainTime;	//c‚èŠÔ
+	int mRemainTime;	//c‚èŠÔ
 };
