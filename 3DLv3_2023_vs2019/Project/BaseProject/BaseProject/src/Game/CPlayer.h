@@ -23,6 +23,8 @@ public:
 	void UpdateIdle();
 	// 攻撃
 	void UpdateAttack();
+	// 強攻撃
+	void UpdateAttackStrong();
 	// 攻撃終了待ち
 	void UpdateAttackWait();
 	// ジャンプ開始
@@ -37,6 +39,10 @@ public:
 	void UpdateDash();
 	//ダッシュ終了
 	void UpdateDashEnd();
+	//回避開始
+	void UpdateRotate();
+	//回避終了
+	void UpdateRotateEnd();
 
 	// 更新
 	void Update();
@@ -58,15 +64,17 @@ private:
 	{
 		None = -1,
 
-		eTPose,		// Tポーズ
-		eIdle,		// 待機
-		eWalk,		// 歩行
-		eAttack,	// 攻撃
-		eJumpStart,	// ジャンプ開始
-		eJump,		// ジャンプ中
-		eJumpEnd,	// ジャンプ終了
-		eDash,		//ダッシュ
-		eDashStop,	//ダッシュ終了
+		eTPose,			// Tポーズ
+		eIdle,			// 待機
+		eWalk,			// 歩行
+		eAttack,		// 攻撃
+		eAttackStrong,	// 強攻撃
+		eJumpStart,		// ジャンプ開始
+		eJump,			// ジャンプ中
+		eJumpEnd,		// ジャンプ終了
+		eDash,			// ダッシュ
+		eDashStop,		// ダッシュ終了
+		eRotate,		// 回避
 
 		Num
 	};
@@ -89,15 +97,18 @@ private:
 	// プレイヤーの状態
 	enum class EState
 	{
-		eIdle,		// 待機
-		eAttack,	// 攻撃
-		eAttackWait,// 攻撃終了待ち
-		eJumpStart,	// ジャンプ開始
-		eJump,		// ジャンプ中
-		eJumpEnd,	// ジャンプ終了
-		eDashStart,	//ダッシュ開始
-		eDash,		//ダッシュ中
-		eDashEnd,	//ダッシュ終了
+		eIdle,			// 待機
+		eAttack,		// 攻撃
+		eAttackStrong,	// 強攻撃
+		eAttackWait,	// 攻撃終了待ち
+		eJumpStart,		// ジャンプ開始
+		eJump,			// ジャンプ中
+		eJumpEnd,		// ジャンプ終了
+		eDashStart,		// ダッシュ開始
+		eDash,			// ダッシュ中
+		eDashEnd,		// ダッシュ終了
+		eRotate,		// 回避開始
+		eRotateEnd,		// 回避終了待ち
 	};
 	EState mState;	// プレイヤーの状態
 
@@ -106,5 +117,5 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
-	int mRemainTime;	//残り時間
+	int mRemainTime;	// 残り時間
 };

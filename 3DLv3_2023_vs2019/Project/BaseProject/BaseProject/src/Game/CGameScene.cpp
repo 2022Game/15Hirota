@@ -4,7 +4,8 @@
 #include "CPlayer.h"
 #include "CEnemy.h"
 #include "CCamera.h"
-#include "CMaria.h"
+#include "CUnityChan.h"
+#include "CFutao.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -25,12 +26,19 @@ void CGameScene::Load()
 
 	new CField();
 
+	// プレイヤー
 	CPlayer* player = new CPlayer();
 	player->Scale(1.0f, 1.0f, 1.0f);
+	
+	// ユニティちゃん
+	CUnityChan* unity = new CUnityChan();
+	unity->Scale(1.0f, 1.0f, 1.0f);
+	unity->Position(0.0f, 20.0f, 0.0f);
 
-	CMaria* maria = new CMaria();
-	maria->Scale(1.0f, 1.0f, 1.0f);
-	maria->Position(0.0f, 20.0f, 0.0f);
+	// 胡桃
+	CFutao* futao = new CFutao();
+	futao->Scale(1.0f, 1.0f, 1.0f);
+	futao->Position(0.0f, 20.0f,30.0f);
 
 	CCamera* mainCamera = new CCamera
 	(

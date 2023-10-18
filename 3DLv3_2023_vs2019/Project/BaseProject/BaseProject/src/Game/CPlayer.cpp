@@ -12,15 +12,17 @@ CPlayer* CPlayer::spInstance = nullptr;
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 {
-	{ "",										true,	0.0f	},	// Tポーズ
-	{ "Character\\Player\\anim\\idle.x",		true,	153.0f	},	//待機
-	{ "Character\\Player\\anim\\walk.x",		true,	66.0f	},	// 歩行
-	{ "Character\\Player\\anim\\attack.x",		false,	91.0f	},	// 攻撃
-	{ "Character\\Player\\anim\\jump_start.x",	false,	25.0f	},	// ジャンプ開始
-	{ "Character\\Player\\anim\\jump.x",		true,	1.0f	},	// ジャンプ中
-	{ "Character\\Player\\anim\\jump_end.x",	false,	26.0f	},	// ジャンプ終了
-	{ "Character\\Player\\anim\\Dash.x",		true,	23.0f	},	// ダッシュ
-	{ "Character\\Player\\anim\\Dash_Stop.x",	false,	27.0f	},	// ダッシュ終了
+	{ "",												true,	0.0f	},	// Tポーズ
+	{ "Character\\Player\\anim\\idle.x",				true,	153.0f	},	// 待機
+	{ "Character\\Player\\anim\\walk.x",				true,	66.0f	},	// 歩行
+	{ "Character\\Player\\anim\\attack.x",				false,	91.0f	},	// 攻撃
+	{ "Character\\Player\\anim\\Attack_Strong.x",		false,	161.0f	},	// 強攻撃
+	{ "Character\\Player\\anim\\jump_start.x",			false,	25.0f	},	// ジャンプ開始
+	{ "Character\\Player\\anim\\jump.x",				true,	1.0f	},	// ジャンプ中
+	{ "Character\\Player\\anim\\jump_end.x",			false,	26.0f	},	// ジャンプ終了
+	{ "Character\\Player\\anim\\Dash.x",				true,	23.0f	},	// ダッシュ
+	{ "Character\\Player\\anim\\Dash_Stop.x",			false,	27.0f	},	// ダッシュ終了
+	{ "Character\\Player\\anim\\Rotate.x",				false,	71.0f	},	// 回避
 };
 
 #define PLAYER_HEIGHT 16.0f
@@ -34,7 +36,7 @@ CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
-	, mRemainTime(20)
+	, mRemainTime(50)
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -97,6 +99,8 @@ void CPlayer::ChangeAnimation(EAnimType type)
 // 待機
 void CPlayer::UpdateIdle()
 {
+	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
+
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	
@@ -130,12 +134,19 @@ void CPlayer::UpdateIdle()
 			ChangeAnimation(EAnimType::eIdle);
 		}
 
-		// 左クリックで攻撃状態へ移行
-		if (CInput::PushKey(VK_LBUTTON))
+		// Jキーで攻撃状態へ移行
+		if (CInput::PushKey('J'))
 		{
 			mMoveSpeed.X(0.0f);
 			mMoveSpeed.Z(0.0f);
 			mState = EState::eAttack;
+		}
+		// Kキーで強攻撃
+		else if (CInput::PushKey('K'))
+		{
+			mMoveSpeed.X(0.0f);
+			mMoveSpeed.Z(0.0f);
+			mState = EState::eAttackStrong;
 		}
 		// SPACEキーでジャンプ開始へ移行
 		else if (CInput::PushKey(VK_SPACE))
@@ -143,11 +154,15 @@ void CPlayer::UpdateIdle()
 			mState = EState::eJumpStart;
 		}
 		// SHIFTキーでダッシュ開始へ移行
-		else if (CInput::Key(VK_SHIFT) && (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D')))
+		else if (CInput::Key(VK_SHIFT) && KeyPush)
 		{
-			mRemainTime -= 1;
 			mMoveSpeed.Y(0.0f);
 			mState = EState::eDashStart;
+		}
+		// Q,Eキーで回避へ移行
+		else if ((CInput::PushKey('Q') || CInput::PushKey('E') && KeyPush) || mState == EState::eDash)
+		{
+			mState = EState::eRotate;
 		}
 	}
 	else
@@ -162,6 +177,15 @@ void CPlayer::UpdateAttack()
 {
 	// 攻撃アニメーションを開始
 	ChangeAnimation(EAnimType::eAttack);
+	// 攻撃終了待ち状態へ移行
+	mState = EState::eAttackWait;
+}
+
+// 強攻撃
+void CPlayer::UpdateAttackStrong()
+{
+	// 強攻撃アニメーションを開始
+	ChangeAnimation(EAnimType::eAttackStrong);
 	// 攻撃終了待ち状態へ移行
 	mState = EState::eAttackWait;
 }
@@ -188,26 +212,46 @@ void CPlayer::UpdateDashStart()
 //ダッシュ中
 void CPlayer::UpdateDash()
 {
+	//簡略
+	bool KeyPush = CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D');
 	// ダッシュの速度倍率を設定
-	const float dashSpeedMultiplier = 2.0f; // ダッシュ速度は通常の速度の2倍
-
-	// 移動処理
-	CVector input;
-	if (CInput::Key('W')) input.Z(-0.5f);
-	else if (CInput::Key('S')) input.Z(0.5f);
-	if (CInput::Key('A')) input.X(-0.5f);
-	else if (CInput::Key('D')) input.X(0.5f);
+	const float dashSpeed = 0.5f; // ダッシュ速度
 
 	// ダッシュ中の速度適用
+	// 移動処理
+	CVector input;
 	if (mState == EState::eDash) {
-		input *= dashSpeedMultiplier; // ダッシュ速度倍率を適用
+		// WASDキーの入力を監視し、速度倍率を適用
+		if (CInput::Key('W')) {
+			input.Z(-1.0f);
+		}
+		if (CInput::Key('A')) {
+			input.X(-1.0f);
+		}
+		if (CInput::Key('S')) {
+			input.Z(1.0f);
+		}
+		if (CInput::Key('D')) {
+			input.X(1.0f);
+		}
+
+		// 入力ベクトルを正規化
+		if (input.Length() > 0.0f) {
+			input.Normalize();
+			input *= dashSpeed;
+		}
 	}
 
+	// 移動処理
 	Position(Position() + mMoveSpeed + input);
 
+	// ダッシュタイム減少
+	mRemainTime--;
 
-	if (mRemainTime <= 0.0f || !CInput::Key(VK_SHIFT) && (!CInput::Key('W') && !CInput::Key('A') && !CInput::Key('S') && !CInput::Key('D')))
+	// 条件
+	if (mRemainTime <= 0 || !CInput::Key(VK_SHIFT) || input.Length() == 0.0f)
 	{
+		// ダッシュ終了アニメーション
 		ChangeAnimation(EAnimType::eDashStop);
 		mState = EState::eDashEnd;
 	}
@@ -219,7 +263,7 @@ void CPlayer::UpdateDashEnd()
 	if (IsAnimationFinished())
 	{
 		mState = EState::eIdle;
-		mRemainTime = 30;
+		mRemainTime = 50;
 	}
 }
 
@@ -252,6 +296,23 @@ void CPlayer::UpdateJumpEnd()
 	}
 }
 
+//回避開始
+void CPlayer::UpdateRotate()
+{
+	ChangeAnimation(EAnimType::eRotate);
+	mState = EState::eRotateEnd;
+}
+
+//回避終了待ち
+void CPlayer::UpdateRotateEnd()
+{
+	if (IsAnimationFinished())
+	{
+		mState = EState::eIdle;
+		ChangeAnimation(EAnimType::eIdle);
+	}
+}
+
 // 更新
 void CPlayer::Update()
 {
@@ -268,6 +329,10 @@ void CPlayer::Update()
 		// 攻撃
 		case EState::eAttack:
 			UpdateAttack();
+			break;
+		// 強攻撃
+		case EState::eAttackStrong:
+			UpdateAttackStrong();
 			break;
 		// 攻撃終了待ち
 		case EState::eAttackWait:
@@ -296,6 +361,14 @@ void CPlayer::Update()
 		//ダッシュ終了
 		case EState::eDashEnd:
 			UpdateDashEnd();
+			break;
+		//回避開始
+		case EState::eRotate:
+			UpdateRotate();
+			break;
+		//回避終了
+		case EState::eRotateEnd:
+			UpdateRotateEnd();
 			break;
 	}
 
@@ -342,27 +415,3 @@ void CPlayer::Render()
 {
 	CXCharacter::Render();
 }
-
-//float mDashSpeed = 0.1f; // ダッシュ速度を適切な値に設定
-//
-//CVector input;
-//
-////値を入れる
-//if (CInput::Key('W')) input.Z(-0.0001f);
-//if (CInput::Key('S')) input.Z(0.0001f);
-//if (CInput::Key('A')) input.X(-0.0001f);
-//if (CInput::Key('D')) input.X(0.0001f);
-//
-////速度ベクトルを正規化
-//input.Normalize();
-//
-////移動
-//Position(Position() + mMoveSpeed * mDashSpeed + input);
-//
-////プレイヤーを移動方向へ向ける
-//CVector current = VectorZ();
-//CVector target = mMoveSpeed * mDashSpeed + input;
-//target.Y(0.0f);
-//target.Normalize();
-//CVector forward = CVector::Slerp(current, target, 0.125f);
-//Rotation(CQuaternion::LookRotation(forward));

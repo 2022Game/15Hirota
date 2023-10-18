@@ -199,7 +199,10 @@
     <ClCompile Include="src\Game\CRotateFloor.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
-    <ClCompile Include="src\CMaria.cpp">
+    <ClCompile Include="src\CUnityChan.cpp">
+      <Filter>ソース ファイル\Game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFutaocpp.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
   </ItemGroup>
@@ -366,7 +369,10 @@
     <ClInclude Include="src\Game\CRotateFloor.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
-    <ClInclude Include="src\CMaria.h">
+    <ClInclude Include="src\CUnityChan.h">
+      <Filter>ソース ファイル\Game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFutao.h">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
   </ItemGroup>
