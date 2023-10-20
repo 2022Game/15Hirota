@@ -51,7 +51,6 @@ private:
 	{
 		None = -1,
 
-
 		eIdle,		// ë“ã@
 		eWalk,		// ï‡çs
 		eAttack,	// çUåÇ

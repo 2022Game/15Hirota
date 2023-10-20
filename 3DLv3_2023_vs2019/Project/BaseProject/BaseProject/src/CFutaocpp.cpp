@@ -5,13 +5,13 @@
 CFutao* CFutao::spInstance = nullptr;
 
 // プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Futao\\Futao_Model.x"
+#define MODEL_PATH "Character\\Futao\\yukari_Model.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CFutao::AnimData CFutao::ANIM_DATA[] =
 {
 	//{ "",										true,	0.0f	},	// Tポーズ
-	{ "Character\\Futao\\anim\\Futao_Idle.x",		true,	168.0f	},	// ポーズ
+	{ "Character\\Futao\\anim\\yukari_Playing.x",		true,	143.0f	},	// Idle時
 };
 
 #define PLAYER_HEIGHT 16.0f
@@ -26,6 +26,7 @@ CFutao::CFutao()
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
 {
+
 	//インスタンスの設定
 	spInstance = this;
 
@@ -79,6 +80,7 @@ CFutao* CFutao::Instance()
 // アニメーション切り替え
 void CFutao::ChangeAnimation(EAnimType type)
 {
+	if (type != EAnimType::eIdle) return;
 	if (!(EAnimType::None < type && type < EAnimType::Num)) return;
 	AnimData data = ANIM_DATA[(int)type];
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);

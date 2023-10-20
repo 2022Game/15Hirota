@@ -38,7 +38,7 @@ void CGameScene::Load()
 	// ŒÓ“
 	CFutao* futao = new CFutao();
 	futao->Scale(1.0f, 1.0f, 1.0f);
-	futao->Position(0.0f, 20.0f,30.0f);
+	futao->Position(20.0f, 20.0f, 0.0f);
 
 	CCamera* mainCamera = new CCamera
 	(
