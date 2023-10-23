@@ -202,7 +202,7 @@
     <ClCompile Include="src\CUnityChan.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
-    <ClCompile Include="src\CFutaocpp.cpp">
+    <ClCompile Include="src\CYukari.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
   </ItemGroup>
@@ -372,7 +372,7 @@
     <ClInclude Include="src\CUnityChan.h">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
-    <ClInclude Include="src\CFutao.h">
+    <ClInclude Include="src\CYukari.h">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
   </ItemGroup>

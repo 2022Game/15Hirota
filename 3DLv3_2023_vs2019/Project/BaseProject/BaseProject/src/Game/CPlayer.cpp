@@ -6,8 +6,18 @@
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
 
+// HP
+int CPlayer::sHP = 0;
+
+int CPlayer::HP()
+{
+	return sHP;
+}
+
 // プレイヤーのモデルデータのパス
 #define MODEL_PATH "Character\\Monster1\\Monster_1.x"
+// HPの初期値
+#define HP 100;
 
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
@@ -37,9 +47,12 @@ CPlayer::CPlayer()
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
 	, mRemainTime(50)
+	, mInvincible(0)
 {
 	//インスタンスの設定
 	spInstance = this;
+	// HP
+	sHP = HP;
 
 	// モデルデータ読み込み
 	CModelX* model = new CModelX();
@@ -389,6 +402,13 @@ void CPlayer::Update()
 	CXCharacter::Update();
 
 	mIsGrounded = false;
+
+	// 無敵中はカウントを減少させる
+	if (mInvincible > 0)
+	{
+		// 減算
+		mInvincible--;
+	}
 }
 
 // 衝突処理

@@ -58,6 +58,9 @@ public:
 	// 描画
 	void Render();
 
+	// HPを取得
+	static int HP();
+
 private:
 	// アニメーションの種類
 	enum class EAnimType
@@ -118,4 +121,6 @@ private:
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
 	int mRemainTime;	// 残り時間
+	static int sHP;		// HP
+	int mInvincible;	// 無敵カウンタ
 };

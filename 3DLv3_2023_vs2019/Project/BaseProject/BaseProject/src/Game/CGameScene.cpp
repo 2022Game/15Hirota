@@ -5,7 +5,8 @@
 #include "CEnemy.h"
 #include "CCamera.h"
 #include "CUnityChan.h"
-#include "CFutao.h"
+#include "CYukari.h"
+#include "CUIBase.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -30,15 +31,15 @@ void CGameScene::Load()
 	CPlayer* player = new CPlayer();
 	player->Scale(1.0f, 1.0f, 1.0f);
 	
-	// ユニティちゃん
-	CUnityChan* unity = new CUnityChan();
-	unity->Scale(1.0f, 1.0f, 1.0f);
-	unity->Position(0.0f, 20.0f, 0.0f);
+	//// ユニティちゃん
+	//CUnityChan* unity = new CUnityChan();
+	//unity->Scale(1.0f, 1.0f, 1.0f);
+	//unity->Position(0.0f, 20.0f, 0.0f);
 
-	// 胡桃
-	CFutao* futao = new CFutao();
-	futao->Scale(1.0f, 1.0f, 1.0f);
-	futao->Position(20.0f, 20.0f, 0.0f);
+	//// ゆかり
+	//CYukari* yukari = new CYukari();
+	//yukari->Scale(3.0f, 3.0f, 3.0f);
+	//yukari->Position(20.0f, 20.0f, 0.0f);
 
 	CCamera* mainCamera = new CCamera
 	(
