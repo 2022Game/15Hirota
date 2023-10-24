@@ -2,22 +2,21 @@
 #include "CPlayer.h"
 #include "CInput.h"
 #include "CCamera.h"
+#include "CImage.h"
+
+// プレイヤーのモデルデータのパス
+#define MODEL_PATH "Character\\Monster1\\Monster_1.x"
+
+#define PLAYER_HEIGHT 16.0f
+#define MOVE_SPEED 1.0f
+#define JUMP_SPEED 1.5f
+#define GRAVITY 0.0625f
+#define JUMP_END_Y 1.0f
+#define GAUGE_HEIGHT 20.0f
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
 
-// HP
-int CPlayer::sHP = 0;
-
-int CPlayer::HP()
-{
-	return sHP;
-}
-
-// プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Monster1\\Monster_1.x"
-// HPの初期値
-#define HP 100;
 
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
@@ -35,12 +34,6 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Player\\anim\\Rotate.x",				false,	71.0f	},	// 回避
 };
 
-#define PLAYER_HEIGHT 16.0f
-#define MOVE_SPEED 1.0f
-#define JUMP_SPEED 1.5f
-#define GRAVITY 0.0625f
-#define JUMP_END_Y 1.0f
-
 // コンストラクタ
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
@@ -48,11 +41,10 @@ CPlayer::CPlayer()
 	, mpRideObject(nullptr)
 	, mRemainTime(50)
 	, mInvincible(0)
+	, mHP(500)
 {
 	//インスタンスの設定
 	spInstance = this;
-	// HP
-	sHP = HP;
 
 	// モデルデータ読み込み
 	CModelX* model = new CModelX();
@@ -83,6 +75,7 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
+	CPlayer* player;
 	if (mpColliderLine != nullptr)
 	{
 		delete mpColliderLine;
@@ -99,6 +92,16 @@ CPlayer::~CPlayer()
 CPlayer* CPlayer::Instance()
 {
 	return spInstance;
+}
+
+int CPlayer::GetHP() const
+{
+	return mHP;
+}
+
+void CPlayer::SetHP(int hp)
+{
+	mHP = hp;
 }
 
 // アニメーション切り替え
@@ -165,6 +168,21 @@ void CPlayer::UpdateIdle()
 		else if (CInput::PushKey(VK_SPACE))
 		{
 			mState = EState::eJumpStart;
+			// スペースキーが押された場合、プレイヤーのHPを減少させる
+			int currentHP = spInstance->GetHP();
+
+			int playerHP = spInstance->GetHP(); // プレイヤーのHPを取得
+			CDebugPrint::Print("Player HP: %d\n", playerHP); // HPをデバッグ出力
+
+			int newHP = currentHP - 100;
+
+			// HPが0未満にならないように確認
+			if (newHP < 0) {
+				newHP = 0;
+			}
+
+			spInstance->SetHP(newHP);
+			
 		}
 		// SHIFTキーでダッシュ開始へ移行
 		else if (CInput::Key(VK_SHIFT) && KeyPush)
@@ -409,6 +427,17 @@ void CPlayer::Update()
 		// 減算
 		mInvincible--;
 	}
+
+	// HPゲージ処理
+	new CImage();
+
+	CImage* image = new CImage("UI\\Gauge.png");
+	image->SetPos(100.0f, 100.0f);
+	//image->SetSize(1000.0f, 20.0f);
+
+	int playerHP = spInstance->GetHP();
+	float gaugeWidth = static_cast<float>(playerHP); // HPに応じたゲージの幅
+	image->SetSize(gaugeWidth, GAUGE_HEIGHT);
 }
 
 // 衝突処理
@@ -434,4 +463,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 void CPlayer::Render()
 {
 	CXCharacter::Render();
+}
+
+// 2D描画
+void CPlayer::Render2D()
+{
+
 }

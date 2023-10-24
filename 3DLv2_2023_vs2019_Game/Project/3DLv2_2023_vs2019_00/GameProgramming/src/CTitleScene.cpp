@@ -20,11 +20,11 @@ void CTitleScene::Load()
 	//ここでタイトル画面に必要な
 	//リソースの読み込みやクラスの生成を行う
 	//フェード背景用の白イメージを読み込み
-	mBgImage = new CImage("White.png");
-	//背景の色設定
-	mBgImage->SetColor(1.0f,0.0f, 0.0f, 1.0f);
-	mBgImage->SetPos(0.0f, 0.0f);
-	mBgImage->SetSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	//mBgImage = new CImage("White.png");
+	////背景の色設定
+	//mBgImage->SetColor(1.0f,0.0f, 0.0f, 1.0f);
+	//mBgImage->SetPos(0.0f, 0.0f);
+	//mBgImage->SetSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	// 新しい画像を読み込む
 	mBgImage1 = new CImage("Title.png");	//後で決める

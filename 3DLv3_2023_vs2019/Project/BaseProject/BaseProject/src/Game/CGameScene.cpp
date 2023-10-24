@@ -7,6 +7,8 @@
 #include "CUnityChan.h"
 #include "CYukari.h"
 #include "CUIBase.h"
+#include "CImage.h"
+#include "CPlayer.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -27,7 +29,7 @@ void CGameScene::Load()
 
 	new CField();
 
-	// プレイヤー
+	// モンスター(プレイヤー)
 	CPlayer* player = new CPlayer();
 	player->Scale(1.0f, 1.0f, 1.0f);
 	
@@ -36,7 +38,7 @@ void CGameScene::Load()
 	//unity->Scale(1.0f, 1.0f, 1.0f);
 	//unity->Position(0.0f, 20.0f, 0.0f);
 
-	//// ゆかり
+	//// ゆかりさん
 	//CYukari* yukari = new CYukari();
 	//yukari->Scale(3.0f, 3.0f, 3.0f);
 	//yukari->Position(20.0f, 20.0f, 0.0f);
@@ -48,9 +50,12 @@ void CGameScene::Load()
 		player->Position()
 	);
 	mainCamera->SetFollowTargetTf(player);
+
+	
 }
 
 //シーンの更新処理
 void CGameScene::Update()
 {
+
 }

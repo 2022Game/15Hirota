@@ -1,11 +1,3 @@
-﻿  CSceneManager.cpp
-  CGameScene.cpp
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv3_2023_vs2019\Project\BaseProject\BaseProject\src\Game\CGameScene.h(18,9): error C2143: 構文エラー: ';' が '*' の前にありません。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv3_2023_vs2019\Project\BaseProject\BaseProject\src\Game\CGameScene.h(18,9): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv3_2023_vs2019\Project\BaseProject\BaseProject\src\Game\CGameScene.h(18,15): error C2238: ';' の前に無効なトークンがあります。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv3_2023_vs2019\Project\BaseProject\BaseProject\src\Game\CGameScene.cpp(14,3): error C2614: 'CGameScene': イニシャライズ リスト内のクラス 'mpUI' が基底クラスでもメンバーでもありません。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv3_2023_vs2019\Project\BaseProject\BaseProject\src\Game\CGameScene.cpp(16,2): error C2065: 'mpUI': 定義されていない識別子です。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv3_2023_vs2019\Project\BaseProject\BaseProject\src\Game\CGameScene.cpp(58,2): error C2065: 'mpUI': 定義されていない識別子です。
-C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv3_2023_vs2019\Project\BaseProject\BaseProject\src\Game\CGameScene.cpp(59,2): error C2065: 'mpUI': 定義されていない識別子です。
-  CTitleScene.cpp
-  コードを生成中...
+﻿  CPlayer.cpp
+C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv3_2023_vs2019\Project\BaseProject\BaseProject\src\Game\CPlayer.cpp(78,11): warning C4101: 'player': ローカル変数は 1 度も使われていません。
+  BaseProject.vcxproj -> C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv3_2023_vs2019\Project\BaseProject\Debug\BaseProject.exe

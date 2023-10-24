@@ -4,6 +4,8 @@
 #include "CColliderLine.h"
 #include "CRideableObject.h"
 
+class CImage;
+
 /*
 プレイヤークラス
 キャラクタクラスを継承
@@ -57,9 +59,13 @@ public:
 
 	// 描画
 	void Render();
+	// 2D描画
+	void Render2D();
 
-	// HPを取得
-	static int HP();
+	// HP取得
+	int GetHP() const;
+	// HP変更
+	void SetHP(int hp);
 
 private:
 	// アニメーションの種類
@@ -81,6 +87,7 @@ private:
 
 		Num
 	};
+
 	// アニメーション切り替え
 	void ChangeAnimation(EAnimType type);
 
@@ -113,14 +120,15 @@ private:
 		eRotate,		// 回避開始
 		eRotateEnd,		// 回避終了待ち
 	};
-	EState mState;	// プレイヤーの状態
+	EState mState;		// プレイヤーの状態
 
 	CVector mMoveSpeed;	// 移動速度
+	CImage* image;
 	bool mIsGrounded;	// 接地しているかどうか
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
 	int mRemainTime;	// 残り時間
-	static int sHP;		// HP
+	int mHP;			// HP
 	int mInvincible;	// 無敵カウンタ
 };

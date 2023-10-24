@@ -1,6 +1,8 @@
 #pragma once
 #include "CSceneBase.h"
 
+class CImage;
+
 //タイトルシーン
 class CGameScene :public CSceneBase
 {
@@ -15,4 +17,5 @@ public:
 	void Update();
 
 private:
+	CImage* image;
 };

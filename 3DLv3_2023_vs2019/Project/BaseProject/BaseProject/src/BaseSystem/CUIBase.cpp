@@ -3,9 +3,14 @@
 
 CUIBase::CUIBase()
 	: CTask(ETaskPriority::eUI)
+	, image(nullptr)
 {
 }
 
 CUIBase::~CUIBase()
+{
+}
+
+void CUIBase::Load()
 {
 }
