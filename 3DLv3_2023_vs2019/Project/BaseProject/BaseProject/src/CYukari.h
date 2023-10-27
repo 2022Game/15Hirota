@@ -4,10 +4,14 @@
 #include "CXCharacter.h"
 #include "CColliderLine.h"
 #include "CRideableObject.h"
+
+class CImage;
+class CBillBoard;
 /*
 プレイヤークラス
 キャラクタクラスを継承
 */
+
 class CYukari : public CXCharacter
 {
 public:
@@ -31,6 +35,8 @@ public:
 	void UpdateJump();
 	// ジャンプ終了
 	void UpdateJumpEnd();
+
+	CVector GetHeadPosition() const;
 
 	// 更新
 	void Update();
@@ -93,5 +99,7 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
+	CImage* mbillboard;
+	CImage* mbillboard1;
 };
 #endif

@@ -10,7 +10,3 @@ CUIBase::CUIBase()
 CUIBase::~CUIBase()
 {
 }
-
-void CUIBase::Load()
-{
-}

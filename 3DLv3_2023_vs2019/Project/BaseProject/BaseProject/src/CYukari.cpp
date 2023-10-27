@@ -1,5 +1,7 @@
 #include "CYukari.h"
 #include "CCamera.h"
+#include "CBillBoard.h"
+#include "CImage.h"
 
 // プレイヤーのインスタンス
 CYukari* CYukari::spInstance = nullptr;
@@ -25,6 +27,8 @@ CYukari::CYukari()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
+	, mbillboard(nullptr)
+	, mbillboard1(nullptr)
 {
 
 	//インスタンスの設定
@@ -55,6 +59,10 @@ CYukari::CYukari()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+
+	// 画像読み込み
+	mbillboard = new CImage("UI\\Image_Gauge_Frame.png");
+	mbillboard1 = new CImage("UI\\Gauge.png");
 }
 
 CYukari::~CYukari()
@@ -70,7 +78,28 @@ CYukari::~CYukari()
 		delete mpModel;
 		mpModel = nullptr;
 	}
+
+	if (mbillboard != nullptr)
+	{
+		delete mbillboard;
+		mbillboard = nullptr;
+	}
+
+	if (mbillboard1 != nullptr)
+	{
+		delete mbillboard1;
+		mbillboard1 = nullptr;
+	}
 }
+
+CVector CYukari::GetHeadPosition() const
+{
+	// Yukariの位置に頭の高さを加えて頭上の位置を計算
+	CVector headPosition = Position();
+	headPosition.Y(headPosition.Y() + PLAYER_HEIGHT);
+	return headPosition;
+}
+
 
 CYukari* CYukari::Instance()
 {
@@ -195,6 +224,24 @@ void CYukari::Update()
 	target.Normalize();
 	CVector forward = CVector::Slerp(current, target, 0.125f);
 	Rotation(CQuaternion::LookRotation(forward));
+
+
+	// Yukariの頭上の位置を取得
+	CVector headPosition = GetHeadPosition();
+	// ビルボードの位置を設定
+	mbillboard->SetPos(CVector2(headPosition.X(), headPosition.Y()));
+	// ビルボードのサイズを設定
+	mbillboard->SetSize(CVector2(600.0f, 30.0f));
+	// UV座標を正しい向きに設定
+	mbillboard->SetUV(0, 0, 1, 1);
+
+
+	mbillboard1->SetPos(CVector2(headPosition.X(), headPosition.Y()));
+	mbillboard1->SetSize(CVector2(600.0f, 30.0f));
+	mbillboard1->SetUV(0, 0, 1, 1);
+
+	mbillboard->Render();
+
 
 	// キャラクターの更新
 	CXCharacter::Update();

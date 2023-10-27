@@ -9,6 +9,7 @@
 #include "CUIBase.h"
 #include "CImage.h"
 #include "CPlayer.h"
+#include "CBillBoard.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -38,10 +39,10 @@ void CGameScene::Load()
 	//unity->Scale(1.0f, 1.0f, 1.0f);
 	//unity->Position(0.0f, 20.0f, 0.0f);
 
-	//// ゆかりさん
-	//CYukari* yukari = new CYukari();
-	//yukari->Scale(3.0f, 3.0f, 3.0f);
-	//yukari->Position(20.0f, 20.0f, 0.0f);
+	// ゆかりさん
+	CYukari* yukari = new CYukari();
+	yukari->Scale(3.0f, 3.0f, 3.0f);
+	yukari->Position(20.0f, 20.0f, 0.0f);
 
 	CCamera* mainCamera = new CCamera
 	(
@@ -50,8 +51,6 @@ void CGameScene::Load()
 		player->Position()
 	);
 	mainCamera->SetFollowTargetTf(player);
-
-	
 }
 
 //シーンの更新処理

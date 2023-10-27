@@ -2,17 +2,22 @@
 #include "CPlayer.h"
 #include "CInput.h"
 #include "CCamera.h"
-#include "CImage.h"
 
 // プレイヤーのモデルデータのパス
 #define MODEL_PATH "Character\\Monster1\\Monster_1.x"
 
-#define PLAYER_HEIGHT 16.0f
-#define MOVE_SPEED 1.0f
-#define JUMP_SPEED 1.5f
-#define GRAVITY 0.0625f
-#define JUMP_END_Y 1.0f
-#define GAUGE_HEIGHT 20.0f
+// プレイヤー関連
+#define PLAYER_HEIGHT 16.0f		// 高さ
+#define MOVE_SPEED 1.0f			// スピード
+#define JUMP_SPEED 1.5f			// ジャンプ
+#define GRAVITY 0.0625f			// 重力
+#define JUMP_END_Y 1.0f			// ジャンプ終了時
+
+// 画像関連
+#define GAUGE_HEIGHT 30.0f		// 高さ
+#define GAUGE_WIDTH 800.0f		// 幅
+#define GAUGE_X_POS 200.0f		// 横軸
+#define GAUGE_Y_POS 100.0f		// 縦軸
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -39,9 +44,12 @@ CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
+	, mGauguSitaji(nullptr)
+	, mGaugu(nullptr)
 	, mRemainTime(50)
 	, mInvincible(0)
-	, mHP(500)
+	, mHP(4000)
+	, mMaxHP(4000)
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -71,11 +79,14 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+
+	// 画像読み込み
+	mGauguSitaji = new CImage("UI\\Image_Gauge_Frame.png");
+	mGaugu = new CImage("UI\\Gauge.png");
 }
 
 CPlayer::~CPlayer()
 {
-	CPlayer* player;
 	if (mpColliderLine != nullptr)
 	{
 		delete mpColliderLine;
@@ -86,6 +97,18 @@ CPlayer::~CPlayer()
 	{
 		delete mpModel;
 		mpModel = nullptr;
+	}
+
+	if (mGauguSitaji != nullptr)
+	{
+		delete mGauguSitaji;
+		mGauguSitaji = nullptr;
+	}
+
+	if (mGaugu != nullptr)
+	{
+		delete mGaugu;
+		mGaugu = nullptr;
 	}
 }
 
@@ -102,6 +125,11 @@ int CPlayer::GetHP() const
 void CPlayer::SetHP(int hp)
 {
 	mHP = hp;
+}
+
+int CPlayer::MaxHP() const
+{
+	return mMaxHP;
 }
 
 // アニメーション切り替え
@@ -171,14 +199,15 @@ void CPlayer::UpdateIdle()
 			// スペースキーが押された場合、プレイヤーのHPを減少させる
 			int currentHP = spInstance->GetHP();
 
-			int playerHP = spInstance->GetHP(); // プレイヤーのHPを取得
-			CDebugPrint::Print("Player HP: %d\n", playerHP); // HPをデバッグ出力
-
-			int newHP = currentHP - 100;
+			int newHP = currentHP - 500;
 
 			// HPが0未満にならないように確認
 			if (newHP < 0) {
 				newHP = 0;
+				if (newHP == 0)
+				{
+					newHP = 4000;
+				}
 			}
 
 			spInstance->SetHP(newHP);
@@ -416,9 +445,6 @@ void CPlayer::Update()
 	CVector forward = CVector::Slerp(current, target, 0.125f);
 	Rotation(CQuaternion::LookRotation(forward));
 
-	// キャラクターの更新
-	CXCharacter::Update();
-
 	mIsGrounded = false;
 
 	// 無敵中はカウントを減少させる
@@ -428,16 +454,8 @@ void CPlayer::Update()
 		mInvincible--;
 	}
 
-	// HPゲージ処理
-	new CImage();
-
-	CImage* image = new CImage("UI\\Gauge.png");
-	image->SetPos(100.0f, 100.0f);
-	//image->SetSize(1000.0f, 20.0f);
-
-	int playerHP = spInstance->GetHP();
-	float gaugeWidth = static_cast<float>(playerHP); // HPに応じたゲージの幅
-	image->SetSize(gaugeWidth, GAUGE_HEIGHT);
+	// キャラクターの更新
+	CXCharacter::Update();
 }
 
 // 衝突処理
@@ -462,11 +480,27 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 // 描画
 void CPlayer::Render()
 {
+	// ↓HPゲージ処理
+	// HPの取得処理
+	int playerHP = spInstance->GetHP();
+	int maxHP = spInstance->MaxHP();
+	// HPをintからfloat型にしている
+	float gaugeWidth = static_cast<float>(playerHP) / static_cast<float>(maxHP) * GAUGE_WIDTH; // HPに応じたゲージの幅
+
+	mGauguSitaji->SetPos(GAUGE_X_POS, GAUGE_Y_POS);
+	mGauguSitaji->SetSize(GAUGE_WIDTH, GAUGE_HEIGHT);
+	mGauguSitaji->SetUV(0, 0, 426, 63);
+	mGauguSitaji->Render();
+
+	mGaugu->SetPos(GAUGE_X_POS, GAUGE_Y_POS);
+	mGaugu->SetSize(gaugeWidth, GAUGE_HEIGHT);
+	mGaugu->SetUV(434, 426, 0, 63);
+	mGaugu->Render();
+
+	// デバッグ情報
+	/*CDebugPrint::Print("Player HP: %d\n", playerHP);
+	CDebugPrint::Print("Setting Gauge Size: %f x %f\n", gaugeWidth, GAUGE_HEIGHT);*/
+
+	// キャラ描画
 	CXCharacter::Render();
-}
-
-// 2D描画
-void CPlayer::Render2D()
-{
-
 }

@@ -17,5 +17,4 @@ public:
 	void Update();
 
 private:
-	CImage* mBgImage;   //”wŒi‰æ‘œ
 };

@@ -39,6 +39,7 @@ void CBillBoard::Set(CVector pos, float w, float h)
 void CBillBoard::Update()
 {
 }
+
 void CBillBoard::Render()
 {
 	Render(&mMaterial);
@@ -46,23 +47,23 @@ void CBillBoard::Render()
 //Render(マテリアルのポインタ)
 void CBillBoard::Render(CMaterial* mpMaterial)
 {
-//	//行列の保存
-//	glPushMatrix();
-//	//拡縮、回転、移動させる
-////	glMultMatrixf((CApplication::ModelViewInverse() *  mMatrix).M());
-//	//ライトオフ
-//	glDisable(GL_LIGHTING);
-//	//描画色の設定
-//	glColor4fv(mpMaterial->Diffuse());
-//	//マテリアル適用
-//	mpMaterial->Enabled();
-//	//三角形の描画
-//	mT[0].Render();
-//	mT[1].Render();
-//	//マテリアル解除
-//	mpMaterial->Disabled();
-//	//ライトオン
-//	glEnable(GL_LIGHTING);
-//	//行列を戻す
-//	glPopMatrix();
+	//行列の保存
+	glPushMatrix();
+	//拡縮、回転、移動させる
+	//glMultMatrixf((CApplication::ModelViewInverse() *  mMatrix).M());
+	//ライトオフ
+	glDisable(GL_LIGHTING);
+	//描画色の設定
+	glColor4fv(mpMaterial->Diffuse());
+	//マテリアル適用
+	mpMaterial->Enabled();
+	//三角形の描画
+	mT[0].Render();
+	mT[1].Render();
+	//マテリアル解除
+	mpMaterial->Disabled();
+	//ライトオン
+	glEnable(GL_LIGHTING);
+	//行列を戻す
+	glPopMatrix();
 }

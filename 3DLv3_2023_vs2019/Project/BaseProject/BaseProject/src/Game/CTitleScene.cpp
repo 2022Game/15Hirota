@@ -6,7 +6,6 @@
 //コンストラクタ
 CTitleScene::CTitleScene()
 	: CSceneBase(EScene::eTitle)
-	, mBgImage(nullptr)
 {
 }
 
