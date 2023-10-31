@@ -1,13 +1,14 @@
 #include "CUIGauge.h"
 #include "Maths.h"
+#include "CImage.h"
 
 #define FRAME_IMAGE "UI\\Image_Gauge_Frame.png"
 #define BAR_IMAGE "UI\\Gauge.png"
 
 // フレームの横サイズ
-#define FRAME_SIZE_X (50.0f)
+#define FRAME_SIZE_X (426.0f)	//(50.0f)
 // フレームの縦サイズ
-#define FRAME_SIZE_Y (32.0f)
+#define FRAME_SIZE_Y (62.0f)	//(32.0f)
 // フレームの線の幅
 #define FRAME_BORDER (2.0f)
 // バーの横のサイズ
@@ -21,8 +22,9 @@ CUIGauge::CUIGauge()
 {
 	mpFrameImage = new CImage(FRAME_IMAGE);
 	mpFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);
+	mpFrameImage->SetUV(0, 1, 1, 0);
 
-	mpFrameImage = new CImage(BAR_IMAGE);
+	mpBarImage = new CImage(BAR_IMAGE);
 	mpBarImage->SetSize(BAR_SIZE_X, BAR_SIZE_Y);
 }
 

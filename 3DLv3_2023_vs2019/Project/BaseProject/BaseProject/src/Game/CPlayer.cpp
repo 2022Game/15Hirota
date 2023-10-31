@@ -138,6 +138,7 @@ void CPlayer::ChangeLevel(int level)
 	// 現在のステータスを最大値にすることで、HPも回復
 	mCharaStatus = mCharaMaxStatus;
 
+	// 最大HPと現在HPをHPゲージに反映
 	mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
 	mpHpGauge->SetValue(mCharaStatus.hp);
 }
@@ -460,9 +461,10 @@ void CPlayer::Update()
 	if (debug)
 	{
 		CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
-		CDebugPrint::Print(" HP		%d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
+		CDebugPrint::Print(" HP	%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
 		CDebugPrint::Print(" 攻撃値 %d\n", mCharaStatus.power);
 	}
+	// 1キーを押しながら、↑ ↓ でHP増減
 	if (CInput::Key('1'))
 	{
 		if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;

@@ -1,7 +1,7 @@
 #ifndef CUIGauge_H
 #define CUIGauge_H
 #include "CUIBase.h"
-#include "CImage.h"
+class CImage;
 
 class CUIGauge :public CUIBase
 {

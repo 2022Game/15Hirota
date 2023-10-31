@@ -378,9 +378,6 @@
     <ClInclude Include="src\Game\CRotateFloor.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
-    <ClInclude Include="src\CharaStatus.h">
-      <Filter>ソース ファイル\Game\Character</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CUnityChan.h">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
@@ -389,6 +386,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CUIGauge.h">
       <Filter>ソース ファイル\Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CharaStatus.h">
+      <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

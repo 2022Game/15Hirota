@@ -1,2 +1,10 @@
-﻿  CUIGauge.cpp
+﻿  CApplication.cpp
+  CGameScene.cpp
+  CPlayer.cpp
+  CUnityChan.cpp
+  CXCharacter.cpp
+  CYukari.cpp
+  CharaStatus.cpp
+  main.cpp
+  コードを生成中...
   BaseProject.vcxproj -> C:\Users\Manam.DESKTOP-RTRTCM3\OneDrive\デスクトップ\Git\15Hirota\3DLv3_2023_vs2019\Project\BaseProject\Debug\BaseProject.exe
