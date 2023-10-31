@@ -86,10 +86,6 @@ CPlayer::CPlayer()
 
 	//HPゲージを作成
 	mpHpGauge = new CUIGauge();
-	mpHpGauge->SetMaxValue(HP);
-	mpHpGauge->SetValue(HP);
-
-	mpHpGauge->SetPos(300.0f, 400.0f);
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -141,6 +137,8 @@ void CPlayer::ChangeLevel(int level)
 	// 最大HPと現在HPをHPゲージに反映
 	mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
 	mpHpGauge->SetValue(mCharaStatus.hp);
+
+	//mpHpGauge->SetPos(300.0f, 400.0f);
 }
 
 // アニメーション切り替え
@@ -449,9 +447,6 @@ void CPlayer::Update()
 		mInvincible--;
 	}
 
-	// 現在のHPを設定
-	mpHpGauge->SetValue(HP);
-
 	// キャラクターのデバッグ表示
 	static bool debug = false;
 	if (CInput::PushKey('T'))
@@ -474,6 +469,9 @@ void CPlayer::Update()
 	{
 		LevelUp();
 	}
+	// 現在のHPを設定
+	mpHpGauge->SetValue(mCharaStatus.hp);
+
 
 	// キャラクターの更新
 	CXCharacter::Update();
