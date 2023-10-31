@@ -3,6 +3,7 @@
 #include "CObjectBase.h"
 #include "CTriangle.h"
 #include "CMaterial.h"
+#include "CImage.h"
 
 /*
 ビルボードクラス
@@ -24,10 +25,14 @@ public:
 	//描画
 	void Render();
 	void Render(CMaterial* mpMaterial);
+
+	void SetTexture(const CImage& texture);
+	const CImage& GetTexture() const;
 protected:
 	//三角形2つ
 	CTriangle mT[2];
 	//マテリアル
 	CMaterial mMaterial;
+	CImage mTexture; // ビルボードのテクスチャ
 };
 #endif

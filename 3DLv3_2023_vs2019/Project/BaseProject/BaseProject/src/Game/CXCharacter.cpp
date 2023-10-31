@@ -141,3 +141,15 @@ int CXCharacter::AnimationIndex()
 {
 	return mAnimationIndex;
 }
+
+// キャラの最大ステータスを取得
+const CharaStatus& CXCharacter::MaxStatus() const
+{
+	return mCharaMaxStatus;
+}
+
+// キャラステータスを取得
+const CharaStatus& CXCharacter::Status() const
+{
+	return mCharaStatus;
+}

@@ -41,8 +41,8 @@ void CGameScene::Load()
 
 	// ‚ä‚©‚è‚³‚ñ
 	CYukari* yukari = new CYukari();
-	yukari->Scale(3.0f, 3.0f, 3.0f);
-	yukari->Position(20.0f, 20.0f, 0.0f);
+	yukari->Scale(2.0f, 2.0f, 2.0f);
+	yukari->Position(20.0f, 100.0f, 0.0f);
 
 	CCamera* mainCamera = new CCamera
 	(

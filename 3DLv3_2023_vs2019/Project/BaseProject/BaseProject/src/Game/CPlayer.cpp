@@ -2,6 +2,8 @@
 #include "CPlayer.h"
 #include "CInput.h"
 #include "CCamera.h"
+#include "CUiGauge.h"
+#include "Maths.h"
 
 // プレイヤーのモデルデータのパス
 #define MODEL_PATH "Character\\Monster1\\Monster_1.x"
@@ -13,11 +15,17 @@
 #define GRAVITY 0.0625f			// 重力
 #define JUMP_END_Y 1.0f			// ジャンプ終了時
 
-// 画像関連
-#define GAUGE_HEIGHT 30.0f		// 高さ
-#define GAUGE_WIDTH 800.0f		// 幅
-#define GAUGE_X_POS 200.0f		// 横軸
-#define GAUGE_Y_POS 100.0f		// 縦軸
+// HP関連
+#define HP 100
+
+// レベル関連
+#define LEVEL 1
+
+//// 画像関連
+//#define GAUGE_HEIGHT 30.0f		// 高さ
+//#define GAUGE_WIDTH 716.0f		// 幅
+//#define GAUGE_X_POS 150.0f		// 横軸
+//#define GAUGE_Y_POS 100.0f		// 縦軸
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -44,12 +52,8 @@ CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
-	, mGauguSitaji(nullptr)
-	, mGaugu(nullptr)
 	, mRemainTime(50)
 	, mInvincible(0)
-	, mHP(4000)
-	, mMaxHP(4000)
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -80,9 +84,16 @@ CPlayer::CPlayer()
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
-	// 画像読み込み
-	mGauguSitaji = new CImage("UI\\Image_Gauge_Frame.png");
-	mGaugu = new CImage("UI\\Gauge.png");
+	//HPゲージを作成
+	mpHpGauge = new CUIGauge();
+	mpHpGauge->SetMaxValue(HP);
+	mpHpGauge->SetValue(HP);
+
+	mpHpGauge->SetPos(300.0f, 400.0f);
+
+	// 最初に1レベルに設定
+	ChangeLevel(1);
+
 }
 
 CPlayer::~CPlayer()
@@ -98,18 +109,6 @@ CPlayer::~CPlayer()
 		delete mpModel;
 		mpModel = nullptr;
 	}
-
-	if (mGauguSitaji != nullptr)
-	{
-		delete mGauguSitaji;
-		mGauguSitaji = nullptr;
-	}
-
-	if (mGaugu != nullptr)
-	{
-		delete mGaugu;
-		mGaugu = nullptr;
-	}
 }
 
 CPlayer* CPlayer::Instance()
@@ -117,19 +116,30 @@ CPlayer* CPlayer::Instance()
 	return spInstance;
 }
 
-int CPlayer::GetHP() const
+//bool CPlayer::ISdeth() const
+//{
+//	
+//}
+
+// レベルアップ
+void CPlayer::LevelUp()
 {
-	return mHP;
+	int level = mCharaStatus.level;
+	ChangeLevel(level + 1);
 }
 
-void CPlayer::SetHP(int hp)
+// レベルを変更
+void CPlayer::ChangeLevel(int level)
 {
-	mHP = hp;
-}
+	// ステータスのテーブルのインデックス値に変換
+	int index = Math::Clamp(level - 1, 0, PLAYER_LEVEL_MAX);
+	// 最大ステータスに設定
+	mCharaMaxStatus = PLAYER_STATUS[index];
+	// 現在のステータスを最大値にすることで、HPも回復
+	mCharaStatus = mCharaMaxStatus;
 
-int CPlayer::MaxHP() const
-{
-	return mMaxHP;
+	mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
+	mpHpGauge->SetValue(mCharaStatus.hp);
 }
 
 // アニメーション切り替え
@@ -166,7 +176,7 @@ void CPlayer::UpdateIdle()
 			move.Y(0.0f);
 			move.Normalize();
 
-			mMoveSpeed += move * MOVE_SPEED;
+			mMoveSpeed += move * MOVE_SPEED * mCharaStatus.moveSpeed;
 
 			// 歩行アニメーションに切り替え
 			ChangeAnimation(EAnimType::eWalk);
@@ -196,22 +206,6 @@ void CPlayer::UpdateIdle()
 		else if (CInput::PushKey(VK_SPACE))
 		{
 			mState = EState::eJumpStart;
-			// スペースキーが押された場合、プレイヤーのHPを減少させる
-			int currentHP = spInstance->GetHP();
-
-			int newHP = currentHP - 500;
-
-			// HPが0未満にならないように確認
-			if (newHP < 0) {
-				newHP = 0;
-				if (newHP == 0)
-				{
-					newHP = 4000;
-				}
-			}
-
-			spInstance->SetHP(newHP);
-			
 		}
 		// SHIFTキーでダッシュ開始へ移行
 		else if (CInput::Key(VK_SHIFT) && KeyPush)
@@ -454,6 +448,31 @@ void CPlayer::Update()
 		mInvincible--;
 	}
 
+	// 現在のHPを設定
+	mpHpGauge->SetValue(HP);
+
+	// キャラクターのデバッグ表示
+	static bool debug = false;
+	if (CInput::PushKey('T'))
+	{
+		debug = !debug;
+	}
+	if (debug)
+	{
+		CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
+		CDebugPrint::Print(" HP		%d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
+		CDebugPrint::Print(" 攻撃値 %d\n", mCharaStatus.power);
+	}
+	if (CInput::Key('1'))
+	{
+		if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
+		else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
+	}
+	else if (CInput::Key('2'))
+	{
+		LevelUp();
+	}
+
 	// キャラクターの更新
 	CXCharacter::Update();
 }
@@ -480,26 +499,26 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 // 描画
 void CPlayer::Render()
 {
-	// ↓HPゲージ処理
-	// HPの取得処理
-	int playerHP = spInstance->GetHP();
-	int maxHP = spInstance->MaxHP();
-	// HPをintからfloat型にしている
-	float gaugeWidth = static_cast<float>(playerHP) / static_cast<float>(maxHP) * GAUGE_WIDTH; // HPに応じたゲージの幅
+	//// ↓HPゲージ処理
+	//// HPの取得処理
+	//int playerHP = spInstance->GetHP();
+	//int maxHP = spInstance->MaxHP();
+	//// HPをintからfloat型にしている
+	//float gaugeWidth = static_cast<float>(playerHP) / static_cast<float>(maxHP) * GAUGE_WIDTH; // HPに応じたゲージの幅
 
-	mGauguSitaji->SetPos(GAUGE_X_POS, GAUGE_Y_POS);
-	mGauguSitaji->SetSize(GAUGE_WIDTH, GAUGE_HEIGHT);
-	mGauguSitaji->SetUV(0, 0, 426, 63);
-	mGauguSitaji->Render();
+	//mGauguSitaji->SetPos(GAUGE_X_POS, GAUGE_Y_POS);
+	//mGauguSitaji->SetSize(900.0f, 62.0f);
+	//mGauguSitaji->SetUV(0, 1, 1, 0);
+	//mGauguSitaji->Render();
 
-	mGaugu->SetPos(GAUGE_X_POS, GAUGE_Y_POS);
-	mGaugu->SetSize(gaugeWidth, GAUGE_HEIGHT);
-	mGaugu->SetUV(434, 426, 0, 63);
-	mGaugu->Render();
+	//mGaugu->SetPos(333.0f, 132.0f);
+	//mGaugu->SetSize(gaugeWidth, GAUGE_HEIGHT);
+	//mGaugu->SetUV(1400, 0, 1800, 62);
+	//mGaugu->Render();
 
-	// デバッグ情報
-	/*CDebugPrint::Print("Player HP: %d\n", playerHP);
-	CDebugPrint::Print("Setting Gauge Size: %f x %f\n", gaugeWidth, GAUGE_HEIGHT);*/
+	//// デバッグ情報
+	//CDebugPrint::Print("Player HP: %d\n", playerHP);
+	//CDebugPrint::Print("Setting Gauge Size: %f x %f\n", gaugeWidth, GAUGE_HEIGHT);
 
 	// キャラ描画
 	CXCharacter::Render();

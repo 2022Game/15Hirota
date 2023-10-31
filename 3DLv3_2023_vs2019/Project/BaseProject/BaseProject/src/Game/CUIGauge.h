@@ -1,0 +1,31 @@
+#ifndef CUIGauge_H
+#define CUIGauge_H
+#include "CUIBase.h"
+#include "CImage.h"
+
+class CUIGauge :public CUIBase
+{
+private:
+	CImage* mpFrameImage;	// 枠画像
+	CImage* mpBarImage;		// バー画像
+	int mMaxVsalue;			// 最大値
+	int mValue;				// 現在値
+public:
+	// コンストラクタ
+	CUIGauge();
+	// デストラクタ
+	~CUIGauge();
+
+	// 最大値を設定
+	void SetMaxValue(int value);
+	// 現在地を設定
+	void SetValue(int value);
+
+	// バーの表示位置の割合を設定
+	// (HPであれば、残りHPが最大HPと比べて何パーセント残っているかを設定)
+	void SetPor(float per);
+
+	// 更新処理
+	void Update();
+};
+#endif

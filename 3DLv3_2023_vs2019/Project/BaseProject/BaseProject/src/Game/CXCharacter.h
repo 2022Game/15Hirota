@@ -4,6 +4,7 @@
 #include "CModelX.h"
 #include "CMaterial.h"
 #include "CCharaBase.h"
+#include "CharaStatus.h"
 
 class CXCharacter : public CCharaBase
 {
@@ -28,15 +29,23 @@ public:
 
 	int AnimationIndex();	//アニメーションの番号の取得
 
+	// キャラの最大ステータスを取得
+	const CharaStatus& MaxStatus() const;
+	// キャラステータスを取得
+	const CharaStatus& Status() const;
+
 protected:
-	CModelX* mpModel;			//モデルデータ
-	CMatrix* mpCombinedMatrix;	//合成行列退避
+	CModelX* mpModel;				//モデルデータ
+	CMatrix* mpCombinedMatrix;		//合成行列退避
 
-	bool mAnimationLoopFlg;		//true:アニメーションを繰り返す
+	bool mAnimationLoopFlg;			//true:アニメーションを繰り返す
 
-	int mAnimationIndex;		//アニメーション番号
+	int mAnimationIndex;			//アニメーション番号
 
-	float mAnimationFrame;		//アニメーションの再生フレーム
-	float mAnimationFrameSize;	//アニメーションの再生フレーム数
+	float mAnimationFrame;			//アニメーションの再生フレーム
+	float mAnimationFrameSize;		//アニメーションの再生フレーム数
+
+	CharaStatus mCharaMaxStatus;	//キャラの最大ステータス
+	CharaStatus mCharaStatus;		// キャラの現在ステータス
 };
 #endif

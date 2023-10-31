@@ -5,7 +5,7 @@
 #include "CRideableObject.h"
 #include "CImage.h"
 
-class CImage;
+class CUIGauge;
 
 /*
 プレイヤークラス
@@ -60,15 +60,10 @@ public:
 
 	// 描画
 	void Render();
-	// 2D描画
-	void Render2D();
 
-	// HP取得
-	int GetHP() const;
-	// 最大HP取得
-	int MaxHP() const;
-	// HP変更
-	void SetHP(int hp);
+	// レベル処理
+	void LevelUp();
+	void ChangeLevel(int level);
 
 private:
 	// アニメーションの種類
@@ -131,10 +126,8 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
-	int mRemainTime;		// 残り時間
-	int mHP;				// HP
-	int mMaxHP;				// 最大HP
-	int mInvincible;		// 無敵カウンタ
-	CImage* mGauguSitaji;	// 画像_下地
-	CImage* mGaugu;			// 画像_ゲージ
+	int mRemainTime;			// 残り時間
+	int mInvincible;			// 無敵カウンタ
+
+	CUIGauge* mpHpGauge;		// HPゲージ
 };

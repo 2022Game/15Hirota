@@ -36,8 +36,19 @@ void CBillBoard::Set(CVector pos, float w, float h)
 	mMaterial.Diffuse()[2] = 1.0f;
 	mMaterial.Diffuse()[3] = 1.0f;
 }
+
 void CBillBoard::Update()
 {
+}
+
+void CBillBoard::SetTexture(const CImage& texture)
+{
+	mTexture = texture;
+}
+
+const CImage& CBillBoard::GetTexture() const
+{
+	return mTexture;
 }
 
 void CBillBoard::Render()

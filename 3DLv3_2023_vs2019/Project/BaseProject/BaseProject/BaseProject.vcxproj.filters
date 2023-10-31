@@ -56,6 +56,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object">
       <UniqueIdentifier>{944b0643-4c32-4f86-9d33-49cba7329b64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI">
+      <UniqueIdentifier>{4e84a726-ab3b-43f0-bba8-569c8da5127e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -199,11 +202,17 @@
     <ClCompile Include="src\Game\CRotateFloor.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
-    <ClCompile Include="src\CUnityChan.cpp">
+    <ClCompile Include="src\Game\CharaStatus.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
-    <ClCompile Include="src\CYukari.cpp">
+    <ClCompile Include="src\Game\CUnityChan.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CYukari.cpp">
+      <Filter>ソース ファイル\Game\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CUIGauge.cpp">
+      <Filter>ソース ファイル\Game\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -369,11 +378,17 @@
     <ClInclude Include="src\Game\CRotateFloor.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
-    <ClInclude Include="src\CUnityChan.h">
+    <ClInclude Include="src\CharaStatus.h">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
-    <ClInclude Include="src\CYukari.h">
+    <ClInclude Include="src\Game\CUnityChan.h">
       <Filter>ソース ファイル\Game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CYukari.h">
+      <Filter>ソース ファイル\Game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CUIGauge.h">
+      <Filter>ソース ファイル\Game\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

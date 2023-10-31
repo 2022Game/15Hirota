@@ -46,20 +46,22 @@
     <ClCompile Include="src\BaseSystem\CVector.cpp" />
     <ClCompile Include="src\BaseSystem\CObjectBase.cpp" />
     <ClCompile Include="src\BaseSystem\Maths.cpp" />
-    <ClCompile Include="src\CYukari.cpp" />
     <ClCompile Include="src\Game\CApplication.cpp" />
     <ClCompile Include="src\Game\CEnemy.cpp" />
     <ClCompile Include="src\Game\CField.cpp" />
     <ClCompile Include="src\Game\CGameScene.cpp" />
+    <ClCompile Include="src\Game\CharaStatus.cpp" />
     <ClCompile Include="src\Game\CImage.cpp" />
     <ClCompile Include="src\Game\CMoveFloor.cpp" />
     <ClCompile Include="src\Game\CPlayer.cpp" />
     <ClCompile Include="src\Game\CRideabeObject.cpp" />
     <ClCompile Include="src\Game\CRotateFloor.cpp" />
     <ClCompile Include="src\Game\CTitleScene.cpp" />
+    <ClCompile Include="src\Game\CUIGauge.cpp" />
+    <ClCompile Include="src\Game\CUnityChan.cpp" />
     <ClCompile Include="src\Game\CXCharacter.cpp" />
+    <ClCompile Include="src\Game\CYukari.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\CUnityChan.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CBillBoard.h" />
@@ -104,7 +106,7 @@
     <ClInclude Include="src\BaseSystem\TaskPauseType.h" />
     <ClInclude Include="src\BaseSystem\TaskPriority.h" />
     <ClInclude Include="src\BaseSystem\ObjectTag.h" />
-    <ClInclude Include="src\CYukari.h" />
+    <ClInclude Include="src\CharaStatus.h" />
     <ClInclude Include="src\Define.h" />
     <ClInclude Include="src\Game\CApplication.h" />
     <ClInclude Include="src\Game\CEnemy.h" />
@@ -116,8 +118,10 @@
     <ClInclude Include="src\Game\CRideableObject.h" />
     <ClInclude Include="src\Game\CRotateFloor.h" />
     <ClInclude Include="src\Game\CTitleScene.h" />
+    <ClInclude Include="src\Game\CUIGauge.h" />
+    <ClInclude Include="src\Game\CUnityChan.h" />
     <ClInclude Include="src\Game\CXCharacter.h" />
-    <ClInclude Include="src\CUnityChan.h" />
+    <ClInclude Include="src\Game\CYukari.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8802AF2F-2920-4700-89F2-CA6778727283}</ProjectGuid>
