@@ -117,6 +117,8 @@ private:
 		eDashEnd,		// ダッシュ終了
 		eRotate,		// 回避開始
 		eRotateEnd,		// 回避終了待ち
+		eClear,			// クリア状態
+		eDeth,			// 死亡
 	};
 	EState mState;		// プレイヤーの状態
 

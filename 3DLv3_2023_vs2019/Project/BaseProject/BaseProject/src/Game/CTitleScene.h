@@ -17,4 +17,5 @@ public:
 	void Update();
 
 private:
+	CImage* mpTitle;
 };

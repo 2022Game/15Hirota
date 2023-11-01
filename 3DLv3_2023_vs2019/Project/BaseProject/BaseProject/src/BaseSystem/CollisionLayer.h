@@ -6,6 +6,7 @@ enum class ELayer
 {
 	eNone = -1,
 	eField,
+	eGoal,
 	ePlayer,
 };
 // 衝突判定レイヤーの初期化リスト

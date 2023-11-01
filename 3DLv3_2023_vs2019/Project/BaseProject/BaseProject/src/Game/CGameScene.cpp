@@ -9,7 +9,7 @@
 #include "CUIBase.h"
 #include "CImage.h"
 #include "CPlayer.h"
-#include "CBillBoard.h"
+#include "CInput.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -56,5 +56,8 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-	
+	if (CInput::PushKey('C'))
+	{
+		CSceneManager::Instance()->LoadScene(EScene::eClear);
+	}
 }
