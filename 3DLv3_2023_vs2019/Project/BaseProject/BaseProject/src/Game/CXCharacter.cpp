@@ -142,6 +142,23 @@ int CXCharacter::AnimationIndex()
 	return mAnimationIndex;
 }
 
+// 指定したボーンの行列を取得
+const CMatrix*
+CXCharacter::GetFrameMtx(std::string name) const
+{
+	// モデルデータが設定されていない
+	if (mpModel == nullptr) return nullptr;
+
+	// フレーム検索
+	CModelXFrame* frame = mpModel->FinedFrame(name.c_str());
+
+	//指定されたフレームが存在しなかった
+	if (frame == nullptr) return nullptr;
+
+	// フレームの行列祖返す
+	return &frame->CombinedMatrix();
+}
+
 // キャラの最大ステータスを取得
 const CharaStatus& CXCharacter::MaxStatus() const
 {

@@ -1,6 +1,7 @@
 #include "CSceneManager.h"
 #include "CTitleScene.h"
 #include "CGameScene.h"
+#include "CClearScene.h"
 
 // シーンマネージャのインスタンス
 CSceneManager* CSceneManager::mpInstance = nullptr;
@@ -51,6 +52,8 @@ void CSceneManager::LoadScene(EScene scene)
 	case EScene::eTitle:   mpScene = new CTitleScene();   break;
 		//ゲームシーン
 	case EScene::eGame:    mpScene = new CGameScene();    break;
+		//ゲームクリアシーン
+	case EScene::eClear:   mpScene = new CClearScene();	  break;
 	}
 
 	//シーンを新しく生成できたら、

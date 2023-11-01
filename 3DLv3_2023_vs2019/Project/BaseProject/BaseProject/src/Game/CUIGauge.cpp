@@ -65,7 +65,7 @@ void CUIGauge::Update()
 	// HPの割合でバーの色を変更
 	CColor color;
 	// 10%以下
-	if (percent <= 0.1f) color = CColor(1.0f, 0.0f, 0.0f);
+	if (percent <= 0.2f) color = CColor(1.0f, 0.0f, 0.0f);
 	// 50%以下
 	else if (percent <= 0.5f) color = CColor(0.9f, 0.3f, 0.5f);
 	// それ以外

@@ -29,6 +29,9 @@ public:
 
 	int AnimationIndex();	//アニメーションの番号の取得
 
+	// 指定したボーンの行列を取得
+	const CMatrix* GetFrameMtx(std::string name) const;
+
 	// キャラの最大ステータスを取得
 	const CharaStatus& MaxStatus() const;
 	// キャラステータスを取得

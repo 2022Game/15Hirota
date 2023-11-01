@@ -21,12 +21,6 @@
 // レベル関連
 #define LEVEL 1
 
-//// 画像関連
-//#define GAUGE_HEIGHT 30.0f		// 高さ
-//#define GAUGE_WIDTH 716.0f		// 幅
-//#define GAUGE_X_POS 150.0f		// 横軸
-//#define GAUGE_Y_POS 100.0f		// 縦軸
-
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
 
@@ -499,27 +493,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 // 描画
 void CPlayer::Render()
 {
-	//// ↓HPゲージ処理
-	//// HPの取得処理
-	//int playerHP = spInstance->GetHP();
-	//int maxHP = spInstance->MaxHP();
-	//// HPをintからfloat型にしている
-	//float gaugeWidth = static_cast<float>(playerHP) / static_cast<float>(maxHP) * GAUGE_WIDTH; // HPに応じたゲージの幅
-
-	//mGauguSitaji->SetPos(GAUGE_X_POS, GAUGE_Y_POS);
-	//mGauguSitaji->SetSize(900.0f, 62.0f);
-	//mGauguSitaji->SetUV(0, 1, 1, 0);
-	//mGauguSitaji->Render();
-
-	//mGaugu->SetPos(333.0f, 132.0f);
-	//mGaugu->SetSize(gaugeWidth, GAUGE_HEIGHT);
-	//mGaugu->SetUV(1400, 0, 1800, 62);
-	//mGaugu->Render();
-
-	//// デバッグ情報
-	//CDebugPrint::Print("Player HP: %d\n", playerHP);
-	//CDebugPrint::Print("Setting Gauge Size: %f x %f\n", gaugeWidth, GAUGE_HEIGHT);
-
 	// キャラ描画
 	CXCharacter::Render();
 }
