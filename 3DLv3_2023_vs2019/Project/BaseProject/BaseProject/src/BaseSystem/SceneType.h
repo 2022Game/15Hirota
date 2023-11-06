@@ -7,4 +7,5 @@ enum class EScene
 	eTitle,	//タイトルシーン
 	eGame,	//ゲームシーン
 	eClear,	//ゲームクリアシーン
+	eOver,	//ゲームオーバーシーン
 };

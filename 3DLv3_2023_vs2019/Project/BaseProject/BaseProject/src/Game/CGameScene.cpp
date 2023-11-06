@@ -10,6 +10,7 @@
 #include "CImage.h"
 #include "CPlayer.h"
 #include "CInput.h"
+#include "CharaStatus.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -58,6 +59,6 @@ void CGameScene::Update()
 {
 	if (CInput::PushKey('C'))
 	{
-		CSceneManager::Instance()->LoadScene(EScene::eClear);
+		CSceneManager::Instance()->LoadScene(EScene::eOver);
 	}
 }

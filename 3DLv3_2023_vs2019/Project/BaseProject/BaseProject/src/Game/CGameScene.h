@@ -2,6 +2,7 @@
 #include "CSceneBase.h"
 
 class CImage;
+class CPlayer;
 
 //タイトルシーン
 class CGameScene :public CSceneBase

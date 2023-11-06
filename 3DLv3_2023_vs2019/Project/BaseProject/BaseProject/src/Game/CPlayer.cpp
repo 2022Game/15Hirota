@@ -4,6 +4,7 @@
 #include "CCamera.h"
 #include "CUiGauge.h"
 #include "Maths.h"
+#include "CSceneManager.h"
 
 // プレイヤーのモデルデータのパス
 #define MODEL_PATH "Character\\Monster1\\Monster_1.x"
@@ -465,7 +466,6 @@ void CPlayer::Update()
 	}
 	// 現在のHPを設定
 	mpHpGauge->SetValue(mCharaStatus.hp);
-
 
 	// キャラクターの更新
 	CXCharacter::Update();
