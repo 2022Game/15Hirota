@@ -10,6 +10,7 @@
 #include "CImage.h"
 #include "CInput.h"
 #include "CGameOverScene.h"
+#include "CharaStatus.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -56,8 +57,17 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-	if (CInput::PushKey('O'))
-	{
+	// hp取得
+	int currentHP = CPlayer::Instance()->GetHp();
+	// 最大hp取得
+	int maxHP = CPlayer::Instance()->GetMaxHp();
+
+	// デバッグ 現在のhp
+	CDebugPrint::Print("currentHP %d\n", currentHP);
+
+	// hpが半分を切るとeOverに遷移させる
+	// エラー
+	if (currentHP <= maxHP / 2) {
 		CSceneManager::Instance()->LoadScene(EScene::eOver);
 	}
 }

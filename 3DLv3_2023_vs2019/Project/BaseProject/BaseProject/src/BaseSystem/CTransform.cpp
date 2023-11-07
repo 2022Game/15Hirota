@@ -24,10 +24,13 @@ CTransform::~CTransform()
 		mpParent->RemoveChild(this);
 		mpParent = nullptr;
 	}
-
 	// Žq‚ª‘¶Ý‚·‚ê‚ÎAŽq‚Æ‚ÌŒq‚ª‚è‚ð‰ðœ
-	for (CTransform* child : mChildren)
+	auto itr = mChildren.begin();
+	auto end = mChildren.end();
+	while (end != end)
 	{
+		CTransform* child = *itr;
+		itr++;
 		child->SetParent(nullptr);
 	}
 	mChildren.clear();

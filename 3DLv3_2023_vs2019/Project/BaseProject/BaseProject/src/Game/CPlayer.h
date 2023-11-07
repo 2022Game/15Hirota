@@ -5,6 +5,8 @@
 #include "CRideableObject.h"
 #include "CImage.h"
 
+#define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
+
 class CUIGauge;
 
 /*
@@ -62,8 +64,12 @@ public:
 	void Render();
 
 	// レベル処理
-	void LevelUp();
-	void ChangeLevel(int level);
+	void LevelUp();	//	レベルアップ
+	void ChangeLevel(int level);	// レベル変更
+
+	// hp取得
+	int GetHp();
+	int GetMaxHp();
 
 private:
 	// アニメーションの種類

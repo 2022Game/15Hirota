@@ -50,6 +50,8 @@ CPlayer::CPlayer()
 	, mRemainTime(50)
 	, mInvincible(0)
 {
+	mCharaStatus.hp = PLAYER_STATUS[0].hp; // レベル1の初期HPを設定
+
 	//インスタンスの設定
 	spInstance = this;
 
@@ -84,7 +86,6 @@ CPlayer::CPlayer()
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
-
 }
 
 CPlayer::~CPlayer()
@@ -107,10 +108,17 @@ CPlayer* CPlayer::Instance()
 	return spInstance;
 }
 
-//bool CPlayer::ISdeth() const
-//{
-//	
-//}
+// hp取得
+int CPlayer::GetHp()
+{
+	return mCharaStatus.hp;
+}
+
+// 最大hp取得
+int CPlayer::GetMaxHp()
+{
+	return mCharaMaxStatus.hp;
+}
 
 // レベルアップ
 void CPlayer::LevelUp()
@@ -450,7 +458,7 @@ void CPlayer::Update()
 	}
 	if (debug)
 	{
-		CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
+		//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
 		CDebugPrint::Print(" HP	%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
 		CDebugPrint::Print(" 攻撃値 %d\n", mCharaStatus.power);
 	}
