@@ -19,6 +19,6 @@ public:
 	//シーンの更新処理
 	void Update();
 private:
-	CImage* mpImage;
+	CImage* mpOverImage;
 };
 #endif

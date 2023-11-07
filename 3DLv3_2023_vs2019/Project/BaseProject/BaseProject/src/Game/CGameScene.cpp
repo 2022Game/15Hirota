@@ -8,9 +8,8 @@
 #include "CYukari.h"
 #include "CUIBase.h"
 #include "CImage.h"
-#include "CPlayer.h"
 #include "CInput.h"
-#include "CharaStatus.h"
+#include "CGameOverScene.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -57,7 +56,7 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-	if (CInput::PushKey('C'))
+	if (CInput::PushKey('O'))
 	{
 		CSceneManager::Instance()->LoadScene(EScene::eOver);
 	}

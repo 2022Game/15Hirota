@@ -131,7 +131,5 @@ private:
 	int mRemainTime;			// 残り時間
 	int mInvincible;			// 無敵カウンタ
 
-	CPlayer* mpPlayer;
-
 	CUIGauge* mpHpGauge;		// HPゲージ
 };
