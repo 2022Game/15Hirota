@@ -1,5 +1,7 @@
 #include "CGameScene.h"
 #include "CSceneManager.h"
+#include "CGameOverScene.h"
+#include "CClearScene.h"
 #include "CField.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
@@ -9,18 +11,27 @@
 #include "CUIBase.h"
 #include "CImage.h"
 #include "CInput.h"
-#include "CGameOverScene.h"
-#include "CharaStatus.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
+	,image(nullptr)
+	,Clear(false)
 {
+	//image = new CImage("UI\\Clear.jpeg"); // CLEAR_IMAGE_PATH はクリア画像のファイルパス
+	//image->SetSize(700, 500);
+	//image->SetPos(CVector2(300.0f, 200.0f)); // 画像の表示位置を設定
+	//image->SetUV(0, 1, 1, 0);
 }
 
 //デストラクタ
 CGameScene::~CGameScene()
 {
+	if (image != nullptr)
+	{
+		delete image;
+		image = nullptr;
+	}
 }
 
 //シーン読み込み
@@ -52,6 +63,13 @@ void CGameScene::Load()
 		player->Position()
 	);
 	mainCamera->SetFollowTargetTf(player);
+
+	//// クリア画像のリソースをロード
+	//CImage* clearImage = new CImage("UI\\Clear.jpeg"); // CLEAR_IMAGE_PATH はクリア画像のファイルパス
+	//clearImage->SetSize(800, 500);
+	//clearImage->SetPos(CVector2(300.0f, 300.0f)); // 画像の表示位置を設定
+	//clearImage->SetUV(0, 1, 1, 0);
+	// クリア画像のリソースをロード
 }
 
 //シーンの更新処理
@@ -63,11 +81,21 @@ void CGameScene::Update()
 	int maxHP = CPlayer::Instance()->GetMaxHp();
 
 	// デバッグ 現在のhp
-	CDebugPrint::Print("currentHP %d\n", currentHP);
+	//CDebugPrint::Print("currentHP %d\n", currentHP);
 
 	// hpが半分を切るとeOverに遷移させる
-	// エラー
-	if (currentHP <= maxHP / 2) {
+	if (currentHP <= 0) {
 		CSceneManager::Instance()->LoadScene(EScene::eOver);
+	}
+	else if (currentHP <= 5 && Clear)
+	{
+		if (Clear)
+		{
+			image->Load("UI\\Clear.jpeg");
+			if (CInput::PushKey('C'))
+			{
+				CSceneManager::Instance()->LoadScene(EScene::eClear);
+			}
+		}
 	}
 }

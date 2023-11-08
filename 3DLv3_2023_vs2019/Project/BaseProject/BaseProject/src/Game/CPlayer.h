@@ -118,9 +118,6 @@ private:
 		eJumpStart,		// ジャンプ開始
 		eJump,			// ジャンプ中
 		eJumpEnd,		// ジャンプ終了
-		eDashStart,		// ダッシュ開始
-		eDash,			// ダッシュ中
-		eDashEnd,		// ダッシュ終了
 		eRotate,		// 回避開始
 		eRotateEnd,		// 回避終了待ち
 		eClear,			// クリア状態
@@ -134,7 +131,7 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
-	int mRemainTime;			// 残り時間
+	float mRemainTime;			// 残り時間
 	int mInvincible;			// 無敵カウンタ
 
 	CUIGauge* mpHpGauge;		// HPゲージ

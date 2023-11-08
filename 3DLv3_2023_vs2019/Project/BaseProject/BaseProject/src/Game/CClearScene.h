@@ -17,5 +17,6 @@ public:
 
 	// XVˆ—
 	void Update();
+private:
 };
 #endif

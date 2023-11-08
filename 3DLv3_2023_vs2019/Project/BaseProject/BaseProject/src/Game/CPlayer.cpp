@@ -12,6 +12,7 @@
 // プレイヤー関連
 #define PLAYER_HEIGHT 16.0f		// 高さ
 #define MOVE_SPEED 1.0f			// スピード
+#define RUN_SPEED 1.5f			// 移動スピード
 #define JUMP_SPEED 1.5f			// ジャンプ
 #define GRAVITY 0.0625f			// 重力
 #define JUMP_END_Y 1.0f			// ジャンプ終了時
@@ -47,7 +48,7 @@ CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
-	, mRemainTime(50)
+	, mRemainTime(0.0f)
 	, mInvincible(0)
 {
 	mCharaStatus.hp = PLAYER_STATUS[0].hp; // レベル1の初期HPを設定
@@ -178,7 +179,27 @@ void CPlayer::UpdateIdle()
 			move.Y(0.0f);
 			move.Normalize();
 
-			mMoveSpeed += move * MOVE_SPEED * mCharaStatus.moveSpeed;
+			float speed = MOVE_SPEED;
+			// SHIFTキーでダッシュ開始へ移行
+			if (CInput::Key(VK_SHIFT) && KeyPush)
+			{
+				speed = RUN_SPEED;
+				// ダッシュタイム減少
+				mRemainTime++;
+				CDebugPrint::Print("タイム %f\n", mRemainTime);
+				ChangeAnimation(EAnimType::eDash);
+			}
+			else if (mRemainTime >= 100.0f && !KeyPush)
+			{
+				ChangeAnimation(EAnimType::eDashStop);
+			}
+			else
+			{
+				mRemainTime = 0.0f;
+				ChangeAnimation(EAnimType::eWalk);
+			}
+
+			mMoveSpeed += move * MOVE_SPEED * mCharaStatus.moveSpeed * speed;
 
 			// 歩行アニメーションに切り替え
 			ChangeAnimation(EAnimType::eWalk);
@@ -209,14 +230,8 @@ void CPlayer::UpdateIdle()
 		{
 			mState = EState::eJumpStart;
 		}
-		// SHIFTキーでダッシュ開始へ移行
-		else if (CInput::Key(VK_SHIFT) && KeyPush)
-		{
-			mMoveSpeed.Y(0.0f);
-			mState = EState::eDashStart;
-		}
 		// Q,Eキーで回避へ移行
-		else if ((CInput::PushKey('Q') || CInput::PushKey('E') && KeyPush) || mState == EState::eDash)
+		else if ((CInput::PushKey('Q') || CInput::PushKey('E') && KeyPush))
 		{
 			mState = EState::eRotate;
 		}
@@ -255,71 +270,6 @@ void CPlayer::UpdateAttackWait()
 		// 待機状態へ移行
 		mState = EState::eIdle;
 		ChangeAnimation(EAnimType::eIdle);
-	}
-}
-
-//ダッシュ開始
-void CPlayer::UpdateDashStart()
-{
-	ChangeAnimation(EAnimType::eDash);
-	mState = EState::eDash;
-}
-
-//ダッシュ中
-void CPlayer::UpdateDash()
-{
-	//簡略
-	bool KeyPush = CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D');
-	// ダッシュの速度倍率を設定
-	const float dashSpeed = 0.5f; // ダッシュ速度
-
-	// ダッシュ中の速度適用
-	// 移動処理
-	CVector input;
-	if (mState == EState::eDash) {
-		// WASDキーの入力を監視し、速度倍率を適用
-		if (CInput::Key('W')) {
-			input.Z(-1.0f);
-		}
-		if (CInput::Key('A')) {
-			input.X(-1.0f);
-		}
-		if (CInput::Key('S')) {
-			input.Z(1.0f);
-		}
-		if (CInput::Key('D')) {
-			input.X(1.0f);
-		}
-
-		// 入力ベクトルを正規化
-		if (input.Length() > 0.0f) {
-			input.Normalize();
-			input *= dashSpeed;
-		}
-	}
-
-	// 移動処理
-	Position(Position() + mMoveSpeed + input);
-
-	// ダッシュタイム減少
-	mRemainTime--;
-
-	// 条件
-	if (mRemainTime <= 0 || !CInput::Key(VK_SHIFT) || input.Length() == 0.0f)
-	{
-		// ダッシュ終了アニメーション
-		ChangeAnimation(EAnimType::eDashStop);
-		mState = EState::eDashEnd;
-	}
-}
-
-//ダッシュ終了
-void CPlayer::UpdateDashEnd()
-{
-	if (IsAnimationFinished())
-	{
-		mState = EState::eIdle;
-		mRemainTime = 50;
 	}
 }
 
@@ -405,18 +355,6 @@ void CPlayer::Update()
 		// ジャンプ終了
 		case EState::eJumpEnd:
 			UpdateJumpEnd();
-			break;
-		//ダッシュ開始
-		case EState::eDashStart:
-			UpdateDashStart();
-			break;
-		//ダッシュ状態
-		case EState::eDash:
-			UpdateDash();
-			break;
-		//ダッシュ終了
-		case EState::eDashEnd:
-			UpdateDashEnd();
 			break;
 		//回避開始
 		case EState::eRotate:

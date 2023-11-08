@@ -56,7 +56,7 @@ void CSceneManager::LoadScene(EScene scene)
 		//ゲームオーバーシン
 	case EScene::eOver:	   mpScene = new CGameOverScene();	break;
 		//ゲームクリアシーン
-	//case EScene::eClear:   mpScene = new CClearScene();		break;
+	case EScene::eClear:   mpScene = new CClearScene();		break;
 	}
 
 	//シーンを新しく生成できたら、

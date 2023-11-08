@@ -12,7 +12,7 @@ CYukari* CYukari::spInstance = nullptr;
 // プレイヤーのアニメーションデータのテーブル
 const CYukari::AnimData CYukari::ANIM_DATA[] =
 {
-	{ "",										true,	0.0f	},	// Tポーズ
+	{ "",												true,	0.0f	},	// Tポーズ
 	{ "Character\\Yukari\\anim\\yukari_Playing.x",		true,	163.0f	},	// Idle時
 };
 
