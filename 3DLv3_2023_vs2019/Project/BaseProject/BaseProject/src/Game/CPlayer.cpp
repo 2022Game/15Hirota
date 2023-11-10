@@ -12,7 +12,7 @@
 // プレイヤー関連
 #define PLAYER_HEIGHT 16.0f		// 高さ
 #define MOVE_SPEED 1.0f			// スピード
-#define RUN_SPEED 1.5f			// 移動スピード
+#define RUN_SPEED 0.05f			// 移動スピード
 #define JUMP_SPEED 1.5f			// ジャンプ
 #define GRAVITY 0.0625f			// 重力
 #define JUMP_END_Y 1.0f			// ジャンプ終了時
@@ -23,6 +23,9 @@
 // レベル関連
 #define LEVEL 1
 
+// スタミナ関連
+#define STAMINA 100
+
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
 
@@ -30,17 +33,18 @@ CPlayer* CPlayer::spInstance = nullptr;
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 {
-	{ "",												true,	0.0f	},	// Tポーズ
-	{ "Character\\Player\\anim\\idle.x",				true,	153.0f	},	// 待機
-	{ "Character\\Player\\anim\\walk.x",				true,	66.0f	},	// 歩行
-	{ "Character\\Player\\anim\\attack.x",				false,	91.0f	},	// 攻撃
-	{ "Character\\Player\\anim\\Attack_Strong.x",		false,	161.0f	},	// 強攻撃
-	{ "Character\\Player\\anim\\jump_start.x",			false,	25.0f	},	// ジャンプ開始
-	{ "Character\\Player\\anim\\jump.x",				true,	1.0f	},	// ジャンプ中
-	{ "Character\\Player\\anim\\jump_end.x",			false,	26.0f	},	// ジャンプ終了
-	{ "Character\\Player\\anim\\Dash.x",				true,	23.0f	},	// ダッシュ
-	{ "Character\\Player\\anim\\Dash_Stop.x",			false,	27.0f	},	// ダッシュ終了
-	{ "Character\\Player\\anim\\Rotate.x",				false,	71.0f	},	// 回避
+	{ "",														true,	0.0f	},	// Tポーズ
+	{ "Character\\Monster1\\anim\\Warrok_Idle.x",				true,	854.0f	},	// 待機
+	{ "Character\\Monster1\\anim\\Warrok_Walking.x",			true,	86.0f	},	// ダッシュ
+	{ "Character\\Monster1\\anim\\attack.x",					false,	91.0f	},	// 攻撃
+	{ "Character\\Monster1\\anim\\Warrok_StrongAttack.x",		false,	161.0f	},	// 強攻撃
+	{ "Character\\Monster1\\anim\\jump_start.x",				false,	25.0f	},	// ジャンプ開始
+	{ "Character\\Monster1\\anim\\jump.x",						true,	1.0f	},	// ジャンプ中
+	{ "Character\\Monster1\\anim\\jump_end.x",					false,	26.0f	},	// ジャンプ終了
+	{ "Character\\Monster1\\anim\\Warrok_Run.x",				true,	53.0f	},	// 歩行
+	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	90.0f	},	// ダッシュ終了
+	{ "Character\\Monster1\\anim\\Rotate.x",					false,	71.0f	},	// 回避
+
 };
 
 // コンストラクタ
@@ -48,10 +52,10 @@ CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
-	, mRemainTime(0.0f)
-	, mInvincible(0)
+	, staminaDepleted(false)
 {
-	mCharaStatus.hp = PLAYER_STATUS[0].hp; // レベル1の初期HPを設定
+	//mCharaStatus.hp = PLAYER_STATUS[0].hp; // レベル1の初期HPを設定
+
 
 	//インスタンスの設定
 	spInstance = this;
@@ -82,8 +86,11 @@ CPlayer::CPlayer()
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
-	//HPゲージを作成
+	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
+	// スタミナゲージを作成
+	mpStaminaGauge = new CUIGauge();
+
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -142,7 +149,9 @@ void CPlayer::ChangeLevel(int level)
 	mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
 	mpHpGauge->SetValue(mCharaStatus.hp);
 
-	//mpHpGauge->SetPos(300.0f, 400.0f);
+	// 最大スタミナと現在スタミナをスタミナゲージに反映
+	mpStaminaGauge->SetMaxValue(mCharaMaxStatus.stamina);
+	mpStaminaGauge->SetValue(mCharaStatus.stamina);
 }
 
 // アニメーション切り替え
@@ -179,36 +188,46 @@ void CPlayer::UpdateIdle()
 			move.Y(0.0f);
 			move.Normalize();
 
-			float speed = MOVE_SPEED;
-			// SHIFTキーでダッシュ開始へ移行
 			if (CInput::Key(VK_SHIFT) && KeyPush)
 			{
-				speed = RUN_SPEED;
-				// ダッシュタイム減少
-				mRemainTime++;
-				CDebugPrint::Print("タイム %f\n", mRemainTime);
-				ChangeAnimation(EAnimType::eDash);
-			}
-			else if (mRemainTime >= 100.0f && !KeyPush)
-			{
-				ChangeAnimation(EAnimType::eDashStop);
+				if (mCharaStatus.stamina > 0 || staminaDepleted)
+				{
+					mCharaStatus.stamina -= 1;
+					ChangeAnimation(EAnimType::eDash);
+					if (mCharaStatus.stamina == 0)
+					{
+						mState = EState::eDashEnd;
+						//staminaDepleted = true;
+					}
+				}
 			}
 			else
 			{
-				mRemainTime = 0.0f;
+				if (mCharaStatus.stamina < 100 && !staminaDepleted)
+				{
+					mCharaStatus.stamina += 1;
+				}
+				else if (mCharaStatus.stamina >= 100)
+				{
+					staminaDepleted = false;  // スタミナが100以上になったらフラグをリセット
+				}
 				ChangeAnimation(EAnimType::eWalk);
 			}
-
-			mMoveSpeed += move * MOVE_SPEED * mCharaStatus.moveSpeed * speed;
-
-			// 歩行アニメーションに切り替え
-			ChangeAnimation(EAnimType::eWalk);
+			mMoveSpeed += move * MOVE_SPEED * mCharaStatus.moveSpeed;
 		}
 		// 移動キーを入力していない
 		else
 		{
 			// 待機アニメーションに切り替え
 			ChangeAnimation(EAnimType::eIdle);
+			if (mCharaStatus.stamina < 100 && !staminaDepleted)
+			{
+				mCharaStatus.stamina += 1;
+			}
+			else if (mCharaStatus.stamina >= 100)
+			{
+				staminaDepleted = false;  // スタミナが100以上になったらフラグをリセット
+			}
 		}
 
 		// Jキーで攻撃状態へ移行
@@ -231,13 +250,17 @@ void CPlayer::UpdateIdle()
 			mState = EState::eJumpStart;
 		}
 		// Q,Eキーで回避へ移行
-		else if ((CInput::PushKey('Q') || CInput::PushKey('E') && KeyPush))
+		else if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush))
 		{
 			mState = EState::eRotate;
 		}
 	}
 	else
 	{
+		if (mCharaStatus.stamina < 100)
+		{
+			mCharaStatus.stamina += 1;
+		}
 		// 待機アニメーションに切り替え
 		ChangeAnimation(EAnimType::eIdle);
 	}
@@ -319,6 +342,19 @@ void CPlayer::UpdateRotateEnd()
 	}
 }
 
+// ダッシュ終了
+void CPlayer::UpdateDashEnd()
+{
+	mMoveSpeed.Z(0.0f);
+	mMoveSpeed.X(0.0f);
+	ChangeAnimation(EAnimType::eDashStop);
+	if (IsAnimationFinished())
+	{
+		mState = EState::eIdle;
+		ChangeAnimation(EAnimType::eIdle);
+	}
+}
+
 // 更新
 void CPlayer::Update()
 {
@@ -356,13 +392,17 @@ void CPlayer::Update()
 		case EState::eJumpEnd:
 			UpdateJumpEnd();
 			break;
-		//回避開始
+		// 回避開始
 		case EState::eRotate:
 			UpdateRotate();
 			break;
-		//回避終了
+		// 回避終了
 		case EState::eRotateEnd:
 			UpdateRotateEnd();
+			break;
+		// ダッシュ終了
+		case EState::eDashEnd:
+			UpdateDashEnd();
 			break;
 	}
 
@@ -397,8 +437,9 @@ void CPlayer::Update()
 	if (debug)
 	{
 		//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
-		CDebugPrint::Print(" HP	%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
-		CDebugPrint::Print(" 攻撃値 %d\n", mCharaStatus.power);
+		CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
+		CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
+		CDebugPrint::Print(" スタミナ%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
 	}
 	// 1キーを押しながら、↑ ↓ でHP増減
 	if (CInput::Key('1'))
@@ -412,6 +453,8 @@ void CPlayer::Update()
 	}
 	// 現在のHPを設定
 	mpHpGauge->SetValue(mCharaStatus.hp);
+	// 現在のスタミナを設定
+	mpStaminaGauge->SetValue(mCharaStatus.stamina);
 
 	// キャラクターの更新
 	CXCharacter::Update();

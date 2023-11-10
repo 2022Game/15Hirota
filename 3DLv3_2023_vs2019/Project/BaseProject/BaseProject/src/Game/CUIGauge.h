@@ -6,10 +6,14 @@ class CImage;
 class CUIGauge :public CUIBase
 {
 private:
-	CImage* mpFrameImage;	// 枠画像
-	CImage* mpBarImage;		// バー画像
-	int mMaxVsalue;			// 最大値
-	int mValue;				// 現在値
+	CImage* mpFrameImage;		// 枠画像
+	CImage* mpBarImage;			// バー画像
+	CImage* mpStaminaImage;		// スタミナ画像
+
+	int mMaxValue;				// 最大値
+	int mValue;					// 現在値
+	int mMaxSutaminaValue;		// スタミナ最大値
+	int mSutaminaValue;			// スタミナ現在値
 public:
 	// コンストラクタ
 	CUIGauge();
@@ -27,5 +31,6 @@ public:
 
 	// 更新処理
 	void Update();
+
 };
 #endif

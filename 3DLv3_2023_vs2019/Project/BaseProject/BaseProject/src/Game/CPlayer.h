@@ -38,10 +38,6 @@ public:
 	void UpdateJump();
 	// ジャンプ終了
 	void UpdateJumpEnd();
-	//ダッシュ開始
-	void UpdateDashStart();
-	//ダッシュ中
-	void UpdateDash();
 	//ダッシュ終了
 	void UpdateDashEnd();
 	//回避開始
@@ -78,7 +74,7 @@ private:
 		None = -1,
 
 		eTPose,			// Tポーズ
-		eIdle,			// 待機
+		eIdle,			// 休憩
 		eWalk,			// 歩行
 		eAttack,		// 攻撃
 		eAttackStrong,	// 強攻撃
@@ -120,8 +116,10 @@ private:
 		eJumpEnd,		// ジャンプ終了
 		eRotate,		// 回避開始
 		eRotateEnd,		// 回避終了待ち
+		eDashEnd,		// ダッシュ終了
 		eClear,			// クリア状態
 		eDeth,			// 死亡
+		eBreak,			// 休憩
 	};
 	EState mState;		// プレイヤーの状態
 
@@ -131,8 +129,10 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
-	float mRemainTime;			// 残り時間
 	int mInvincible;			// 無敵カウンタ
+	bool staminaDepleted;	// スタミナが0に到達した場合のフラグ
+
 
 	CUIGauge* mpHpGauge;		// HPゲージ
+	CUIGauge* mpStaminaGauge;	// スタミナゲージ
 };
