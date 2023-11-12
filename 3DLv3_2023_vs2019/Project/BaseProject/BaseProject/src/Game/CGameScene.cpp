@@ -80,14 +80,11 @@ void CGameScene::Update()
 	// 最大hp取得
 	int maxHP = CPlayer::Instance()->GetMaxHp();
 
-	// デバッグ 現在のhp
-	//CDebugPrint::Print("currentHP %d\n", currentHP);
-
 	// hpが半分を切るとeOverに遷移させる
 	if (currentHP <= 0) {
 		CSceneManager::Instance()->LoadScene(EScene::eOver);
 	}
-	else if (currentHP <= 5 && Clear)
+	/*else if (currentHP <= 5 && Clear)
 	{
 		if (Clear)
 		{
@@ -97,5 +94,5 @@ void CGameScene::Update()
 				CSceneManager::Instance()->LoadScene(EScene::eClear);
 			}
 		}
-	}
+	}*/
 }

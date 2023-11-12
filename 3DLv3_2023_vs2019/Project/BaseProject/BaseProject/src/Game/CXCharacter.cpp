@@ -143,8 +143,7 @@ int CXCharacter::AnimationIndex()
 }
 
 // 指定したボーンの行列を取得
-const CMatrix*
-CXCharacter::GetFrameMtx(std::string name) const
+const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
 {
 	// モデルデータが設定されていない
 	if (mpModel == nullptr) return nullptr;

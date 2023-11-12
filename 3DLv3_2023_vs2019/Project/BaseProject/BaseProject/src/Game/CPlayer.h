@@ -8,6 +8,7 @@
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
 class CUIGauge;
+class CStaminaGauge;
 
 /*
 プレイヤークラス
@@ -133,6 +134,6 @@ private:
 	bool staminaDepleted;	// スタミナが0に到達した場合のフラグ
 
 
-	CUIGauge* mpHpGauge;		// HPゲージ
-	CUIGauge* mpStaminaGauge;	// スタミナゲージ
+	CUIGauge* mpHpGauge;			// HPゲージ
+	CStaminaGauge* mpStaminaGauge;	// スタミナゲージ
 };

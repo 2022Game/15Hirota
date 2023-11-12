@@ -3,6 +3,7 @@
 #include "CInput.h"
 #include "CCamera.h"
 #include "CUiGauge.h"
+#include "CStaminaGauge.h"
 #include "Maths.h"
 #include "CSceneManager.h"
 
@@ -54,8 +55,10 @@ CPlayer::CPlayer()
 	, mpRideObject(nullptr)
 	, staminaDepleted(false)
 {
-	//mCharaStatus.hp = PLAYER_STATUS[0].hp; // レベル1の初期HPを設定
-
+	//// HPゲージを作成
+	mpHpGauge = new CUIGauge();
+	// スタミナゲージを作成
+	mpStaminaGauge = new CStaminaGauge();
 
 	//インスタンスの設定
 	spInstance = this;
@@ -85,12 +88,6 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
-
-	// HPゲージを作成
-	mpHpGauge = new CUIGauge();
-	// スタミナゲージを作成
-	mpStaminaGauge = new CUIGauge();
-
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -150,8 +147,8 @@ void CPlayer::ChangeLevel(int level)
 	mpHpGauge->SetValue(mCharaStatus.hp);
 
 	// 最大スタミナと現在スタミナをスタミナゲージに反映
-	mpStaminaGauge->SetMaxValue(mCharaMaxStatus.stamina);
-	mpStaminaGauge->SetValue(mCharaStatus.stamina);
+	mpStaminaGauge->SetSutaminaMaxValue(mCharaMaxStatus.stamina);
+	mpStaminaGauge->SetSutaminaValue(mCharaStatus.stamina);
 }
 
 // アニメーション切り替え
@@ -197,8 +194,11 @@ void CPlayer::UpdateIdle()
 					if (mCharaStatus.stamina == 0)
 					{
 						mState = EState::eDashEnd;
-						//staminaDepleted = true;
 					}
+				}
+				else
+				{
+					ChangeAnimation(EAnimType::eWalk);
 				}
 			}
 			else
@@ -233,6 +233,7 @@ void CPlayer::UpdateIdle()
 		// Jキーで攻撃状態へ移行
 		if (CInput::PushKey('J'))
 		{
+			mCharaStatus.hp -= 1;
 			mMoveSpeed.X(0.0f);
 			mMoveSpeed.Z(0.0f);
 			mState = EState::eAttack;
@@ -250,9 +251,18 @@ void CPlayer::UpdateIdle()
 			mState = EState::eJumpStart;
 		}
 		// Q,Eキーで回避へ移行
-		else if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush))
+		else if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush) && (mCharaStatus.stamina <= 100 && mCharaStatus.stamina >= 35))
 		{
 			mState = EState::eRotate;
+
+			// 回避行動前にスタミナが0以下になるかどうかを確認
+			if (mCharaStatus.stamina - 35 >= 0) {
+				// スタミナが0以下にならない場合は回避行動を実行
+				mCharaStatus.stamina -= 35;
+			}
+			else 
+			{
+			}
 		}
 	}
 	else
@@ -419,8 +429,6 @@ void CPlayer::Update()
 	CVector forward = CVector::Slerp(current, target, 0.125f);
 	Rotation(CQuaternion::LookRotation(forward));
 
-	mIsGrounded = false;
-
 	// 無敵中はカウントを減少させる
 	if (mInvincible > 0)
 	{
@@ -430,7 +438,7 @@ void CPlayer::Update()
 
 	// キャラクターのデバッグ表示
 	static bool debug = false;
-	if (CInput::PushKey('T'))
+	if (CInput::PushKey('R'))
 	{
 		debug = !debug;
 	}
@@ -439,7 +447,7 @@ void CPlayer::Update()
 		//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
 		CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
 		CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
-		CDebugPrint::Print(" スタミナ%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
+		CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
 	}
 	// 1キーを押しながら、↑ ↓ でHP増減
 	if (CInput::Key('1'))
@@ -454,10 +462,12 @@ void CPlayer::Update()
 	// 現在のHPを設定
 	mpHpGauge->SetValue(mCharaStatus.hp);
 	// 現在のスタミナを設定
-	mpStaminaGauge->SetValue(mCharaStatus.stamina);
+	mpStaminaGauge->SetSutaminaValue(mCharaStatus.stamina);
 
 	// キャラクターの更新
 	CXCharacter::Update();
+
+	mIsGrounded = false;
 }
 
 // 衝突処理

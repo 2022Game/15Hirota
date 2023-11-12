@@ -57,10 +57,6 @@ CYukari::CYukari()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
-
-	// 画像読み込み
-	/*("UI\\Image_Gauge_Frame.png");
-	("UI\\Gauge.png");*/
 }
 
 CYukari::~CYukari()
@@ -77,16 +73,6 @@ CYukari::~CYukari()
 		mpModel = nullptr;
 	}
 }
-
-//
-//CVector CYukari::GetHeadPosition() const
-//{
-//	// Yukariの位置に頭の高さを加えて頭上の位置を計算
-//	CVector headPosition = Position();
-//	headPosition.Y(headPosition.Y() + PLAYER_HEIGHT);
-//	return headPosition;
-//}
-
 
 CYukari* CYukari::Instance()
 {
@@ -211,10 +197,6 @@ void CYukari::Update()
 	target.Normalize();
 	CVector forward = CVector::Slerp(current, target, 0.125f);
 	Rotation(CQuaternion::LookRotation(forward));
-	
-	// デバッグ
-	//CDebugPrint::Print("Setting Gauge Size: %f x %f\n", headPosition.X(), headPosition.Y());
-
 
 	// キャラクターの更新
 	CXCharacter::Update();

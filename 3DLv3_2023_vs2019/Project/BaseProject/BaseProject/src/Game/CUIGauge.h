@@ -1,5 +1,5 @@
-#ifndef CUIGauge_H
-#define CUIGauge_H
+#ifndef CUIGAUGE_H
+#define CUIGAUGE_H
 #include "CUIBase.h"
 class CImage;
 
@@ -8,12 +8,9 @@ class CUIGauge :public CUIBase
 private:
 	CImage* mpFrameImage;		// 枠画像
 	CImage* mpBarImage;			// バー画像
-	CImage* mpStaminaImage;		// スタミナ画像
 
 	int mMaxValue;				// 最大値
 	int mValue;					// 現在値
-	int mMaxSutaminaValue;		// スタミナ最大値
-	int mSutaminaValue;			// スタミナ現在値
 public:
 	// コンストラクタ
 	CUIGauge();
