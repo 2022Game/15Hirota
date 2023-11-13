@@ -13,7 +13,7 @@
 // プレイヤー関連
 #define PLAYER_HEIGHT 16.0f		// 高さ
 #define MOVE_SPEED 1.0f			// スピード
-#define RUN_SPEED 0.05f			// 移動スピード
+#define RUN_SPEED 1.5f			// 移動スピード
 #define JUMP_SPEED 1.5f			// ジャンプ
 #define GRAVITY 0.0625f			// 重力
 #define JUMP_END_Y 1.0f			// ジャンプ終了時
@@ -25,7 +25,7 @@
 #define LEVEL 1
 
 // スタミナ関連
-#define STAMINA 100
+#define STAMINA 109
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -54,6 +54,7 @@ CPlayer::CPlayer()
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
 	, staminaDepleted(false)
+	, staminaLowerLimit(false)
 {
 	//// HPゲージを作成
 	mpHpGauge = new CUIGauge();
@@ -185,10 +186,13 @@ void CPlayer::UpdateIdle()
 			move.Y(0.0f);
 			move.Normalize();
 
+			float speed = MOVE_SPEED;
 			if (CInput::Key(VK_SHIFT) && KeyPush)
 			{
 				if (mCharaStatus.stamina > 0 || staminaDepleted)
 				{
+					// 速度を走行速度に変更
+					speed = RUN_SPEED;
 					mCharaStatus.stamina -= 1;
 					ChangeAnimation(EAnimType::eDash);
 					if (mCharaStatus.stamina == 0)
@@ -203,30 +207,30 @@ void CPlayer::UpdateIdle()
 			}
 			else
 			{
-				if (mCharaStatus.stamina < 100 && !staminaDepleted)
+				if (mCharaStatus.stamina < mCharaMaxStatus.stamina && !staminaDepleted)
 				{
 					mCharaStatus.stamina += 1;
 				}
-				else if (mCharaStatus.stamina >= 100)
+				else if (mCharaStatus.stamina >= mCharaMaxStatus.stamina)
 				{
-					staminaDepleted = false;  // スタミナが100以上になったらフラグをリセット
+					staminaDepleted = false;  // スタミナが上限値より上になったらリセット
 				}
 				ChangeAnimation(EAnimType::eWalk);
 			}
-			mMoveSpeed += move * MOVE_SPEED * mCharaStatus.moveSpeed;
+			mMoveSpeed += move * speed * MOVE_SPEED * mCharaStatus.moveSpeed;
 		}
 		// 移動キーを入力していない
 		else
 		{
 			// 待機アニメーションに切り替え
 			ChangeAnimation(EAnimType::eIdle);
-			if (mCharaStatus.stamina < 100 && !staminaDepleted)
+			if (mCharaStatus.stamina < mCharaMaxStatus.stamina && !staminaDepleted)
 			{
 				mCharaStatus.stamina += 1;
 			}
-			else if (mCharaStatus.stamina >= 100)
+			else if (mCharaStatus.stamina >= mCharaMaxStatus.stamina)
 			{
-				staminaDepleted = false;  // スタミナが100以上になったらフラグをリセット
+				staminaDepleted = false;  //  スタミナが上限値より上になったらリセット
 			}
 		}
 
@@ -248,17 +252,25 @@ void CPlayer::UpdateIdle()
 		// SPACEキーでジャンプ開始へ移行
 		else if (CInput::PushKey(VK_SPACE))
 		{
-			mState = EState::eJumpStart;
+			if (mCharaStatus.stamina - 20 >= 0)
+			{
+				mState = EState::eJumpStart;
+				// スタミナが0以下にならない場合はジャンプを実行
+				mCharaStatus.stamina -= 20;
+			}
+			else
+			{
+			}
 		}
 		// Q,Eキーで回避へ移行
-		else if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush) && (mCharaStatus.stamina <= 100 && mCharaStatus.stamina >= 35))
+		else if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
 		{
-			mState = EState::eRotate;
-
 			// 回避行動前にスタミナが0以下になるかどうかを確認
-			if (mCharaStatus.stamina - 35 >= 0) {
+			if (mCharaStatus.stamina - 50 >= 0) {
+
+				mState = EState::eRotate;
 				// スタミナが0以下にならない場合は回避行動を実行
-				mCharaStatus.stamina -= 35;
+				mCharaStatus.stamina -= 50;
 			}
 			else 
 			{
@@ -267,7 +279,7 @@ void CPlayer::UpdateIdle()
 	}
 	else
 	{
-		if (mCharaStatus.stamina < 100)
+		if (mCharaStatus.stamina < mCharaStatus.stamina)
 		{
 			mCharaStatus.stamina += 1;
 		}

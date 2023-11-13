@@ -1,0 +1,11 @@
+■今回の作業内容
+・ジャンプと回避行動にもスタミナを消費するように設定した。
+
+
+■次回の作業内容
+・処理時間計測関連の処理を追加する。
+
+■懸念点
+・BaseProject.vcxprojとBaseProject.vcxproj.filtersにコードを追加したが、
+　Define.hで3つのヘッダーファイルをincludeしても、CDebugProfiler.hだけが
+　認識されなかった。

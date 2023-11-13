@@ -131,7 +131,8 @@ private:
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
 	int mInvincible;			// 無敵カウンタ
-	bool staminaDepleted;	// スタミナが0に到達した場合のフラグ
+	bool staminaDepleted;		// スタミナが上限値に到達した場合のフラグ
+	bool staminaLowerLimit;		// スタミナが下限値に到達した場合のフラグ
 
 
 	CUIGauge* mpHpGauge;			// HPゲージ
