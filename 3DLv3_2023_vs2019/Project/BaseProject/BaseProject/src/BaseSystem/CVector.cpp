@@ -22,17 +22,36 @@ const CVector2 CVector2::down(0.0f, -1.0f);
 // 3次元ベクトル
 //------------------------------
 
-// コンストラクタ
+// コンストラクタ（引数なし）
 CVector::CVector()
-	: mX(0.0f), mY(0.0f), mZ(0.0f)
+	:CVector(0.0f, 0.0f, 0.0f)
 {
 }
 
-// コンストラクタ
+// コンストラクタ（xyz）
 CVector::CVector(float x, float y, float z)
 	: mX(x), mY(y), mZ(z)
 {
 }
+
+// コンストラクタ（CVector2）
+CVector::CVector(const CVector2& v)
+	: CVector(v.X(), v.Y(), 0.0f)
+{
+}
+
+// コンストラクタ（CVector2 + z）
+CVector::CVector(const CVector2& v, float z)
+	: CVector(v.X(), v.Y(), z)
+{
+}
+
+// コンストラクタ（CVector4）
+CVector::CVector(const CVector4& v)
+	: CVector(v.X(), v.Y(), v.Z())
+{
+}
+
 
 // デストラクタ
 CVector::~CVector()
@@ -275,15 +294,21 @@ CVector CVector::Slerp(const CVector& a, const CVector& b, float t)
 // 2次元ベクトル
 //------------------------------
 
-// コンストラクタ
+// コンストラクタ（引数なし）
 CVector2::CVector2()
-	: mX(0.0f), mY(0.0f)
+	: CVector2(0.0f, 0.0f)
 {
 }
 
-// コンストラクタ
+// コンストラクタ（xy）
 CVector2::CVector2(float x, float y)
 	: mX(x), mY(y)
+{
+}
+
+// コンストラクタ（CVector）
+CVector2::CVector2(const CVector& v)
+	: CVector2(v.X(), v.Y())
 {
 }
 
@@ -464,6 +489,36 @@ float CVector2::Angle(const CVector2& v0, const CVector2& v1)
 // CVector4
 //------------------------------
 
+// コンストラクタ（引数なし）
+CVector4::CVector4()
+	: CVector4(0.0f, 0.0f, 0.0f, 0.0f)
+{
+}
+
+// コンストラクタ（xyzw）
+CVector4::CVector4(float x, float y, float z, float w)
+	: mX(x), mY(y), mZ(z), mW(w)
+{
+}
+
+// コンストラクタ（xyz）
+CVector4::CVector4(float x, float y, float z)
+	: CVector4(x, y, z, 0.0f)
+{
+}
+
+// コンストラクタ（CVector）
+CVector4::CVector4(const CVector& v)
+	: CVector4(v.X(), v.Y(), v.Z())
+{
+}
+
+// コンストラクタ（CVector）
+CVector4::CVector4(const CVector& v, float w)
+	: CVector4(v.X(), v.Y(), v.Z(), w)
+{
+}
+
 //Set(X座標, Y座標, Z座標, W)
 void CVector4::Set(float x, float y, float z, float w)
 {
@@ -519,26 +574,6 @@ float CVector4::W() const
 void CVector4::W(float w)
 {
 	mW = w;
-}
-
-CVector4::CVector4()
-	: CVector4(0.0f, 0.0f, 0.0f, 0.0f)
-{
-}
-
-CVector4::CVector4(float x, float y, float z, float w)
-	: mX(x), mY(y), mZ(z), mW(w)
-{
-}
-
-CVector4::CVector4(float x, float y, float z)
-	: CVector4(x, y, z, 0.0f)
-{
-}
-
-CVector4::CVector4(const CVector& v)
-	: CVector4(v.X(), v.Y(), v.Z())
-{
 }
 
 void CVector4::operator=(const CVector& v)

@@ -13,7 +13,7 @@ public:
 	/// <param name="isMainCamera">メインカメラかどうか</param>
 	CCamera(const CVector& eye, const CVector& center, bool isMainCamera = true);
 	// デストラクタ
-	~CCamera();
+	virtual ~CCamera();
 
 	// メインカメラを取得
 	static CCamera* MainCamera();
@@ -45,10 +45,10 @@ public:
 	void LookAt(const CVector& pos);
 
 	// 更新
-	void Update();
+	void Update() override;
 
 	// カメラ反映
-	void Apply();
+	virtual void Apply();
 
 	// 2D用のカメラ行列を反映
 	static void Start2DCamera();

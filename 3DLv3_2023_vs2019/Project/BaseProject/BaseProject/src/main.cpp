@@ -28,6 +28,17 @@ void display() {
 
 }
 
+/// <summary>
+/// マウスホイール回転時のコールバック関数
+/// </summary>
+/// <param name="window"></param>
+/// <param name="x"></param>
+/// <param name="y"></param>
+void wheel(GLFWwindow* window, double x, double y)
+{
+	CInput::AddMouseWheel((int)y);
+}
+
 
 /*ウィンドウサイズ変更時の処理
 void reshape(int width, int height)
@@ -118,6 +129,9 @@ int main(void)
 	glfwSetWindowSizeCallback(window, reshape);
 	reshape(window, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+	// マウスホイール回転時のコールバック関数を登録
+	glfwSetScrollCallback(window, wheel);
+
 #ifdef GAME3D
 	glEnable(GL_DEPTH_TEST);	//3D必要 2D不要
 	glEnable(GL_CULL_FACE);
@@ -157,17 +171,20 @@ int main(void)
 	return 0;
 }
 
+// 目標フレームレートを取得
 int Time::TargetFPS()
 {
 	return gFPS;
 }
 
+// 前回のフレームのFPSを取得
 float Time::FPS()
 {
 	if (gDeltaTime == 0.0f) return 0.0f;
 	return 1.0f / gDeltaTime;
 }
 
+// 前回のフレームの経過時間を取得
 float Time::DeltaTime()
 {
 	return gDeltaTime;

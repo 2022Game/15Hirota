@@ -229,6 +229,12 @@
     <ClCompile Include="src\BaseSystem\CDebugTimer.cpp">
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseSystem\CDebugCamera.cpp">
+      <Filter>ソース ファイル\BaseSystem\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CDebugInput.cpp">
+      <Filter>ソース ファイル\BaseSystem\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -421,6 +427,12 @@
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\Time.h">
+      <Filter>ソース ファイル\BaseSystem\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CDebugCamera.h">
+      <Filter>ソース ファイル\BaseSystem\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CDebugInput.h">
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
     </ClInclude>
   </ItemGroup>
