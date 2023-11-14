@@ -173,8 +173,8 @@ void CPlayer::UpdateIdle()
 		// 移動処理
 		// キーの入力ベクトルを取得
 		CVector input;
-		if (CInput::Key('W'))		input.Z(1.0f);
-		else if (CInput::Key('S'))	input.Z(-1.0f);
+		if (CInput::Key('W'))		input.Z(-1.0f);
+		else if (CInput::Key('S'))	input.Z(1.0f);
 		if (CInput::Key('A'))		input.X(-1.0f);
 		else if (CInput::Key('D'))	input.X(1.0f);
 
@@ -490,7 +490,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		if (other->Layer() == ELayer::eField)
 		{
 			mMoveSpeed.Y(0.0f);
-			Position(Position() + hit.adjust);
+			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
 			mIsGrounded = true;
 
 			if (other->Tag() == ETag::eRideableObject)

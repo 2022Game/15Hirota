@@ -21,9 +21,6 @@ public:
 	// 更新
 	void Update() override;
 
-	// デバッグカメラ反映
-	void Apply() override;
-
 private:
 	// コンストラクタ
 	CDebugCamera();

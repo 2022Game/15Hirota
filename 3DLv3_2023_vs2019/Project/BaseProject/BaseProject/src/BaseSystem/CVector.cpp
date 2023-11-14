@@ -576,6 +576,22 @@ void CVector4::W(float w)
 	mW = w;
 }
 
+float CVector4::V(int n) const
+{
+	if (n == 0) return mX;
+	if (n == 1) return mY;
+	if (n == 2) return mZ;
+	return mW;
+}
+
+void CVector4::V(int n, float v)
+{
+	if (n == 0) mX = v;
+	else if (n == 1) mY = v;
+	else if (n == 2) mZ = v;
+	else mW = v;
+}
+
 void CVector4::operator=(const CVector& v)
 {
 	mX = v.X();
@@ -630,4 +646,31 @@ void CVector4::operator*=(const float& f)
 	mY *= f;
 	mZ *= f;
 	mW *= f;
+}
+
+CVector4 CVector4::operator*(const CMatrix& m) const
+{
+	CVector4 ret;
+	for (int i = 0; i < 4; i++)
+	{
+		float v = 0.0f;
+		for (int j = 0; j < 4; j++)
+		{
+			v += m.M(j, i) * V(j);
+		}
+		ret.V(i, v);
+	}
+	return ret;
+}
+
+//CMatrix * CVector ‚Ì‰‰ŽZŒ‹‰Ê‚ð•Ô‚·
+CVector operator*(const CMatrix& m, const CVector& v)
+{
+	return v * m;
+}
+
+//CMatrix * CVector4 ‚Ì‰‰ŽZŒ‹‰Ê‚ð•Ô‚·
+CVector4 operator*(const CMatrix& m, const CVector4& v)
+{
+	return v * m;
 }

@@ -335,6 +335,10 @@ public:
 	float W() const;
 	//Wの値を設定
 	void W(float w);
+	//インデックス値を指定して値を取得
+	float V(int n) const;
+	//インデックス値を指定して値を設定
+	void V(int n, float v);
 
 	//代入演算子
 	//CVector4 = CVector でCVectorの内容を自身に代入
@@ -365,7 +369,15 @@ public:
 	//CVector4 *= float で演算結果を自身に代入
 	void operator*=(const float& f);
 
+	//CVector4 * CMatrix の演算結果を返す
+	CVector4 operator*(const CMatrix& m) const;
+
 private:
 	//4Dでの値を設定
 	float mX, mY, mZ, mW;
 };
+
+//CMatrix * CVector の演算結果を返す
+CVector operator * (const CMatrix& m, const CVector& v);
+//CMatrix * CVector4 の演算結果を返す
+CVector4 operator * (const CMatrix& m, const CVector4& v);

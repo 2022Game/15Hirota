@@ -59,6 +59,9 @@
     <Filter Include="ソース ファイル\Game\UI">
       <UniqueIdentifier>{4e84a726-ab3b-43f0-bba8-569c8da5127e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Test">
+      <UniqueIdentifier>{571be4f5-8b86-49e5-8524-29f89ae925fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -234,6 +237,36 @@
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CDebugInput.cpp">
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\CColBasecpp.cpp">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\CBootMenuScene.cpp">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\CColLine.cpp">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\CColQuad.cpp">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\CColSphere.cpp">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\CColTriangle.cpp">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\CCollisionTestScene.cpp">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\CMeasure.cpp">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\Primitive.cpp">
+      <Filter>ソース ファイル\BaseSystem\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test\System.cpp">
+      <Filter>ソース ファイル\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -434,6 +467,36 @@
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CDebugInput.h">
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\CColBase.h">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\CBootMenuScene.h">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\CColLine.h">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\CColQuad.h">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\CColSphere.h">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\CColTriangle.h">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\CCollisionTestScene.h">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\CMeasure.h">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\Primitive.h">
+      <Filter>ソース ファイル\BaseSystem\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\System.h">
+      <Filter>ソース ファイル\Test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

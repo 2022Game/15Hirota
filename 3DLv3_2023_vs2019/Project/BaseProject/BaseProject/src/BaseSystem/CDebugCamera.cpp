@@ -69,12 +69,12 @@ void CDebugCamera::On(bool disableInput)
 	CCamera* mainCamera = CCamera::MainCamera();
 	if (mainCamera != nullptr)
 	{
-		spDebugCamera->Position(mainCamera->Position());
-		spDebugCamera->Rotation(mainCamera->Rotation());
+		spDebugCamera->CopyCamera(mainCamera);
 		spDebugCamera->mMoveSpeed = CVector::zero;
 		spDebugCamera->mMoveSpeedRatio = 1.0f;
 		spDebugCamera->mRotateAngle = spDebugCamera->EulerAngles();
 	}
+	spDebugCamera->Reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
 // デバッグカメラをオフ
@@ -82,6 +82,12 @@ void CDebugCamera::Off()
 {
 	CDebugInput::Off();
 	msIsOn = false;
+
+	CCamera* mainCamera = CCamera::MainCamera();
+	if (mainCamera != nullptr)
+	{
+		mainCamera->Reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
 }
 
 // 更新
@@ -106,8 +112,8 @@ void CDebugCamera::Update()
 
 	// キーの入力ベクトルを取得
 	CVector input;
-	if (CDebugInput::Key('W'))		input.Z(1.0f);
-	else if (CDebugInput::Key('S'))	input.Z(-1.0f);
+	if (CDebugInput::Key('W'))		input.Z(-1.0f);
+	else if (CDebugInput::Key('S'))	input.Z(1.0f);
 	if (CDebugInput::Key('A'))		input.X(-1.0f);
 	else if (CDebugInput::Key('D'))	input.X(1.0f);
 
@@ -116,7 +122,8 @@ void CDebugCamera::Update()
 	{
 		// 移動速度を加速
 		float addSpeed = MOVE_ADD_SPEED * mMoveSpeedRatio;
-		mMoveSpeed += Rotation() * input.Normalized() * addSpeed;
+		CVector move = CQuaternion(mRotateAngle) * input;
+		mMoveSpeed += move.Normalized() * addSpeed;
 		// 移動速度を最大値でクランプ
 		float maxSpeed = MOVE_MAX_SPEED * mMoveSpeedRatio;
 		if (mMoveSpeed.Length() > maxSpeed)
@@ -135,18 +142,22 @@ void CDebugCamera::Update()
 	{
 		CVector2 delta = CDebugInput::GetDeltaMousePos();
 		Position(Position() + VectorX() * delta.X() * TRANSLATE_SPEED);
-		Position(Position() + -VectorY() * delta.Y() * TRANSLATE_SPEED);
+		Position(Position() + VectorY() * delta.Y() * TRANSLATE_SPEED);
 	}
 	// 右ドラッグでカメラを回転
 	else if (CDebugInput::Key(VK_RBUTTON))
 	{
 		CVector2 delta = CDebugInput::GetDeltaMousePos();
-		float x = Math::Repeat(mRotateAngle.X() - delta.Y() * ROTATE_SPEED, 360.0f);
+		float x = Math::Repeat(mRotateAngle.X() + delta.Y() * ROTATE_SPEED, 360.0f);
 		float y = Math::Repeat(mRotateAngle.Y() + delta.X() * ROTATE_SPEED, 360.0f);
 		mRotateAngle.X(x);
 		mRotateAngle.Y(y);
-		Rotation(CQuaternion(mRotateAngle));
 	}
+	Rotation(CQuaternion(mRotateAngle));
+
+	mEye = Position();
+	mAt = mEye + -VectorZ().Normalized();
+	mUp = VectorY();
 
 	// デバッグ表示
 	CVector pos = Position();
@@ -157,18 +168,7 @@ void CDebugCamera::Update()
 	CDebugPrint::Print("ホイール：カメラ移動速度割合 x %.2f\n", mMoveSpeedRatio);
 	CDebugPrint::Print("カメラ座標：%f, %f, %f\n", pos.X(), pos.Y(), pos.Z());
 	CDebugPrint::Print("■■■■■■■■■■■■■■■■■■■■■■■\n");
-}
 
-// デバッグカメラ反映
-void CDebugCamera::Apply()
-{
-	CVector eye = CTransform::Position();
-	CVector center = eye + VectorZ().Normalized();
-	CVector up = -VectorY();
-	gluLookAt
-	(
-		eye.X(), eye.Y(), eye.Z(),
-		center.X(), center.Y(), center.Z(),
-		up.X(), up.Y(), up.Z()
-	);
+	// カメラのベース更新
+	CCamera::Update();
 }

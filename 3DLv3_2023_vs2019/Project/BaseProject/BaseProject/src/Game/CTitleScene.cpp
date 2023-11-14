@@ -25,6 +25,9 @@ CTitleScene::~CTitleScene()
 //ƒV[ƒ““Ç‚Ýž‚Ý
 void CTitleScene::Load()
 {
+	// ”wŒiFÝ’è
+	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
 	mpTitle = new CImage(TITLE_IMAGE);
 	mpTitle->SetSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	mpTitle->SetUV(0, 1, 1, 0);

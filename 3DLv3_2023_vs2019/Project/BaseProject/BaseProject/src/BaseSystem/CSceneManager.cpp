@@ -4,6 +4,9 @@
 #include "CGameOverScene.h"
 #include "CClearScene.h"
 
+#include "Test/CBootMenuScene.h"
+#include "Test/CCollisionTestScene.h"
+
 // シーンマネージャのインスタンス
 CSceneManager* CSceneManager::mpInstance = nullptr;
 
@@ -50,9 +53,13 @@ void CSceneManager::LoadScene(EScene scene)
 	switch (scene)
 	{
 		//タイトルシーン
-	case EScene::eTitle:   mpScene = new CTitleScene();		break;
+	case EScene::eTitle:	mpScene = new CTitleScene();	break;
 		//ゲームシーン
-	case EScene::eGame:    mpScene = new CGameScene();		break;
+	case EScene::eGame:		mpScene = new CGameScene();		break;
+		//起動時メニュー
+	case EScene::eBootMenu:	mpScene = new CBootMenuScene();	break;
+		//衝突判定テスト
+	case EScene::eColTest:	mpScene = new CCollisionTestScene(); break;
 		//ゲームオーバーシン
 	case EScene::eOver:	   mpScene = new CGameOverScene();	break;
 		//ゲームクリアシーン

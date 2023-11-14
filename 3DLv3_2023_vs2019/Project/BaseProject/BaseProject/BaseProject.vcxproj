@@ -69,6 +69,16 @@
     <ClCompile Include="src\Game\CXCharacter.cpp" />
     <ClCompile Include="src\Game\CYukari.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Test\CBootMenuScene.cpp" />
+    <ClCompile Include="src\Test\CColBasecpp.cpp" />
+    <ClCompile Include="src\Test\CColLine.cpp" />
+    <ClCompile Include="src\Test\CCollisionTestScene.cpp" />
+    <ClCompile Include="src\Test\CColQuad.cpp" />
+    <ClCompile Include="src\Test\CColSphere.cpp" />
+    <ClCompile Include="src\Test\CColTriangle.cpp" />
+    <ClCompile Include="src\Test\CMeasure.cpp" />
+    <ClCompile Include="src\Test\Primitive.cpp" />
+    <ClCompile Include="src\Test\System.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CBillBoard.h" />
@@ -137,6 +147,16 @@
     <ClInclude Include="src\Game\CUnityChan.h" />
     <ClInclude Include="src\Game\CXCharacter.h" />
     <ClInclude Include="src\Game\CYukari.h" />
+    <ClInclude Include="src\Test\CBootMenuScene.h" />
+    <ClInclude Include="src\Test\CColBase.h" />
+    <ClInclude Include="src\Test\CColLine.h" />
+    <ClInclude Include="src\Test\CCollisionTestScene.h" />
+    <ClInclude Include="src\Test\CColQuad.h" />
+    <ClInclude Include="src\Test\CColSphere.h" />
+    <ClInclude Include="src\Test\CColTriangle.h" />
+    <ClInclude Include="src\Test\CMeasure.h" />
+    <ClInclude Include="src\Test\Primitive.h" />
+    <ClInclude Include="src\Test\System.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8802AF2F-2920-4700-89F2-CA6778727283}</ProjectGuid>
