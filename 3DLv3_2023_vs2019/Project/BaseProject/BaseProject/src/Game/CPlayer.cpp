@@ -195,14 +195,14 @@ void CPlayer::UpdateIdle()
 			float speed = MOVE_SPEED;
 			if (CInput::Key(VK_SHIFT) && KeyPush)
 			{
-				if (mCharaStatus.stamina <= 0 && !staminaLowerLimit && staminaDepleted)
+				if ((mCharaStatus.stamina > 0 && !staminaLowerLimit))
 				{
 					// 速度を走行速度に変更
 					speed = RUN_SPEED;
 					mCharaStatus.stamina -= 1;
 					ChangeAnimation(EAnimType::eDash);
 
-					if (mCharaStatus.stamina <= 0)
+					if (mCharaStatus.stamina == 0)
 					{
 						staminaLowerLimit = true;
 						mState = EState::eDashEnd;
@@ -210,6 +210,11 @@ void CPlayer::UpdateIdle()
 				}
 				else
 				{
+					if (staminaLowerLimit && mCharaStatus.stamina == mCharaMaxStatus.stamina)
+					{
+						staminaLowerLimit = false; // スタミナが再びMAXになったらリセット
+					}
+					mCharaStatus.stamina += 1;
 					ChangeAnimation(EAnimType::eWalk);
 				}
 			}
@@ -222,10 +227,6 @@ void CPlayer::UpdateIdle()
 				else if (mCharaStatus.stamina >= mCharaMaxStatus.stamina)
 				{
 					staminaDepleted = false;  // スタミナが上限値より上になったらリセット
-				}
-				if (staminaLowerLimit && mCharaStatus.stamina >= mCharaMaxStatus.stamina)
-				{
-					staminaLowerLimit = false; // スタミナが再びMAXになったらリセット
 				}
 
 				ChangeAnimation(EAnimType::eWalk);
@@ -291,10 +292,11 @@ void CPlayer::UpdateIdle()
 	}
 	else
 	{
-		if (mCharaStatus.stamina < mCharaStatus.stamina)
+		if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
 		{
 			mCharaStatus.stamina += 1;
 		}
+
 		// 待機アニメーションに切り替え
 		ChangeAnimation(EAnimType::eIdle);
 	}
