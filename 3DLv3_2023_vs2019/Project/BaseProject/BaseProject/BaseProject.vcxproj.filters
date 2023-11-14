@@ -421,7 +421,7 @@
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\Time.h">
-      <Filter>ソース ファイル\BaseSystem\System</Filter>
+      <Filter>ソース ファイル\BaseSystem\Debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

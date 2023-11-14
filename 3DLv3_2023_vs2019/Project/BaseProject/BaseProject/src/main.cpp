@@ -156,3 +156,19 @@ int main(void)
 	glfwTerminate();
 	return 0;
 }
+
+int Time::TargetFPS()
+{
+	return gFPS;
+}
+
+float Time::FPS()
+{
+	if (gDeltaTime == 0.0f) return 0.0f;
+	return 1.0f / gDeltaTime;
+}
+
+float Time::DeltaTime()
+{
+	return gDeltaTime;
+}
