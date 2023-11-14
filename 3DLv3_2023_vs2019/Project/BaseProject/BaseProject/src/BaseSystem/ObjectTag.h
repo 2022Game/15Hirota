@@ -11,6 +11,8 @@ enum class ETag
 	eItem,				// アイテムのオブジェクト
 	eGoalObject,		// クリア条件のオブジェクト
 
+
+
 	ePlayer,			// プレイヤー
 	eEnemy,				// エネミー
 

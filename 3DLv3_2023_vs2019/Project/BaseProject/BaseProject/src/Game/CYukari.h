@@ -78,7 +78,7 @@ private:
 	// アニメーションデータのテーブル
 	static const AnimData ANIM_DATA[];
 
-	// プレイヤーの状態
+	// 状態
 	enum class EState
 	{
 		eIdle,		// 待機
@@ -87,6 +87,7 @@ private:
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
 		eJumpEnd,	// ジャンプ終了
+		eChase,		// 追跡
 	};
 	EState mState;	// プレイヤーの状態
 
@@ -95,5 +96,9 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
+
+	CVector playerPosition;		// 目標地点
+	CVector yukariPosition;		// 自分の地点
+
 };
 #endif

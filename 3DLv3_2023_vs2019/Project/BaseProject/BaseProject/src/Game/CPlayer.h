@@ -120,7 +120,6 @@ private:
 		eDashEnd,		// ダッシュ終了
 		eClear,			// クリア状態
 		eDeth,			// 死亡
-		eBreak,			// 休憩
 	};
 	EState mState;		// プレイヤーの状態
 

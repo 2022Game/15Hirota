@@ -7,6 +7,9 @@
 #include "Maths.h"
 #include "CSceneManager.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 // プレイヤーのモデルデータのパス
 #define MODEL_PATH "Character\\Monster1\\Monster_1.x"
 
@@ -17,6 +20,9 @@
 #define JUMP_SPEED 1.5f			// ジャンプ
 #define GRAVITY 0.0625f			// 重力
 #define JUMP_END_Y 1.0f			// ジャンプ終了時
+
+#define FOV_ANGLE 45.0f			//視野の角度(ー角度+角度も出)
+#define FOV_LENGTH 5.0f			//視野の角度
 
 // HP関連
 #define HP 100
@@ -37,7 +43,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "",														true,	0.0f	},	// Tポーズ
 	{ "Character\\Monster1\\anim\\Warrok_Idle.x",				true,	854.0f	},	// 待機
 	{ "Character\\Monster1\\anim\\Warrok_Walking.x",			true,	86.0f	},	// ダッシュ
-	{ "Character\\Monster1\\anim\\attack.x",					false,	91.0f	},	// 攻撃
+	{ "Character\\Monster1\\anim\\Warrok_Punchi.x",				false,	67.0f	},	// 攻撃
 	{ "Character\\Monster1\\anim\\Warrok_StrongAttack.x",		false,	161.0f	},	// 強攻撃
 	{ "Character\\Monster1\\anim\\jump_start.x",				false,	25.0f	},	// ジャンプ開始
 	{ "Character\\Monster1\\anim\\jump.x",						true,	1.0f	},	// ジャンプ中
@@ -189,14 +195,16 @@ void CPlayer::UpdateIdle()
 			float speed = MOVE_SPEED;
 			if (CInput::Key(VK_SHIFT) && KeyPush)
 			{
-				if (mCharaStatus.stamina > 0 || staminaDepleted)
+				if (mCharaStatus.stamina <= 0 && !staminaLowerLimit && staminaDepleted)
 				{
 					// 速度を走行速度に変更
 					speed = RUN_SPEED;
 					mCharaStatus.stamina -= 1;
 					ChangeAnimation(EAnimType::eDash);
-					if (mCharaStatus.stamina == 0)
+
+					if (mCharaStatus.stamina <= 0)
 					{
+						staminaLowerLimit = true;
 						mState = EState::eDashEnd;
 					}
 				}
@@ -215,6 +223,11 @@ void CPlayer::UpdateIdle()
 				{
 					staminaDepleted = false;  // スタミナが上限値より上になったらリセット
 				}
+				if (staminaLowerLimit && mCharaStatus.stamina >= mCharaMaxStatus.stamina)
+				{
+					staminaLowerLimit = false; // スタミナが再びMAXになったらリセット
+				}
+
 				ChangeAnimation(EAnimType::eWalk);
 			}
 			mMoveSpeed += move * speed * MOVE_SPEED * mCharaStatus.moveSpeed;
@@ -237,7 +250,6 @@ void CPlayer::UpdateIdle()
 		// Jキーで攻撃状態へ移行
 		if (CInput::PushKey('J'))
 		{
-			mCharaStatus.hp -= 1;
 			mMoveSpeed.X(0.0f);
 			mMoveSpeed.Z(0.0f);
 			mState = EState::eAttack;
