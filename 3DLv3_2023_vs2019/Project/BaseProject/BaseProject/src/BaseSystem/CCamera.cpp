@@ -61,6 +61,15 @@ void CCamera::SetFollowTargetTf(CTransform* target)
 	}
 }
 
+// 追従時のオフセット座標を設定
+void CCamera::SetFollowTargetOffset(const CVector& offset)
+{
+	if (mFollowTargetTf != nullptr)
+	{
+		mFollowOffsetPos = offset;
+	}
+}
+
 // 注視する位置を設定
 void CCamera::LookAt(const CVector& pos)
 {

@@ -20,8 +20,9 @@ void CColliderSphere::Set(CObjectBase* owner, ELayer layer, float radius)
 // ‹…‚ÌÀ•W‚Æ”¼Œa‚ğæ“¾
 void CColliderSphere::Get(CVector* pos, float* rad) const
 {
-	*pos = Position();
-	*rad = mRadius;
+	CMatrix m = Matrix();
+	*pos = Position() * m;
+	*rad = mRadius * m.VectorX().Length();
 }
 
 void CColliderSphere::Render()
