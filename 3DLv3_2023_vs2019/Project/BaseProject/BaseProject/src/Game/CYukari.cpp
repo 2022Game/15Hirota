@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "Maths.h"
 
+
 // プレイヤーのインスタンス
 CYukari* CYukari::spInstance = nullptr;
 
@@ -281,7 +282,7 @@ void CYukari::TakeDamage(int damage)
 	if (mCharaStatus_Enemy.hp <= 0) return;
 
 	// HPからダメージを引く
-	//mCharaStatus_Enemy.hp = max(mCharaStatus_Enemy.hp - damage, 0);
+	mCharaStatus_Enemy.hp = std::max(mCharaStatus_Enemy.hp - damage, 0);
 	// HPが0になったら
 	if (mCharaStatus_Enemy.hp == 0)
 	{
