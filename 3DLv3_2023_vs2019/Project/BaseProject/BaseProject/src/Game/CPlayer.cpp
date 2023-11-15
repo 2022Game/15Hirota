@@ -107,7 +107,9 @@ CPlayer::CPlayer()
 	//// ダメージを受けるコライダーを少し上へずらす
 	//mpDamageCol->Position(0.0f, 0.3f, 0.0f);
 
-	//mpSword = new CMajicSword();
+	mpSword = new CMajicSword();
+	mpSword->AttackMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
+	mpSword->SetOwner(this);
 
 
 	// 最初に1レベルに設定

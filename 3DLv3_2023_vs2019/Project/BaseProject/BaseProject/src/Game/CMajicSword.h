@@ -7,6 +7,7 @@
 
 class CMajicSword :public CEnemyWeapon
 {
+public:
 	CMajicSword();
 	~CMajicSword();
 
