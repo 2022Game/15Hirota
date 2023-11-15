@@ -11,10 +11,10 @@ enum class ETag
 	eItem,				// アイテムのオブジェクト
 	eGoalObject,		// クリア条件のオブジェクト
 
-
-
 	ePlayer,			// プレイヤー
 	eEnemy,				// エネミー
+
+	eEnemyWeapon,		// 敵の武器
 
 	eCamera,			// カメラ
 

@@ -3,6 +3,7 @@
 //キャラクタクラスのインクルード
 #include "CXCharacter.h"
 #include "CColliderLine.h"
+#include "CColliderSphere.h"
 #include "CRideableObject.h"
 
 /*
@@ -46,6 +47,14 @@ public:
 
 	// 描画
 	void Render();
+
+	// 被ダメージ処理
+	// damage == 受けるダメージ
+	void TakeDamage(int damage) override;
+
+	// レベル処理
+	void LevelUp();	//	レベルアップ
+	void ChangeLevel(int level);	// レベル変更
 
 private:
 	// アニメーションの種類
@@ -96,6 +105,7 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
+	CColliderSphere* mpDamageCol;	//ダメージを受けるコライダ
 
 	CVector playerPosition;		// 目標地点
 	CVector yukariPosition;		// 自分の地点

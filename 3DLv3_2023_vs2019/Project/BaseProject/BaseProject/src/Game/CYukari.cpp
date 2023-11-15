@@ -1,4 +1,5 @@
 #include "CYukari.h"
+#include "Maths.h"
 #include "CCamera.h"
 #include "CBillBoard.h"
 #include "CImage.h"
@@ -14,8 +15,9 @@ CYukari* CYukari::spInstance = nullptr;
 const CYukari::AnimData CYukari::ANIM_DATA[] =
 {
 	{ "",													true,	0.0f	},	// Tポーズ
-	{ "Character\\Yukari\\anim\\yukari_Playing.x",			true,	163.0f	},	// Idle時
-	{ "Character\\Yukari\\anim\\Yukari_Walking83.x",		true,	83.0f	},	// 移動時
+	{ "Character\\Yukari\\anim\\Yukari_GunIdle463.x",		true,	463.0f	},	// Idle時
+	{ "Character\\Yukari\\anim\\Yukari_GunWorlk79.x",		true,	79.0f	},	// 移動
+	{ "Character\\Yukari\\anim\\Yukari_GunPlay13.x",		true,	13.0f	},	// プレイヤー発見時攻撃
 
 };
 
@@ -60,6 +62,17 @@ CYukari::CYukari()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+
+	// ダメージを受けるコライダーを作成
+	mpDamageCol = new CColliderSphere
+	(
+		this, ELayer::eDamageCol,
+		5.0f
+	);
+	// ダメージを受けるコライダーと
+	// 衝突判定を行うコライダーのレイヤーとタグを設定
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpDamageCol->SetCollisionTags({ ETag::ePlayer });
 }
 
 CYukari::~CYukari()
@@ -75,11 +88,37 @@ CYukari::~CYukari()
 		delete mpModel;
 		mpModel = nullptr;
 	}
+
+	// ダメージを受けるコライダーを削除
+	if (mpDamageCol != nullptr)
+	{
+		delete mpDamageCol;
+		mpDamageCol = nullptr;
+	}
 }
 
 CYukari* CYukari::Instance()
 {
 	return spInstance;
+}
+
+// レベルアップ
+void CYukari::LevelUp()
+{
+	int level = mCharaStatus_Enemy.level;
+	ChangeLevel(level + 1);
+}
+
+// レベルを変更
+void CYukari::ChangeLevel(int level)
+{
+	// ステータスのテーブルのインデックス地に変換
+	int index = Math::Clamp(level - 1, 0, ENEMY_LEVEL_MAX);
+	// 最大ステータスに設定
+	mCharaMaxStatus_Enemy = ENEMY_STATUS[index];
+	// 現在のステータスを最大値にすることで、HP回復
+	mCharaStatus_Enemy = mCharaMaxStatus_Enemy;
+
 }
 
 // アニメーション切り替え
@@ -193,6 +232,8 @@ void CYukari::Update()
 	// 移動
 	Position(Position() + mMoveSpeed);
 
+	CVector PlayerPosition;
+
 	// プレイヤーを移動方向へ向ける
 	CVector current = VectorZ();
 	CVector target = mMoveSpeed;
@@ -230,4 +271,19 @@ void CYukari::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 void CYukari::Render()
 {
 	CXCharacter::Render();
+}
+
+// 被ダメージ処理
+void CYukari::TakeDamage(int damage)
+{
+	// 死亡していたらダメージは受けない
+	if (mCharaStatus_Enemy.hp <= 0) return;
+
+	// HPからダメージを引く
+	mCharaStatus_Enemy.hp = max(mCharaStatus_Enemy.hp - damage, 0);
+	// HPが0になったら
+	if (mCharaStatus_Enemy.hp == 0)
+	{
+		//死亡処理
+	}
 }

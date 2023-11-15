@@ -7,9 +7,6 @@
 #include "Maths.h"
 #include "CSceneManager.h"
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-
 // プレイヤーのモデルデータのパス
 #define MODEL_PATH "Character\\Monster1\\Monster_1.x"
 

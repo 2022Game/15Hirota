@@ -11,6 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CGun.cpp" />
+    <ClCompile Include="CItem.cpp" />
     <ClCompile Include="src\BaseSystem\CBillBoard.cpp" />
     <ClCompile Include="src\BaseSystem\CCamera.cpp" />
     <ClCompile Include="src\BaseSystem\CCollider.cpp" />
@@ -81,6 +83,8 @@
     <ClCompile Include="src\Test\System.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CGun.h" />
+    <ClInclude Include="CItem.h" />
     <ClInclude Include="src\BaseSystem\CBillBoard.h" />
     <ClInclude Include="src\BaseSystem\CCamera.h" />
     <ClInclude Include="src\BaseSystem\CCollider.h" />

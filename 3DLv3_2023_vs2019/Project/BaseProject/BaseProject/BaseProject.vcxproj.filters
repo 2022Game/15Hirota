@@ -62,6 +62,9 @@
     <Filter Include="ソース ファイル\Test">
       <UniqueIdentifier>{571be4f5-8b86-49e5-8524-29f89ae925fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\CharaObject">
+      <UniqueIdentifier>{7e6dead6-fe0b-4bc1-9359-b06809b96d83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -267,6 +270,12 @@
     </ClCompile>
     <ClCompile Include="src\Test\System.cpp">
       <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="CGun.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -497,6 +506,12 @@
     </ClInclude>
     <ClInclude Include="src\Test\System.h">
       <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="CGun.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CItem.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

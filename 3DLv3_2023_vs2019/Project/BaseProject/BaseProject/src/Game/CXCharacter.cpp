@@ -157,15 +157,3 @@ const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
 	// フレームの行列祖返す
 	return &frame->CombinedMatrix();
 }
-
-// キャラの最大ステータスを取得
-const CharaStatus& CXCharacter::MaxStatus() const
-{
-	return mCharaMaxStatus;
-}
-
-// キャラステータスを取得
-const CharaStatus& CXCharacter::Status() const
-{
-	return mCharaStatus;
-}
