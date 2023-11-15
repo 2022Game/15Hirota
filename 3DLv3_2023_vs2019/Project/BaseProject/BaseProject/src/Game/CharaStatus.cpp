@@ -18,10 +18,10 @@ const CharaStatus PLAYER_STATUS[PLAYER_LEVEL_MAX] =
 };
 
 // エネミーのレベルごとにステータス
-const CharaStatus ENEMY_STATUS[ENEMY_LEVEL_MAX] = 
+const CharaStatus ENEMY_STATUS[ENEMY_LEVEL_MAX] =
 {
 	// レベル		HP		攻撃力
 	{		1,		 30,		2},
 	{		5,		 60,		5},
 
-}
+};

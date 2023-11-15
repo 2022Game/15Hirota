@@ -8,7 +8,7 @@
 CGun::CGun()
 {
 	mpGun = new CModel();
-	mpGun->Load("M1GARAND_O", M1GARAND_M);
+	mpGun->Load(M1GARAND_O, M1GARAND_M);
 
 	// 攻撃判定用のコライダーを作成
 	mpAttackCol = new CColliderLine

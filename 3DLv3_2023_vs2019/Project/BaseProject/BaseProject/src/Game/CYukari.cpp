@@ -1,9 +1,10 @@
 #include "CYukari.h"
-#include "Maths.h"
 #include "CCamera.h"
 #include "CBillBoard.h"
 #include "CImage.h"
 #include "CPlayer.h"
+#include <algorithm>
+#include "Maths.h"
 
 // プレイヤーのインスタンス
 CYukari* CYukari::spInstance = nullptr;
@@ -280,10 +281,10 @@ void CYukari::TakeDamage(int damage)
 	if (mCharaStatus_Enemy.hp <= 0) return;
 
 	// HPからダメージを引く
-	mCharaStatus_Enemy.hp = max(mCharaStatus_Enemy.hp - damage, 0);
+	//mCharaStatus_Enemy.hp = max(mCharaStatus_Enemy.hp - damage, 0);
 	// HPが0になったら
 	if (mCharaStatus_Enemy.hp == 0)
 	{
-		//死亡処理
+		//死亡処理 後で
 	}
 }
