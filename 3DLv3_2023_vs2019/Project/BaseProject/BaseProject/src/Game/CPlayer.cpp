@@ -6,6 +6,7 @@
 #include "CStaminaGauge.h"
 #include "Maths.h"
 #include "CSceneManager.h"
+#include "CMajicSword.h"
 
 // プレイヤーのモデルデータのパス
 #define MODEL_PATH "Character\\Monster1\\Monster_1.x"
@@ -92,6 +93,22 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+
+	//// ダメージを受けるコライダーを作成
+	//mpDamageCol = new CColliderSphere
+	//(
+	//	this, ELayer::eDamageCol,
+	//	5.0f
+	//);
+	//// ダメージを受けるコライダーと
+	//// 衝突判定を行うコライダーのレイヤーとタグを設定
+	//mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
+	//mpDamageCol->SetCollisionTags({ ETag::eBullet });
+	//// ダメージを受けるコライダーを少し上へずらす
+	//mpDamageCol->Position(0.0f, 0.3f, 0.0f);
+
+	//mpSword = new CMajicSword();
+
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -509,6 +526,22 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				mpRideObject = other->Owner();
 			}
 		}
+	}
+}
+
+// 被ダメージ処理
+void CPlayer::TakeDamage(int damage)
+{
+	//// 死亡していたら、ダメージは受けない
+	//if (mCharaStatus.hp <= 0)return;
+
+	//// HPからダメージを引く
+	//mCharaStatus.hp = max(mCharaStatus.hp - damage, 0);
+	mCharaStatus.hp -= damage;
+	// HPが0になったら
+	if (mCharaStatus.hp == 0)
+	{
+		// 死亡処理　後で書く
 	}
 }
 

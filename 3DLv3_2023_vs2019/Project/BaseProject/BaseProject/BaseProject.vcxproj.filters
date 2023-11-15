@@ -271,10 +271,19 @@
     <ClCompile Include="src\Test\System.cpp">
       <Filter>ソース ファイル\Test</Filter>
     </ClCompile>
-    <ClCompile Include="CGun.cpp">
+    <ClCompile Include="src\Game\CItem.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
-    <ClCompile Include="CItem.cpp">
+    <ClCompile Include="src\Game\CGun.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CEnemyWeapon.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CBullet.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CMajicSword.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
   </ItemGroup>
@@ -507,10 +516,19 @@
     <ClInclude Include="src\Test\System.h">
       <Filter>ソース ファイル\Test</Filter>
     </ClInclude>
-    <ClInclude Include="CGun.h">
+    <ClInclude Include="src\Game\CItem.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
-    <ClInclude Include="CItem.h">
+    <ClInclude Include="src\Game\CGun.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CEnemyWeapon.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CBullet.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMajicSword.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
   </ItemGroup>

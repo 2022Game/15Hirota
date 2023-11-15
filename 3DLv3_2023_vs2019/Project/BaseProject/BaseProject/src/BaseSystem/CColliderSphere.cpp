@@ -32,7 +32,10 @@ void CColliderSphere::Render()
 	glPushMatrix();
 
 	// 自身の行列を適用
-	glMultMatrixf(Matrix().M());
+	CMatrix m;
+	m.Translate(Position());
+	glMultMatrixf((m * Matrix()).M());
+
 	// アルファブレンドを有効にする
 	glEnable(GL_BLEND);
 	// ブレンド方法を指定

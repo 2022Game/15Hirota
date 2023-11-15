@@ -15,7 +15,7 @@ void CCharaBase::TakeDamage(int damage)
 
 }
 
-// キャラ最大ステータスを取得
+// 最大ステータスを取得
 const CharaStatus& CCharaBase::MaxStatus() const
 {
 	return mCharaMaxStatus;

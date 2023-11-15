@@ -19,9 +19,10 @@ public:
 	const CharaStatus& MaxStatus() const;
 	// 現在のステータスを取得
 	const CharaStatus& Status() const;
+
 protected:
-	CharaStatus mCharaMaxStatus;	// 最大ステータス
-	CharaStatus mCharaStatus;		// 現在ステータス
+	CharaStatus mCharaMaxStatus;	// プレイヤー最大ステータス
+	CharaStatus mCharaStatus;		// プレイヤー現在ステータス
 
 	CharaStatus mCharaMaxStatus_Enemy;	// 敵の最大ステータス
 	CharaStatus mCharaStatus_Enemy;		// 敵のステータス

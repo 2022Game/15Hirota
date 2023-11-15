@@ -3,7 +3,9 @@
 #include "CXCharacter.h"
 #include "CColliderLine.h"
 #include "CRideableObject.h"
+#include "CColliderSphere.h"
 #include "CImage.h"
+class CMajicSword;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -67,6 +69,9 @@ public:
 	// hp取得
 	int GetHp();
 	int GetMaxHp();
+
+	// damage == 受けるダメージ
+	void TakeDamage(int damage) override;
 
 private:
 	// アニメーションの種類
@@ -132,6 +137,9 @@ private:
 	int mInvincible;			// 無敵カウンタ
 	bool staminaDepleted;		// スタミナが上限値に到達した場合のフラグ
 	bool staminaLowerLimit;		// スタミナが下限値に到達した場合のフラグ
+
+	CColliderSphere* mpDamageCol;	//ダメージを受けるコライダ
+	CMajicSword* mpSword;
 
 
 	CUIGauge* mpHpGauge;			// HPゲージ

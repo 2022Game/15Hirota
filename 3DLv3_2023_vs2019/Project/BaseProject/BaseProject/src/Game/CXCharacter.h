@@ -4,7 +4,6 @@
 #include "CModelX.h"
 #include "CMaterial.h"
 #include "CCharaBase.h"
-#include "CharaStatus.h"
 
 class CXCharacter : public CCharaBase
 {

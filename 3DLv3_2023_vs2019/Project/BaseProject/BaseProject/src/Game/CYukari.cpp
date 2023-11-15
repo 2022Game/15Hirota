@@ -74,7 +74,13 @@ CYukari::CYukari()
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
-	mpDamageCol->SetCollisionTags({ ETag::ePlayer });
+	mpDamageCol->SetCollisionTags({ ETag::eWeapon });
+	// ダメージを受けるコライダーを少し上へずらす
+	mpDamageCol->Position(0.0f, 5.0f, 0.0f);
+
+	// 銃を作成して持たせる
+	//mpGun = new CGun();
+
 }
 
 CYukari::~CYukari()
@@ -282,7 +288,8 @@ void CYukari::TakeDamage(int damage)
 	if (mCharaStatus_Enemy.hp <= 0) return;
 
 	// HPからダメージを引く
-	mCharaStatus_Enemy.hp = std::max(mCharaStatus_Enemy.hp - damage, 0);
+	//mCharaStatus_Enemy.hp = std::max(mCharaStatus_Enemy.hp - damage, 0);
+	mCharaStatus_Enemy.hp -= damage;
 	// HPが0になったら
 	if (mCharaStatus_Enemy.hp == 0)
 	{

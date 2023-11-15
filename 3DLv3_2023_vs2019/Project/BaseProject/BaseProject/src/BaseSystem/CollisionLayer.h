@@ -6,6 +6,7 @@ enum class ELayer
 {
 	eNone = -1,
 	eTest,
+
 	eField,
 	eGoal,
 	ePlayer,

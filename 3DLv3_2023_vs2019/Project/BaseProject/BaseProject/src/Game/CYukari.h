@@ -5,6 +5,7 @@
 #include "CColliderLine.h"
 #include "CColliderSphere.h"
 #include "CRideableObject.h"
+class CGun;
 
 /*
 プレイヤークラス
@@ -109,6 +110,8 @@ private:
 
 	CVector playerPosition;		// 目標地点
 	CVector yukariPosition;		// 自分の地点
+
+	CGun* mpGun;	// 銃のモデル
 
 };
 #endif
