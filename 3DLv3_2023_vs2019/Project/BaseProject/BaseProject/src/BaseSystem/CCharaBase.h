@@ -16,9 +16,14 @@ public:
 	virtual void TakeDamage(int damage);
 
 	// 最大ステータスを取得
-	const CharaStatus& MaxStatus() const;
+	const CharaStatus& MaxStatus() const;		// プレイヤー最大ステータス
 	// 現在のステータスを取得
-	const CharaStatus& Status() const;
+	const CharaStatus& Status() const;			// プレイヤー現在ステータス
+
+	// エネミー最大ステータスを取得
+	const CharaStatus& MaxEnemyStatus() const;	// エネミー最大ステータス
+	// エネミー現在ステータスを取得
+	const CharaStatus& EnemeyStatus() const;	// エネミー現在ステータス
 
 protected:
 	CharaStatus mCharaMaxStatus;	// プレイヤー最大ステータス

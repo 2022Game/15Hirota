@@ -26,3 +26,15 @@ const CharaStatus& CCharaBase::Status() const
 {
 	return mCharaStatus;
 }
+
+// エネミー最大ステータス
+const CharaStatus& CCharaBase::MaxEnemyStatus() const
+{
+	return mCharaMaxStatus_Enemy;
+}
+
+// エネミー現在ステータス
+const CharaStatus& CCharaBase::EnemeyStatus() const
+{
+	return mCharaStatus_Enemy;
+}

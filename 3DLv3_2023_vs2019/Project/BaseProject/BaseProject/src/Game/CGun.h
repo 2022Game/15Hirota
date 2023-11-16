@@ -7,6 +7,7 @@
 
 class CGun :public CEnemyWeapon
 {
+public:
 	CGun();
 	~CGun();
 

@@ -111,7 +111,6 @@ CPlayer::CPlayer()
 	mpSword->AttackMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpSword->SetOwner(this);
 
-
 	// Å‰‚É1ƒŒƒxƒ‹‚Éİ’è
 	ChangeLevel(1);
 }

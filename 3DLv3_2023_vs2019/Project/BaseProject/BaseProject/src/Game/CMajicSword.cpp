@@ -77,8 +77,19 @@ CMatrix CMajicSword::Matrix() const
 	else
 	{
 		CMatrix sm;
-		sm.Scale(100.0f, 100.0f, 100.0f);
-		return sm * (*mpAttachMtx);
+		sm.Scale(80.0f, 80.0f, 80.0f);
+
+		// 90度回転を表す行列を作成
+		CMatrix rotateY;
+		CMatrix rotateZ;
+		CMatrix rotateX;
+
+		rotateY.RotateY(90.0f);		// Y軸周りに90度回転
+		//rotateZ.RotateZ(90.0f);		// Z軸周りに90度回転
+		rotateX.RotateX(90.0f);		// X軸周り身90度回転
+
+
+		return sm * rotateY * rotateX * (*mpAttachMtx);
 	}
 }
 

@@ -5,6 +5,8 @@
 #include "CPlayer.h"
 #include <algorithm>
 #include "Maths.h"
+#include <BaseSystem/CInput.h>
+#include "CGun.h"
 
 
 // プレイヤーのインスタンス
@@ -28,6 +30,15 @@ const CYukari::AnimData CYukari::ANIM_DATA[] =
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f
+
+// HP関連
+#define HP 5
+
+// レベル関連
+#define LEVEL 1
+
+// スタミナ関連
+#define ATTACK 10
 
 // コンストラクタ
 CYukari::CYukari()
@@ -79,7 +90,12 @@ CYukari::CYukari()
 	mpDamageCol->Position(0.0f, 5.0f, 0.0f);
 
 	// 銃を作成して持たせる
-	//mpGun = new CGun();
+	mpGun = new CGun();
+	mpGun->AttackMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
+	mpGun->SetOwner(this);
+
+	// 最初に1レベルに設定
+	ChangeLevel(1);
 
 }
 
@@ -237,6 +253,30 @@ void CYukari::Update()
 
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 
+	// キャラクターのデバッグ表示
+	static bool debug = false;
+	if (CInput::PushKey('F'))
+	{
+		debug = !debug;
+	}
+	if (debug)
+	{
+		//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
+		CDebugPrint::Print(" HP%d / %d\n", mCharaStatus_Enemy.hp, mCharaMaxStatus_Enemy.hp);
+		CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus_Enemy.power);
+		CDebugPrint::Print(" ST%d / %d\n", mCharaStatus_Enemy.stamina, mCharaMaxStatus_Enemy.stamina);
+	}
+	// 1キーを押しながら、↑ ↓ でHP増減
+	if (CInput::Key('1'))
+	{
+		if (CInput::PushKey(VK_UP)) mCharaStatus_Enemy.hp++;
+		else if (CInput::PushKey(VK_DOWN)) mCharaStatus_Enemy.hp--;
+	}
+	else if (CInput::Key('2'))
+	{
+		LevelUp();
+	}
+
 	// 移動
 	Position(Position() + mMoveSpeed);
 
@@ -285,7 +325,7 @@ void CYukari::Render()
 void CYukari::TakeDamage(int damage)
 {
 	// 死亡していたらダメージは受けない
-	if (mCharaStatus_Enemy.hp <= 0) return;
+	//if (mCharaStatus_Enemy.hp <= 0) return;
 
 	// HPからダメージを引く
 	//mCharaStatus_Enemy.hp = std::max(mCharaStatus_Enemy.hp - damage, 0);
