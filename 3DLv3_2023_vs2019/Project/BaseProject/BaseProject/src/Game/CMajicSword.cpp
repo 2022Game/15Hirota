@@ -16,7 +16,7 @@ CMajicSword::CMajicSword()
 	(
 		this, ELayer::eAttackCol,
 		CVector(0.0f, 0.0f, 0.0f),
-		CVector(0.0f, 1.0f, 1.0f)
+		CVector(0.0f, 0.0f, 3.0f)
 	);
 	// 攻撃判定用のコライダーと衝突判定を行う
 	// レイヤーとタグを設定
@@ -96,7 +96,7 @@ CMatrix CMajicSword::Matrix() const
 // 攻撃開始
 void CMajicSword::AttackStart()
 {
-	CEnemyWeapon::AttackStart();
+	CWeapon::AttackStart();
 	// 攻撃が始まったら、攻撃判定用のコライダーをオフにする
 	mpAttackCol->SetEnable(true);
 }
@@ -104,7 +104,7 @@ void CMajicSword::AttackStart()
 // 攻撃終了
 void CMajicSword::AttackEnd()
 {
-	CEnemyWeapon::AttackEnd();
+	CWeapon::AttackEnd();
 	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
 	mpAttackCol->SetEnable(false);
 }

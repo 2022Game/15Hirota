@@ -37,12 +37,12 @@ const CYukari::AnimData CYukari::ANIM_DATA[] =
 // レベル関連
 #define LEVEL 1
 
-// スタミナ関連
+// 攻撃力関連
 #define ATTACK 10
 
 // コンストラクタ
 CYukari::CYukari()
-	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
+	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
 {
@@ -80,7 +80,7 @@ CYukari::CYukari()
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		5.0f
+		10.0f //後で変更
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
@@ -91,7 +91,7 @@ CYukari::CYukari()
 
 	// 銃を作成して持たせる
 	mpGun = new CGun();
-	mpGun->AttackMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
+	mpGun->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpGun->SetOwner(this);
 
 	// 最初に1レベルに設定
@@ -129,7 +129,7 @@ CYukari* CYukari::Instance()
 // レベルアップ
 void CYukari::LevelUp()
 {
-	int level = mCharaStatus_Enemy.level;
+	int level = mCharaStatus.level;
 	ChangeLevel(level + 1);
 }
 
@@ -139,9 +139,9 @@ void CYukari::ChangeLevel(int level)
 	// ステータスのテーブルのインデックス地に変換
 	int index = Math::Clamp(level - 1, 0, ENEMY_LEVEL_MAX);
 	// 最大ステータスに設定
-	mCharaMaxStatus_Enemy = ENEMY_STATUS[index];
+	mCharaMaxStatus = ENEMY_STATUS[index];
 	// 現在のステータスを最大値にすることで、HP回復
-	mCharaStatus_Enemy = mCharaMaxStatus_Enemy;
+	mCharaStatus = mCharaMaxStatus;
 
 }
 
@@ -262,15 +262,15 @@ void CYukari::Update()
 	if (debug)
 	{
 		//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
-		CDebugPrint::Print(" HP%d / %d\n", mCharaStatus_Enemy.hp, mCharaMaxStatus_Enemy.hp);
-		CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus_Enemy.power);
-		CDebugPrint::Print(" ST%d / %d\n", mCharaStatus_Enemy.stamina, mCharaMaxStatus_Enemy.stamina);
+		CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
+		CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
+		CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
 	}
 	// 1キーを押しながら、↑ ↓ でHP増減
-	if (CInput::Key('1'))
+	if (CInput::Key('3'))
 	{
-		if (CInput::PushKey(VK_UP)) mCharaStatus_Enemy.hp++;
-		else if (CInput::PushKey(VK_DOWN)) mCharaStatus_Enemy.hp--;
+		if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
+		else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
 	}
 	else if (CInput::Key('2'))
 	{
@@ -325,13 +325,13 @@ void CYukari::Render()
 void CYukari::TakeDamage(int damage)
 {
 	// 死亡していたらダメージは受けない
-	//if (mCharaStatus_Enemy.hp <= 0) return;
+	//if (mCharaStatus.hp <= 0) return;
 
 	// HPからダメージを引く
-	//mCharaStatus_Enemy.hp = std::max(mCharaStatus_Enemy.hp - damage, 0);
-	mCharaStatus_Enemy.hp -= damage;
+	//mCharaStatus.hp = std::max(mCharaStatus.hp - damage, 0);
+	mCharaStatus.hp -= damage;
 	// HPが0になったら
-	if (mCharaStatus_Enemy.hp == 0)
+	if (mCharaStatus.hp == 0)
 	{
 		//死亡処理 後で
 	}

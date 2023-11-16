@@ -1,11 +1,11 @@
 #ifndef CGUN_H
 #define CGUN_H
 #include "CObjectBase.h"
-#include "CEnemyWeapon.h"
+#include "CWeapon.h"
 #include "CColliderLine.h"
 #include "CModel.h"
 
-class CGun :public CEnemyWeapon
+class CGun :public CWeapon
 {
 public:
 	CGun();

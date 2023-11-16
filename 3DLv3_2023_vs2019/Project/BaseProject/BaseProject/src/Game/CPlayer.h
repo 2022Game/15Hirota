@@ -5,12 +5,11 @@
 #include "CRideableObject.h"
 #include "CColliderSphere.h"
 #include "CImage.h"
+class CUIGauge;
+class CStaminaGauge;
 class CMajicSword;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
-
-class CUIGauge;
-class CStaminaGauge;
 
 /*
 プレイヤークラス
@@ -48,9 +47,6 @@ public:
 	//回避終了
 	void UpdateRotateEnd();
 
-	// 更新
-	void Update();
-
 	/// <summary>
 	/// 衝突処理
 	/// </summary>
@@ -58,9 +54,6 @@ public:
 	/// <param name="other">衝突した相手のコライダー</param>
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
-
-	// 描画
-	void Render();
 
 	// レベル処理
 	void LevelUp();	//	レベルアップ
@@ -72,6 +65,12 @@ public:
 
 	// damage == 受けるダメージ
 	void TakeDamage(int damage) override;
+
+	// 更新
+	void Update();
+
+	// 描画
+	void Render();
 
 private:
 	// アニメーションの種類

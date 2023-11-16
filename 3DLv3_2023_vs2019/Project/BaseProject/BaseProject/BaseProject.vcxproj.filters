@@ -277,7 +277,7 @@
     <ClCompile Include="src\Game\CGun.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CEnemyWeapon.cpp">
+    <ClCompile Include="src\Game\CWeapon.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CBullet.cpp">
@@ -522,7 +522,7 @@
     <ClInclude Include="src\Game\CGun.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CEnemyWeapon.h">
+    <ClInclude Include="src\Game\CWeapon.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CBullet.h">

@@ -1,18 +1,15 @@
 #ifndef CMAJICSWORD_H
 #define CMAJICSWORD_H
 #include "CObjectBase.h"
-#include "CEnemyWeapon.h"
+#include "CWeapon.h"
 #include "CColliderLine.h"
 #include "CModel.h"
 
-class CMajicSword :public CEnemyWeapon
+class CMajicSword :public CWeapon
 {
 public:
 	CMajicSword();
 	~CMajicSword();
-
-	void Update();
-	void Render();
 
 	/// <summary>
 	/// Õ“Ëˆ—
@@ -30,6 +27,9 @@ public:
 
 	// •Ší‚Ìs—ñ‚ğæ“¾
 	CMatrix Matrix() const override;
+
+	void Update();
+	void Render();
 
 private:
 

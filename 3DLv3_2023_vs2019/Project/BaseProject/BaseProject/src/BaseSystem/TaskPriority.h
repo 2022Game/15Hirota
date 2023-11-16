@@ -9,8 +9,9 @@ enum class ETaskPriority
 	eBackground,// 背景
 	eDefault,	// デフォルト
 	ePlayer,	// プレイヤー
+	eEnemy,		// エネミー
 
-	eWeapon,	// 武器
+	eWeapon,	// プレイヤー武器武器
 
 	eEffect,	// エフェクト
 

@@ -60,12 +60,12 @@ CPlayer::CPlayer()
 	, staminaDepleted(false)
 	, staminaLowerLimit(false)
 {
-	//// HPゲージを作成
+	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
 	// スタミナゲージを作成
 	mpStaminaGauge = new CStaminaGauge();
 
-	//インスタンスの設定
+	// インスタンスの設定
 	spInstance = this;
 
 	// モデルデータ読み込み
@@ -108,7 +108,7 @@ CPlayer::CPlayer()
 	//mpDamageCol->Position(0.0f, 0.3f, 0.0f);
 
 	mpSword = new CMajicSword();
-	mpSword->AttackMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpSword->SetOwner(this);
 
 	// 最初に1レベルに設定
@@ -324,6 +324,9 @@ void CPlayer::UpdateAttack()
 	ChangeAnimation(EAnimType::eAttack);
 	// 攻撃終了待ち状態へ移行
 	mState = EState::eAttackWait;
+
+	// 剣に攻撃開始を伝える
+	mpSword->AttackStart();
 }
 
 // 強攻撃
@@ -344,6 +347,9 @@ void CPlayer::UpdateAttackWait()
 		// 待機状態へ移行
 		mState = EState::eIdle;
 		ChangeAnimation(EAnimType::eIdle);
+
+		// 剣に攻撃終了を伝える
+		mpSword->AttackEnd();
 	}
 }
 

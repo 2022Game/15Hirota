@@ -77,7 +77,7 @@ CMatrix CGun::Matrix() const
 	else
 	{
 		CMatrix sm;
-		sm.Scale(100.0f, 100.0f, 100.0f);
+		sm.Scale(130.0f, 130.0f, 130.0f);
 		return sm * (*mpAttachMtx);
 	}
 }
@@ -85,7 +85,7 @@ CMatrix CGun::Matrix() const
 // 攻撃開始
 void CGun::AttackStart()
 {
-	CEnemyWeapon::AttackStart();
+	CWeapon::AttackStart();
 	// 攻撃が始まったら、攻撃判定用のコライダーをオフにする
 	mpAttackCol->SetEnable(true);
 }
@@ -93,7 +93,7 @@ void CGun::AttackStart()
 // 攻撃終了
 void CGun::AttackEnd()
 {
-	CEnemyWeapon::AttackEnd();
+	CWeapon::AttackEnd();
 	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
 	mpAttackCol->SetEnable(false);
 }
