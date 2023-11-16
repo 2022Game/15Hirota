@@ -2,14 +2,14 @@
 #include "CCollisionManager.h"
 #include "CCharaBase.h"
 
-#define M1GARAND_O "Character\\MajicSword\\MajicSword.obj"
-#define M1GARAND_M "Character\\MajicSword\\MajicSword.mtl"
+#define SWORD_O "Character\\MajicSword\\MajicSword.obj"
+#define SWORD_M "Character\\MajicSword\\MajicSword.mtl"
 
 CMajicSword::CMajicSword()
 {
 	// モデルロード
 	mpSword = new CModel();
-	mpSword->Load(M1GARAND_O, M1GARAND_M);
+	mpSword->Load(SWORD_O, SWORD_M);
 
 	// 攻撃判定用のコライダーを作成
 	mpAttackCol = new CColliderLine
