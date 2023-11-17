@@ -1,6 +1,7 @@
 #include "CGun.h"
 #include "CCollisionManager.h"
 #include "CCharaBase.h"
+#include "CInput.h"
 
 #define M1GARAND_O "Character\\Gun_M1Garand\\Gun_M1Garand.obj"
 #define M1GARAND_M "Character\\Gun_M1Garand\\Gun_M1Garand.mtl"
@@ -11,20 +12,20 @@ CGun::CGun()
 	mpGun = new CModel();
 	mpGun->Load(M1GARAND_O, M1GARAND_M);
 
-	// 攻撃判定用のコライダーを作成
-	mpAttackCol = new CColliderLine
-	(
-		this, ELayer::eAttackCol,
-		CVector(0.0f, 0.0f, 0.0f),
-		CVector(0.0f, 1.0f, 1.0f)
-	);
-	// 攻撃判定用のコライダーと衝突判定を行う
-	// レイヤーとタグを設定
-	mpAttackCol->SetCollisionLayers({ ELayer::eDamageCol });
-	mpAttackCol->SetCollisionTags({ ETag::eEnemy });
+	//// 攻撃判定用のコライダーを作成
+	//mpAttackCol = new CColliderLine
+	//(
+	//	this, ELayer::eAttackCol,
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	CVector(0.0f, 1.0f, 1.0f)
+	//);
+	//// 攻撃判定用のコライダーと衝突判定を行う
+	//// レイヤーとタグを設定
+	//mpAttackCol->SetCollisionLayers({ ELayer::eDamageCol });
+	//mpAttackCol->SetCollisionTags({ ETag::eEnemy });
 
 	// 最初は攻撃判定用のコライダーをオフにしておく
-	mpAttackCol->SetEnable(false);
+	//mpAttackCol->SetEnable(false);
 }
 
 CGun::~CGun()
@@ -77,8 +78,30 @@ CMatrix CGun::Matrix() const
 	else
 	{
 		CMatrix sm;
-		sm.Scale(130.0f, 130.0f, 130.0f);
-		return sm * (*mpAttachMtx);
+		sm.Scale(190.0f, 190.0f, 190.0f);
+
+		// 回転を表す行列を作成
+		CMatrix rotateY;
+		CMatrix rotateZ;
+		CMatrix rotateX;
+
+		// 移動を表す行列を作成
+		CMatrix positionX;
+		CMatrix positionZ;
+		CMatrix positionY;
+
+		//rotateX.RotateX(30.0f);		// X軸の回転
+		rotateY.RotateY(-105.0f);	// Y軸の回転
+		rotateZ.RotateZ(-22.5f);		// Z軸の回転
+
+		float xOffset = 5.0f;	// X軸方向のずれを指定
+		positionX.Translate(xOffset, 0, 0);
+		float yOffset = 17.0f;	// Y軸方向のずれを指定
+		positionY.Translate(0, yOffset, 0);
+		float zOffset = 8.0f;	// Z軸方向のずれを指定3.5f
+		positionZ.Translate(0, 0, zOffset);
+
+		return sm * rotateZ * rotateY * positionX * positionY * positionZ * (*mpAttachMtx);
 	}
 }
 
