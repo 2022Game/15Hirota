@@ -8,6 +8,7 @@
 class CUIGauge;
 class CStaminaGauge;
 class CMajicSword;
+class CBullet;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -32,8 +33,10 @@ public:
 	void UpdateAttack();
 	// 強攻撃
 	void UpdateAttackStrong();
-	// 攻撃終了待ち
+	// 攻撃終了待ち1
 	void UpdateAttackWait();
+	// 攻撃終了待ち2
+	void UpdateAttackWait2();
 	// ジャンプ開始
 	void UpdateJumpStart();
 	// ジャンプ中
@@ -116,6 +119,7 @@ private:
 		eAttack,		// 攻撃
 		eAttackStrong,	// 強攻撃
 		eAttackWait,	// 攻撃終了待ち
+		eAttackWait2,	// 攻撃終了待ち2
 		eJumpStart,		// ジャンプ開始
 		eJump,			// ジャンプ中
 		eJumpEnd,		// ジャンプ終了
@@ -139,7 +143,10 @@ private:
 
 	CColliderSphere* mpDamageCol;	//ダメージを受けるコライダ
 	CMajicSword* mpSword;
+	CBullet* mpBullet;
 
+	// 弾生存時間
+	int mLife;
 
 	CUIGauge* mpHpGauge;			// HPゲージ
 	CStaminaGauge* mpStaminaGauge;	// スタミナゲージ

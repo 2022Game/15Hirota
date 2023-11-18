@@ -286,6 +286,9 @@
     <ClCompile Include="src\Game\CMajicSword.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CEnemyWeapon.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -529,6 +532,9 @@
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CMajicSword.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CEnemyWeapon.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
   </ItemGroup>

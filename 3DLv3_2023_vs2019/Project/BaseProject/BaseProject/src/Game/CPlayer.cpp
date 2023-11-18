@@ -7,6 +7,7 @@
 #include "Maths.h"
 #include "CSceneManager.h"
 #include "CMajicSword.h"
+#include "CBullet.h"
 
 // プレイヤーのモデルデータのパス
 #define MODEL_PATH "Character\\Monster1\\Monster_1.x"
@@ -59,6 +60,7 @@ CPlayer::CPlayer()
 	, mpRideObject(nullptr)
 	, staminaDepleted(false)
 	, staminaLowerLimit(false)
+	, mLife(50)
 {
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
@@ -275,6 +277,20 @@ void CPlayer::UpdateIdle()
 		{
 			mMoveSpeed.X(0.0f);
 			mMoveSpeed.Z(0.0f);
+
+			// 後で消す
+			mpBullet = new CBullet();
+			mpBullet->SetOwner(this);
+			mpBullet->Position(CVector(0.0f, 10.0f, 15.0f) * Matrix());
+			mpBullet->Rotation(Rotation());
+
+			mLife--;
+			mpBullet->Update();
+			if (mLife == 0)
+			{
+				mpBullet->Kill();
+			}
+
 			mState = EState::eAttackStrong;
 		}
 		// SPACEキーでジャンプ開始へ移行
@@ -335,7 +351,9 @@ void CPlayer::UpdateAttackStrong()
 	// 強攻撃アニメーションを開始
 	ChangeAnimation(EAnimType::eAttackStrong);
 	// 攻撃終了待ち状態へ移行
-	mState = EState::eAttackWait;
+	mState = EState::eAttackWait2;
+
+	mpBullet->AttackStart();
 }
 
 // 攻撃終了待ち
@@ -350,6 +368,17 @@ void CPlayer::UpdateAttackWait()
 
 		// 剣に攻撃終了を伝える
 		mpSword->AttackEnd();
+	}
+}
+
+// 攻撃終了待ち2
+void CPlayer::UpdateAttackWait2()
+{
+	if (IsAnimationFinished())
+	{
+		mState = EState::eIdle;
+		ChangeAnimation(EAnimType::eIdle);
+		mpBullet->AttackEnd();
 	}
 }
 
@@ -436,6 +465,10 @@ void CPlayer::Update()
 		// 攻撃終了待ち
 		case EState::eAttackWait:
 			UpdateAttackWait();
+			break;
+		// 攻撃終了待ち2
+		case EState::eAttackWait2:
+			UpdateAttackWait2();
 			break;
 		// ジャンプ開始
 		case EState::eJumpStart:

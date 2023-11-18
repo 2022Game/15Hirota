@@ -5,7 +5,7 @@ class CCharaBase;
 
 // オブジェクト継承
 
-class CWeapon : public CObjectBase
+class CWeapon :public CObjectBase
 {
 public:
 	CWeapon();

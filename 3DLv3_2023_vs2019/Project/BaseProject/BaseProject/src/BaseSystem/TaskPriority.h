@@ -6,21 +6,22 @@ enum class ETaskPriority
 	eNone = -1,
 
 	// 3D関連
-	eBackground,// 背景
-	eDefault,	// デフォルト
-	ePlayer,	// プレイヤー
-	eEnemy,		// エネミー
+	eBackground,	// 背景
+	eDefault,		// デフォルト
+	ePlayer,		// プレイヤー
+	eEnemy,			// エネミー
 
-	eWeapon,	// プレイヤー武器武器
+	eWeapon,		// プレイヤー武器
+	eEnemyWeapon,	// 敵の武器
 
-	eEffect,	// エフェクト
+	eEffect,		// エフェクト
 
-	eCamera,	// カメラ
+	eCamera,		// カメラ
 
 	// 2D関連
-	eUI,		// UI関連のデフォルト
-	eSystem,	// システム関連
-	eDebug,		// デバッグ関連
+	eUI,			// UI関連のデフォルト
+	eSystem,		// システム関連
+	eDebug,			// デバッグ関連
 
 	Num,
 
