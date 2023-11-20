@@ -3,7 +3,7 @@
 #include "CCharaBase.h"
 
 #define BULLET_O "Character\\Bullet1\\Bullet.obj"
-#define BULLET_M "Character\\Bullet1\\Bullet.obj"
+#define BULLET_M "Character\\Bullet1\\Bullet.mtl"
 
 CBullet::CBullet()
 {
@@ -22,7 +22,7 @@ CBullet::CBullet()
 	// 攻撃判定用の子ラダーと衝突判定を行う
 	// レイヤーとタグを設定
 	mpAttackCol->SetCollisionLayers({ ELayer::eDamageCol });
-	mpAttackCol->SetCollisionTags({ ETag::eEnemy });
+	mpAttackCol->SetCollisionTags({ ETag::ePlayer });
 
 	// 最初は攻撃判定用のコライダーをオフにしておく
 	mpAttackCol->SetEnable(false);
@@ -36,7 +36,7 @@ CBullet::~CBullet()
 void CBullet::Update()
 {
 	CVector currentPos = Position();
-	currentPos = mPos + CVector(0.0f,0.0f,1.0f) * Matrix();
+	currentPos = mPos + CVector(0.0f,0.0f,2.0f) * Matrix();
 
 	Position(currentPos);
 }
@@ -49,12 +49,12 @@ void CBullet::Render()
 
 CMatrix CBullet::Matrix() const
 {
-	// 手に持っていないときは、自分自身の行列を返す
+	// 自分自身の行列を返す
 	if (mpAttachMtx == nullptr)
 	{
 		return CTransform::Matrix();
 	}
-	// 手に持っているときは、アタッチしている行列を返す
+	// アタッチしている行列を返す
 	else
 	{
 		CMatrix sm;

@@ -1,7 +1,7 @@
 #include "CEnemyWeapon.h"
 
 CEnemyWeapon::CEnemyWeapon()
-	:CObjectBase(ETag::eWeapon, ETaskPriority::eWeapon)
+	:CObjectBase(ETag::eEnemyWeapon, ETaskPriority::eEnemyWeapon)
 	, mpAttachMtx(nullptr)
 {
 

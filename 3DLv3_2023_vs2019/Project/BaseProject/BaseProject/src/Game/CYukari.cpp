@@ -7,15 +7,18 @@
 #include "Maths.h"
 #include <BaseSystem/CInput.h>
 #include "CGun.h"
+#include "CBullet.h"
+
+#define _USE_MATH_DEFINES
 
 
-// プレイヤーのインスタンス
+// Yukariのインスタンス
 CYukari* CYukari::spInstance = nullptr;
 
-// プレイヤーのモデルデータのパス
+// Yukariのモデルデータのパス
 #define MODEL_PATH "Character\\Yukari\\Yukari_Model.x"
 
-// プレイヤーのアニメーションデータのテーブル
+// Yukariのアニメーションデータのテーブル
 const CYukari::AnimData CYukari::ANIM_DATA[] =
 {
 	{ "",													true,	0.0f	},	// Tポーズ
@@ -26,10 +29,14 @@ const CYukari::AnimData CYukari::ANIM_DATA[] =
 };
 
 #define PLAYER_HEIGHT 8.0f
-#define MOVE_SPEED 1.0f
+#define MOVE_SPEED 0.5f
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f
+
+//移動速度
+#define FOV_ANGLE 65.0f		// 視野の角度(ー角度+角度も出)
+#define ATTACK_RANGE 30.0f	// プレイヤーまでの距離
 
 // HP関連
 #define HP 5
@@ -45,6 +52,10 @@ CYukari::CYukari()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
+	, Shot(false)
+	, mLife(50)
+	, mTimeShot(0)
+	, mTimeShotEnd(20)
 {
 
 	//インスタンスの設定
@@ -148,7 +159,6 @@ void CYukari::ChangeLevel(int level)
 // アニメーション切り替え
 void CYukari::ChangeAnimation(EAnimType type)
 {
-	if (type != EAnimType::eIdle) return;
 	if (!(EAnimType::None < type && type < EAnimType::Num)) return;
 	AnimData data = ANIM_DATA[(int)type];
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
@@ -160,19 +170,101 @@ void CYukari::UpdateIdle()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
+	//プレイヤーを見つけたら、追跡状態へ移行
+	if (IsFoundPlayer())
+	{
+		mState = EState::eChase;
+	}
+	else
 	{
 		// 待機アニメーションに切り替え
 		ChangeAnimation(EAnimType::eIdle);
 	}
 }
 
+void CYukari::UpdateChase()
+{
+	if (!IsFoundPlayer())
+	{
+		ChangeAnimation(EAnimType::eIdle);
+		mState = EState::eIdle;
+	}
+	else
+	{
+		CPlayer* player = CPlayer::Instance();
+
+		CVector toPlayer = (player->Position() - Position()).Normalized();
+		CVector newPosition = Position() + toPlayer * MOVE_SPEED;
+		Position(newPosition);
+
+		// プレイヤーとの距離が一定範囲以内であれば攻撃モードに切り替える
+		float distanceToPlayer = (player->Position() - Position()).Length();
+		const float attackRange = 30.0f;
+		ChangeAnimation(EAnimType::eWalk);
+
+		if (distanceToPlayer <= attackRange)
+		{
+			mState = EState::eAttack;
+		}
+		else
+		{
+
+		}
+	}
+	CXCharacter::Update();
+}
+
+
 // 攻撃
 void CYukari::UpdateAttack()
 {
-	// 攻撃アニメーションを開始
-	ChangeAnimation(EAnimType::eAttack);
-	// 攻撃終了待ち状態へ移行
-	mState = EState::eAttackWait;
+	//プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+	if (player != nullptr)
+	{
+		//プレイヤーまでのベクトルを求める
+		CVector vp = player->Position() - Position();
+
+		float distancePlayer = vp.Length();
+
+		if (distancePlayer <= ATTACK_RANGE)
+		{
+			mTimeShot++;
+
+			if (mTimeShot >= mTimeShotEnd && !Shot)
+			{
+				mMoveSpeed.X(0.0f);
+				ChangeAnimation(EAnimType(EAnimType::eAttack));
+
+				mpBullet = new CBullet();
+				mpBullet->SetOwner(this);
+				mpBullet->Position(CVector(0.0f, 10.0f, 10.0f) * Matrix());
+				mpBullet->Rotation(Rotation());
+				mpBullet->AttackStart();
+				mpBullet->Update();
+
+				mLife--;
+
+				Shot = true;
+
+				if (mLife <= 0)
+				{
+					mpBullet->Kill();
+				}
+			}
+			else if (IsAnimationFinished())
+			{
+				mState = EState::eAttackWait;
+			}
+		}
+	}
+	else
+	{
+		Shot = false;
+		mTimeShot = 0;
+		mState = EState::eAttackWait;
+	}
+	CXCharacter::Update();
 }
 
 // 攻撃終了待ち
@@ -181,9 +273,11 @@ void CYukari::UpdateAttackWait()
 	// 攻撃アニメーションが終了したら、
 	if (IsAnimationFinished())
 	{
+		Shot = false;
+		mTimeShot = 0;
 		// 待機状態へ移行
 		mState = EState::eIdle;
-		ChangeAnimation(EAnimType::eIdle);
+		mpBullet->AttackEnd();
 	}
 }
 
@@ -249,11 +343,14 @@ void CYukari::Update()
 	case EState::eJumpEnd:
 		UpdateJumpEnd();
 		break;
+	case EState::eChase:
+		UpdateChase();
+		break;
 	}
 
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 
-	// キャラクターのデバッグ表示
+	// Yukariのデバッグ表示
 	static bool debug = false;
 	if (CInput::PushKey('F'))
 	{
@@ -282,7 +379,7 @@ void CYukari::Update()
 
 	CVector PlayerPosition;
 
-	// プレイヤーを移動方向へ向ける
+	// Yukariを移動方向へ向ける
 	CVector current = VectorZ();
 	CVector target = mMoveSpeed;
 	target.Y(0.0f);
@@ -290,11 +387,62 @@ void CYukari::Update()
 	CVector forward = CVector::Slerp(current, target, 0.125f);
 	Rotation(CQuaternion::LookRotation(forward));
 
-	// キャラクターの更新
+	// Yukariの更新
 	CXCharacter::Update();
 
 	mIsGrounded = false;
 }
+
+bool CYukari::IsFoundPlayer() const
+{
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector enemyPos = Position();
+
+	CVector toPlayer = (playerPos - enemyPos).Normalized();
+	CVector forward = Matrix().VectorZ().Normalized();
+
+	float dot = forward.Dot(toPlayer);
+
+	// 視野角の半分を計算する
+	float halfFOV = FOV_ANGLE * 0.5f;
+
+	// acos関数を使用して実際の角度を計算する
+	float angle = acos(dot) * (180.0f / M_PI);
+
+	// 視野角の半分より小さいかつプレイヤーとの距離が一定範囲以内であれば、プレイヤーを認識する
+	if (angle < halfFOV && dot >= cosf(halfFOV * M_PI / 180.0f))
+	{
+		float distance = (playerPos - enemyPos).Length();
+		const float chaseRange = 100.0f;
+
+		if (distance <= chaseRange)
+			return true;
+	}
+
+	return false;
+
+	/*CVector playerPos = CPlayer::Instance()->Position();
+	CVector enemyPos = Position();
+
+	CVector EP = (playerPos - enemyPos).Normalized();
+
+	CVector forwrd = Matrix().VectorZ().Normalized();
+
+	float dot = forwrd.Dot(EP);
+
+	if (dot < cosf(FOV_ANGLE * M_PI / 180.0f)) return false;
+
+	float distance = (playerPos - enemyPos).Length();
+
+	const float chaseRenge = 100.0f;
+
+	if (distance > chaseRenge)
+		return false;
+
+	return true;*/
+
+}
+
 
 // 衝突処理
 void CYukari::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)

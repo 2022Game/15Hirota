@@ -96,18 +96,18 @@ CPlayer::CPlayer()
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
-	//// ダメージを受けるコライダーを作成
-	//mpDamageCol = new CColliderSphere
-	//(
-	//	this, ELayer::eDamageCol,
-	//	5.0f
-	//);
-	//// ダメージを受けるコライダーと
-	//// 衝突判定を行うコライダーのレイヤーとタグを設定
-	//mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
-	//mpDamageCol->SetCollisionTags({ ETag::eBullet });
-	//// ダメージを受けるコライダーを少し上へずらす
-	//mpDamageCol->Position(0.0f, 0.3f, 0.0f);
+	// ダメージを受けるコライダーを作成
+	mpDamageCol = new CColliderSphere
+	(
+		this, ELayer::eDamageCol,
+		6.0f
+	);
+	// ダメージを受けるコライダーと
+	// 衝突判定を行うコライダーのレイヤーとタグを設定
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon });
+	// ダメージを受けるコライダーを少し上へずらす
+	mpDamageCol->Position(0.0f, 3.0f, 0.0f);
 
 	mpSword = new CMajicSword();
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
@@ -277,20 +277,6 @@ void CPlayer::UpdateIdle()
 		{
 			mMoveSpeed.X(0.0f);
 			mMoveSpeed.Z(0.0f);
-
-			// 後で消す
-			mpBullet = new CBullet();
-			mpBullet->SetOwner(this);
-			mpBullet->Position(CVector(0.0f, 10.0f, 15.0f) * Matrix());
-			mpBullet->Rotation(Rotation());
-
-			mLife--;
-			mpBullet->Update();
-			if (mLife == 0)
-			{
-				mpBullet->Kill();
-			}
-
 			mState = EState::eAttackStrong;
 		}
 		// SPACEキーでジャンプ開始へ移行
@@ -352,8 +338,6 @@ void CPlayer::UpdateAttackStrong()
 	ChangeAnimation(EAnimType::eAttackStrong);
 	// 攻撃終了待ち状態へ移行
 	mState = EState::eAttackWait2;
-
-	mpBullet->AttackStart();
 }
 
 // 攻撃終了待ち
@@ -378,7 +362,6 @@ void CPlayer::UpdateAttackWait2()
 	{
 		mState = EState::eIdle;
 		ChangeAnimation(EAnimType::eIdle);
-		mpBullet->AttackEnd();
 	}
 }
 

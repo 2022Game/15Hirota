@@ -10,4 +10,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 1
-map_Kd Weapons_ChamferZone\\Ammunition\\textures\\WPNT_Ammunition_AlbedoTransparency.png
+map_Kd texture\\WPNT_Ammunition_AlbedoTransparency.png

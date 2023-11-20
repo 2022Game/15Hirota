@@ -6,6 +6,8 @@
 #include "CColliderSphere.h"
 #include "CRideableObject.h"
 class CGun;
+class CBullet;
+class CPlayer;
 
 /*
 プレイヤークラス
@@ -35,6 +37,8 @@ public:
 	void UpdateJump();
 	// ジャンプ終了
 	void UpdateJumpEnd();
+	// 追跡
+	void UpdateChase();
 
 	// 更新
 	void Update();
@@ -103,6 +107,8 @@ private:
 
 	CVector mMoveSpeed;	// 移動速度
 	bool mIsGrounded;	// 接地しているかどうか
+	bool IsFoundPlayer() const;	//プレイヤーを見つけたか
+	CVector mPoint;
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
@@ -112,6 +118,13 @@ private:
 	CVector yukariPosition;		// 自分の地点
 
 	CGun* mpGun;	// 銃のモデル
+	CBullet* mpBullet;
+	// 弾生存時間
+	int mLife;
+
+	int mTimeShot;
+	int mTimeShotEnd;
+	bool Shot;
 
 };
 #endif
