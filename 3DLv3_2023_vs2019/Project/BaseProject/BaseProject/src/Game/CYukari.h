@@ -70,6 +70,7 @@ private:
 		eIdle,		// 待機
 		eWalk,		// 歩行
 		eAttack,	// 攻撃
+		eReload,	// リロード
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
 		eJumpEnd,	// ジャンプ終了

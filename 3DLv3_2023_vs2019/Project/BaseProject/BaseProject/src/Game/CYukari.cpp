@@ -25,18 +25,19 @@ const CYukari::AnimData CYukari::ANIM_DATA[] =
 	{ "Character\\Yukari\\anim\\Yukari_GunIdle463.x",		true,	463.0f	},	// Idle時
 	{ "Character\\Yukari\\anim\\Yukari_GunWorlk79.x",		true,	79.0f	},	// 移動
 	{ "Character\\Yukari\\anim\\Yukari_GunPlay13.x",		true,	13.0f	},	// プレイヤー発見時攻撃
+	{ "Character\\Yukari\\anim\\Yukari1_Reload199.fbx.x",	false,	199.0f	},	// リロード
 
 };
 
 #define PLAYER_HEIGHT 8.0f
-#define MOVE_SPEED 0.5f
+#define MOVE_SPEED 1.0f
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f
 
 //移動速度
-#define FOV_ANGLE 65.0f		// 視野の角度(ー角度+角度も出)
-#define ATTACK_RANGE 30.0f	// プレイヤーまでの距離
+#define FOV_ANGLE 55.0f		// 視野の角度(ー角度+角度も出)
+#define ATTACK_RANGE 50.0f	// プレイヤーまでの距離
 
 // HP関連
 #define HP 5
@@ -55,7 +56,7 @@ CYukari::CYukari()
 	, Shot(false)
 	, mLife(50)
 	, mTimeShot(0)
-	, mTimeShotEnd(20)
+	, mTimeShotEnd(5)
 {
 
 	//インスタンスの設定
@@ -170,15 +171,11 @@ void CYukari::UpdateIdle()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
+	ChangeAnimation(EAnimType::eIdle);
 	//プレイヤーを見つけたら、追跡状態へ移行
 	if (IsFoundPlayer())
 	{
 		mState = EState::eChase;
-	}
-	else
-	{
-		// 待機アニメーションに切り替え
-		ChangeAnimation(EAnimType::eIdle);
 	}
 }
 
@@ -186,8 +183,7 @@ void CYukari::UpdateChase()
 {
 	if (!IsFoundPlayer())
 	{
-		ChangeAnimation(EAnimType::eIdle);
-		mState = EState::eIdle;
+		
 	}
 	else
 	{
@@ -199,25 +195,21 @@ void CYukari::UpdateChase()
 
 		// プレイヤーとの距離が一定範囲以内であれば攻撃モードに切り替える
 		float distanceToPlayer = (player->Position() - Position()).Length();
-		const float attackRange = 30.0f;
+
 		ChangeAnimation(EAnimType::eWalk);
 
-		if (distanceToPlayer <= attackRange)
+		if (distanceToPlayer <= ATTACK_RANGE)
 		{
 			mState = EState::eAttack;
 		}
-		else
-		{
-
-		}
 	}
-	CXCharacter::Update();
 }
 
 
 // 攻撃
 void CYukari::UpdateAttack()
 {
+	Shot = true;
 	//プレイヤーのポインタが0以外の時
 	CPlayer* player = CPlayer::Instance();
 	if (player != nullptr)
@@ -230,55 +222,52 @@ void CYukari::UpdateAttack()
 		if (distancePlayer <= ATTACK_RANGE)
 		{
 			mTimeShot++;
-
-			if (mTimeShot >= mTimeShotEnd && !Shot)
+			if (mTimeShot < mTimeShotEnd && Shot)
 			{
-				mMoveSpeed.X(0.0f);
-				ChangeAnimation(EAnimType(EAnimType::eAttack));
-
 				mpBullet = new CBullet();
 				mpBullet->SetOwner(this);
 				mpBullet->Position(CVector(0.0f, 10.0f, 10.0f) * Matrix());
 				mpBullet->Rotation(Rotation());
 				mpBullet->AttackStart();
 				mpBullet->Update();
-
-				mLife--;
-
-				Shot = true;
-
-				if (mLife <= 0)
+				ChangeAnimation(EAnimType::eAttack);
+				if (mTimeShot <= mTimeShotEnd && Shot)
 				{
-					mpBullet->Kill();
+					if (IsAnimationFinished())
+					{
+						// 攻撃終了後の待機状態に遷移
+						mState = EState::eAttackWait;
+						Shot = false;
+						mTimeShot = 0;
+					}
 				}
 			}
-			else if (IsAnimationFinished())
-			{
-				mState = EState::eAttackWait;
-			}
+		}
+		else
+		{
+			mState = EState::eChase;
+			Shot = false;
+			mTimeShot = 0;
 		}
 	}
 	else
 	{
-		Shot = false;
+		mState = EState::eIdle;
+		Shot = true;
 		mTimeShot = 0;
-		mState = EState::eAttackWait;
 	}
-	CXCharacter::Update();
+
+	CDebugPrint::Print("Shot%d\n", mTimeShot);
+	CDebugPrint::Print("Shot: %s\n", Shot ? "true" : "false");
 }
 
 // 攻撃終了待ち
 void CYukari::UpdateAttackWait()
 {
-	// 攻撃アニメーションが終了したら、
-	if (IsAnimationFinished())
-	{
-		Shot = false;
-		mTimeShot = 0;
-		// 待機状態へ移行
-		mState = EState::eIdle;
-		mpBullet->AttackEnd();
-	}
+	ChangeAnimation(EAnimType::eReload);
+	// 待機状態へ移行
+	mState = EState::eIdle;
+	mpBullet->AttackEnd();
 }
 
 // ジャンプ開始
