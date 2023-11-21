@@ -109,6 +109,7 @@ private:
 	CVector mMoveSpeed;	// 移動速度
 	bool mIsGrounded;	// 接地しているかどうか
 	bool IsFoundPlayer() const;	//プレイヤーを見つけたか
+
 	CVector mPoint;
 
 	CColliderLine* mpColliderLine;

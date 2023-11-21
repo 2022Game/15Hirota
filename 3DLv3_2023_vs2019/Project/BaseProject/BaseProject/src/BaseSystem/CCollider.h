@@ -123,6 +123,9 @@ public:
 	/// <returns>trueならば衝突判定を行う</returns>
 	bool IsCollisionTag(ETag tag) const;
 
+	// 指定した行列にコライダーを附属させる
+	void SetAttachMtx(const CMatrix* mtx);
+
 	// 行列を取得
 	CMatrix Matrix() const;
 
@@ -282,4 +285,6 @@ private:
 	float mWeight;			// コライダーの重量
 	int mCollisionLayers;	// 衝突判定を行うレイヤーのビットフラグ
 	int mCollisionTags;		// 衝突判定を行うオブジェクトタグのビットフラグ
+
+	const CMatrix* mpAttachMtx;
 };

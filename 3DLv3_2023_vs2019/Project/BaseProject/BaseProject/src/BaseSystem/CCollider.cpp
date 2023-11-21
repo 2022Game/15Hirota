@@ -18,6 +18,7 @@ CCollider::CCollider(CObjectBase* owner, ELayer layer, EColliderType type,
 	, mWeight(weight)
 	, mCollisionLayers(~0)
 	, mCollisionTags(~0)
+	, mpAttachMtx(nullptr)
 {
 	// コリジョンリストに追加
 	CCollisionManager::Instance()->Add(this);
@@ -164,12 +165,28 @@ bool CCollider::IsCollisionTag(ETag tag) const
 	return (mCollisionTags & 1 << (int)tag) != 0;
 }
 
+// 指定した行列にコライダーを附属させる
+void CCollider::SetAttachMtx(const CMatrix* mtx)
+{
+	mpAttachMtx = mtx;
+}
+
 // 行列を取得
 CMatrix CCollider::Matrix() const
 {
 	CMatrix m = CTransform::Matrix();
-	if (mpOwner != nullptr)
+	// 附属させる行列が設定されていれば
+	if (mpAttachMtx != nullptr)
 	{
+		// その行列に附属する
+		CMatrix sm;
+		sm.Scale(100.0f, 100.0f, 100.0f);
+		m = sm * *mpAttachMtx * m;
+	}
+	// 持ち主が設定されていれば
+	else if (mpOwner != nullptr)
+	{
+		// 持ち主の行列に附属
 		m = mpOwner->Matrix() * m;
 	}
 	return m;

@@ -25,7 +25,7 @@ const CYukari::AnimData CYukari::ANIM_DATA[] =
 	{ "Character\\Yukari\\anim\\Yukari_GunIdle463.x",		true,	463.0f	},	// Idle時
 	{ "Character\\Yukari\\anim\\Yukari_GunWorlk79.x",		true,	79.0f	},	// 移動
 	{ "Character\\Yukari\\anim\\Yukari_GunPlay13.x",		true,	13.0f	},	// プレイヤー発見時攻撃
-	{ "Character\\Yukari\\anim\\Yukari1_Reload199.fbx.x",	false,	199.0f	},	// リロード
+	{ "Character\\Yukari\\anim\\Yukari1_Reload199.x",		true,	199.0f	},	// リロード
 
 };
 
@@ -56,7 +56,7 @@ CYukari::CYukari()
 	, mShot(false)
 	, mLife(50)
 	, mTimeShot(0)
-	, mTimeShotEnd(5)
+	, mTimeShotEnd(10)
 {
 
 	//インスタンスの設定
@@ -177,13 +177,17 @@ void CYukari::UpdateIdle()
 	{
 		mState = EState::eChase;
 	}
+	else
+	{
+		ChangeAnimation(EAnimType::eIdle);
+	}
 }
 
 void CYukari::UpdateChase()
 {
 	if (!IsFoundPlayer())
 	{
-		
+		ChangeAnimation(EAnimType::eIdle);
 	}
 	else
 	{
@@ -195,10 +199,9 @@ void CYukari::UpdateChase()
 
 		// プレイヤーとの距離が一定範囲以内であれば攻撃モードに切り替える
 		float distanceToPlayer = (player->Position() - Position()).Length();
-
 		ChangeAnimation(EAnimType::eWalk);
 
-		if (distanceToPlayer <= ATTACK_RANGE)
+		if (distanceToPlayer <= ATTACK_RANGE && !mShot)
 		{
 			mState = EState::eAttack;
 		}
@@ -209,38 +212,53 @@ void CYukari::UpdateChase()
 // 攻撃
 void CYukari::UpdateAttack()
 {
-	mShot = true;
-	//プレイヤーのポインタが0以外の時
+	// プレイヤーのポインタが0以外の時
 	CPlayer* player = CPlayer::Instance();
 	if (player != nullptr)
 	{
-		//プレイヤーまでのベクトルを求める
+		// プレイヤーまでのベクトルを求める
 		CVector vp = player->Position() - Position();
 
 		float distancePlayer = vp.Length();
 
 		if (distancePlayer <= ATTACK_RANGE)
 		{
-			mTimeShot++;
-			if (mTimeShot < mTimeShotEnd && mShot)
+			if (mTimeShot <= mTimeShotEnd && !mShot && mLife <= 50 >= 0)
 			{
+				ChangeAnimation(EAnimType::eAttack);
+				if (mLife <= 50 >= 0)
+				{
+					mLife--;
+				}
+				mTimeShot++;
 				mpBullet = new CBullet();
-				mpBullet->SetOwner(this);
+				//mpBullet->SetOwner(this);
 				mpBullet->Position(CVector(0.0f, 10.0f, 10.0f) * Matrix());
 				mpBullet->Rotation(Rotation());
 				mpBullet->AttackStart();
 				mpBullet->Update();
-				ChangeAnimation(EAnimType::eAttack);
-				if (mTimeShot >= mTimeShotEnd && mShot)
+				if (mTimeShot > mTimeShotEnd && mLife <= 0)
 				{
-					ChangeAnimation(EAnimType::eReload);
-					if (IsAnimationFinished())
+					if (!mShot)  
 					{
-						// 攻撃終了後の待機状態に遷移
-						mState = EState::eAttackWait;
-						mShot = false;
-						mTimeShot = 0;
+						mShot = true;
+						if (IsAnimationFinished())
+						{
+							// 攻撃終了後の待機状態に遷移
+							mState = EState::eAttackWait;
+							mTimeShot = 0;
+						}
 					}
+				}
+			}
+			else
+			{
+				mShot = true;
+				if (IsAnimationFinished())
+				{
+					// 攻撃終了後の待機状態に遷移
+					mState = EState::eAttackWait;
+					mTimeShot = 0;
 				}
 			}
 		}
@@ -253,22 +271,40 @@ void CYukari::UpdateAttack()
 	}
 	else
 	{
-		mState = EState::eIdle;
-		mShot = true;
+		mState = EState::eChase;
+		mShot = false;
 		mTimeShot = 0;
 	}
-
-	CDebugPrint::Print("Shot%d\n", mTimeShot);
-	CDebugPrint::Print("Shot: %s\n", mShot ? "true" : "false");
 }
 
 // 攻撃終了待ち
 void CYukari::UpdateAttackWait()
 {
 	ChangeAnimation(EAnimType::eReload);
-	// 待機状態へ移行
-	mState = EState::eIdle;
-	mpBullet->AttackEnd();
+	if (IsAnimationFinished())
+	{
+		mLife++;
+
+		if (mLife > 50)
+		{
+			mLife = 50;
+		}
+
+		CPlayer* player = CPlayer::Instance();
+		float distanceToPlayer = (player->Position() - Position()).Length();
+
+		if (distanceToPlayer <= ATTACK_RANGE && mLife <= 50)
+		{
+			mShot = false;
+			mState = EState::eAttack;
+		}
+		else
+		{
+			mShot = false;
+			mState = EState::eChase;
+		}
+		mpBullet->AttackEnd();
+	}
 }
 
 // ジャンプ開始
@@ -376,6 +412,11 @@ void CYukari::Update()
 	target.Normalize();
 	CVector forward = CVector::Slerp(current, target, 0.125f);
 	Rotation(CQuaternion::LookRotation(forward));
+
+	CDebugPrint::Print("mLife%d\n", mLife);
+	CDebugPrint::Print("Shot%d\n", mTimeShot);
+	CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
+	CDebugPrint::Print("Shot: %s\n", mShot ? "true" : "false");
 
 	// Yukariの更新
 	CXCharacter::Update();
