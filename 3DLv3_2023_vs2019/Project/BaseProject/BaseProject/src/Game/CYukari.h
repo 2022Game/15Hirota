@@ -125,7 +125,7 @@ private:
 
 	int mTimeShot;
 	int mTimeShotEnd;
-	bool Shot;
+	bool mShot;
 
 };
 #endif

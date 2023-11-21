@@ -53,7 +53,7 @@ CYukari::CYukari()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
 	, mState(EState::eIdle)
 	, mpRideObject(nullptr)
-	, Shot(false)
+	, mShot(false)
 	, mLife(50)
 	, mTimeShot(0)
 	, mTimeShotEnd(5)
@@ -209,7 +209,7 @@ void CYukari::UpdateChase()
 // 攻撃
 void CYukari::UpdateAttack()
 {
-	Shot = true;
+	mShot = true;
 	//プレイヤーのポインタが0以外の時
 	CPlayer* player = CPlayer::Instance();
 	if (player != nullptr)
@@ -222,7 +222,7 @@ void CYukari::UpdateAttack()
 		if (distancePlayer <= ATTACK_RANGE)
 		{
 			mTimeShot++;
-			if (mTimeShot < mTimeShotEnd && Shot)
+			if (mTimeShot < mTimeShotEnd && mShot)
 			{
 				mpBullet = new CBullet();
 				mpBullet->SetOwner(this);
@@ -231,13 +231,14 @@ void CYukari::UpdateAttack()
 				mpBullet->AttackStart();
 				mpBullet->Update();
 				ChangeAnimation(EAnimType::eAttack);
-				if (mTimeShot <= mTimeShotEnd && Shot)
+				if (mTimeShot >= mTimeShotEnd && mShot)
 				{
+					ChangeAnimation(EAnimType::eReload);
 					if (IsAnimationFinished())
 					{
 						// 攻撃終了後の待機状態に遷移
 						mState = EState::eAttackWait;
-						Shot = false;
+						mShot = false;
 						mTimeShot = 0;
 					}
 				}
@@ -246,19 +247,19 @@ void CYukari::UpdateAttack()
 		else
 		{
 			mState = EState::eChase;
-			Shot = false;
+			mShot = false;
 			mTimeShot = 0;
 		}
 	}
 	else
 	{
 		mState = EState::eIdle;
-		Shot = true;
+		mShot = true;
 		mTimeShot = 0;
 	}
 
 	CDebugPrint::Print("Shot%d\n", mTimeShot);
-	CDebugPrint::Print("Shot: %s\n", Shot ? "true" : "false");
+	CDebugPrint::Print("Shot: %s\n", mShot ? "true" : "false");
 }
 
 // 攻撃終了待ち
