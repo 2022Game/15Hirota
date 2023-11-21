@@ -31,10 +31,12 @@ public:
 	void Update();
 	void Render();
 private:
-	CModel* mpBullet;
+	static CModel* mpBullet;
 	// 攻撃判定用のコライダー
 	CColliderSphere* mpAttackCol;
 
+	// 弾丸の移動距離
+	float mMoveDistance;
 
 	CVector mPos;
 };

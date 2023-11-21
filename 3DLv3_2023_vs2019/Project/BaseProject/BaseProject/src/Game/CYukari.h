@@ -106,6 +106,7 @@ private:
 	};
 	EState mState;	// プレイヤーの状態
 
+	CVector mTargetDir;	// キャラクターの見る方向
 	CVector mMoveSpeed;	// 移動速度
 	bool mIsGrounded;	// 接地しているかどうか
 	bool IsFoundPlayer() const;	//プレイヤーを見つけたか
@@ -120,13 +121,10 @@ private:
 	CVector yukariPosition;		// 自分の地点
 
 	CGun* mpGun;	// 銃のモデル
-	CBullet* mpBullet;
-	// 弾生存時間
-	int mLife;
 
 	int mTimeShot;
 	int mTimeShotEnd;
-	bool mShot;
+	float mElapsedTime;	// 経過時間計測用
 
 };
 #endif
