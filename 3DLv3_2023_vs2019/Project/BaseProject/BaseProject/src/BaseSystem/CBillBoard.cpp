@@ -41,16 +41,6 @@ void CBillBoard::Update()
 {
 }
 
-void CBillBoard::SetTexture(const CImage& texture)
-{
-	mTexture = texture;
-}
-
-const CImage& CBillBoard::GetTexture() const
-{
-	return mTexture;
-}
-
 void CBillBoard::Render()
 {
 	Render(&mMaterial);

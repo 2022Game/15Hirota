@@ -29,7 +29,7 @@ CStaminaGauge::CStaminaGauge()
 {
 	mpStaminaImage = new CImage(STAMINA_IMAGE);
 	mpStaminaImage->SetSize(SUTAMINA_SIZE_X, SUTAMINA_SIZE_Y);
-	mpStaminaImage->SetUV(291.0f, 386.0f, 1687.0f, 434.0f);
+	mpStaminaImage->SetUV(0, 1, 1, 0);
 }
 
 CStaminaGauge::~CStaminaGauge()
@@ -40,6 +40,7 @@ void CStaminaGauge::Update()
 {
 	// スタミナゲージのポジション
 	mpStaminaImage->SetPos(mPosition + CVector2(SUTAMINAPOSITION_X, SUTAMINAPOSITION_Y));
+	mpStaminaImage->SetUV(0, 1, 1, 0);
 
 	// スタミナのサイズを最大値と現在地から求める
 	float percent_sutamina = Math::Clamp01((float)mSutaminaValue / mMaxSutaminaValue);

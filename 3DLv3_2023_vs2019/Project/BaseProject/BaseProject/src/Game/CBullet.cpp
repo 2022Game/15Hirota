@@ -4,15 +4,17 @@
 
 #define BULLET_O "Character\\Bullet1\\Bullet.obj"
 #define BULLET_M "Character\\Bullet1\\Bullet.mtl"
+
 // 弾丸の移動速度
 #define MOVE_SPEED 100.0f
 
 CModel* CBullet::mpBullet = nullptr;
 
 CBullet::CBullet()
-	:mMoveDistance(0.0f)
+	: mPos (CVector(0.0f, 0.0f, 0.0f))
+	, mMoveDistance(0.0f)
 {
-	mPos = CVector(0.0f, 0.0f, 0.0f);
+	//mPos = CVector(0.0f, 0.0f, 0.0f);
 
 	if (mpBullet == nullptr)
 	{
@@ -30,7 +32,7 @@ CBullet::CBullet()
 	mpAttackCol = new CColliderSphere
 	(
 		this, ELayer::eAttackCol,
-		rad //後で変更
+		rad
 	);
 	// 攻撃判定用の子ラダーと衝突判定を行う
 	// レイヤーとタグを設定

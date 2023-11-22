@@ -11,10 +11,12 @@ private:
 	CTexture* mpTexture;	//表示するイメージのテクスチャ
 	CVector4 mUV;			//表示するテクスチャ上の範囲（UV）
 public:
-	//コンストラクタ
-	CImage();
-	//コンストラクタ（テクスチャ指定版）
-	CImage(const char* path);
+	CImage(const char* path,
+		ETaskPriority prio = ETaskPriority::eUI,
+		int sortOrder = 0,
+		ETaskPauseType pause = ETaskPauseType::eDefault,
+		bool dontDelete = false,
+		bool addTaskList = true);
 	//デストラクタ
 	~CImage();
 

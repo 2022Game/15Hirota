@@ -4,6 +4,7 @@
 #include "CEnemyWeapon.h"
 #include "CColliderSphere.h"
 #include "CModel.h"
+#include "CEffect.h"
 
 class CBullet :public CEnemyWeapon
 {
@@ -37,6 +38,8 @@ private:
 
 	// 弾丸の移動距離
 	float mMoveDistance;
+	// 弾のエフェクト
+	CEffect* mpBulletEffect;
 
 	CVector mPos;
 };

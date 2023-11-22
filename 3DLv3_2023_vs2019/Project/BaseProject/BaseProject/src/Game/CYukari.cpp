@@ -251,6 +251,10 @@ void CYukari::UpdateAttack()
 			bullet->Position(CVector(0.0f, 10.0f, 10.0f) * Matrix());
 			bullet->Rotation(Rotation());
 
+			CBulletEffect* effect = new CBulletEffect();
+			effect->Position(bullet->Position() * Matrix());
+			effect->Rotation(bullet->Rotation());
+
 			// ‘S’e”­ŽË‚µ‚½‚çAUŒ‚I—¹
 			mTimeShot++;
 			if (mTimeShot >= mTimeShotEnd)

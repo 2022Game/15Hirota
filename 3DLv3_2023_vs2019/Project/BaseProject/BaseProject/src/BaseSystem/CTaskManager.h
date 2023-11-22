@@ -1,11 +1,13 @@
 #pragma once
 #include "CTask.h"
+#include <list>
 
 /// <summary>
 /// タスク管理クラス
 /// </summary>
 class CTaskManager
 {
+public:
 public:
 	/// <summary>
 	/// インスタンスを取得
@@ -14,7 +16,6 @@ public:
 	static CTaskManager* Instance();
 	// インスタンスを破棄
 	static void ClearInstance();
-
 	/// <summary>
 	/// 指定したタスクをリストに追加
 	/// </summary>
@@ -25,7 +26,6 @@ public:
 	/// </summary>
 	/// <param name="task">取り除くタスク</param>
 	void Remove(CTask* task);
-
 	// 削除フラグが立っているタスクを全て削除
 	void Delete();
 	/// <summary>
@@ -34,12 +34,32 @@ public:
 	/// <param name="scene">削除するシーンの種類</param>
 	void DeleteInScene(EScene scene);
 
+	// 3Dタスクのリストを取得
+	const std::list<CTask*>& Get3dTasks() const;
+	// 2Dタスクのリストを取得
+	const std::list<CTask*>& Get2dTasks() const;
+
+	/// <summary>
+	/// ポーズする
+	/// </summary>
+	/// <param name="pauseBit"></param>
+	void Pause(int pauseBit);
+	/// <summary>
+	/// ポーズを解除する
+	/// </summary>
+	/// <param name="pauseBit"></param>
+	void UnPause(int pauseBit);
+	/// <summary>
+	/// ポーズ中かどうか
+	/// </summary>
+	/// <param name="pauseBit"></param>
+	/// <returns></returns>
+	bool IsPaused(int pauseBit = 0) const;
+
 	// 更新
 	void Update();
 	// 描画
 	void Render();
-
-	void Collision();
 
 private:
 	// コンストラクタ
@@ -47,12 +67,17 @@ private:
 	// デストラクタ
 	~CTaskManager();
 
+	// 指定されたリスト内で
+	// 削除フラグが立っているタスクを全て削除
+	void Delete(std::list<CTask*>& list);
+
 	// タスクマネージャのインスタンス
 	static CTaskManager* mpInstance;
 
-	// 初期化
-	void Initialize();
+	// 3Dタスクのリスト
+	std::list<CTask*> m3dTasks;
+	// 2Dタスクのリスト
+	std::list<CTask*> m2dTasks;
 
-	CTask* mpHead;	// 先頭タスク
-	CTask* mpTail;	// 最終タスク
+	int mPauseBit;	// ポーズのビットフラグ
 };

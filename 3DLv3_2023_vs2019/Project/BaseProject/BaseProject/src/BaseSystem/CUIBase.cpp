@@ -1,8 +1,8 @@
 #include "CUIBase.h"
 #include "CImage.h"
 
-CUIBase::CUIBase(ETaskPriority prio, bool dontDelete)
-	: CTask(prio, dontDelete)
+CUIBase::CUIBase(ETaskPriority prio, int sortOrder, ETaskPauseType pause, bool dontDelete, bool addTaskList)
+	: CTask(prio, sortOrder, pause, dontDelete, addTaskList)
 	, mPosition(0.0f, 0.0f)
 	, mSize(100.0f, 100.0f)
 	, mColor(1.0, 1.0f, 1.0f)

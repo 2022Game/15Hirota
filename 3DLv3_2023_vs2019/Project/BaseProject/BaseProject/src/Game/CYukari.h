@@ -5,6 +5,8 @@
 #include "CColliderLine.h"
 #include "CColliderSphere.h"
 #include "CRideableObject.h"
+#include "CEffect.h"
+#include "CBulletEffect.h"
 class CGun;
 class CBullet;
 class CPlayer;
@@ -121,6 +123,7 @@ private:
 	CVector yukariPosition;		// ©•ª‚Ì’n“_
 
 	CGun* mpGun;	// e‚Ìƒ‚ƒfƒ‹
+
 
 	int mTimeShot;
 	int mTimeShotEnd;

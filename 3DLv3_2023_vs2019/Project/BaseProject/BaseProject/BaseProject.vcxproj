@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BaseSystem\CBillBoard.cpp" />
+    <ClCompile Include="src\BaseSystem\CBulletEffect.cpp" />
     <ClCompile Include="src\BaseSystem\CCamera.cpp" />
     <ClCompile Include="src\BaseSystem\CCollider.cpp" />
     <ClCompile Include="src\BaseSystem\CColliderLine.cpp" />
@@ -28,6 +29,7 @@
     <ClCompile Include="src\BaseSystem\CEffect.cpp" />
     <ClCompile Include="src\BaseSystem\CFont.cpp" />
     <ClCompile Include="src\BaseSystem\CCharaBase.cpp" />
+    <ClCompile Include="src\BaseSystem\CGamePause.cpp" />
     <ClCompile Include="src\BaseSystem\CInput.cpp" />
     <ClCompile Include="src\BaseSystem\CMaterial.cpp" />
     <ClCompile Include="src\BaseSystem\CMatrix.cpp" />
@@ -88,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CBillBoard.h" />
+    <ClInclude Include="src\BaseSystem\CBulletEffect.h" />
     <ClInclude Include="src\BaseSystem\CCamera.h" />
     <ClInclude Include="src\BaseSystem\CCollider.h" />
     <ClInclude Include="src\BaseSystem\CColliderLine.h" />
@@ -104,6 +107,7 @@
     <ClInclude Include="src\BaseSystem\CEffect.h" />
     <ClInclude Include="src\BaseSystem\CFont.h" />
     <ClInclude Include="src\BaseSystem\CCharaBase.h" />
+    <ClInclude Include="src\BaseSystem\CGamePause.h" />
     <ClInclude Include="src\BaseSystem\CInput.h" />
     <ClInclude Include="src\BaseSystem\CMaterial.h" />
     <ClInclude Include="src\BaseSystem\CMatrix.h" />

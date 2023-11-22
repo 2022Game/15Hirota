@@ -40,7 +40,7 @@ CUIGauge::CUIGauge()
 {
 	mpFrameImage = new CImage(FRAME_IMAGE);
 	mpFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);
-	mpFrameImage->SetUV(0, 1, 1, 0);
+	mpFrameImage->SetUV(0, 0, 1, 1);
 
 	mpBarImage = new CImage(BAR_IMAGE);
 	mpBarImage->SetSize(BAR_SIZE_X, BAR_SIZE_Y);
