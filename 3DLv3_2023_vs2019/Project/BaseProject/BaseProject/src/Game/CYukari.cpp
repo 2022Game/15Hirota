@@ -252,8 +252,8 @@ void CYukari::UpdateAttack()
 			bullet->Rotation(Rotation());
 
 			CBulletEffect* effect = new CBulletEffect();
-			effect->Position(bullet->Position() * Matrix());
-			effect->Rotation(bullet->Rotation());
+			effect->SetAssociatedBullet(bullet);
+			effect->Update();
 
 			// ‘S’e”­Ë‚µ‚½‚çAUŒ‚I—¹
 			mTimeShot++;

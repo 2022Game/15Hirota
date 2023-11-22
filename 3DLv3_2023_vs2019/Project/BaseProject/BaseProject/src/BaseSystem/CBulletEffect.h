@@ -5,8 +5,9 @@
 #include "CEnemyWeapon.h"
 #include "CEffect.h"
 #include "CBillBoard.h"
+class CBullet;
 
-class CBulletEffect :public CBillBoard
+class CBulletEffect :public CEffect
 {
 public:
 	CBulletEffect();
@@ -14,16 +15,18 @@ public:
 
 	//CMatrix Matrix() const override;
 
-	void Update();
-	void Render();
+	void SetAssociatedBullet(CBullet* pBullet);
+
+	void Update() override;
+	void Render() override;
 private:
 	// 弾丸の移動距離
 	float mMoveDistance;
 	// 弾のエフェクト
 	static CEffect* mpBulletEffect;
 
-	const CMatrix* mpAttachMtx;
-
 	CVector mPos;
+
+	CBullet* mpAssociatedBullet;
 };
 #endif

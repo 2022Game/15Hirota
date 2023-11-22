@@ -24,14 +24,14 @@
 #define BAR_SIZE_Y (NEW_BAR_SIZE_Y - FRAME_BORDER)
 
 // フレームポジション横
-#define FRAMEPOSITION_X		(150.0f)
+#define FRAMEPOSITION_X		(400.0f)
 // フレームポジション縦
-#define FRAMEPOSITION_Y		(100.0f)
+#define FRAMEPOSITION_Y		(600.0f)
 
 // ゲージポジション横
-#define BARPOSITION_X		(237.5f)
+#define BARPOSITION_X		(488.5f)
 // ゲージポジション縦
-#define BARPOSITION_Y		(132.0f)
+#define BARPOSITION_Y		(632.0f)
 
 
 CUIGauge::CUIGauge()

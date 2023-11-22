@@ -19,9 +19,9 @@
 #define SUTAMINA_SIZE_Y (NEW_BAR_SIZE_Y - FRAME_BORDER)
 
 // スタミナポジション横
-#define SUTAMINAPOSITION_X	(237.5f)
+#define SUTAMINAPOSITION_X	(488.5f)
 // スタミナポジション縦
-#define SUTAMINAPOSITION_Y	(100.0f)
+#define SUTAMINAPOSITION_Y	(600.0f)
 
 CStaminaGauge::CStaminaGauge()
 	: mMaxSutaminaValue(100)
