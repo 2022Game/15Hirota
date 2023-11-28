@@ -45,6 +45,7 @@ void CBillBoard::Render()
 {
 	Render(&mMaterial);
 }
+
 //Render(マテリアルのポインタ)
 void CBillBoard::Render(CMaterial* mpMaterial)
 {

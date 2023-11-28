@@ -21,7 +21,7 @@
 // スタミナポジション横
 #define SUTAMINAPOSITION_X	(488.5f)
 // スタミナポジション縦
-#define SUTAMINAPOSITION_Y	(600.0f)
+#define SUTAMINAPOSITION_Y	(632.0f)
 
 CStaminaGauge::CStaminaGauge()
 	: mMaxSutaminaValue(100)

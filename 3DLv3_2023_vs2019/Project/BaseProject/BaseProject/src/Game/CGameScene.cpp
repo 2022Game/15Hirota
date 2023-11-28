@@ -83,6 +83,11 @@ void CGameScene::Update()
 	// Å‘åhpæ“¾
 	int maxHP = CPlayer::Instance()->GetMaxHp();
 
+	if (currentHP == 0)
+	{
+		CPlayer::Instance()->Deth();
+	}
+
 	//// hp‚ª”¼•ª‚ğØ‚é‚ÆeOver‚É‘JˆÚ‚³‚¹‚é
 	//if (currentHP <= 0) {
 	//	CSceneManager::Instance()->LoadScene(EScene::eOver);

@@ -23,11 +23,11 @@ public:
 	// 武器の行列を取得
 	CMatrix Matrix() const override;
 
-	// 攻撃開始
-	void AttackStart() override;
+	//// 攻撃開始
+	//void AttackStart() override;
 
-	// 攻撃終了
-	void AttackEnd() override;
+	//// 攻撃終了
+	//void AttackEnd() override;
 
 	void Update();
 	void Render();
@@ -38,8 +38,6 @@ private:
 
 	// 弾丸の移動距離
 	float mMoveDistance;
-	// 弾のエフェクト
-	CEffect* mpBulletEffect;
 
 	CVector mPos;
 };

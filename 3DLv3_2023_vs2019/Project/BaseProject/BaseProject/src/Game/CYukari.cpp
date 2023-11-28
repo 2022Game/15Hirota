@@ -9,6 +9,7 @@
 #include "CGun.h"
 #include "CBullet.h"
 
+
 #define _USE_MATH_DEFINES
 
 
@@ -17,6 +18,8 @@ CYukari* CYukari::spInstance = nullptr;
 
 // Yukariのモデルデータのパス
 #define MODEL_PATH "Character\\Yukari\\Yukari_Model.x"
+
+#define EFFECT	 "Effect\\exp.tga"
 
 // Yukariのアニメーションデータのテーブル
 const CYukari::AnimData CYukari::ANIM_DATA[] =
@@ -246,14 +249,14 @@ void CYukari::UpdateAttack()
 		else
 		{
 			mElapsedTime -= SHOT_INTERVAL;
+			
 			// 弾丸を発射
 			CBullet* bullet = new CBullet();
 			bullet->Position(CVector(0.0f, 10.0f, 10.0f) * Matrix());
 			bullet->Rotation(Rotation());
 
-			CBulletEffect* effect = new CBulletEffect();
-			effect->SetAssociatedBullet(bullet);
-			effect->Update();
+			
+
 
 			// 全弾発射したら、攻撃終了
 			mTimeShot++;

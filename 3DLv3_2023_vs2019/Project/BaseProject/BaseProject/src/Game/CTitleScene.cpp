@@ -2,6 +2,7 @@
 #include "CSceneManager.h"
 #include "CGameScene.h"
 #include "CCamera.h"
+#include "CPlayer.h"
 
 #define TITLE_IMAGE "UI\\Title.png"
 

@@ -69,6 +69,9 @@ public:
 	// damage == 受けるダメージ
 	void TakeDamage(int damage) override;
 
+	// 死亡処理
+	void Deth();
+
 	// 更新
 	void Update();
 

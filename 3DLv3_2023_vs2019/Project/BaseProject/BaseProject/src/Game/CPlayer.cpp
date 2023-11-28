@@ -156,6 +156,15 @@ void CPlayer::LevelUp()
 	ChangeLevel(level + 1);
 }
 
+void CPlayer::Deth()
+{
+	ChangeAnimation(EAnimType::eAttackStrong);
+	if (IsAnimationFinished())
+	{
+		CSceneManager::Instance()->LoadScene(EScene::eOver);
+	}
+}
+
 // レベルを変更
 void CPlayer::ChangeLevel(int level)
 {
@@ -322,13 +331,12 @@ void CPlayer::UpdateIdle()
 // 攻撃
 void CPlayer::UpdateAttack()
 {
+	// 剣に攻撃開始を伝える
+	mpSword->AttackStart();
 	// 攻撃アニメーションを開始
 	ChangeAnimation(EAnimType::eAttack);
 	// 攻撃終了待ち状態へ移行
 	mState = EState::eAttackWait;
-
-	// 剣に攻撃開始を伝える
-	mpSword->AttackStart();
 }
 
 // 強攻撃
@@ -564,7 +572,7 @@ void CPlayer::TakeDamage(int damage)
 	// HPが0になったら
 	if (mCharaStatus.hp == 0)
 	{
-		// 死亡処理　後で書く
+		CPlayer::Deth();
 	}
 }
 

@@ -6,7 +6,7 @@
 #include "CColliderSphere.h"
 #include "CRideableObject.h"
 #include "CEffect.h"
-#include "CBulletEffect.h"
+
 class CGun;
 class CBullet;
 class CPlayer;

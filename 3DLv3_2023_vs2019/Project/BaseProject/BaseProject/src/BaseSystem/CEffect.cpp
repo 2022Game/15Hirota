@@ -38,10 +38,10 @@ void CEffect::Update() {
 	//ビルボード更新
 	CBillBoard::Update();
 
-	if (mFrame >= mRows * mCols * mFps)
+	/*if (mFrame >= mRows * mCols * mFps)
 	{
 		Kill();
-	}
+	}*/
 }
 
 void CEffect::Render()

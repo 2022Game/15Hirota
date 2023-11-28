@@ -289,11 +289,11 @@
     <ClCompile Include="src\Game\CEnemyWeapon.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
-    <ClCompile Include="src\BaseSystem\CBulletEffect.cpp">
-      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="src\BaseSystem\CGamePause.cpp">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CBulletEffect.cpp">
+      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -543,11 +543,11 @@
     <ClInclude Include="src\Game\CEnemyWeapon.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
-    <ClInclude Include="src\BaseSystem\CBulletEffect.h">
-      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="src\BaseSystem\CGamePause.h">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CBulletEffect.h">
+      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

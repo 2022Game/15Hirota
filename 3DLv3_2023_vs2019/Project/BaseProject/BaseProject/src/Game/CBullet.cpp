@@ -1,6 +1,7 @@
 #include "CBullet.h"
 #include "CCollisionManager.h"
 #include "CCharaBase.h"
+#include "CEffect.h"
 
 #define BULLET_O "Character\\Bullet1\\Bullet.obj"
 #define BULLET_M "Character\\Bullet1\\Bullet.mtl"
@@ -14,7 +15,7 @@ CBullet::CBullet()
 	: mPos (CVector(0.0f, 0.0f, 0.0f))
 	, mMoveDistance(0.0f)
 {
-	//mPos = CVector(0.0f, 0.0f, 0.0f);
+	mPos = CVector(0.0f, 0.0f, 0.0f);
 
 	if (mpBullet == nullptr)
 	{
@@ -110,19 +111,19 @@ void CBullet::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	}
 }
 
-
-// 攻撃開始
-void CBullet::AttackStart()
-{
-	CEnemyWeapon::AttackStart();
-	// 攻撃が始まったら、攻撃判定用のコライダーをオフにする
-	mpAttackCol->SetEnable(true);
-}
-
-// 攻撃終了
-void CBullet::AttackEnd()
-{
-	CEnemyWeapon::AttackEnd();
-	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
-	mpAttackCol->SetEnable(false);
-}
+//
+//// 攻撃開始
+//void CBullet::AttackStart()
+//{
+//	CEnemyWeapon::AttackStart();
+//	// 攻撃が始まったら、攻撃判定用のコライダーをオフにする
+//	mpAttackCol->SetEnable(true);
+//}
+//
+//// 攻撃終了
+//void CBullet::AttackEnd()
+//{
+//	CEnemyWeapon::AttackEnd();
+//	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
+//	mpAttackCol->SetEnable(false);
+//}

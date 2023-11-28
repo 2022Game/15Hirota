@@ -31,7 +31,7 @@
 // ゲージポジション横
 #define BARPOSITION_X		(488.5f)
 // ゲージポジション縦
-#define BARPOSITION_Y		(632.0f)
+#define BARPOSITION_Y		(600.0f)
 
 
 CUIGauge::CUIGauge()
