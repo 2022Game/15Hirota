@@ -10,6 +10,7 @@
 class CGun;
 class CBullet;
 class CPlayer;
+class CBillBoardImage;
 
 /*
 プレイヤークラス
@@ -123,7 +124,8 @@ private:
 	CVector yukariPosition;		// 自分の地点
 
 	CGun* mpGun;	// 銃のモデル
-
+	CBillBoardImage* mpBillboardImage;
+	CBillBoardImage* mpGauge;
 
 	int mTimeShot;
 	int mTimeShotEnd;

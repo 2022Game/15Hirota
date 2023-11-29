@@ -8,6 +8,8 @@
 #include <BaseSystem/CInput.h>
 #include "CGun.h"
 #include "CBullet.h"
+#include "CBillBoardImage.h"
+#include "CYukariGauge.h"
 
 
 #define _USE_MATH_DEFINES
@@ -32,7 +34,8 @@ const CYukari::AnimData CYukari::ANIM_DATA[] =
 
 };
 
-#define PLAYER_HEIGHT 8.0f
+#define ENEMY_HEIGHT 8.0f
+#define ENEMY_HEIGHT2 20.0f
 #define MOVE_SPEED 0.5f
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
@@ -67,7 +70,9 @@ CYukari::CYukari()
 	, mTimeShotEnd(10)
 	, mElapsedTime(0.0f)
 {
-
+	mpBillboardImage = new CBillBoardImage("UI\\Image_Gauge_Frame.png", ETag::eGauge, ETaskPriority::eUI, 0, ETaskPauseType::eGame);
+	mpGauge = new CYukariGauge();
+	
 	//インスタンスの設定
 	spInstance = this;
 
@@ -93,7 +98,7 @@ CYukari::CYukari()
 	(
 		this, ELayer::eField,
 		CVector(0.0f, 0.0f, 0.0f),
-		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
+		CVector(0.0f, ENEMY_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
@@ -139,6 +144,12 @@ CYukari::~CYukari()
 	{
 		delete mpDamageCol;
 		mpDamageCol = nullptr;
+	}
+
+	if (mpBillboardImage != nullptr)
+	{
+		delete mpBillboardImage;
+		mpBillboardImage = nullptr;
 	}
 }
 
@@ -404,6 +415,12 @@ void CYukari::Update()
 
 	CDebugPrint::Print("Shot%d\n", mTimeShot);
 	CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
+	
+	mpBillboardImage->SetSize(CVector2(5.0f, 1.0f));
+	mpBillboardImage->Position(Position() + CVector(0.0f, ENEMY_HEIGHT2, 0.0f));
+
+	
+	CDebugPrint::Print("Billboard Position: %f, %f, %f\n", mpBillboardImage->Position().X(), mpBillboardImage->Position().Y(), mpBillboardImage->Position().Z());
 
 	// Yukariの更新
 	CXCharacter::Update();

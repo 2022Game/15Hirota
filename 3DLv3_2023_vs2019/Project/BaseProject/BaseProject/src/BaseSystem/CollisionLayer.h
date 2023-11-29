@@ -8,6 +8,7 @@ enum class ELayer
 	eTest,
 
 	eField,
+	eEffect,
 	ePlayer,
 
 	eGoalCol,	// ゴールのコライダー

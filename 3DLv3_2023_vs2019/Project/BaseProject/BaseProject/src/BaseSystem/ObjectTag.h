@@ -18,6 +18,8 @@ enum class ETag
 	eEnemyWeapon,		// “G‚Ì•Ší
 
 	eCamera,			// ƒJƒƒ‰
+	eBakuhatu,
+	eGauge,
 
 	Num
 };
