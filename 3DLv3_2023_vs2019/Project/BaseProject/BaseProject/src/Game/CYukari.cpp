@@ -70,8 +70,8 @@ CYukari::CYukari()
 	, mTimeShotEnd(10)
 	, mElapsedTime(0.0f)
 {
-	mpBillboardImage = new CBillBoardImage("UI\\Image_Gauge_Frame.png", ETag::eGauge, ETaskPriority::eUI, 0, ETaskPauseType::eGame);
 	mpGauge = new CYukariGauge();
+	mpBillboardImage = new CBillBoardImage("UI\\Image_Gauge_Frame.png", ETag::eEnemyFrame, ETaskPriority::eEnemyUi, 0, ETaskPauseType::eGame);
 	
 	//インスタンスの設定
 	spInstance = this;
@@ -174,6 +174,10 @@ void CYukari::ChangeLevel(int level)
 	mCharaMaxStatus = ENEMY_STATUS[index];
 	// 現在のステータスを最大値にすることで、HP回復
 	mCharaStatus = mCharaMaxStatus;
+
+	// 最大HPと現在HPをHPゲージに反映
+	mpGauge->SetMaxValue(mCharaMaxStatus.hp);
+	mpGauge->SetValue(mCharaStatus.hp);
 
 }
 
@@ -416,11 +420,17 @@ void CYukari::Update()
 	CDebugPrint::Print("Shot%d\n", mTimeShot);
 	CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
 	
-	mpBillboardImage->SetSize(CVector2(5.0f, 1.0f));
-	mpBillboardImage->Position(Position() + CVector(0.0f, ENEMY_HEIGHT2, 0.0f));
 
-	
-	CDebugPrint::Print("Billboard Position: %f, %f, %f\n", mpBillboardImage->Position().X(), mpBillboardImage->Position().Y(), mpBillboardImage->Position().Z());
+	mpBillboardImage->SetSize(CVector2(6.0f, 1.0f));
+	mpBillboardImage->Position(Position() + CVector(0.0f, ENEMY_HEIGHT2, 0.0f));
+	mpBillboardImage->SetUV(CRect(0.0f, 0.0f, 1.0f, -1.0f));
+
+
+	mpGauge->SetSize(CVector2(5.0f, 0.5f));
+	mpGauge->Position(Position() + CVector(0.0f, 20.5f, 0.0f));
+	mpGauge->SetUV(CRect(0.0f, 0.0f, 1.0f, -1.0f));
+	// 現在のHPを設定
+	mpGauge->SetValue(mCharaStatus.hp);
 
 	// Yukariの更新
 	CXCharacter::Update();

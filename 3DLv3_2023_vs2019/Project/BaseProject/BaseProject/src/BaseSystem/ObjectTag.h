@@ -17,10 +17,13 @@ enum class ETag
 	eWeapon,			// プレイヤーの武器
 	eEnemyWeapon,		// 敵の武器
 
-	eCamera,			// カメラ
 	eBakuhatu,
 	eGauge,
+	eEnemyFrame,
 
+
+	eCamera,			// カメラ
+	
 	Num
 };
 // オブジェクト識別用のタグの初期化リスト

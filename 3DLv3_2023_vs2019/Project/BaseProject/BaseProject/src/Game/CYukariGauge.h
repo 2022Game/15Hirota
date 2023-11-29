@@ -1,12 +1,13 @@
 #ifndef CYUKARIGAUGE_H
 #define CYUKARIGAUGE_H
+#include "CUIBase.h"
 #include "CBillBoardImage.h"
 class CBillBoardImage;
 
 class CYukariGauge :public CBillBoardImage
 {
 private:
-	CBillBoardImage* mpBarImage;			// バー画像
+	CBillBoardImage* mpBarImage;	// バー画像
 
 	int mMaxValue;				// 最大値
 	int mValue;					// 現在値

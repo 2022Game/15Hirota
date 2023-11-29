@@ -11,6 +11,7 @@ class CGun;
 class CBullet;
 class CPlayer;
 class CBillBoardImage;
+class CYukariGauge;
 
 /*
 プレイヤークラス
@@ -124,8 +125,9 @@ private:
 	CVector yukariPosition;		// 自分の地点
 
 	CGun* mpGun;	// 銃のモデル
+
 	CBillBoardImage* mpBillboardImage;
-	CBillBoardImage* mpGauge;
+	CYukariGauge* mpGauge;
 
 	int mTimeShot;
 	int mTimeShotEnd;

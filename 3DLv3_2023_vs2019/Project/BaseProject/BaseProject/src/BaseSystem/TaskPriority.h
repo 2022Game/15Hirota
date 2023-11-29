@@ -8,13 +8,15 @@ enum class ETaskPriority
 	// 3D関連
 	eBackground,	// 背景
 	eDefault,		// デフォルト
+	eEnemyGauge,	// エネミーのゲージ
+	eEnemyUi,		// エネミーのUI
 	ePlayer,		// プレイヤー
 	eEnemy,			// エネミー
 
 	eWeapon,		// プレイヤー武器
 	eEnemyWeapon,	// 敵の武器
 
-	eEffect,		// エフェクト
+	eEffect,
 
 	eCamera,		// カメラ
 
