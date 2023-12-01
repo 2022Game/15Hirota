@@ -2,9 +2,11 @@
 #define CYUKARIGAUGE_H
 #include "CUIBase.h"
 #include "CBillBoardImage.h"
+#include "CObjectBase.h"
 class CBillBoardImage;
 
-class CYukariGauge :public CBillBoardImage
+class CYukariGauge :public CUIBase
+
 {
 private:
 	CBillBoardImage* mpBarImage;	// バー画像
@@ -16,6 +18,8 @@ public:
 	CYukariGauge();
 	// デストラクタ
 	~CYukariGauge();
+
+	//void Setup(const CVector& pos, const CVector& dir);
 
 	// 最大値を設定
 	void SetMaxValue(int value);

@@ -151,6 +151,12 @@ CYukari::~CYukari()
 		delete mpBillboardImage;
 		mpBillboardImage = nullptr;
 	}
+
+	if (mpGauge != nullptr)
+	{
+		delete mpGauge;
+		mpGauge = nullptr;
+	}
 }
 
 CYukari* CYukari::Instance()
@@ -426,9 +432,10 @@ void CYukari::Update()
 	mpBillboardImage->SetUV(CRect(0.0f, 0.0f, 1.0f, -1.0f));
 
 
-	mpGauge->SetSize(CVector2(5.0f, 0.5f));
+	/*mpGauge->SetSize(CVector2(5.0f, 0.5f));
 	mpGauge->Position(Position() + CVector(0.0f, 20.5f, 0.0f));
-	mpGauge->SetUV(CRect(0.0f, 0.0f, 1.0f, -1.0f));
+	mpGauge->SetUV(CRect(0.0f, 0.0f, 1.0f, -1.0f));*/
+
 	// Œ»Ý‚ÌHP‚ðÝ’è
 	mpGauge->SetValue(mCharaStatus.hp);
 

@@ -27,11 +27,11 @@
 
 
 CYukariGauge::CYukariGauge()
-	: CBillBoardImage(BAR_IMAGE, ETag::eGauge, ETaskPriority::eEnemyGauge, 0, ETaskPauseType::eGame)
-	, mMaxValue(50)
+	: mMaxValue(50)
 	, mValue(50)
 {
-	
+	mpBarImage = new CBillBoardImage(BAR_IMAGE, ETag::eGauge, ETaskPriority::eEnemyGauge, 0, ETaskPauseType::eGame);
+	mpBarImage->SetSize(CVector2(BAR_SIZE_X, BAR_SIZE_Y));
 }
 
 // デストラクタ
@@ -40,27 +40,35 @@ CYukariGauge::~CYukariGauge()
 
 }
 
+//void CYukariGauge::Setup(const CVector& pos, const CVector& dir)
+//{
+//
+//}
+
 // 更新処理
 void CYukariGauge::Update()
 {
-	//CDebugPrint::Print("Position: X=%f, Y=%f, Z=%f\n", mpBarImage->Position().X(), mpBarImage->Position().Y(), mpBarImage->Position().Z());
+	mpBarImage->Position(mPosition + CVector(0.0f, 20.0f, 0.0f));
+	CDebugPrint::Print("Position: X=%f, Y=%f, Z=%f\n", mpBarImage->Position().X(), mpBarImage->Position().Y(), mpBarImage->Position().Z());
 
-	//// バーのサイズを最大値と現在地から求める
-	//float percent = Math::Clamp01((float)mValue / mMaxValue);
-	//CVector2 size = CVector2(BAR_SIZE_X, BAR_SIZE_Y);
-	//size.X(BAR_SIZE_X * percent);
-	//mpBarImage->SetSize(size);
 
-	//// HPの割合でバーの色を変更
-	//CColor color;
-	//// 10%以下
-	//if (percent <= 0.2f) color = CColor(1.0f, 0.0f, 0.0f);
-	//// 50%以下
-	//else if (percent <= 0.5f) color = CColor(0.9f, 0.3f, 0.5f);
-	//// それ以外
-	//else color = CColor(0.0f, 1.0f, 0.0f);
-	//// バーに色を設定
-	//mpBarImage->SetColor(color);
+	// バーのサイズを最大値と現在地から求める
+	float percent = Math::Clamp01((float)mValue / mMaxValue);
+	CVector2 size = CVector2(BAR_SIZE_X, BAR_SIZE_Y);
+	size.X(BAR_SIZE_X * percent);
+	mpBarImage->SetSize(size);
+
+
+	// HPの割合でバーの色を変更
+	CColor color;
+	// 10%以下
+	if (percent <= 0.2f) color = CColor(1.0f, 0.0f, 0.0f);
+	// 50%以下
+	else if (percent <= 0.5f) color = CColor(0.9f, 0.3f, 0.5f);
+	// それ以外
+	else color = CColor(0.0f, 1.0f, 0.0f);
+	// バーに色を設定
+	mpBarImage->SetColor(color);
 }
 
 // 最大値
