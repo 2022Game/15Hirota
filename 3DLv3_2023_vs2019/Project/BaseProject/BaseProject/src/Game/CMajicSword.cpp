@@ -2,8 +2,8 @@
 #include "CCollisionManager.h"
 #include "CCharaBase.h"
 
-#define SWORD_O "Character\\MajicSword\\MajicSword.obj"
-#define SWORD_M "Character\\MajicSword\\MajicSword.mtl"
+#define SWORD_O "Item\\MajicSword\\MajicSword.obj"
+#define SWORD_M "Item\\MajicSword\\MajicSword.mtl"
 
 CMajicSword::CMajicSword()
 {

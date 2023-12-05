@@ -25,13 +25,15 @@ CSoldier* CSoldier::spInstance = nullptr;
 // CSoldierのアニメーションデータのテーブル
 const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 {
-	{ "",																	true,	0.0f	},	// Tポーズ
-	{ "Character\\Gas mask soldier\\anim\\Rifle_Idle1_515.x",				true,	515.0f	},	// Idle時
-	{ "Character\\Gas mask soldier\\anim\\Rifle_walk_79.x",					true,	79.0f	},	// 移動
-	{ "Character\\Gas mask soldier\\anim\\Alert_83.x",						true,	83.0f	},	// 警戒
-	{ "Character\\Gas mask soldier\\anim\\Rifle_1shot_71.x",				true,	71.0f	},	// プレイヤー発見時攻撃
-	{ "Character\\Gas mask soldier\\anim\\Right foot kick_121.x",			false,	121.0f	},	// 格闘
-	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",					true,	199.0f	},	// リロード
+	{ "",																				true,	  0.0f	},	// Tポーズ
+	{ "Character\\Gas mask soldier\\anim\\Rifle_Idle1_515.x",							true,   515.0f	},	// Idle時
+	{ "Character\\Gas mask soldier\\anim\\Rifle_Idle3_187.x",							true,   187.0f	},	// ライフルIdle時
+	{ "Character\\Gas mask soldier\\anim\\Rifle_walk_79.x",								true,	 79.0f	},	// 移動
+	{ "Character\\Gas mask soldier\\anim\\Alert_83.x",									true,	 83.0f	},	// 警戒
+	{ "Character\\Gas mask soldier\\anim\\Rifle_1shot_71.x",							true,	 71.0f	},	// プレイヤー発見時攻撃
+	{ "Character\\Gas mask soldier\\anim\\Right foot kick_121.x",					false,	121.0f	},		// 格闘
+	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",								true,	 99.0f	},	// リロード
+	{ "Character\\Gas mask soldier\\anim\\Rilfle_Aim_to_Dwon._91.x",				false,	 91.0f	},		// エイム解除
 };
 
 #define ENEMY_HEIGHT 8.0f
@@ -43,7 +45,7 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 
 //移動速度
 #define FOV_ANGLE 100.0f		// 視野の角度(ー角度+角度も出)
-#define ATTACK_RANGE 60.0f	// プレイヤーまでの距離
+#define ATTACK_RANGE 70.0f	// プレイヤーまでの距離
 #define ATTACK_RANGE_KICK 27.0f
 
 // HP関連
@@ -61,6 +63,9 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 // 弾丸の発射間隔
 #define SHOT_INTERVAL 1.3f
 
+// 敵を見失った後の時間
+#define PLAYER_LOST 10.0f
+
 // コンストラクタ
 CSoldier::CSoldier()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
@@ -70,6 +75,7 @@ CSoldier::CSoldier()
 	, mTimeShot(0)
 	, mTimeShotEnd(10)
 	, mElapsedTime(0.0f)
+	, mElapsedTime_End(0.0f)
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -125,6 +131,8 @@ CSoldier::CSoldier()
 	mpGun = new CGun();
 	mpGun->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpGun->SetOwner(this);
+
+	//const CMatrix* bodyMtx = GetFrameMtx("Armature_")
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -191,7 +199,6 @@ void CSoldier::UpdateIdle()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	ChangeAnimation(EAnimType::eIdle);
 	//プレイヤーを見つけたら、追跡状態へ移行
 	if (IsFoundPlayer())
 	{
@@ -203,16 +210,25 @@ void CSoldier::UpdateIdle()
 	}
 }
 
+// 追跡
 void CSoldier::UpdateChase()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	if (!IsFoundPlayer())
 	{
-		ChangeAnimation(EAnimType::eIdle);
+		ChangeAnimation(EAnimType::eRifleIdle);
+		mElapsedTime_End += Time::DeltaTime();
+		CDebugPrint::Print("TimeEnd%f\n", mElapsedTime_End);
+		if (mElapsedTime_End >= PLAYER_LOST)
+		{
+			mState = EState::eAimDwon;
+			mElapsedTime_End = 0.0f; // プレイヤーが視界から消えたら経過時間をリセット
+		}
 	}
 	else
 	{
+		mElapsedTime_End = 0.0f;
 		CPlayer* player = CPlayer::Instance();
 		CVector playerPos = player->Position();
 		playerPos.Y(Position().Y());
@@ -278,14 +294,14 @@ void CSoldier::UpdateAttack()
 			if (distancePlayer <= ATTACK_RANGE_KICK)
 			{
 				mState = EState::eKick;
+				return;
 			}
 		}
 	}
 	else
 	{
 		mState = EState::eChase;
-		mTimeShot = 0;
-		mElapsedTime = 0.0f;
+		mElapsedTime_End = 0.0f;
 	}
 }
 
@@ -328,7 +344,8 @@ void CSoldier::UpdateAttackWait()
 		}
 		else
 		{
-			mState = EState::eChase;
+			mState = EState::eAimDwon;
+			mElapsedTime_End = 0.0f;
 		}
 	}
 }
@@ -342,6 +359,18 @@ void CSoldier::UpdateJumpStart()
 	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
 	mIsGrounded = false;
 }
+
+// エイム解除
+void CSoldier::UpdateAimDwon()
+{
+	ChangeAnimation(EAnimType::eAimDwou);
+	if (IsAnimationFinished())
+	{
+		mState = EState::eIdle;
+		mElapsedTime_End = 0.0f;
+	}
+}
+
 
 // ジャンプ中
 void CSoldier::UpdateJump()
@@ -386,6 +415,10 @@ void CSoldier::Update()
 		// キック終了
 	case EState::eKickWait:
 		UpdateKickWait();
+		break;
+		// エイム解除
+	case EState::eAimDwon:
+		UpdateAimDwon();
 		break;
 		// 攻撃終了待ち
 	case EState::eAttackWait:

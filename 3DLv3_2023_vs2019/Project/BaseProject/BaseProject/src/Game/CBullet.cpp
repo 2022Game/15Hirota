@@ -3,8 +3,8 @@
 #include "CCharaBase.h"
 #include "CEffect.h"
 
-#define BULLET_O "Character\\Bullet1\\Bullet.obj"
-#define BULLET_M "Character\\Bullet1\\Bullet.mtl"
+#define BULLET_O "Item\\Bullet1\\Bullet.obj"
+#define BULLET_M "Item\\Bullet1\\Bullet.mtl"
 
 // ’eŠÛ‚ÌˆÚ“®‘¬“x
 #define MOVE_SPEED 100.0f

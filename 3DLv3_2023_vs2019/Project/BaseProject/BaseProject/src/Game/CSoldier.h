@@ -47,6 +47,8 @@ public:
 	void UpdateKick();
 	// キック終了
 	void UpdateKickWait();
+	// エイム解除
+	void UpdateAimDwon();
 
 	// 更新
 	void Update();
@@ -77,15 +79,17 @@ private:
 		None = -1,
 
 		eTpose,		// Tポーズ
-		eIdle,		// 待機
+		eIdle,		// Idle時
+		eRifleIdle,	// ライフルIdle時
 		eWalk,		// 移動
 		eAlert,		// 警戒
-		eAttack,	// 攻撃
+		eAttack,	// プレイヤー発見時攻撃
 		eKick,		// 格闘
 		eReload,	// リロード
+		eAimDwou,	// エイム解除
+		eJumpEnd,	// ジャンプ終了
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
-		eJumpEnd,	// ジャンプ終了
 
 		Num
 	};
@@ -117,6 +121,7 @@ private:
 		eChase,		// 追跡
 		eKick,		// キック
 		eKickWait,	// キック終了
+		eAimDwon,	// エイム解除
 	};
 	EState mState;	// プレイヤーの状態
 
@@ -142,7 +147,8 @@ private:
 
 	int mTimeShot;
 	int mTimeShotEnd;
-	float mElapsedTime;	// 経過時間計測用
+	float mElapsedTime;		// 経過時間計測用
+	float mElapsedTime_End;	// 解除時間計測用
 
 };
 #endif

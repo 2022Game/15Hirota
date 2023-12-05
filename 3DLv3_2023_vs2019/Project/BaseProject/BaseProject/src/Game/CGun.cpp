@@ -4,8 +4,8 @@
 #include "CInput.h"
 #include "CEffect.h"
 
-#define M1GARAND_O "Character\\Gun_M1Garand\\Gun_M1Garand.obj"
-#define M1GARAND_M "Character\\Gun_M1Garand\\Gun_M1Garand.mtl"
+#define M1GARAND_O "Item\\Gun_M1Garand\\Gun_M1Garand.obj"
+#define M1GARAND_M "Item\\Gun_M1Garand\\Gun_M1Garand.mtl"
 
 
 CGun::CGun()
