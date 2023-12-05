@@ -26,7 +26,7 @@ CSoldier* CSoldier::spInstance = nullptr;
 const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 {
 	//{ "",													true,	0.0f	},	// Tポーズ
-	{ "Character\\Gas mask soldier\\anim\\Right foot kick_121.x",		true,	121.0f	},	// Idle時
+	{ "Character\\Gas mask soldier\\anim\\Rifle_Idle1_515.x",			true,	515.0f	},	// Idle時
 	{ "Character\\Gas mask soldier\\anim\\Rifle_walk_79.x",				true,	79.0f	},	// 移動
 	{ "Character\\Gas mask soldier\\anim\\Rifle_1shot_71.x",			true,	71.0f	},	// プレイヤー発見時攻撃
 	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",				true,	199.0f	},	// リロード
@@ -68,10 +68,6 @@ CSoldier::CSoldier()
 	, mTimeShotEnd(10)
 	, mElapsedTime(0.0f)
 {
-
-	// 最初は待機アニメーションを再生
-	ChangeAnimation(EAnimType::eIdle);
-
 	//インスタンスの設定
 	spInstance = this;
 
@@ -89,6 +85,10 @@ CSoldier::CSoldier()
 	}
 	// CXCharacterの初期化
 	Init(model);
+
+	// 最初は待機アニメーションを再生
+	ChangeAnimation(EAnimType::eIdle);
+
 
 	mpColliderLine = new CColliderLine
 	(
@@ -359,6 +359,7 @@ void CSoldier::Update()
 	case EState::eJumpEnd:
 		UpdateJumpEnd();
 		break;
+		// 追跡状態
 	case EState::eChase:
 		UpdateChase();
 		break;
