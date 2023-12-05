@@ -66,6 +66,7 @@
     <ClCompile Include="src\Game\CharaStatus.cpp" />
     <ClCompile Include="src\Game\CImage.cpp" />
     <ClCompile Include="src\Game\CItem.cpp" />
+    <ClCompile Include="src\Game\CKick.cpp" />
     <ClCompile Include="src\Game\CMoveFloor.cpp" />
     <ClCompile Include="src\Game\CPlayer.cpp" />
     <ClCompile Include="src\Game\CRideabeObject.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="src\Game\CharaStatus.h" />
     <ClInclude Include="src\Game\CImage.h" />
     <ClInclude Include="src\Game\CItem.h" />
+    <ClInclude Include="src\Game\CKick.h" />
     <ClInclude Include="src\Game\CMoveFloor.h" />
     <ClInclude Include="src\Game\CPlayer.h" />
     <ClInclude Include="src\Game\CRideableObject.h" />

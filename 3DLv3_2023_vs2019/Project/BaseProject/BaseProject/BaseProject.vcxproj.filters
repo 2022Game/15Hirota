@@ -310,6 +310,9 @@
     <ClCompile Include="src\Game\CSoldier.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CKick.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -575,6 +578,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSoldier.h">
       <Filter>ソース ファイル\Game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CKick.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

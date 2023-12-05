@@ -100,14 +100,16 @@ CPlayer::CPlayer()
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		6.0f
+		8.0f
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
 	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon });
+	mpDamageCol->SetCollisionTags({ ETag::eEnemy });
 	// ダメージを受けるコライダーを少し上へずらす
-	mpDamageCol->Position(0.0f, 3.0f, 0.0f);
+	mpDamageCol->Position(0.0f, 5.0f, 0.0f);
+
 
 	mpSword = new CMajicSword();
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));

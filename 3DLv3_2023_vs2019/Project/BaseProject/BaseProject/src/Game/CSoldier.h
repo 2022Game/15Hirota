@@ -8,10 +8,10 @@
 #include "CRideableObject.h"
 #include "CEffect.h"
 
-
 class CGun;
 class CBullet;
 class CPlayer;
+class CKick;
 
 /*
 プレイヤークラス
@@ -43,6 +43,8 @@ public:
 	void UpdateJumpEnd();
 	// 追跡
 	void UpdateChase();
+	// キック
+	void UpdateKick();
 
 	// 更新
 	void Update();
@@ -66,14 +68,18 @@ public:
 	void ChangeLevel(int level);	// レベル変更
 
 private:
+
 	// アニメーションの種類
 	enum class EAnimType
 	{
 		None = -1,
 
+		eTpose,		// Tポーズ
 		eIdle,		// 待機
-		eWalk,		// 歩行
+		eWalk,		// 移動
+		eAlert,		// 警戒
 		eAttack,	// 攻撃
+		eKick,		// 格闘
 		eReload,	// リロード
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
@@ -107,6 +113,7 @@ private:
 		eJump,		// ジャンプ中
 		eJumpEnd,	// ジャンプ終了
 		eChase,		// 追跡
+		eKick,		// キック
 	};
 	EState mState;	// プレイヤーの状態
 
@@ -119,12 +126,16 @@ private:
 
 	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
-	CColliderSphere* mpDamageCol;	//ダメージを受けるコライダ
+
+	CColliderSphere* mpDamageCol;	// ダメージを受けるコライダ
+	CColliderSphere* mpAttackCol;	// ダメージを与えるコライダ
+
 
 	CVector playerPosition;		// 目標地点
 	CVector yukariPosition;		// 自分の地点
 
 	CGun* mpGun;	// 銃のモデル
+	CKick* mpKick;
 
 	int mTimeShot;
 	int mTimeShotEnd;

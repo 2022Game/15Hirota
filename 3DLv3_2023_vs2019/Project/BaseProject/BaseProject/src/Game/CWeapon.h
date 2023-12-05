@@ -1,5 +1,5 @@
 #ifndef CWEAPON_H
-#define CEAPON_H
+#define CWEAPON_H
 #include "CObjectBase.h"
 class CCharaBase;
 
@@ -38,6 +38,5 @@ protected:
 
 	// アイテムの所持キャラクター
 	CCharaBase* mOwner;
-
 };
 #endif

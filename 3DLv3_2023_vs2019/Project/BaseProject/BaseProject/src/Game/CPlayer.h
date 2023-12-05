@@ -5,6 +5,7 @@
 #include "CRideableObject.h"
 #include "CColliderSphere.h"
 #include "CImage.h"
+
 class CUIGauge;
 class CStaminaGauge;
 class CMajicSword;

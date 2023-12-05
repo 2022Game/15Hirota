@@ -8,7 +8,7 @@
 #include <BaseSystem/CInput.h>
 #include "CGun.h"
 #include "CBullet.h"
-#include "CBillBoardImage.h"
+#include "CKick.h"
 
 
 #define _USE_MATH_DEFINES
@@ -25,11 +25,13 @@ CSoldier* CSoldier::spInstance = nullptr;
 // CSoldierのアニメーションデータのテーブル
 const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 {
-	//{ "",													true,	0.0f	},	// Tポーズ
-	{ "Character\\Gas mask soldier\\anim\\Rifle_Idle1_515.x",			true,	515.0f	},	// Idle時
-	{ "Character\\Gas mask soldier\\anim\\Rifle_walk_79.x",				true,	79.0f	},	// 移動
-	{ "Character\\Gas mask soldier\\anim\\Rifle_1shot_71.x",			true,	71.0f	},	// プレイヤー発見時攻撃
-	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",				true,	199.0f	},	// リロード
+	{ "",																	true,	0.0f	},	// Tポーズ
+	{ "Character\\Gas mask soldier\\anim\\Rifle_Idle1_515.x",				true,	515.0f	},	// Idle時
+	{ "Character\\Gas mask soldier\\anim\\Rifle_walk_79.x",					true,	79.0f	},	// 移動
+	{ "Character\\Gas mask soldier\\anim\\Alert_83.x",						true,	83.0f	},	// 警戒
+	{ "Character\\Gas mask soldier\\anim\\Rifle_1shot_71.x",				true,	71.0f	},	// プレイヤー発見時攻撃
+	{ "Character\\Gas mask soldier\\anim\\Right foot kick_121.x",			false,	121.0f	},	// 格闘
+	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",					true,	199.0f	},	// リロード
 };
 
 #define ENEMY_HEIGHT 8.0f
@@ -40,8 +42,9 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 #define JUMP_END_Y 1.0f
 
 //移動速度
-#define FOV_ANGLE 90.0f		// 視野の角度(ー角度+角度も出)
-#define ATTACK_RANGE 50.0f	// プレイヤーまでの距離
+#define FOV_ANGLE 100.0f		// 視野の角度(ー角度+角度も出)
+#define ATTACK_RANGE 60.0f	// プレイヤーまでの距離
+#define ATTACK_RANGE_KICK 27.0f
 
 // HP関連
 #define HP 5
@@ -56,7 +59,7 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 #define ATTACK 10
 
 // 弾丸の発射間隔
-#define SHOT_INTERVAL 0.25f
+#define SHOT_INTERVAL 1.3f
 
 // コンストラクタ
 CSoldier::CSoldier()
@@ -111,6 +114,13 @@ CSoldier::CSoldier()
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 5.0f, 0.0f);
 
+
+	// 右足にダメージコライダーを設定
+	mpKick = new CKick();
+	mpKick->AttachMtx(GetFrameMtx("Armature_mixamorig_RightToeBase"));
+	mpKick->SetOwner(this);
+
+
 	// 銃を作成して持たせる
 	mpGun = new CGun();
 	mpGun->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
@@ -118,8 +128,8 @@ CSoldier::CSoldier()
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
-
 }
+
 
 CSoldier::~CSoldier()
 {
@@ -141,6 +151,7 @@ CSoldier::~CSoldier()
 		delete mpDamageCol;
 		mpDamageCol = nullptr;
 	}
+
 }
 
 CSoldier* CSoldier::Instance()
@@ -212,8 +223,8 @@ void CSoldier::UpdateChase()
 
 		// プレイヤーとの距離が一定範囲以内であれば攻撃モードに切り替える
 		float distanceToPlayer = (player->Position() - Position()).Length();
-		ChangeAnimation(EAnimType::eWalk);
-
+		ChangeAnimation(EAnimType::eAlert);
+		
 		if (distanceToPlayer <= ATTACK_RANGE)
 		{
 			mState = EState::eAttack;
@@ -255,9 +266,6 @@ void CSoldier::UpdateAttack()
 			bullet->Position(CVector(0.0f, 10.0f, 10.0f) * Matrix());
 			bullet->Rotation(Rotation());
 
-
-
-
 			// 全弾発射したら、攻撃終了
 			mTimeShot++;
 			if (mTimeShot >= mTimeShotEnd)
@@ -267,6 +275,10 @@ void CSoldier::UpdateAttack()
 				mTimeShot = 0;
 				mElapsedTime = 0.0f;
 			}
+			if (distancePlayer <= ATTACK_RANGE_KICK)
+			{
+				mState = EState::eKick;
+			}
 		}
 	}
 	else
@@ -274,6 +286,21 @@ void CSoldier::UpdateAttack()
 		mState = EState::eChase;
 		mTimeShot = 0;
 		mElapsedTime = 0.0f;
+	}
+}
+
+// キック
+void CSoldier::UpdateKick()
+{
+	// 攻撃するときは移動を停止
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	mpKick->AttackStart();
+	ChangeAnimation(EAnimType::eKick);
+	if(IsAnimationFinished())
+	{
+		mpKick->AttackEnd();
+		mState = EState::eChase;
 	}
 }
 
@@ -342,6 +369,10 @@ void CSoldier::Update()
 		// 攻撃
 	case EState::eAttack:
 		UpdateAttack();
+		break;
+		// キック
+	case EState::eKick:
+		UpdateKick();
 		break;
 		// 攻撃終了待ち
 	case EState::eAttackWait:
@@ -412,6 +443,7 @@ void CSoldier::Update()
 	mIsGrounded = false;
 }
 
+// プレイヤー追跡
 bool CSoldier::IsFoundPlayer() const
 {
 	CVector playerPos = CPlayer::Instance()->Position();
@@ -441,7 +473,6 @@ bool CSoldier::IsFoundPlayer() const
 	return false;
 
 }
-
 
 // 衝突処理
 void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
