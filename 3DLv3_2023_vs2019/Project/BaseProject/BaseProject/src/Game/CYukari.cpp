@@ -19,7 +19,7 @@
 CYukari* CYukari::spInstance = nullptr;
 
 // Yukariのモデルデータのパス
-#define MODEL_PATH "Character\\Yukari\\Yukari_Model.x"
+#define MODEL_PATH	"Character\\Yukari\\Yukari_Model.x"
 
 #define EFFECT	 "Effect\\exp.tga"
 
@@ -31,7 +31,6 @@ const CYukari::AnimData CYukari::ANIM_DATA[] =
 	{ "Character\\Yukari\\anim\\Yukari_GunWorlk79.x",		true,	79.0f	},	// 移動
 	{ "Character\\Yukari\\anim\\Yukari_GunPlay13.x",		true,	13.0f	},	// プレイヤー発見時攻撃
 	{ "Character\\Yukari\\anim\\Yukari1_Reload199.x",		true,	199.0f	},	// リロード
-
 };
 
 #define ENEMY_HEIGHT 8.0f

@@ -10,6 +10,7 @@ enum class ETaskPriority
 	eDefault,		// デフォルト
 	eEnemyGauge,	// エネミーのゲージ
 	eEnemyUi,		// エネミーのUI
+
 	ePlayer,		// プレイヤー
 	eEnemy,			// エネミー
 

@@ -307,6 +307,9 @@
     <ClCompile Include="src\Game\CYukariGauge.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CSoldier.cpp">
+      <Filter>ソース ファイル\Game\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -569,6 +572,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CYukariGauge.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSoldier.h">
+      <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

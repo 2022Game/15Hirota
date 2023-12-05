@@ -5,6 +5,7 @@
 #include "CField.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
+#include "Csoldier.h"
 #include "CCamera.h"
 #include "CUnityChan.h"
 #include "CYukari.h"
@@ -54,10 +55,15 @@ void CGameScene::Load()
 	//unity->Scale(1.0f, 1.0f, 1.0f);
 	//unity->Position(0.0f, 20.0f, 0.0f);
 
-	// ‚ä‚©‚è‚³‚ñ
-	CYukari* yukari = new CYukari();
-	yukari->Scale(1.0f, 1.0f, 1.0f);
-	yukari->Position(20.0f, 100.0f, -100.0f);
+	//// ‚ä‚©‚è‚³‚ñ
+	//CYukari* yukari = new CYukari();
+	//yukari->Scale(1.0f, 1.0f, 1.0f);
+	//yukari->Position(20.0f, 100.0f, -100.0f);
+
+	// ƒKƒXƒ}ƒXƒN•ºŽm
+	CSoldier* sol = new CSoldier();
+	sol->Scale(1.0f, 1.0f, 1.0f);
+	sol->Position(100.0f, 50.0f, -100.0f);
 
 	CCamera* mainCamera = new CCamera
 	(

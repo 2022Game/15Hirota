@@ -1,0 +1,484 @@
+#include "CSoldier.h"
+#include "CCamera.h"
+#include "CBillBoard.h"
+#include "CImage.h"
+#include "CPlayer.h"
+#include <algorithm>
+#include "Maths.h"
+#include <BaseSystem/CInput.h>
+#include "CGun.h"
+#include "CBullet.h"
+#include "CBillBoardImage.h"
+
+
+#define _USE_MATH_DEFINES
+
+
+// CSoldierのインスタンス
+CSoldier* CSoldier::spInstance = nullptr;
+
+// CSoldierのモデルデータのパス
+#define MODEL_PATH	"Character\\Gas mask soldier\\GasMask_Soldier_Model.x"
+
+#define EFFECT	 "Effect\\exp.tga"
+
+// CSoldierのアニメーションデータのテーブル
+const CSoldier::AnimData CSoldier::ANIM_DATA[] =
+{
+	//{ "",													true,	0.0f	},	// Tポーズ
+	{ "Character\\Gas mask soldier\\anim\\Right foot kick_121.x",		true,	121.0f	},	// Idle時
+	{ "Character\\Gas mask soldier\\anim\\Rifle_walk_79.x",				true,	79.0f	},	// 移動
+	{ "Character\\Gas mask soldier\\anim\\Rifle_1shot_71.x",			true,	71.0f	},	// プレイヤー発見時攻撃
+	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",				true,	199.0f	},	// リロード
+};
+
+#define ENEMY_HEIGHT 8.0f
+#define ENEMY_HEIGHT2 20.0f
+#define MOVE_SPEED 0.5f
+#define JUMP_SPEED 1.5f
+#define GRAVITY 0.0625f
+#define JUMP_END_Y 1.0f
+
+//移動速度
+#define FOV_ANGLE 90.0f		// 視野の角度(ー角度+角度も出)
+#define ATTACK_RANGE 50.0f	// プレイヤーまでの距離
+
+// HP関連
+#define HP 5
+
+// レベル関連
+#define LEVEL 1
+
+// 攻撃力関連
+#define ATTACK 10
+
+// 弾丸の発射間隔
+#define ATTACK 10
+
+// 弾丸の発射間隔
+#define SHOT_INTERVAL 0.25f
+
+// コンストラクタ
+CSoldier::CSoldier()
+	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
+	, mState(EState::eIdle)
+	, mTargetDir(0.0f, 0.0f, 1.0f)
+	, mpRideObject(nullptr)
+	, mTimeShot(0)
+	, mTimeShotEnd(10)
+	, mElapsedTime(0.0f)
+{
+
+	// 最初は待機アニメーションを再生
+	ChangeAnimation(EAnimType::eIdle);
+
+	//インスタンスの設定
+	spInstance = this;
+
+	// モデルデータ読み込み
+	CModelX* model = new CModelX();
+	model->Load(MODEL_PATH);
+
+	// テーブル内のアニメーションデータを読み込み
+	int size = ARRAY_SIZE(ANIM_DATA);
+	for (int i = 0; i < size; i++)
+	{
+		const AnimData& data = ANIM_DATA[i];
+		if (data.path.empty()) continue;
+		model->AddAnimationSet(data.path.c_str());
+	}
+	// CXCharacterの初期化
+	Init(model);
+
+	mpColliderLine = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, ENEMY_HEIGHT, 0.0f)
+	);
+	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+
+	// ダメージを受けるコライダーを作成
+	mpDamageCol = new CColliderSphere
+	(
+		this, ELayer::eDamageCol,
+		10.0f //後で変更
+	);
+	// ダメージを受けるコライダーと
+	// 衝突判定を行うコライダーのレイヤーとタグを設定
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
+	mpDamageCol->SetCollisionTags({ ETag::eWeapon });
+	// ダメージを受けるコライダーを少し上へずらす
+	mpDamageCol->Position(0.0f, 5.0f, 0.0f);
+
+	// 銃を作成して持たせる
+	mpGun = new CGun();
+	mpGun->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
+	mpGun->SetOwner(this);
+
+	// 最初に1レベルに設定
+	ChangeLevel(1);
+
+}
+
+CSoldier::~CSoldier()
+{
+	if (mpColliderLine != nullptr)
+	{
+		delete mpColliderLine;
+		mpColliderLine = nullptr;
+	}
+
+	if (mpModel != nullptr)
+	{
+		delete mpModel;
+		mpModel = nullptr;
+	}
+
+	// ダメージを受けるコライダーを削除
+	if (mpDamageCol != nullptr)
+	{
+		delete mpDamageCol;
+		mpDamageCol = nullptr;
+	}
+}
+
+CSoldier* CSoldier::Instance()
+{
+	return spInstance;
+}
+
+// レベルアップ
+void CSoldier::LevelUp()
+{
+	int level = mCharaStatus.level;
+	ChangeLevel(level + 1);
+}
+
+// レベルを変更
+void CSoldier::ChangeLevel(int level)
+{
+	// ステータスのテーブルのインデックス地に変換
+	int index = Math::Clamp(level - 1, 0, ENEMY_LEVEL_MAX);
+	// 最大ステータスに設定
+	mCharaMaxStatus = ENEMY_STATUS[index];
+	// 現在のステータスを最大値にすることで、HP回復
+	mCharaStatus = mCharaMaxStatus;
+}
+
+// アニメーション切り替え
+void CSoldier::ChangeAnimation(EAnimType type)
+{
+	if (!(EAnimType::None < type && type < EAnimType::Num)) return;
+	AnimData data = ANIM_DATA[(int)type];
+	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
+}
+
+// 待機
+void CSoldier::UpdateIdle()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	ChangeAnimation(EAnimType::eIdle);
+	//プレイヤーを見つけたら、追跡状態へ移行
+	if (IsFoundPlayer())
+	{
+		mState = EState::eChase;
+	}
+	else
+	{
+		ChangeAnimation(EAnimType::eIdle);
+	}
+}
+
+void CSoldier::UpdateChase()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	if (!IsFoundPlayer())
+	{
+		ChangeAnimation(EAnimType::eIdle);
+	}
+	else
+	{
+		CPlayer* player = CPlayer::Instance();
+		CVector playerPos = player->Position();
+		playerPos.Y(Position().Y());
+
+		CVector toPlayer = (playerPos - Position()).Normalized();
+		mMoveSpeed += toPlayer * MOVE_SPEED;
+		mTargetDir = toPlayer;
+
+		// プレイヤーとの距離が一定範囲以内であれば攻撃モードに切り替える
+		float distanceToPlayer = (player->Position() - Position()).Length();
+		ChangeAnimation(EAnimType::eWalk);
+
+		if (distanceToPlayer <= ATTACK_RANGE)
+		{
+			mState = EState::eAttack;
+		}
+	}
+}
+
+
+// 攻撃
+void CSoldier::UpdateAttack()
+{
+	// 攻撃するときは移動を停止
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
+	if (distancePlayer <= ATTACK_RANGE)
+	{
+		ChangeAnimation(EAnimType::eAttack);
+		// 弾丸発射間隔時間が経過するのを待つ
+		if (mElapsedTime < SHOT_INTERVAL)
+		{
+			mElapsedTime += Time::DeltaTime();
+		}
+		// 弾丸発射間隔が経過した
+		else
+		{
+			mElapsedTime -= SHOT_INTERVAL;
+
+			// 弾丸を発射
+			CBullet* bullet = new CBullet();
+			bullet->Position(CVector(0.0f, 10.0f, 10.0f) * Matrix());
+			bullet->Rotation(Rotation());
+
+
+
+
+			// 全弾発射したら、攻撃終了
+			mTimeShot++;
+			if (mTimeShot >= mTimeShotEnd)
+			{
+				// 攻撃終了後の待機状態に遷移
+				mState = EState::eAttackWait;
+				mTimeShot = 0;
+				mElapsedTime = 0.0f;
+			}
+		}
+	}
+	else
+	{
+		mState = EState::eChase;
+		mTimeShot = 0;
+		mElapsedTime = 0.0f;
+	}
+}
+
+// 攻撃終了待ち
+void CSoldier::UpdateAttackWait()
+{
+	ChangeAnimation(EAnimType::eReload);
+	if (IsAnimationFinished())
+	{
+		CPlayer* player = CPlayer::Instance();
+		float distanceToPlayer = (player->Position() - Position()).Length();
+
+		if (distanceToPlayer <= ATTACK_RANGE)
+		{
+			mState = EState::eAttack;
+		}
+		else
+		{
+			mState = EState::eChase;
+		}
+	}
+}
+
+// ジャンプ開始
+void CSoldier::UpdateJumpStart()
+{
+	ChangeAnimation(EAnimType::eJumpStart);
+	mState = EState::eJump;
+
+	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
+	mIsGrounded = false;
+}
+
+// ジャンプ中
+void CSoldier::UpdateJump()
+{
+	if (mMoveSpeed.Y() <= 0.0f)
+	{
+		ChangeAnimation(EAnimType::eJumpEnd);
+		mState = EState::eJumpEnd;
+	}
+}
+
+// ジャンプ終了
+void CSoldier::UpdateJumpEnd()
+{
+	if (IsAnimationFinished())
+	{
+		mState = EState::eIdle;
+	}
+}
+
+// 更新
+void CSoldier::Update()
+{
+	SetParent(mpRideObject);
+	mpRideObject = nullptr;
+
+	// 状態に合わせて、更新処理を切り替える
+	switch (mState)
+	{
+		// 待機状態
+	case EState::eIdle:
+		UpdateIdle();
+		break;
+		// 攻撃
+	case EState::eAttack:
+		UpdateAttack();
+		break;
+		// 攻撃終了待ち
+	case EState::eAttackWait:
+		UpdateAttackWait();
+		break;
+		// ジャンプ開始
+	case EState::eJumpStart:
+		UpdateJumpStart();
+		break;
+		// ジャンプ中
+	case EState::eJump:
+		UpdateJump();
+		break;
+		// ジャンプ終了
+	case EState::eJumpEnd:
+		UpdateJumpEnd();
+		break;
+	case EState::eChase:
+		UpdateChase();
+		break;
+	}
+
+	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
+
+	// CSoldierのデバッグ表示
+	static bool debug = false;
+	if (CInput::PushKey('F'))
+	{
+		debug = !debug;
+	}
+	if (debug)
+	{
+		//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
+		CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
+		CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
+		CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
+	}
+	// 1キーを押しながら、↑ ↓ でHP増減
+	if (CInput::Key('3'))
+	{
+		if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
+		else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
+	}
+	else if (CInput::Key('2'))
+	{
+		LevelUp();
+	}
+
+	// 移動
+	Position(Position() + mMoveSpeed);
+
+	CVector PlayerPosition;
+
+	// CSoldierを移動方向へ向ける
+	CVector current = VectorZ();
+	CVector target = mTargetDir;
+	CVector forward = CVector::Slerp(current, target, 0.125f);
+	Rotation(CQuaternion::LookRotation(forward));
+
+
+	CDebugPrint::Print("Shot%d\n", mTimeShot);
+	CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
+
+	// CSoldierの更新
+	CXCharacter::Update();
+
+	mIsGrounded = false;
+}
+
+bool CSoldier::IsFoundPlayer() const
+{
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector enemyPos = Position();
+
+	CVector toPlayer = (playerPos - enemyPos).Normalized();
+	CVector forward = Matrix().VectorZ().Normalized();
+
+	float dot = forward.Dot(toPlayer);
+
+	// 視野角の半分を計算する
+	float halfFOV = FOV_ANGLE * 0.5f;
+
+	//// acos関数を使用して実際の角度を計算する
+	//float angle = acos(dot) * (180.0f / M_PI);
+
+	// 視野角の半分より小さいかつプレイヤーとの距離が一定範囲以内であれば、プレイヤーを認識する
+	if (dot >= cosf(halfFOV * M_PI / 180.0f))
+	{
+		float distance = (playerPos - enemyPos).Length();
+		const float chaseRange = 100.0f;
+
+		if (distance <= chaseRange)
+			return true;
+	}
+
+	return false;
+
+}
+
+
+// 衝突処理
+void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+{
+	if (self == mpColliderLine)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mMoveSpeed.Y(0.0f);
+			Position(Position() + hit.adjust);
+			mIsGrounded = true;
+
+			if (other->Tag() == ETag::eRideableObject)
+			{
+				mpRideObject = other->Owner();
+			}
+		}
+	}
+}
+
+// 描画
+void CSoldier::Render()
+{
+	CXCharacter::Render();
+}
+
+// 被ダメージ処理
+void CSoldier::TakeDamage(int damage)
+{
+	// 死亡していたらダメージは受けない
+	//if (mCharaStatus.hp <= 0) return;
+
+	// HPからダメージを引く
+	//mCharaStatus.hp = std::max(mCharaStatus.hp - damage, 0);
+	mCharaStatus.hp -= damage;
+	// HPが0になったら
+	if (mCharaStatus.hp == 0)
+	{
+		//死亡処理 後で
+	}
+}

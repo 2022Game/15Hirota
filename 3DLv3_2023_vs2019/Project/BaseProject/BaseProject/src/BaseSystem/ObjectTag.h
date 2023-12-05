@@ -13,6 +13,7 @@ enum class ETag
 
 	ePlayer,			// プレイヤー
 	eEnemy,				// エネミー
+	eSoldier,
 
 	eWeapon,			// プレイヤーの武器
 	eEnemyWeapon,		// 敵の武器
