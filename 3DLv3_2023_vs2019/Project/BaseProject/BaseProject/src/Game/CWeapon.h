@@ -9,7 +9,6 @@ class CWeapon :public CObjectBase
 {
 public:
 	CWeapon();
-
 	virtual ~CWeapon();
 
 	virtual void AttachMtx(const CMatrix* mtx);

@@ -45,6 +45,8 @@ public:
 	void UpdateChase();
 	// キック
 	void UpdateKick();
+	// キック終了
+	void UpdateKickWait();
 
 	// 更新
 	void Update();
@@ -114,6 +116,7 @@ private:
 		eJumpEnd,	// ジャンプ終了
 		eChase,		// 追跡
 		eKick,		// キック
+		eKickWait,	// キック終了
 	};
 	EState mState;	// プレイヤーの状態
 

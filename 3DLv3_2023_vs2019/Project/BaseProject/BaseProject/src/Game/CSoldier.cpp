@@ -297,10 +297,19 @@ void CSoldier::UpdateKick()
 	mMoveSpeed.Z(0.0f);
 	mpKick->AttackStart();
 	ChangeAnimation(EAnimType::eKick);
-	if(IsAnimationFinished())
+
+	mState = EState::eKickWait;
+}
+
+// キック終了
+void CSoldier::UpdateKickWait()
+{
+	if (IsAnimationFinished())
 	{
-		mpKick->AttackEnd();
 		mState = EState::eChase;
+		ChangeAnimation(EAnimType::eIdle);
+
+		mpKick->AttackEnd();
 	}
 }
 
@@ -373,6 +382,10 @@ void CSoldier::Update()
 		// キック
 	case EState::eKick:
 		UpdateKick();
+		break;
+		// キック終了
+	case EState::eKickWait:
+		UpdateKickWait();
 		break;
 		// 攻撃終了待ち
 	case EState::eAttackWait:

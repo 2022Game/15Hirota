@@ -106,7 +106,6 @@ CPlayer::CPlayer()
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
 	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon });
-	mpDamageCol->SetCollisionTags({ ETag::eEnemy });
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 5.0f, 0.0f);
 

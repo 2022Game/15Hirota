@@ -37,18 +37,18 @@ void CKick::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	if (self == mpAttackCol)
 	{
 		// キャラのポインタに変換
-		CCharaBase* kick = dynamic_cast<CCharaBase*>(other->Owner());
+		CCharaBase* chara = dynamic_cast<CCharaBase*>(other->Owner());
 		// 相手のコライダーの持ち主がキャラであれば
-		if (kick != nullptr)
+		if (chara != nullptr)
 		{
 			// すでに攻撃済みのキャラでなければ
-			if (!IsAttackHitObj(kick))
+			if (!IsAttackHitObj(chara))
 			{
 				//　ダメージを与える
-				kick->TakeDamage(2);
+				chara->TakeDamage(1);
 
 				// 攻撃済みリストに追加
-				AddAttackHitObj(kick);
+				AddAttackHitObj(chara);
 			}
 		}
 	}
@@ -67,17 +67,7 @@ CMatrix CKick::Matrix() const
 		CMatrix sm;
 		sm.Scale(80.0f, 80.0f, 80.0f);
 
-		// 90度回転を表す行列を作成
-		CMatrix rotateY;
-		CMatrix rotateZ;
-		CMatrix rotateX;
-
-		rotateY.RotateY(90.0f);		// Y軸周りに90度回転
-		//rotateZ.RotateZ(90.0f);		// Z軸周りに90度回転
-		rotateX.RotateX(90.0f);		// X軸周り身90度回転
-
-
-		return sm * rotateY * rotateX * (*mpAttachMtx);
+		return sm * (*mpAttachMtx);
 	}
 }
 
