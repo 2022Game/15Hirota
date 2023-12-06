@@ -36,7 +36,7 @@ private:
 	~CModelX();
 
 	//ファイル読み込み
-	bool Load(std::string path) override;
+	bool Load(std::string path, bool dontDelete) override;
 
 	std::vector<CMaterial*> mMaterial;	//マテリアル配列
 	std::vector<CModelXFrame*> mFrame;  //フレームの配列
@@ -119,7 +119,7 @@ public:
 	//デフォルトコンストラクタ
 	CModelXFrame();
 	//コンストラクタ
-	CModelXFrame(CModelX* model);
+	CModelXFrame(CModelX* model, bool dontDelete);
 	//デストラクタ
 	~CModelXFrame();
 
@@ -172,7 +172,7 @@ public:
 	//スキンウェイトにフレーム番号を設定する
 	void SetSkinWeightFrameIndex(CModelX* model);
 	//読み込み処理
-	void Init(CModelX* model);
+	void Init(CModelX* model, bool dontDelete);
 	//描画処理
 	void Render();
 };

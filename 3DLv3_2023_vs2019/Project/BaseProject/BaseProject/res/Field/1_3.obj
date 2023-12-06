@@ -1,6 +1,6 @@
 # Blender 3.4.1
 # www.blender.org
-mtllib ステージ1(仮)3.mtl
+mtllib 1_3.mtl
 o Plane
 v -199.237595 0.000000 199.237595
 v 199.237595 0.000000 199.237595

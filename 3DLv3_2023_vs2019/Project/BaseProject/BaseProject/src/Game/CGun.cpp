@@ -11,7 +11,7 @@
 CGun::CGun()
 {
 	// モデルデータ取得
-	CModel* model = CResourceManager::Get<CModel>("Gun_M1G");
+	mpGun = CResourceManager::Get<CModel>("Gun_M1G");
 
 	//// 攻撃判定用のコライダーを作成
 	//mpAttackCol = new CColliderLine

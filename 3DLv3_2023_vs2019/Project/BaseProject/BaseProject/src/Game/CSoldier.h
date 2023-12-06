@@ -49,6 +49,8 @@ public:
 	void UpdateKickWait();
 	// エイム解除
 	void UpdateAimDwon();
+	// プレイヤーの攻撃Hit
+	void UpdateHit();
 
 	// 更新
 	void Update();
@@ -87,6 +89,7 @@ private:
 		eKick,		// 格闘
 		eReload,	// リロード
 		eAimDwou,	// エイム解除
+		eHit,		// ダメージHit
 		eJumpEnd,	// ジャンプ終了
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
@@ -122,6 +125,7 @@ private:
 		eKick,		// キック
 		eKickWait,	// キック終了
 		eAimDwon,	// エイム解除
+		eHit,		// ダメージHit
 	};
 	EState mState;	// プレイヤーの状態
 

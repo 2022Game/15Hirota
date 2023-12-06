@@ -80,7 +80,7 @@ std::vector<CTriangle> CModel::Triangles() const
 }
 
 //モデル読み込み
-bool CModel::Load(std::string path)
+bool CModel::Load(std::string path, bool dontDelete)
 {
 	//頂点データの保存(CVector型)
 	std::vector<CVector> vertex;
@@ -183,7 +183,7 @@ bool CModel::Load(std::string path)
 		//先頭がmtllibの時、マテリアルを読み込む
 		else if (strcmp(str[0], "mtllib") == 0) {
 			std::string mtlPath = dirPath + "\\" + str[1];
-			LoadMaterial(mtlPath);
+			LoadMaterial(mtlPath, dontDelete);
 		}
 		//先頭がusemtlの時、マテリアルインデックスを取得する
 		else if (strcmp(str[0], "usemtl") == 0) {
@@ -212,7 +212,7 @@ bool CModel::Load(std::string path)
 }
 
 //マテリアル読み込み
-bool CModel::LoadMaterial(std::string path)
+bool CModel::LoadMaterial(std::string path, bool dontDelete)
 {
 	std::string mtlPath = RES_DIR + path;
 
@@ -274,7 +274,7 @@ bool CModel::LoadMaterial(std::string path)
 		//先頭がmap_Kdの時、テクスチャを入力する
 		else if (strcmp(str[0], "map_Kd") == 0) {
 			std::string texPath = dirPath + str[1];
-			mpMaterials[idx]->LoadTexture(str[1], texPath.c_str());
+			mpMaterials[idx]->LoadTexture(str[1], texPath.c_str(), dontDelete);
 		}
 
 	}

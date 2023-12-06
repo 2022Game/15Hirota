@@ -17,8 +17,12 @@ protected:
 	CResource();
 	// デストラクタ
 	virtual ~CResource();
-	// リソース読み込み
-	virtual bool Load(std::string path) = 0;
 
+	// シーン切り替えで削除するかどうかを設定
+	void SetDontDelete(bool del);
+	// リソース読み込み
+	virtual bool Load(std::string path, bool dontDelete) = 0;
+
+	EScene mSceneType;		// 所属するシーンの種類
 	int mReferenceCount;	// 参照カウント
 };

@@ -10,8 +10,10 @@ CSceneBase::CSceneBase(EScene scene)
 //デストラクタ
 CSceneBase::~CSceneBase()
 {
-	//削除するシーンに所属するタスクは全て削除
+	//削除するシーンに所属するタスクとリソースは全て削除
 	CTaskManager::Instance()->DeleteInScene(mSceneType);
+
+	CResourceManager::DeleteInScene(mSceneType);
 }
 
 //シーンの種類を取得

@@ -42,7 +42,7 @@ void CGameScene::Load()
 	//リソースの読み込みやクラスの生成を行う
 
 	// フィールド関連
-	CResourceManager::Load<CModel>("Field","Field\\ステージ1(仮)3.obj");
+	CResourceManager::Load<CModel>("Field","Field\\1_3.obj");
 	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");
 	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");
 

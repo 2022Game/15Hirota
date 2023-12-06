@@ -7,7 +7,7 @@
 
 CMajicSword::CMajicSword()
 {
-	CModel* model = CResourceManager::Get<CModel>("MajicSword");
+	mpSword = CResourceManager::Get<CModel>("MajicSword");
 
 	// 攻撃判定用のコライダーを作成
 	mpAttackCol = new CColliderLine

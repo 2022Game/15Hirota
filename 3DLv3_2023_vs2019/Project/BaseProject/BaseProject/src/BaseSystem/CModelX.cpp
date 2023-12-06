@@ -424,7 +424,7 @@ void CModelX::SkipNode()
 	}
 }
 
-bool CModelX::Load(std::string path)
+bool CModelX::Load(std::string path, bool dontDelete)
 {
 	//ファイルサイズを取得する
 	FILE* fp;
@@ -485,7 +485,7 @@ bool CModelX::Load(std::string path)
 		//Materialの時
 		else if (strcmp(mToken, "Material") == 0)
 		{
-			new CMaterial(this);
+			new CMaterial(this, dontDelete);
 		}
 		//単語がFrameの場合
 		else if (strcmp(mToken, "Frame") == 0)
@@ -504,7 +504,7 @@ bool CModelX::Load(std::string path)
 				if (FinedFrame(mToken) == 0)
 				{
 					//フレームを作成する
-					p->mChild.push_back(new CModelXFrame(this));
+					p->mChild.push_back(new CModelXFrame(this, dontDelete));
 				}
 			}
 		}
@@ -566,7 +566,7 @@ model:CModelXインスタンスへのポインタ
 読み込み中にFrameが見つかれば、フレームを作成し、
 子フレームに追加する
 */
-CModelXFrame::CModelXFrame(CModelX* model)
+CModelXFrame::CModelXFrame(CModelX* model, bool dontDelete)
 	: mpMesh(nullptr)
 	, mpName(nullptr)
 	, mIndex(0)
@@ -607,7 +607,7 @@ CModelXFrame::CModelXFrame(CModelX* model)
 				if (model->FinedFrame(model->mToken) == 0)
 				{
 					//フレームを作成し、子フレームの配列に追加
-					mChild.push_back(new CModelXFrame(model));
+					mChild.push_back(new CModelXFrame(model, dontDelete));
 				}
 			}
 		}
@@ -624,7 +624,7 @@ CModelXFrame::CModelXFrame(CModelX* model)
 		else if (strcmp(model->mToken, "Mesh") == 0)
 		{
 		mpMesh = new CMesh;
-		mpMesh->Init(model);
+		mpMesh->Init(model, dontDelete);
 		}
 		else
 		{
@@ -904,7 +904,7 @@ void CMesh::SetSkinWeightFrameIndex(CModelX* model)
 Init
 Meshのデータを読み込む
 */
-void CMesh::Init(CModelX* model)
+void CMesh::Init(CModelX* model, bool dontDelete)
 {
 	model->GetToken();	//{ or 名前
 	if (!strchr(model->mToken, '{'))
@@ -999,7 +999,7 @@ void CMesh::Init(CModelX* model)
 				model->GetToken();  //Material
 				if (strcmp(model->Token(), "Material") == 0)
 				{
-					mMaterial.push_back(new CMaterial(model));
+					mMaterial.push_back(new CMaterial(model, dontDelete));
 				}
 				else
 				{//既出

@@ -11,7 +11,7 @@ CImage::CImage(const char* path, ETaskPriority prio, int sortOrder,
 	mSize = CVector2(128.0f, 128.0f);
 	mColor = CColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-	Load(path);
+	Load(path, dontDelete);
 }
 
 //デストラクタ
@@ -20,9 +20,9 @@ CImage::~CImage()
 }
 
 //テクスチャの読み込み
-void CImage::Load(const char* path)
+void CImage::Load(const char* path, bool dontDelete)
 {
-	mpTexture = CResourceManager::Load<CTexture>(path);
+	mpTexture = CResourceManager::Load<CTexture>(path, path, dontDelete);
 	//読み込み成功
 	if (mpTexture != nullptr)
 	{

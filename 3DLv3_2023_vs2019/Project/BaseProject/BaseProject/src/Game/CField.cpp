@@ -9,7 +9,7 @@ CField::CField()
 	/*mpModel = new CModel();
 	mpModel->Load("Field\\ステージ1(仮)3.obj", "Field\\ステージ1(仮)3.mtl");*/
 	// モデルデータ取得
-	CModel* model = CResourceManager::Get<CModel>("Field");
+	mpModel = CResourceManager::Get<CModel>("Field");
 
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 

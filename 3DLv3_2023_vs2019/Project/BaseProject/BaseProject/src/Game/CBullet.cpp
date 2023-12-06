@@ -20,7 +20,7 @@ CBullet::CBullet()
 	if (mpBullet == nullptr)
 	{
 		// モデルデータ取得
-		CModel* model = CResourceManager::Get<CModel>("Bullet");
+		mpBullet = CResourceManager::Get<CModel>("Bullet");
 	}
 
 	// 弾丸とコライダーのスケールを設定

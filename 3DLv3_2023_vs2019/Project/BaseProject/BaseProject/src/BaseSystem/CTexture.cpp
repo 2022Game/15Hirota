@@ -30,7 +30,7 @@ void CTexture::Destory() {
 	}
 }
 
-bool CTexture::Load(std::string path)
+bool CTexture::Load(std::string path, bool dontDelete)
 {
 	//ファイルオープン
 	std::string file(path);

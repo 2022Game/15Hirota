@@ -85,7 +85,7 @@ private:
 	Load(ファイル名)
 	画像ファイルの読み込み（テクスチャファイルの読み込み）
 	*/
-	bool Load(std::string path) override;
+	bool Load(std::string path, bool dontDelete) override;
 
 	//	static std::map<std::string, CTexture>mTexFile;
 		//ファイル名

@@ -24,9 +24,9 @@ public:
 private:
 	~CModel();
 	//モデル読み込み
-	bool Load(std::string path) override;
+	bool Load(std::string path, bool dontDelete) override;
 	//マテリアル読み込み
-	bool LoadMaterial(std::string path);
+	bool LoadMaterial(std::string path, bool dontDelete);
 	void CreateVertexBuffer();
 	//マテリアルポインタの可変長配列
 	std::vector<CMaterial*> mpMaterials;

@@ -20,9 +20,9 @@ char* strncpy(char* str1, const char* str2, int len)
 	return str1; //コピー先の先頭アドレスを返却
 }
 
-bool CMaterial::LoadTexture(std::string name, std::string path)
+bool CMaterial::LoadTexture(std::string name, std::string path, bool dontDelete)
 {
-	mpTexture = CResourceManager::Load<CTexture>(name, path);
+	mpTexture = CResourceManager::Load<CTexture>(path, path, dontDelete);
 	return mpTexture != nullptr;
 }
 
@@ -65,7 +65,7 @@ CMaterial::CMaterial()
 /*
 Materialデータの読み込みと設定
 */
-CMaterial::CMaterial(CModelX *model)
+CMaterial::CMaterial(CModelX* model, bool dontDelete)
 	:mpTextureFilename(nullptr)
 {
 	//CModelXにマテリアルを追加する
@@ -105,7 +105,7 @@ CMaterial::CMaterial(CModelX *model)
 
 		//テクスチャの読み込み
 		std::string texPath = model->DirPath() + mpTextureFilename;
-		LoadTexture(mpTextureFilename, texPath);
+		LoadTexture(mpTextureFilename, texPath, dontDelete);
 
 		model->GetToken(); // }
 		model->GetToken(); // }

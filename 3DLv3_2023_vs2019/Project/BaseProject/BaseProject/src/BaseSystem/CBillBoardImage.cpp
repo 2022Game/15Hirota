@@ -8,7 +8,7 @@ CBillBoardImage::CBillBoardImage(std::string path, ETag tag, ETaskPriority prio,
 	, mElapsedTime(0.0f)
 {
 	// テクスチャ読み込み
-	mMaterial.LoadTexture("", path);
+	mMaterial.LoadTexture("", path, false);
 	CTexture* tex = mMaterial.Texture();
 
 	CVector2 size;

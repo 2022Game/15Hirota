@@ -34,6 +34,8 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 	{ "Character\\Gas mask soldier\\anim\\Right foot kick_121.x",					false,	121.0f	},		// 格闘
 	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",								true,	 99.0f	},	// リロード
 	{ "Character\\Gas mask soldier\\anim\\Rilfle_Aim_to_Dwon._91.x",				false,	 91.0f	},		// エイム解除
+	{ "Character\\Gas mask soldier\\anim\\Hit_27.x",								false,	 27.0f	},		// Hit
+
 };
 
 #define ENEMY_HEIGHT 8.0f
@@ -343,16 +345,6 @@ void CSoldier::UpdateAttackWait()
 	}
 }
 
-// ジャンプ開始
-void CSoldier::UpdateJumpStart()
-{
-	ChangeAnimation(EAnimType::eJumpStart);
-	mState = EState::eJump;
-
-	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
-	mIsGrounded = false;
-}
-
 // エイム解除
 void CSoldier::UpdateAimDwon()
 {
@@ -362,6 +354,22 @@ void CSoldier::UpdateAimDwon()
 		mState = EState::eIdle;
 		mElapsedTime_End = 0.0f;
 	}
+}
+
+// プレイヤーの攻撃を受けた時
+void CSoldier::UpdateHit()
+{
+
+}
+
+// ジャンプ開始
+void CSoldier::UpdateJumpStart()
+{
+	ChangeAnimation(EAnimType::eJumpStart);
+	mState = EState::eJump;
+
+	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
+	mIsGrounded = false;
 }
 
 
@@ -417,6 +425,14 @@ void CSoldier::Update()
 	case EState::eAttackWait:
 		UpdateAttackWait();
 		break;
+		// 追跡状態
+	case EState::eChase:
+		UpdateChase();
+		break;
+		// プレイヤーの攻撃Hit
+	case EState::eHit:
+		UpdateHit();
+		break;
 		// ジャンプ開始
 	case EState::eJumpStart:
 		UpdateJumpStart();
@@ -428,10 +444,6 @@ void CSoldier::Update()
 		// ジャンプ終了
 	case EState::eJumpEnd:
 		UpdateJumpEnd();
-		break;
-		// 追跡状態
-	case EState::eChase:
-		UpdateChase();
 		break;
 	}
 
