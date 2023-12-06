@@ -112,14 +112,16 @@ CSoldier::CSoldier()
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		10.0f //後で変更
+		0.5f //後で変更
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
 	mpDamageCol->SetCollisionTags({ ETag::eWeapon });
-	// ダメージを受けるコライダーを少し上へずらす
-	mpDamageCol->Position(0.0f, 5.0f, 0.0f);
+	// ダメージを受けるコライダーを少し下へずらす
+	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
+	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
+	mpDamageCol->SetAttachMtx(spineMtx);
 
 
 	// 右足にダメージコライダーを設定
@@ -359,7 +361,14 @@ void CSoldier::UpdateAimDwon()
 // プレイヤーの攻撃を受けた時
 void CSoldier::UpdateHit()
 {
-
+	// ダメージを受けた時は移動を停止
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	ChangeAnimation(EAnimType::eHit);
+	if (IsAnimationFinished())
+	{
+		mState = EState::eIdle;
+	}
 }
 
 // ジャンプ開始
@@ -540,6 +549,13 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				mpRideObject = other->Owner();
 			}
+		}
+	}
+	if (self == mpDamageCol)
+	{
+		if (other->Layer() == ELayer::eAttackCol)
+		{
+			mState = EState::eHit;
 		}
 	}
 }
