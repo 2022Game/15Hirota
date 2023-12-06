@@ -6,8 +6,10 @@
 CField::CField()
 	: CObjectBase(ETag::eField, ETaskPriority::eBackground)
 {
-	mpModel = new CModel();
-	mpModel->Load("Field\\ステージ1(仮)3.obj", "Field\\ステージ1(仮)3.mtl");
+	/*mpModel = new CModel();
+	mpModel->Load("Field\\ステージ1(仮)3.obj", "Field\\ステージ1(仮)3.mtl");*/
+	// モデルデータ取得
+	CModel* model = CResourceManager::Get<CModel>("Field");
 
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 
@@ -16,38 +18,17 @@ CField::CField()
 
 CField::~CField()
 {
-	if (mpModel != nullptr)
-	{
-		delete mpModel;
-		mpModel = nullptr;
-	}
-
 	if (mpColliderMesh != nullptr)
 	{
 		delete mpColliderMesh;
 		mpColliderMesh = nullptr;
 	}
-
-	if (mpCubeModel != nullptr)
-	{
-		delete mpCubeModel;
-		mpCubeModel = nullptr;
-	}
-
-	if (mpCylinderModel != nullptr)
-	{
-		delete mpCubeModel;
-		mpCubeModel = nullptr;
-	}
 }
 
 void CField::CreateFieldObjects()
 {
-	mpCubeModel = new CModel();
-	mpCubeModel->Load("Field\\Object\\cube.obj", "Field\\Object\\cube.mtl");
-
-	mpCylinderModel = new CModel();
-	mpCylinderModel->Load("Field\\Object\\cylinder.obj", "Field\\Object\\cylinder.mtl");
+	mpCubeModel = CResourceManager::Get<CModel>("FieldCube");
+	mpCylinderModel = CResourceManager::Get<CModel>("FieldCylinder");
 
 	new CMoveFloor
 	(

@@ -68,6 +68,9 @@
     <Filter Include="ソース ファイル\Game\UI\EnemyUI">
       <UniqueIdentifier>{eec507f6-3712-4c19-8ec6-7d16afda7243}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\BaseSystem\Resource">
+      <UniqueIdentifier>{25e6b34e-6c0b-4b3b-a041-930632c047be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -312,6 +315,12 @@
     </ClCompile>
     <ClCompile Include="src\Game\CKick.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CResourceManager.cpp">
+      <Filter>ソース ファイル\BaseSystem\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CResource.cpp">
+      <Filter>ソース ファイル\BaseSystem\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -581,6 +590,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CKick.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CResourceManager.h">
+      <Filter>ソース ファイル\BaseSystem\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CResource.h">
+      <Filter>ソース ファイル\BaseSystem\Resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

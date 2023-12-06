@@ -25,9 +25,11 @@ private:
 	//マテリアル名
 	char mName[MATERIAL_NAME_LEN + 1];
 	//テクスチャ
-	CTexture mTexture;
+	CTexture* mpTexture;
 
 public:
+	//テクスチャ読み込み
+	bool LoadTexture(std::string name, std::string path);
 	//テクスチャの取得
 	CTexture* Texture();
 	//マテリアルを無効にする

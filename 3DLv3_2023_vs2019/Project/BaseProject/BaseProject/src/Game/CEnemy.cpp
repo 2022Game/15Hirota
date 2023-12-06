@@ -9,8 +9,8 @@
 CEnemy::CEnemy()
 	: CCharaBase(ETag::eEnemy, ETaskPriority::eDefault)
 {
-	// モデルデータ読み込み
-	CModelX* model = new CModelX();
+	//// モデルデータ読み込み
+	//CModelX* model = new CModelX();
 	//model->Load();
 }
 

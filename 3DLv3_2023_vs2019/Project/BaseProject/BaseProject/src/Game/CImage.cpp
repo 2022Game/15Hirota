@@ -17,31 +17,18 @@ CImage::CImage(const char* path, ETaskPriority prio, int sortOrder,
 //デストラクタ
 CImage::~CImage()
 {
-	//テクスチャを読み込んでいたら破棄
-	if (mpTexture != nullptr)
-	{
-		delete mpTexture;
-	}
 }
 
 //テクスチャの読み込み
 void CImage::Load(const char* path)
 {
-	mpTexture = new CTexture();
-	bool success = mpTexture->Load(path);
+	mpTexture = CResourceManager::Load<CTexture>(path);
 	//読み込み成功
-	if (success)
+	if (mpTexture != nullptr)
 	{
 		//表示サイズをテクスチャのサイズで初期化
 		const STgamHeader& header = mpTexture->Header();
 		SetSize(header.width, header.height);
-	}
-	//読み込み失敗
-	else
-	{
-		//テクスチャを破棄
-		delete mpTexture;
-		mpTexture = nullptr;
 	}
 }
 

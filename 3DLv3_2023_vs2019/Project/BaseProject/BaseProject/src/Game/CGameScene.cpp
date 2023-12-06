@@ -41,6 +41,23 @@ void CGameScene::Load()
 	//ここでゲーム中に必要な
 	//リソースの読み込みやクラスの生成を行う
 
+	// フィールド関連
+	CResourceManager::Load<CModel>("Field","Field\\ステージ1(仮)3.obj");
+	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");
+	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");
+
+	// キャラクター関連
+	CResourceManager::Load<CModelX>("Player", "Character\\Monster1\\Monster_1.x");
+	CResourceManager::Load<CModelX>("Soldier", "Character\\Gas mask soldier\\GasMask_Soldier_Model.x");
+	//CResourceManager::Load<CModelX>("UnityChan", "Character\\UnityChan\\unitychan.x");
+	//CResourceManager::Load<CModelX>("Yukari", "Character\\Yukari\\Yukari_Model.x");
+
+
+	// アイテム関連
+	CResourceManager::Load<CModel>("Bullet", "Item\\Bullet1\\Bullet.obj");
+	CResourceManager::Load<CModel>("Gun_M1G", "Item\\Gun_M1Garand\\Gun_M1Garand.obj");
+	CResourceManager::Load<CModel>("MajicSword", "Item\\MajicSword\\MajicSword.obj");
+
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
 

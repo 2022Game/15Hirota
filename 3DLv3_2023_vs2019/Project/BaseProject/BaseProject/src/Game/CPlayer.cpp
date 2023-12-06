@@ -9,8 +9,8 @@
 #include "CMajicSword.h"
 #include "CBullet.h"
 
-// プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\Monster1\\Monster_1.x"
+//// プレイヤーのモデルデータのパス
+//#define MODEL_PATH "Character\\Monster1\\Monster_1.x"
 
 // プレイヤー関連
 #define PLAYER_HEIGHT 16.0f		// 高さ
@@ -70,9 +70,8 @@ CPlayer::CPlayer()
 	// インスタンスの設定
 	spInstance = this;
 
-	// モデルデータ読み込み
-	CModelX* model = new CModelX();
-	model->Load(MODEL_PATH);
+	// モデルデータ取得
+	CModelX* model = CResourceManager::Get<CModelX>("Player");
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
@@ -124,12 +123,6 @@ CPlayer::~CPlayer()
 	{
 		delete mpColliderLine;
 		mpColliderLine = nullptr;
-	}
-
-	if (mpModel != nullptr)
-	{
-		delete mpModel;
-		mpModel = nullptr;
 	}
 }
 

@@ -17,8 +17,8 @@
 // CSoldierのインスタンス
 CSoldier* CSoldier::spInstance = nullptr;
 
-// CSoldierのモデルデータのパス
-#define MODEL_PATH	"Character\\Gas mask soldier\\GasMask_Soldier_Model.x"
+//// CSoldierのモデルデータのパス
+//#define MODEL_PATH	"Character\\Gas mask soldier\\GasMask_Soldier_Model.x"
 
 #define EFFECT	 "Effect\\exp.tga"
 
@@ -80,9 +80,8 @@ CSoldier::CSoldier()
 	//インスタンスの設定
 	spInstance = this;
 
-	// モデルデータ読み込み
-	CModelX* model = new CModelX();
-	model->Load(MODEL_PATH);
+	// モデルデータ取得
+	CModelX* model = CResourceManager::Get<CModelX>("Soldier");
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
@@ -145,12 +144,6 @@ CSoldier::~CSoldier()
 	{
 		delete mpColliderLine;
 		mpColliderLine = nullptr;
-	}
-
-	if (mpModel != nullptr)
-	{
-		delete mpModel;
-		mpModel = nullptr;
 	}
 
 	// ダメージを受けるコライダーを削除

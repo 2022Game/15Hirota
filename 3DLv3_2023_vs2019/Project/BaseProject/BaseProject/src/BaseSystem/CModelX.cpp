@@ -198,8 +198,20 @@ void CModelX::RenderShader(CMatrix* pCombinedMatrix)
 	mShader.Render(this, pCombinedMatrix);
 }
 
+bool CModelX::IsAddAnimationSet(std::string path) const
+{
+	for (CAnimationSet* anim : mAnimationSet)
+	{
+		if (path == anim->mPath) return true;
+	}
+	return false;
+}
+
+
 void CModelX::AddAnimationSet(const char* file)
 {
+	if (IsAddAnimationSet(file)) return;
+
 	//ファイルパスにリソースデータのディレクトリパスを追加
 	std::string filePath = RES_DIR;
 	filePath += file;
@@ -242,7 +254,8 @@ void CModelX::AddAnimationSet(const char* file)
 		//単語がAnimationSetの場合
 		else if (strcmp(mToken, "AnimationSet") == 0)
 		{
-			new CAnimationSet(this);
+			CAnimationSet* anim = new CAnimationSet(this);
+			anim->mPath = file;
 		}
 	}
 	SAFE_DELETE_ARRAY(buf);	//確保した領域を解放する
@@ -411,28 +424,27 @@ void CModelX::SkipNode()
 	}
 }
 
-void CModelX::Load(char* file)
+bool CModelX::Load(std::string path)
 {
 	//ファイルサイズを取得する
 	FILE* fp;
 
 	//ファイルパスにリソースデータのディレクトリパスを追加
-	std::string filePath = RES_DIR;
-	filePath += file;
+	std::string filePath = RES_DIR + path;
 
 	fp = fopen(filePath.c_str(), "rb"); //ファイルをオープンする
 	//エラーチェック
 	if (fp == NULL)
 	{
 		printf("fopen error:%s\n", filePath.c_str());
-		return;
+		return false;
 	}
 	printf("%s\n", filePath.c_str());
 
 	//ファイルパスを記憶
 	mFilePath = filePath;
 	//ファイルパスからディレクトリパスを取得
-	mDirPath = file;
+	mDirPath = path;
 	size_t index = mDirPath.find_last_of('\\');
 	if (index >= 0)
 	{
@@ -521,6 +533,8 @@ void CModelX::Load(char* file)
 	mpSkinningMatrix = new CMatrix[mFrame.size()];
 	//シェーダー読み込み
 	mShader.Load("Shader\\skinmesh.vert", "Shader\\skinmesh.flag");
+
+	return true;
 
 }
 

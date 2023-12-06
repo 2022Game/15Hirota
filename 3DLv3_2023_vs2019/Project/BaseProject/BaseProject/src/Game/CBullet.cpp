@@ -3,8 +3,8 @@
 #include "CCharaBase.h"
 #include "CEffect.h"
 
-#define BULLET_O "Item\\Bullet1\\Bullet.obj"
-#define BULLET_M "Item\\Bullet1\\Bullet.mtl"
+//#define BULLET_O "Item\\Bullet1\\Bullet.obj"
+//#define BULLET_M "Item\\Bullet1\\Bullet.mtl"
 
 // 弾丸の移動速度
 #define MOVE_SPEED 100.0f
@@ -19,9 +19,8 @@ CBullet::CBullet()
 
 	if (mpBullet == nullptr)
 	{
-		// モデルロード
-		mpBullet = new CModel();
-		mpBullet->Load(BULLET_O, BULLET_M);
+		// モデルデータ取得
+		CModel* model = CResourceManager::Get<CModel>("Bullet");
 	}
 
 	// 弾丸とコライダーのスケールを設定

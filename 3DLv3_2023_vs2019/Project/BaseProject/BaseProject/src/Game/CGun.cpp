@@ -4,15 +4,14 @@
 #include "CInput.h"
 #include "CEffect.h"
 
-#define M1GARAND_O "Item\\Gun_M1Garand\\Gun_M1Garand.obj"
-#define M1GARAND_M "Item\\Gun_M1Garand\\Gun_M1Garand.mtl"
+//#define M1GARAND_O "Item\\Gun_M1Garand\\Gun_M1Garand.obj"
+//#define M1GARAND_M "Item\\Gun_M1Garand\\Gun_M1Garand.mtl"
 
 
 CGun::CGun()
 {
-	// モデルロード
-	mpGun = new CModel();
-	mpGun->Load(M1GARAND_O, M1GARAND_M);
+	// モデルデータ取得
+	CModel* model = CResourceManager::Get<CModel>("Gun_M1G");
 
 	//// 攻撃判定用のコライダーを作成
 	//mpAttackCol = new CColliderLine

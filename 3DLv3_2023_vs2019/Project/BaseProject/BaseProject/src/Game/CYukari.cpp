@@ -18,8 +18,8 @@
 // Yukariのインスタンス
 CYukari* CYukari::spInstance = nullptr;
 
-// Yukariのモデルデータのパス
-#define MODEL_PATH	"Character\\Yukari\\Yukari_Model.x"
+//// Yukariのモデルデータのパス
+//#define MODEL_PATH	"Character\\Yukari\\Yukari_Model.x"
 
 #define EFFECT	 "Effect\\exp.tga"
 
@@ -75,9 +75,8 @@ CYukari::CYukari()
 	//インスタンスの設定
 	spInstance = this;
 
-	// モデルデータ読み込み
-	CModelX* model = new CModelX();
-	model->Load(MODEL_PATH);
+	// モデルデータ取得
+	CModelX* model = CResourceManager::Get<CModelX>("Yukari");
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
@@ -130,12 +129,6 @@ CYukari::~CYukari()
 	{
 		delete mpColliderLine;
 		mpColliderLine = nullptr;
-	}
-
-	if (mpModel != nullptr)
-	{
-		delete mpModel;
-		mpModel = nullptr;
 	}
 
 	// ダメージを受けるコライダーを削除

@@ -4,8 +4,8 @@
 // プレイヤーのインスタンス
 CUnityChan* CUnityChan::spInstance = nullptr;
 
-// プレイヤーのモデルデータのパス
-#define MODEL_PATH "Character\\UnityChan\\unitychan.x"
+//// プレイヤーのモデルデータのパス
+//#define MODEL_PATH "Character\\UnityChan\\unitychan.x"
 
 // プレイヤーのアニメーションデータのテーブル
 const CUnityChan::AnimData CUnityChan::ANIM_DATA[] =
@@ -29,9 +29,8 @@ CUnityChan::CUnityChan()
 	//インスタンスの設定
 	spInstance = this;
 
-	// モデルデータ読み込み
-	CModelX* model = new CModelX();
-	model->Load(MODEL_PATH);
+	// モデルデータ取得
+	CModelX* model = CResourceManager::Get<CModelX>("UnityChan");
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
@@ -62,12 +61,6 @@ CUnityChan::~CUnityChan()
 	{
 		delete mpColliderLine;
 		mpColliderLine = nullptr;
-	}
-
-	if (mpModel != nullptr)
-	{
-		delete mpModel;
-		mpModel = nullptr;
 	}
 }
 
