@@ -331,6 +331,9 @@
     <ClCompile Include="src\Game\CSoldierGauge.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CStone1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -614,6 +617,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSoldierGauge.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStone1.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

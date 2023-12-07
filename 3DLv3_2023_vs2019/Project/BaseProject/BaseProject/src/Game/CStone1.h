@@ -1,0 +1,21 @@
+#ifndef CSTONE1_H
+#define CSTONE1_H
+
+#include "CModel.h"
+#include "CColliderMesh.h"
+#include "CObjectBase.h"
+
+class CStone1 : public CObjectBase
+{
+public:
+	CStone1(CModel* model, const CVector& pos, const CVector& scale, const CVector& rot);
+	~CStone1();
+
+	void Update();
+	void Render();
+
+private:
+	CModel* mpModel;
+	CColliderMesh* mpColliderMesh;
+};
+#endif

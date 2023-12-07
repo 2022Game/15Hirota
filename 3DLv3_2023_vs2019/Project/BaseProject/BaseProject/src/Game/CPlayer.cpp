@@ -87,6 +87,7 @@ CPlayer::CPlayer()
 	// 最初は待機アニメーションを再生
 	ChangeAnimation(EAnimType::eIdle);
 
+	// 縦のコライダーライン
 	mpColliderLine = new CColliderLine
 	(
 		this, ELayer::eField,
@@ -97,14 +98,23 @@ CPlayer::CPlayer()
 	mpColliderLine->SetAttachMtx(speneMtxL);*/
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
+	// 前後のコライダーライン
 	mpColliderLine_2 = new CColliderLine
 	(
-		this, ELayer::eGoalCol,
-		CVector(0.0f, 8.0f, -7.0f),
-		CVector(0.0f, 8.0f, 7.0f)
+		this, ELayer::eField,
+		CVector(0.0f, 8.0f, -8.0f),
+		CVector(0.0f, 8.0f, 8.0f)
 	);
-	mpColliderLine_2->SetCollisionLayers({ ELayer::eGoalCol });
-	mpColliderLine_2->SetCollisionTags({ ETag::eGoalObject });
+	mpColliderLine_2->SetCollisionLayers({ ELayer::eField });
+
+	// 横のコライダーライン
+	mpColliderLine_3 = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(8.0f, 8.0f, 0.0f),
+		CVector(-8.0f, 8.0f, 0.0f)
+	);
+	mpColliderLine_3->SetCollisionLayers({ ELayer::eField });
 
 	// ダメージを受けるコライダーを作成
 	mpDamageCol = new CColliderSphere
@@ -142,6 +152,12 @@ CPlayer::~CPlayer()
 	{
 		delete mpColliderLine_2;
 		mpColliderLine_2 = nullptr;
+	}
+
+	if (mpColliderLine_3 != nullptr)
+	{
+		delete mpColliderLine_3;
+		mpColliderLine_3 = nullptr;
 	}
 
 	if (mpDamageCol != nullptr)
@@ -564,6 +580,34 @@ void CPlayer::Update()
 void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	if (self == mpColliderLine)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mMoveSpeed.Y(0.0f);
+			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
+			mIsGrounded = true;
+
+			if (other->Tag() == ETag::eRideableObject)
+			{
+				mpRideObject = other->Owner();
+			}
+		}
+	}
+	else if (self == mpColliderLine_2)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mMoveSpeed.Y(0.0f);
+			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
+			mIsGrounded = true;
+
+			if (other->Tag() == ETag::eRideableObject)
+			{
+				mpRideObject = other->Owner();
+			}
+		}
+	}
+	else if (self == mpColliderLine_3)
 	{
 		if (other->Layer() == ELayer::eField)
 		{

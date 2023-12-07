@@ -12,6 +12,7 @@
 #include "CUIBase.h"
 #include "CImage.h"
 #include "CInput.h"
+#include "CStone1.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -46,6 +47,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");
 	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");
 	CResourceManager::Load<CModel>("GoalModel", "Field\\Object\\Goal.obj");
+	CResourceManager::Load<CModel>("Stone1", "Field\\Object\\Stone1.obj");
 
 	// キャラクター関連
 	CResourceManager::Load<CModelX>("Player", "Character\\Monster1\\Monster_1.x");

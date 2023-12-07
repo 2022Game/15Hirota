@@ -9,7 +9,7 @@ CGoalObject::CGoalObject(CModel* model, const CVector& pos, const CVector& scale
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(0.0f, 50.0f, 0.0f),
 		true, 1.0f);
-	mpColliderLine->SetCollisionLayers({ ELayer::eGoalCol });
+	mpColliderLine->SetCollisionLayers({ ELayer::ePlayer });
 
 	mpColliderMesh = new CColliderMesh(this, ELayer::eGoalCol, mpModel, true);
 

@@ -12,6 +12,7 @@ enum class ELayer
 
 	eEffect,
 	ePlayer,
+	eEnemy,
 
 	eAttackCol,	// 攻撃を与える時のコライダー
 	eDamageCol,	// ダメージを受ける時のコライダー

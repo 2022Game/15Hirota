@@ -78,6 +78,7 @@
     <ClCompile Include="src\Game\CSoldierFrame.cpp" />
     <ClCompile Include="src\Game\CSoldierGauge.cpp" />
     <ClCompile Include="src\Game\CStaminaGauge.cpp" />
+    <ClCompile Include="src\Game\CStone1.cpp" />
     <ClCompile Include="src\Game\CTitleScene.cpp" />
     <ClCompile Include="src\Game\CUIGauge.cpp" />
     <ClCompile Include="src\Game\CUnityChan.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="src\Game\CSoldierFrame.h" />
     <ClInclude Include="src\Game\CSoldierGauge.h" />
     <ClInclude Include="src\Game\CStaminaGauge.h" />
+    <ClInclude Include="src\Game\CStone1.h" />
     <ClInclude Include="src\Game\CTitleScene.h" />
     <ClInclude Include="src\Game\CUIGauge.h" />
     <ClInclude Include="src\Game\CUnityChan.h" />

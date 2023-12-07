@@ -139,8 +139,10 @@ private:
 	CImage* image;
 	bool mIsGrounded;	// 接地しているかどうか
 
+	// コライダーライン
 	CColliderLine* mpColliderLine;
 	CColliderLine* mpColliderLine_2;
+	CColliderLine* mpColliderLine_3;
 
 	CTransform* mpRideObject;
 	int mInvincible;			// 無敵カウンタ
