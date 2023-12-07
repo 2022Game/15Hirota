@@ -140,6 +140,8 @@ private:
 	bool mIsGrounded;	// 接地しているかどうか
 
 	CColliderLine* mpColliderLine;
+	CColliderLine* mpColliderLine_2;
+
 	CTransform* mpRideObject;
 	int mInvincible;			// 無敵カウンタ
 	bool staminaDepleted;		// スタミナが上限値に到達した場合のフラグ

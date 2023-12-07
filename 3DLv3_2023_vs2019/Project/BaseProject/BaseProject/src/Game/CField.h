@@ -19,4 +19,5 @@ private:
 
 	CModel* mpCubeModel;
 	CModel* mpCylinderModel;
+	CModel* mpGoalModel;
 };

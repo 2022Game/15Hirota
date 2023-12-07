@@ -45,6 +45,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("Field","Field\\1_3.obj");
 	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");
 	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");
+	CResourceManager::Load<CModel>("GoalModel", "Field\\Object\\Goal.obj");
 
 	// キャラクター関連
 	CResourceManager::Load<CModelX>("Player", "Character\\Monster1\\Monster_1.x");
@@ -89,6 +90,7 @@ void CGameScene::Load()
 		player->Position()
 	);
 	mainCamera->SetFollowTargetTf(player);
+
 
 	//// クリア画像のリソースをロード
 	//CImage* clearImage = new CImage("UI\\Clear.jpeg"); // CLEAR_IMAGE_PATH はクリア画像のファイルパス

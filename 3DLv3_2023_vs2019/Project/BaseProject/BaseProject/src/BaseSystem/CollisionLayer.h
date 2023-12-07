@@ -8,10 +8,11 @@ enum class ELayer
 	eTest,
 
 	eField,
+	eGoalCol,	// ゴールのコライダー
+
 	eEffect,
 	ePlayer,
 
-	eGoalCol,	// ゴールのコライダー
 	eAttackCol,	// 攻撃を与える時のコライダー
 	eDamageCol,	// ダメージを受ける時のコライダー
 };

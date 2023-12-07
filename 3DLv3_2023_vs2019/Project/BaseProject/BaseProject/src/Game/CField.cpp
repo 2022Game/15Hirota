@@ -2,6 +2,7 @@
 #include "CCollisionManager.h"
 #include "CMoveFloor.h"
 #include "CRotateFloor.h"
+#include "CGoalObject.h"
 
 CField::CField()
 	: CObjectBase(ETag::eField, ETaskPriority::eBackground)
@@ -85,6 +86,14 @@ void CField::CreateFieldObjects()
 		CVector(135.0f, 70.0f, -52.5f), CVector(0.25f, 1.0f, 0.25f),
 		CVector(0.0f, 50.0f, 0.0f), 5.0f
 	);
+
+	// ÉSÅ[ÉãÉÇÉfÉã
+	new CGoalObject
+	(
+		mpGoalModel,
+		CVector(-30.0f, 0.0f, 100.0f), CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 90.0f, 0.0f)
+		);
 }
 
 void CField::Update()

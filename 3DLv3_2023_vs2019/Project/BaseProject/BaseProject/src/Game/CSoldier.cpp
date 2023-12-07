@@ -9,9 +9,25 @@
 #include "CGun.h"
 #include "CBullet.h"
 #include "CKick.h"
-
+#include "CSoldierFrame.h"
+#include "CSoldierGauge.h"
 
 #define _USE_MATH_DEFINES
+
+
+// フレームの線の幅
+#define FRAME_BORDER	(1.0f)
+
+
+// バーの横サイズ
+#define NEW_BAR_SIZE_X	(139.0f)
+// バーの縦サイズ
+#define NEW_BAR_SIZE_Y	(11.5f)
+
+// バーの横サイズ * 線の幅
+#define BAR_SIZE_X (NEW_BAR_SIZE_X - FRAME_BORDER) //*2.0f
+// バーの縦サイズ * 線の幅
+#define BAR_SIZE_Y (NEW_BAR_SIZE_Y - FRAME_BORDER)
 
 
 // CSoldierのインスタンス
@@ -84,6 +100,9 @@ CSoldier::CSoldier()
 
 	// モデルデータ取得
 	CModelX* model = CResourceManager::Get<CModelX>("Soldier");
+
+	mpFrame = new CSoldierFrame();
+	mpGauge = new CSoldierGauge();
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
@@ -180,6 +199,10 @@ void CSoldier::ChangeLevel(int level)
 	mCharaMaxStatus = ENEMY_STATUS[index];
 	// 現在のステータスを最大値にすることで、HP回復
 	mCharaStatus = mCharaMaxStatus;
+
+	// 最大HPと現在HPをHPゲージに反映
+	mpGauge->SetMaxValue(mCharaMaxStatus.hp);
+	mpGauge->SetValue(mCharaStatus.hp);
 }
 
 // アニメーション切り替え
@@ -308,10 +331,22 @@ void CSoldier::UpdateKick()
 	// 攻撃するときは移動を停止
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
-	mpKick->AttackStart();
-	ChangeAnimation(EAnimType::eKick);
 
-	mState = EState::eKickWait;
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
+	ChangeAnimation(EAnimType::eKick);
+	if (mAnimationFrame >= 45.0f && mAnimationFrame < 60.0f)
+	{
+		mpKick->AttackStart();
+		mState = EState::eKickWait;
+	}
 }
 
 // キック終了
@@ -501,6 +536,25 @@ void CSoldier::Update()
 	CXCharacter::Update();
 
 	mIsGrounded = false;
+
+	
+	// カメラの取得
+	CCamera* cam = CCamera::CurrentCamera();
+	// フレームの位置を頭上に固定
+	CVector gaugeWorldPos = Position() + CVector(-5.0f, 30.0f, 0.0f);
+	// カメラでワールド座標をスクリーン座標へ変換
+	CVector gp = cam->WorldToScreenPos(gaugeWorldPos);
+
+	// フレームの座標を2Dで設定
+	mpFrame->SetPos(gp.X(), gp.Y());
+
+	// ゲージの座標を2Dで設定（右にずらす）
+	float GaugeOffsetX = 20.0f;
+	// ゲージの座標を2Dで設定
+	mpGauge->SetPos(gp.X() + GaugeOffsetX, gp.Y());
+
+	// 現在のHpを設定
+	mpGauge->SetValue(mCharaStatus.hp);
 }
 
 // プレイヤー追跡

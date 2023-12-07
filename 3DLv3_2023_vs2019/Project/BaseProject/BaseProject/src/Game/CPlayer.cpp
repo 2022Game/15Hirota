@@ -93,20 +93,33 @@ CPlayer::CPlayer()
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
+	/*const CMatrix* speneMtxL = GetFrameMtx("Armature_mixamorig_Spine1");
+	mpColliderLine->SetAttachMtx(speneMtxL);*/
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+
+	mpColliderLine_2 = new CColliderLine
+	(
+		this, ELayer::eGoalCol,
+		CVector(0.0f, 8.0f, -7.0f),
+		CVector(0.0f, 8.0f, 7.0f)
+	);
+	mpColliderLine_2->SetCollisionLayers({ ELayer::eGoalCol });
+	mpColliderLine_2->SetCollisionTags({ ETag::eGoalObject });
 
 	// ダメージを受けるコライダーを作成
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		8.0f
+		0.5f
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
 	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon });
 	// ダメージを受けるコライダーを少し上へずらす
-	mpDamageCol->Position(0.0f, 5.0f, 0.0f);
+	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
+	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
+	mpDamageCol->SetAttachMtx(spineMtx);
 
 
 	mpSword = new CMajicSword();
@@ -123,6 +136,18 @@ CPlayer::~CPlayer()
 	{
 		delete mpColliderLine;
 		mpColliderLine = nullptr;
+	}
+
+	if (mpColliderLine_2 != nullptr)
+	{
+		delete mpColliderLine_2;
+		mpColliderLine_2 = nullptr;
+	}
+
+	if (mpDamageCol != nullptr)
+	{
+		delete mpDamageCol;
+		mpDamageCol = nullptr;
 	}
 }
 
@@ -550,6 +575,13 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				mpRideObject = other->Owner();
 			}
+		}
+	}
+	else if (self == mpDamageCol)
+	{
+		if (other->Layer() == ELayer::eGoalCol)
+		{
+			ChangeAnimation(EAnimType::eRotate);
 		}
 	}
 }

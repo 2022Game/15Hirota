@@ -322,6 +322,15 @@
     <ClCompile Include="src\BaseSystem\CResource.cpp">
       <Filter>ソース ファイル\BaseSystem\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CGoalObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSoldierFrame.cpp">
+      <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSoldierGauge.cpp">
+      <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -596,6 +605,15 @@
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CResource.h">
       <Filter>ソース ファイル\BaseSystem\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGoalObject.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSoldierFrame.h">
+      <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSoldierGauge.h">
+      <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

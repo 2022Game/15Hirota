@@ -64,6 +64,7 @@
     <ClCompile Include="src\Game\CField.cpp" />
     <ClCompile Include="src\Game\CGameOverScene.cpp" />
     <ClCompile Include="src\Game\CGameScene.cpp" />
+    <ClCompile Include="src\Game\CGoalObject.cpp" />
     <ClCompile Include="src\Game\CGun.cpp" />
     <ClCompile Include="src\Game\CharaStatus.cpp" />
     <ClCompile Include="src\Game\CImage.cpp" />
@@ -74,6 +75,8 @@
     <ClCompile Include="src\Game\CRideabeObject.cpp" />
     <ClCompile Include="src\Game\CRotateFloor.cpp" />
     <ClCompile Include="src\Game\CSoldier.cpp" />
+    <ClCompile Include="src\Game\CSoldierFrame.cpp" />
+    <ClCompile Include="src\Game\CSoldierGauge.cpp" />
     <ClCompile Include="src\Game\CStaminaGauge.cpp" />
     <ClCompile Include="src\Game\CTitleScene.cpp" />
     <ClCompile Include="src\Game\CUIGauge.cpp" />
@@ -158,6 +161,7 @@
     <ClInclude Include="src\Game\CField.h" />
     <ClInclude Include="src\Game\CGameOverScene.h" />
     <ClInclude Include="src\Game\CGameScene.h" />
+    <ClInclude Include="src\Game\CGoalObject.h" />
     <ClInclude Include="src\Game\CGun.h" />
     <ClInclude Include="src\Game\CharaStatus.h" />
     <ClInclude Include="src\Game\CImage.h" />
@@ -168,6 +172,8 @@
     <ClInclude Include="src\Game\CRideableObject.h" />
     <ClInclude Include="src\Game\CRotateFloor.h" />
     <ClInclude Include="src\Game\CSoldier.h" />
+    <ClInclude Include="src\Game\CSoldierFrame.h" />
+    <ClInclude Include="src\Game\CSoldierGauge.h" />
     <ClInclude Include="src\Game\CStaminaGauge.h" />
     <ClInclude Include="src\Game\CTitleScene.h" />
     <ClInclude Include="src\Game\CUIGauge.h" />

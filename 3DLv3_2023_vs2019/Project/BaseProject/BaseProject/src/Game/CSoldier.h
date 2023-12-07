@@ -12,6 +12,8 @@ class CGun;
 class CBullet;
 class CPlayer;
 class CKick;
+class CSoldierFrame;
+class CSoldierGauge;
 
 /*
 プレイヤークラス
@@ -153,6 +155,9 @@ private:
 	int mTimeShotEnd;
 	float mElapsedTime;		// 経過時間計測用
 	float mElapsedTime_End;	// 解除時間計測用
+
+	CSoldierFrame* mpFrame;
+	CSoldierGauge* mpGauge;
 
 };
 #endif

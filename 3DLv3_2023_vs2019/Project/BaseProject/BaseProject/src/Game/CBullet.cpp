@@ -7,7 +7,7 @@
 //#define BULLET_M "Item\\Bullet1\\Bullet.mtl"
 
 // ’eŠÛ‚ÌˆÚ“®‘¬“x
-#define MOVE_SPEED 100.0f
+#define MOVE_SPEED 150.0f
 
 CModel* CBullet::mpBullet = nullptr;
 
