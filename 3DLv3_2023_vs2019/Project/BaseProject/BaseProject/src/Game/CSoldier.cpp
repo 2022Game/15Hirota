@@ -545,13 +545,37 @@ void CSoldier::Update()
 	// カメラでワールド座標をスクリーン座標へ変換
 	CVector gp = cam->WorldToScreenPos(gaugeWorldPos);
 
-	// フレームの座標を2Dで設定
-	mpFrame->SetPos(gp.X(), gp.Y());
+	// プレイヤーの座標
+	CVector playerPos = CPlayer::Instance()->Position();
+	// プレイヤーと敵の距離を計算
+	float distance = (playerPos - Position()).Length();
 
-	// ゲージの座標を2Dで設定（右にずらす）
-	float GaugeOffsetX = 20.0f;
-	// ゲージの座標を2Dで設定
-	mpGauge->SetPos(gp.X() + GaugeOffsetX, gp.Y());
+	// 一定の範囲内に居る場合は表示
+	float displayRange = 100.0f;
+	if (distance < displayRange)
+	{
+		// フレーム座標
+		mpFrame->SetPos(gp.X(), gp.Y());
+
+		// ゲージの座標を2Dで設定（右にずらす）
+		float GaugeOffsetX = 20.0f;
+		// ゲージの座標を2Dで設定
+		mpGauge->SetPos(gp.X() + GaugeOffsetX, gp.Y());
+	}
+	else
+	{
+		// 無理やり非表示
+		mpFrame->SetPos(-1000, -1000);
+		mpGauge->SetPos(-1000, -1000);
+	}
+
+	//// フレームの座標を2Dで設定
+	//mpFrame->SetPos(gp.X(), gp.Y());
+
+	//// ゲージの座標を2Dで設定（右にずらす）
+	//float GaugeOffsetX = 20.0f;
+	//// ゲージの座標を2Dで設定
+	//mpGauge->SetPos(gp.X() + GaugeOffsetX, gp.Y());
 
 	// 現在のHpを設定
 	mpGauge->SetValue(mCharaStatus.hp);

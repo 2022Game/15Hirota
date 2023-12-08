@@ -43,11 +43,11 @@ void CGameScene::Load()
 	//リソースの読み込みやクラスの生成を行う
 
 	// フィールド関連
-	CResourceManager::Load<CModel>("Field","Field\\1_3.obj");
-	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");
-	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");
-	CResourceManager::Load<CModel>("GoalModel", "Field\\Object\\Goal.obj");
-	CResourceManager::Load<CModel>("Stone1", "Field\\Object\\Stone1.obj");
+	CResourceManager::Load<CModel>("Field","Field\\GameStage(1).obj");					// 仮1面
+	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");				// 初期の四角のモデル
+	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");		// 初期の回転する四角モデル
+	CResourceManager::Load<CModel>("GoalModel", "Field\\Object\\Goal.obj");				// ゴールモデル
+	CResourceManager::Load<CModel>("Stone1", "Field\\Object\\Stone1.obj");				// 石1
 
 	// キャラクター関連
 	CResourceManager::Load<CModelX>("Player", "Character\\Monster1\\Monster_1.x");
@@ -69,6 +69,7 @@ void CGameScene::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = new CPlayer();
 	player->Scale(1.0f, 1.0f, 1.0f);
+	player->Position(0.0f, 10.0f, -20.0f);
 	
 	//// ユニティちゃん
 	//CUnityChan* unity = new CUnityChan();

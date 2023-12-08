@@ -8,8 +8,6 @@
 CField::CField()
 	: CObjectBase(ETag::eField, ETaskPriority::eBackground)
 {
-	/*mpModel = new CModel();
-	mpModel->Load("Field\\ÉXÉeÅ[ÉW1(âº)3.obj", "Field\\ÉXÉeÅ[ÉW1(âº)3.mtl");*/
 	// ÉÇÉfÉãÉfÅ[É^éÊìæ
 	mpModel = CResourceManager::Get<CModel>("Field");
 
@@ -32,67 +30,67 @@ void CField::CreateFieldObjects()
 	mpCubeModel = CResourceManager::Get<CModel>("FieldCube");
 	mpCylinderModel = CResourceManager::Get<CModel>("FieldCylinder");
 
-	new CMoveFloor
-	(
-		mpCubeModel,
-		CVector(0.0f, 10.0f, -50.0f), CVector(1.0f, 1.0f, 1.0f),
-		CVector(50.0f, 0.0f, 0.0f), 10.0f
-	);
-	new CRotateFloor
-	(
-		mpCylinderModel,
-		CVector(-40.0f, 15.0f, 20.0f), CVector(1.0f, 1.0f, 1.0f),
-		1.0f
-	);
+	//new CMoveFloor
+	//(
+	//	mpCubeModel,
+	//	CVector(0.0f, 10.0f, -50.0f), CVector(1.0f, 1.0f, 1.0f),
+	//	CVector(50.0f, 0.0f, 0.0f), 10.0f
+	//);
+	//new CRotateFloor
+	//(
+	//	mpCylinderModel,
+	//	CVector(-40.0f, 15.0f, 20.0f), CVector(1.0f, 1.0f, 1.0f),
+	//	1.0f
+	//);
 
-	// ìÆÇ©Ç»Ç¢è∞á@
-	new CMoveFloor
-	(
-		mpCubeModel,
-		CVector(20.0f, 10.0f, 0.0f), CVector(0.5f, 1.0f, 0.25f),
-		CVector(0.0f, 0.0f, 0.0f), 5.0f
-	);
-	// ìÆÇ≠è∞á@
-	new CMoveFloor
-	(
-		mpCubeModel,
-		CVector(60.0f, 20.0f, 0.0f), CVector(0.25f, 1.0f, 0.25f),
-		CVector(20.0f, 0.0f, 0.0f), 5.0f
-	);
-	// ìÆÇ©Ç»Ç¢è∞áA
-	new CMoveFloor
-	(
-		mpCubeModel,
-		CVector(100.0f, 20.0f, 0.0f), CVector(0.25f, 1.0f, 0.25f),
-		CVector(0.0f, 0.0f, 0.0f), 5.0f
-	);
-	// âÒì]Ç∑ÇÈè∞á@
-	new CRotateFloor
-	(
-		mpCubeModel,
-		CVector(135.0f, 20.0f, 0.0f), CVector(1.0f, 1.0f, 0.25f),
-		0.5f
-	);
-	// ìÆÇ©Ç»Ç¢è∞áA
-	new CMoveFloor
-	(
-		mpCubeModel,
-		CVector(135.0f, 20.0f, -35.0f), CVector(0.25f, 1.0f, 0.25f),
-		CVector(0.0f, 0.0f, 0.0f), 5.0f
-	);
-	// ìÆÇ©Ç»Ç¢è∞áA
-	new CMoveFloor
-	(
-		mpCubeModel,
-		CVector(135.0f, 70.0f, -52.5f), CVector(0.25f, 1.0f, 0.25f),
-		CVector(0.0f, 50.0f, 0.0f), 5.0f
-	);
+	//// ìÆÇ©Ç»Ç¢è∞á@
+	//new CMoveFloor
+	//(
+	//	mpCubeModel,
+	//	CVector(20.0f, 10.0f, 0.0f), CVector(0.5f, 1.0f, 0.25f),
+	//	CVector(0.0f, 0.0f, 0.0f), 5.0f
+	//);
+	//// ìÆÇ≠è∞á@
+	//new CMoveFloor
+	//(
+	//	mpCubeModel,
+	//	CVector(60.0f, 20.0f, 0.0f), CVector(0.25f, 1.0f, 0.25f),
+	//	CVector(20.0f, 0.0f, 0.0f), 5.0f
+	//);
+	//// ìÆÇ©Ç»Ç¢è∞áA
+	//new CMoveFloor
+	//(
+	//	mpCubeModel,
+	//	CVector(100.0f, 20.0f, 0.0f), CVector(0.25f, 1.0f, 0.25f),
+	//	CVector(0.0f, 0.0f, 0.0f), 5.0f
+	//);
+	//// âÒì]Ç∑ÇÈè∞á@
+	//new CRotateFloor
+	//(
+	//	mpCubeModel,
+	//	CVector(135.0f, 20.0f, 0.0f), CVector(1.0f, 1.0f, 0.25f),
+	//	0.5f
+	//);
+	//// ìÆÇ©Ç»Ç¢è∞áA
+	//new CMoveFloor
+	//(
+	//	mpCubeModel,
+	//	CVector(135.0f, 20.0f, -35.0f), CVector(0.25f, 1.0f, 0.25f),
+	//	CVector(0.0f, 0.0f, 0.0f), 5.0f
+	//);
+	//// ìÆÇ©Ç»Ç¢è∞áA
+	//new CMoveFloor
+	//(
+	//	mpCubeModel,
+	//	CVector(135.0f, 70.0f, -52.5f), CVector(0.25f, 1.0f, 0.25f),
+	//	CVector(0.0f, 50.0f, 0.0f), 5.0f
+	//);
 
 	// ÉSÅ[ÉãÉÇÉfÉã
 	new CGoalObject
 	(
 		mpGoalModel,
-		CVector(-30.0f, 0.0f, 100.0f), CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 0.0f, -350.0f), CVector(1.5f, 1.5f, 1.5f),
 		CVector(0.0f, 90.0f, 0.0f)
 	);
 
