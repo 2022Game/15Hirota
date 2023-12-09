@@ -14,8 +14,8 @@
 
 // プレイヤー関連
 #define PLAYER_HEIGHT 16.0f		// 高さ
-#define MOVE_SPEED 1.0f			// スピード
-#define RUN_SPEED 1.5f			// 移動スピード
+#define MOVE_SPEED 0.9f			// スピード
+#define RUN_SPEED 1.0f			// 移動スピード
 #define JUMP_SPEED 1.5f			// ジャンプ
 #define GRAVITY 0.0625f			// 重力
 #define JUMP_END_Y 1.0f			// ジャンプ終了時
@@ -50,6 +50,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Warrok_Run.x",				true,	53.0f	},	// 歩行
 	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	90.0f	},	// ダッシュ終了
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	71.0f	},	// 回避
+	{ "Character\\Monster1\\anim\\Guts pose_171.x",				false,	171.0f	},	// ガッツポーズ
 
 };
 
@@ -57,6 +58,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
+	, mMoveSpeed(0.0f,0.0f,0.0f)
 	, mpRideObject(nullptr)
 	, staminaDepleted(false)
 	, staminaLowerLimit(false)
@@ -98,6 +100,7 @@ CPlayer::CPlayer()
 	mpColliderLine->SetAttachMtx(speneMtxL);*/
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
+
 	// 前後のコライダーライン
 	mpColliderLine_2 = new CColliderLine
 	(
@@ -106,6 +109,7 @@ CPlayer::CPlayer()
 		CVector(0.0f, 8.0f, 8.0f)
 	);
 	mpColliderLine_2->SetCollisionLayers({ ELayer::eField });
+
 
 	// 横のコライダーライン
 	mpColliderLine_3 = new CColliderLine
@@ -116,16 +120,17 @@ CPlayer::CPlayer()
 	);
 	mpColliderLine_3->SetCollisionLayers({ ELayer::eField });
 
+
 	// ダメージを受けるコライダーを作成
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		0.5f
+		2.0f//0.5f
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
-	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon });
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol });
+	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject });
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -467,6 +472,22 @@ void CPlayer::UpdateDashEnd()
 	}
 }
 
+// クリア
+void CPlayer::UpdateClear()
+{
+	ChangeAnimation(EAnimType::eGuts);
+	mState = EState::eClearEnd;
+}
+
+// クリア終了
+void CPlayer::UpdateClearEnd()
+{
+	if (IsAnimationFinished())
+	{
+		mState = EState::eIdle;
+	}
+}
+
 // 更新
 void CPlayer::Update()
 {
@@ -520,12 +541,20 @@ void CPlayer::Update()
 		case EState::eDashEnd:
 			UpdateDashEnd();
 			break;
+		// クリア
+		case EState::eClear:
+			UpdateClear();
+			break;
+		// クリア終了
+		case EState::eClearEnd:
+			UpdateClearEnd();
+			break;
 	}
 
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 
 	// 移動
-	Position(Position() + mMoveSpeed);
+	Position(Position() + mMoveSpeed * 60.0f * Time::DeltaTime());
 
 	// プレイヤーを移動方向へ向ける
 	CVector current = VectorZ();
@@ -584,7 +613,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		if (other->Layer() == ELayer::eField)
 		{
 			mMoveSpeed.Y(0.0f);
-			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
+			Position(Position() + hit.adjust);
 			mIsGrounded = true;
 
 			if (other->Tag() == ETag::eRideableObject)
@@ -593,7 +622,8 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 	}
-	else if (self == mpColliderLine_2)
+
+	if (self == mpColliderLine_2)
 	{
 		if (other->Layer() == ELayer::eField)
 		{
@@ -607,7 +637,8 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 	}
-	else if (self == mpColliderLine_3)
+
+	if (self == mpColliderLine_3)
 	{
 		if (other->Layer() == ELayer::eField)
 		{
@@ -621,11 +652,13 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 	}
-	else if (self == mpDamageCol)
+
+	if (self == mpDamageCol)
 	{
 		if (other->Layer() == ELayer::eGoalCol)
 		{
-			ChangeAnimation(EAnimType::eRotate);
+			CDebugPrint::Print("Player hit GoalObject!");
+			mState = EState::eClear;
 		}
 	}
 }

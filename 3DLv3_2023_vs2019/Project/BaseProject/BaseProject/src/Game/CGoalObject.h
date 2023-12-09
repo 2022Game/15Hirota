@@ -3,10 +3,11 @@
 
 #include "CModel.h"
 #include "CColliderLine.h"
+#include "CColliderSphere.h"
 #include "CColliderMesh.h"
-#include "CObjectBase.h"
+#include "CGoalBase.h"
 
-class CGoalObject : CObjectBase
+class CGoalObject : public CGoalBase
 {
 public:
 	CGoalObject(CModel* model, const CVector& pos, const CVector& scale, const CVector&rot);
@@ -17,7 +18,8 @@ public:
 
 private:
 	CModel* mpModel;
-	CColliderLine* mpColliderLine;
+	//CColliderLine* mpColliderLine;
+	CColliderSphere* mpColliderSphere;
 	CColliderMesh* mpColliderMesh;
 };
 #endif

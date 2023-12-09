@@ -1,11 +1,11 @@
 #ifndef CKICK_H
 #define CKICK_H
 #include "CObjectBase.h"
-#include "CEnemyWeapon.h"
+#include "CWeaponEnemy.h"
 #include "CColliderSphere.h"
 #include "CModel.h"
 
-class CKick :public CEnemyWeapon
+class CKick :public CWeaponEnemy
 {
 public:
 	CKick();

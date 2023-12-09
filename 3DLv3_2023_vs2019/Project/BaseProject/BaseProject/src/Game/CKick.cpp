@@ -74,7 +74,7 @@ CMatrix CKick::Matrix() const
 // 攻撃開始
 void CKick::AttackStart()
 {
-	CEnemyWeapon::AttackStart();
+	CWeaponEnemy::AttackStart();
 	// 攻撃が始まったら、攻撃判定用のコライダーをオフにする
 	mpAttackCol->SetEnable(true);
 }
@@ -82,7 +82,7 @@ void CKick::AttackStart()
 // 攻撃終了
 void CKick::AttackEnd()
 {
-	CEnemyWeapon::AttackEnd();
+	CWeaponEnemy::AttackEnd();
 	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
 	mpAttackCol->SetEnable(false);
 }

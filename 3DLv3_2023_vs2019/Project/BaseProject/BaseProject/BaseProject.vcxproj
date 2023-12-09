@@ -60,7 +60,8 @@
     <ClCompile Include="src\Game\CBullet.cpp" />
     <ClCompile Include="src\Game\CClearScene.cpp" />
     <ClCompile Include="src\Game\CEnemy.cpp" />
-    <ClCompile Include="src\Game\CEnemyWeapon.cpp" />
+    <ClCompile Include="src\Game\CGoalBase.cpp" />
+    <ClCompile Include="src\Game\CWeaponEnemy.cpp" />
     <ClCompile Include="src\Game\CField.cpp" />
     <ClCompile Include="src\Game\CGameOverScene.cpp" />
     <ClCompile Include="src\Game\CGameScene.cpp" />
@@ -158,7 +159,8 @@
     <ClInclude Include="src\Game\CBullet.h" />
     <ClInclude Include="src\Game\CClearScene.h" />
     <ClInclude Include="src\Game\CEnemy.h" />
-    <ClInclude Include="src\Game\CEnemyWeapon.h" />
+    <ClInclude Include="src\Game\CGoalBase.h" />
+    <ClInclude Include="src\Game\CWeaponEnemy.h" />
     <ClInclude Include="src\Game\CField.h" />
     <ClInclude Include="src\Game\CGameOverScene.h" />
     <ClInclude Include="src\Game\CGameScene.h" />

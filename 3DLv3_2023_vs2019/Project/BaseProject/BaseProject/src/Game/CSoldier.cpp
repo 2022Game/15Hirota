@@ -79,7 +79,7 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 #define ATTACK 10
 
 // ’eŠÛ‚Ì”­ŽËŠÔŠu
-#define SHOT_INTERVAL 1.3f
+#define SHOT_INTERVAL 0.1f
 
 // “G‚ðŒ©Ž¸‚Á‚½Œã‚ÌŽžŠÔ
 #define PLAYER_LOST 10.0f
@@ -91,7 +91,7 @@ CSoldier::CSoldier()
 	, mTargetDir(0.0f, 0.0f, 1.0f)
 	, mpRideObject(nullptr)
 	, mTimeShot(0)
-	, mTimeShotEnd(10)
+	, mTimeShotEnd(20)
 	, mElapsedTime(0.0f)
 	, mElapsedTime_End(0.0f)
 {
@@ -518,7 +518,7 @@ void CSoldier::Update()
 	}
 
 	// ˆÚ“®
-	Position(Position() + mMoveSpeed);
+	Position(Position() + mMoveSpeed * 60.0f * Time::DeltaTime());
 
 	CVector PlayerPosition;
 

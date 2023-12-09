@@ -50,6 +50,10 @@ public:
 	void UpdateRotate();
 	//回避終了
 	void UpdateRotateEnd();
+	// クリア
+	void UpdateClear();
+	// クリア終了
+	void UpdateClearEnd();
 
 	/// <summary>
 	/// 衝突処理
@@ -96,6 +100,7 @@ private:
 		eDash,			// ダッシュ
 		eDashStop,		// ダッシュ終了
 		eRotate,		// 回避
+		eGuts,			// ガッツポーズ
 
 		Num
 	};
@@ -131,6 +136,7 @@ private:
 		eRotateEnd,		// 回避終了待ち
 		eDashEnd,		// ダッシュ終了
 		eClear,			// クリア状態
+		eClearEnd,		// クリア終了
 		eDeth,			// 死亡
 	};
 	EState mState;		// プレイヤーの状態
@@ -145,6 +151,7 @@ private:
 	CColliderLine* mpColliderLine_3;
 
 	CTransform* mpRideObject;
+
 	int mInvincible;			// 無敵カウンタ
 	bool staminaDepleted;		// スタミナが上限値に到達した場合のフラグ
 	bool staminaLowerLimit;		// スタミナが下限値に到達した場合のフラグ

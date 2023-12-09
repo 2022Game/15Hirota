@@ -3,9 +3,9 @@
 
 #include "CModel.h"
 #include "CColliderMesh.h"
-#include "CObjectBase.h"
+#include "CRideableObject.h"
 
-class CStone1 : public CObjectBase
+class CStone1 : public CRideableObject
 {
 public:
 	CStone1(CModel* model, const CVector& pos, const CVector& scale, const CVector& rot);

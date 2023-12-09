@@ -1,12 +1,12 @@
 #ifndef CBULLET_H
 #define CBULLET_H
 #include "CObjectBase.h"
-#include "CEnemyWeapon.h"
+#include "CWeaponEnemy.h"
 #include "CColliderSphere.h"
 #include "CModel.h"
 #include "CEffect.h"
 
-class CBullet :public CEnemyWeapon
+class CBullet :public CWeaponEnemy
 {
 public:
 	CBullet();

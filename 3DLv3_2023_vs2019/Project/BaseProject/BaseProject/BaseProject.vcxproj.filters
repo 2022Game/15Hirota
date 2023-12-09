@@ -292,7 +292,7 @@
     <ClCompile Include="src\Game\CMajicSword.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CEnemyWeapon.cpp">
+    <ClCompile Include="src\Game\CWeaponEnemy.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CGamePause.cpp">
@@ -332,6 +332,9 @@
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CStone1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGoalBase.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
   </ItemGroup>
@@ -579,7 +582,7 @@
     <ClInclude Include="src\Game\CMajicSword.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CEnemyWeapon.h">
+    <ClInclude Include="src\Game\CWeaponEnemy.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CGamePause.h">
@@ -619,6 +622,9 @@
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CStone1.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGoalBase.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
   </ItemGroup>
