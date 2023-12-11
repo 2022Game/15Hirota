@@ -64,6 +64,7 @@ CPlayer::CPlayer()
 	, mpRideObject(nullptr)
 	, staminaDepleted(false)
 	, staminaLowerLimit(false)
+	, damageObject(false)
 	, mLife(50)
 {
 	// HPゲージを作成
@@ -100,7 +101,7 @@ CPlayer::CPlayer()
 	);
 	/*const CMatrix* speneMtxL = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpColliderLine->SetAttachMtx(speneMtxL);*/
-	mpColliderLine->SetCollisionLayers({ ELayer::eField });
+	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject });
 
 
 	// 前後のコライダーライン
@@ -508,6 +509,17 @@ void CPlayer::UpdateDethEnd()
 	}
 }
 
+// 再起
+void CPlayer::UpdateReStart()
+{
+	if (IsAnimationFinished())
+	{
+		damageObject = false;
+		Position(0.0f, 10.0f, -30.0f);
+		mState = EState::eIdle;
+	}
+}
+
 // 更新
 void CPlayer::Update()
 {
@@ -576,6 +588,10 @@ void CPlayer::Update()
 		// 死亡処理終了
 		case EState::eDethEnd:
 			UpdateDethEnd();
+			break;
+		// 再起
+		case EState::eReStart:
+			UpdateReStart();
 			break;
 	}
 
@@ -649,6 +665,24 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				mpRideObject = other->Owner();
 			}
 		}
+		else if (other->Layer() == ELayer::eDamageObject)
+		{
+			mMoveSpeed.Y(0.0f);
+			Position(Position() + hit.adjust);
+			mIsGrounded = true;
+
+			if (other->Tag() == ETag::eRideableObject)
+			{
+				if (!damageObject)
+				{
+					mCharaStatus.hp -= 1;
+					damageObject = true;
+				}
+				ChangeAnimation(EAnimType::eDeth);
+				mpRideObject = other->Owner();
+				mState = EState::eReStart;
+			}
+		}
 	}
 
 	if (self == mpColliderLine_2)
@@ -702,7 +736,7 @@ void CPlayer::TakeDamage(int damage)
 	//mCharaStatus.hp = max(mCharaStatus.hp - damage, 0);
 	mCharaStatus.hp -= damage;
 	// HPが0になったら
-	if (mCharaStatus.hp == 0)
+	if (mCharaStatus.hp <= 0)
 	{
 		mState = EState::eDeth;
 	}

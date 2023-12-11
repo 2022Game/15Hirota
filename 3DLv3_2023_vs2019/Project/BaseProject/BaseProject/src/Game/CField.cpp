@@ -43,13 +43,13 @@ void CField::CreateFieldObjects()
 	//	1.0f
 	//);
 
-	//// ìÆÇ©Ç»Ç¢è∞á@
-	//new CMoveFloor
-	//(
-	//	mpCubeModel,
-	//	CVector(20.0f, 10.0f, 0.0f), CVector(0.5f, 1.0f, 0.25f),
-	//	CVector(0.0f, 0.0f, 0.0f), 5.0f
-	//);
+	// ìÆÇ©Ç»Ç¢è∞á@
+	new CMoveFloor
+	(
+		mpCubeModel,
+		CVector(-20.0f, -20.0f, -340.0f), CVector(5.5f, 1.0f, 3.25f),
+		CVector(0.0f, 0.0f, 0.0f), 5.0f
+	);
 	//// ìÆÇ≠è∞á@
 	//new CMoveFloor
 	//(
