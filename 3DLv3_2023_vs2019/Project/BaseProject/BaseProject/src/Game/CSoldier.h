@@ -53,6 +53,10 @@ public:
 	void UpdateAimDwon();
 	// プレイヤーの攻撃Hit
 	void UpdateHit();
+	// 死亡
+	void UpdateDeth();
+	// 死亡処理終了
+	void UpdateDethEnd();
 
 	// 更新
 	void Update();
@@ -75,6 +79,10 @@ public:
 	void LevelUp();	//	レベルアップ
 	void ChangeLevel(int level);	// レベル変更
 
+	/*void SetCollider(CColliderSphere* newCollider);
+	void SetGauge(CSoldierGauge* newGauge);
+	void SetFrame(CSoldierFrame* newFrame);*/
+
 private:
 
 	// アニメーションの種類
@@ -92,6 +100,7 @@ private:
 		eReload,	// リロード
 		eAimDwou,	// エイム解除
 		eHit,		// ダメージHit
+		eDeth,		// 死亡
 		eJumpEnd,	// ジャンプ終了
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
@@ -128,6 +137,8 @@ private:
 		eKickWait,	// キック終了
 		eAimDwon,	// エイム解除
 		eHit,		// ダメージHit
+		eDeth,		// 死亡
+		eDethEnd,	// 死亡終了
 	};
 	EState mState;	// プレイヤーの状態
 

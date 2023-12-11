@@ -98,17 +98,17 @@ void CField::CreateFieldObjects()
 	new CStone1
 	(
 		mpStone1,
-		CVector(-30.0f, 0.0f, -80.0f), CVector(10.0f, 10.0f, 10.0f),
+		CVector(-80.0f, 0.0f, -200.0f), CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 
-	// Šâ1ƒ‚ƒfƒ‹
-	new CStone1
-	(
-		mpStone1,
-		CVector(30.0f, 0.0f, -700.0f), CVector(10.0f, 10.0f, 10.0f),
-		CVector(60.0f, 0.0f, 0.0f)
-	);
+	//// Šâ1ƒ‚ƒfƒ‹
+	//new CStone1
+	//(
+	//	mpStone1,
+	//	CVector(30.0f, 0.0f, -700.0f), CVector(10.0f, 10.0f, 10.0f),
+	//	CVector(60.0f, 0.0f, 0.0f)
+	//);
 }
 
 void CField::Update()

@@ -54,6 +54,10 @@ public:
 	void UpdateClear();
 	// クリア終了
 	void UpdateClearEnd();
+	// 死亡
+	void UpdateDeth();
+	// 死亡処理終了
+	void UpdateDethEnd();
 
 	/// <summary>
 	/// 衝突処理
@@ -73,9 +77,6 @@ public:
 
 	// damage == 受けるダメージ
 	void TakeDamage(int damage) override;
-
-	// 死亡処理
-	void Deth();
 
 	// 更新
 	void Update();
@@ -101,6 +102,7 @@ private:
 		eDashStop,		// ダッシュ終了
 		eRotate,		// 回避
 		eGuts,			// ガッツポーズ
+		eDeth,			// 死亡
 
 		Num
 	};
@@ -138,10 +140,12 @@ private:
 		eClear,			// クリア状態
 		eClearEnd,		// クリア終了
 		eDeth,			// 死亡
+		eDethEnd,		// 死亡終了
 	};
 	EState mState;		// プレイヤーの状態
 
 	CVector mMoveSpeed;	// 移動速度
+	CVector mPosition;
 	CImage* image;
 	bool mIsGrounded;	// 接地しているかどうか
 

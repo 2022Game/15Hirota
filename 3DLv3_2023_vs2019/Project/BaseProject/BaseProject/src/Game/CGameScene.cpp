@@ -69,7 +69,7 @@ void CGameScene::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = new CPlayer();
 	player->Scale(1.0f, 1.0f, 1.0f);
-	player->Position(0.0f, 60.0f, -20.0f);
+	player->Position(0.0f, 60.0f, -30.0f);
 	
 	//// ユニティちゃん
 	//CUnityChan* unity = new CUnityChan();
@@ -84,7 +84,7 @@ void CGameScene::Load()
 	// ガスマスク兵士
 	CSoldier* sol = new CSoldier();
 	sol->Scale(1.0f, 1.0f, 1.0f);
-	sol->Position(100.0f, 50.0f, -100.0f);
+	sol->Position(-100.0f, 50.0f, -200.0f);
 
 	CCamera* mainCamera = new CCamera
 	(
@@ -110,11 +110,6 @@ void CGameScene::Update()
 	int currentHP = CPlayer::Instance()->GetHp();
 	// 最大hp取得
 	int maxHP = CPlayer::Instance()->GetMaxHp();
-
-	if (currentHP == 0)
-	{
-		CPlayer::Instance()->Deth();
-	}
 
 	//// hpが半分を切るとeOverに遷移させる
 	//if (currentHP <= 0) {

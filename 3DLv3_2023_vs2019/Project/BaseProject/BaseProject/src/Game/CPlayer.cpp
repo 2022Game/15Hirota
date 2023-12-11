@@ -50,7 +50,8 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Warrok_Run.x",				true,	53.0f	},	// 歩行
 	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	90.0f	},	// ダッシュ終了
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	71.0f	},	// 回避
-	{ "Character\\Monster1\\anim\\Guts pose_171.x",				false,	171.0f	},	// ガッツポーズ
+	{ "Character\\Monster1\\anim\\Guts pose_325.x",				false,	325.0f	},	// ガッツポーズ
+	{ "Character\\Monster1\\anim\\Deth_276.x",					false,	276.0f	},	// 死亡
 
 };
 
@@ -58,7 +59,8 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
-	, mMoveSpeed(0.0f,0.0f,0.0f)
+	, mMoveSpeed(0.0f, 0.0f, 0.0f)
+	, mPosition(0.0f,0.0f,0.0f)//0.0f, 60.0f, -30.0f
 	, mpRideObject(nullptr)
 	, staminaDepleted(false)
 	, staminaLowerLimit(false)
@@ -125,7 +127,7 @@ CPlayer::CPlayer()
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		2.0f//0.5f
+		0.5f//0.5f
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
@@ -196,15 +198,6 @@ void CPlayer::LevelUp()
 	ChangeLevel(level + 1);
 }
 
-void CPlayer::Deth()
-{
-	ChangeAnimation(EAnimType::eAttackStrong);
-	if (IsAnimationFinished())
-	{
-		CSceneManager::Instance()->LoadScene(EScene::eOver);
-	}
-}
-
 // レベルを変更
 void CPlayer::ChangeLevel(int level)
 {
@@ -235,6 +228,7 @@ void CPlayer::ChangeAnimation(EAnimType type)
 // 待機
 void CPlayer::UpdateIdle()
 {
+	mpDamageCol->SetEnable(true);
 	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
 
 	mMoveSpeed.X(0.0f);
@@ -475,6 +469,8 @@ void CPlayer::UpdateDashEnd()
 // クリア
 void CPlayer::UpdateClear()
 {
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
 	ChangeAnimation(EAnimType::eGuts);
 	mState = EState::eClearEnd;
 }
@@ -484,6 +480,30 @@ void CPlayer::UpdateClearEnd()
 {
 	if (IsAnimationFinished())
 	{
+		mState = EState::eIdle;
+		Position(0.0f,0.0f,-30.0f);
+	}
+}
+
+// 死亡
+void CPlayer::UpdateDeth()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	ChangeAnimation(EAnimType::eDeth);
+	if (IsAnimationFinished())
+	{
+		mState = EState::eDethEnd;
+	}
+}
+
+// 死亡処理終了
+void CPlayer::UpdateDethEnd()
+{
+	if (IsAnimationFinished())
+	{
+		mCharaStatus = mCharaMaxStatus;
+		Position(0.0f, 0.0f, -30.0f);
 		mState = EState::eIdle;
 	}
 }
@@ -548,6 +568,14 @@ void CPlayer::Update()
 		// クリア終了
 		case EState::eClearEnd:
 			UpdateClearEnd();
+			break;
+		// 死亡
+		case EState::eDeth:
+			UpdateDeth();
+			break;
+		// 死亡処理終了
+		case EState::eDethEnd:
+			UpdateDethEnd();
 			break;
 	}
 
@@ -657,7 +685,8 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	{
 		if (other->Layer() == ELayer::eGoalCol)
 		{
-			CDebugPrint::Print("Player hit GoalObject!");
+			CDebugPrint::Print("Player hit GoalObject!\n");
+			mpDamageCol->SetEnable(false);
 			mState = EState::eClear;
 		}
 	}
@@ -675,7 +704,7 @@ void CPlayer::TakeDamage(int damage)
 	// HPが0になったら
 	if (mCharaStatus.hp == 0)
 	{
-		CPlayer::Deth();
+		mState = EState::eDeth;
 	}
 }
 

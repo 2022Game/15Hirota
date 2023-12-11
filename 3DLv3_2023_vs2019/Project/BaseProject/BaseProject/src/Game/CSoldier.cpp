@@ -51,6 +51,7 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",								true,	 99.0f	},	// リロード
 	{ "Character\\Gas mask soldier\\anim\\Rilfle_Aim_to_Dwon._91.x",				false,	 91.0f	},		// エイム解除
 	{ "Character\\Gas mask soldier\\anim\\Hit_27.x",								false,	 27.0f	},		// Hit
+	{ "Character\\Gas mask soldier\\anim\\Death_Fall down1_157.x",					false,	157.0f	},		// 死亡
 
 };
 
@@ -212,6 +213,21 @@ void CSoldier::ChangeAnimation(EAnimType type)
 	AnimData data = ANIM_DATA[(int)type];
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
 }
+//
+//void CSoldier::SetCollider(CColliderSphere* newCollider)
+//{
+//	mpDamageCol = newCollider;
+//}
+//
+//void CSoldier::SetGauge(CSoldierGauge* newGauge)
+//{
+//	mpGauge = newGauge;
+//}
+//
+//void CSoldier::SetFrame(CSoldierFrame* newFrame)
+//{
+//	mpFrame = newFrame;
+//}
 
 // 待機
 void CSoldier::UpdateIdle()
@@ -402,7 +418,14 @@ void CSoldier::UpdateHit()
 	ChangeAnimation(EAnimType::eHit);
 	if (IsAnimationFinished())
 	{
-		mState = EState::eIdle;
+		if (mCharaStatus.hp > 1)
+		{
+			mState = EState::eChase;
+		}
+		else if (mCharaStatus.hp == 0)
+		{
+			mState = EState::eDeth;
+		}
 	}
 }
 
@@ -432,6 +455,29 @@ void CSoldier::UpdateJumpEnd()
 {
 	if (IsAnimationFinished())
 	{
+		mState = EState::eIdle;
+	}
+}
+
+// 死亡
+void CSoldier::UpdateDeth()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	ChangeAnimation(EAnimType::eDeth);
+	if (IsAnimationFinished())
+	{
+		mState = EState::eDethEnd;
+	}
+}
+
+// 死亡処理終了
+void CSoldier::UpdateDethEnd()
+{
+	if (IsAnimationFinished())
+	{
+		mCharaStatus = mCharaMaxStatus;
+		Position(-100.0f, 50.0f, -200.0f);
 		mState = EState::eIdle;
 	}
 }
@@ -489,6 +535,14 @@ void CSoldier::Update()
 	case EState::eJumpEnd:
 		UpdateJumpEnd();
 		break;
+		// 死亡
+	case EState::eDeth:
+		UpdateDeth();
+		break;
+		// 死亡処理終了
+	case EState::eDethEnd:
+		UpdateDethEnd();
+		break;
 	}
 
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
@@ -531,12 +585,6 @@ void CSoldier::Update()
 
 	CDebugPrint::Print("Shot%d\n", mTimeShot);
 	CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
-
-	// CSoldierの更新
-	CXCharacter::Update();
-
-	mIsGrounded = false;
-
 	
 	// カメラの取得
 	CCamera* cam = CCamera::CurrentCamera();
@@ -551,7 +599,7 @@ void CSoldier::Update()
 	float distance = (playerPos - Position()).Length();
 
 	// 一定の範囲内に居る場合は表示
-	float displayRange = 100.0f;
+	float displayRange = 120.0f;
 	if (distance < displayRange)
 	{
 		// フレーム座標
@@ -565,8 +613,8 @@ void CSoldier::Update()
 	else
 	{
 		// 無理やり非表示
-		mpFrame->SetPos(-1000, -1000);
-		mpGauge->SetPos(-1000, -1000);
+		mpFrame->SetPos(-10000, -10000);
+		mpGauge->SetPos(-10000, -10000);
 	}
 
 	//// フレームの座標を2Dで設定
@@ -579,6 +627,11 @@ void CSoldier::Update()
 
 	// 現在のHpを設定
 	mpGauge->SetValue(mCharaStatus.hp);
+
+	// CSoldierの更新
+	CXCharacter::Update();
+
+	mIsGrounded = false;
 }
 
 // プレイヤー追跡
@@ -629,6 +682,7 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 	}
+
 	if (self == mpDamageCol)
 	{
 		if (other->Layer() == ELayer::eAttackCol)
@@ -656,6 +710,6 @@ void CSoldier::TakeDamage(int damage)
 	// HPが0になったら
 	if (mCharaStatus.hp == 0)
 	{
-		//死亡処理 後で
+		mState = EState::eDeth;
 	}
 }

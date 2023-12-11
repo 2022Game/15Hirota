@@ -3,6 +3,7 @@
 
 class CImage;
 class CPlayer;
+class CSoldier;
 
 //タイトルシーン
 class CGameScene :public CSceneBase
@@ -18,6 +19,7 @@ public:
 	void Update();
 
 private:
+
 	CImage* image;
 	bool Clear;
 };

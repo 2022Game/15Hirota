@@ -15,7 +15,7 @@ CGoalObject::CGoalObject(CModel* model, const CVector& pos, const CVector& scale
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
 	// ゴールコライダーを少し上へずらす
 	mpColliderSphere->Position(0.0f, 6.0f, 0.0f);
-	mpColliderSphere->SetEnable(false);
+	//mpColliderSphere->SetEnable(false);
 
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 
@@ -47,7 +47,7 @@ CGoalObject::~CGoalObject()
 
 void CGoalObject::Update()
 {
-
+	
 }
 
 void CGoalObject::Render()
