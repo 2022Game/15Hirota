@@ -11,6 +11,9 @@ CField::CField()
 	// モデルデータ取得
 	mpModel = CResourceManager::Get<CModel>("Field");
 
+	CModel* wallCol = CResourceManager::Get<CModel>("WallCol");
+	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);
+
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 
 	CreateFieldObjects();

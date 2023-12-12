@@ -16,6 +16,7 @@ private:
 
 	CModel* mpModel;
 	CColliderMesh* mpColliderMesh;
+	CColliderMesh* mpWallCol;
 
 	CModel* mpCubeModel;
 	CModel* mpCylinderModel;

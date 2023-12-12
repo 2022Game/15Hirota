@@ -43,7 +43,8 @@ void CGameScene::Load()
 	//リソースの読み込みやクラスの生成を行う
 
 	// フィールド関連
-	CResourceManager::Load<CModel>("Field","Field\\GameStage(1).obj");					// 仮1面
+	CResourceManager::Load<CModel>("Field","Field\\GameStageFloor(1).obj");				// 仮1面
+	CResourceManager::Load<CModel>("WallCol", "Field\\GameStageWall(1).obj");			// 仮1面の壁
 	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");				// 初期の四角のモデル
 	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");		// 初期の回転する四角モデル
 	CResourceManager::Load<CModel>("GoalModel", "Field\\Object\\Goal.obj");				// ゴールモデル
@@ -84,7 +85,11 @@ void CGameScene::Load()
 	// ガスマスク兵士
 	CSoldier* sol = new CSoldier();
 	sol->Scale(1.0f, 1.0f, 1.0f);
-	sol->Position(-100.0f, 50.0f, -200.0f);
+	sol->Position(-100.0f, 150.0f, -100.0f);
+
+	CSoldier* sol2 = new CSoldier();
+	sol2->Scale(1.0f, 1.0f, 1.0f);
+	sol2->Position(-50.0f, 150.0f, -100.0f);
 
 	CCamera* mainCamera = new CCamera
 	(

@@ -15,7 +15,7 @@
 // プレイヤー関連
 #define PLAYER_HEIGHT 16.0f		// 高さ
 #define MOVE_SPEED 0.9f			// スピード
-#define RUN_SPEED 1.0f			// 移動スピード
+#define RUN_SPEED 1.3f			// 移動スピード
 #define JUMP_SPEED 1.5f			// ジャンプ
 #define GRAVITY 0.0625f			// 重力
 #define JUMP_END_Y 1.0f			// ジャンプ終了時
@@ -111,7 +111,7 @@ CPlayer::CPlayer()
 		CVector(0.0f, 8.0f, -8.0f),
 		CVector(0.0f, 8.0f, 8.0f)
 	);
-	mpColliderLine_2->SetCollisionLayers({ ELayer::eField });
+	mpColliderLine_2->SetCollisionLayers({ ELayer::eFieldWall });
 
 
 	// 横のコライダーライン
@@ -121,7 +121,7 @@ CPlayer::CPlayer()
 		CVector(8.0f, 8.0f, 0.0f),
 		CVector(-8.0f, 8.0f, 0.0f)
 	);
-	mpColliderLine_3->SetCollisionLayers({ ELayer::eField });
+	mpColliderLine_3->SetCollisionLayers({ ELayer::eFieldWall });
 
 
 	// ダメージを受けるコライダーを作成
@@ -687,11 +687,9 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 
 	if (self == mpColliderLine_2)
 	{
-		if (other->Layer() == ELayer::eField)
+		if (other->Layer() == ELayer::eFieldWall)
 		{
-			mMoveSpeed.Y(0.0f);
 			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
-			mIsGrounded = true;
 
 			if (other->Tag() == ETag::eRideableObject)
 			{
@@ -702,11 +700,9 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 
 	if (self == mpColliderLine_3)
 	{
-		if (other->Layer() == ELayer::eField)
+		if (other->Layer() == ELayer::eFieldWall)
 		{
-			mMoveSpeed.Y(0.0f);
 			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
-			mIsGrounded = true;
 
 			if (other->Tag() == ETag::eRideableObject)
 			{
