@@ -43,7 +43,8 @@ void CGameScene::Load()
 	//リソースの読み込みやクラスの生成を行う
 
 	// フィールド関連
-	CResourceManager::Load<CModel>("Field","Field\\GameStageFloor(1).obj");				// 仮1面
+	CResourceManager::Load<CModel>("Field","Field\\GameStage(1).obj");					// 仮1面
+	CResourceManager::Load<CModel>("FloorCol", "Field\\GameStageFloor(1).obj");
 	CResourceManager::Load<CModel>("WallCol", "Field\\GameStageWall(1).obj");			// 仮1面の壁
 	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");				// 初期の四角のモデル
 	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");		// 初期の回転する四角モデル
