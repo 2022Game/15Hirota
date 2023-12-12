@@ -731,7 +731,7 @@ void CPlayer::TakeDamage(int damage)
 
 	//// HP‚©‚çƒ_ƒ[ƒW‚ğˆø‚­
 	//mCharaStatus.hp = max(mCharaStatus.hp - damage, 0);
-	mCharaStatus.hp -= damage;
+	//mCharaStatus.hp -= damage;
 	// HP‚ª0‚É‚È‚Á‚½‚ç
 	if (mCharaStatus.hp <= 0)
 	{
