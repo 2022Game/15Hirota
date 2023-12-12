@@ -24,7 +24,7 @@ class CSoldier : public CXCharacter
 {
 public:
 	//インスタンスのポインタの取得
-	static CSoldier* Instance();
+	CSoldier* Instance();
 
 	// コンストラクタ
 	CSoldier();

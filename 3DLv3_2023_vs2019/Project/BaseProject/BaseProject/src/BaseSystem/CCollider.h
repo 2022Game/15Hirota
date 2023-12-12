@@ -129,6 +129,9 @@ public:
 	// 行列を取得
 	CMatrix Matrix() const;
 
+	// コライダー更新
+	void Update();
+
 	// コライダー描画
 	virtual void Render() = 0;
 
@@ -314,5 +317,6 @@ private:
 	int mCollisionLayers;	// 衝突判定を行うレイヤーのビットフラグ
 	int mCollisionTags;		// 衝突判定を行うオブジェクトタグのビットフラグ
 
-	const CMatrix* mpAttachMtx;
+	const CMatrix* mpAttachMtx;	// くっつける行列のポインター
+	CMatrix mAttachMtx;			// くっつける行列の本体
 };

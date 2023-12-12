@@ -630,6 +630,7 @@ void CSoldier::Update()
 
 	// CSoldier‚ÌXV
 	CXCharacter::Update();
+	mpDamageCol->Update();
 
 	mIsGrounded = false;
 }

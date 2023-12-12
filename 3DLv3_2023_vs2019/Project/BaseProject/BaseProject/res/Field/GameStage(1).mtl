@@ -1,16 +1,6 @@
 # Blender 3.4.1 MTL File: 'GameStage(1).blend'
 # www.blender.org
 
-newmtl Material
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Kd 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 1.000000 1.000000 1.000000
-Ni 1.450000
-d 0.000000
-illum 9
-
 newmtl Material.001
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
@@ -29,7 +19,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd その他/63_0105_jpg/芝生V005.jpg
+map_Kd C:/Users/Manam.DESKTOP-RTRTCM3/OneDrive/デスクトップ/Git/15Hirota/3DLv3_2023_vs2019/Project/BaseProject/BaseProject/res/Field/その他/63_0105_jpg/芝生V005.jpg
 
 newmtl Material.003
 Ns 250.000000
@@ -40,6 +30,16 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+
+newmtl Material.004
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 1.000000 1.000000 1.000000
+Ni 1.450000
+d 0.000000
+illum 9
 
 newmtl Material.006
 Ns 250.000000

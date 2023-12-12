@@ -645,6 +645,7 @@ void CPlayer::Update()
 
 	// キャラクターの更新
 	CXCharacter::Update();
+	mpDamageCol->Update();
 
 	mIsGrounded = false;
 }
