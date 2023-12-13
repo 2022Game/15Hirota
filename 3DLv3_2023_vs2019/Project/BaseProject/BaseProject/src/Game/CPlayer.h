@@ -60,6 +60,8 @@ public:
 	void UpdateDethEnd();
 	// 再起
 	void UpdateReStart();
+	// 敵のの攻撃Hit
+	void UpdateHit();
 
 	/// <summary>
 	/// 衝突処理
@@ -144,6 +146,7 @@ private:
 		eDeth,			// 死亡
 		eDethEnd,		// 死亡終了
 		eReStart,		// 再起
+		eHit,			// ダメージヒット
 	};
 	EState mState;		// プレイヤーの状態
 
@@ -162,7 +165,8 @@ private:
 	int mInvincible;			// 無敵カウンタ
 	bool staminaDepleted;		// スタミナが上限値に到達した場合のフラグ
 	bool staminaLowerLimit;		// スタミナが下限値に到達した場合のフラグ
-	bool damageObject;
+	bool damageObject;			// ダメージを与えるフラグ
+	bool damageEnemy;			// ダメージを与えるフラグ(敵)
 
 	CColliderSphere* mpDamageCol;	//ダメージを受けるコライダ
 	CMajicSword* mpSword;

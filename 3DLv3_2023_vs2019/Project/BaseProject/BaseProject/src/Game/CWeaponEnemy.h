@@ -1,6 +1,7 @@
 #ifndef CWEAPONENEMY_H
 #define CWEAPONENEMY_H
 #include "CObjectBase.h"
+#include "CModelX.h"
 class CCharaBase;
 
 class CWeaponEnemy :public CObjectBase
@@ -22,6 +23,7 @@ public:
 	CCharaBase* GetOwner() const;
 
 protected:
+	CModelX* mpModel;
 	// 攻撃がヒットしたオブジェクトを追加
 	void AddAttackHitObj(CObjectBase* obj);
 	// すでに攻撃がヒットしているオブジェクトかどうか

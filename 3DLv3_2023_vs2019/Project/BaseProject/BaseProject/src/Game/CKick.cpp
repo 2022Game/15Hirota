@@ -4,16 +4,7 @@
 
 CKick::CKick()
 {
-	// 右足にプレイヤーにダメージを与えるコライダーを作成
-	mpAttackCol = new CColliderSphere
-	(
-		this, ELayer::eAttackCol,
-		0.5f
-	);
-	mpAttackCol->SetCollisionLayers({ ELayer::eDamageCol });
-	mpAttackCol->SetCollisionTags({ ETag::ePlayer });
-
-	mpAttackCol->SetEnable(false);
+	
 }
 
 CKick::~CKick()
@@ -54,22 +45,22 @@ void CKick::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	}
 }
 
-CMatrix CKick::Matrix() const
-{
-	// 手に持っていないときは、自分自身の行列を返す
-	if (mpAttachMtx == nullptr)
-	{
-		return CTransform::Matrix();
-	}
-	// 手に持っているときは、アタッチしている行列を返す
-	else
-	{
-		CMatrix sm;
-		sm.Scale(80.0f, 80.0f, 80.0f);
-
-		return sm * (*mpAttachMtx);
-	}
-}
+//CMatrix CKick::Matrix() const
+//{
+//	//// 手に持っていないときは、自分自身の行列を返す
+//	//if (mpAttachMtx == nullptr)
+//	//{
+//	//	return CTransform::Matrix();
+//	//}
+//	//// 手に持っているときは、アタッチしている行列を返す
+//	//else
+//	//{
+//	//	CMatrix sm;
+//	//	sm.Scale(80.0f, 80.0f, 80.0f);
+//
+//	//	return sm * (*mpAttachMtx);
+//	//}
+//}
 
 // 攻撃開始
 void CKick::AttackStart()

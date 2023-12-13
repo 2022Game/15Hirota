@@ -145,9 +145,16 @@ CSoldier::CSoldier()
 
 
 	// 右足にダメージコライダーを設定
-	mpKick = new CKick();
-	mpKick->AttachMtx(GetFrameMtx("Armature_mixamorig_RightToeBase"));
-	mpKick->SetOwner(this);
+	mpAttackCol = new CColliderSphere
+	(
+		this, ELayer::eKickCol,
+		0.3f
+	);
+	mpAttackCol->SetCollisionLayers({ ELayer::eDamageCol });
+	mpAttackCol->SetCollisionTags({ ETag::ePlayer });
+	mpAttackCol->SetEnable(false);
+	const CMatrix* spineMtxK = GetFrameMtx("Armature_mixamorig_RightToeBase");
+	mpAttackCol->SetAttachMtx(spineMtxK);
 
 
 	// 銃を作成して持たせる
@@ -177,6 +184,11 @@ CSoldier::~CSoldier()
 		mpDamageCol = nullptr;
 	}
 
+	if (mpAttackCol != nullptr)
+	{
+		delete mpAttackCol;
+		mpAttackCol = nullptr;
+	}
 }
 
 CSoldier* CSoldier::Instance()
@@ -232,6 +244,7 @@ void CSoldier::ChangeAnimation(EAnimType type)
 // 待機
 void CSoldier::UpdateIdle()
 {
+	mpAttackCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
@@ -358,9 +371,9 @@ void CSoldier::UpdateKick()
 	mTargetDir = vp.Normalized();
 
 	ChangeAnimation(EAnimType::eKick);
-	if (mAnimationFrame >= 45.0f && mAnimationFrame < 60.0f)
+	if (mAnimationFrame >= 45.0f)
 	{
-		mpKick->AttackStart();
+		mpAttackCol->SetEnable(true);
 		mState = EState::eKickWait;
 	}
 }
@@ -370,10 +383,9 @@ void CSoldier::UpdateKickWait()
 {
 	if (IsAnimationFinished())
 	{
+		mpAttackCol->SetEnable(false);
 		mState = EState::eChase;
 		ChangeAnimation(EAnimType::eIdle);
-
-		mpKick->AttackEnd();
 	}
 }
 
@@ -422,7 +434,7 @@ void CSoldier::UpdateHit()
 		{
 			mState = EState::eChase;
 		}
-		else if (mCharaStatus.hp == 0)
+		else if (mCharaStatus.hp <= 0)
 		{
 			mState = EState::eDeth;
 		}
@@ -631,6 +643,7 @@ void CSoldier::Update()
 	// CSoldierの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
+	mpAttackCol->Update();
 
 	mIsGrounded = false;
 }

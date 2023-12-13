@@ -11,7 +11,6 @@
 class CGun;
 class CBullet;
 class CPlayer;
-class CKick;
 class CSoldierFrame;
 class CSoldierGauge;
 
@@ -160,7 +159,6 @@ private:
 	CVector yukariPosition;		// ©•ª‚Ì’n“_
 
 	CGun* mpGun;	// e‚Ìƒ‚ƒfƒ‹
-	CKick* mpKick;
 
 	int mTimeShot;
 	int mTimeShotEnd;

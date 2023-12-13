@@ -65,6 +65,7 @@ CPlayer::CPlayer()
 	, staminaDepleted(false)
 	, staminaLowerLimit(false)
 	, damageObject(false)
+	, damageEnemy(false)
 	, mLife(50)
 {
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
@@ -133,8 +134,8 @@ CPlayer::CPlayer()
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol });
-	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject });
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eKickCol });
+	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, ETag::eEnemy });
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -231,6 +232,7 @@ void CPlayer::ChangeAnimation(EAnimType type)
 void CPlayer::UpdateIdle()
 {
 	mpDamageCol->SetEnable(true);
+	damageEnemy = false;
 	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
 
 	mMoveSpeed.X(0.0f);
@@ -490,6 +492,7 @@ void CPlayer::UpdateClearEnd()
 // 死亡
 void CPlayer::UpdateDeth()
 {
+	mpDamageCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	ChangeAnimation(EAnimType::eDeth);
@@ -504,6 +507,7 @@ void CPlayer::UpdateDethEnd()
 {
 	if (IsAnimationFinished())
 	{
+		//CSceneManager::Instance()->LoadScene(EScene::eOver);
 		mCharaStatus = mCharaMaxStatus;
 		Position(0.0f, 0.0f, -30.0f);
 		mState = EState::eIdle;
@@ -518,6 +522,37 @@ void CPlayer::UpdateReStart()
 		damageObject = false;
 		Position(0.0f, 10.0f, -30.0f);
 		mState = EState::eIdle;
+	}
+}
+
+// 敵の攻撃を受けた時
+void CPlayer::UpdateHit()
+{
+	if (!damageEnemy)
+	{
+		mCharaStatus.hp -= 1;
+		damageEnemy = true;
+	}
+	
+	mpDamageCol->SetEnable(false);
+	// ダメージを受けた時は移動を停止
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	ChangeAnimation(EAnimType::eDeth);
+	if (IsAnimationFinished())
+	{
+		if (mCharaStatus.hp > 0)
+		{
+			damageEnemy = false;
+			mpDamageCol->SetEnable(false);
+			mState = EState::eIdle;
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			damageEnemy = false;
+			mpDamageCol->SetEnable(false);
+			mState = EState::eDeth;
+		}
 	}
 }
 
@@ -593,6 +628,10 @@ void CPlayer::Update()
 		// 再起
 		case EState::eReStart:
 			UpdateReStart();
+			break;
+		// 敵のダメージHit
+		case EState::eHit:
+			UpdateHit();
 			break;
 	}
 
@@ -721,6 +760,11 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			mpDamageCol->SetEnable(false);
 			mState = EState::eClear;
 		}
+		else if (other->Layer() == ELayer::eKickCol)
+		{
+			mpRideObject = other->Owner();
+			mState = EState::eHit;
+		}
 	}
 }
 
@@ -732,7 +776,7 @@ void CPlayer::TakeDamage(int damage)
 
 	//// HPからダメージを引く
 	//mCharaStatus.hp = max(mCharaStatus.hp - damage, 0);
-	//mCharaStatus.hp -= damage;
+	mCharaStatus.hp -= damage;
 	// HPが0になったら
 	if (mCharaStatus.hp <= 0)
 	{

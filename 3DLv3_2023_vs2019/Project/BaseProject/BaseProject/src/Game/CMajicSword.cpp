@@ -27,7 +27,16 @@ CMajicSword::CMajicSword()
 
 CMajicSword::~CMajicSword()
 {
-
+	if (mpAttackCol != nullptr)
+	{
+		delete mpAttackCol;
+		mpAttackCol = nullptr;
+	}
+	/*if (mpAttachMtx != nullptr)
+	{
+		delete mpAttachMtx;
+		mpAttachMtx = nullptr;
+	}*/
 }
 
 void CMajicSword::Update()
