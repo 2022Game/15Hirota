@@ -19,7 +19,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/Users/Manam.DESKTOP-RTRTCM3/OneDrive/デスクトップ/Git/15Hirota/3DLv3_2023_vs2019/Project/BaseProject/BaseProject/res/Field/C:/Users/Manam.DESKTOP-RTRTCM3/OneDrive/デスクトップ/Git/15Hirota/3DLv3_2023_vs2019/Project/BaseProject/BaseProject/res/Field/その他/63_0105_jpg/芝生V005.jpg
+map_Kd shibafuV005.jpg
 
 newmtl Material.003
 Ns 250.000000
