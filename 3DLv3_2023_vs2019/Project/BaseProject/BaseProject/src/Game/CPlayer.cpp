@@ -67,6 +67,7 @@ CPlayer::CPlayer()
 	, damageObject(false)
 	, mLife(50)
 {
+	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
 	// スタミナゲージを作成
