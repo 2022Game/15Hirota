@@ -18,7 +18,9 @@ public:
 
 private:
 	CModel* mpModel;
-	//CColliderLine* mpColliderLine;
+	CModel* mpGoalPost;
+
+	CColliderLine* mpColliderLine;
 	CColliderSphere* mpColliderSphere;
 	CColliderMesh* mpColliderMesh;
 };

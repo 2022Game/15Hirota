@@ -48,7 +48,8 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("WallCol", "Field\\GameStageWall(1).obj");			// 仮1面の壁
 	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");				// 初期の四角のモデル
 	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");		// 初期の回転する四角モデル
-	CResourceManager::Load<CModel>("GoalModel", "Field\\Object\\Goal.obj");				// ゴールモデル
+	CResourceManager::Load<CModel>("GoalCube", "Field\\Object\\GoalCube.obj");			// ゴールの土台
+	CResourceManager::Load<CModel>("GoalPost", "Field\\Object\\GoalPost.obj");			// ゴールのポスト
 	CResourceManager::Load<CModel>("Stone1", "Field\\Object\\Stone1.obj");				// 石1
 
 	// キャラクター関連

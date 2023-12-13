@@ -27,6 +27,12 @@ CField::~CField()
 		delete mpColliderMesh;
 		mpColliderMesh = nullptr;
 	}
+
+	if (mpWallCol != nullptr)
+	{
+		delete mpWallCol;
+		mpWallCol = nullptr;
+	}
 }
 
 void CField::CreateFieldObjects()
