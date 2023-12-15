@@ -530,7 +530,7 @@ void CPlayer::UpdateHit()
 {
 	if (!damageEnemy)
 	{
-		mCharaStatus.hp -= 1;
+		mCharaStatus.hp -= 3;
 		damageEnemy = true;
 	}
 	

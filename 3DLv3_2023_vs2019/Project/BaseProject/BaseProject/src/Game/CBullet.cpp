@@ -101,7 +101,7 @@ void CBullet::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			if (!IsAttackHitObj(bullet))
 			{
 				// ダメージを与える
-				bullet->TakeDamage(1);
+				bullet->TakeDamage(0);
 
 				// 攻撃済みリストに追加
 				AddAttackHitObj(bullet);

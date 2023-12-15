@@ -2,7 +2,7 @@
 #define CSTONE1_H
 
 #include "CModel.h"
-#include "CColliderMesh.h"
+#include "CColliderSphere.h"
 #include "CRideableObject.h"
 
 class CStone1 : public CRideableObject
@@ -16,6 +16,6 @@ public:
 
 private:
 	CModel* mpModel;
-	CColliderMesh* mpColliderMesh;
+	CColliderSphere* mpColliderSphere;
 };
 #endif

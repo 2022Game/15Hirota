@@ -10,6 +10,7 @@ struct CharaStatus
 	int defense;		// 防御力
 	float moveSpeed;	// 移動速度
 	int stamina;		// スタミナ
+	int baria;			// バリア
 };
 
 // プレイヤーの最大レベル

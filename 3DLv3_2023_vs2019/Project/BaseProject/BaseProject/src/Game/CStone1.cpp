@@ -5,7 +5,12 @@ CStone1::CStone1(CModel* model, const CVector& pos, const CVector& scale, const 
 {
 	mpModel = CResourceManager::Get<CModel>("Stone1");
 
-	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
+	mpColliderSphere = new CColliderSphere
+	(
+		this, ELayer::eField,
+		1.5f, true
+	);
+	mpColliderSphere->Position(0.0f, 1.0f, 0.0f);
 
 	Position(pos);
 	Scale(scale);
@@ -14,10 +19,10 @@ CStone1::CStone1(CModel* model, const CVector& pos, const CVector& scale, const 
 
 CStone1::~CStone1()
 {
-	if (mpColliderMesh != nullptr)
+	if (mpColliderSphere != nullptr)
 	{
-		delete mpColliderMesh;
-		mpColliderMesh = nullptr;
+		delete mpColliderSphere;
+		mpColliderSphere = nullptr;
 	}
 }
 
