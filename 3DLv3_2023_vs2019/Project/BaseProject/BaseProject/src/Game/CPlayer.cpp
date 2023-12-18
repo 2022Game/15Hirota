@@ -51,6 +51,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	90.0f	},	// ダッシュ終了
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	71.0f	},	// 回避
 	{ "Character\\Monster1\\anim\\Guts pose_325.x",				false,	325.0f	},	// ガッツポーズ
+	{ "Character\\Monster1\\anim\\Hit_63.x",					false,	63.0f	},	// 敵の攻撃Hit
 	{ "Character\\Monster1\\anim\\Deth_276.x",					false,	276.0f	},	// 死亡
 
 };
@@ -233,6 +234,7 @@ void CPlayer::UpdateIdle()
 {
 	mpDamageCol->SetEnable(true);
 	damageEnemy = false;
+	damageObject = false;
 	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
 
 	mMoveSpeed.X(0.0f);
@@ -508,6 +510,7 @@ void CPlayer::UpdateDethEnd()
 	if (IsAnimationFinished())
 	{
 		//CSceneManager::Instance()->LoadScene(EScene::eOver);
+		damageObject = false;
 		mCharaStatus = mCharaMaxStatus;
 		Position(0.0f, 0.0f, -30.0f);
 		mState = EState::eIdle;
@@ -538,7 +541,7 @@ void CPlayer::UpdateHit()
 	// ダメージを受けた時は移動を停止
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
-	ChangeAnimation(EAnimType::eDeth);
+	ChangeAnimation(EAnimType::eHit);
 	if (IsAnimationFinished())
 	{
 		if (mCharaStatus.hp > 0)
@@ -717,11 +720,20 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				if (!damageObject)
 				{
 					mCharaStatus.hp -= 1;
-					damageObject = true;
+
+					if (mCharaStatus.hp > 0)
+					{
+						damageObject = true;
+						ChangeAnimation(EAnimType::eHit);
+						mState = EState::eReStart;
+					}
+					else
+					{
+						damageObject = true;
+						mState = EState::eDeth;
+					}
 				}
-				ChangeAnimation(EAnimType::eDeth);
 				mpRideObject = other->Owner();
-				mState = EState::eReStart;
 			}
 		}
 	}

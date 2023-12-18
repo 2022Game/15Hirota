@@ -80,7 +80,7 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 #define ATTACK 10
 
 // 弾丸の発射間隔
-#define SHOT_INTERVAL 0.1f
+#define SHOT_INTERVAL 2.0f
 
 // 敵を見失った後の時間
 #define PLAYER_LOST 10.0f
@@ -92,7 +92,7 @@ CSoldier::CSoldier()
 	, mTargetDir(0.0f, 0.0f, 1.0f)
 	, mpRideObject(nullptr)
 	, mTimeShot(0)
-	, mTimeShotEnd(20)
+	, mTimeShotEnd(5)
 	, mElapsedTime(0.0f)
 	, mElapsedTime_End(0.0f)
 {
@@ -427,9 +427,19 @@ void CSoldier::UpdateHit()
 	// ダメージを受けた時は移動を停止
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+
 	ChangeAnimation(EAnimType::eHit);
 	if (IsAnimationFinished())
 	{
+		// プレイヤーのポインタが0以外の時
+		CPlayer* player = CPlayer::Instance();
+
+		// プレイヤーまでのベクトルを求める
+		CVector vp = player->Position() - Position();
+		float distancePlayer = vp.Length();
+		vp.Y(0.0f);
+		mTargetDir = vp.Normalized();
+
 		if (mCharaStatus.hp > 1)
 		{
 			mState = EState::eChase;

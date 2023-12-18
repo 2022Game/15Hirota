@@ -11,7 +11,7 @@ CMoveFloor::CMoveFloor(CModel* model, const CVector& pos, const CVector& scale, 
 	, mElapsedTime(0.0f)
 {
 	mpColliderMesh = new CColliderMesh(this, ELayer::eDamageObject, mpModel, true);
-	mpColliderMesh->SetCollisionLayers({ ELayer::eField });
+	//mpColliderMesh->SetCollisionLayers({ ELayer::eField });
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
 
 	Position(mDefaultPos);

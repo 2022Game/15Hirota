@@ -23,6 +23,10 @@
 // スタミナポジション縦
 #define SUTAMINAPOSITION_Y	(632.0f)
 
+#define VERTICAL_SHAKE_AMOUNT 20.0f
+
+#define CHANGE_SPEED 3.0f
+
 CStaminaGauge::CStaminaGauge()
 	: mMaxSutaminaValue(100)
 	, mSutaminaValue(100)
@@ -58,6 +62,48 @@ void CStaminaGauge::Update()
 	else colorsutamina = CColor(1.0f, 1.0f, 0.0f);
 	// バーに色を設定
 	mpStaminaImage->SetColor(colorsutamina);
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//// スタミナゲージのポジション
+	//mpStaminaImage->SetPos(mPosition + CVector2(SUTAMINAPOSITION_X, SUTAMINAPOSITION_Y));
+
+
+	//// バーのサイズを目標のサイズに向かって変化させる
+	//float targetPercent = Math::Clamp01((float)mSutaminaValue / mMaxSutaminaValue);
+	//float currentPercent = Math::Clamp01(mpStaminaImage->GetSize().X() / NEW_BAR_SIZE_X);
+	//float newPercent = Math::Lerp(currentPercent, targetPercent, Time::DeltaTime() * CHANGE_SPEED);
+
+	//CColor colorSutamina;
+
+	//const float epsilon = 0.0001f;
+	//float verticalOffset = 0.0f;
+	//if (targetPercent < currentPercent - epsilon) {
+
+	//	verticalOffset = Math::Rand(-1.5f, 1.5f) * VERTICAL_SHAKE_AMOUNT;
+	//}
+	//else {
+	//	// 10%以下
+	//	if (targetPercent <= 0.2f) {
+	//		colorSutamina = CColor(1.0f, 0.0f, 0.0f);
+	//	}
+	//	// 50%以下
+	//	else if (targetPercent <= 0.5f) {
+	//		colorSutamina = CColor(0.9f, 0.3f, 0.5f);
+	//	}
+	//	// それ以外
+	//	else {
+	//		colorSutamina = CColor(0.0f, 1.0f, 0.0f);
+	//	}
+	//}
+
+
+	//// バーに色を設定
+	//mpStaminaImage->SetColor(colorSutamina);
+	//CVector2 position = mPosition + CVector2(SUTAMINAPOSITION_X, SUTAMINAPOSITION_Y + verticalOffset);
+	//mpStaminaImage->SetPos(position);
+	//CVector2 size = CVector2(SUTAMINA_SIZE_X * newPercent, SUTAMINA_SIZE_Y);
+	//mpStaminaImage->SetSize(size);
 }
 
 // スタミナ最大値

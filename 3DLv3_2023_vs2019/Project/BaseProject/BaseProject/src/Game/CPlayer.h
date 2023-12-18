@@ -106,6 +106,7 @@ private:
 		eDashStop,		// ダッシュ終了
 		eRotate,		// 回避
 		eGuts,			// ガッツポーズ
+		eHit,			// 敵の攻撃Hit
 		eDeth,			// 死亡
 
 		Num
