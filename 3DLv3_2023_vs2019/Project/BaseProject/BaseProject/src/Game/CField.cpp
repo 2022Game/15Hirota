@@ -4,6 +4,7 @@
 #include "CRotateFloor.h"
 #include "CGoalObject.h"
 #include "CStone1.h"
+#include "CCamera.h"
 
 CField::CField()
 	: CObjectBase(ETag::eField, ETaskPriority::eBackground)
@@ -30,9 +31,22 @@ CField::~CField()
 
 	if (mpWallCol != nullptr)
 	{
+		// メインカメラから壁のコライダーへの参照を取り除く
+		CCamera* mainCamera = CCamera::MainCamera();
+		if (mainCamera != nullptr)
+		{
+			mainCamera->RemoveCollider(mpWallCol);
+
+		}
 		delete mpWallCol;
 		mpWallCol = nullptr;
 	}
+}
+
+// 壁のコライダー取得
+CColliderMesh* CField::GetWallCol() const
+{
+	return mpWallCol;
 }
 
 void CField::CreateFieldObjects()

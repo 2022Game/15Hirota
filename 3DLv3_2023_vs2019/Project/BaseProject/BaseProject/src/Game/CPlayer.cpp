@@ -112,19 +112,19 @@ CPlayer::CPlayer()
 	(
 		this, ELayer::eField,
 		CVector(0.0f, 8.0f, -8.0f),
-		CVector(0.0f, 8.0f, 8.0f)
+		CVector(0.0f, 8.0f, 12.0f)
 	);
-	mpColliderLine_2->SetCollisionLayers({ ELayer::eFieldWall });
+	mpColliderLine_2->SetCollisionLayers({ ELayer::eFieldWall,ELayer::eField });
 
 
 	// 横のコライダーライン
 	mpColliderLine_3 = new CColliderLine
 	(
 		this, ELayer::eField,
-		CVector(8.0f, 8.0f, 0.0f),
-		CVector(-8.0f, 8.0f, 0.0f)
+		CVector(12.0f, 8.0f, 0.0f),
+		CVector(-12.0f, 8.0f, 0.0f)
 	);
-	mpColliderLine_3->SetCollisionLayers({ ELayer::eFieldWall });
+	mpColliderLine_3->SetCollisionLayers({ ELayer::eFieldWall,ELayer::eField });
 
 
 	// ダメージを受けるコライダーを作成
@@ -240,6 +240,8 @@ bool CPlayer::CanEvade()
 // 待機
 void CPlayer::UpdateIdle()
 {
+	// 剣に攻撃終了を伝える
+	mpSword->AttackEnd();
 	mpDamageCol->SetEnable(true);
 	damageEnemy = false;
 	damageObject = false;
@@ -350,11 +352,13 @@ void CPlayer::UpdateIdle()
 			}
 		}
 		// Q,Eキーで回避へ移行
-		if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+		else if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
 		{
 			// 回避行動前にスタミナが0以下になるかどうかを確認
 			if (mCharaStatus.stamina - 50 >= 0) {
-
+				
+				mMoveSpeed.X(0.0f);
+				mMoveSpeed.Z(0.0f);
 				mState = EState::eRotate;
 				// スタミナが0以下にならない場合は回避行動を実行
 				mCharaStatus.stamina -= 50;
@@ -379,27 +383,11 @@ void CPlayer::UpdateIdle()
 // 攻撃
 void CPlayer::UpdateAttack()
 {
-	if (!IsAnimationFinished())
-	{
-		if (CanEvade())
-		{
-			mState = EState::eRotate;
-			return;
-		}
-		// 剣に攻撃開始を伝える
-		mpSword->AttackStart();
-		// 攻撃アニメーションを開始
-		ChangeAnimation(EAnimType::eAttack);
-		// 攻撃終了待ち状態へ移行
-		mState = EState::eAttackWait;
-	}
-
-	//// 剣に攻撃開始を伝える
-	//mpSword->AttackStart();
-	//// 攻撃アニメーションを開始
-	//ChangeAnimation(EAnimType::eAttack);
-	//// 攻撃終了待ち状態へ移行
-	//mState = EState::eAttackWait;
+	// 攻撃アニメーションを開始
+	// 剣に攻撃開始を伝える
+	mpSword->AttackStart();
+	ChangeAnimation(EAnimType::eAttack);
+	mState = EState::eAttackWait;
 }
 
 // 強攻撃
@@ -414,6 +402,34 @@ void CPlayer::UpdateAttackStrong()
 // 攻撃終了待ち
 void CPlayer::UpdateAttackWait()
 {
+	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
+	if (mAnimationFrame >= 10.0f)
+	{
+		// 攻撃終了待ち状態へ移行
+		// Q,Eキーで回避へ移行
+		if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+		{
+			// 回避行動前にスタミナが0以下になるかどうかを確認
+			if (mCharaStatus.stamina - 50 >= 0) {
+
+				mState = EState::eRotate;
+				// スタミナが0以下にならない場合は回避行動を実行
+				mCharaStatus.stamina -= 50;
+
+			}
+			else
+			{
+			}
+		}
+		if (mState == EState::eRotate)
+		{
+			
+		}
+	}
+	else
+	{
+
+	}
 	// 攻撃アニメーションが終了したら、
 	if (IsAnimationFinished())
 	{
@@ -468,6 +484,25 @@ void CPlayer::UpdateJumpEnd()
 //回避開始
 void CPlayer::UpdateRotate()
 {
+	// 移動処理
+	// キーの入力ベクトルを取得
+	CVector input;
+	if (CInput::Key('W'))		input.Z(-1.0f);
+	else if (CInput::Key('S'))	input.Z(1.0f);
+	if (CInput::Key('A'))		input.X(-1.0f);
+	else if (CInput::Key('D'))	input.X(1.0f);
+
+	// 入力ベクトルの長さで入力されているか判定
+	if (input.LengthSqr() > 0.0f)
+	{
+		// カメラの向きに合わせた移動ベクトルに変換
+		CVector move = CCamera::MainCamera()->Rotation() * input;
+		move.Y(0.0f);
+		move.Normalize();
+
+		float speed = MOVE_SPEED;
+		mMoveSpeed += move * speed * MOVE_SPEED * mCharaStatus.moveSpeed;
+	}
 	ChangeAnimation(EAnimType::eRotate);
 	mState = EState::eRotateEnd;
 }
@@ -581,6 +616,7 @@ void CPlayer::UpdateHit()
 		}
 	}
 }
+
 
 // 更新
 void CPlayer::Update()
@@ -772,6 +808,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				mpRideObject = other->Owner();
 			}
 		}
+		if (other->Layer() == ELayer::eField)
+		{
+			Position(Position() + hit.adjust);
+		}
 	}
 
 	if (self == mpColliderLine_3)
@@ -784,6 +824,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				mpRideObject = other->Owner();
 			}
+		}
+		if (other->Layer() == ELayer::eField)
+		{
+			Position(Position() + hit.adjust);
 		}
 	}
 

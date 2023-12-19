@@ -67,7 +67,7 @@ void CGameScene::Load()
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
 
-	new CField();
+	CField* field = new CField();
 
 	// モンスター(プレイヤー)
 	CPlayer* player = new CPlayer();
@@ -82,7 +82,7 @@ void CGameScene::Load()
 	//// ゆかりさん
 	//CYukari* yukari = new CYukari();
 	//yukari->Scale(1.0f, 1.0f, 1.0f);
-	//yukari->Position(20.0f, 100.0f, -100.0f);
+	//yukari->Position(-100.0f, 200.0f, -100.0f);
 
 	// ガスマスク兵士
 	CSoldier* sol = new CSoldier();
@@ -93,13 +93,16 @@ void CGameScene::Load()
 	sol2->Scale(1.0f, 1.0f, 1.0f);
 	sol2->Position(-50.0f, 150.0f, -100.0f);
 
+
 	CCamera* mainCamera = new CCamera
 	(
 		//CVector(5.0f, -15.0f, 180.0f),
-		CVector(0.0f, 100.0f, 75.0f),
-		player->Position()
+		CVector(0.0f, 80.0f, 75.0f),
+		player->Position() + CVector(0.0f, 10.0f, 0.0f)
 	);
 	mainCamera->SetFollowTargetTf(player);
+	// スフィアかメッシュぐらい
+	mainCamera->AddCollider(field->GetWallCol());
 
 
 	//// クリア画像のリソースをロード

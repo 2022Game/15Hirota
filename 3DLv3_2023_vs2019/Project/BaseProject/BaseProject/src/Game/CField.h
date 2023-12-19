@@ -8,6 +8,10 @@ public:
 	CField();
 	~CField();
 
+
+	// 壁のコライダー取得
+	CColliderMesh* GetWallCol() const;
+
 	void Update();
 	void Render();
 

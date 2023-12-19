@@ -168,5 +168,6 @@ private:
 	CSoldierFrame* mpFrame;
 	CSoldierGauge* mpGauge;
 
+
 };
 #endif

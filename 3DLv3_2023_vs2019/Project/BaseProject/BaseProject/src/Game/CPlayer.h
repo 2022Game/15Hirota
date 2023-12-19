@@ -63,6 +63,8 @@ public:
 	// 敵のの攻撃Hit
 	void UpdateHit();
 
+	void UpdateMovement();
+
 
 	bool CanEvade();
 
@@ -171,6 +173,7 @@ private:
 	bool staminaLowerLimit;		// スタミナが下限値に到達した場合のフラグ
 	bool damageObject;			// ダメージを与えるフラグ
 	bool damageEnemy;			// ダメージを与えるフラグ(敵)
+
 
 	CColliderSphere* mpDamageCol;	//ダメージを受けるコライダ
 	CMajicSword* mpSword;

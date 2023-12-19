@@ -136,7 +136,7 @@ CSoldier::CSoldier()
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy });
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy, ELayer::eFieldWall });
 	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy });
 	// ダメージを受けるコライダーを少し下へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
@@ -162,7 +162,6 @@ CSoldier::CSoldier()
 	mpGun->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpGun->SetOwner(this);
 
-	//const CMatrix* bodyMtx = GetFrameMtx("Armature_")
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);

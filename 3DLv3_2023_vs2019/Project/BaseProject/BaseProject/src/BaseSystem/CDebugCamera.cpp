@@ -167,6 +167,8 @@ void CDebugCamera::Update()
 	CDebugPrint::Print("右ドラッグ：カメラ回転\n");
 	CDebugPrint::Print("ホイール：カメラ移動速度割合 x %.2f\n", mMoveSpeedRatio);
 	CDebugPrint::Print("カメラ座標：%f, %f, %f\n", pos.X(), pos.Y(), pos.Z());
+	CDebugPrint::Print("回避行動 : Q,E\n");
+	CDebugPrint::Print("ダッシュ : SHIFT\n");
 	CDebugPrint::Print("■■■■■■■■■■■■■■■■■■■■■■■\n");
 
 	// カメラのベース更新
