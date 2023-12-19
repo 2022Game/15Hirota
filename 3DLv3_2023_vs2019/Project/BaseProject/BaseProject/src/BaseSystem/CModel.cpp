@@ -288,6 +288,8 @@ bool CModel::LoadMaterial(std::string path, bool dontDelete)
 
 void CModel::Render()
 {
+	// 完全に透明な状態であれば、描画しない
+	if (mColor.A() == 0.0f) return;
 	//可変長配列の要素数だけ繰り返し
 	for (int i = 0; i < mTriangles.size(); i++) {
 		//マテリアルの適用
@@ -342,6 +344,8 @@ float CModel::GetAlpha() const
 //Render(行列)
 void CModel::Render(const CMatrix& m)
 {
+	// 完全に透明な状態であれば、描画しない
+	if (mColor.A() == 0.0f) return;
 	//行列の退避
 	glPushMatrix();
 	//合成行列を掛ける

@@ -229,6 +229,14 @@ void CPlayer::ChangeAnimation(EAnimType type)
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
 }
 
+// 回避可能かどうかの判定
+bool CPlayer::CanEvade()
+{
+	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
+	// QまたはEキーが押され、かつ回避条件を満たしている場合
+	return (CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush && (mCharaStatus.stamina <= mCharaMaxStatus.stamina) && (mCharaStatus.stamina - 50 >= 0);
+}
+
 // 待機
 void CPlayer::UpdateIdle()
 {
@@ -342,7 +350,7 @@ void CPlayer::UpdateIdle()
 			}
 		}
 		// Q,Eキーで回避へ移行
-		else if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+		if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
 		{
 			// 回避行動前にスタミナが0以下になるかどうかを確認
 			if (mCharaStatus.stamina - 50 >= 0) {
@@ -351,7 +359,7 @@ void CPlayer::UpdateIdle()
 				// スタミナが0以下にならない場合は回避行動を実行
 				mCharaStatus.stamina -= 50;
 			}
-			else 
+			else
 			{
 			}
 		}
@@ -371,12 +379,27 @@ void CPlayer::UpdateIdle()
 // 攻撃
 void CPlayer::UpdateAttack()
 {
-	// 剣に攻撃開始を伝える
-	mpSword->AttackStart();
-	// 攻撃アニメーションを開始
-	ChangeAnimation(EAnimType::eAttack);
-	// 攻撃終了待ち状態へ移行
-	mState = EState::eAttackWait;
+	if (!IsAnimationFinished())
+	{
+		if (CanEvade())
+		{
+			mState = EState::eRotate;
+			return;
+		}
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		// 攻撃アニメーションを開始
+		ChangeAnimation(EAnimType::eAttack);
+		// 攻撃終了待ち状態へ移行
+		mState = EState::eAttackWait;
+	}
+
+	//// 剣に攻撃開始を伝える
+	//mpSword->AttackStart();
+	//// 攻撃アニメーションを開始
+	//ChangeAnimation(EAnimType::eAttack);
+	//// 攻撃終了待ち状態へ移行
+	//mState = EState::eAttackWait;
 }
 
 // 強攻撃

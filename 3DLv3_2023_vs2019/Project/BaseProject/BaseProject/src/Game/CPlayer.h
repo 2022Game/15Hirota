@@ -63,6 +63,9 @@ public:
 	// “G‚Ì‚ÌUŒ‚Hit
 	void UpdateHit();
 
+
+	bool CanEvade();
+
 	/// <summary>
 	/// Õ“Ëˆ—
 	/// </summary>

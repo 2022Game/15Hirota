@@ -136,8 +136,8 @@ CSoldier::CSoldier()
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
-	mpDamageCol->SetCollisionTags({ ETag::eWeapon });
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy });
+	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy });
 	// ダメージを受けるコライダーを少し下へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -712,6 +712,14 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		if (other->Layer() == ELayer::eAttackCol)
 		{
 			mState = EState::eHit;
+		}
+
+		if (other->Layer() == ELayer::eDamageCol)
+		{
+			(other->Tag() == ETag::eEnemy);
+			{
+				Position(Position() + hit.adjust);
+			}
 		}
 	}
 }

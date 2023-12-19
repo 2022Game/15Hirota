@@ -192,6 +192,12 @@ public:
 	/// <param name="parent">設定する親のCTransform</param>
 	void SetParent(CTransform* parent);
 
+	/// <summary>
+	/// 親を取得
+	/// </summary>
+	/// <returns>設定されている親</returns>
+	const CTransform* GetParent() const;
+
 private:
 	/// <summary>
 	/// 子のリストに追加
