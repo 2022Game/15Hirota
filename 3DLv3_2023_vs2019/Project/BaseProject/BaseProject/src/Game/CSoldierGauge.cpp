@@ -8,17 +8,26 @@
 // フレームの線の幅
 #define FRAME_BORDER	(1.0f)
 // フレームの横サイズ
-#define FRAME_SIZE_X	(90.0f)	//(50.0f)
+#define FRAME_SIZE_X	(200.0f)	//(50.0f)
 
 // バーの横サイズ
-#define NEW_BAR_SIZE_X	(71.5f)
+#define NEW_BAR_SIZE_X	(135.0f)
 // バーの縦サイズ
-#define NEW_BAR_SIZE_Y	(8.0f)
+#define NEW_BAR_SIZE_Y	(12.5f)
 
 // バーの横サイズ * 線の幅
 #define BAR_SIZE_X (NEW_BAR_SIZE_X - FRAME_BORDER) //*2.0f
 // バーの縦サイズ * 線の幅
 #define BAR_SIZE_Y (NEW_BAR_SIZE_Y - FRAME_BORDER)
+
+// スケール値計算時のカメラとの距離の最小値
+#define SCALE_DIST_MIN 50.0f
+// スケール値計算時のカメラとの距離の最大値
+#define SCALE_DIST_MAX 100.0f
+// スケール値の最小値
+#define SCALE_MIN 0.8f
+// スケール値の最大値
+#define SCALE_MAX 1.0f
 
 
 CSoldierGauge::CSoldierGauge()
@@ -26,7 +35,6 @@ CSoldierGauge::CSoldierGauge()
 	, mValue(10)
 	, mCenterRatio(0.0f, 0.0f)
 	, mScale(0.0f)
-	, mIsShow(true)
 {
 	mpBarImage = new CImage(BAR_IMAGE);
 	mpBarImage->SetSize(BAR_SIZE_X, BAR_SIZE_Y);
@@ -49,11 +57,6 @@ void CSoldierGauge::Kill()
 void CSoldierGauge::SetCenterRatio(const CVector2& ratio)
 {
 	mCenterRatio = ratio;
-	mpBarImage->SetCenter
-	(
-		0.0f,
-		BAR_SIZE_Y * mCenterRatio.Y()
-	);
 }
 
 // ワールド座標を設定
@@ -70,12 +73,13 @@ void CSoldierGauge::SetWorldPos(const CVector& worldPos)
 	// ゲージを表示しない
 	if (screenPos.Z() < 0.0f)
 	{
-		mIsShow = false;
+		SetShow(false);
 		return;
 	}
 
+	
 	// ゲージ表示
-	mIsShow = true;
+	SetShow(true);
 	// 求めたスクリーン座標を自身の座標に設定
 	mPosition = screenPos;
 
@@ -83,8 +87,8 @@ void CSoldierGauge::SetWorldPos(const CVector& worldPos)
 	float dist = (worldPos - cam->Position()).Length();
 
 	// カメラから離れるごとにスケール値を小さくする
-	float ratio = Math::Clamp01((dist - 10.0f) / (50.0f, -10.0f));
-	mScale = Math::Lerp(0.1f, 1.0f, ratio);
+	float ratio = Math::Clamp01((dist - SCALE_DIST_MIN) / (SCALE_DIST_MAX -SCALE_DIST_MIN));
+	mScale = Math::Lerp(SCALE_MIN, SCALE_MAX, ratio);
 }
 
 // 更新処理
@@ -93,14 +97,20 @@ void CSoldierGauge::Update()
 	// ゲージの位置を設定
 	CVector2 pos = mPosition;
 	pos.X(pos.X() - FRAME_SIZE_X * mCenterRatio.X() * mScale);
-	mpBarImage->SetPos(pos * mScale);
+	mpBarImage->SetPos(pos + CVector2(0.0f,0.0f) * mScale);
 
 
 	// ゲージサイズを最大値と現在地から求める
 	float percent = Math::Clamp01((float)mValue / mMaxValue);
-	CVector2 size = CVector2(BAR_SIZE_X, BAR_SIZE_Y);
-	size.X(BAR_SIZE_X * percent);
+	CVector2 size = CVector2(BAR_SIZE_X * percent, BAR_SIZE_Y) * mScale;
 	mpBarImage->SetSize(size);
+
+	// ゲージの中心位置を設定
+	mpBarImage->SetCenter
+	(
+		0.0f,
+		BAR_SIZE_Y * mCenterRatio.Y() * mScale
+	);
 
 	// HPの割合でゲージの色を変更
 	CColor color;

@@ -69,7 +69,6 @@ CPlayer::CPlayer()
 	, damageEnemy(false)
 	, mLife(50)
 {
-	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
 	// スタミナゲージを作成
@@ -603,6 +602,7 @@ void CPlayer::UpdateReStart()
 // 敵の攻撃を受けた時
 void CPlayer::UpdateHit()
 {
+	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 	if (!damageEnemy)
 	{
 		mCharaStatus.hp -= 3;
@@ -636,6 +636,7 @@ void CPlayer::UpdateHit()
 void CPlayer::Update()
 {
 	SetParent(mpRideObject);
+	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
 
 	// 状態に合わせて、更新処理を切り替える

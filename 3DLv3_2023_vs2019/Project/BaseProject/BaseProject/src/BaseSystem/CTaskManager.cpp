@@ -220,22 +220,18 @@ void CTaskManager::Update()
 	// 3Dタスクリスト内のタスクを順番に更新
 	for (CTask* task : m3dTasks)
 	{
-		// ポーズ中のタスクでなければ、
-		ETaskPauseType pause = task->GetPauseType();
-		if (pause == ETaskPauseType::eNone || (mPauseBit & (int)pause) == 0)
+		// 更新するタスクであれば、タスクを更新
+		if (IsUpdate(task))
 		{
-			// タスクを更新
 			task->Update();
 		}
 	}
 	// 2Dタスクリスト内のタスクを順番に更新
 	for (CTask* task : m2dTasks)
 	{
-		// ポーズ中のタスクでなければ、
-		ETaskPauseType pause = task->GetPauseType();
-		if (pause == ETaskPauseType::eNone || (mPauseBit & (int)pause) == 0)
+		// 更新するタスクであれば、タスクを更新
+		if (IsUpdate(task))
 		{
-			// タスクを更新
 			task->Update();
 		}
 	}
@@ -253,8 +249,12 @@ void CTaskManager::Render()
 		// 3D関連の描画
 		for (CTask* task : m3dTasks)
 		{
-			// タスクを描画
-			task->Render();
+			// 表示フラグがオンならば、
+			if (task->IsShow())
+			{
+				// タスクを描画
+				task->Render();
+			}
 		}
 	}
 
@@ -263,8 +263,12 @@ void CTaskManager::Render()
 	// 2D関連の描画
 	for (CTask* task : m2dTasks)
 	{
-		// タスクを描画
-		task->Render();
+		// 表示フラグがオンならば、
+		if (task->IsShow())
+		{
+			// タスクを描画
+			task->Render();
+		}
 	}
 	// 3D描画用のカメラへ戻す
 	CCamera::End2DCamera();

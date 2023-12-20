@@ -14,7 +14,6 @@ private:
 	int mValue;					// 現在値
 	CVector2 mCenterRatio;		// 中心位置の割合
 	float mScale;				// ゲージのスケール値
-	bool mIsShow;				// ゲージを表示するかどうか
 public:
 	// コンストラクタ
 	CSoldierGauge();

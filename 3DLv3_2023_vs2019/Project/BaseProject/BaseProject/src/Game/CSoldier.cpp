@@ -14,22 +14,6 @@
 
 #define _USE_MATH_DEFINES
 
-
-// フレームの線の幅
-#define FRAME_BORDER	(1.0f)
-
-
-// バーの横サイズ
-#define NEW_BAR_SIZE_X	(139.0f)
-// バーの縦サイズ
-#define NEW_BAR_SIZE_Y	(11.5f)
-
-// バーの横サイズ * 線の幅
-#define BAR_SIZE_X (NEW_BAR_SIZE_X - FRAME_BORDER) //*2.0f
-// バーの縦サイズ * 線の幅
-#define BAR_SIZE_Y (NEW_BAR_SIZE_Y - FRAME_BORDER)
-
-
 // CSoldierのインスタンス
 CSoldier* CSoldier::spInstance = nullptr;
 
@@ -103,6 +87,7 @@ CSoldier::CSoldier()
 	CModelX* model = CResourceManager::Get<CModelX>("Soldier");
 
 	mpFrame = new CSoldierFrame();
+	// 0~1の値を設定
 	mpFrame->SetCenterRatio(CVector2(0.5f, 0.0f));
 	mpGauge = new CSoldierGauge();
 	mpGauge->SetCenterRatio(CVector2(0.3f, 0.0f));
@@ -614,23 +599,16 @@ void CSoldier::Update()
 	CDebugPrint::Print("Shot%d\n", mTimeShot);
 	CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
 	
-	// カメラの取得
-	CCamera* cam = CCamera::CurrentCamera();
-	// フレームの位置を頭上に固定
-	CVector gaugeWorldPos = Position() + CVector(0.0f, 30.0f, 0.0f);
-	// カメラでワールド座標をスクリーン座標へ変換
-	CVector gp = cam->WorldToScreenPos(gaugeWorldPos);
 
-	// プレイヤーの座標
-	CVector playerPos = CPlayer::Instance()->Position();
-	// プレイヤーと敵の距離を計算
-	float distance = (playerPos - Position()).Length();
-	// ゲージの座標を2Dで設定（右にずらす）
-	//float GaugeOffsetX = -17.5f;
-	// フレーム座標
-	mpFrame->SetPos(gp.X(), gp.Y());
+	// HPゲージの座標を更新 (敵の座標の少し上の座標)
+	CVector gaugePos = Position() + CVector(0.0f, 25.0f, 0.0f);
+	mpGauge->SetWorldPos(gaugePos);
+	CVector framePos = Position() + CVector(0.0f, 25.0f, 0.0f);
+	mpFrame->SetWorldPos(framePos);
+
+
 	// ゲージの座標を2Dで設定
-	mpGauge->SetPos(gp.X(), gp.Y());
+	//mpGauge->SetPos(gp.X(), gp.Y());
 
 
 	//// 一定の範囲内に居る場合は表示

@@ -97,7 +97,7 @@ void CGameScene::Load()
 	CCamera* mainCamera = new CCamera
 	(
 		//CVector(5.0f, -15.0f, 180.0f),
-		CVector(0.0f, 90.0f, 75.0f),
+		CVector(0.0f, 80.0f, 45.0f),
 		player->Position() + CVector(0.0f, 10.0f, 0.0f)
 	);
 	mainCamera->SetFollowTargetTf(player);
