@@ -26,6 +26,21 @@ void CWeapon::AttachMtx(const CMatrix* mtx)
 	mpAttachMtx = mtx;
 }
 
+// 追従する行列を取得
+const CMatrix* CWeapon::GetAttachMtx() const
+{
+	if (mpAttachMtx == nullptr) return nullptr;
+	return &mAttachCurrentMtx;
+}
+
+// 追従する行列の値を更新
+void CWeapon::UpdateAttachMtx()
+{
+	if (mpAttachMtx == nullptr) return;
+	// 現在の行列の状態をメンバ変数の行列へコピー
+	mAttachCurrentMtx = *mpAttachMtx;
+}
+
 // 攻撃開始
 void CWeapon::AttackStart()
 {

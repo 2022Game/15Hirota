@@ -32,8 +32,9 @@ void CGun::Render()
 
 CMatrix CGun::Matrix() const
 {
+	const CMatrix* attachMtx = GetAttachMtx();
 	// 手に持っていないときは、自分自身の行列を返す
-	if (mpAttachMtx == nullptr)
+	if (attachMtx == nullptr)
 	{
 		return CTransform::Matrix();
 	}
@@ -64,6 +65,6 @@ CMatrix CGun::Matrix() const
 		float zOffset = 8.0f;	// Z軸方向のずれを指定3.5f
 		positionZ.Translate(0, 0, zOffset);
 
-		return sm * rotateZ * rotateY * positionX * positionY * positionZ * (*mpAttachMtx);
+		return sm * rotateZ * rotateY * positionX * positionY * positionZ * (*attachMtx);
 	}
 }

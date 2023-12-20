@@ -107,24 +107,32 @@ CPlayer::CPlayer()
 	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject });
 
 
-	// 前後のコライダーライン
-	mpColliderLine_2 = new CColliderLine
-	(
-		this, ELayer::eField,
-		CVector(0.0f, 8.0f, -8.0f),
-		CVector(0.0f, 8.0f, 12.0f)
-	);
-	mpColliderLine_2->SetCollisionLayers({ ELayer::eFieldWall,ELayer::eField });
+	//// 前後のコライダーライン
+	//mpColliderLine_2 = new CColliderLine
+	//(
+	//	this, ELayer::eField,
+	//	CVector(0.0f, 8.0f, -8.0f),
+	//	CVector(0.0f, 8.0f, 12.0f)
+	//);
+	//mpColliderLine_2->SetCollisionLayers({ ELayer::eFieldWall,ELayer::eField });
 
 
-	// 横のコライダーライン
-	mpColliderLine_3 = new CColliderLine
+	//// 横のコライダーライン
+	//mpColliderLine_3 = new CColliderLine
+	//(
+	//	this, ELayer::eField,
+	//	CVector(12.0f, 8.0f, 0.0f),
+	//	CVector(-12.0f, 8.0f, 0.0f)
+	//);
+	//mpColliderLine_3->SetCollisionLayers({ ELayer::eFieldWall,ELayer::eField });
+
+	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::eField,
-		CVector(12.0f, 8.0f, 0.0f),
-		CVector(-12.0f, 8.0f, 0.0f)
+		9.0f
 	);
-	mpColliderLine_3->SetCollisionLayers({ ELayer::eFieldWall,ELayer::eField });
+	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField});
+	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 
 
 	// ダメージを受けるコライダーを作成
@@ -159,7 +167,7 @@ CPlayer::~CPlayer()
 		mpColliderLine = nullptr;
 	}
 
-	if (mpColliderLine_2 != nullptr)
+	/*if (mpColliderLine_2 != nullptr)
 	{
 		delete mpColliderLine_2;
 		mpColliderLine_2 = nullptr;
@@ -169,6 +177,12 @@ CPlayer::~CPlayer()
 	{
 		delete mpColliderLine_3;
 		mpColliderLine_3 = nullptr;
+	}*/
+
+	if (mpColliderSphere != nullptr)
+	{
+		delete mpColliderSphere;
+		mpColliderSphere = nullptr;
 	}
 
 	if (mpDamageCol != nullptr)
@@ -748,6 +762,7 @@ void CPlayer::Update()
 	// キャラクターの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
+	mpSword->UpdateAttachMtx();
 
 	mIsGrounded = false;
 }
@@ -797,7 +812,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 	}
 
-	if (self == mpColliderLine_2)
+	if (self == mpColliderSphere)
 	{
 		if (other->Layer() == ELayer::eFieldWall)
 		{
@@ -814,22 +829,22 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 	}
 
-	if (self == mpColliderLine_3)
-	{
-		if (other->Layer() == ELayer::eFieldWall)
-		{
-			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
+	//if (self == mpColliderLine_3)
+	//{
+	//	if (other->Layer() == ELayer::eFieldWall)
+	//	{
+	//		Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
 
-			if (other->Tag() == ETag::eRideableObject)
-			{
-				mpRideObject = other->Owner();
-			}
-		}
-		if (other->Layer() == ELayer::eField)
-		{
-			Position(Position() + hit.adjust);
-		}
-	}
+	//		if (other->Tag() == ETag::eRideableObject)
+	//		{
+	//			mpRideObject = other->Owner();
+	//		}
+	//	}
+	//	if (other->Layer() == ELayer::eField)
+	//	{
+	//		Position(Position() + hit.adjust);
+	//	}
+	//}
 
 	if (self == mpDamageCol)
 	{

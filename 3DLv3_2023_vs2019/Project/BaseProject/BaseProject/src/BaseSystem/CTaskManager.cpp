@@ -199,6 +199,21 @@ bool CTaskManager::IsPaused(int pauseBit) const
 	return (mPauseBit & pauseBit) != 0;
 }
 
+// 更新するかどうか
+bool CTaskManager::IsUpdate(CTask* task) const
+{
+	if (task == nullptr) return false;
+
+	// ポーズ中のタスクならば、更新しない
+	ETaskPauseType pause = task->GetPauseType();
+	if (pause != ETaskPauseType::eNone && (mPauseBit & (int)pause) != 0) return false;
+
+	// 有効フラグがオフならば、更新しない
+	if (!task->IsEnable()) return false;
+
+	return true;
+}
+
 // 更新
 void CTaskManager::Update()
 {

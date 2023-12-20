@@ -163,8 +163,10 @@ private:
 
 	// コライダーライン
 	CColliderLine* mpColliderLine;
-	CColliderLine* mpColliderLine_2;
-	CColliderLine* mpColliderLine_3;
+	/*CColliderLine* mpColliderLine_2;
+	CColliderLine* mpColliderLine_3;*/
+
+	CColliderSphere* mpColliderSphere;
 
 	CTransform* mpRideObject;
 

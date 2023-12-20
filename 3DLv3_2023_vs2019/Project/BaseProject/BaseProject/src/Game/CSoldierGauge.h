@@ -3,6 +3,7 @@
 class CImage;
 
 #include "CUIBase.h"
+#include "CVector.h"
 
 class CSoldierGauge :public CUIBase
 {
@@ -11,11 +12,17 @@ private:
 
 	int mMaxValue;				// 最大値
 	int mValue;					// 現在値
+	CVector2 mCenterRatio;		// 中心位置の割合
+	float mScale;				// ゲージのスケール値
+	bool mIsShow;				// ゲージを表示するかどうか
 public:
 	// コンストラクタ
 	CSoldierGauge();
 	// デストラクタ
 	~CSoldierGauge();
+
+	// ゲージを削除
+	void Kill() override;
 
 	// 最大値を設定
 	void SetMaxValue(int value);
@@ -25,6 +32,12 @@ public:
 	// バーの表示位置の割合を設定
 	// (HPであれば、残りHPが最大HPと比べて何パーセント残っているかを設定)
 	void SetPor(float per);
+
+	// 中心位置の割合を設定
+	void SetCenterRatio(const CVector2& ratio);
+
+	// ワールド座標を設定
+	void SetWorldPos(const CVector& worldPos);
 
 	// 更新処理
 	void Update();

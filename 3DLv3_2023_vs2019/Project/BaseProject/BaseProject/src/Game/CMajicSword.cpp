@@ -75,8 +75,9 @@ void CMajicSword::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 
 CMatrix CMajicSword::Matrix() const
 {
+	const CMatrix* attachMtx = GetAttachMtx();
 	// 手に持っていないときは、自分自身の行列を返す
-	if (mpAttachMtx == nullptr)
+	if (attachMtx == nullptr)
 	{
 		return CTransform::Matrix();
 	}
@@ -96,7 +97,7 @@ CMatrix CMajicSword::Matrix() const
 		rotateX.RotateX(90.0f);		// X軸周り身90度回転
 
 
-		return sm * rotateY * rotateX * (*mpAttachMtx);
+		return sm * rotateY * rotateX * (*attachMtx);
 	}
 }
 

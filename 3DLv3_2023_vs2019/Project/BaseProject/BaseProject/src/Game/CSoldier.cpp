@@ -103,7 +103,9 @@ CSoldier::CSoldier()
 	CModelX* model = CResourceManager::Get<CModelX>("Soldier");
 
 	mpFrame = new CSoldierFrame();
+	mpFrame->SetCenterRatio(CVector2(0.5f, 0.0f));
 	mpGauge = new CSoldierGauge();
+	mpGauge->SetCenterRatio(CVector2(0.3f, 0.0f));
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
@@ -159,8 +161,8 @@ CSoldier::CSoldier()
 
 	// 銃を作成して持たせる
 	mpGun = new CGun();
-	mpGun->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
-	mpGun->SetOwner(this);
+	const CMatrix* gun = GetFrameMtx("Armature_mixamorig_RightHand");
+	mpGun->AttachMtx(gun);
 
 
 	// 最初に1レベルに設定
@@ -188,6 +190,10 @@ CSoldier::~CSoldier()
 		delete mpAttackCol;
 		mpAttackCol = nullptr;
 	}
+
+	// UI周りを消す
+	mpGauge->Kill();
+	mpFrame->Kill();
 }
 
 CSoldier* CSoldier::Instance()
@@ -497,9 +503,10 @@ void CSoldier::UpdateDethEnd()
 {
 	if (IsAnimationFinished())
 	{
-		mCharaStatus = mCharaMaxStatus;
+		/*mCharaStatus = mCharaMaxStatus;
 		Position(-100.0f, 50.0f, -200.0f);
-		mState = EState::eIdle;
+		mState = EState::eIdle;*/
+		Kill();
 	}
 }
 
@@ -610,7 +617,7 @@ void CSoldier::Update()
 	// カメラの取得
 	CCamera* cam = CCamera::CurrentCamera();
 	// フレームの位置を頭上に固定
-	CVector gaugeWorldPos = Position() + CVector(-5.0f, 30.0f, 0.0f);
+	CVector gaugeWorldPos = Position() + CVector(0.0f, 30.0f, 0.0f);
 	// カメラでワールド座標をスクリーン座標へ変換
 	CVector gp = cam->WorldToScreenPos(gaugeWorldPos);
 
@@ -618,25 +625,32 @@ void CSoldier::Update()
 	CVector playerPos = CPlayer::Instance()->Position();
 	// プレイヤーと敵の距離を計算
 	float distance = (playerPos - Position()).Length();
+	// ゲージの座標を2Dで設定（右にずらす）
+	//float GaugeOffsetX = -17.5f;
+	// フレーム座標
+	mpFrame->SetPos(gp.X(), gp.Y());
+	// ゲージの座標を2Dで設定
+	mpGauge->SetPos(gp.X(), gp.Y());
 
-	// 一定の範囲内に居る場合は表示
-	float displayRange = 120.0f;
-	if (distance < displayRange)
-	{
-		// フレーム座標
-		mpFrame->SetPos(gp.X(), gp.Y());
 
-		// ゲージの座標を2Dで設定（右にずらす）
-		float GaugeOffsetX = 20.0f;
-		// ゲージの座標を2Dで設定
-		mpGauge->SetPos(gp.X() + GaugeOffsetX, gp.Y());
-	}
-	else
-	{
-		// 無理やり非表示
-		mpFrame->SetPos(-10000, -10000);
-		mpGauge->SetPos(-10000, -10000);
-	}
+	//// 一定の範囲内に居る場合は表示
+	//float displayRange = 120.0f;
+	//if (distance < displayRange)
+	//{
+	//	// フレーム座標
+	//	mpFrame->SetPos(gp.X(), gp.Y());
+
+	//	// ゲージの座標を2Dで設定（右にずらす）
+	//	float GaugeOffsetX = 20.0f;
+	//	// ゲージの座標を2Dで設定
+	//	mpGauge->SetPos(gp.X() + GaugeOffsetX, gp.Y());
+	//}
+	//else
+	//{
+	//	// 無理やり非表示
+	//	mpFrame->SetPos(-10000, -10000);
+	//	mpGauge->SetPos(-10000, -10000);
+	//}
 
 	//// フレームの座標を2Dで設定
 	//mpFrame->SetPos(gp.X(), gp.Y());
@@ -653,6 +667,7 @@ void CSoldier::Update()
 	CXCharacter::Update();
 	mpDamageCol->Update();
 	mpAttackCol->Update();
+	mpGun->UpdateAttachMtx();
 
 	mIsGrounded = false;
 }
