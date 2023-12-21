@@ -8,12 +8,12 @@
 // フレームの線の幅
 #define FRAME_BORDER	(1.0f)
 // フレームの横サイズ
-#define FRAME_SIZE_X	(200.0f)	//(50.0f)
+#define FRAME_SIZE_X	(100.0f)	//(50.0f)
 
 // バーの横サイズ
-#define NEW_BAR_SIZE_X	(135.0f)
+#define NEW_BAR_SIZE_X	(80.0f)
 // バーの縦サイズ
-#define NEW_BAR_SIZE_Y	(12.5f)
+#define NEW_BAR_SIZE_Y	(7.5f)
 
 // バーの横サイズ * 線の幅
 #define BAR_SIZE_X (NEW_BAR_SIZE_X - FRAME_BORDER) //*2.0f
@@ -77,7 +77,6 @@ void CSoldierGauge::SetWorldPos(const CVector& worldPos)
 		return;
 	}
 
-	
 	// ゲージ表示
 	SetShow(true);
 	// 求めたスクリーン座標を自身の座標に設定

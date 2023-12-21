@@ -9,9 +9,9 @@
 #define FRAME_BORDER	(1.0f)
 
 // フレームの横サイズ
-#define FRAME_SIZE_X	(200.0f)		//(50.0f)
+#define FRAME_SIZE_X	(100.0f)		//(50.0f)
 // フレームの縦サイズ
-#define FRAME_SIZE_Y	(32.0f)		//(32.0f)
+#define FRAME_SIZE_Y	(15.0f)		//(32.0f)
 
 
 // スケール値計算時のカメラとの距離の最小値
