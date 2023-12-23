@@ -3,7 +3,7 @@
 #include "CImage.h"
 #include "CCamera.h"
 
-#define FRAME_IMAGE "UI\\Image_Gauge_Frame.png"
+//#define FRAME_IMAGE "UI\\Image_Gauge_Frame.png"
 
 // ƒtƒŒ[ƒ€‚Ìü‚Ì•
 #define FRAME_BORDER	(1.0f)
@@ -32,7 +32,7 @@ CSoldierFrame::CSoldierFrame()
 		, mScale(0.0f)
 		, mIsShow(true)
 {
-	mpFrameImage = new CImage(FRAME_IMAGE);
+	mpFrameImage = new CImage("SFrame");
 	mpFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);
 	mpFrameImage->SetUV(0, 0, 1, 1);
 	

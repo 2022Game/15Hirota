@@ -3,7 +3,7 @@
 #include "CImage.h"
 #include "CCamera.h"
 
-#define BAR_IMAGE "UI\\Gauge.png"
+//#define BAR_IMAGE "UI\\Gauge.png"
 
 // ƒtƒŒ[ƒ€‚Ìü‚Ì•
 #define FRAME_BORDER	(1.0f)
@@ -36,7 +36,7 @@ CSoldierGauge::CSoldierGauge()
 	, mCenterRatio(0.0f, 0.0f)
 	, mScale(0.0f)
 {
-	mpBarImage = new CImage(BAR_IMAGE);
+	mpBarImage = new CImage("SBar");
 	mpBarImage->SetSize(BAR_SIZE_X, BAR_SIZE_Y);
 	mpBarImage->SetUV(438, 0, 500, 62);
 	

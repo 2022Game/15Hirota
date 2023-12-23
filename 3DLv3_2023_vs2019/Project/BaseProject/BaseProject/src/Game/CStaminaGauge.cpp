@@ -31,7 +31,7 @@ CStaminaGauge::CStaminaGauge()
 	: mMaxSutaminaValue(100)
 	, mSutaminaValue(100)
 {
-	mpStaminaImage = new CImage(STAMINA_IMAGE);
+	mpStaminaImage = new CImage("PStamina");
 	mpStaminaImage->SetSize(SUTAMINA_SIZE_X, SUTAMINA_SIZE_Y);
 	mpStaminaImage->SetUV(0, 1, 1, 0);
 }

@@ -2,8 +2,6 @@
 #include "Maths.h"
 #include "CImage.h"
 
-//#define FRAME_IMAGE "UI\\Image_Gauge_Frame.png"
-//#define BAR_IMAGE "UI\\WhiteUI.png"
 
 // ƒtƒŒ[ƒ€‚Ìü‚Ì•
 #define FRAME_BORDER	(1.0f)
@@ -42,13 +40,12 @@ CUIGauge::CUIGauge()
 	: mMaxValue(100)
 	, mValue(100)
 {
-	//mpFrameImage = new CImage(FRAME_IMAGE);
-	mpFrameImage = CResourceManager::Get<CImage>("PFrame");
+	mpFrameImage = new CImage("PFrame");
 	mpFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);
 	mpFrameImage->SetUV(0, 0, 1, 1);
 
-	//mpBarImage = new CImage(BAR_IMAGE);
-	mpBarImage = CResourceManager::Get<CImage>("PBarImage");
+
+	mpBarImage = new CImage("PBarImage");
 	mpBarImage->SetSize(BAR_SIZE_X, BAR_SIZE_Y);
 	mpBarImage->SetUV(438, 0, 500, 62);
 }
