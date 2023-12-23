@@ -18,24 +18,14 @@
 //コンストラクタ
 CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
-	,image(nullptr)
 	,Clear(false)
 {
-	//image = new CImage("UI\\Clear.jpeg"); // CLEAR_IMAGE_PATH はクリア画像のファイルパス
-	//image->SetSize(700, 500);
-	//image->SetPos(CVector2(300.0f, 200.0f)); // 画像の表示位置を設定
-	//image->SetUV(0, 1, 1, 0);
 }
 
 
 //デストラクタ
 CGameScene::~CGameScene()
 {
-	if (image != nullptr)
-	{
-		delete image;
-		image = nullptr;
-	}
 }
 
 
@@ -78,7 +68,6 @@ void CGameScene::Load()
 
 
 
-
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
 
@@ -109,9 +98,13 @@ void CGameScene::Load()
 	sol->Scale(1.0f, 1.0f, 1.0f);
 	sol->Position(-100.0f, 150.0f, -100.0f);
 
-	CSoldier* sol2 = new CSoldier();
+	/*CSoldier* sol2 = new CSoldier();
 	sol2->Scale(1.0f, 1.0f, 1.0f);
 	sol2->Position(-50.0f, 150.0f, -100.0f);
+
+	CSoldier* sol3 = new CSoldier();
+	sol3->Scale(1.0f, 1.0f, 1.0f);
+	sol3->Position(50.0f, 150.0f, -150.0f);*/
 
 
 	CCamera* mainCamera = new CCamera

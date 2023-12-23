@@ -3,6 +3,7 @@
 #include "CSceneBase.h"
 #include "CInput.h"
 #include "CImage.h"
+class CImage;
 
 class CClearScene :public CSceneBase
 {
@@ -18,5 +19,6 @@ public:
 	// XVˆ—
 	void Update();
 private:
+	CImage* mpClearImage;
 };
 #endif

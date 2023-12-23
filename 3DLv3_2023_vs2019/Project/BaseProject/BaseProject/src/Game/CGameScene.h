@@ -1,7 +1,6 @@
 #pragma once
 #include "CSceneBase.h"
 
-class CImage;
 class CPlayer;
 class CSoldier;
 
@@ -19,7 +18,5 @@ public:
 	void Update();
 
 private:
-
-	CImage* image;
 	bool Clear;
 };

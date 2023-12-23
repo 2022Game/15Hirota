@@ -31,7 +31,6 @@ void CTitleScene::Load()
 
 	mpTitle = new CImage(TITLE_IMAGE);
 	mpTitle->SetSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-	mpTitle->SetUV(0, 1, 1, 0);
 
 	CCamera* mainCamera = new CCamera
 	(
