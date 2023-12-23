@@ -17,6 +17,8 @@
 // CSoldierのインスタンス
 CSoldier* CSoldier::spInstance = nullptr;
 
+int CSoldier::enemyCount = 0;
+
 //// CSoldierのモデルデータのパス
 //#define MODEL_PATH	"Character\\Gas mask soldier\\GasMask_Soldier_Model.x"
 
@@ -69,6 +71,7 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 // 敵を見失った後の時間
 #define PLAYER_LOST 10.0f
 
+
 // コンストラクタ
 CSoldier::CSoldier()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
@@ -80,6 +83,7 @@ CSoldier::CSoldier()
 	, mElapsedTime(0.0f)
 	, mElapsedTime_End(0.0f)
 {
+	enemyCount++;
 	//インスタンスの設定
 	spInstance = this;
 
@@ -176,6 +180,7 @@ CSoldier::~CSoldier()
 		mpAttackCol = nullptr;
 	}
 
+	enemyCount--;
 	// UI周りを消す
 	mpGauge->Kill();
 	mpFrame->Kill();
@@ -215,6 +220,8 @@ void CSoldier::ChangeAnimation(EAnimType type)
 	AnimData data = ANIM_DATA[(int)type];
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
 }
+
+
 //
 //void CSoldier::SetCollider(CColliderSphere* newCollider)
 //{
@@ -648,6 +655,7 @@ void CSoldier::Update()
 	mpGun->UpdateAttachMtx();
 
 	mIsGrounded = false;
+
 }
 
 // プレイヤー追跡
@@ -736,4 +744,9 @@ void CSoldier::TakeDamage(int damage)
 	{
 		mState = EState::eDeth;
 	}
+}
+
+int CSoldier::GetEnemyCount()
+{
+	return enemyCount;
 }

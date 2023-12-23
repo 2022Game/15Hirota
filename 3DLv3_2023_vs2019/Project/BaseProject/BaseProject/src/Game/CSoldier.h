@@ -15,13 +15,14 @@ class CSoldierFrame;
 class CSoldierGauge;
 
 /*
-プレイヤークラス
+ソルジャークラス
 キャラクタクラスを継承
 */
 
 class CSoldier : public CXCharacter
 {
 public:
+
 	//インスタンスのポインタの取得
 	CSoldier* Instance();
 
@@ -82,7 +83,11 @@ public:
 	void SetGauge(CSoldierGauge* newGauge);
 	void SetFrame(CSoldierFrame* newFrame);*/
 
+	static int GetEnemyCount();
+
 private:
+
+	static int enemyCount;
 
 	// アニメーションの種類
 	enum class EAnimType
