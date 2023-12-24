@@ -51,9 +51,7 @@ CColliderMesh* CField::GetWallCol() const
 
 void CField::CreateFieldObjects()
 {
-	mpCubeModel = CResourceManager::Get<CModel>("FieldCube");
-	mpCylinderModel = CResourceManager::Get<CModel>("FieldCylinder");
-
+	
 	//new CMoveFloor
 	//(
 	//	mpCubeModel,
@@ -67,13 +65,7 @@ void CField::CreateFieldObjects()
 	//	1.0f
 	//);
 
-	// ìÆÇ©Ç»Ç¢è∞á@
-	new CMoveFloor
-	(
-		mpCubeModel,
-		CVector(-20.0f, -20.0f, -340.0f), CVector(5.5f, 1.0f, 3.25f),
-		CVector(0.0f, 0.0f, 0.0f), 5.0f
-	);
+	
 	//// ìÆÇ≠è∞á@
 	//new CMoveFloor
 	//(
@@ -110,21 +102,7 @@ void CField::CreateFieldObjects()
 	//	CVector(0.0f, 50.0f, 0.0f), 5.0f
 	//);
 
-	// ÉSÅ[ÉãÉÇÉfÉã
-	new CGoalObject
-	(
-		mpGoalModel,
-		CVector(0.0f, 0.0f, -100.0f), CVector(1.5f, 1.5f, 1.5f),
-		CVector(0.0f, 90.0f, 0.0f)
-	);
-
-	// ä‚1ÉÇÉfÉã
-	new CStone1
-	(
-		mpStone1,
-		CVector(-80.0f, 0.0f, -200.0f), CVector(10.0f, 10.0f, 10.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
+	
 
 	//// ä‚1ÉÇÉfÉã
 	//new CStone1

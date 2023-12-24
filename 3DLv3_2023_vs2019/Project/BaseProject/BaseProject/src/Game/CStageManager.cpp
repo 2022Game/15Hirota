@@ -1,0 +1,61 @@
+#include "CStageManager.h"
+#include "CStageBase.h"
+#include "CStage1.h"
+
+CStageManager* CStageManager::spInstance = nullptr;
+CStageBase* CStageManager::spCurrentStage = nullptr;
+
+// コンストラクタ
+CStageManager::~CStageManager()
+{
+	spInstance = this;
+}
+
+// デストラクタ
+CStageManager::~CStageManager()
+{
+	spInstance = nullptr;
+
+	// ステージが読み込まれていたら
+	UnloadStage();
+}
+
+// ステージ読み込み
+void CStageManager::LoadStage(int no)
+{
+	// すでにステージが読み込まれていたら、破棄
+	UnloadStage();
+
+	// ステージ番号に合わせてステージを読み込み
+	switch (no)
+	{
+	case 0: spCurrentStage = new CStage1(); break;
+	}
+	// ステージが作成出来たら、ステージ読み込み
+	if (spCurrentStage != nullptr)
+	{
+		spCurrentStage->Unload();
+	}
+}
+
+// 現在のステージ破棄
+void CStageManager::UnloadStage()
+{
+	if (spCurrentStage == nullptr) return;
+	spCurrentStage->Unload();
+	SAFE_DELETE(spCurrentStage);
+}
+
+// 作成したタスクをリストに追加
+void CStageManager::AddTask(CTask* task)
+{
+	if (spCurrentStage == nullptr) return;
+	spCurrentStage->AddTask(task);
+}
+
+// 作成したタスクをリストから取り除く
+void CStageManager::RemoveTask(CTask* task)
+{
+	if (spCurrentStage == nullptr) return;
+	spCurrentStage->RemoveTask(task);
+}

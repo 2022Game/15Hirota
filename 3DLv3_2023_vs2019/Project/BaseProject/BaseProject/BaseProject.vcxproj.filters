@@ -71,6 +71,9 @@
     <Filter Include="ソース ファイル\BaseSystem\Resource">
       <UniqueIdentifier>{25e6b34e-6c0b-4b3b-a041-930632c047be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Stage">
+      <UniqueIdentifier>{d3f6f30b-a43b-4594-a54d-50e54fad00e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -336,6 +339,15 @@
     </ClCompile>
     <ClCompile Include="src\Game\CGoalBase.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageBase.cpp">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageManager.cpp">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStage1.cpp">
+      <Filter>ソース ファイル\Game\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -626,6 +638,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CGoalBase.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageBase.h">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageManager.h">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStage1.h">
+      <Filter>ソース ファイル\Game\Stage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

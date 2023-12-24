@@ -863,6 +863,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	}
 }
 
+
 // ”íƒ_ƒ[ƒWˆ—
 void CPlayer::TakeDamage(int damage)
 {

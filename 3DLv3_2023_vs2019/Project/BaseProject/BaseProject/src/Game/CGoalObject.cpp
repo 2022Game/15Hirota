@@ -8,7 +8,6 @@ CGoalObject::CGoalObject(CModel* model, const CVector& pos, const CVector& scale
 	mpModel = CResourceManager::Get<CModel>("GoalCube");
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 
-	//CModel* post = CResourceManager::Get<CModel>("GoalPost");
 	mpGoalPost = CResourceManager::Get<CModel>("GoalPost");
 
 

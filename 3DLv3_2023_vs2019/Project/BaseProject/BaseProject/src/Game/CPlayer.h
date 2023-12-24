@@ -63,8 +63,6 @@ public:
 	// “G‚Ì‚ÌUŒ‚Hit
 	void UpdateHit();
 
-	void UpdateMovement();
-
 
 	bool CanEvade();
 
