@@ -1,7 +1,6 @@
 #ifndef CSTAGEBASE_H
 #define CSTAGEBASE_H
 #include "CTask.h"
-#include "CModel.h"
 #include <list>
 
 // ステージのベースクラス
@@ -31,7 +30,5 @@ protected:
 
 	// このステージで作成したタスクのリスト
 	std::list<CTask*> mCreateTasks;
-	// このステージで作成したモデルのリスト
-	std::list<CModel*> mCreateModels;
 };
 #endif

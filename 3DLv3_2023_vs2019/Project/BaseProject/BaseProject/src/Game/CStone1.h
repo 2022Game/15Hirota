@@ -8,7 +8,7 @@
 class CStone1 : public CRideableObject
 {
 public:
-	CStone1(CModel* model, const CVector& pos, const CVector& scale, const CVector& rot);
+	CStone1(const CVector& pos, const CVector& scale, const CVector& rot);
 	~CStone1();
 
 	void Update();

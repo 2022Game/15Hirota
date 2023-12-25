@@ -1,0 +1,21 @@
+#ifndef CSTAGE2_H
+#define CSTAGE2_H
+#include "CStageBase.h"
+
+// ステージ1「未定」
+class CStage2 : public CStageBase
+{
+public:
+	// コンストラクタ
+	CStage2();
+	// デストラクタ
+	~CStage2();
+
+	// ステージ読み込み
+	void Load() override;
+	// ステージ破棄
+	void Unload() override;
+
+private:
+};
+#endif

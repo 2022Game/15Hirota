@@ -1,12 +1,13 @@
 #include "CStageManager.h"
 #include "CStageBase.h"
 #include "CStage1.h"
+#include "CStage2.h"
 
 CStageManager* CStageManager::spInstance = nullptr;
 CStageBase* CStageManager::spCurrentStage = nullptr;
 
 // コンストラクタ
-CStageManager::~CStageManager()
+CStageManager::CStageManager()
 {
 	spInstance = this;
 }
@@ -30,11 +31,13 @@ void CStageManager::LoadStage(int no)
 	switch (no)
 	{
 	case 0: spCurrentStage = new CStage1(); break;
+	case 1: spCurrentStage = new CStage2(); break;
+	default:spCurrentStage = new CStage1(); break;
 	}
 	// ステージが作成出来たら、ステージ読み込み
 	if (spCurrentStage != nullptr)
 	{
-		spCurrentStage->Unload();
+		spCurrentStage->Load();
 	}
 }
 

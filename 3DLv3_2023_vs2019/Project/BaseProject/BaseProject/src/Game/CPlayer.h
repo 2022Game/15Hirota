@@ -28,6 +28,14 @@ public:
 	// デストラクタ
 	~CPlayer();
 
+	//	乗ることができるオブジェクトが削除されたときの処理
+	void DeleteRideableObject(CTransform* rideObj);
+
+	// ステージ開始時の位置を設定
+	void SetStartPosition(const CVector& pos);
+
+	// 準備中の状態
+	void UpdateReady();
 	// 待機状態
 	void UpdateIdle();
 	// 攻撃
@@ -134,6 +142,7 @@ private:
 	// プレイヤーの状態
 	enum class EState
 	{
+		eReady,			// 準備中
 		eIdle,			// 待機
 		eAttack,		// 攻撃
 		eAttackStrong,	// 強攻撃
@@ -151,11 +160,16 @@ private:
 		eDethEnd,		// 死亡終了
 		eReStart,		// 再起
 		eHit,			// ダメージヒット
+
 	};
+	// 現在の状態を切り替え
+	void ChangeState(EState state);
 	EState mState;		// プレイヤーの状態
+	int mStateStep;		// 状態内のステップ
 
 	CVector mMoveSpeed;	// 移動速度
 	CVector mPosition;
+	CVector mStartPos;	// プレイヤーの位置
 	CImage* image;
 	bool mIsGrounded;	// 接地しているかどうか
 

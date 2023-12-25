@@ -18,5 +18,4 @@ public:
 	void Update();
 
 private:
-	bool Clear;
 };

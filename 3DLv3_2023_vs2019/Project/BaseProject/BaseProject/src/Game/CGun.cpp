@@ -16,7 +16,6 @@ CGun::CGun()
 
 CGun::~CGun()
 {
-
 }
 
 void CGun::Update()

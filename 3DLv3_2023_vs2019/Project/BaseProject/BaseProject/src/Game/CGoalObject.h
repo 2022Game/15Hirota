@@ -10,7 +10,7 @@
 class CGoalObject : public CGoalBase
 {
 public:
-	CGoalObject(CModel* model, const CVector& pos, const CVector& scale, const CVector&rot);
+	CGoalObject(const CVector& pos, const CVector& scale, const CVector&rot);
 	~CGoalObject();
 
 	void Update();

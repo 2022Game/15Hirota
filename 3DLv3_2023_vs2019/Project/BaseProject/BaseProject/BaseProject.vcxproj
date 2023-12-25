@@ -60,8 +60,10 @@
     <ClCompile Include="src\Game\CBullet.cpp" />
     <ClCompile Include="src\Game\CClearScene.cpp" />
     <ClCompile Include="src\Game\CEnemy.cpp" />
+    <ClCompile Include="src\Game\CGameManager.cpp" />
     <ClCompile Include="src\Game\CGoalBase.cpp" />
     <ClCompile Include="src\Game\CStage1.cpp" />
+    <ClCompile Include="src\Game\CStage2.cpp" />
     <ClCompile Include="src\Game\CStageBase.cpp" />
     <ClCompile Include="src\Game\CStageManager.cpp" />
     <ClCompile Include="src\Game\CWeaponEnemy.cpp" />
@@ -164,6 +166,7 @@
     <ClInclude Include="src\Game\CEnemy.h" />
     <ClInclude Include="src\Game\CGoalBase.h" />
     <ClInclude Include="src\Game\CStage1.h" />
+    <ClInclude Include="src\Game\CStage2.h" />
     <ClInclude Include="src\Game\CStageBase.h" />
     <ClInclude Include="src\Game\CStageManager.h" />
     <ClInclude Include="src\Game\CWeaponEnemy.h" />
@@ -193,6 +196,7 @@
     <ClInclude Include="src\Game\CYukari.h" />
     <ClInclude Include="src\Game\CMajicSword.h" />
     <ClInclude Include="src\Game\CYukariGauge.h" />
+    <ClInclude Include="src\Game\CGameManager.h" />
     <ClInclude Include="src\Test\CBootMenuScene.h" />
     <ClInclude Include="src\Test\CColBase.h" />
     <ClInclude Include="src\Test\CColLine.h" />

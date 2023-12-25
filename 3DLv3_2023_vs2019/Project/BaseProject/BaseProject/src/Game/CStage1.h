@@ -16,7 +16,6 @@ public:
 	// ステージ破棄
 	void Unload() override;
 
-	void Render();
 private:
 };
 #endif

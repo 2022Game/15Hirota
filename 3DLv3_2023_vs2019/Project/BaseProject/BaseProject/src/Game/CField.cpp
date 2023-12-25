@@ -51,66 +51,7 @@ CColliderMesh* CField::GetWallCol() const
 
 void CField::CreateFieldObjects()
 {
-	
-	//new CMoveFloor
-	//(
-	//	mpCubeModel,
-	//	CVector(0.0f, 10.0f, -50.0f), CVector(1.0f, 1.0f, 1.0f),
-	//	CVector(50.0f, 0.0f, 0.0f), 10.0f
-	//);
-	//new CRotateFloor
-	//(
-	//	mpCylinderModel,
-	//	CVector(-40.0f, 15.0f, 20.0f), CVector(1.0f, 1.0f, 1.0f),
-	//	1.0f
-	//);
 
-	
-	//// ìÆÇ≠è∞á@
-	//new CMoveFloor
-	//(
-	//	mpCubeModel,
-	//	CVector(60.0f, 20.0f, 0.0f), CVector(0.25f, 1.0f, 0.25f),
-	//	CVector(20.0f, 0.0f, 0.0f), 5.0f
-	//);
-	//// ìÆÇ©Ç»Ç¢è∞áA
-	//new CMoveFloor
-	//(
-	//	mpCubeModel,
-	//	CVector(100.0f, 20.0f, 0.0f), CVector(0.25f, 1.0f, 0.25f),
-	//	CVector(0.0f, 0.0f, 0.0f), 5.0f
-	//);
-	//// âÒì]Ç∑ÇÈè∞á@
-	//new CRotateFloor
-	//(
-	//	mpCubeModel,
-	//	CVector(135.0f, 20.0f, 0.0f), CVector(1.0f, 1.0f, 0.25f),
-	//	0.5f
-	//);
-	//// ìÆÇ©Ç»Ç¢è∞áA
-	//new CMoveFloor
-	//(
-	//	mpCubeModel,
-	//	CVector(135.0f, 20.0f, -35.0f), CVector(0.25f, 1.0f, 0.25f),
-	//	CVector(0.0f, 0.0f, 0.0f), 5.0f
-	//);
-	//// ìÆÇ©Ç»Ç¢è∞áA
-	//new CMoveFloor
-	//(
-	//	mpCubeModel,
-	//	CVector(135.0f, 70.0f, -52.5f), CVector(0.25f, 1.0f, 0.25f),
-	//	CVector(0.0f, 50.0f, 0.0f), 5.0f
-	//);
-
-	
-
-	//// ä‚1ÉÇÉfÉã
-	//new CStone1
-	//(
-	//	mpStone1,
-	//	CVector(30.0f, 0.0f, -700.0f), CVector(10.0f, 10.0f, 10.0f),
-	//	CVector(60.0f, 0.0f, 0.0f)
-	//);
 }
 
 void CField::Update()

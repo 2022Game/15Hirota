@@ -1,9 +1,7 @@
 #include "CGoalObject.h"
 #include "CPlayer.h"
 
-CGoalObject::CGoalObject(CModel* model, const CVector& pos, const CVector& scale, const CVector& rot)
-	: mpModel(model)
-	, mpGoalPost(model)
+CGoalObject::CGoalObject(const CVector& pos, const CVector& scale, const CVector& rot)
 {
 	mpModel = CResourceManager::Get<CModel>("GoalCube");
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);

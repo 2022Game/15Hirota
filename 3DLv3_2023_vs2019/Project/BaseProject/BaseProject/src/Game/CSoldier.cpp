@@ -184,6 +184,7 @@ CSoldier::~CSoldier()
 	// UIŽü‚è‚ðÁ‚·
 	mpGauge->Kill();
 	mpFrame->Kill();
+	mpGun->Kill();
 }
 
 CSoldier* CSoldier::Instance()

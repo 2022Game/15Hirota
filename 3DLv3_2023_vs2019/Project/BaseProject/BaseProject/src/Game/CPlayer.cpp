@@ -8,6 +8,7 @@
 #include "CSceneManager.h"
 #include "CMajicSword.h"
 #include "CBullet.h"
+#include "CGameManager.h"
 
 //// プレイヤーのモデルデータのパス
 //#define MODEL_PATH "Character\\Monster1\\Monster_1.x"
@@ -60,6 +61,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
+	, mStateStep(0)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mPosition(0.0f,0.0f,0.0f)//0.0f, 60.0f, -30.0f
 	, mpRideObject(nullptr)
@@ -76,6 +78,8 @@ CPlayer::CPlayer()
 
 	// インスタンスの設定
 	spInstance = this;
+	Position(0.0f, 60.0f, -30.0f);
+	mStartPos = Position();
 
 	// モデルデータ取得
 	CModelX* model = CResourceManager::Get<CModelX>("Player");
@@ -189,6 +193,62 @@ CPlayer::~CPlayer()
 		delete mpDamageCol;
 		mpDamageCol = nullptr;
 	}
+
+	mpSword->Kill();
+}
+
+// 乗ることができるオブジェクトが削除されたときの処理
+void CPlayer::DeleteRideableObject(CTransform* rideObj)
+{
+	// 削除されるのが現在乗っているオブジェクトであれば、
+	// 乗っているオブジェクトを削除
+	if (mpRideObject == rideObj)
+	{
+		mpRideObject = nullptr;
+	}
+}
+
+// ステージ開始時の位置を設定
+void CPlayer::SetStartPosition(const CVector& pos)
+{
+	mStartPos = pos;
+	Position(mStartPos);
+}
+
+// 現在の状態を切り替え
+void CPlayer::ChangeState(EState state)
+{
+	mState = state;
+	mStateStep = 0;
+}
+
+// 準備中の状態
+void CPlayer::UpdateReady()
+{
+	// ステップごとに処理を切り替える
+	switch (mStateStep)
+	{
+		// ステップ0 初期化処理
+	case 0:
+		// 全ての衝突判定をオフにする
+		SetEnableCol(false);
+		// プレイヤーの移動速度を0にする
+		mMoveSpeed = CVector::zero;
+		// 次のステップへ
+		mStateStep++;
+		break;
+		// ステップ1 ステージの読み込みから
+	case 1:
+		// ゲームが開始したら
+		if (CGameManager::GameState() == EGameState::eGame)
+		{
+			// プレイヤーの衝突判定をオンにする
+			SetEnableCol(true);
+			// 現在の状態を待機に切り替え
+			ChangeState(EState::eIdle);
+		}
+		break;
+	}
 }
 
 CPlayer* CPlayer::Instance()
@@ -294,7 +354,7 @@ void CPlayer::UpdateIdle()
 					if (mCharaStatus.stamina == 0)
 					{
 						staminaLowerLimit = true;
-						mState = EState::eDashEnd;
+						ChangeState(EState::eDashEnd);
 					}
 				}
 				else
@@ -342,21 +402,21 @@ void CPlayer::UpdateIdle()
 		{
 			mMoveSpeed.X(0.0f);
 			mMoveSpeed.Z(0.0f);
-			mState = EState::eAttack;
+			ChangeState(EState::eAttack);
 		}
 		// Kキーで強攻撃
 		else if (CInput::PushKey('K'))
 		{
 			mMoveSpeed.X(0.0f);
 			mMoveSpeed.Z(0.0f);
-			mState = EState::eAttackStrong;
+			ChangeState(EState::eAttackStrong);
 		}
 		// SPACEキーでジャンプ開始へ移行
 		else if (CInput::PushKey(VK_SPACE))
 		{
 			if (mCharaStatus.stamina - 20 >= 0)
 			{
-				mState = EState::eJumpStart;
+				ChangeState(EState::eJumpStart);
 				// スタミナが0以下にならない場合はジャンプを実行
 				mCharaStatus.stamina -= 20;
 			}
@@ -372,7 +432,7 @@ void CPlayer::UpdateIdle()
 				
 				mMoveSpeed.X(0.0f);
 				mMoveSpeed.Z(0.0f);
-				mState = EState::eRotate;
+				ChangeState(EState::eRotate);
 				// スタミナが0以下にならない場合は回避行動を実行
 				mCharaStatus.stamina -= 50;
 			}
@@ -400,7 +460,7 @@ void CPlayer::UpdateAttack()
 	// 剣に攻撃開始を伝える
 	mpSword->AttackStart();
 	ChangeAnimation(EAnimType::eAttack);
-	mState = EState::eAttackWait;
+	ChangeState(EState::eAttackWait);
 }
 
 // 強攻撃
@@ -409,7 +469,7 @@ void CPlayer::UpdateAttackStrong()
 	// 強攻撃アニメーションを開始
 	ChangeAnimation(EAnimType::eAttackStrong);
 	// 攻撃終了待ち状態へ移行
-	mState = EState::eAttackWait2;
+	ChangeState(EState::eAttackWait2);
 }
 
 // 攻撃終了待ち
@@ -425,7 +485,7 @@ void CPlayer::UpdateAttackWait()
 			// 回避行動前にスタミナが0以下になるかどうかを確認
 			if (mCharaStatus.stamina - 50 >= 0) {
 
-				mState = EState::eRotate;
+				ChangeState(EState::eRotate);
 				// スタミナが0以下にならない場合は回避行動を実行
 				mCharaStatus.stamina -= 50;
 
@@ -447,7 +507,7 @@ void CPlayer::UpdateAttackWait()
 	if (IsAnimationFinished())
 	{
 		// 待機状態へ移行
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 		ChangeAnimation(EAnimType::eIdle);
 
 		// 剣に攻撃終了を伝える
@@ -460,7 +520,7 @@ void CPlayer::UpdateAttackWait2()
 {
 	if (IsAnimationFinished())
 	{
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 		ChangeAnimation(EAnimType::eIdle);
 	}
 }
@@ -469,7 +529,7 @@ void CPlayer::UpdateAttackWait2()
 void CPlayer::UpdateJumpStart()
 {
 	ChangeAnimation(EAnimType::eJumpStart);
-	mState = EState::eJump;
+	ChangeState(EState::eJump);
 
 	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
 	mIsGrounded = false;
@@ -481,7 +541,7 @@ void CPlayer::UpdateJump()
 	if (mMoveSpeed.Y() <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
-		mState = EState::eJumpEnd;
+		ChangeState(EState::eJumpEnd);
 	}
 }
 
@@ -490,7 +550,7 @@ void CPlayer::UpdateJumpEnd()
 {
 	if (IsAnimationFinished())
 	{
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 	}
 }
 
@@ -517,7 +577,7 @@ void CPlayer::UpdateRotate()
 		mMoveSpeed += move * speed * MOVE_SPEED * mCharaStatus.moveSpeed;
 	}
 	ChangeAnimation(EAnimType::eRotate);
-	mState = EState::eRotateEnd;
+	ChangeState(EState::eRotateEnd);
 }
 
 //回避終了待ち
@@ -525,7 +585,7 @@ void CPlayer::UpdateRotateEnd()
 {
 	if (IsAnimationFinished())
 	{
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 		ChangeAnimation(EAnimType::eIdle);
 	}
 }
@@ -538,7 +598,7 @@ void CPlayer::UpdateDashEnd()
 	ChangeAnimation(EAnimType::eDashStop);
 	if (IsAnimationFinished())
 	{
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 		ChangeAnimation(EAnimType::eIdle);
 	}
 }
@@ -549,7 +609,7 @@ void CPlayer::UpdateClear()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	ChangeAnimation(EAnimType::eGuts);
-	mState = EState::eClearEnd;
+	ChangeState(EState::eClearEnd);
 }
 
 // クリア終了
@@ -557,8 +617,10 @@ void CPlayer::UpdateClearEnd()
 {
 	if (IsAnimationFinished())
 	{
-		mState = EState::eIdle;
-		Position(0.0f,0.0f,-30.0f);
+		// ステージをクリア
+		CGameManager::StageClear();
+		// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
+		ChangeState(EState::eReady);
 	}
 }
 
@@ -571,7 +633,7 @@ void CPlayer::UpdateDeth()
 	ChangeAnimation(EAnimType::eDeth);
 	if (IsAnimationFinished())
 	{
-		mState = EState::eDethEnd;
+		ChangeState(EState::eDethEnd);
 	}
 }
 
@@ -584,7 +646,7 @@ void CPlayer::UpdateDethEnd()
 		damageObject = false;
 		mCharaStatus = mCharaMaxStatus;
 		Position(0.0f, 0.0f, -30.0f);
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 	}
 }
 
@@ -595,7 +657,7 @@ void CPlayer::UpdateReStart()
 	{
 		damageObject = false;
 		Position(0.0f, 10.0f, -30.0f);
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 	}
 }
 
@@ -620,17 +682,16 @@ void CPlayer::UpdateHit()
 		{
 			damageEnemy = false;
 			mpDamageCol->SetEnable(false);
-			mState = EState::eIdle;
+			ChangeState(EState::eIdle);
 		}
 		else if (mCharaStatus.hp <= 0)
 		{
 			damageEnemy = false;
 			mpDamageCol->SetEnable(false);
-			mState = EState::eDeth;
+			ChangeState(EState::eDeth);
 		}
 	}
 }
-
 
 // 更新
 void CPlayer::Update()
@@ -642,6 +703,10 @@ void CPlayer::Update()
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)
 	{
+		// 準備中の状態
+	case EState::eReady:
+		UpdateReady();
+		break;
 		// 待機状態
 		case EState::eIdle:
 			UpdateIdle();
@@ -712,18 +777,23 @@ void CPlayer::Update()
 			break;
 	}
 
-	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
+	// 準備中でなければ、移動処理などを行う
+	if (mState != EState::eReady)
+	{
+		mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 
-	// 移動
-	Position(Position() + mMoveSpeed * 60.0f * Time::DeltaTime());
+		// 移動
+		Position(Position() + mMoveSpeed * 60.0f * Time::DeltaTime());
 
-	// プレイヤーを移動方向へ向ける
-	CVector current = VectorZ();
-	CVector target = mMoveSpeed;
-	target.Y(0.0f);
-	target.Normalize();
-	CVector forward = CVector::Slerp(current, target, 0.125f);
-	Rotation(CQuaternion::LookRotation(forward));
+		// プレイヤーを移動方向へ向ける
+		CVector current = VectorZ();
+		CVector target = mMoveSpeed;
+		target.Y(0.0f);
+		target.Normalize();
+		CVector forward = CVector::Slerp(current, target, 0.125f);
+		Rotation(CQuaternion::LookRotation(forward));
+
+	}
 
 	// 無敵中はカウントを減少させる
 	if (mInvincible > 0)
@@ -800,12 +870,12 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					{
 						damageObject = true;
 						ChangeAnimation(EAnimType::eHit);
-						mState = EState::eReStart;
+						ChangeState(EState::eReStart);
 					}
 					else
 					{
 						damageObject = true;
-						mState = EState::eDeth;
+						ChangeState(EState::eDeth);
 					}
 				}
 				mpRideObject = other->Owner();
@@ -853,12 +923,15 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			CDebugPrint::Print("Player hit GoalObject!\n");
 			mpDamageCol->SetEnable(false);
-			mState = EState::eClear;
+			if (CGameManager::StageNo() == 0 || CGameManager::StageNo() == 1 || CGameManager::StageNo() == 2)
+			{
+				ChangeState(EState::eClear);
+			}
 		}
 		else if (other->Layer() == ELayer::eKickCol)
 		{
 			mpRideObject = other->Owner();
-			mState = EState::eHit;
+			ChangeState(EState::eHit);
 		}
 	}
 }
@@ -876,7 +949,7 @@ void CPlayer::TakeDamage(int damage)
 	// HPが0になったら
 	if (mCharaStatus.hp <= 0)
 	{
-		mState = EState::eDeth;
+		ChangeState(EState::eDeth);
 	}
 }
 

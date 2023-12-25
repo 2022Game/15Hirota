@@ -21,11 +21,6 @@ void CStageBase::Unload()
 	{
 		task->Kill();
 	}
-	// このステージで作成したタスクを全て削除
-	for (CModel* model : mCreateModels)
-	{
-		SAFE_DELETE(model);
-	}
 }
 
 // 作成したタスクをリストに追加

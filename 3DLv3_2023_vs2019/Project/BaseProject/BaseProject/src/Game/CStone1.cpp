@@ -1,7 +1,6 @@
 #include "CStone1.h"
 
-CStone1::CStone1(CModel* model, const CVector& pos, const CVector& scale, const CVector& rot)
-	: mpModel(model)
+CStone1::CStone1(const CVector& pos, const CVector& scale, const CVector& rot)
 {
 	mpModel = CResourceManager::Get<CModel>("Stone1");
 

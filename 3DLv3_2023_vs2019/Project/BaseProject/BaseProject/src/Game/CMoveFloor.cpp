@@ -3,9 +3,8 @@
 #include "CCharaBase.h"
 #include "Maths.h"
 
-CMoveFloor::CMoveFloor(CModel* model, const CVector& pos, const CVector& scale, const CVector& move, float moveTime)
-	: mpModel(model)
-	, mDefaultPos(pos)
+CMoveFloor::CMoveFloor(const CVector& pos, const CVector& scale, const CVector& move, float moveTime)
+	: mDefaultPos(pos)
 	, mMoveVec(move)
 	, mMoveTime(moveTime)
 	, mElapsedTime(0.0f)
