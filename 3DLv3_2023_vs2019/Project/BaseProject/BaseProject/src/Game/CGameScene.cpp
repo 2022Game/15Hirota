@@ -9,6 +9,7 @@
 #include "CStageManager.h"
 #include "CGameManager.h"
 #include "CPlayer.h"
+#include "CSoldier.h"
 
 
 //コンストラクタ
@@ -81,14 +82,14 @@ void CGameScene::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = new CPlayer();
 
-	CCamera* mainCamera = new CCamera
-	(
-		CVector(0.0f, 80.0f, 45.0f),
-		player->Position() + CVector(0.0f, 10.0f, 0.0f)
-	);
-	mainCamera->SetFollowTargetTf(player);
-	// スフィアかメッシュぐらい
-	mainCamera->AddCollider(field->GetWallCol());
+	//CCamera* mainCamera = new CCamera
+	//(
+	//	CVector(0.0f, 80.0f, 45.0f),
+	//	player->Position() + CVector(0.0f, 10.0f, 0.0f)
+	//);
+	//mainCamera->SetFollowTargetTf(player);
+	//// スフィアかメッシュぐらい
+	//mainCamera->AddCollider(field->GetWallCol());
 
 
 	CGameManager::GameStart();
@@ -97,6 +98,7 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
+	CDebugPrint::Print("enemy: %d\n", CSoldier::GetEnemyCount());
 	//CDebugPrint::Print("enemy: %d\n", CSoldier::GetEnemyCount());
 	//// hp取得
 	//int currentHP = CPlayer::Instance()->GetHp();

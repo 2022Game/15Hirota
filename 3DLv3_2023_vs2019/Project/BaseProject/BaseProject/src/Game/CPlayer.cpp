@@ -792,7 +792,6 @@ void CPlayer::Update()
 		target.Normalize();
 		CVector forward = CVector::Slerp(current, target, 0.125f);
 		Rotation(CQuaternion::LookRotation(forward));
-
 	}
 
 	// –³“G’†‚ÍƒJƒEƒ“ƒg‚ğŒ¸­‚³‚¹‚é

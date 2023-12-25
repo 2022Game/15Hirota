@@ -33,38 +33,37 @@ void CStage1::Load()
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
+	player->MaxStatus();
 	CVector playerPos = CVector(0.0f, 60.0f, -20.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
 	}
 
-	//// カメラの位置と向きを設定
-	//CCamera* mainCamera = new CCamera
-	//(
-	//	CVector(0.0f, 80.0f, 45.0f),
-	//	player->Position() + CVector(0.0f, 10.0f, 0.0f)
-	//);
-	//mainCamera->SetFollowTargetTf(player);
-	//// スフィアかメッシュぐらい
-	//mainCamera->AddCollider(field->GetWallCol());
-
 	// カメラの位置と向きを設定
-	CCamera* mainCamera = CCamera::MainCamera();
-	if (mainCamera != nullptr)
-	{
-		CVector eye = CVector(0.0f, 80.0f, 75.0f);
-		CVector at = player->Position() + CVector(0.0f,10.0f,0.0f);
-		CVector forward = (at - eye).Normalized();
-		CVector side = CVector::Cross(forward, CVector::up);
-		CVector up = CVector::Cross(side, forward);
-		mainCamera->LookAt(eye, at, up);
-		mainCamera->SetFollowTargetTf(player);
-		// スフィアかメッシュぐらい
-		mainCamera->AddCollider(field->GetWallCol());
-	}
+	CCamera* mainCamera = new CCamera
+	(
+		CVector(0.0f, 80.0f, 45.0f),
+		player->Position() + CVector(0.0f, 10.0f, 0.0f)
+	);
+	mainCamera->SetFollowTargetTf(player);
+	// スフィアかメッシュぐらい
+	mainCamera->AddCollider(field->GetWallCol());
 
-
+	//// カメラの位置と向きを設定
+	//CCamera* mainCamera = CCamera::MainCamera();
+	//if (mainCamera != nullptr)
+	//{
+	//	CVector eye = CVector(0.0f, 80.0f, 75.0f);
+	//	CVector at = player->Position() + CVector(0.0f,10.0f,0.0f);
+	//	CVector forward = (at - eye).Normalized();
+	//	CVector side = CVector::Cross(forward, CVector::up);
+	//	CVector up = CVector::Cross(side, forward);
+	//	mainCamera->LookAt(eye, at, up);
+	//	mainCamera->SetFollowTargetTf(player);
+	//	// スフィアかメッシュぐらい
+	//	mainCamera->AddCollider(field->GetWallCol());
+	//}
 
 	// 四角モデル
 	CMoveFloor* floor = new CMoveFloor( 
@@ -93,6 +92,7 @@ void CStage1::Load()
 	sol1->Scale(1.0f, 1.0f, 1.0f);
 	sol1->Position(-100.0f, 150, -100);
 	AddTask(sol1);
+	
 
 	CSoldier* sol2 = new CSoldier();
 	sol2->Scale(1.0f, 1.0f, 1.0f);
@@ -103,6 +103,7 @@ void CStage1::Load()
 	sol3->Scale(1.0f, 1.0f, 1.0f);
 	sol3->Position(50.0f, 150.0f, -150.0f);
 	AddTask(sol3);
+
 	/////////////////////////////////////////////////
 }
 

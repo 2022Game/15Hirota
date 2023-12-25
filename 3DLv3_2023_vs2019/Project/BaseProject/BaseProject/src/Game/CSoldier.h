@@ -173,6 +173,6 @@ private:
 	CSoldierFrame* mpFrame;
 	CSoldierGauge* mpGauge;
 
-
+	std::list<CSoldier*> mCreateTasks;
 };
 #endif

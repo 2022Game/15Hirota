@@ -90,6 +90,7 @@ CSoldier::CSoldier()
 	// モデルデータ取得
 	CModelX* model = CResourceManager::Get<CModelX>("Soldier");
 
+
 	mpFrame = new CSoldierFrame();
 	// 0~1の値を設定
 	mpFrame->SetCenterRatio(CVector2(0.5f, 0.0f));
@@ -180,11 +181,13 @@ CSoldier::~CSoldier()
 		mpAttackCol = nullptr;
 	}
 
+	mpGun->Kill();
+
 	enemyCount--;
+
 	// UI周りを消す
 	mpGauge->Kill();
 	mpFrame->Kill();
-	mpGun->Kill();
 }
 
 CSoldier* CSoldier::Instance()
@@ -496,9 +499,6 @@ void CSoldier::UpdateDethEnd()
 {
 	if (IsAnimationFinished())
 	{
-		/*mCharaStatus = mCharaMaxStatus;
-		Position(-100.0f, 50.0f, -200.0f);
-		mState = EState::eIdle;*/
 		Kill();
 	}
 }
