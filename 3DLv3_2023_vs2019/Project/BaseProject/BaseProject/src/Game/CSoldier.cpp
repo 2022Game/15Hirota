@@ -11,6 +11,7 @@
 #include "CKick.h"
 #include "CSoldierFrame.h"
 #include "CSoldierGauge.h"
+#include "CStageManager.h"
 
 #define _USE_MATH_DEFINES
 
@@ -162,6 +163,8 @@ CSoldier::CSoldier()
 
 CSoldier::~CSoldier()
 {
+	CStageManager::RemoveTask(this);
+
 	if (mpColliderLine != nullptr)
 	{
 		delete mpColliderLine;
@@ -331,6 +334,7 @@ void CSoldier::UpdateAttack()
 			CBullet* bullet = new CBullet();
 			bullet->Position(CVector(0.0f, 10.0f, 10.0f) * Matrix());
 			bullet->Rotation(Rotation());
+			CStageManager::AddTask(bullet);
 
 			// ‘S’e”­Ë‚µ‚½‚çAUŒ‚I—¹
 			mTimeShot++;

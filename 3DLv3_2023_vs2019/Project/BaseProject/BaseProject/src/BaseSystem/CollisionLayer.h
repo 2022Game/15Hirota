@@ -14,6 +14,7 @@ enum class ELayer
 	ePlayer,
 	eEnemy,
 
+	eVarious,		// 色々コライダー
 	eAttackCol,		// 攻撃を与える時のコライダー
 	eKickCol,		// キックコライダー
 	eDamageCol,		// ダメージを受ける時のコライダー

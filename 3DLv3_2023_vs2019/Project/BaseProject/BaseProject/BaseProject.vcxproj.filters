@@ -355,6 +355,12 @@
     <ClCompile Include="src\Game\CGameManager.cpp">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CDisappearFloor.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CAppearFloor.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -659,6 +665,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CGameManager.h">
       <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CDisappearFloor.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CAppearFloor.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

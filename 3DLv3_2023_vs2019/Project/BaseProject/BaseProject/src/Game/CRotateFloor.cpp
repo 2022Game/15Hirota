@@ -29,5 +29,6 @@ void CRotateFloor::Update()
 
 void CRotateFloor::Render()
 {
+	mpModel->SetColor(mColor);
 	mpModel->Render(Matrix());
 }

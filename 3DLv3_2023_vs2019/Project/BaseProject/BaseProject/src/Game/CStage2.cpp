@@ -6,6 +6,7 @@
 #include "CSoldier.h"
 #include "CPlayer.h"
 #include "CCamera.h"
+#include "CAppearFloor.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -39,29 +40,20 @@ void CStage2::Load()
 		player->SetStartPosition(playerPos);
 	}
 
-	CCamera* mainCamera = new CCamera
-	(
-		CVector(0.0f, 80.0f, 45.0f),
-		player->Position() + CVector(0.0f, 10.0f, 0.0f)
-	);
-	mainCamera->SetFollowTargetTf(player);
-	// スフィアかメッシュぐらい
-	mainCamera->AddCollider(field->GetWallCol());
-
-	//// カメラの位置と向きを設定
-	//CCamera* mainCamera = CCamera::MainCamera();
-	//if (mainCamera != nullptr)
-	//{
-	//	CVector eye = CVector(0.0f, 80.0f, 75.0f);
-	//	CVector at = playerPos + CVector(0.0f,10.0f,0.0f);
-	//	CVector forward = (at - eye).Normalized();
-	//	CVector side = CVector::Cross(forward, CVector::up);
-	//	CVector up = CVector::Cross(side, forward);
-	//	mainCamera->LookAt(eye, at, up);
-	//	mainCamera->SetFollowTargetTf(player);
-	//	// スフィアかメッシュぐらい
-	//	mainCamera->AddCollider(field->GetWallCol());
-	//}
+	// カメラの位置と向きを設定
+	CCamera* mainCamera = CCamera::MainCamera();
+	if (mainCamera != nullptr)
+	{
+		CVector eye = CVector(0.0f, 80.0f, 45.0f);
+		CVector at = playerPos + CVector(0.0f,10.0f,0.0f);
+		CVector forward = (at - eye).Normalized();
+		CVector side = CVector::Cross(forward, CVector::up);
+		CVector up = CVector::Cross(side, forward);
+		mainCamera->LookAt(eye, at, up);
+		mainCamera->SetFollowTargetTf(player);
+		// スフィアかメッシュぐらい
+		mainCamera->AddCollider(field->GetWallCol());
+	}
 
 
 	// 四角モデル
@@ -85,6 +77,15 @@ void CStage2::Load()
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f));
 	AddTask(stone1);
+
+	// 現れる床
+	CAppearFloor* afloor = new CAppearFloor
+	(
+		CVector(0.0f, 10.0f, -200.0f),
+		CVector(0.5f, 4.0f, 0.5f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(afloor);
 
 	// 敵(ガスマスク兵士) ///////////////////////////
 	CSoldier* sol1 = new CSoldier();

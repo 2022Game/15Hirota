@@ -40,5 +40,6 @@ void CMoveFloor::Update()
 
 void CMoveFloor::Render()
 {
+	mpModel->SetColor(mColor);
 	mpModel->Render(Matrix());
 }

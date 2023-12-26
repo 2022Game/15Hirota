@@ -18,6 +18,7 @@ enum class ETaskPriority
 	eEnemyWeapon,	// 敵の武器
 
 	eEffect,
+	eTransparent,	// 透明オブジェクト
 
 	eCamera,		// カメラ
 

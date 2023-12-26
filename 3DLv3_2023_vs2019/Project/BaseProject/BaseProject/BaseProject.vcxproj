@@ -56,6 +56,7 @@
     <ClCompile Include="src\BaseSystem\CVector.cpp" />
     <ClCompile Include="src\BaseSystem\CObjectBase.cpp" />
     <ClCompile Include="src\BaseSystem\Maths.cpp" />
+    <ClCompile Include="src\Game\CAppearFloor.cpp" />
     <ClCompile Include="src\Game\CApplication.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
     <ClCompile Include="src\Game\CClearScene.cpp" />
@@ -93,6 +94,7 @@
     <ClCompile Include="src\Game\CYukari.cpp" />
     <ClCompile Include="src\Game\CMajicSword.cpp" />
     <ClCompile Include="src\Game\CYukariGauge.cpp" />
+    <ClCompile Include="src\Game\CDisappearFloor.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Test\CBootMenuScene.cpp" />
     <ClCompile Include="src\Test\CColBasecpp.cpp" />
@@ -160,6 +162,7 @@
     <ClInclude Include="src\BaseSystem\ObjectTag.h" />
     <ClInclude Include="src\BaseSystem\Time.h" />
     <ClInclude Include="src\Define.h" />
+    <ClInclude Include="src\Game\CAppearFloor.h" />
     <ClInclude Include="src\Game\CApplication.h" />
     <ClInclude Include="src\Game\CBullet.h" />
     <ClInclude Include="src\Game\CClearScene.h" />
@@ -197,6 +200,7 @@
     <ClInclude Include="src\Game\CMajicSword.h" />
     <ClInclude Include="src\Game\CYukariGauge.h" />
     <ClInclude Include="src\Game\CGameManager.h" />
+    <ClInclude Include="src\Game\CDisappearFloor.h" />
     <ClInclude Include="src\Test\CBootMenuScene.h" />
     <ClInclude Include="src\Test\CColBase.h" />
     <ClInclude Include="src\Test\CColLine.h" />

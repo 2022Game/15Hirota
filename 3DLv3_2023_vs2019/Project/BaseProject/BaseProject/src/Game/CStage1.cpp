@@ -6,6 +6,7 @@
 #include "CSoldier.h"
 #include "CPlayer.h"
 #include "CCamera.h"
+#include "CDisappearFloor.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -40,7 +41,6 @@ void CStage1::Load()
 		player->SetStartPosition(playerPos);
 	}
 
-	// カメラの位置と向きを設定
 	CCamera* mainCamera = new CCamera
 	(
 		CVector(0.0f, 80.0f, 45.0f),
@@ -50,20 +50,6 @@ void CStage1::Load()
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(field->GetWallCol());
 
-	//// カメラの位置と向きを設定
-	//CCamera* mainCamera = CCamera::MainCamera();
-	//if (mainCamera != nullptr)
-	//{
-	//	CVector eye = CVector(0.0f, 80.0f, 75.0f);
-	//	CVector at = player->Position() + CVector(0.0f,10.0f,0.0f);
-	//	CVector forward = (at - eye).Normalized();
-	//	CVector side = CVector::Cross(forward, CVector::up);
-	//	CVector up = CVector::Cross(side, forward);
-	//	mainCamera->LookAt(eye, at, up);
-	//	mainCamera->SetFollowTargetTf(player);
-	//	// スフィアかメッシュぐらい
-	//	mainCamera->AddCollider(field->GetWallCol());
-	//}
 
 	// 四角モデル
 	CMoveFloor* floor = new CMoveFloor( 
@@ -86,6 +72,15 @@ void CStage1::Load()
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f));
 	AddTask(stone1);
+
+	// 消える床
+	CDisappearFloor* dfloor = new CDisappearFloor
+	(
+		CVector(0.0f, 10.0f, -200.0f),
+		CVector(0.5f, 2.0f, 0.5f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(dfloor);
 
 	// 敵(ガスマスク兵士) ///////////////////////////
 	CSoldier* sol1 = new CSoldier();

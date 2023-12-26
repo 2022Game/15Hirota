@@ -101,37 +101,16 @@ CPlayer::CPlayer()
 	// 縦のコライダーライン
 	mpColliderLine = new CColliderLine
 	(
-		this, ELayer::eField,
+		this, ELayer::ePlayer,
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
-	/*const CMatrix* speneMtxL = GetFrameMtx("Armature_mixamorig_Spine1");
-	mpColliderLine->SetAttachMtx(speneMtxL);*/
 	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject });
 
 
-	//// 前後のコライダーライン
-	//mpColliderLine_2 = new CColliderLine
-	//(
-	//	this, ELayer::eField,
-	//	CVector(0.0f, 8.0f, -8.0f),
-	//	CVector(0.0f, 8.0f, 12.0f)
-	//);
-	//mpColliderLine_2->SetCollisionLayers({ ELayer::eFieldWall,ELayer::eField });
-
-
-	//// 横のコライダーライン
-	//mpColliderLine_3 = new CColliderLine
-	//(
-	//	this, ELayer::eField,
-	//	CVector(12.0f, 8.0f, 0.0f),
-	//	CVector(-12.0f, 8.0f, 0.0f)
-	//);
-	//mpColliderLine_3->SetCollisionLayers({ ELayer::eFieldWall,ELayer::eField });
-
 	mpColliderSphere = new CColliderSphere
 	(
-		this, ELayer::eField,
+		this, ELayer::ePlayer,
 		9.0f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField});
@@ -845,7 +824,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		if (other->Layer() == ELayer::eField)
 		{
 			mMoveSpeed.Y(0.0f);
-			Position(Position() + hit.adjust);
+			Position(Position() + hit.adjust * hit.weight);
 			mIsGrounded = true;
 
 			if (other->Tag() == ETag::eRideableObject)

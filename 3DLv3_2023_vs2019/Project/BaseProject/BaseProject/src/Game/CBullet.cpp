@@ -2,6 +2,7 @@
 #include "CCollisionManager.h"
 #include "CCharaBase.h"
 #include "CEffect.h"
+#include "CStageManager.h"
 
 //#define BULLET_O "Item\\Bullet1\\Bullet.obj"
 //#define BULLET_M "Item\\Bullet1\\Bullet.mtl"
@@ -42,6 +43,7 @@ CBullet::CBullet()
 
 CBullet::~CBullet()
 {
+	CStageManager::RemoveTask(this);
 	// 弾丸が削除されたら、コライダーも削除
 	SAFE_DELETE_ARRAY(mpAttackCol);
 }

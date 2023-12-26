@@ -1,8 +1,8 @@
 #include "CRideableObject.h"
 #include "CPlayer.h"
 
-CRideableObject::CRideableObject()
-	: CObjectBase(ETag::eRideableObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
+CRideableObject::CRideableObject(ETaskPriority prio)
+	: CObjectBase(ETag::eRideableObject, prio, 0, ETaskPauseType::eGame)
 {
 	
 }
