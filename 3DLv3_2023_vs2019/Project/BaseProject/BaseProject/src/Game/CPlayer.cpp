@@ -106,7 +106,7 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject });
-
+	
 
 	mpColliderSphere = new CColliderSphere
 	(
@@ -224,6 +224,7 @@ void CPlayer::UpdateReady()
 			// プレイヤーの衝突判定をオンにする
 			SetEnableCol(true);
 			// 現在の状態を待機に切り替え
+			mCharaStatus.hp = mCharaMaxStatus.hp;
 			ChangeState(EState::eIdle);
 		}
 		break;
@@ -476,6 +477,11 @@ void CPlayer::UpdateAttackWait()
 		if (mState == EState::eRotate)
 		{
 			
+		}
+		// フレームが50まで行ったらAttackEndを呼び出す
+		if (mAnimationFrame >= 40.0f)
+		{
+			mpSword->AttackEnd();
 		}
 	}
 	else

@@ -50,10 +50,10 @@ void CStage2::Load()
 		CVector side = CVector::Cross(forward, CVector::up);
 		CVector up = CVector::Cross(side, forward);
 		mainCamera->LookAt(eye, at, up);
-		mainCamera->SetFollowTargetTf(player);
-		// スフィアかメッシュぐらい
-		mainCamera->AddCollider(field->GetWallCol());
 	}
+	mainCamera->SetFollowTargetTf(player);
+	// スフィアかメッシュぐらい
+	mainCamera->AddCollider(field->GetWallCol());
 
 
 	// 四角モデル

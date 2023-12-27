@@ -57,6 +57,8 @@ public:
 	void UpdateDeth();
 	// 死亡処理終了
 	void UpdateDethEnd();
+	// 徘徊処理
+	void UpdateWander();
 
 	// 更新
 	void Update();
@@ -82,6 +84,14 @@ public:
 	/*void SetCollider(CColliderSphere* newCollider);
 	void SetGauge(CSoldierGauge* newGauge);
 	void SetFrame(CSoldierFrame* newFrame);*/
+
+	bool ShouldTransitionWander();
+
+	void ChangeDerection();
+
+	CVector CalculateDirection(float angleDegrees);
+
+	void Move();
 
 	static int GetEnemyCount();
 
@@ -143,6 +153,7 @@ private:
 		eHit,		// ダメージHit
 		eDeth,		// 死亡
 		eDethEnd,	// 死亡終了
+		eWander,	// 徘徊処理
 	};
 	EState mState;	// プレイヤーの状態
 
@@ -169,6 +180,7 @@ private:
 	int mTimeShotEnd;
 	float mElapsedTime;		// 経過時間計測用
 	float mElapsedTime_End;	// 解除時間計測用
+	float mTimeToChange;	// ランダム計算
 
 	CSoldierFrame* mpFrame;
 	CSoldierGauge* mpGauge;

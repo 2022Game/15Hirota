@@ -42,9 +42,11 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 
 };
 
+
 #define ENEMY_HEIGHT 8.0f
 #define ENEMY_HEIGHT2 20.0f
 #define MOVE_SPEED 0.5f
+#define RUN_SPEED 25.0f
 #define JUMP_SPEED 1.5f
 #define GRAVITY 0.0625f
 #define JUMP_END_Y 1.0f
@@ -78,11 +80,13 @@ CSoldier::CSoldier()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
 	, mState(EState::eIdle)
 	, mTargetDir(0.0f, 0.0f, 1.0f)
+	, mMoveSpeed(0.0f,0.0f,0.0f)
 	, mpRideObject(nullptr)
 	, mTimeShot(0)
 	, mTimeShotEnd(5)
 	, mElapsedTime(0.0f)
 	, mElapsedTime_End(0.0f)
+	, mTimeToChange(Math::Rand(2.0f,5.0f))
 {
 	enemyCount++;
 	//インスタンスの設定
@@ -193,10 +197,12 @@ CSoldier::~CSoldier()
 	mpFrame->Kill();
 }
 
+
 CSoldier* CSoldier::Instance()
 {
 	return spInstance;
 }
+
 
 // レベルアップ
 void CSoldier::LevelUp()
@@ -204,6 +210,7 @@ void CSoldier::LevelUp()
 	int level = mCharaStatus.level;
 	ChangeLevel(level + 1);
 }
+
 
 // レベルを変更
 void CSoldier::ChangeLevel(int level)
@@ -219,6 +226,7 @@ void CSoldier::ChangeLevel(int level)
 	mpGauge->SetMaxValue(mCharaMaxStatus.hp);
 	mpGauge->SetValue(mCharaStatus.hp);
 }
+
 
 // アニメーション切り替え
 void CSoldier::ChangeAnimation(EAnimType type)
@@ -245,6 +253,7 @@ void CSoldier::ChangeAnimation(EAnimType type)
 //	mpFrame = newFrame;
 //}
 
+
 // 待機
 void CSoldier::UpdateIdle()
 {
@@ -260,7 +269,62 @@ void CSoldier::UpdateIdle()
 	else
 	{
 		ChangeAnimation(EAnimType::eIdle);
+
+		if (ShouldTransitionWander())
+		{
+			mState = EState::eWander;
+		}
 	}
+}
+
+
+// 徘徊に遷移する条件
+bool CSoldier::ShouldTransitionWander()
+{
+	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	return randomValue < 0.01f;  // 10%の確率で徘徊に遷移
+}
+
+
+void CSoldier::ChangeDerection()
+{
+	// ランダムな方向に変更
+	float randomAngle = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 360.0f;
+	mTargetDir = CalculateDirection(randomAngle);
+}
+
+
+CVector CSoldier::CalculateDirection(float angleDegrees)
+{
+	// 角度からラジアンに変換
+	float angleRadians = angleDegrees * M_PI / 180.0f;
+
+	// ベクトルの計算
+	float x = cos(angleRadians);
+	float y = 0.0f;					// Y軸方向に移動させる場合は必要に応じて変更
+	float z = sin(angleRadians);
+
+	return CVector(x, y, z);
+}
+
+
+void CSoldier::Move()
+{
+	// mMoveSpeed は敵の速度ベクトルでmMoveSpeed.X() が X 軸方向の速度を表します。
+    // 適切な速度を設定し、mMoveSpeedをmTargetDirにスケーリングして移動。
+    // 速度を設定
+
+	// 速度を設定
+	float moveSpeed = RUN_SPEED;
+
+	// mTargetDir に速度を掛けて移動ベクトルを得る
+	CVector moveVector = mTargetDir * moveSpeed;
+
+	// deltaTime を考慮して移動量を計算
+	moveVector *= Time::DeltaTime();
+
+	// 現在の座標を更新
+	Position(Position() + moveVector + mMoveSpeed);
 }
 
 // 追跡
@@ -386,11 +450,15 @@ void CSoldier::UpdateKick()
 // キック終了
 void CSoldier::UpdateKickWait()
 {
-	if (IsAnimationFinished())
+	if (mAnimationFrame >= 70.0f)
 	{
 		mpAttackCol->SetEnable(false);
-		mState = EState::eChase;
-		ChangeAnimation(EAnimType::eIdle);
+		if (IsAnimationFinished())
+		{
+			mState = EState::eChase;
+			ChangeAnimation(EAnimType::eIdle);
+		}
+		
 	}
 }
 
@@ -451,6 +519,7 @@ void CSoldier::UpdateHit()
 		}
 		else if (mCharaStatus.hp <= 0)
 		{
+			mpDamageCol->SetEnable(false);
 			mState = EState::eDeth;
 		}
 	}
@@ -504,6 +573,35 @@ void CSoldier::UpdateDethEnd()
 	if (IsAnimationFinished())
 	{
 		Kill();
+	}
+}
+
+// 徘徊処理
+void CSoldier::UpdateWander()
+{
+	mpAttackCol->SetEnable(false);
+	ChangeAnimation(EAnimType::eWalk);
+
+	// 一定時間ごとに方向転換
+	mElapsedTime += Time::DeltaTime();
+	if (mElapsedTime >= mTimeToChange)
+	{
+		ChangeDerection();
+		mElapsedTime = 0.0f;
+	}
+
+	Move();
+
+	if (IsFoundPlayer())
+	{
+		mState = EState::eChase;
+	}
+	else
+	{
+		if (ShouldTransitionWander())
+		{
+			mState = EState::eIdle;
+		}
 	}
 }
 
@@ -567,6 +665,10 @@ void CSoldier::Update()
 		// 死亡処理終了
 	case EState::eDethEnd:
 		UpdateDethEnd();
+		break;
+		// 徘徊処理
+	case EState::eWander:
+		UpdateWander();
 		break;
 	}
 
@@ -660,7 +762,7 @@ void CSoldier::Update()
 	mpGun->UpdateAttachMtx();
 
 	mIsGrounded = false;
-
+	
 }
 
 // プレイヤー追跡
