@@ -361,6 +361,9 @@
     <ClCompile Include="src\Game\CAppearFloor.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CYukariFrame.cpp">
+      <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -671,6 +674,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CAppearFloor.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CYukariFrame.h">
+      <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,7 +3,6 @@
 #include "CImage.h"
 #include "CCamera.h"
 
-//#define BAR_IMAGE "UI\\Gauge.png"
 
 // ƒtƒŒ[ƒ€‚Ìü‚Ì•
 #define FRAME_BORDER	(1.0f)

@@ -7,6 +7,7 @@
 #include "CPlayer.h"
 #include "CCamera.h"
 #include "CDisappearFloor.h"
+#include "CYukari.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -85,21 +86,27 @@ void CStage1::Load()
 	// 敵(ガスマスク兵士) ///////////////////////////
 	CSoldier* sol1 = new CSoldier();
 	sol1->Scale(1.0f, 1.0f, 1.0f);
-	sol1->Position(-100.0f, 150, -100);
+	sol1->Position(-100.0f, 150, -150);
 	AddTask(sol1);
 	
 
 	CSoldier* sol2 = new CSoldier();
 	sol2->Scale(1.0f, 1.0f, 1.0f);
-	sol2->Position(-50.0f, 150.0f, -100.0f);
+	sol2->Position(-50.0f, 150.0f, -150.0f);
 	AddTask(sol2);
 
 	CSoldier* sol3 = new CSoldier();
 	sol3->Scale(1.0f, 1.0f, 1.0f);
-	sol3->Position(50.0f, 150.0f, -150.0f);
+	sol3->Position(50.0f, 150.0f, -200.0f);
 	AddTask(sol3);
 
 	/////////////////////////////////////////////////
+
+	// ゆかりさん
+	CYukari* yukari = new CYukari();
+	yukari->Scale(1.0f, 1.0f, 1.0f);
+	yukari->Position(0.0f, 100.0f, -200.0f);
+	AddTask(yukari);
 }
 
 // ステージ破棄

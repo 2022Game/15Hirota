@@ -8,9 +8,8 @@
 #include <BaseSystem/CInput.h>
 #include "CGun.h"
 #include "CBullet.h"
-#include "CBillBoardImage.h"
+#include "CYukariFrame.h"
 #include "CYukariGauge.h"
-
 
 #define _USE_MATH_DEFINES
 
@@ -18,8 +17,6 @@
 // Yukariのインスタンス
 CYukari* CYukari::spInstance = nullptr;
 
-//// Yukariのモデルデータのパス
-//#define MODEL_PATH	"Character\\Yukari\\Yukari_Model.x"
 
 #define EFFECT	 "Effect\\exp.tga"
 
@@ -69,9 +66,11 @@ CYukari::CYukari()
 	, mTimeShotEnd(10)
 	, mElapsedTime(0.0f)
 {
+	mpFrame = new CYukariFrame();
+	mpFrame->SetCenterRatio(CVector2(0.5f, 0.0f));
 	mpGauge = new CYukariGauge();
-	mpBillboardImage = new CBillBoardImage("UI\\Image_Gauge_Frame.png", ETag::eEnemyFrame, ETaskPriority::eEnemyUi, 0, ETaskPauseType::eGame);
-	
+	mpGauge->SetCenterRatio(CVector2(0.3f, 0.0f));
+
 	//インスタンスの設定
 	spInstance = this;
 
@@ -100,23 +99,27 @@ CYukari::CYukari()
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
+
 	// ダメージを受けるコライダーを作成
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		10.0f //後で変更
+		0.5f //後で変更
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol });
-	mpDamageCol->SetCollisionTags({ ETag::eWeapon });
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy, ELayer::eFieldWall });
+	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy });
 	// ダメージを受けるコライダーを少し上へずらす
-	mpDamageCol->Position(0.0f, 5.0f, 0.0f);
+	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
+	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
+	mpDamageCol->SetAttachMtx(spineMtx);
 
 	// 銃を作成して持たせる
 	mpGun = new CGun();
-	mpGun->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
-	mpGun->SetOwner(this);
+	const CMatrix* gun = GetFrameMtx("Armature_mixamorig_RightHand");
+	mpGun->AttachMtx(gun);
+
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -137,18 +140,10 @@ CYukari::~CYukari()
 		delete mpDamageCol;
 		mpDamageCol = nullptr;
 	}
+	mpGun->Kill();
 
-	if (mpBillboardImage != nullptr)
-	{
-		delete mpBillboardImage;
-		mpBillboardImage = nullptr;
-	}
-
-	if (mpGauge != nullptr)
-	{
-		delete mpGauge;
-		mpGauge = nullptr;
-	}
+	mpGauge->Kill();
+	mpFrame->Kill();
 }
 
 CYukari* CYukari::Instance()
@@ -417,24 +412,24 @@ void CYukari::Update()
 
 	CDebugPrint::Print("Shot%d\n", mTimeShot);
 	CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
-	
-
-	mpBillboardImage->SetSize(CVector2(6.0f, 1.0f));
-	mpBillboardImage->Position(Position() + CVector(0.0f, ENEMY_HEIGHT2, 0.0f));
-	mpBillboardImage->SetUV(CRect(0.0f, 0.0f, 1.0f, -1.0f));
 
 
-	/*mpGauge->SetSize(CVector2(5.0f, 0.5f));
-	mpGauge->Position(Position() + CVector(0.0f, 20.5f, 0.0f));
-	mpGauge->SetUV(CRect(0.0f, 0.0f, 1.0f, -1.0f));*/
+	// HPゲージの座標を更新 (敵の座標の少し上の座標)
+	CVector gaugePos = Position() + CVector(0.0f, 25.0f, 0.0f);
+	mpGauge->SetWorldPos(gaugePos);
+	CVector framePos = Position() + CVector(0.0f, 25.0f, 0.0f);
+	mpFrame->SetWorldPos(framePos);
+
 
 	// 現在のHPを設定
 	mpGauge->SetValue(mCharaStatus.hp);
 
+	mIsGrounded = false;
+
 	// Yukariの更新
 	CXCharacter::Update();
-
-	mIsGrounded = false;
+	mpDamageCol->Update();
+	mpGun->UpdateAttachMtx();
 }
 
 bool CYukari::IsFoundPlayer() const

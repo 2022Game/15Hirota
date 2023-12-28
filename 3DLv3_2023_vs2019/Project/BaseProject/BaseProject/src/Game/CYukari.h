@@ -1,5 +1,6 @@
 #ifndef CYUKARI_H
 #define CYUKARI_H
+
 //キャラクタクラスのインクルード
 #include "CXCharacter.h"
 #include "CColliderLine.h"
@@ -10,7 +11,7 @@
 class CGun;
 class CBullet;
 class CPlayer;
-class CBillBoardImage;
+class CYukariFrame;
 class CYukariGauge;
 
 /*
@@ -22,7 +23,7 @@ class CYukari : public CXCharacter
 {
 public:
 	//インスタンスのポインタの取得
-	static CYukari* Instance();
+	CYukari* Instance();
 
 	// コンストラクタ
 	CYukari();
@@ -126,12 +127,13 @@ private:
 
 	CGun* mpGun;	// 銃のモデル
 
-	CBillBoardImage* mpBillboardImage;
-	CYukariGauge* mpGauge;
 
 	int mTimeShot;
 	int mTimeShotEnd;
 	float mElapsedTime;	// 経過時間計測用
+
+	CYukariFrame* mpFrame;
+	CYukariGauge* mpGauge;
 
 };
 #endif

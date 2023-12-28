@@ -20,8 +20,6 @@ CSoldier* CSoldier::spInstance = nullptr;
 
 int CSoldier::enemyCount = 0;
 
-//// CSoldierのモデルデータのパス
-//#define MODEL_PATH	"Character\\Gas mask soldier\\GasMask_Soldier_Model.x"
 
 #define EFFECT	 "Effect\\exp.tga"
 
@@ -125,6 +123,16 @@ CSoldier::CSoldier()
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField });
 
+	
+	mpColliderSphere = new CColliderSphere
+	(
+		this, ELayer::eEnemy,
+		7.0f
+	);
+	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField });
+	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
+
+
 	// ダメージを受けるコライダーを作成
 	mpDamageCol = new CColliderSphere
 	(
@@ -133,7 +141,7 @@ CSoldier::CSoldier()
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy, ELayer::eFieldWall });
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy });
 	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy });
 	// ダメージを受けるコライダーを少し下へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
@@ -173,6 +181,12 @@ CSoldier::~CSoldier()
 	{
 		delete mpColliderLine;
 		mpColliderLine = nullptr;
+	}
+
+	if (mpColliderSphere != nullptr)
+	{
+		delete mpColliderSphere;
+		mpColliderSphere = nullptr;
 	}
 
 	// ダメージを受けるコライダーを削除
@@ -237,23 +251,6 @@ void CSoldier::ChangeAnimation(EAnimType type)
 }
 
 
-//
-//void CSoldier::SetCollider(CColliderSphere* newCollider)
-//{
-//	mpDamageCol = newCollider;
-//}
-//
-//void CSoldier::SetGauge(CSoldierGauge* newGauge)
-//{
-//	mpGauge = newGauge;
-//}
-//
-//void CSoldier::SetFrame(CSoldierFrame* newFrame)
-//{
-//	mpFrame = newFrame;
-//}
-
-
 // 待機
 void CSoldier::UpdateIdle()
 {
@@ -270,6 +267,7 @@ void CSoldier::UpdateIdle()
 	{
 		ChangeAnimation(EAnimType::eIdle);
 
+		// 確率で徘徊状態に移行
 		if (ShouldTransitionWander())
 		{
 			mState = EState::eWander;
@@ -282,10 +280,11 @@ void CSoldier::UpdateIdle()
 bool CSoldier::ShouldTransitionWander()
 {
 	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-	return randomValue < 0.01f;  // 10%の確率で徘徊に遷移
+	return randomValue < 0.01f;  // 1%の確率で徘徊に遷移
 }
 
 
+// 1%の確率で移行する為の処理
 void CSoldier::ChangeDerection()
 {
 	// ランダムな方向に変更
@@ -293,7 +292,7 @@ void CSoldier::ChangeDerection()
 	mTargetDir = CalculateDirection(randomAngle);
 }
 
-
+// 360度の角度を求めて、x軸とy軸から計算する
 CVector CSoldier::CalculateDirection(float angleDegrees)
 {
 	// 角度からラジアンに変換
@@ -307,9 +306,11 @@ CVector CSoldier::CalculateDirection(float angleDegrees)
 	return CVector(x, y, z);
 }
 
-
+// 移動処理
 void CSoldier::Move()
 {
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
 	// mMoveSpeed は敵の速度ベクトルでmMoveSpeed.X() が X 軸方向の速度を表します。
     // 適切な速度を設定し、mMoveSpeedをmTargetDirにスケーリングして移動。
     // 速度を設定
@@ -814,11 +815,31 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 	}
 
+	if (self == mpColliderSphere)
+	{
+		if (other->Layer() == ELayer::eFieldWall)
+		{
+			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
+
+			if (other->Tag() == ETag::eRideableObject)
+			{
+				mpRideObject = other->Owner();
+			}
+		}
+		if (other->Layer() == ELayer::eField)
+		{
+			Position(Position() + hit.adjust);
+		}
+	}
+
 	if (self == mpDamageCol)
 	{
 		if (other->Layer() == ELayer::eAttackCol)
 		{
-			mState = EState::eHit;
+			if (mState != EState::eKick)
+			{
+				mState = EState::eHit;
+			}
 		}
 
 		if (other->Layer() == ELayer::eDamageCol)
@@ -829,6 +850,8 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 	}
+
+
 }
 
 // 描画

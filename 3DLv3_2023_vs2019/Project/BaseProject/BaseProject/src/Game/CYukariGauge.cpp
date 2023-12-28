@@ -1,65 +1,116 @@
 #include "CYukariGauge.h"
 #include "Maths.h"
 #include "CImage.h"
+#include "CCamera.h"
 
-
-#define BAR_IMAGE "UI\\Gauge.png"
 
 // フレームの線の幅
 #define FRAME_BORDER	(1.0f)
+// フレームの横サイズ
+#define FRAME_SIZE_X	(100.0f)	//(50.0f)
 
 // バーの横サイズ
-#define NEW_BAR_SIZE_X	(5.0f)
+#define NEW_BAR_SIZE_X	(80.0f)
 // バーの縦サイズ
-#define NEW_BAR_SIZE_Y	(1.0f)
+#define NEW_BAR_SIZE_Y	(7.5f)
 
 // バーの横サイズ * 線の幅
 #define BAR_SIZE_X (NEW_BAR_SIZE_X - FRAME_BORDER) //*2.0f
 // バーの縦サイズ * 線の幅
 #define BAR_SIZE_Y (NEW_BAR_SIZE_Y - FRAME_BORDER)
 
-// ゲージポジション横
-#define BARPOSITION_X		(0.0f)
-// ゲージポジション縦
-#define BARPOSITION_Z		(0.0f)
-
-#define ENEMY_HEIGHT2 20.5f
+// スケール値計算時のカメラとの距離の最小値
+#define SCALE_DIST_MIN 50.0f
+// スケール値計算時のカメラとの距離の最大値
+#define SCALE_DIST_MAX 100.0f
+// スケール値の最小値
+#define SCALE_MIN 0.8f
+// スケール値の最大値
+#define SCALE_MAX 1.0f
 
 
 CYukariGauge::CYukariGauge()
-	: mMaxValue(50)
-	, mValue(50)
+	: mMaxValue(10)
+	, mValue(10)
+	, mCenterRatio(0.0f, 0.0f)
+	, mScale(0.0f)
 {
-	mpBarImage = new CBillBoardImage(BAR_IMAGE, ETag::eGauge, ETaskPriority::eEnemyGauge, 0, ETaskPauseType::eGame);
-	mpBarImage->SetSize(CVector2(BAR_SIZE_X, BAR_SIZE_Y));
-}
+	mpBarImage = new CImage("YBar");
+	mpBarImage->SetSize(BAR_SIZE_X, BAR_SIZE_Y);
+	mpBarImage->SetUV(438, 0, 500, 62);
 
+}
 // デストラクタ
 CYukariGauge::~CYukariGauge()
 {
 
 }
 
-//void CYukariGauge::Setup(const CVector& pos, const CVector& dir)
-//{
-//
-//}
+// ゲージを削除
+void CYukariGauge::Kill()
+{
+	CTask::Kill();
+	mpBarImage->Kill();
+}
+
+void CYukariGauge::SetCenterRatio(const CVector2& ratio)
+{
+	mCenterRatio = ratio;
+}
+
+// ワールド座標を設定
+void CYukariGauge::SetWorldPos(const CVector& worldPos)
+{
+	// 現在のカメラを取得
+	CCamera* cam = CCamera::CurrentCamera();
+	if (cam == nullptr) return;
+
+	// 設定されたワールド座標をスクリーン座標に変換
+	CVector screenPos = cam->WorldToScreenPos(worldPos);
+
+	// 設定されたワールド座標がカメラの背後であれば、
+	// ゲージを表示しない
+	if (screenPos.Z() < 0.0f)
+	{
+		SetShow(false);
+		return;
+	}
+
+	// ゲージ表示
+	SetShow(true);
+	// 求めたスクリーン座標を自身の座標に設定
+	mPosition = screenPos;
+
+	// 設定されたワールド座標とカメラの距離を求める
+	float dist = (worldPos - cam->Position()).Length();
+
+	// カメラから離れるごとにスケール値を小さくする
+	float ratio = Math::Clamp01((dist - SCALE_DIST_MIN) / (SCALE_DIST_MAX - SCALE_DIST_MIN));
+	mScale = Math::Lerp(SCALE_MIN, SCALE_MAX, ratio);
+}
 
 // 更新処理
 void CYukariGauge::Update()
 {
-	mpBarImage->Position(mPosition + CVector(0.0f, 20.0f, 0.0f));
-	CDebugPrint::Print("Position: X=%f, Y=%f, Z=%f\n", mpBarImage->Position().X(), mpBarImage->Position().Y(), mpBarImage->Position().Z());
+	// ゲージの位置を設定
+	CVector2 pos = mPosition;
+	pos.X(pos.X() - FRAME_SIZE_X * mCenterRatio.X() * mScale);
+	mpBarImage->SetPos(pos + CVector2(0.0f, 0.0f) * mScale);
 
 
-	// バーのサイズを最大値と現在地から求める
+	// ゲージサイズを最大値と現在地から求める
 	float percent = Math::Clamp01((float)mValue / mMaxValue);
-	CVector2 size = CVector2(BAR_SIZE_X, BAR_SIZE_Y);
-	size.X(BAR_SIZE_X * percent);
+	CVector2 size = CVector2(BAR_SIZE_X * percent, BAR_SIZE_Y) * mScale;
 	mpBarImage->SetSize(size);
 
+	// ゲージの中心位置を設定
+	mpBarImage->SetCenter
+	(
+		0.0f,
+		BAR_SIZE_Y * mCenterRatio.Y() * mScale
+	);
 
-	// HPの割合でバーの色を変更
+	// HPの割合でゲージの色を変更
 	CColor color;
 	// 10%以下
 	if (percent <= 0.2f) color = CColor(1.0f, 0.0f, 0.0f);
@@ -67,7 +118,7 @@ void CYukariGauge::Update()
 	else if (percent <= 0.5f) color = CColor(0.9f, 0.3f, 0.5f);
 	// それ以外
 	else color = CColor(0.0f, 1.0f, 0.0f);
-	// バーに色を設定
+	// ゲージに色を設定
 	mpBarImage->SetColor(color);
 }
 
@@ -85,5 +136,4 @@ void CYukariGauge::SetValue(int value)
 
 void CYukariGauge::SetPor(float per)
 {
-
 }

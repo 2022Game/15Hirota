@@ -93,6 +93,7 @@
     <ClCompile Include="src\Game\CXCharacter.cpp" />
     <ClCompile Include="src\Game\CYukari.cpp" />
     <ClCompile Include="src\Game\CMajicSword.cpp" />
+    <ClCompile Include="src\Game\CYukariFrame.cpp" />
     <ClCompile Include="src\Game\CYukariGauge.cpp" />
     <ClCompile Include="src\Game\CDisappearFloor.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="src\Game\CXCharacter.h" />
     <ClInclude Include="src\Game\CYukari.h" />
     <ClInclude Include="src\Game\CMajicSword.h" />
+    <ClInclude Include="src\Game\CYukariFrame.h" />
     <ClInclude Include="src\Game\CYukariGauge.h" />
     <ClInclude Include="src\Game\CGameManager.h" />
     <ClInclude Include="src\Game\CDisappearFloor.h" />

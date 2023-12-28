@@ -108,6 +108,7 @@ CPlayer::CPlayer()
 	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject });
 	
 
+	// 当たり判定を取るコライダー
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::ePlayer,
@@ -884,22 +885,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 	}
 
-	//if (self == mpColliderLine_3)
-	//{
-	//	if (other->Layer() == ELayer::eFieldWall)
-	//	{
-	//		Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
-
-	//		if (other->Tag() == ETag::eRideableObject)
-	//		{
-	//			mpRideObject = other->Owner();
-	//		}
-	//	}
-	//	if (other->Layer() == ELayer::eField)
-	//	{
-	//		Position(Position() + hit.adjust);
-	//	}
-	//}
 
 	if (self == mpDamageCol)
 	{
@@ -924,6 +909,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 // 被ダメージ処理
 void CPlayer::TakeDamage(int damage)
 {
+	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 	//// 死亡していたら、ダメージは受けない
 	//if (mCharaStatus.hp <= 0)return;
 

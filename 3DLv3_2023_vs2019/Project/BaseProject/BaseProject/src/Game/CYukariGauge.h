@@ -1,25 +1,28 @@
 #ifndef CYUKARIGAUGE_H
 #define CYUKARIGAUGE_H
+class CImage;
+
 #include "CUIBase.h"
-#include "CBillBoardImage.h"
-#include "CObjectBase.h"
-class CBillBoardImage;
+#include "CVector.h"
 
 class CYukariGauge :public CUIBase
 
 {
 private:
-	CBillBoardImage* mpBarImage;	// バー画像
+	CImage* mpBarImage;			// バー画像
 
 	int mMaxValue;				// 最大値
 	int mValue;					// 現在値
+	CVector2 mCenterRatio;		// 中心位置の割合
+	float mScale;				// ゲージのスケール値
 public:
 	// コンストラクタ
 	CYukariGauge();
 	// デストラクタ
 	~CYukariGauge();
 
-	//void Setup(const CVector& pos, const CVector& dir);
+	// ゲージを削除
+	void Kill() override;
 
 	// 最大値を設定
 	void SetMaxValue(int value);
@@ -30,8 +33,13 @@ public:
 	// (HPであれば、残りHPが最大HPと比べて何パーセント残っているかを設定)
 	void SetPor(float per);
 
+	// 中心位置の割合を設定
+	void SetCenterRatio(const CVector2& ratio);
+
+	// ワールド座標を設定
+	void SetWorldPos(const CVector& worldPos);
+
 	// 更新処理
 	void Update();
-
 };
 #endif

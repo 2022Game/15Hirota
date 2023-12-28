@@ -47,7 +47,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModelX>("Player",	"Character\\Monster1\\Monster_1.x");						// プレイヤー
 	CResourceManager::Load<CModelX>("Soldier",	"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
 	//CResourceManager::Load<CModelX>("UnityChan", "Character\\UnityChan\\unitychan.x");					// ユニティちゃん
-	//CResourceManager::Load<CModelX>("Yukari", "Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
+	CResourceManager::Load<CModelX>("Yukari", "Character\\Yukari\\Yukari_Model.x");							// ゆかりさん
 
 
 	// アイテム関連
@@ -62,6 +62,8 @@ void CGameScene::Load()
 	CResourceManager::Load<CTexture>("PStamina",	"UI\\Sutamina.png");				// プレイヤーのスタミナ
 	CResourceManager::Load<CTexture>("SFrame",		"UI\\Image_Gauge_Frame.png");		// ソルジャーのフレーム
 	CResourceManager::Load<CTexture>("SBar",		"UI\\Gauge.png");					// ソルジャーのバー
+	CResourceManager::Load<CTexture>("YFrame",		"UI\\Image_Gauge_Frame.png");		// ゆかりさんのフレーム
+	CResourceManager::Load<CTexture>("YBar",		"UI\\Gauge.png");					// ゆかりさんのバー
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -70,11 +72,6 @@ void CGameScene::Load()
 	//unity->Scale(1.0f, 1.0f, 1.0f);
 	//unity->Position(0.0f, 20.0f, 0.0f);
 
-
-	//// ゆかりさん
-	//CYukari* yukari = new CYukari();
-	//yukari->Scale(1.0f, 1.0f, 1.0f);
-	//yukari->Position(-100.0f, 200.0f, -100.0f);
 
 	// フィールド
 	CField* field = new CField();

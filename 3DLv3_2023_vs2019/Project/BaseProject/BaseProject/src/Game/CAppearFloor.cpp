@@ -23,8 +23,8 @@ CAppearFloor::CAppearFloor(const CVector& pos, const CVector& scale,
 
 	// 消える床のコライダー作成
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
-	mpColliderMesh->SetCollisionLayers({ ELayer::eVarious });
-	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
+	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer, ELayer::eEnemy });
+	mpColliderMesh->SetCollisionTags({ ETag::ePlayer, ETag::eEnemy });
 
 	// 生成時に設定された触れた時に反応するオブジェクトタグと
 	// コライダーのレイヤーを個別に設定

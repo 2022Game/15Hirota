@@ -164,9 +164,10 @@ private:
 
 	CVector mPoint;
 
-	CColliderLine* mpColliderLine;
 	CTransform* mpRideObject;
 
+	CColliderLine* mpColliderLine;
+	CColliderSphere* mpColliderSphere;
 	CColliderSphere* mpDamageCol;	// ダメージを受けるコライダ
 	CColliderSphere* mpAttackCol;	// ダメージを与えるコライダ
 
