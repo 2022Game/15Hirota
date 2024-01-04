@@ -20,6 +20,7 @@
 #define JUMP_SPEED 1.5f			// ジャンプ
 #define GRAVITY 0.0625f			// 重力
 #define JUMP_END_Y 1.0f			// ジャンプ終了時
+#define JUMP_DIRECTION_X 1.0f	// ジャンプオブジェクトに当たった時の移動速度
 
 #define FOV_ANGLE 45.0f			//視野の角度(ー角度+角度も出)
 #define FOV_LENGTH 5.0f			//視野の角度
@@ -32,6 +33,10 @@
 
 // スタミナ関連
 #define STAMINA 109
+
+
+// 色を描画する時間
+#define COLORSET 0.5f
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -53,7 +58,8 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	71.0f	},	// 回避
 	{ "Character\\Monster1\\anim\\Guts pose_325.x",				false,	325.0f	},	// ガッツポーズ
 	{ "Character\\Monster1\\anim\\Hit_63.x",					false,	63.0f	},	// 敵の攻撃Hit
-	{ "Character\\Monster1\\anim\\Deth_276.x",					false,	276.0f	},	// 死亡
+	{ "Character\\Monster1\\anim\\Deth_276.x",					false,	276.0f	},	// 死亡Hit_107
+	{ "Character\\Monster1\\anim\\Hit_107.x",					false,	107.0f	},	// 敵の弾Hit
 
 };
 
@@ -69,7 +75,11 @@ CPlayer::CPlayer()
 	, staminaLowerLimit(false)
 	, damageObject(false)
 	, damageEnemy(false)
+	, JumpObject(false)
 	, mLife(50)
+	, mElapsedTime(0.0f)
+	, mElapsedTimeEnd(0.0f)
+	, JumpCoolDownTime(1.0f)
 {
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
@@ -105,7 +115,7 @@ CPlayer::CPlayer()
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
-	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject });
+	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol });
 	
 
 	// 当たり判定を取るコライダー
@@ -126,7 +136,7 @@ CPlayer::CPlayer()
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eKickCol });
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eKickCol, ELayer::eBulletCol });
 	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, ETag::eEnemy });
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
@@ -298,7 +308,6 @@ void CPlayer::UpdateIdle()
 	mpSword->AttackEnd();
 	mpDamageCol->SetEnable(true);
 	damageEnemy = false;
-	damageObject = false;
 	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
 
 	mMoveSpeed.X(0.0f);
@@ -543,6 +552,7 @@ void CPlayer::UpdateJumpEnd()
 //回避開始
 void CPlayer::UpdateRotate()
 {
+	mpDamageCol->SetEnable(false);
 	// 移動処理
 	// キーの入力ベクトルを取得
 	CVector input;
@@ -650,6 +660,8 @@ void CPlayer::UpdateReStart()
 // 敵の攻撃を受けた時
 void CPlayer::UpdateHit()
 {
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 	if (!damageEnemy)
 	{
@@ -661,7 +673,7 @@ void CPlayer::UpdateHit()
 	// ダメージを受けた時は移動を停止
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
-	ChangeAnimation(EAnimType::eHit);
+	ChangeAnimation(EAnimType::eHitJ);
 	if (IsAnimationFinished())
 	{
 		if (mCharaStatus.hp > 0)
@@ -677,6 +689,33 @@ void CPlayer::UpdateHit()
 			ChangeState(EState::eDeth);
 		}
 	}
+}
+
+// 敵の弾の攻撃を受けた時
+void CPlayer::UpdateHitJ()
+{
+	ChangeAnimation(EAnimType::eHit);
+	mpDamageCol->SetEnable(false);
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	mElapsedTime += Time::DeltaTime();
+	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
+	if (mElapsedTime >= COLORSET)
+	{
+		if (mCharaStatus.hp > 0)
+		{
+			mElapsedTime = 0.0f;
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eIdle);
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mElapsedTime = 0.0f;
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eDeth);
+		}
+	}
+	CDebugPrint::Print("Time%f\n", mElapsedTime);
 }
 
 // 更新
@@ -761,6 +800,10 @@ void CPlayer::Update()
 		case EState::eHit:
 			UpdateHit();
 			break;
+		// 敵の弾Hit
+		case EState::eHitJ:
+			UpdateHitJ();
+			break;
 	}
 
 	// 準備中でなければ、移動処理などを行う
@@ -786,6 +829,18 @@ void CPlayer::Update()
 		// 減算
 		mInvincible--;
 	}
+
+	if (JumpObject)
+	{
+		JumpCoolDownTime -= Time::DeltaTime();
+
+		if (JumpCoolDownTime <= 0.0f)
+		{
+			JumpObject = false;
+		}
+	}
+	CDebugPrint::Print("JumpObject %s\n", JumpObject ? "true" : "false");
+	CDebugPrint::Print("JumpTime %f\n", JumpCoolDownTime);
 
 	// キャラクターのデバッグ表示
 	static bool debug = false;
@@ -814,6 +869,7 @@ void CPlayer::Update()
 	mpHpGauge->SetValue(mCharaStatus.hp);
 	// 現在のスタミナを設定
 	mpStaminaGauge->SetSutaminaValue(mCharaStatus.stamina);
+
 
 	// キャラクターの更新
 	CXCharacter::Update();
@@ -866,6 +922,20 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				mpRideObject = other->Owner();
 			}
 		}
+		else if (other->Layer() == ELayer::eJumpingCol)
+		{
+			if (other->Tag() == ETag::eJumpingObject)
+			{
+				Position(Position() + hit.adjust);
+				if (!JumpObject)
+				{
+					JumpObject = true;
+					ChangeState(EState::eJumpStart);
+
+					JumpCoolDownTime = 5.0f;
+				}
+			}
+		}
 	}
 
 	if (self == mpColliderSphere)
@@ -899,8 +969,12 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 		else if (other->Layer() == ELayer::eKickCol)
 		{
-			mpRideObject = other->Owner();
+			//mpRideObject = other->Owner();
 			ChangeState(EState::eHit);
+		}
+		else if (other->Layer() == ELayer::eBulletCol)
+		{
+			ChangeState(EState::eHitJ);
 		}
 	}
 }
@@ -909,7 +983,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 // 被ダメージ処理
 void CPlayer::TakeDamage(int damage)
 {
-	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 	//// 死亡していたら、ダメージは受けない
 	//if (mCharaStatus.hp <= 0)return;
 

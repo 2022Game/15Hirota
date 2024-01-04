@@ -86,6 +86,7 @@ public:
 	void SetFrame(CSoldierFrame* newFrame);*/
 
 	bool ShouldTransitionWander();
+	bool ShouldTransition();
 
 	void ChangeDerection();
 
@@ -93,6 +94,7 @@ public:
 
 	void Move();
 
+	
 	static int GetEnemyCount();
 
 private:
@@ -172,8 +174,11 @@ private:
 	CColliderSphere* mpAttackCol;	// ダメージを与えるコライダ
 
 
-	CVector playerPosition;		// 目標地点
-	CVector yukariPosition;		// 自分の地点
+	CVector playerPosition;			// 目標地点
+	CVector initialPosition;		// 初期位置の保存
+	float wanderRadius;
+
+
 
 	CGun* mpGun;	// 銃のモデル
 

@@ -63,6 +63,8 @@
     <ClCompile Include="src\Game\CEnemy.cpp" />
     <ClCompile Include="src\Game\CGameManager.cpp" />
     <ClCompile Include="src\Game\CGoalBase.cpp" />
+    <ClCompile Include="src\Game\CJumpingBase.cpp" />
+    <ClCompile Include="src\Game\CJumpingObject.cpp" />
     <ClCompile Include="src\Game\CStage1.cpp" />
     <ClCompile Include="src\Game\CStage2.cpp" />
     <ClCompile Include="src\Game\CStageBase.cpp" />
@@ -169,6 +171,8 @@
     <ClInclude Include="src\Game\CClearScene.h" />
     <ClInclude Include="src\Game\CEnemy.h" />
     <ClInclude Include="src\Game\CGoalBase.h" />
+    <ClInclude Include="src\Game\CJumpingBase.h" />
+    <ClInclude Include="src\Game\CJumpingObject.h" />
     <ClInclude Include="src\Game\CStage1.h" />
     <ClInclude Include="src\Game\CStage2.h" />
     <ClInclude Include="src\Game\CStageBase.h" />

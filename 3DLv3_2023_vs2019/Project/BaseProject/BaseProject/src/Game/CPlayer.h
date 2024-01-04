@@ -68,8 +68,10 @@ public:
 	void UpdateDethEnd();
 	// 再起
 	void UpdateReStart();
-	// 敵のの攻撃Hit
+	// 敵の攻撃Hit
 	void UpdateHit();
+	// 敵の弾Hit
+	void UpdateHitJ();
 
 
 	bool CanEvade();
@@ -119,6 +121,7 @@ private:
 		eGuts,			// ガッツポーズ
 		eHit,			// 敵の攻撃Hit
 		eDeth,			// 死亡
+		eHitJ,			// 敵の弾Hit
 
 		Num
 	};
@@ -160,6 +163,7 @@ private:
 		eDethEnd,		// 死亡終了
 		eReStart,		// 再起
 		eHit,			// ダメージヒット
+		eHitJ,			// 敵の弾ヒット
 
 	};
 	// 現在の状態を切り替え
@@ -187,6 +191,7 @@ private:
 	bool staminaLowerLimit;		// スタミナが下限値に到達した場合のフラグ
 	bool damageObject;			// ダメージを与えるフラグ
 	bool damageEnemy;			// ダメージを与えるフラグ(敵)
+	bool JumpObject;			// ジャンプオブジェクトのフラグ
 
 
 	CColliderSphere* mpDamageCol;	//ダメージを受けるコライダ
@@ -198,4 +203,9 @@ private:
 
 	CUIGauge* mpHpGauge;			// HPゲージ
 	CStaminaGauge* mpStaminaGauge;	// スタミナゲージ
+
+
+	float mElapsedTime;	// 計測時間
+	float mElapsedTimeEnd;	// 計測時間終了
+	float JumpCoolDownTime;
 };

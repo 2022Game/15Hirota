@@ -8,6 +8,7 @@
 #include "CCamera.h"
 #include "CDisappearFloor.h"
 #include "CYukari.h"
+#include "CJumpingObject.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -83,30 +84,39 @@ void CStage1::Load()
 	);
 	AddTask(dfloor);
 
-	// 敵(ガスマスク兵士) ///////////////////////////
-	CSoldier* sol1 = new CSoldier();
-	sol1->Scale(1.0f, 1.0f, 1.0f);
-	sol1->Position(-100.0f, 150, -150);
-	AddTask(sol1);
-	
+	// ジャンプする床
+	CJumpingObject* jump = new CJumpingObject
+	(
+		CVector(0.0f, -5.0f, -340.0f),
+		CVector(0.9f, 2.0f, 0.9f),
+		CVector(0.0f,0.0f,0.0f)
+	);
+	AddTask(jump);
 
-	CSoldier* sol2 = new CSoldier();
-	sol2->Scale(1.0f, 1.0f, 1.0f);
-	sol2->Position(-50.0f, 150.0f, -150.0f);
-	AddTask(sol2);
+	//// 敵(ガスマスク兵士) ///////////////////////////
+	//CSoldier* sol1 = new CSoldier();
+	//sol1->Scale(1.0f, 1.0f, 1.0f);
+	//sol1->Position(-100.0f, 150, -150);
+	//AddTask(sol1);
+	//
 
-	CSoldier* sol3 = new CSoldier();
-	sol3->Scale(1.0f, 1.0f, 1.0f);
-	sol3->Position(50.0f, 150.0f, -200.0f);
-	AddTask(sol3);
+	//CSoldier* sol2 = new CSoldier();
+	//sol2->Scale(1.0f, 1.0f, 1.0f);
+	//sol2->Position(-50.0f, 150.0f, -150.0f);
+	//AddTask(sol2);
 
-	/////////////////////////////////////////////////
+	//CSoldier* sol3 = new CSoldier();
+	//sol3->Scale(1.0f, 1.0f, 1.0f);
+	//sol3->Position(50.0f, 150.0f, -200.0f);
+	//AddTask(sol3);
 
-	// ゆかりさん
-	CYukari* yukari = new CYukari();
-	yukari->Scale(1.0f, 1.0f, 1.0f);
-	yukari->Position(0.0f, 100.0f, -200.0f);
-	AddTask(yukari);
+	///////////////////////////////////////////////////
+
+	//// ゆかりさん
+	//CYukari* yukari = new CYukari();
+	//yukari->Scale(1.0f, 1.0f, 1.0f);
+	//yukari->Position(0.0f, 100.0f, -200.0f);
+	//AddTask(yukari);
 }
 
 // ステージ破棄

@@ -85,7 +85,11 @@ CSoldier::CSoldier()
 	, mElapsedTime(0.0f)
 	, mElapsedTime_End(0.0f)
 	, mTimeToChange(Math::Rand(2.0f,5.0f))
+	, wanderRadius(0.0f)
+	, initialPosition(0.0f,0.0f,0.0f)
 {
+	Position(initialPosition);
+
 	enemyCount++;
 	//ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìİ’è
 	spInstance = this;
@@ -268,7 +272,7 @@ void CSoldier::UpdateIdle()
 		ChangeAnimation(EAnimType::eIdle);
 
 		// Šm—¦‚Åœpœjó‘Ô‚ÉˆÚs
-		if (ShouldTransitionWander())
+		if (ShouldTransition())
 		{
 			mState = EState::eWander;
 		}
@@ -281,6 +285,12 @@ bool CSoldier::ShouldTransitionWander()
 {
 	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 	return randomValue < 0.01f;  // 1%‚ÌŠm—¦‚Åœpœj‚É‘JˆÚ
+}
+
+bool CSoldier::ShouldTransition()
+{
+	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	return randomValue < 0.001f;  // 0.1%‚ÌŠm—¦‚Åœpœj‚É‘JˆÚ
 }
 
 
@@ -305,6 +315,7 @@ CVector CSoldier::CalculateDirection(float angleDegrees)
 
 	return CVector(x, y, z);
 }
+
 
 // ˆÚ“®ˆ—
 void CSoldier::Move()

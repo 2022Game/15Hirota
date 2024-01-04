@@ -32,7 +32,7 @@ CBullet::CBullet()
 	// 攻撃判定用のコライダーを作成
 	mpAttackCol = new CColliderSphere
 	(
-		this, ELayer::eAttackCol,
+		this, ELayer::eBulletCol,
 		rad
 	);
 	// 攻撃判定用の子ラダーと衝突判定を行う

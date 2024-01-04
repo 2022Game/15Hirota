@@ -16,8 +16,10 @@ enum class ELayer
 
 	eVarious,		// 色々コライダー
 	eAttackCol,		// 攻撃を与える時のコライダー
+	eBulletCol,		// 弾のコライダー
 	eKickCol,		// キックコライダー
 	eDamageCol,		// ダメージを受ける時のコライダー
+	eJumpingCol,	// ジャンプさせるコライダー
 	eGoalCol,		// ゴールのコライダー
 	eDamageObject,	// ダメージを与えるコライダー
 };
