@@ -5,7 +5,7 @@
 class CJumpingBase : public CObjectBase
 {
 public:
-	CJumpingBase();
+	CJumpingBase(ETaskPriority prio = ETaskPriority::eBackground);
 	virtual ~CJumpingBase();
 };
 #endif

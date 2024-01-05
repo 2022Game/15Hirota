@@ -18,9 +18,9 @@
 #define MOVE_SPEED 0.9f			// スピード
 #define RUN_SPEED 1.3f			// 移動スピード
 #define JUMP_SPEED 1.5f			// ジャンプ
+#define JUMP_BOUNCE 2.0f
 #define GRAVITY 0.0625f			// 重力
 #define JUMP_END_Y 1.0f			// ジャンプ終了時
-#define JUMP_DIRECTION_X 1.0f	// ジャンプオブジェクトに当たった時の移動速度
 
 #define FOV_ANGLE 45.0f			//視野の角度(ー角度+角度も出)
 #define FOV_LENGTH 5.0f			//視野の角度
@@ -79,7 +79,7 @@ CPlayer::CPlayer()
 	, mLife(50)
 	, mElapsedTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
-	, JumpCoolDownTime(1.0f)
+	, JumpCoolDownTime(5.0f)
 {
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
@@ -549,6 +549,50 @@ void CPlayer::UpdateJumpEnd()
 	}
 }
 
+void CPlayer::UpdateJumpingStart()
+{
+	ChangeAnimation(EAnimType::eJumpStart);
+	ChangeState(EState::eJumping);
+
+	// 移動処理
+	// キーの入力ベクトルを取得
+	CVector input;
+	if (CInput::Key('W'))		input.Z(-1.0f);
+	else if (CInput::Key('S'))	input.Z(1.0f);
+	if (CInput::Key('A'))		input.X(-1.0f);
+	else if (CInput::Key('D'))	input.X(1.0f);
+
+	// 入力ベクトルの長さで入力されているか判定
+	if (input.LengthSqr() > 0.0f)
+	{
+		// カメラの向きに合わせた移動ベクトルに変換
+		CVector move = CCamera::MainCamera()->Rotation() * input;
+		move.Y(0.0f);
+		move.Normalize();
+
+		mMoveSpeed = move;
+		mMoveSpeed += CVector(0.0f, JUMP_BOUNCE, 0.0f);
+	}
+	mIsGrounded = true;
+}
+
+void CPlayer::UpdateJumping()
+{
+	if (mMoveSpeed.Y() <= 0.0f)
+	{
+		ChangeAnimation(EAnimType::eJumpEnd);
+		ChangeState(EState::eJumpingEnd);
+	}
+}
+
+void CPlayer::UpdateJumpingEnd()
+{
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eIdle);
+	}
+}
+
 //回避開始
 void CPlayer::UpdateRotate()
 {
@@ -764,6 +808,18 @@ void CPlayer::Update()
 		case EState::eJumpEnd:
 			UpdateJumpEnd();
 			break;
+		// 跳ねる開始
+		case EState::eJumpingStart:
+			UpdateJumpingStart();
+			break;
+		// 跳ねる
+		case EState::eJumping:
+			UpdateJumping();
+			break;
+		// 跳ねる終了
+		case EState::eJumpingEnd:
+			UpdateJumpingEnd();
+			break;
 		// 回避開始
 		case EState::eRotate:
 			UpdateRotate();
@@ -877,6 +933,7 @@ void CPlayer::Update()
 	mpSword->UpdateAttachMtx();
 
 	mIsGrounded = false;
+	CDebugPrint::Print("mMoveSpeed%f\n", mMoveSpeed.Y());
 }
 
 // 衝突処理
@@ -924,17 +981,12 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 		else if (other->Layer() == ELayer::eJumpingCol)
 		{
+			mMoveSpeed.Y(0.0f);
 			if (other->Tag() == ETag::eJumpingObject)
 			{
 				Position(Position() + hit.adjust);
-				if (!JumpObject)
-				{
-					JumpObject = true;
-					ChangeState(EState::eJumpStart);
-
-					JumpCoolDownTime = 5.0f;
-				}
 			}
+			mpRideObject = other->Owner();
 		}
 	}
 

@@ -54,6 +54,12 @@ public:
 	void UpdateJumpEnd();
 	//ダッシュ終了
 	void UpdateDashEnd();
+	// 跳ねる
+	void UpdateJumpingStart();
+	// 跳ねてる途中
+	void UpdateJumping();
+	// 跳ねるの終了
+	void UpdateJumpingEnd();
 	//回避開始
 	void UpdateRotate();
 	//回避終了
@@ -154,6 +160,9 @@ private:
 		eJumpStart,		// ジャンプ開始
 		eJump,			// ジャンプ中
 		eJumpEnd,		// ジャンプ終了
+		eJumpingStart,	// 跳ねる開始
+		eJumping,		// 跳ねる
+		eJumpingEnd,	// 跳ねる終了
 		eRotate,		// 回避開始
 		eRotateEnd,		// 回避終了待ち
 		eDashEnd,		// ダッシュ終了
