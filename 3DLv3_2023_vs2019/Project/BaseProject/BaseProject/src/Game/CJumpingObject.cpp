@@ -43,6 +43,7 @@ void CJumpingObject::Collision(CCollider* self, CCollider* other, const CHitInfo
 {
 	bool KeyPush = CInput::PushKey(VK_SPACE);
 
+
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;
 
@@ -63,12 +64,47 @@ void CJumpingObject::Collision(CCollider* self, CCollider* other, const CHitInfo
 			CPlayer* player = dynamic_cast<CPlayer*>(owner);
 			if (player)
 			{
+				if(player)
 				player->UpdateJumpStart();
 			}
 			ChangeState(EState::Bounce);
 		}
 		mIsCollision = true;
 	}
+
+	//if (mState == EState::Idle)
+	//{
+	//	CPlayer* player = dynamic_cast<CPlayer*>(owner);
+	//	if (player && player->IsAnimationFinished())
+	//	{
+	//		player->UpdateJumpEnd();
+	//		player->UpdateJumpingEnd();
+	//		// 衝突しているのが、反応するオブジェクトであれば
+	//		if (owner->Tag() == mReactionTag && other->Layer() == mReactionLayer)
+	//		{
+	//			if (mState == EState::Idle && KeyPush)
+	//			{
+	//				CPlayer* player = dynamic_cast<CPlayer*>(owner);
+	//				if (player)
+	//				{
+	//					player->UpdateJumpingStart();
+	//				}
+	//				ChangeState(EState::Bounce);
+	//			}
+	//			else if (mState == EState::Idle)
+	//			{
+	//				CPlayer* player = dynamic_cast<CPlayer*>(owner);
+	//				if (player)
+	//				{
+	//					if (player)
+	//						player->UpdateJumpStart();
+	//				}
+	//				ChangeState(EState::Bounce);
+	//			}
+	//			mIsCollision = true;
+	//		}
+	//	}
+	//}
 }
 
 // 状態を切り替える

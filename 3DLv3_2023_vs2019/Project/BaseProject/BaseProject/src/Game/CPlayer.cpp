@@ -526,8 +526,29 @@ void CPlayer::UpdateJumpStart()
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eJump);
 
+	// 移動処理
+	// キーの入力ベクトルを取得
+	CVector input;
+	if (CInput::Key('W'))		input.Z(-1.0f);
+	else if (CInput::Key('S'))	input.Z(1.0f);
+	if (CInput::Key('A'))		input.X(-1.0f);
+	else if (CInput::Key('D'))	input.X(1.0f);
+
+	// 入力ベクトルの長さで入力されているか判定
+	if (input.LengthSqr() > 0.0f)
+	{
+		// カメラの向きに合わせた移動ベクトルに変換
+		CVector move = CCamera::MainCamera()->Rotation() * input;
+		move.Y(0.0f);
+		move.Normalize();
+
+		mMoveSpeed = move;
+	}
 	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
 	mIsGrounded = false;
+
+	/*mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
+	mIsGrounded = false;*/
 }
 
 // ジャンプ中
@@ -571,9 +592,9 @@ void CPlayer::UpdateJumpingStart()
 		move.Normalize();
 
 		mMoveSpeed = move;
-		mMoveSpeed += CVector(0.0f, JUMP_BOUNCE, 0.0f);
 	}
-	mIsGrounded = true;
+	mMoveSpeed += CVector(0.0f, JUMP_BOUNCE, 0.0f);
+	mIsGrounded = false;
 }
 
 void CPlayer::UpdateJumping()
@@ -981,12 +1002,19 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 		else if (other->Layer() == ELayer::eJumpingCol)
 		{
-			mMoveSpeed.Y(0.0f);
-			if (other->Tag() == ETag::eJumpingObject)
+			if (mState == EState::eJumpEnd)
+			{
+				mMoveSpeed.Y(0.0f);
+				if (other->Tag() == ETag::eJumpingObject)
+				{
+					Position(Position() + hit.adjust);
+				}
+				mpRideObject = other->Owner();
+			}
+			else
 			{
 				Position(Position() + hit.adjust);
 			}
-			mpRideObject = other->Owner();
 		}
 	}
 

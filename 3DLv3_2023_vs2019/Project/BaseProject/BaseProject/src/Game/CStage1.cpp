@@ -88,20 +88,11 @@ void CStage1::Load()
 	CJumpingObject* jump = new CJumpingObject
 	(
 		CVector(0.0f, -5.0f, -340.0f),
-		CVector(1.2f, 2.0f, 1.2f),
+		CVector(2.0f, 2.0f, 2.0f),
 		CVector(0.0f,0.0f,0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(jump);
-
-	CJumpingObject* jump1 = new CJumpingObject
-	(
-		CVector(0.0f, -0.1f, -380.0f),
-		CVector(1.2f, 2.0f, 1.2f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(jump1);
 
 	//// ìG(ÉKÉXÉ}ÉXÉNï∫ém) ///////////////////////////
 	//CSoldier* sol1 = new CSoldier();

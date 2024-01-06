@@ -733,37 +733,6 @@ void CSoldier::Update()
 	mpFrame->SetWorldPos(framePos);
 
 
-	// ゲージの座標を2Dで設定
-	//mpGauge->SetPos(gp.X(), gp.Y());
-
-
-	//// 一定の範囲内に居る場合は表示
-	//float displayRange = 120.0f;
-	//if (distance < displayRange)
-	//{
-	//	// フレーム座標
-	//	mpFrame->SetPos(gp.X(), gp.Y());
-
-	//	// ゲージの座標を2Dで設定（右にずらす）
-	//	float GaugeOffsetX = 20.0f;
-	//	// ゲージの座標を2Dで設定
-	//	mpGauge->SetPos(gp.X() + GaugeOffsetX, gp.Y());
-	//}
-	//else
-	//{
-	//	// 無理やり非表示
-	//	mpFrame->SetPos(-10000, -10000);
-	//	mpGauge->SetPos(-10000, -10000);
-	//}
-
-	//// フレームの座標を2Dで設定
-	//mpFrame->SetPos(gp.X(), gp.Y());
-
-	//// ゲージの座標を2Dで設定（右にずらす）
-	//float GaugeOffsetX = 20.0f;
-	//// ゲージの座標を2Dで設定
-	//mpGauge->SetPos(gp.X() + GaugeOffsetX, gp.Y());
-
 	// 現在のHpを設定
 	mpGauge->SetValue(mCharaStatus.hp);
 
