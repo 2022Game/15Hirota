@@ -290,7 +290,7 @@ bool CSoldier::ShouldTransitionWander()
 bool CSoldier::ShouldTransition()
 {
 	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-	return randomValue < 0.001f;  // 0.1%‚ÌŠm—¦‚Åœpœj‚É‘JˆÚ
+	return randomValue < 0.01f;  // 0.1%‚ÌŠm—¦‚Åœpœj‚É‘JˆÚ
 }
 
 

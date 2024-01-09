@@ -29,7 +29,6 @@
 CYukariFrame::CYukariFrame()
 	: mCenterRatio(0.0f, 0.0f)
 	, mScale(0.0f)
-	, mIsShow(true)
 {
 	mpFrameImage = new CImage("YFrame");
 	mpFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);

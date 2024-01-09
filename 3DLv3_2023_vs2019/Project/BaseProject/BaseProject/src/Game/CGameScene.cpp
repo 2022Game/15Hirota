@@ -10,6 +10,7 @@
 #include "CGameManager.h"
 #include "CPlayer.h"
 #include "CSoldier.h"
+#include "CSignboard.h"
 
 
 //コンストラクタ
@@ -41,6 +42,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("GoalCube",		"Field\\Object\\GoalCube.obj");		// ゴールの土台
 	CResourceManager::Load<CModel>("GoalPost",		"Field\\Object\\GoalPost.obj");		// ゴールのポスト
 	CResourceManager::Load<CModel>("Stone1",		"Field\\Object\\Stone1.obj");		// 石1
+	CResourceManager::Load<CModel>("Signboard",		"Field\\Object\\signboard.obj");		// 看板オブジェクト(ジャンプヒント)
 
 
 	// キャラクター関連
@@ -64,6 +66,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CTexture>("SBar",		"UI\\Gauge.png");					// ソルジャーのバー
 	CResourceManager::Load<CTexture>("YFrame",		"UI\\Image_Gauge_Frame.png");		// ゆかりさんのフレーム
 	CResourceManager::Load<CTexture>("YBar",		"UI\\Gauge.png");					// ゆかりさんのバー
+	CResourceManager::Load<CTexture>("CSignboardUI", "UI\\Ukye.png");					// Uキーの画像
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

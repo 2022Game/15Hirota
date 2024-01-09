@@ -74,6 +74,9 @@
     <Filter Include="ソース ファイル\Game\Stage">
       <UniqueIdentifier>{d3f6f30b-a43b-4594-a54d-50e54fad00e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\ObjectUI">
+      <UniqueIdentifier>{19fac913-bfa6-4a91-b01f-a5d1d6f9cbcc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -369,6 +372,15 @@
     </ClCompile>
     <ClCompile Include="src\Game\CJumpingBase.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSignboard.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CSignboardPause.cpp">
+      <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSignboardUI.cpp">
+      <Filter>ソース ファイル\Game\UI\ObjectUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -689,6 +701,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CJumpingBase.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSignboard.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CSignboardPause.h">
+      <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSignboardUI.h">
+      <Filter>ソース ファイル\Game\UI\ObjectUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

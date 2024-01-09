@@ -9,6 +9,7 @@
 #include "CDisappearFloor.h"
 #include "CYukari.h"
 #include "CJumpingObject.h"
+#include "CSignboard.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -94,22 +95,32 @@ void CStage1::Load()
 	);
 	AddTask(jump);
 
+	// 看板		-380は対岸
+	CSignboard* board = new CSignboard
+	(
+		CVector(-50.0f, 1.0f, -300.0f),
+		CVector(15.0f, 15.0f, 15.0f),
+		CVector(0.0f, -30.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(board);
+
 	//// 敵(ガスマスク兵士) ///////////////////////////
-	//CSoldier* sol1 = new CSoldier();
-	//sol1->Scale(1.0f, 1.0f, 1.0f);
-	//sol1->Position(-100.0f, 150, -150);
-	//AddTask(sol1);
-	//
+	CSoldier* sol1 = new CSoldier();
+	sol1->Scale(1.0f, 1.0f, 1.0f);
+	sol1->Position(-100.0f, 150, -150);
+	AddTask(sol1);
+	
 
-	//CSoldier* sol2 = new CSoldier();
-	//sol2->Scale(1.0f, 1.0f, 1.0f);
-	//sol2->Position(-50.0f, 150.0f, -150.0f);
-	//AddTask(sol2);
+	CSoldier* sol2 = new CSoldier();
+	sol2->Scale(1.0f, 1.0f, 1.0f);
+	sol2->Position(-50.0f, 150.0f, -150.0f);
+	AddTask(sol2);
 
-	//CSoldier* sol3 = new CSoldier();
-	//sol3->Scale(1.0f, 1.0f, 1.0f);
-	//sol3->Position(50.0f, 150.0f, -200.0f);
-	//AddTask(sol3);
+	CSoldier* sol3 = new CSoldier();
+	sol3->Scale(1.0f, 1.0f, 1.0f);
+	sol3->Position(50.0f, 150.0f, -200.0f);
+	AddTask(sol3);
 
 	///////////////////////////////////////////////////
 
