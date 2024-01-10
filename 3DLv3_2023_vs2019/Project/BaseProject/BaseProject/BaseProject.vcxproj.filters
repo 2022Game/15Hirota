@@ -582,9 +582,6 @@
     <ClInclude Include="src\BaseSystem\CDebugTimer.h">
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="src\BaseSystem\Time.h">
-      <Filter>ソース ファイル\BaseSystem\Debug</Filter>
-    </ClInclude>
     <ClInclude Include="src\BaseSystem\CDebugCamera.h">
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
     </ClInclude>
@@ -727,6 +724,9 @@
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CLineEffect.h">
+      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\Time.h">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
     </ClInclude>
   </ItemGroup>

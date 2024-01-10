@@ -10,6 +10,7 @@
 #include "CBullet.h"
 #include "CYukariFrame.h"
 #include "CYukariGauge.h"
+#include "CStageManager.h"
 
 #define _USE_MATH_DEFINES
 
@@ -262,8 +263,7 @@ void CYukari::UpdateAttack()
 			CBullet* bullet = new CBullet();
 			bullet->Position(CVector(0.0f, 10.0f, 10.0f) * Matrix());
 			bullet->Rotation(Rotation());
-
-			
+			CStageManager::AddTask(bullet);
 
 
 			// ‘S’e”­Ë‚µ‚½‚çAUŒ‚I—¹

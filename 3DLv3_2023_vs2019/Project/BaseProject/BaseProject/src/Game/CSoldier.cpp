@@ -826,6 +826,7 @@ void CSoldier::ChangeDerection()
 	mTargetDir = CalculateDirection(randomAngle);
 }
 
+
 // 360度の角度を求めて、x軸とy軸から計算する
 CVector CSoldier::CalculateDirection(float angleDegrees)
 {
@@ -848,7 +849,6 @@ void CSoldier::Move()
 	mMoveSpeed.Z(0.0f);
 	// mMoveSpeed は敵の速度ベクトルでmMoveSpeed.X() が X 軸方向の速度を表します。
 	// 適切な速度を設定し、mMoveSpeedをmTargetDirにスケーリングして移動。
-	// 速度を設定
 
 	// 速度を設定
 	float moveSpeed = RUN_SPEED;
