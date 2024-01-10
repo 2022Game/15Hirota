@@ -137,7 +137,7 @@ CPlayer::CPlayer()
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eKickCol, ELayer::eBulletCol });
-	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, ETag::eEnemy });
+	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, ETag::eEnemy, ETag::eBullet});
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -765,15 +765,28 @@ void CPlayer::UpdateHit()
 void CPlayer::UpdateHitJ()
 {
 	ChangeAnimation(EAnimType::eHit);
+
+	if (!damageEnemy)
+	{
+		mCharaStatus.hp -= 1;
+		damageEnemy = true;
+		if (mCharaStatus.hp <= 0)
+		{
+			ChangeState(EState::eDeth);
+		}
+	}
+
 	mpDamageCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
+
 	if (mElapsedTime >= COLORSET)
 	{
 		if (mCharaStatus.hp > 0)
 		{
+			TakeDamage(1);
 			mElapsedTime = 0.0f;
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eIdle);
@@ -1054,7 +1067,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 		else if (other->Layer() == ELayer::eKickCol)
 		{
-			//mpRideObject = other->Owner();
 			ChangeState(EState::eHit);
 		}
 		else if (other->Layer() == ELayer::eBulletCol)

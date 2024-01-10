@@ -60,14 +60,14 @@ void CGameScene::Load()
 
 
 	// UI関連
-	CResourceManager::Load<CTexture>("PFrame",		"UI\\Image_Gauge_Frame.png");		// プレイヤーのフレーム
-	CResourceManager::Load<CTexture>("PBarImage",	"UI\\WhiteUI.png");					// プレイヤーのバー
-	CResourceManager::Load<CTexture>("PStamina",	"UI\\Sutamina.png");				// プレイヤーのスタミナ
-	CResourceManager::Load<CTexture>("SFrame",		"UI\\Image_Gauge_Frame.png");		// ソルジャーのフレーム
-	CResourceManager::Load<CTexture>("SBar",		"UI\\Gauge.png");					// ソルジャーのバー
-	CResourceManager::Load<CTexture>("YFrame",		"UI\\Image_Gauge_Frame.png");		// ゆかりさんのフレーム
-	CResourceManager::Load<CTexture>("YBar",		"UI\\Gauge.png");					// ゆかりさんのバー
-	CResourceManager::Load<CTexture>("CSignboardUI", "UI\\Ukye.png");					// Uキーの画像
+	CResourceManager::Load<CTexture>("PFrame",			"UI\\Image_Gauge_Frame.png");		// プレイヤーのフレーム
+	CResourceManager::Load<CTexture>("PBarImage",		"UI\\WhiteUI.png");					// プレイヤーのバー
+	CResourceManager::Load<CTexture>("PStamina",		"UI\\Sutamina.png");				// プレイヤーのスタミナ
+	CResourceManager::Load<CTexture>("SFrame",			"UI\\Image_Gauge_Frame.png");		// ソルジャーのフレーム
+	CResourceManager::Load<CTexture>("SBar",			"UI\\Gauge.png");					// ソルジャーのバー
+	CResourceManager::Load<CTexture>("YFrame",			"UI\\Image_Gauge_Frame.png");		// ゆかりさんのフレーム
+	CResourceManager::Load<CTexture>("YBar",			"UI\\Gauge.png");					// ゆかりさんのバー
+	CResourceManager::Load<CTexture>("CSignboardUI",	"UI\\Ukye_1.png");					// Uキーの画像
 
 
 	// エフェクト関連

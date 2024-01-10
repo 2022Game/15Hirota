@@ -348,11 +348,15 @@ void CSoldier::UpdateAttack()
 		{
 			mElapsedTime -= SHOT_INTERVAL;
 
-			// 弾丸を発射
-			CBullet* bullet = new CBullet();
-			bullet->Position(CVector(0.0f, 10.0f, 10.0f) * Matrix());
-			bullet->Rotation(Rotation());
-			CStageManager::AddTask(bullet);
+			// 弾丸を生成
+			new CBullet
+			(
+				// 発射位置
+				Position() + CVector(0.0f, 10.0f, 0.0f) + VectorZ() * 20.0f,
+				VectorZ(),	// 発射方向
+				1000.0f,	// 移動距離
+				1000.0f		// 飛距離
+			);
 
 			// 全弾発射したら、攻撃終了
 			mTimeShot++;
@@ -666,6 +670,7 @@ void CSoldier::Update()
 
 	CDebugPrint::Print("Shot%d\n", mTimeShot);
 	CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
+	CDebugPrint::Print("FPS:%f\n", Time::FPS());
 	
 
 	// HPゲージの座標を更新 (敵の座標の少し上の座標)

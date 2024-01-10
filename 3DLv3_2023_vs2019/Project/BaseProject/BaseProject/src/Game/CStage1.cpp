@@ -108,16 +108,16 @@ void CStage1::Load()
 	AddTask(board);
 
 	//// “G(ƒKƒXƒ}ƒXƒN•ºŽm) ///////////////////////////
-	/*CSoldier* sol1 = new CSoldier();
+	CSoldier* sol1 = new CSoldier();
 	sol1->Scale(1.0f, 1.0f, 1.0f);
 	sol1->Position(-100.0f, 150, -150);
-	AddTask(sol1);*/
+	AddTask(sol1);
 	
 
-	//CSoldier* sol2 = new CSoldier();
-	//sol2->Scale(1.0f, 1.0f, 1.0f);
-	//sol2->Position(-50.0f, 150.0f, -150.0f);
-	//AddTask(sol2);
+	CSoldier* sol2 = new CSoldier();
+	sol2->Scale(1.0f, 1.0f, 1.0f);
+	sol2->Position(-50.0f, 150.0f, -150.0f);
+	AddTask(sol2);
 
 	//CSoldier* sol3 = new CSoldier();
 	//sol3->Scale(1.0f, 1.0f, 1.0f);

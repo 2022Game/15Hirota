@@ -1,44 +1,35 @@
-#ifndef CBULLET_H
-#define CBULLET_H
+#pragma once
 #include "CObjectBase.h"
-#include "CWeaponEnemy.h"
-#include "CColliderSphere.h"
 #include "CModel.h"
-#include "CEffect.h"
+#include "CColliderSphere.h"
+class CTrailEffect;
 
-class CBullet :public CWeaponEnemy
+// 弾丸クラス
+class CBullet : public CObjectBase
 {
 public:
-	CBullet();
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="pos">弾丸の位置</param>
+	/// <param name="dir">弾丸の向き</param>
+	/// <param name="speed">移動速度</param>
+	/// <param name="distance">飛距離</param>
+	CBullet(const CVector& pos, const CVector& dir,
+		float speed, float distance);
+
+	// デストラクタ
 	~CBullet();
 
-	/// <summary>
-	/// 衝突処理
-	/// </summary>
-	/// <param name="self">衝突した自身のコライダー</param>
-	/// <param name="other">衝突した自身のコライダー</param>
-	/// <param name="hit">衝突したときの情報</param>
-	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit);
+	// 更新
+	void Update() override;
+	// 描画
+	void Render() override;
 
-	// 武器の行列を取得
-	CMatrix Matrix() const override;
-
-	//// 攻撃開始
-	//void AttackStart() override;
-
-	//// 攻撃終了
-	//void AttackEnd() override;
-
-	void Update();
-	void Render();
 private:
-	static CModel* mpBullet;
-	// 攻撃判定用のコライダー
-	CColliderSphere* mpAttackCol;
-
-	// 弾丸の移動距離
-	float mMoveDistance;
-
-	CVector mPos;
+	CTrailEffect* mpTrailEffect;	// 弾丸の軌跡のエフェクト
+	CColliderSphere* mpSpherer;
+	float mMoveSpeed;				// 移動速度
+	float mFlyingDistance;			// 飛距離
+	float mCurrentFlyingDistance;	// 現在の飛距離
 };
-#endif

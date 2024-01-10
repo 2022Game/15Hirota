@@ -1,130 +1,80 @@
 #include "CBullet.h"
-#include "CCollisionManager.h"
-#include "CCharaBase.h"
-#include "CEffect.h"
-#include "CStageManager.h"
+#include "CTrailEffect.h"
+#include <Test/Primitive.h>
 
-//#define BULLET_O "Item\\Bullet1\\Bullet.obj"
-//#define BULLET_M "Item\\Bullet1\\Bullet.mtl"
-
-// 弾丸の移動速度
-#define MOVE_SPEED 150.0f
-
-CModel* CBullet::mpBullet = nullptr;
-
-CBullet::CBullet()
-	: mPos (CVector(0.0f, 0.0f, 0.0f))
-	, mMoveDistance(0.0f)
+// コンストラクタ
+CBullet::CBullet(const CVector& pos, const CVector& dir,
+	float speed, float distance)
+	: CObjectBase(ETag::eBullet, ETaskPriority::eDefault, 0, ETaskPauseType::eGame)
+	, mMoveSpeed(speed)
+	, mFlyingDistance(distance)
+	, mCurrentFlyingDistance(0.0f)
 {
-	mPos = CVector(0.0f, 0.0f, 0.0f);
+	Position(pos);
+	Rotation(CQuaternion::LookRotation(dir, CVector::up));
 
-	if (mpBullet == nullptr)
-	{
-		// モデルデータ取得
-		mpBullet = CResourceManager::Get<CModel>("Bullet");
-	}
+	// 軌跡のエフェクトを作成
+	mpTrailEffect = new CTrailEffect
+	(
+		ETag::eBullet,	// オブジェクトタグ
+		this,
+		nullptr,
+		CVector(0.0f, 0.0f, 0.0f),
+		0.01f,			// 更新間隔（時間）
+		20.0f,			// 更新間隔（距離）// 変更した(30.0f)
+		2.0f,			// 開始時の軌跡の幅
+		0.0f,			// 終了時の軌跡の幅
+		0.0625f			// 表示時間
+	);
+	mpTrailEffect->SetTexture("Laser");
+	mpTrailEffect->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
 
-	// 弾丸とコライダーのスケールを設定
-	float scale = 50.0f;
-	Scale(scale, scale, scale);
-	float rad = 1.0f / scale;
-
-	// 攻撃判定用のコライダーを作成
-	mpAttackCol = new CColliderSphere
+	mpSpherer = new CColliderSphere
 	(
 		this, ELayer::eBulletCol,
-		rad
+		0.5f
 	);
-	// 攻撃判定用の子ラダーと衝突判定を行う
-	// レイヤーとタグを設定
-	mpAttackCol->SetCollisionLayers({ ELayer::eDamageCol });
-	mpAttackCol->SetCollisionTags({ ETag::ePlayer });
+	mpSpherer->SetCollisionLayers({ ELayer::eDamageCol });
+	mpSpherer->SetCollisionTags({ ETag::ePlayer });
 }
 
+// デストラクタ
 CBullet::~CBullet()
 {
-	CStageManager::RemoveTask(this);
-	// 弾丸が削除されたら、コライダーも削除
-	SAFE_DELETE_ARRAY(mpAttackCol);
+	mpTrailEffect->SetOwner(nullptr);
+	SAFE_DELETE(mpSpherer);
 }
 
+// 更新
 void CBullet::Update()
 {
-	CVector currentPos = Position();
-	float moveSpeed = MOVE_SPEED * Time::DeltaTime();
-	currentPos += VectorZ() * moveSpeed;;
-	Position(currentPos);
+	if (IsKill()) return;
 
-	// 弾丸の移動距離を加算
-	mMoveDistance += moveSpeed;
-	// 一定距離移動したら、弾丸を削除
-	if (mMoveDistance >= 100.0f)
+	// 残り飛距離が0ならば、弾丸削除
+	float remain = mFlyingDistance - mCurrentFlyingDistance;
+	if (remain <= 0.0f)
 	{
 		Kill();
+		return;
 	}
+
+	// 移動速度を計算
+	// 移動速度が残りの飛距離より大きい場合は、
+	// 残りの飛距離を移動速度とする
+	float moveSpeed = mMoveSpeed * Time::DeltaTime();
+	if (abs(moveSpeed) > remain)
+	{
+		moveSpeed = remain * (moveSpeed < 0.0f ? -1.0f : 1.0f);
+	}
+
+	// 弾丸を正面方向に移動
+	Position(Position() + VectorZ() * moveSpeed);
+	// 現在の飛距離を更新
+	mCurrentFlyingDistance += abs(moveSpeed);
 }
 
-
+// 描画
 void CBullet::Render()
 {
-	mpBullet->Render(Matrix());
+	Primitive::DrawSphere(Matrix(), 0.1f, mColor);
 }
-
-CMatrix CBullet::Matrix() const
-{
-	// 自分自身の行列を返す
-	if (mpAttachMtx == nullptr)
-	{
-		return CTransform::Matrix();
-	}
-	// アタッチしている行列を返す
-	else
-	{
-		CMatrix sm;
-		sm.Scale(150.0f, 150.0f, 150.0f);
-
-		CMatrix moveMatrix;
-		moveMatrix.Translate(0.0f, 0.0f, 10.0f);
-		return moveMatrix * sm * (*mpAttachMtx);
-	}
-}
-
-void CBullet::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
-{
-	// 衝突した自分のコライダーが攻撃判定用コライダーか
-	if (self == mpAttackCol)
-	{
-		// 弾をポインタに変換
-		CCharaBase* bullet = dynamic_cast<CCharaBase*>(other->Owner());
-		// 相手のコライダーの持ち主が弾であれば
-		if (bullet != nullptr)
-		{
-			// すでに攻撃済みの弾でなければ
-			if (!IsAttackHitObj(bullet))
-			{
-				// ダメージを与える
-				bullet->TakeDamage(1);
-
-				// 攻撃済みリストに追加
-				AddAttackHitObj(bullet);
-			}
-		}
-	}
-}
-
-//
-//// 攻撃開始
-//void CBullet::AttackStart()
-//{
-//	CEnemyWeapon::AttackStart();
-//	// 攻撃が始まったら、攻撃判定用のコライダーをオフにする
-//	mpAttackCol->SetEnable(true);
-//}
-//
-//// 攻撃終了
-//void CBullet::AttackEnd()
-//{
-//	CEnemyWeapon::AttackEnd();
-//	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
-//	mpAttackCol->SetEnable(false);
-//}
