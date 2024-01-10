@@ -559,6 +559,7 @@ void CPlayer::UpdateJumpStart()
 // ƒWƒƒƒ“ƒv’†
 void CPlayer::UpdateJump()
 {
+	mpDamageCol->SetEnable(false);
 	if (mMoveSpeed.Y() <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
@@ -784,7 +785,7 @@ void CPlayer::UpdateHitJ()
 
 	if (mElapsedTime >= COLORSET)
 	{
-		if (mCharaStatus.hp > 0)
+		if (mCharaStatus.hp >= 0)
 		{
 			TakeDamage(1);
 			mElapsedTime = 0.0f;

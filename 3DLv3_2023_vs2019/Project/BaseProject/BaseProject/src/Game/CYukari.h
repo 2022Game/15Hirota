@@ -23,7 +23,7 @@ class CYukari : public CXCharacter
 {
 public:
 	//インスタンスのポインタの取得
-	CYukari* Instance();
+	static CYukari* Instance();
 
 	// コンストラクタ
 	CYukari();

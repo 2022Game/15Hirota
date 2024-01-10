@@ -2,6 +2,7 @@
 #include "Maths.h"
 #include "CImage.h"
 #include "CCamera.h"
+#include "CPlayer.h"
 
 //#define FRAME_IMAGE "UI\\Image_Gauge_Frame.png"
 
@@ -64,6 +65,8 @@ void CSoldierFrame::SetWorldPos(const CVector& worldPos)
 	CCamera* cam = CCamera::CurrentCamera();
 	if (cam == nullptr) return;
 
+	CVector playerPos = CPlayer::Instance()->Position();
+
 	// 設定されたワールド座標をスクリーン座標に変換
 	CVector screenPos = cam->WorldToScreenPos(worldPos);
 
@@ -75,9 +78,16 @@ void CSoldierFrame::SetWorldPos(const CVector& worldPos)
 		return;
 	}
 
+	float distanceToPlayer = (worldPos - playerPos).Length();
+	if (distanceToPlayer < 100.0f)
+	{
+		SetShow(true);
+	}
+	else
+	{
+		SetShow(false);
+	}
 
-	// ゲージ表示
-	//SetShow(true);
 	// 求めたスクリーン座標を自身の座標に設定
 	mPosition = screenPos;
 
@@ -88,13 +98,6 @@ void CSoldierFrame::SetWorldPos(const CVector& worldPos)
 	float ratio = Math::Clamp01((dist - SCALE_DIST_MIN) / (SCALE_DIST_MAX -SCALE_DIST_MIN));
 	mScale = Math::Lerp(SCALE_MIN, SCALE_MAX, ratio);
 
-	// カメラの距離が一定範囲外の場合は表示しない
-	if (dist < DISTANCE_MIN || dist > DISTANCE_MAX)
-	{
-		SetShow(false);
-		return;
-	}
-	SetShow(true);
 }
 
 void CSoldierFrame::Update()
@@ -111,4 +114,6 @@ void CSoldierFrame::Update()
 		FRAME_SIZE_X * mCenterRatio.X() * mScale,
 		FRAME_SIZE_Y * mCenterRatio.Y() * mScale
 	);
+
+	mpFrameImage->SetShow(IsShow());
 }

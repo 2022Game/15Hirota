@@ -2,6 +2,7 @@
 #include "Maths.h"
 #include "CImage.h"
 #include "CCamera.h"
+#include "CPlayer.h"
 
 
 // フレームの線の幅
@@ -62,6 +63,8 @@ void CYukariFrame::SetWorldPos(const CVector& worldPos)
 	CCamera* cam = CCamera::CurrentCamera();
 	if (cam == nullptr) return;
 
+	CVector playerPos = CPlayer::Instance()->Position();
+
 	// 設定されたワールド座標をスクリーン座標に変換
 	CVector screenPos = cam->WorldToScreenPos(worldPos);
 
@@ -73,9 +76,16 @@ void CYukariFrame::SetWorldPos(const CVector& worldPos)
 		return;
 	}
 
+	float distanceToPlayer = (worldPos - playerPos).Length();
+	if (distanceToPlayer < 100.0f)
+	{
+		SetShow(true);
+	}
+	else
+	{
+		SetShow(false);
+	}
 
-	// ゲージ表示
-	//SetShow(true);
 	// 求めたスクリーン座標を自身の座標に設定
 	mPosition = screenPos;
 
@@ -85,14 +95,6 @@ void CYukariFrame::SetWorldPos(const CVector& worldPos)
 	// カメラから離れるごとにスケール値を小さくする
 	float ratio = Math::Clamp01((dist - SCALE_DIST_MIN) / (SCALE_DIST_MAX - SCALE_DIST_MIN));
 	mScale = Math::Lerp(SCALE_MIN, SCALE_MAX, ratio);
-
-	// カメラの距離が一定範囲外の場合は表示しない
-	if (dist < DISTANCE_MIN || dist > DISTANCE_MAX)
-	{
-		SetShow(false);
-		return;
-	}
-	SetShow(true);
 }
 
 void CYukariFrame::Update()
@@ -101,6 +103,7 @@ void CYukariFrame::Update()
 	//CVector2 pos = mPosition - CVector2(FRAME_SIZE_X, 0.0f) * 0.5f;
 	mpFrameImage->SetPos(mPosition);
 	mpFrameImage->SetSize(CVector2(FRAME_SIZE_X, FRAME_SIZE_Y) * mScale);
+	mpFrameImage->SetShow(IsShow());
 
 
 	// フレームの中心位置

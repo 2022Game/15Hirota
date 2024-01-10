@@ -2,6 +2,7 @@
 #include "Maths.h"
 #include "CImage.h"
 #include "CCamera.h"
+#include "CPlayer.h"
 
 
 // フレームの線の幅
@@ -65,6 +66,8 @@ void CYukariGauge::SetWorldPos(const CVector& worldPos)
 	CCamera* cam = CCamera::CurrentCamera();
 	if (cam == nullptr) return;
 
+	CVector playerPos = CPlayer::Instance()->Position();
+
 	// 設定されたワールド座標をスクリーン座標に変換
 	CVector screenPos = cam->WorldToScreenPos(worldPos);
 
@@ -76,8 +79,16 @@ void CYukariGauge::SetWorldPos(const CVector& worldPos)
 		return;
 	}
 
-	// ゲージ表示
-	SetShow(true);
+	float distanceToPlayer = (worldPos - playerPos).Length();
+	if (distanceToPlayer < 100.0f)
+	{
+		SetShow(true);
+	}
+	else
+	{
+		SetShow(false);
+	}
+
 	// 求めたスクリーン座標を自身の座標に設定
 	mPosition = screenPos;
 
@@ -120,6 +131,8 @@ void CYukariGauge::Update()
 	else color = CColor(0.0f, 1.0f, 0.0f);
 	// ゲージに色を設定
 	mpBarImage->SetColor(color);
+
+	mpBarImage->SetShow(IsShow());
 }
 
 // 最大値
