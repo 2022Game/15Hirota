@@ -55,7 +55,7 @@ const CYukari::AnimData CYukari::ANIM_DATA[] =
 #define ATTACK 10
 
 // 弾丸の発射間隔
-#define SHOT_INTERVAL 1.0f
+#define SHOT_INTERVAL 0.5f
 
 // コンストラクタ
 CYukari::CYukari()

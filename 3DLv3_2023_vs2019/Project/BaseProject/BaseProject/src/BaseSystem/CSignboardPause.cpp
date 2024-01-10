@@ -11,7 +11,7 @@ CSignboardPause* CSignboardPause::spInstance = nullptr;
 
 //コンストラクタ
 CSignboardPause::CSignboardPause()
-	: CTask(ETaskPriority::eSystem, 0, ETaskPauseType::eSystem, true)
+	: CTask(ETaskPriority::eUI, 0, ETaskPauseType::eMenu, true)
 	, mIsPaused(false)
 	, mPauseStep(0)
 	, mElapsedTime(0.0f)
@@ -25,7 +25,7 @@ CSignboardPause::CSignboardPause()
 	(
 		"UI/white.png",
 		ETaskPriority::eUI, 0,
-		ETaskPauseType::eSystem,
+		ETaskPauseType::eMenu,
 		true, false
 	);
 	//今回は黒背景にするのでカラーを黒(0, 0, 0)にする
@@ -41,7 +41,7 @@ CSignboardPause::CSignboardPause()
 	(
 		"UI/JumpText.png",
 		ETaskPriority::eUI, 0,
-		ETaskPauseType::eSystem,
+		ETaskPauseType::eMenu,
 		true, false
 	);
 	//こちらも最初は非表示なのでアルファ値を0にしておく
@@ -76,7 +76,7 @@ void CSignboardPause::Update()
 		if (CInput::PushKey('U') && CSignboard::Instance()->IsFoundPlayer())
 		{
 			//TaskManagerからポーズを設定する
-			CTaskManager::Instance()->Pause(PAUSE_GAME);
+			CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
 			//ポーズ中のフラグも立てる
 			mIsPaused = true;
 		}
@@ -160,7 +160,7 @@ void CSignboardPause::Update()
 				mElapsedTime = 0.0f;
 				mPauseStep = 0;
 				//TaskManagerからポーズを解除する
-				CTaskManager::Instance()->UnPause(PAUSE_GAME);
+				CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
 				//ポーズフラグも下ろす
 				mIsPaused = false;
 			}

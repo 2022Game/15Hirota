@@ -12,11 +12,13 @@
 #include "CSoldier.h"
 #include "CSignboard.h"
 #include "CGameCamera.h"
+#include "CGameMenu.h"
 
 
 //コンストラクタ
 CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
+	, mpGameMenu(nullptr)
 {
 }
 
@@ -96,6 +98,9 @@ void CGameScene::Load()
 	//// スフィアかメッシュぐらい
 	//mainCamera->AddCollider(field->GetWallCol());
 
+	// ゲームメニューを作成
+	mpGameMenu = new CGameMenu();
+
 
 	CGameManager::GameStart();
 }
@@ -109,6 +114,17 @@ void CGameScene::Update()
 	{
 		CSceneManager::Instance()->LoadScene(EScene::eTitle);
 	}
+
+
+	// ゲームメニューを開いてなければ、[Ｍ]キーでメニューを開く
+	if (!mpGameMenu->IsOpened())
+	{
+		if (CInput::PushKey('M'))
+		{
+			mpGameMenu->Open();
+		}
+	}
+
 	//CDebugPrint::Print("enemy: %d\n", CSoldier::GetEnemyCount());
 	//// hp取得
 	//int currentHP = CPlayer::Instance()->GetHp();

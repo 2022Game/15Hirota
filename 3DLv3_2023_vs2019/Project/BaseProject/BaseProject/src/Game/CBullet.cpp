@@ -21,7 +21,7 @@ CBullet::CBullet(const CVector& pos, const CVector& dir,
 		nullptr,
 		CVector(0.0f, 0.0f, 0.0f),
 		0.01f,			// 更新間隔（時間）
-		20.0f,			// 更新間隔（距離）// 変更した(30.0f)
+		10.0f,			// 更新間隔（距離）// 変更した(30.0f)
 		2.0f,			// 開始時の軌跡の幅
 		0.0f,			// 終了時の軌跡の幅
 		0.0625f			// 表示時間
@@ -32,7 +32,7 @@ CBullet::CBullet(const CVector& pos, const CVector& dir,
 	mpSpherer = new CColliderSphere
 	(
 		this, ELayer::eBulletCol,
-		0.5f
+		2.0f
 	);
 	mpSpherer->SetCollisionLayers({ ELayer::eDamageCol });
 	mpSpherer->SetCollisionTags({ ETag::ePlayer });

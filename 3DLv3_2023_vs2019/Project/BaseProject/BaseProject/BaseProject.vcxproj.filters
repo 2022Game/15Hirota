@@ -77,6 +77,9 @@
     <Filter Include="ソース ファイル\Game\UI\ObjectUI">
       <UniqueIdentifier>{19fac913-bfa6-4a91-b01f-a5d1d6f9cbcc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Menu">
+      <UniqueIdentifier>{9669176f-0ce1-45a8-8d3d-52f9c5a31d66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -390,6 +393,12 @@
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CLineEffect.cpp">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGameMenu.cpp">
+      <Filter>ソース ファイル\Game\UI\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CFallingObjects.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -728,6 +737,12 @@
     </ClInclude>
     <ClInclude Include="src\BaseSystem\Time.h">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGameMenu.h">
+      <Filter>ソース ファイル\Game\UI\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CFallingObjects.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

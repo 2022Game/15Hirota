@@ -306,7 +306,7 @@ void CPlayer::UpdateIdle()
 {
 	// 剣に攻撃終了を伝える
 	mpSword->AttackEnd();
-	mpDamageCol->SetEnable(true);
+	mpDamageCol->SetEnable(false);
 	damageEnemy = false;
 	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
 
@@ -767,27 +767,22 @@ void CPlayer::UpdateHitJ()
 {
 	ChangeAnimation(EAnimType::eHit);
 
-	if (!damageEnemy)
-	{
-		mCharaStatus.hp -= 1;
-		damageEnemy = true;
-		if (mCharaStatus.hp <= 0)
-		{
-			ChangeState(EState::eDeth);
-		}
-	}
-
 	mpDamageCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 
+	if (!damageEnemy)
+	{
+		mCharaStatus.hp -= 1;
+		damageEnemy = true;
+	}
+
 	if (mElapsedTime >= COLORSET)
 	{
-		if (mCharaStatus.hp >= 0)
+		if (mCharaStatus.hp > 0)
 		{
-			TakeDamage(1);
 			mElapsedTime = 0.0f;
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eIdle);
@@ -799,6 +794,7 @@ void CPlayer::UpdateHitJ()
 			ChangeState(EState::eDeth);
 		}
 	}
+
 	CDebugPrint::Print("Time%f\n", mElapsedTime);
 }
 
@@ -808,6 +804,10 @@ void CPlayer::Update()
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
+
+
+	// ダメージコライダーをオフ
+	mpDamageCol->SetEnable(false);
 
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)

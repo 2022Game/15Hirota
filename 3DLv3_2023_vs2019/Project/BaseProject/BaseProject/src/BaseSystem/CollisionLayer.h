@@ -20,6 +20,7 @@ enum class ELayer
 	eKickCol,		// キックコライダー
 	eDamageCol,		// ダメージを受ける時のコライダー
 	eJumpingCol,	// ジャンプさせるコライダー
+	eFallingCol,	// 落下ブロックコライダー
 	eGoalCol,		// ゴールのコライダー
 	eDamageObject,	// ダメージを与えるコライダー
 };
