@@ -382,6 +382,15 @@
     <ClCompile Include="src\Game\CSignboardUI.cpp">
       <Filter>ソース ファイル\Game\UI\ObjectUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CGameCamera.cpp">
+      <Filter>ソース ファイル\Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CTrailEffect.cpp">
+      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CLineEffect.cpp">
+      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -710,6 +719,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSignboardUI.h">
       <Filter>ソース ファイル\Game\UI\ObjectUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGameCamera.h">
+      <Filter>ソース ファイル\Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CTrailEffect.h">
+      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CLineEffect.h">
+      <Filter>ソース ファイル\BaseSystem\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

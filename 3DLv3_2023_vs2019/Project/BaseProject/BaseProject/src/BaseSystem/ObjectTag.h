@@ -18,6 +18,7 @@ enum class ETag
 
 	eWeapon,			// ƒvƒŒƒCƒ„[‚Ì•Ší
 	eEnemyWeapon,		// “G‚Ì•Ší
+	eBulletLine,		// ’eŠÛ‚Ìü
 
 	eBakuhatu,
 	eGauge,

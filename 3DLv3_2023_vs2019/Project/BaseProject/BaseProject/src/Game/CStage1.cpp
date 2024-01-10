@@ -10,6 +10,7 @@
 #include "CYukari.h"
 #include "CJumpingObject.h"
 #include "CSignboard.h"
+#include "CGameCamera.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -44,6 +45,7 @@ void CStage1::Load()
 		player->SetStartPosition(playerPos);
 	}
 
+	// CGameCamera* mainCamera = new CGameCamera
 	CCamera* mainCamera = new CCamera
 	(
 		CVector(0.0f, 80.0f, 45.0f),

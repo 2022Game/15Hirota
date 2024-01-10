@@ -11,6 +11,7 @@
 #include "CPlayer.h"
 #include "CSoldier.h"
 #include "CSignboard.h"
+#include "CGameCamera.h"
 
 
 //コンストラクタ
@@ -68,6 +69,10 @@ void CGameScene::Load()
 	CResourceManager::Load<CTexture>("YBar",		"UI\\Gauge.png");					// ゆかりさんのバー
 	CResourceManager::Load<CTexture>("CSignboardUI", "UI\\Ukye.png");					// Uキーの画像
 
+
+	// エフェクト関連
+	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");			// 弾のエフェクト
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//// ユニティちゃん
@@ -99,6 +104,11 @@ void CGameScene::Load()
 void CGameScene::Update()
 {
 	CDebugPrint::Print("enemy: %d\n", CSoldier::GetEnemyCount());
+
+	if (CInput::PushKey('H'))
+	{
+		CSceneManager::Instance()->LoadScene(EScene::eTitle);
+	}
 	//CDebugPrint::Print("enemy: %d\n", CSoldier::GetEnemyCount());
 	//// hp取得
 	//int currentHP = CPlayer::Instance()->GetHp();

@@ -148,6 +148,10 @@ protected:
 	CVector mEye;		// 視点の実際の位置
 	CVector mAt;		// 注視点
 	CVector mUp;		// 上ベクトル
+	CVector mEyeVec;	// 視点から注視点までのベクトル
+
+	CTransform* mFollowTargetTf;	// 追従するターゲットのCTransfrom
+	CVector mFollowOffsetPos;		// 追従ターゲットの位置から視点までのオフセット値
 
 private:
 	// カメラを削除
@@ -161,8 +165,7 @@ private:
 	static CCamera* spMainCamera;	// メインカメラ
 	static CCamera* spCurrentCamera;// 現在のカメラ
 	bool mIsMainCamera;				// メインカメラかどうか
-	CTransform* mFollowTargetTf;	// 追従するターゲットのCTransfrom
-	CVector mFollowOffsetPos;		// 追従ターゲットの位置から視点までのオフセット値
+	
 
 	CMatrix mViewMatrix;			// ビュー行列
 	CMatrix mProjectionMatrix;		// プロジェクション行列

@@ -327,6 +327,11 @@ void CPlayer::UpdateIdle()
 		if (input.LengthSqr() > 0.0f)
 		{
 			// カメラの向きに合わせた移動ベクトルに変換
+			/*CCamera* mainCamera = CCamera::MainCamera();
+			CVector camForward = mainCamera->VectorZ();
+			CVector camSide = CVector::Cross(CVector::up, camForward);
+			CVector move = camForward * input.Z() + camSide * input.X();*/
+			// カメラの向きに合わせた移動ベクトルに変換
 			CVector move = CCamera::MainCamera()->Rotation() * input;
 			move.Y(0.0f);
 			move.Normalize();

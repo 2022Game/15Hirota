@@ -280,64 +280,6 @@ void CSoldier::UpdateIdle()
 }
 
 
-// 徘徊に遷移する条件
-bool CSoldier::ShouldTransitionWander()
-{
-	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-	return randomValue < 0.01f;  // 1%の確率で徘徊に遷移
-}
-
-bool CSoldier::ShouldTransition()
-{
-	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-	return randomValue < 0.01f;  // 0.1%の確率で徘徊に遷移
-}
-
-
-// 1%の確率で移行する為の処理
-void CSoldier::ChangeDerection()
-{
-	// ランダムな方向に変更
-	float randomAngle = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 360.0f;
-	mTargetDir = CalculateDirection(randomAngle);
-}
-
-// 360度の角度を求めて、x軸とy軸から計算する
-CVector CSoldier::CalculateDirection(float angleDegrees)
-{
-	// 角度からラジアンに変換
-	float angleRadians = angleDegrees * M_PI / 180.0f;
-
-	// ベクトルの計算
-	float x = cos(angleRadians);
-	float y = 0.0f;					// Y軸方向に移動させる場合は必要に応じて変更
-	float z = sin(angleRadians);
-
-	return CVector(x, y, z);
-}
-
-
-// 移動処理
-void CSoldier::Move()
-{
-	mMoveSpeed.X(0.0f);
-	mMoveSpeed.Z(0.0f);
-	// mMoveSpeed は敵の速度ベクトルでmMoveSpeed.X() が X 軸方向の速度を表します。
-    // 適切な速度を設定し、mMoveSpeedをmTargetDirにスケーリングして移動。
-    // 速度を設定
-
-	// 速度を設定
-	float moveSpeed = RUN_SPEED;
-
-	// mTargetDir に速度を掛けて移動ベクトルを得る
-	CVector moveVector = mTargetDir * moveSpeed;
-
-	// deltaTime を考慮して移動量を計算
-	moveVector *= Time::DeltaTime();
-
-	// 現在の座標を更新
-	Position(Position() + moveVector + mMoveSpeed);
-}
 
 // 追跡
 void CSoldier::UpdateChase()
@@ -859,4 +801,64 @@ void CSoldier::TakeDamage(int damage)
 int CSoldier::GetEnemyCount()
 {
 	return enemyCount;
+}
+
+
+// 徘徊に遷移する条件
+bool CSoldier::ShouldTransitionWander()
+{
+	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	return randomValue < 0.01f;  // 1%の確率で徘徊に遷移
+}
+
+bool CSoldier::ShouldTransition()
+{
+	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	return randomValue < 0.01f;  // 0.1%の確率で徘徊に遷移
+}
+
+
+// 1%の確率で移行する為の処理
+void CSoldier::ChangeDerection()
+{
+	// ランダムな方向に変更
+	float randomAngle = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 360.0f;
+	mTargetDir = CalculateDirection(randomAngle);
+}
+
+// 360度の角度を求めて、x軸とy軸から計算する
+CVector CSoldier::CalculateDirection(float angleDegrees)
+{
+	// 角度からラジアンに変換
+	float angleRadians = angleDegrees * M_PI / 180.0f;
+
+	// ベクトルの計算
+	float x = cos(angleRadians);
+	float y = 0.0f;					// Y軸方向に移動させる場合は必要に応じて変更
+	float z = sin(angleRadians);
+
+	return CVector(x, y, z);
+}
+
+
+// 移動処理
+void CSoldier::Move()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	// mMoveSpeed は敵の速度ベクトルでmMoveSpeed.X() が X 軸方向の速度を表します。
+	// 適切な速度を設定し、mMoveSpeedをmTargetDirにスケーリングして移動。
+	// 速度を設定
+
+	// 速度を設定
+	float moveSpeed = RUN_SPEED;
+
+	// mTargetDir に速度を掛けて移動ベクトルを得る
+	CVector moveVector = mTargetDir * moveSpeed;
+
+	// deltaTime を考慮して移動量を計算
+	moveVector *= Time::DeltaTime();
+
+	// 現在の座標を更新
+	Position(Position() + moveVector + mMoveSpeed);
 }
