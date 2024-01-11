@@ -8,6 +8,8 @@
 // 消えた後の待ち時間
 #define WAIT_TIME 3.0f
 
+#define MINHEIGHT -30.0f
+
 // コンストラクタ
 CFallingObjects::CFallingObjects(const CVector& pos, const CVector& scale,
 	ETag reactionTag, ELayer reactionLayer)
@@ -71,13 +73,8 @@ void CFallingObjects::Collision(CCollider* slef, CCollider* other, const CHitInf
 		// 現在が待機状態であれば、フェード状態へ切り替える
 		if (mState == EState::Idle)
 		{
-			CPlayer* player = dynamic_cast<CPlayer*>(owner);
-			if (player)
-			{
-				ChangeState(EState::Falling);
-				mFadeTime = FADE_TIME;
-				mWaitTime = WAIT_TIME;
-			}
+			ChangeState(EState::Falling);
+			mWaitTime = WAIT_TIME;
 		}
 
 		// 反応するオブジェクトが触れているので
@@ -99,74 +96,64 @@ void CFallingObjects::UpdateIdle()
 
 }
 
-// 現れている状態の更新処理
+// 落下状態の更新処理
 void CFallingObjects::UpdateFalling()
 {
-	// 反応するオブジェクトが触れていたら
-	if (mIsCollision)
-	{
-		float fallSpeed = 5.0f;
-		mMoveSpeed = CVector(0.0f, -fallSpeed * Time::DeltaTime(), 0.0f);
-		Position(Position() + mMoveSpeed);
-		// ステップ0からやり直し
-		mStateStep = 0;
-		mWaitTime = WAIT_TIME;
-		mFadeTime = FADE_TIME;
-	}
-	else
-	{
-		// プレイヤーが離れたら上昇
-		float ascendSpeed = 5.0f; // 適切な速度を設定
-		mMoveSpeed = CVector(0.0f, +ascendSpeed * Time::DeltaTime(), 0.0f);
-		Position(Position() + mMoveSpeed);
-
-		// 離れた位置に達したら初期位置に戻す
-		if (CVector::Distance(Position(), mStartPos) < 0.1f)
-		{
-			Position(mStartPos);
-			// 待機状態へ戻す
-			ChangeState(EState::Idle);
-			mFadeTime = 0.0f;
-			mWaitTime = 0.0f;
-		}
-	}
-
 	// ステップごとに処理を切り替え
 	switch (mStateStep)
 	{
 		// ステップ0 フェード後の待ち時間
 	case 0:
 		// 待ち時間が経過していなければ、経過時間分減らす
-		if (mWaitTime > 0.0f)
+		if (Position().Y() > MINHEIGHT)
 		{
-			mWaitTime -= Time::DeltaTime();
+			// 下降
+			float fallSpeed = 50.0f;
+
+			mMoveSpeed = CVector(0.0f, -fallSpeed * Time::DeltaTime(), 0.0f);
+			Position(Position() + mMoveSpeed);
 		}
-		// 待ち時間が経過したら、次のステップへ
+		// 最大値を越したら
 		else
 		{
+			mpColliderMesh->SetEnable(false);
+			SetAlpha(0.0f);
 			mStateStep++;
 		}
 		break;
-		// ステップ1 消えた床をもとに戻す
+		// ステップ1 オブジェクトを疑似消去
 	case 1:
-		if (mFadeTime > 0.0f)
+	{
+		// 最大値になったら当たり判定と
+		// 描画を消す
+		if (Position().Y() <= MINHEIGHT)
 		{
-			mFadeTime -= Time::DeltaTime();
-		}
-		else
-		{
-			// 待機状態へ戻す
-			ChangeState(EState::Idle);
-			mFadeTime = 0.0f;
-			mWaitTime = 0.0f;
-
-			// プレイヤーが触れていた場合、元の位置に戻す
-			if (mIsCollision)
+			if (mWaitTime > 0.0f)
 			{
-				Position(mStartPos);
+				
+				mWaitTime -= Time::DeltaTime();
+				CDebugPrint::Print("mWaitTime %f\n", mWaitTime);
+			}
+			// 待ち時間が経過したら、次のステップへ
+			else
+			{
+				mStateStep++;
 			}
 		}
+	}
 		break;
+	case 2:
+	{
+		// 位置を最初の位置に戻して
+		// 描画を再開する
+		Position(mStartPos);
+		mpColliderMesh->SetEnable(true);
+		SetAlpha(1.0f);
+		mWaitTime = 0.0f;
+
+		// 待機状態へ戻す
+		ChangeState(EState::Idle);
+	}
 	}
 }
 
@@ -186,11 +173,6 @@ void CFallingObjects::Update()
 		break;
 
 	}
-
-	//// フェード時間に合わせて床のα値を求める
-	//// α値を設定
-	//float alpha = Math::Clamp01(mFadeTime / FADE_TIME);
-	//SetAlpha(alpha);
 
 	// 衝突フラグを初期化
 	mIsCollision = false;

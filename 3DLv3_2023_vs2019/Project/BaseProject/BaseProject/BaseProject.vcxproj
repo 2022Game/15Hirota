@@ -69,8 +69,8 @@
     <ClCompile Include="src\Game\CGameManager.cpp" />
     <ClCompile Include="src\Game\CGameMenu.cpp" />
     <ClCompile Include="src\Game\CGoalBase.cpp" />
-    <ClCompile Include="src\Game\CJumpingBase.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
+    <ClCompile Include="src\Game\CRisingObject.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CStage1.cpp" />
@@ -85,7 +85,6 @@
     <ClCompile Include="src\Game\CGun.cpp" />
     <ClCompile Include="src\Game\CharaStatus.cpp" />
     <ClCompile Include="src\Game\CImage.cpp" />
-    <ClCompile Include="src\Game\CItem.cpp" />
     <ClCompile Include="src\Game\CKick.cpp" />
     <ClCompile Include="src\Game\CMoveFloor.cpp" />
     <ClCompile Include="src\Game\CPlayer.cpp" />
@@ -185,8 +184,8 @@
     <ClInclude Include="src\Game\CGameCamera.h" />
     <ClInclude Include="src\Game\CGameMenu.h" />
     <ClInclude Include="src\Game\CGoalBase.h" />
-    <ClInclude Include="src\Game\CJumpingBase.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
+    <ClInclude Include="src\Game\CRisingObject.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CStage1.h" />
@@ -201,7 +200,6 @@
     <ClInclude Include="src\Game\CGun.h" />
     <ClInclude Include="src\Game\CharaStatus.h" />
     <ClInclude Include="src\Game\CImage.h" />
-    <ClInclude Include="src\Game\CItem.h" />
     <ClInclude Include="src\Game\CKick.h" />
     <ClInclude Include="src\Game\CMoveFloor.h" />
     <ClInclude Include="src\Game\CPlayer.h" />

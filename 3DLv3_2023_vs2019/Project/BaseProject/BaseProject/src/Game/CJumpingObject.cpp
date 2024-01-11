@@ -9,7 +9,7 @@
 
 CJumpingObject::CJumpingObject(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
-	: CJumpingBase(ETaskPriority::eBackground)
+	: CRideableObject(ETaskPriority::eBackground)
 	, mState(EState::Idle)
 	, mStateStep(0)
 	, mReactionTag(reactionTag)

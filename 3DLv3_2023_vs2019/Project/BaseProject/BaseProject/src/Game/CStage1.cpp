@@ -12,6 +12,8 @@
 #include "CSignboard.h"
 #include "CGameCamera.h"
 #include "CFallingObjects.h"
+#include "CRisingObject.h"
+
 
 // コンストラクタ
 CStage1::CStage1()
@@ -108,33 +110,33 @@ void CStage1::Load()
 	);
 	AddTask(board);
 
-	//// 落下する床
-	//CFallingObjects* fallobj = new CFallingObjects
-	//(
-	//	CVector(0.0f, 6.0f, -430.0f),
-	//	CVector(1.0f, 1.0f, 1.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//CVector fallobjpos = CVector(0.0f, 6.0f, -430.0f);
-	//if (fallobj != nullptr)
-	//{
-	//	fallobj->SetStartPosition(fallobjpos);
-	//}
-	//AddTask(fallobj);
+	// 落下する床
+	CFallingObjects* fallobj = new CFallingObjects
+	(
+		CVector(150.0f, 8.0f, -430.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector fallobjpos = CVector(150.0f, 8.0f, -430.0f);
+	if (fallobj != nullptr)
+	{
+		fallobj->SetStartPosition(fallobjpos);
+	}
+	AddTask(fallobj);
 
-	//// 落下する床
-	//CFallingObjects* fallobj2 = new CFallingObjects
-	//(
-	//	CVector(0.0f, 15.0f, -500.0f),
-	//	CVector(1.0f, 1.0f, 1.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//CVector fallobjpos2 = CVector(0.0f, 15.0f, -500.0f);
-	//if (fallobj2 != nullptr)
-	//{
-	//	fallobj2->SetStartPosition(fallobjpos2);
-	//}
-	//AddTask(fallobj2);
+	// 上昇するオブジェクト
+	CRisingObject* rising = new CRisingObject
+	(
+		CVector(-30.0f, 3.0f, -450.0f),
+		CVector(0.5f, 0.5f, 0.5f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector risingPos = CVector(-30.0f, 3.0f, -450.0f);
+	if (rising != nullptr)
+	{
+		rising->SetStartPosition(risingPos);
+	}
+	AddTask(rising);
 
 	//// 敵(ガスマスク兵士) ///////////////////////////
 	CSoldier* sol1 = new CSoldier();

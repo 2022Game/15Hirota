@@ -5,9 +5,9 @@
 #include "CColliderLine.h"
 #include "CColliderSphere.h"
 #include "CColliderMesh.h"
-#include "CJumpingBase.h"
+#include "CRideableObject.h"
 
-class CJumpingObject : public CJumpingBase
+class CJumpingObject : public CRideableObject
 {
 public:
 	CJumpingObject(const CVector& pos, const CVector& scale, const CVector& rot,

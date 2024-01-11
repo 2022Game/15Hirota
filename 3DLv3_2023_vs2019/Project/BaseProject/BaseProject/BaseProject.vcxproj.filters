@@ -80,6 +80,9 @@
     <Filter Include="ソース ファイル\Game\UI\Menu">
       <UniqueIdentifier>{9669176f-0ce1-45a8-8d3d-52f9c5a31d66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\CharaObject\ItemObject">
+      <UniqueIdentifier>{dc46f484-423a-4ed6-b568-80985fcc2bcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -286,9 +289,6 @@
     <ClCompile Include="src\Test\System.cpp">
       <Filter>ソース ファイル\Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CItem.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CGun.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
@@ -373,9 +373,6 @@
     <ClCompile Include="src\Game\CJumpingObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CJumpingBase.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CSignboard.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
@@ -398,6 +395,9 @@
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CFallingObjects.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CRisingObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
   </ItemGroup>
@@ -627,9 +627,6 @@
     <ClInclude Include="src\Test\System.h">
       <Filter>ソース ファイル\Test</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CItem.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CGun.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
@@ -714,9 +711,6 @@
     <ClInclude Include="src\Game\CJumpingObject.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CJumpingBase.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CSignboard.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
@@ -742,6 +736,9 @@
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CFallingObjects.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CRisingObject.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
   </ItemGroup>

@@ -712,7 +712,7 @@ void CPlayer::UpdateDethEnd()
 		//CSceneManager::Instance()->LoadScene(EScene::eOver);
 		damageObject = false;
 		mCharaStatus = mCharaMaxStatus;
-		Position(0.0f, 0.0f, -30.0f);
+		Position(0.0f, 20.0f, -30.0f);
 		ChangeState(EState::eIdle);
 	}
 }
@@ -736,7 +736,7 @@ void CPlayer::UpdateHit()
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 	if (!damageEnemy)
 	{
-		mCharaStatus.hp -= 3;
+		TakeDamage(3);
 		damageEnemy = true;
 	}
 	
@@ -775,7 +775,7 @@ void CPlayer::UpdateHitJ()
 
 	if (!damageEnemy)
 	{
-		mCharaStatus.hp -= 1;
+		TakeDamage(1);
 		damageEnemy = true;
 	}
 
@@ -805,9 +805,6 @@ void CPlayer::Update()
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
 
-
-	// ダメージコライダーをオフ
-	mpDamageCol->SetEnable(false);
 
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)
@@ -967,6 +964,16 @@ void CPlayer::Update()
 	mpStaminaGauge->SetSutaminaValue(mCharaStatus.stamina);
 
 
+	float minHeaight = -100.0f;
+	if (Position().Y() < minHeaight)
+	{
+		ChangeAnimation(EAnimType::eHitJ);
+		TakeDamage(1);
+		Position(0.0f, 20.0f, -30.0f);
+	}
+	CDebugPrint::Print("Position.Y %f\n", Position().Y());
+
+
 	// キャラクターの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
@@ -1002,7 +1009,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				if (!damageObject)
 				{
-					mCharaStatus.hp -= 1;
+					TakeDamage(1);
 
 					if (mCharaStatus.hp > 0)
 					{
@@ -1024,10 +1031,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			if (mState == EState::eJumpEnd)
 			{
 				mMoveSpeed.Y(0.0f);
-				if (other->Tag() == ETag::eJumpingObject)
-				{
-					Position(Position() + hit.adjust);
-				}
+				Position(Position() + hit.adjust);
 				mpRideObject = other->Owner();
 			}
 			else
