@@ -64,7 +64,7 @@ void CMajicSword::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 			if (!IsAttackHitObj(chara))
 			{
 				//　ダメージを与える
-				chara->TakeDamage(1);
+				chara->TakeDamage(10);
 
 				// 攻撃済みリストに追加
 				AddAttackHitObj(chara);
