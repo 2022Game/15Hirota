@@ -4,10 +4,12 @@
 class CEnemyManager
 {
 public:
+    // ソルジャーの数を増やす
     static void IncrementEnemyCount();
+    // ソルジャーの数を減らす
     static void DecrementEnemyCount();
+    // ソルジャーの数を取得
     static int GetEnemyCount();
-    static void EnemyKilled();
 
 private:
     static int enemyCount;

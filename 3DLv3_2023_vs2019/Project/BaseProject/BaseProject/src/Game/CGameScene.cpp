@@ -14,6 +14,8 @@
 #include "CGameCamera.h"
 #include "CGameMenu.h"
 #include "CEnemyManager.h"
+#include "CRisingObject.h"
+#include "CStage1.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -88,6 +90,7 @@ void CGameScene::Load()
 
 	// モンスター(プレイヤー)
 	CPlayer* player = new CPlayer();
+
 
 	//CCamera* mainCamera = new CCamera
 	//(

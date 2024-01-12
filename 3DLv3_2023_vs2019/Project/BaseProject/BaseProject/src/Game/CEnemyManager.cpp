@@ -17,8 +17,3 @@ int CEnemyManager::GetEnemyCount()
 {
     return enemyCount;
 }
-
-void CEnemyManager::EnemyKilled()
-{
-    DecrementEnemyCount();
-}

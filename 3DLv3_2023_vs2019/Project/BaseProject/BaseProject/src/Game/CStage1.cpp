@@ -127,7 +127,7 @@ void CStage1::Load()
 	}
 	AddTask(fallobj);
 
-	//// 敵(ガスマスク兵士) ///////////////////////////
+	//// 敵(ガスマスク兵士) ///////////////////////////////////////////
 	CSoldier* sol1 = new CSoldier();
 	sol1->Scale(1.0f, 1.0f, 1.0f);
 	sol1->Position(-100.0f, 150, -150);
@@ -144,11 +144,13 @@ void CStage1::Load()
 	//sol3->Position(50.0f, 150.0f, -200.0f);
 	//AddTask(sol3);
 
-	///////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
 
 	int enemyCount = CEnemyManager::GetEnemyCount();  // 敵の数を取得
 
-	if (enemyCount <= 0)
+	static bool hasCreatedRisingObject = false;  // フラグを追加
+
+	if (enemyCount <= 0 && !hasCreatedRisingObject)
 	{
 		// 上昇するオブジェクト
 		CRisingObject* rising = new CRisingObject
@@ -163,6 +165,9 @@ void CStage1::Load()
 			rising->SetStartPosition(risingPos);
 		}
 		AddTask(rising);
+		
+		// 二度目以降はオブジェクトが作成されないようにする
+		hasCreatedRisingObject = true;
 	}
 	
 	// ゆかりさん
@@ -171,6 +176,7 @@ void CStage1::Load()
 	yukari->Position(0.0f, 100.0f, -200.0f);
 	AddTask(yukari);
 }
+
 
 // ステージ破棄
 void CStage1::Unload()
