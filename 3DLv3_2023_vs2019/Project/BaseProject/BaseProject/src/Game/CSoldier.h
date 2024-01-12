@@ -94,12 +94,7 @@ public:
 
 	void Move();
 
-	
-	static int GetEnemyCount();
-
 private:
-
-	static int enemyCount;
 
 	// アニメーションの種類
 	enum class EAnimType

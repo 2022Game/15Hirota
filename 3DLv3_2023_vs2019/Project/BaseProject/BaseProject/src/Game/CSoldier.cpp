@@ -12,13 +12,12 @@
 #include "CSoldierFrame.h"
 #include "CSoldierGauge.h"
 #include "CStageManager.h"
+#include "CEnemyManager.h"
 
 #define _USE_MATH_DEFINES
 
 // CSoldierのインスタンス
 CSoldier* CSoldier::spInstance = nullptr;
-
-int CSoldier::enemyCount = 0;
 
 
 #define EFFECT	 "Effect\\exp.tga"
@@ -90,7 +89,7 @@ CSoldier::CSoldier()
 {
 	Position(initialPosition);
 
-	enemyCount++;
+	CEnemyManager::IncrementEnemyCount();
 	//インスタンスの設定
 	spInstance = this;
 
@@ -208,7 +207,7 @@ CSoldier::~CSoldier()
 
 	mpGun->Kill();
 
-	enemyCount--;
+	CEnemyManager::DecrementEnemyCount();
 
 	// UI周りを消す
 	mpGauge->Kill();
@@ -683,6 +682,7 @@ void CSoldier::Update()
 	// 現在のHpを設定
 	mpGauge->SetValue(mCharaStatus.hp);
 
+
 	// CSoldierの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
@@ -801,11 +801,6 @@ void CSoldier::TakeDamage(int damage)
 	{
 		mState = EState::eDeth;
 	}
-}
-
-int CSoldier::GetEnemyCount()
-{
-	return enemyCount;
 }
 
 

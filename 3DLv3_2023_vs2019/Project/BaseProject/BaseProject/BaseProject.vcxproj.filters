@@ -83,6 +83,9 @@
     <Filter Include="ソース ファイル\Game\Character\CharaObject\ItemObject">
       <UniqueIdentifier>{dc46f484-423a-4ed6-b568-80985fcc2bcd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Count">
+      <UniqueIdentifier>{4cc6ce07-bb8a-446e-abf7-467f09ea938b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -399,6 +402,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CRisingObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CEnemyManager.cpp">
+      <Filter>ソース ファイル\Game\Character\Count</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -740,6 +746,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CRisingObject.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CEnemyManager.h">
+      <Filter>ソース ファイル\Game\Character\Count</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

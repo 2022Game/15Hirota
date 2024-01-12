@@ -1,6 +1,8 @@
 #include "CTask.h"
 #include "CTaskManager.h"
 #include "CSceneManager.h"
+#include "CEnemyManager.h"
+
 
 //コンストラクタ
 CTask::CTask(ETaskPriority prio, int sortOrder,

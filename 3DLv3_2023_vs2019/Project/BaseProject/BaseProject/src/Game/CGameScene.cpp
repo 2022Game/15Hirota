@@ -13,7 +13,7 @@
 #include "CSignboard.h"
 #include "CGameCamera.h"
 #include "CGameMenu.h"
-
+#include "CEnemyManager.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -108,7 +108,7 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-	CDebugPrint::Print("enemy: %d\n", CSoldier::GetEnemyCount());
+	CDebugPrint::Print("count:%d\n", CEnemyManager::GetEnemyCount());
 
 	if (CInput::PushKey('H'))
 	{
@@ -124,6 +124,7 @@ void CGameScene::Update()
 			mpGameMenu->Open();
 		}
 	}
+
 
 	//CDebugPrint::Print("enemy: %d\n", CSoldier::GetEnemyCount());
 	//// hp取得

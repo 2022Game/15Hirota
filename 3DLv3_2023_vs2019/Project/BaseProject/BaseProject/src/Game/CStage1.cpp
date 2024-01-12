@@ -13,7 +13,10 @@
 #include "CGameCamera.h"
 #include "CFallingObjects.h"
 #include "CRisingObject.h"
+#include "CEnemyManager.h"
 
+
+#define enemycount 0
 
 // コンストラクタ
 CStage1::CStage1()
@@ -124,20 +127,6 @@ void CStage1::Load()
 	}
 	AddTask(fallobj);
 
-	// 上昇するオブジェクト
-	CRisingObject* rising = new CRisingObject
-	(
-		CVector(-30.0f, 3.0f, -450.0f),
-		CVector(0.5f, 0.5f, 0.5f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector risingPos = CVector(-30.0f, 3.0f, -450.0f);
-	if (rising != nullptr)
-	{
-		rising->SetStartPosition(risingPos);
-	}
-	AddTask(rising);
-
 	//// 敵(ガスマスク兵士) ///////////////////////////
 	CSoldier* sol1 = new CSoldier();
 	sol1->Scale(1.0f, 1.0f, 1.0f);
@@ -157,6 +146,25 @@ void CStage1::Load()
 
 	///////////////////////////////////////////////////
 
+	int enemyCount = CEnemyManager::GetEnemyCount();  // 敵の数を取得
+
+	if (enemyCount <= 0)
+	{
+		// 上昇するオブジェクト
+		CRisingObject* rising = new CRisingObject
+		(
+			CVector(-30.0f, 3.0f, -450.0f),
+			CVector(0.5f, 0.5f, 0.5f),
+			ETag::ePlayer, ELayer::ePlayer
+		);
+		CVector risingPos = CVector(-30.0f, 3.0f, -450.0f);
+		if (rising != nullptr)
+		{
+			rising->SetStartPosition(risingPos);
+		}
+		AddTask(rising);
+	}
+	
 	// ゆかりさん
 	CYukari* yukari = new CYukari();
 	yukari->Scale(1.0f, 1.0f, 1.0f);

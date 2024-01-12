@@ -1,6 +1,7 @@
 #include "CRisingObject.h"
 #include "Maths.h"
 #include "CPlayer.h"
+#include "CInput.h"
 
 
 // 消えるのにかかる時間
@@ -8,7 +9,10 @@
 // 消えた後の待ち時間
 #define WAIT_TIME 3.0f
 
-#define MAXHEIGHT 50.0f
+#define MAXHEIGHT 100.0f
+
+#define FALLSPEED 20.0f
+
 
 // コンストラクタ
 CRisingObject::CRisingObject(const CVector& pos, const CVector& scale,
@@ -73,7 +77,14 @@ void CRisingObject::Collision(CCollider* slef, CCollider* other, const CHitInfo&
 		// 現在が待機状態であれば、フェード状態へ切り替える
 		if (mState == EState::Idle)
 		{
-			ChangeState(EState::Rising);
+			CPlayer* player = dynamic_cast<CPlayer*>(owner);
+			if (player)
+			{
+				if (CInput::PushKey('U'))
+				{
+					ChangeState(EState::Rising);
+				}
+			}
 		}
 
 		// 反応するオブジェクトが触れているので
@@ -107,9 +118,7 @@ void CRisingObject::UpdateRising()
 		if (Position().Y() < MAXHEIGHT)
 		{
 			// 上昇
-			float fallSpeed = 8.0f;
-
-			mMoveSpeed = CVector(0.0f, +fallSpeed * Time::DeltaTime(), 0.0f);
+			mMoveSpeed = CVector(0.0f, FALLSPEED * Time::DeltaTime(), 0.0f);
 			Position(Position() + mMoveSpeed);
 		}// 最大値を越したら
 		else
@@ -120,12 +129,11 @@ void CRisingObject::UpdateRising()
 		// ステップ1 消えた床をもとに戻す
 	case 1:
 		// 下降
-		float fallSpeed = 8.0f;
-		mMoveSpeed = CVector(0.0f, -fallSpeed * Time::DeltaTime(), 0.0f);
+		mMoveSpeed = CVector(0.0f, -FALLSPEED * Time::DeltaTime(), 0.0f);
 		Position(Position() + mMoveSpeed);
 		mFadeTime -= Time::DeltaTime();
 		// 離れた位置に達したら初期位置に戻す
-		if (CVector::Distance(Position(), mStartPos) < 0.1f)
+		if (CVector::Distance(Position(), mStartPos) < 1.0f)
 		{
 			Position(mStartPos);
 			// 待機状態へ戻す
