@@ -148,9 +148,9 @@ void CStage1::Load()
 
 	int enemyCount = CEnemyManager::GetEnemyCount();  // 敵の数を取得
 
-	static bool hasCreatedRisingObject = false;  // フラグを追加
+	static bool Rising = false;  // フラグを追加
 
-	if (enemyCount <= 0 && !hasCreatedRisingObject)
+	if (enemyCount <= 0 && !Rising)
 	{
 		// 上昇するオブジェクト
 		CRisingObject* rising = new CRisingObject
@@ -167,7 +167,7 @@ void CStage1::Load()
 		AddTask(rising);
 		
 		// 二度目以降はオブジェクトが作成されないようにする
-		hasCreatedRisingObject = true;
+		Rising = true;
 	}
 	
 	// ゆかりさん
