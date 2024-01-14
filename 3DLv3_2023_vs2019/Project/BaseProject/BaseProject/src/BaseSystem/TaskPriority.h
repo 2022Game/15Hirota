@@ -20,6 +20,7 @@ enum class ETaskPriority
 	eEffect,
 	eTransparent,	// 透明オブジェクト
 	eFallingOBJ,	// 落下オブジェクト
+	eHatenaOBJ,		// ハテナブロックオブジェクト
 
 	eCamera,		// カメラ
 

@@ -115,7 +115,7 @@ CPlayer::CPlayer()
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
-	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol });
+	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol, ELayer::eHatenaBlockCol });
 	
 
 	// 当たり判定を取るコライダー
@@ -306,7 +306,7 @@ void CPlayer::UpdateIdle()
 {
 	// 剣に攻撃終了を伝える
 	mpSword->AttackEnd();
-	mpDamageCol->SetEnable(false);
+	mpDamageCol->SetEnable(true);
 	damageEnemy = false;
 	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
 
@@ -559,7 +559,7 @@ void CPlayer::UpdateJumpStart()
 // ジャンプ中
 void CPlayer::UpdateJump()
 {
-	mpDamageCol->SetEnable(false);
+	//mpDamageCol->SetEnable(false);
 	if (mMoveSpeed.Y() <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
@@ -1029,6 +1029,19 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		else if (other->Layer() == ELayer::eJumpingCol)
 		{
 			if (mState == EState::eJumpEnd)
+			{
+				mMoveSpeed.Y(0.0f);
+				Position(Position() + hit.adjust);
+				mpRideObject = other->Owner();
+			}
+			else
+			{
+				Position(Position() + hit.adjust);
+			}
+		}
+		else if (other->Layer() == ELayer::eHatenaBlockCol)
+		{
+			if (mState == EState::eJump)
 			{
 				mMoveSpeed.Y(0.0f);
 				Position(Position() + hit.adjust);

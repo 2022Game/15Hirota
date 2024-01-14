@@ -39,15 +39,17 @@ void CGameScene::Load()
 	//リソースの読み込みやクラスの生成を行う
 
 	// フィールド関連
-	CResourceManager::Load<CModel>("Field",			"Field\\GameStage(1).obj");			// 仮1面
-	CResourceManager::Load<CModel>("FloorCol",		"Field\\GameStageFloor(1).obj");	// 仮1面の床
-	CResourceManager::Load<CModel>("WallCol",		"Field\\GameStageWall(1).obj");		// 仮1面の壁
-	CResourceManager::Load<CModel>("FieldCube",		"Field\\Object\\cube.obj");			// 初期の四角のモデル
-	CResourceManager::Load<CModel>("FieldCylinder", "Field\\Object\\cylinder.obj");		// 初期の回転する四角モデル
-	CResourceManager::Load<CModel>("GoalCube",		"Field\\Object\\GoalCube.obj");		// ゴールの土台
-	CResourceManager::Load<CModel>("GoalPost",		"Field\\Object\\GoalPost.obj");		// ゴールのポスト
-	CResourceManager::Load<CModel>("Stone1",		"Field\\Object\\Stone1.obj");		// 石1
-	CResourceManager::Load<CModel>("Signboard",		"Field\\Object\\signboard.obj");		// 看板オブジェクト(ジャンプヒント)
+	CResourceManager::Load<CModel>("Field",				"Field\\GameStage(1).obj");					// 仮1面
+	CResourceManager::Load<CModel>("FloorCol",			"Field\\GameStageFloor(1).obj");			// 仮1面の床
+	CResourceManager::Load<CModel>("WallCol",			"Field\\GameStageWall(1).obj");				// 仮1面の壁
+	CResourceManager::Load<CModel>("FieldCube",			"Field\\Object\\cube.obj");					// 初期の四角のモデル
+	CResourceManager::Load<CModel>("FieldCylinder",		"Field\\Object\\cylinder.obj");				// 初期の回転する四角モデル
+	CResourceManager::Load<CModel>("GoalCube",			"Field\\Object\\GoalCube.obj");				// ゴールの土台
+	CResourceManager::Load<CModel>("GoalPost",			"Field\\Object\\GoalPost.obj");				// ゴールのポスト
+	CResourceManager::Load<CModel>("Stone1",			"Field\\Object\\Stone1.obj");				// 石1
+	CResourceManager::Load<CModel>("Signboard",			"Field\\Object\\signboard.obj");			// 看板オブジェクト(ジャンプヒント)
+	CResourceManager::Load<CModel>("HatenaBlock",		"Field\\Object\\hatena.obj");			// ハテナブロック(アイテム保有)
+	CResourceManager::Load<CModel>("HatenaBlockAfter",	"Field\\Object\\UsedHatenaBlock.obj");			// ハテナブロック(アイテム不保有)
 
 
 	// キャラクター関連
@@ -128,6 +130,35 @@ void CGameScene::Update()
 		}
 	}
 
+	int enemyCount = CEnemyManager::GetEnemyCount();
+
+	static bool Rising = false;
+
+	if (enemyCount <= 0 && !Rising)
+	{
+		int currentStage = CGameManager::StageNo();
+		if (currentStage == 0)
+		{
+			// 上昇するオブジェクト
+			CRisingObject* rising = new CRisingObject
+			(
+				CVector(-30.0f, 3.0f, -450.0f),
+				CVector(0.5f, 0.5f, 0.5f),
+				ETag::ePlayer, ELayer::ePlayer
+			);
+			CVector risingPos = CVector(-30.0f, 3.0f, -450.0f);
+			if (rising != nullptr)
+			{
+				rising->SetStartPosition(risingPos);
+			}
+			AddTask(rising);
+
+			// 二度目以降はオブジェクトが作成されないようにする
+			Rising = true;
+		}
+	}
+
+	CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
 
 	//CDebugPrint::Print("enemy: %d\n", CSoldier::GetEnemyCount());
 	//// hp取得

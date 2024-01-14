@@ -19,6 +19,7 @@ public:
 
 	// ステージ番号取得
 	int GetStageNo() const;
+	
 
 	// 作成したタスクをリストに追加
 	void AddTask(CTask* task);

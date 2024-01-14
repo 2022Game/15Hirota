@@ -26,7 +26,7 @@ public:
 	static EGameState GameState();
 	// 現在のステージ番号
 	static int StageNo();
-
+	
 	// 更新処理
 	void Update();
 

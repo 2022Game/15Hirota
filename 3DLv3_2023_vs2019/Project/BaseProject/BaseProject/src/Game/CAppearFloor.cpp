@@ -45,7 +45,7 @@ CAppearFloor::~CAppearFloor()
 }
 
 // Õ“Ëˆ—
-void CAppearFloor::Collision(CCollider* slef, CCollider* other, const CHitInfo& hit)
+void CAppearFloor::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;

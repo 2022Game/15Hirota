@@ -14,6 +14,7 @@
 #include "CFallingObjects.h"
 #include "CRisingObject.h"
 #include "CEnemyManager.h"
+#include "CHatenaBlock.h"
 
 
 #define enemycount 0
@@ -143,32 +144,25 @@ void CStage1::Load()
 	//sol3->Scale(1.0f, 1.0f, 1.0f);
 	//sol3->Position(50.0f, 150.0f, -200.0f);
 	//AddTask(sol3);
-
+	
 	////////////////////////////////////////////////////////////////////
 
-	int enemyCount = CEnemyManager::GetEnemyCount();  // 敵の数を取得
-
-	static bool Rising = false;  // フラグを追加
-
-	if (enemyCount <= 0 && !Rising)
+	// ハテナブロック
+	CHatenaBlock* hatena = new CHatenaBlock
+	(
+		CVector(30.0f, 7.0f, -50.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector hatenaPos = CVector(-30.0f, 7.0f, -50.0f);
+	if (hatena != nullptr)
 	{
-		// 上昇するオブジェクト
-		CRisingObject* rising = new CRisingObject
-		(
-			CVector(-30.0f, 3.0f, -450.0f),
-			CVector(0.5f, 0.5f, 0.5f),
-			ETag::ePlayer, ELayer::ePlayer
-		);
-		CVector risingPos = CVector(-30.0f, 3.0f, -450.0f);
-		if (rising != nullptr)
-		{
-			rising->SetStartPosition(risingPos);
-		}
-		AddTask(rising);
-		
-		// 二度目以降はオブジェクトが作成されないようにする
-		Rising = true;
+		hatena->SetStartPosition(hatenaPos);
 	}
+	AddTask(hatena);
+
+
+	
 	
 	// ゆかりさん
 	CYukari* yukari = new CYukari();

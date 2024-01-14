@@ -86,6 +86,9 @@
     <Filter Include="ソース ファイル\Game\Character\Count">
       <UniqueIdentifier>{4cc6ce07-bb8a-446e-abf7-467f09ea938b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\PlayerUI">
+      <UniqueIdentifier>{7162809b-e06e-4d22-91bf-02cf1bc08ac2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -238,17 +241,11 @@
     <ClCompile Include="src\Game\CYukari.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CUIGauge.cpp">
-      <Filter>ソース ファイル\Game\UI</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CClearScene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CGameOverScene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CStaminaGauge.cpp">
-      <Filter>ソース ファイル\Game\UI</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CDebugProfiler.cpp">
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
@@ -405,6 +402,15 @@
     </ClCompile>
     <ClCompile Include="src\Game\CEnemyManager.cpp">
       <Filter>ソース ファイル\Game\Character\Count</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStaminaGauge.cpp">
+      <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CUIGauge.cpp">
+      <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CHatenaBlock.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -576,9 +582,6 @@
     <ClInclude Include="src\Game\CYukari.h">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CUIGauge.h">
-      <Filter>ソース ファイル\Game\UI</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CharaStatus.h">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
@@ -587,9 +590,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CGameOverScene.h">
       <Filter>ソース ファイル\Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CStaminaGauge.h">
-      <Filter>ソース ファイル\Game\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CDebugProfiler.h">
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
@@ -749,6 +749,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CEnemyManager.h">
       <Filter>ソース ファイル\Game\Character\Count</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStaminaGauge.h">
+      <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CUIGauge.h">
+      <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CHatenaBlock.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
