@@ -38,6 +38,9 @@
 // 色を描画する時間
 #define COLORSET 0.5f
 
+// ダメージコライダーの計測時間
+#define DAMAGECOL 2.0f
+
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
 
@@ -80,6 +83,7 @@ CPlayer::CPlayer()
 	, mElapsedTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
 	, JumpCoolDownTime(5.0f)
+	, mElapsedTimeCol(0.0f)
 {
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
@@ -306,7 +310,17 @@ void CPlayer::UpdateIdle()
 {
 	// 剣に攻撃終了を伝える
 	mpSword->AttackEnd();
-	mpDamageCol->SetEnable(true);
+
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
 	damageEnemy = false;
 	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
 
@@ -531,6 +545,16 @@ void CPlayer::UpdateJumpStart()
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eJump);
 
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
 	// 移動処理
 	// キーの入力ベクトルを取得
 	CVector input;
@@ -559,7 +583,16 @@ void CPlayer::UpdateJumpStart()
 // ジャンプ中
 void CPlayer::UpdateJump()
 {
-	//mpDamageCol->SetEnable(false);
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
 	if (mMoveSpeed.Y() <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
@@ -570,6 +603,16 @@ void CPlayer::UpdateJump()
 // ジャンプ終了
 void CPlayer::UpdateJumpEnd()
 {
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eIdle);
@@ -624,6 +667,14 @@ void CPlayer::UpdateJumpingEnd()
 void CPlayer::UpdateRotate()
 {
 	mpDamageCol->SetEnable(false);
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+		}
+	}
 	// 移動処理
 	// キーの入力ベクトルを取得
 	CVector input;
@@ -650,6 +701,14 @@ void CPlayer::UpdateRotate()
 //回避終了待ち
 void CPlayer::UpdateRotateEnd()
 {
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+		}
+	}
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eIdle);
@@ -660,6 +719,16 @@ void CPlayer::UpdateRotateEnd()
 // ダッシュ終了
 void CPlayer::UpdateDashEnd()
 {
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
 	mMoveSpeed.Z(0.0f);
 	mMoveSpeed.X(0.0f);
 	ChangeAnimation(EAnimType::eDashStop);
@@ -709,7 +778,6 @@ void CPlayer::UpdateDethEnd()
 {
 	if (IsAnimationFinished())
 	{
-		//CSceneManager::Instance()->LoadScene(EScene::eOver);
 		damageObject = false;
 		mCharaStatus = mCharaMaxStatus;
 		Position(0.0f, 20.0f, -30.0f);
@@ -740,7 +808,9 @@ void CPlayer::UpdateHit()
 		damageEnemy = true;
 	}
 	
+	mElapsedTimeCol = 0.0f;
 	mpDamageCol->SetEnable(false);
+
 	// ダメージを受けた時は移動を停止
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
@@ -750,12 +820,14 @@ void CPlayer::UpdateHit()
 		if (mCharaStatus.hp > 0)
 		{
 			damageEnemy = false;
+			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eIdle);
 		}
 		else if (mCharaStatus.hp <= 0)
 		{
 			damageEnemy = false;
+			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eDeth);
 		}
@@ -767,7 +839,9 @@ void CPlayer::UpdateHitJ()
 {
 	ChangeAnimation(EAnimType::eHit);
 
+	mElapsedTimeCol = 0.0f;
 	mpDamageCol->SetEnable(false);
+
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	mElapsedTime += Time::DeltaTime();
@@ -784,12 +858,14 @@ void CPlayer::UpdateHitJ()
 		if (mCharaStatus.hp > 0)
 		{
 			mElapsedTime = 0.0f;
+			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eIdle);
 		}
 		else if (mCharaStatus.hp <= 0)
 		{
 			mElapsedTime = 0.0f;
+			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eDeth);
 		}
@@ -804,7 +880,6 @@ void CPlayer::Update()
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
-
 
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)
@@ -972,6 +1047,8 @@ void CPlayer::Update()
 		Position(0.0f, 20.0f, -30.0f);
 	}
 	CDebugPrint::Print("Position.Y %f\n", Position().Y());
+
+	CDebugPrint::Print("TimeCol%f\n", mElapsedTimeCol);
 
 
 	// キャラクターの更新

@@ -112,7 +112,7 @@ void CHatenaBlock::UpdateHit()
 		// 最大値まで
 		if (Position().Y() < MAXHEIGHT)
 		{
-			mMoveSpeed = CVector(0.0f, 50.0f * Time::DeltaTime(), 0.0f);
+			mMoveSpeed = CVector(0.0f, 100.0f * Time::DeltaTime(), 0.0f);
 			Position(Position() + mMoveSpeed);
 		}
 		else
@@ -122,7 +122,7 @@ void CHatenaBlock::UpdateHit()
 		break;
 		// ステップ1 元に戻す
 	case 1:
-		mMoveSpeed = CVector(0.0f, -5.0f * Time::DeltaTime(), 0.0f);
+		mMoveSpeed = CVector(0.0f, -50.0f * Time::DeltaTime(), 0.0f);
 		Position(Position() + mMoveSpeed);
 		if (CVector::Distance(Position(), mStartPos) < 0.5f)
 		{

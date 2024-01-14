@@ -72,6 +72,7 @@
     <ClCompile Include="src\Game\CGoalBase.cpp" />
     <ClCompile Include="src\Game\CHatenaBlock.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
+    <ClCompile Include="src\Game\CRengaBlock.cpp" />
     <ClCompile Include="src\Game\CRisingObject.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="src\Game\CGoalBase.h" />
     <ClInclude Include="src\Game\CHatenaBlock.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
+    <ClInclude Include="src\Game\CRengaBlock.h" />
     <ClInclude Include="src\Game\CRisingObject.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />

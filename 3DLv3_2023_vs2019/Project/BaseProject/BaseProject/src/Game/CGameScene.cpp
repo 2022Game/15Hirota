@@ -48,8 +48,9 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("GoalPost",			"Field\\Object\\GoalPost.obj");				// ゴールのポスト
 	CResourceManager::Load<CModel>("Stone1",			"Field\\Object\\Stone1.obj");				// 石1
 	CResourceManager::Load<CModel>("Signboard",			"Field\\Object\\signboard.obj");			// 看板オブジェクト(ジャンプヒント)
-	CResourceManager::Load<CModel>("HatenaBlock",		"Field\\Object\\hatena.obj");			// ハテナブロック(アイテム保有)
-	CResourceManager::Load<CModel>("HatenaBlockAfter",	"Field\\Object\\UsedHatenaBlock.obj");			// ハテナブロック(アイテム不保有)
+	CResourceManager::Load<CModel>("HatenaBlock",		"Field\\Object\\hatena.obj");				// ハテナブロック(アイテム保有)
+	CResourceManager::Load<CModel>("HatenaBlockAfter",	"Field\\Object\\UsedHatenaBlock.obj");		// ハテナブロック(アイテム不保有)
+	CResourceManager::Load<CModel>("RengaBlock",		"Field\\Object\\RengaBlock.obj");			// レンガブロック
 
 
 	// キャラクター関連

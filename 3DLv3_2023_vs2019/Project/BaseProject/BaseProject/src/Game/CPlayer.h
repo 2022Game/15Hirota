@@ -216,5 +216,6 @@ private:
 
 	float mElapsedTime;	// 計測時間
 	float mElapsedTimeEnd;	// 計測時間終了
+	float mElapsedTimeCol;	// コライダーの計測時間
 	float JumpCoolDownTime;
 };

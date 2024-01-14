@@ -15,6 +15,7 @@
 #include "CRisingObject.h"
 #include "CEnemyManager.h"
 #include "CHatenaBlock.h"
+#include "CRengaBlock.h"
 
 
 #define enemycount 0
@@ -147,19 +148,48 @@ void CStage1::Load()
 	
 	////////////////////////////////////////////////////////////////////
 
+	// ハテナブロックとレンガブロックの間隔は約7.3f
 	// ハテナブロック
 	CHatenaBlock* hatena = new CHatenaBlock
 	(
-		CVector(30.0f, 7.0f, -50.0f),
+		CVector(30.0f, 6.0f, -50.0f),
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector hatenaPos = CVector(-30.0f, 7.0f, -50.0f);
+	CVector hatenaPos = CVector(30.0f, 6.0f, -50.0f);
 	if (hatena != nullptr)
 	{
 		hatena->SetStartPosition(hatenaPos);
 	}
 	AddTask(hatena);
+
+	// レンガブロック
+	CRengaBlock* renga = new CRengaBlock
+	(
+		CVector(37.3f, 6.0f, -50.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector rengaPos = CVector(37.3f, 6.0f, -50.0f);
+	if (renga != nullptr)
+	{
+		renga->SetStartPosition(rengaPos);
+	}
+	AddTask(renga);
+
+	// レンガブロック
+	CRengaBlock* renga1 = new CRengaBlock
+	(
+		CVector(22.7f, 6.0f, -50.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector rengaPos1 = CVector(22.7f, 6.0f, -50.0f);
+	if (renga1 != nullptr)
+	{
+		renga1->SetStartPosition(rengaPos1);
+	}
+	AddTask(renga1);
 
 
 	

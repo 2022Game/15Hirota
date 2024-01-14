@@ -412,6 +412,9 @@
     <ClCompile Include="src\Game\CHatenaBlock.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CRengaBlock.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -757,6 +760,9 @@
       <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CHatenaBlock.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CRengaBlock.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
   </ItemGroup>
