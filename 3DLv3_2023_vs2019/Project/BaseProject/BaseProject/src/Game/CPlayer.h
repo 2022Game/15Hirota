@@ -101,6 +101,9 @@ public:
 	// damage == 受けるダメージ
 	void TakeDamage(int damage) override;
 
+	// recovery == 回復
+	void TakeRecovery(int recovery) override;
+
 	// 更新
 	void Update();
 

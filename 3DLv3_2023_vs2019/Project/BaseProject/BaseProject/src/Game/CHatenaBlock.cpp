@@ -1,6 +1,7 @@
 #include "CHatenaBlock.h"
 #include "Maths.h"
 #include "CPlayer.h"
+#include "CRecoveryObject.h"
 
 // 消えるのにかかる時間
 #define FADE_TIME 3.0f
@@ -8,6 +9,8 @@
 #define WAIT_TIME 3.0f
 
 #define MAXHEIGHT 15.0f
+
+#define HEIGHT_ABOVE_BLOCK 3.0f
 
 // コンストラクタ
 CHatenaBlock::CHatenaBlock(const CVector& pos, const CVector& scale,
@@ -31,7 +34,7 @@ CHatenaBlock::CHatenaBlock(const CVector& pos, const CVector& scale,
 	// ハテナブロックのコライダーを作成
 	mpColliderSphere = new CColliderSphere
 	(
-		this, ELayer::eHatenaBlockCol,
+		this, ELayer::eBlockCol,
 		1.0f, true
 	);
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
@@ -46,6 +49,7 @@ CHatenaBlock::CHatenaBlock(const CVector& pos, const CVector& scale,
 	Position(pos);
 	Scale(scale);
 
+	mpSword = nullptr;
 }
 
 // デストラクタ
@@ -112,8 +116,17 @@ void CHatenaBlock::UpdateHit()
 		// 最大値まで
 		if (Position().Y() < MAXHEIGHT)
 		{
-			mMoveSpeed = CVector(0.0f, 100.0f * Time::DeltaTime(), 0.0f);
-			Position(Position() + mMoveSpeed);
+			CVector mSpd = mMoveSpeed;
+			mSpd = CVector(0.0f, 100.0f * Time::DeltaTime(), 0.0f);
+			Position(Position() + mSpd);
+
+			if (!mpSword)
+			{
+				mpSword = new CRecoveryObject();
+				
+				mpSword->Position(mStartPos + CVector(0.0f,40.0f,0.0f));
+			}
+
 		}
 		else
 		{

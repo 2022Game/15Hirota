@@ -119,7 +119,7 @@ CPlayer::CPlayer()
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
-	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol, ELayer::eHatenaBlockCol });
+	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol, ELayer::eBlockCol });
 	
 
 	// 当たり判定を取るコライダー
@@ -128,7 +128,7 @@ CPlayer::CPlayer()
 		this, ELayer::ePlayer,
 		9.0f
 	);
-	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField});
+	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol});
 	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 
 
@@ -1116,7 +1116,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				Position(Position() + hit.adjust);
 			}
 		}
-		else if (other->Layer() == ELayer::eHatenaBlockCol)
+		else if (other->Layer() == ELayer::eBlockCol)
 		{
 			if (mState == EState::eJump)
 			{
@@ -1142,9 +1142,16 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				mpRideObject = other->Owner();
 			}
 		}
-		if (other->Layer() == ELayer::eField)
+		else if (other->Layer() == ELayer::eField)
 		{
 			Position(Position() + hit.adjust);
+		}
+		else if (other->Layer() == ELayer::eRecoverCol)
+		{
+			if (other->Tag() == ETag::eItem)
+			{
+				TakeRecovery(1);
+			}
 		}
 	}
 
@@ -1186,6 +1193,12 @@ void CPlayer::TakeDamage(int damage)
 	{
 		ChangeState(EState::eDeth);
 	}
+}
+
+// 回復処理
+void CPlayer::TakeRecovery(int recovery)
+{
+	mCharaStatus.hp += recovery;
 }
 
 // 描画

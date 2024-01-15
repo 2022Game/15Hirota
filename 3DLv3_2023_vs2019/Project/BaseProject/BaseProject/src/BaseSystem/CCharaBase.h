@@ -16,6 +16,10 @@ public:
 	// damage == 受けるダメージ
 	virtual void TakeDamage(int damage);
 
+	// 回復処理
+	// recovery == 回復
+	virtual void TakeRecovery(int recovery);
+
 	// 最大ステータスを取得
 	const CharaStatus& MaxStatus() const;
 	// 現在のステータスを取得

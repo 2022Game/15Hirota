@@ -18,8 +18,6 @@
 #include "CRengaBlock.h"
 
 
-#define enemycount 0
-
 // コンストラクタ
 CStage1::CStage1()
 {

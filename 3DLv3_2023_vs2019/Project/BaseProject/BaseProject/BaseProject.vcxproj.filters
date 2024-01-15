@@ -415,6 +415,12 @@
     <ClCompile Include="src\Game\CRengaBlock.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CItemObjectBase.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CRecoveryObject.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -764,6 +770,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CRengaBlock.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CItemObjectBase.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CRecoveryObject.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

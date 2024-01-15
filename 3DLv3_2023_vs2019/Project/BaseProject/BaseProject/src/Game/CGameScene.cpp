@@ -57,7 +57,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModelX>("Player",	"Character\\Monster1\\Monster_1.x");						// プレイヤー
 	CResourceManager::Load<CModelX>("Soldier",	"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
 	//CResourceManager::Load<CModelX>("UnityChan", "Character\\UnityChan\\unitychan.x");					// ユニティちゃん
-	CResourceManager::Load<CModelX>("Yukari", "Character\\Yukari\\Yukari_Model.x");							// ゆかりさん
+	CResourceManager::Load<CModelX>("Yukari",	"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
 
 
 	// アイテム関連
@@ -114,8 +114,6 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-	CDebugPrint::Print("count:%d\n", CEnemyManager::GetEnemyCount());
-
 	if (CInput::PushKey('H'))
 	{
 		CSceneManager::Instance()->LoadScene(EScene::eTitle);
@@ -131,11 +129,13 @@ void CGameScene::Update()
 		}
 	}
 
-	int enemyCount = CEnemyManager::GetEnemyCount();
+	// [CStage1] の処理 /////////////////////////////////////////////////////////////
+
+	int enemyCount = CEnemyManager::GetEnemyCount();	// ソルジャーの数
 
 	static bool Rising = false;
 
-	if (enemyCount <= 0 && !Rising)
+	if (enemyCount <= 0 && !Rising)	// ステージ番号
 	{
 		int currentStage = CGameManager::StageNo();
 		if (currentStage == 0)
@@ -159,39 +159,10 @@ void CGameScene::Update()
 		}
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////
+
+	// ステージ番号の確認
 	CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
-
-	//CDebugPrint::Print("enemy: %d\n", CSoldier::GetEnemyCount());
-	//// hp取得
-	//int currentHP = CPlayer::Instance()->GetHp();
-	//// 最大hp取得
-	//int maxHP = CPlayer::Instance()->GetMaxHp();
-
-	//int Enemy = CSoldier::GetEnemyCount();
-
-	//if (Enemy <= 0)
-	//{
-	//	CSceneManager::Instance()->LoadScene(EScene::eClear);
-	//}
-
-	/*if (currentHP <= 0)
-	{
-		CSceneManager::Instance()->LoadScene(EScene::eOver);
-	}*/
-
-	//// hpが半分を切るとeOverに遷移させる
-	//if (currentHP <= 0) {
-	//	CSceneManager::Instance()->LoadScene(EScene::eOver);
-	//}
-	/*else if (currentHP <= 5 && Clear)
-	{
-		if (Clear)
-		{
-			image->Load("UI\\Clear.jpeg");
-			if (CInput::PushKey('C'))
-			{
-				CSceneManager::Instance()->LoadScene(EScene::eClear);
-			}
-		}
-	}*/
+	// ソルジャーの数の確認
+	CDebugPrint::Print("count:%d\n", CEnemyManager::GetEnemyCount());
 }

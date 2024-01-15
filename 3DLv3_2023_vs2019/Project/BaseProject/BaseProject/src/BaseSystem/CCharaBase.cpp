@@ -15,6 +15,12 @@ void CCharaBase::TakeDamage(int damage)
 	
 }
 
+// 回復処理
+void CCharaBase::TakeRecovery(int recovery)
+{
+
+}
+
 // 最大ステータスを取得
 const CharaStatus& CCharaBase::MaxStatus() const
 {

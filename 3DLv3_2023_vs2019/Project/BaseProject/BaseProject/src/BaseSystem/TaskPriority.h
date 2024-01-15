@@ -14,6 +14,7 @@ enum class ETaskPriority
 	ePlayer,		// プレイヤー
 	eEnemy,			// エネミー
 
+	eItem,			// アイテム
 	eWeapon,		// プレイヤー武器
 	eEnemyWeapon,	// 敵の武器
 

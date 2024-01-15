@@ -5,6 +5,8 @@
 #include "CModel.h"
 #include "CColliderSphere.h"
 
+class CRecoveryObject;
+
 // ハテナブロック
 class CHatenaBlock : public CRideableObject
 {
@@ -71,5 +73,7 @@ private:
 
 	CVector mMoveSpeed;
 	CVector mStartPos;
+
+	CRecoveryObject* mpSword;
 };
 #endif

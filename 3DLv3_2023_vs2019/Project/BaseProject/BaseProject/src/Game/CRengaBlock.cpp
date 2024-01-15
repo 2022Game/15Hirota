@@ -32,7 +32,7 @@ CRengaBlock::CRengaBlock(const CVector& pos, const CVector& scale,
 	// レンガロックのコライダーを作成
 	mpColliderSphere = new CColliderSphere
 	(
-		this, ELayer::eHatenaBlockCol,
+		this, ELayer::eBlockCol,
 		1.0f, true
 	);
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });

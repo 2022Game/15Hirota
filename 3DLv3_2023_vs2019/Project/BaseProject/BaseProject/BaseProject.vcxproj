@@ -72,6 +72,7 @@
     <ClCompile Include="src\Game\CGoalBase.cpp" />
     <ClCompile Include="src\Game\CHatenaBlock.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
+    <ClCompile Include="src\Game\CRecoveryObject.cpp" />
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
     <ClCompile Include="src\Game\CRisingObject.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
@@ -108,6 +109,7 @@
     <ClCompile Include="src\Game\CYukariFrame.cpp" />
     <ClCompile Include="src\Game\CYukariGauge.cpp" />
     <ClCompile Include="src\Game\CDisappearFloor.cpp" />
+    <ClCompile Include="src\Game\CItemObjectBase.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Test\CBootMenuScene.cpp" />
     <ClCompile Include="src\Test\CColBasecpp.cpp" />
@@ -190,6 +192,7 @@
     <ClInclude Include="src\Game\CGoalBase.h" />
     <ClInclude Include="src\Game\CHatenaBlock.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
+    <ClInclude Include="src\Game\CRecoveryObject.h" />
     <ClInclude Include="src\Game\CRengaBlock.h" />
     <ClInclude Include="src\Game\CRisingObject.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
@@ -227,6 +230,7 @@
     <ClInclude Include="src\Game\CYukariGauge.h" />
     <ClInclude Include="src\Game\CGameManager.h" />
     <ClInclude Include="src\Game\CDisappearFloor.h" />
+    <ClInclude Include="src\Game\CItemObjectBase.h" />
     <ClInclude Include="src\Test\CBootMenuScene.h" />
     <ClInclude Include="src\Test\CColBase.h" />
     <ClInclude Include="src\Test\CColLine.h" />
