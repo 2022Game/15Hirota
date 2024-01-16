@@ -5,9 +5,11 @@
 #include "Maths.h"
 
 #define GRAVITY 0.0625f			// d—Í
-#define RUN_SPEED 20.0f
+#define RUN_SPEED 40.0f
 
 #define TIMERETURN 5.0f
+
+#define BOUNCE_FORCE 1.5f
 
 CInvincible::CInvincible()
 	: mMoveSpeed(0.0f, 0.0f, 0.0f)
@@ -43,6 +45,13 @@ void CInvincible::Update()
 {
 	// d—Í
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
+
+	if (mIsGround)
+	{
+		mMoveSpeed += CVector(0.0f, BOUNCE_FORCE, 0.0f);
+		mIsGround = false;
+	}
+
 
 	// ‰ñ“]
 	float rot = 1.0f;
@@ -86,6 +95,8 @@ void CInvincible::Update()
 
 	// ˆÚ“®
 	Position(Position() + moveVector + mMoveSpeed * 60.0f * Time::DeltaTime());
+
+	mIsGround = false;
 }
 
 void CInvincible::Render()
@@ -128,7 +139,7 @@ void CInvincible::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 		{
 			mIsGround = true;
 			mMoveSpeed.Y(0.0f);
-			Position(Position() + hit.adjust * hit.weight);
+			Position(Position() + hit.adjust);
 		}
 		else if (other->Layer() == ELayer::eFieldWall)
 		{

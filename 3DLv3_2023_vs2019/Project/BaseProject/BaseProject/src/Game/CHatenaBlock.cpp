@@ -135,19 +135,11 @@ void CHatenaBlock::UpdateHit()
 	case 0:
 		// —h‚ç‚·
 		// Å‘å’l‚Ü‚Å
-		if (Position().Y() < MAXHEIGHT)
+		if (Position().Y() < mStartPos.Y() + MAXHEIGHT)
 		{
 			CVector mSpd = mMoveSpeed;
 			mSpd = CVector(0.0f, 100.0f * Time::DeltaTime(), 0.0f);
 			Position(Position() + mSpd);
-
-			/*if (!mpHeart)
-			{
-				mpHeart = new CRecoveryObject();
-				mpHeart->Scale(3.0f, 3.0f, 3.0f);
-				CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
-				mpHeart->Position(newPosition);
-			}*/
 		}
 		else
 		{

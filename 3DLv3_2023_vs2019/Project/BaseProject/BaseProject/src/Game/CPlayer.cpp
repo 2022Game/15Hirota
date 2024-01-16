@@ -80,11 +80,13 @@ CPlayer::CPlayer()
 	, damageObject(false)
 	, damageEnemy(false)
 	, JumpObject(false)
+	, mInvincible(false)
 	, mLife(50)
 	, mElapsedTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
 	, JumpCoolDownTime(5.0f)
 	, mElapsedTimeCol(0.0f)
+	, mInvincibleStartTime(10.0f)
 {
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
@@ -315,7 +317,7 @@ void CPlayer::UpdateIdle()
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL)
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
 		{
 			mElapsedTimeCol = DAMAGECOL;
 			mpDamageCol->SetEnable(true);
@@ -508,8 +510,14 @@ void CPlayer::UpdateAttackWait()
 		{
 			
 		}
-		// フレームが50まで行ったらAttackEndを呼び出す
-		if (mAnimationFrame >= 40.0f)
+
+		if (CInput::PushKey(VK_SPACE))
+		{
+			ChangeState(EState::eJumpStart);
+		}
+
+		// フレームが30まで行ったらAttackEndを呼び出す
+		if (mAnimationFrame >= 30.0f)
 		{
 			mpSword->AttackEnd();
 		}
@@ -549,7 +557,7 @@ void CPlayer::UpdateJumpStart()
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL)
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
 		{
 			mElapsedTimeCol = DAMAGECOL;
 			mpDamageCol->SetEnable(true);
@@ -587,7 +595,7 @@ void CPlayer::UpdateJump()
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL)
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
 		{
 			mElapsedTimeCol = DAMAGECOL;
 			mpDamageCol->SetEnable(true);
@@ -607,7 +615,7 @@ void CPlayer::UpdateJumpEnd()
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL)
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
 		{
 			mElapsedTimeCol = DAMAGECOL;
 			mpDamageCol->SetEnable(true);
@@ -624,6 +632,16 @@ void CPlayer::UpdateJumpingStart()
 {
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eJumping);
+
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
 
 	// 移動処理
 	// キーの入力ベクトルを取得
@@ -649,6 +667,16 @@ void CPlayer::UpdateJumpingStart()
 
 void CPlayer::UpdateJumping()
 {
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
 	if (mMoveSpeed.Y() <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
@@ -658,6 +686,16 @@ void CPlayer::UpdateJumping()
 
 void CPlayer::UpdateJumpingEnd()
 {
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eIdle);
@@ -667,15 +705,16 @@ void CPlayer::UpdateJumpingEnd()
 //回避開始
 void CPlayer::UpdateRotate()
 {
-	mpDamageCol->SetEnable(false);
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL)
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
 		{
 			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
 		}
 	}
+
 	// 移動処理
 	// キーの入力ベクトルを取得
 	CVector input;
@@ -705,11 +744,13 @@ void CPlayer::UpdateRotateEnd()
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL)
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
 		{
 			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
 		}
 	}
+
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eIdle);
@@ -723,7 +764,7 @@ void CPlayer::UpdateDashEnd()
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL)
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
 		{
 			mElapsedTimeCol = DAMAGECOL;
 			mpDamageCol->SetEnable(true);
@@ -809,8 +850,15 @@ void CPlayer::UpdateHit()
 		damageEnemy = true;
 	}
 	
-	mElapsedTimeCol = 0.0f;
-	mpDamageCol->SetEnable(false);
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
 
 	// ダメージを受けた時は移動を停止
 	mMoveSpeed.X(0.0f);
@@ -840,8 +888,15 @@ void CPlayer::UpdateHitJ()
 {
 	ChangeAnimation(EAnimType::eHit);
 
-	mElapsedTimeCol = 0.0f;
-	mpDamageCol->SetEnable(false);
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
 
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
@@ -992,12 +1047,19 @@ void CPlayer::Update()
 		Rotation(CQuaternion::LookRotation(forward));
 	}
 
-	// 無敵中はカウントを減少させる
-	if (mInvincible > 0)
+	if (mInvincible)
 	{
-		// 減算
-		mInvincible--;
+		SetColor(CColor(1.0, 1.0, 0.0, 1.0));
+		mInvincibleStartTime -= Time::DeltaTime();
+
+		if (mInvincibleStartTime <= 0.0f)
+		{
+			mpDamageCol->SetEnable(true);
+			mInvincibleStartTime = 10.0f;
+			mInvincible = false;
+		}
 	}
+
 
 	if (JumpObject)
 	{
@@ -1058,7 +1120,9 @@ void CPlayer::Update()
 	mpSword->UpdateAttachMtx();
 
 	mIsGrounded = false;
+
 	CDebugPrint::Print("mMoveSpeed%f\n", mMoveSpeed.Y());
+	CDebugPrint::Print("mInvincible:%f\n", mInvincibleStartTime);
 }
 
 // 衝突処理
@@ -1207,11 +1271,11 @@ void CPlayer::TakeRecovery(int recovery)
 
 void CPlayer::TakeInvincible()
 {
-	mpDamageCol->SetEnable(false);
-	mElapsedTime += Time::DeltaTime();
-	if (mElapsedTime > 5.0f)
+	mInvincibleStartTime = 10.0f;
+	if (!mInvincible)
 	{
-		mpDamageCol->SetEnable(true);
+		mpDamageCol->SetEnable(false);
+		mInvincible = true;
 	}
 }
 

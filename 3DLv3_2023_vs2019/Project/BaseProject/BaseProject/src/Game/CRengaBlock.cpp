@@ -111,7 +111,7 @@ void CRengaBlock::UpdateHit()
 	case 0:
 		// —h‚ç‚·
 		// Å‘å’l‚Ü‚Å
-		if (Position().Y() < MAXHEIGHT)
+		if (Position().Y() < mStartPos.Y() + MAXHEIGHT)
 		{
 			mMoveSpeed = CVector(0.0f, 100.0f * Time::DeltaTime(), 0.0f);
 			Position(Position() + mMoveSpeed);

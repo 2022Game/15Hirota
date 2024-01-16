@@ -200,7 +200,7 @@ private:
 
 	CTransform* mpRideObject;
 
-	int mInvincible;			// 無敵カウンタ
+	bool mInvincible;			// 無敵カウンタ
 	bool staminaDepleted;		// スタミナが上限値に到達した場合のフラグ
 	bool staminaLowerLimit;		// スタミナが下限値に到達した場合のフラグ
 	bool damageObject;			// ダメージを与えるフラグ
@@ -223,4 +223,5 @@ private:
 	float mElapsedTimeEnd;	// 計測時間終了
 	float mElapsedTimeCol;	// コライダーの計測時間
 	float JumpCoolDownTime;
+	float mInvincibleStartTime;
 };

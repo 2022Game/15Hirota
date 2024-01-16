@@ -89,6 +89,9 @@
     <Filter Include="ソース ファイル\Game\UI\PlayerUI">
       <UniqueIdentifier>{7162809b-e06e-4d22-91bf-02cf1bc08ac2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Stage">
+      <UniqueIdentifier>{65edd1ba-a62e-4bc5-b2bb-c2778c75654e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
