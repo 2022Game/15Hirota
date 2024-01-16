@@ -81,6 +81,7 @@ CPlayer::CPlayer()
 	, damageEnemy(false)
 	, JumpObject(false)
 	, mInvincible(false)
+	, mHpHit(false)
 	, mLife(50)
 	, mElapsedTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
@@ -1120,6 +1121,7 @@ void CPlayer::Update()
 	mpSword->UpdateAttachMtx();
 
 	mIsGrounded = false;
+	mHpHit = false;
 
 	CDebugPrint::Print("mMoveSpeed%f\n", mMoveSpeed.Y());
 	CDebugPrint::Print("mInvincible:%f\n", mInvincibleStartTime);
@@ -1263,8 +1265,10 @@ void CPlayer::TakeDamage(int damage)
 // ‰ñ•œˆ—
 void CPlayer::TakeRecovery(int recovery)
 {
-	if (mCharaStatus.hp < mCharaMaxStatus.hp)
+	// ‚²‚è‰Ÿ‚µA‘½•ª‘¼‚Ì•û–@‚ª‚ ‚é
+	if (mCharaStatus.hp < mCharaMaxStatus.hp && !mHpHit)
 	{
+		mHpHit = true;
 		mCharaStatus.hp += recovery;
 	}
 }

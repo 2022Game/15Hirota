@@ -206,6 +206,7 @@ private:
 	bool damageObject;			// ダメージを与えるフラグ
 	bool damageEnemy;			// ダメージを与えるフラグ(敵)
 	bool JumpObject;			// ジャンプオブジェクトのフラグ
+	bool mHpHit;
 
 
 	CColliderSphere* mpDamageCol;	//ダメージを受けるコライダ

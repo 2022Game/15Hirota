@@ -20,10 +20,10 @@ public:
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit);
 
-	//// 回復開始
-	//void RecoverStart();
+	// 回復開始
+	void RecoverStart();
 
-	//void RecoverEnd();
+	void RecoverEnd();
 
 	// 回復アイテムの行列を取得
 	//CMatrix Matrix() const override;

@@ -79,25 +79,6 @@ void CHatenaBlock::Collision(CCollider* self, CCollider* other, const CHitInfo& 
 			// 現在が待機状態であれば、当たった時の処理にする
 			if (mState == EState::Idle)
 			{
-				int randomValue = Math::Rand(0, 1);
-				bool item = false;
-
-				if ((randomValue == 0 && !mpHeart && !item))
-				{
-					item = true;
-					mpHeart = new CRecoveryObject();
-					mpHeart->Scale(3.0f, 3.0f, 3.0f);
-					CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
-					mpHeart->Position(newPosition);
-				}
-				else if ((randomValue == 1 && !mpStar && !item))
-				{
-					item = true;
-					mpStar = new CInvincible();
-					mpStar->Scale(3.0f, 3.0f, 3.0f);
-					CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
-					mpStar->Position(newPosition);
-				}
 				ChangeState(EState::Hit);
 			}
 		}
@@ -128,6 +109,7 @@ void CHatenaBlock::UpdateIdle()
 // 当たった時の更新処理
 void CHatenaBlock::UpdateHit()
 {
+	bool item = false;
 	// ステップごとに処理を切り替え
 	switch (mStateStep)
 	{
@@ -137,6 +119,29 @@ void CHatenaBlock::UpdateHit()
 		// 最大値まで
 		if (Position().Y() < mStartPos.Y() + MAXHEIGHT)
 		{
+			int randomValue = Math::Rand(0, 1);
+
+			item = false;
+
+			bool obj = !mpHeart && !mpStar;
+
+			if ((randomValue == 0 && obj && !item))
+			{
+				item = true;
+				mpHeart = new CRecoveryObject();
+				mpHeart->Scale(3.0f, 3.0f, 3.0f);
+				CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
+				mpHeart->Position(newPosition);
+			}
+			else if ((randomValue == 1 && obj && !item))
+			{
+				item = true;
+				mpStar = new CInvincible();
+				mpStar->Scale(3.0f, 3.0f, 3.0f);
+				CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
+				mpStar->Position(newPosition);
+			}
+
 			CVector mSpd = mMoveSpeed;
 			mSpd = CVector(0.0f, 100.0f * Time::DeltaTime(), 0.0f);
 			Position(Position() + mSpd);

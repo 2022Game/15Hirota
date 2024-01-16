@@ -187,13 +187,13 @@ void CInvincible::MoveZ()
 	float moveSpeed = RUN_SPEED;
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
-	moveVector = mTargetDir * moveSpeed;
+	moveVector = mTargetDir * -moveSpeed;
 
 	// deltaTime を考慮して移動量を計算
 	moveVector *= Time::DeltaTime();
 
 	// 現在の座標を更新
-	Position(Position() + moveVector + mMoveSpeed);
+	//Position(Position() + moveVector + mMoveSpeed);
 }
 
 void CInvincible::MoveX()
@@ -202,7 +202,7 @@ void CInvincible::MoveX()
 	float moveSpeed = RUN_SPEED;
 
 	// mTargetDir を横方向に変更（左右に動く）
-	CVector moveDirection(mTargetDir.Z(), 0.0f, -mTargetDir.X());
+	CVector moveDirection(mTargetDir.Z(), 0.0f, mTargetDir.X());
 	moveDirection.Normalize();
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
@@ -212,7 +212,7 @@ void CInvincible::MoveX()
 	moveVector *= Time::DeltaTime();
 
 	// 現在の座標を更新
-	Position(Position() + moveVector + mMoveSpeed);
+	//Position(Position() + moveVector + mMoveSpeed);
 }
 
 void CInvincible::MoveY()
@@ -221,7 +221,7 @@ void CInvincible::MoveY()
 	float moveSpeed = RUN_SPEED;
 
 	// mTargetDir を横方向に変更（左右に動く）
-	CVector moveDirection(mTargetDir.Z(), 0.0f, -mTargetDir.X());
+	CVector moveDirection(-mTargetDir.Z(), 0.0f, mTargetDir.X());
 	moveDirection.Normalize();
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
@@ -231,5 +231,5 @@ void CInvincible::MoveY()
 	moveVector *= Time::DeltaTime();
 
 	// 現在の座標を更新
-	Position(Position() + moveVector + mMoveSpeed);
+	//Position(Position() + moveVector + mMoveSpeed);
 }

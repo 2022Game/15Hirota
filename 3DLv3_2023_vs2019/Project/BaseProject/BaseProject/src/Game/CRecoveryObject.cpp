@@ -7,12 +7,12 @@
 #define GRAVITY 0.0625f			// 重力
 #define RUN_SPEED 20.0f
 
-#define TIMERETURN 5.0f
+#define TIMERETURN 0.5f
 
 CRecoveryObject::CRecoveryObject()
 	: mMoveSpeed(0.0f,0.0f,0.0f)
 	, mTargetDir(0.0f, 0.0f, 1.0f)
-	, mElapsedTime(1.0f)
+	, mElapsedTime(0.0f)
 	, mIsGround(false)
 	, mSwitchCounter(0)
 	, mRecoveryUsed(false)
@@ -54,10 +54,10 @@ void CRecoveryObject::Update()
 	mElapsedTime += Time::DeltaTime();
 
 	// タイムが2秒以下だったら
-	if (mElapsedTime >= 2.0f)
+	if (mElapsedTime >= TIMERETURN)
 	{
 		mSwitchCounter++;
-		if (mSwitchCounter == 6)
+		if (mSwitchCounter == 15)
 		{
 			Kill();
 		}
@@ -105,13 +105,13 @@ void CRecoveryObject::Collision(CCollider* self, CCollider* other, const CHitInf
 			// すでに回復済みのキャラでなければ
 			if (!IsAttachHitObj(player) && !mRecoveryUsed)
 			{
+				mRecoveryUsed = true;
 				// 回復させる
 				player->TakeRecovery(1);
 
 				// 回復済みリストに追加
 				AddAttachHitObj(player);
 
-				mRecoveryUsed = true;
 				if (mRecoveryUsed)
 				{
 					Kill();
@@ -128,7 +128,7 @@ void CRecoveryObject::Collision(CCollider* self, CCollider* other, const CHitInf
 		{
 			mIsGround = true;
 			mMoveSpeed.Y(0.0f);
-			Position(Position() + hit.adjust * hit.weight);
+			Position(Position() + hit.adjust);
 		}
 		else if (other->Layer() == ELayer::eFieldWall)
 		{
@@ -136,22 +136,22 @@ void CRecoveryObject::Collision(CCollider* self, CCollider* other, const CHitInf
 		}
 	}
 }
-//
-//// 回復スタート
-//void CRecoveryObject::RecoverStart()
-//{
-//	CItemObjectBase::RecoverStart();
-//	// 回復が始まったら、回復コライダーをオンにする
-//	mpRecoverCol->SetEnable(true);
-//}
-//
-//// 回復終了
-//void CRecoveryObject::RecoverEnd()
-//{
-//	CItemObjectBase::RecoverEnd();
-//	// 回復が終われば、回復コライダーをオフにするん
-//	mpRecoverCol->SetEnable(false);
-//}
+
+// 回復スタート
+void CRecoveryObject::RecoverStart()
+{
+	CItemObjectBase::RecoverStart();
+	// 回復が始まったら、回復コライダーをオンにする
+	mpRecoverCol->SetEnable(true);
+}
+
+// 回復終了
+void CRecoveryObject::RecoverEnd()
+{
+	CItemObjectBase::RecoverEnd();
+	// 回復が終われば、回復コライダーをオフにするん
+	mpRecoverCol->SetEnable(false);
+}
 
 
 // 移動処理
@@ -176,13 +176,13 @@ void CRecoveryObject::MoveZ()
 	float moveSpeed = RUN_SPEED;
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
-	moveVector = mTargetDir * moveSpeed;
+	moveVector = mTargetDir * -moveSpeed;
 
 	// deltaTime を考慮して移動量を計算
 	moveVector *= Time::DeltaTime();
 
 	// 現在の座標を更新
-	Position(Position() + moveVector + mMoveSpeed);
+	//Position(Position() + moveVector + mMoveSpeed);
 }
 
 void CRecoveryObject::MoveX()
@@ -191,7 +191,7 @@ void CRecoveryObject::MoveX()
 	float moveSpeed = RUN_SPEED;
 
 	// mTargetDir を横方向に変更（左右に動く）
-	CVector moveDirection(mTargetDir.Z(), 0.0f, -mTargetDir.X());
+	CVector moveDirection(mTargetDir.Z(), 0.0f, mTargetDir.X());
 	moveDirection.Normalize();
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
@@ -201,7 +201,7 @@ void CRecoveryObject::MoveX()
 	moveVector *= Time::DeltaTime();
 
 	// 現在の座標を更新
-	Position(Position() + moveVector + mMoveSpeed);
+	//Position(Position() + moveVector + mMoveSpeed);
 }
 
 void CRecoveryObject::MoveY()
@@ -210,7 +210,7 @@ void CRecoveryObject::MoveY()
 	float moveSpeed = RUN_SPEED;
 
 	// mTargetDir を横方向に変更（左右に動く）
-	CVector moveDirection(mTargetDir.Z(), 0.0f, -mTargetDir.X());
+	CVector moveDirection(-mTargetDir.Z(), 0.0f, mTargetDir.X());
 	moveDirection.Normalize();
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
@@ -220,5 +220,5 @@ void CRecoveryObject::MoveY()
 	moveVector *= Time::DeltaTime();
 
 	// 現在の座標を更新
-	Position(Position() + moveVector + mMoveSpeed);
+	//Position(Position() + moveVector + mMoveSpeed);
 }
