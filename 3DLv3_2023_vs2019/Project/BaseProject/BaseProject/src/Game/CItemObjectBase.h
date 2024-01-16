@@ -24,6 +24,7 @@ protected:
 
 	// 回復がヒット済みのオブジェクトリスト
 	std::list<CObjectBase*> mRecoveryObjects;
+	std::list<CObjectBase*> mInvincible;
 
 
 };

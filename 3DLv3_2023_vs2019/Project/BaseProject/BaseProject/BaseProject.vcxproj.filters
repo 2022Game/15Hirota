@@ -421,6 +421,9 @@
     <ClCompile Include="src\Game\CRecoveryObject.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CInvincible.cpp">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -776,6 +779,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CRecoveryObject.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CInvincible.h">
+      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

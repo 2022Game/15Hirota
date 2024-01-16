@@ -6,6 +6,7 @@
 #include "CColliderSphere.h"
 
 class CRecoveryObject;
+class CInvincible;
 
 // ハテナブロック
 class CHatenaBlock : public CRideableObject
@@ -74,6 +75,7 @@ private:
 	CVector mMoveSpeed;
 	CVector mStartPos;
 
-	CRecoveryObject* mpSword;
+	CRecoveryObject* mpHeart;
+	CInvincible* mpStar;
 };
 #endif

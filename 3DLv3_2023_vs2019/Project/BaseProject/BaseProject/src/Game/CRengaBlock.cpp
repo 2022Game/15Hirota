@@ -35,8 +35,8 @@ CRengaBlock::CRengaBlock(const CVector& pos, const CVector& scale,
 		this, ELayer::eBlockCol,
 		1.0f, true
 	);
-	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
-	mpColliderSphere->SetCollisionLayers({ ELayer::ePlayer });
+	mpColliderSphere->SetCollisionTags({ ETag::ePlayer,ETag::eItem });
+	mpColliderSphere->SetCollisionLayers({ ELayer::ePlayer,ELayer::eRecoverCol });
 	mpColliderSphere->Position(0.0f, 5.0f, 0.0f);
 
 	// 生成時に設定された触れた時に反応するオブジェクトタグと

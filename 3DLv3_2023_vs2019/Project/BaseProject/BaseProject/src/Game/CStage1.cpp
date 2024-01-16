@@ -161,6 +161,32 @@ void CStage1::Load()
 	}
 	AddTask(hatena);
 
+	CHatenaBlock* hatena1 = new CHatenaBlock
+	(
+		CVector(0.0f, 6.0f, -250.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector hatenaPos1 = CVector(0.0f, 6.0f, -250.0f);
+	if (hatena1 != nullptr)
+	{
+		hatena1->SetStartPosition(hatenaPos1);
+	}
+	AddTask(hatena1);
+
+	CHatenaBlock* hatena2 = new CHatenaBlock
+	(
+		CVector(7.3f, 6.0f, -250.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector hatenaPos2 = CVector(7.3f, 6.0f, -250.0f);
+	if (hatena2 != nullptr)
+	{
+		hatena2->SetStartPosition(hatenaPos2);
+	}
+	AddTask(hatena2);
+
 	// ƒŒƒ“ƒKƒuƒƒbƒN
 	CRengaBlock* renga = new CRengaBlock
 	(

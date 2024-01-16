@@ -19,6 +19,9 @@ public:
 	// 回復処理
 	// recovery == 回復
 	virtual void TakeRecovery(int recovery);
+	
+	virtual void TakeInvincible();
+
 
 	// 最大ステータスを取得
 	const CharaStatus& MaxStatus() const;

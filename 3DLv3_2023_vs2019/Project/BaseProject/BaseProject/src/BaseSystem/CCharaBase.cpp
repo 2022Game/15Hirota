@@ -21,6 +21,11 @@ void CCharaBase::TakeRecovery(int recovery)
 
 }
 
+void CCharaBase::TakeInvincible()
+{
+}
+
+
 // 最大ステータスを取得
 const CharaStatus& CCharaBase::MaxStatus() const
 {

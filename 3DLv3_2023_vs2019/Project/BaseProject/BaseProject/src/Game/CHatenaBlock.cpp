@@ -2,6 +2,7 @@
 #include "Maths.h"
 #include "CPlayer.h"
 #include "CRecoveryObject.h"
+#include "CInvincible.h"
 
 // 消えるのにかかる時間
 #define FADE_TIME 3.0f
@@ -37,8 +38,8 @@ CHatenaBlock::CHatenaBlock(const CVector& pos, const CVector& scale,
 		this, ELayer::eBlockCol,
 		1.0f, true
 	);
-	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
-	mpColliderSphere->SetCollisionLayers({ ELayer::ePlayer });
+	mpColliderSphere->SetCollisionTags({ ETag::ePlayer, ETag::eItem });
+	mpColliderSphere->SetCollisionLayers({ ELayer::ePlayer, ELayer::eRecoverCol });
 	mpColliderSphere->Position(0.0f, 5.0f, 0.0f);
 
 	// 生成時に設定された触れた時に反応するオブジェクトタグと
@@ -49,7 +50,8 @@ CHatenaBlock::CHatenaBlock(const CVector& pos, const CVector& scale,
 	Position(pos);
 	Scale(scale);
 
-	mpSword = nullptr;
+	mpHeart = nullptr;
+	mpStar = nullptr;
 }
 
 // デストラクタ
@@ -77,6 +79,25 @@ void CHatenaBlock::Collision(CCollider* self, CCollider* other, const CHitInfo& 
 			// 現在が待機状態であれば、当たった時の処理にする
 			if (mState == EState::Idle)
 			{
+				int randomValue = Math::Rand(0, 1);
+				bool item = false;
+
+				if ((randomValue == 0 && !mpHeart && !item))
+				{
+					item = true;
+					mpHeart = new CRecoveryObject();
+					mpHeart->Scale(3.0f, 3.0f, 3.0f);
+					CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
+					mpHeart->Position(newPosition);
+				}
+				else if ((randomValue == 1 && !mpStar && !item))
+				{
+					item = true;
+					mpStar = new CInvincible();
+					mpStar->Scale(3.0f, 3.0f, 3.0f);
+					CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
+					mpStar->Position(newPosition);
+				}
 				ChangeState(EState::Hit);
 			}
 		}
@@ -120,13 +141,13 @@ void CHatenaBlock::UpdateHit()
 			mSpd = CVector(0.0f, 100.0f * Time::DeltaTime(), 0.0f);
 			Position(Position() + mSpd);
 
-			if (!mpSword)
+			/*if (!mpHeart)
 			{
-				mpSword = new CRecoveryObject();
-				
-				mpSword->Position(mStartPos + CVector(0.0f,40.0f,0.0f));
-			}
-
+				mpHeart = new CRecoveryObject();
+				mpHeart->Scale(3.0f, 3.0f, 3.0f);
+				CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
+				mpHeart->Position(newPosition);
+			}*/
 		}
 		else
 		{
@@ -174,7 +195,6 @@ void CHatenaBlock::Update()
 		UpdateAfter();
 		break;
 	}
-
 }
 
 // 描画
@@ -183,3 +203,24 @@ void CHatenaBlock::Render()
 	mpModel->SetColor(mColor);
 	mpModel->Render(Matrix());	
 }
+
+//
+//int randomValue = Math::Rand(0, 10);
+//bool item = false;
+//
+//if ((randomValue >= 0 && randomValue <= 5) && !mpHeart && !item)
+//{
+//	item = true;
+//	mpHeart = new CRecoveryObject();
+//	mpHeart->Scale(3.0f, 3.0f, 3.0f);
+//	CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
+//	mpHeart->Position(newPosition);
+//}
+//else if ((randomValue >= 6 && randomValue <= 10) && !mpStar && !item)
+//{
+//	item = true;
+//	mpStar = new CInvincible();
+//	mpStar->Scale(3.0f, 3.0f, 3.0f);
+//	CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
+//	mpStar->Position(newPosition);
+//}

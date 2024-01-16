@@ -104,6 +104,8 @@ public:
 	// recovery == ‰ñ•œ
 	void TakeRecovery(int recovery) override;
 
+	void TakeInvincible() override;
+
 	// XV
 	void Update();
 

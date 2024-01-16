@@ -9,6 +9,7 @@
 #include "CMajicSword.h"
 #include "CBullet.h"
 #include "CGameManager.h"
+#include "CRecoveryObject.h"
 
 //// プレイヤーのモデルデータのパス
 //#define MODEL_PATH "Character\\Monster1\\Monster_1.x"
@@ -1198,7 +1199,20 @@ void CPlayer::TakeDamage(int damage)
 // 回復処理
 void CPlayer::TakeRecovery(int recovery)
 {
-	mCharaStatus.hp += recovery;
+	if (mCharaStatus.hp < mCharaMaxStatus.hp)
+	{
+		mCharaStatus.hp += recovery;
+	}
+}
+
+void CPlayer::TakeInvincible()
+{
+	mpDamageCol->SetEnable(false);
+	mElapsedTime += Time::DeltaTime();
+	if (mElapsedTime > 5.0f)
+	{
+		mpDamageCol->SetEnable(true);
+	}
 }
 
 // 描画

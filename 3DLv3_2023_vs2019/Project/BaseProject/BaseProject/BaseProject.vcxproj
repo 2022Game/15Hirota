@@ -71,6 +71,7 @@
     <ClCompile Include="src\Game\CGameMenu.cpp" />
     <ClCompile Include="src\Game\CGoalBase.cpp" />
     <ClCompile Include="src\Game\CHatenaBlock.cpp" />
+    <ClCompile Include="src\Game\CInvincible.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="src\Game\CGameMenu.h" />
     <ClInclude Include="src\Game\CGoalBase.h" />
     <ClInclude Include="src\Game\CHatenaBlock.h" />
+    <ClInclude Include="src\Game\CInvincible.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
     <ClInclude Include="src\Game\CRecoveryObject.h" />
     <ClInclude Include="src\Game\CRengaBlock.h" />
