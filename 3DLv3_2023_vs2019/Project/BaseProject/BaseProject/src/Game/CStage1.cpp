@@ -97,7 +97,7 @@ void CStage1::Load()
 	CJumpingObject* jump = new CJumpingObject
 	(
 		CVector(0.0f, -5.0f, -340.0f),
-		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.5f, 0.5f, 0.5f),
 		CVector(0.0f,0.0f,0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);

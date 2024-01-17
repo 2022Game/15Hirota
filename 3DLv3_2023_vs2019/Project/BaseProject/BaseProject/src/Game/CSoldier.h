@@ -135,6 +135,8 @@ private:
 	void UpdateDethEnd();
 	// 徘徊処理
 	void UpdateWander();
+	// バックステップ
+	void UpdateBackStep();
 
 	// 状態
 	enum class EState
@@ -153,7 +155,9 @@ private:
 		eDeth,		// 死亡
 		eDethEnd,	// 死亡終了
 		eWander,	// 徘徊処理
+		eBackStep,	// バックステップ
 	};
+	void ChangeState(EState state);
 	// プレイヤーの状態
 	EState mState;
 	// 乗れるオブジェクトに乗っているか
@@ -180,6 +184,7 @@ private:
 		eAimDwou,	// エイム解除
 		eHit,		// ダメージHit
 		eDeth,		// 死亡
+		eBackStep,	// バックステップ
 		eJumpEnd,	// ジャンプ終了
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
@@ -211,7 +216,6 @@ private:
 	// 初期位置の保存
 	CVector mInitialPosition;
 
-
 	//////////////////////////////////////////////////////////
 	
 
@@ -221,15 +225,21 @@ private:
 	int mTimeShot;
 	// 銃の弾の終わり値
 	int mTimeShotEnd;
+	// 状態内のステップ
+	int mStateStep;
+	// キックかバックステップか
+	int mKickorbackstep;
 	// 経過時間計測用
 	float mElapsedTime;
 	// 解除時間計測用
 	float mElapsedTime_End;
 	// ランダム時間計算
 	float mTimeToChange;
+	// キックの時間計測用
+	float mTimeKickTime;
 	// 接地しているかどうか
 	bool mIsGrounded;
-	//プレイヤーを見つけたか
+	// プレイヤーを見つけたか
 	bool IsFoundPlayer() const;
 
 	//////////////////////////////////////////////////////////

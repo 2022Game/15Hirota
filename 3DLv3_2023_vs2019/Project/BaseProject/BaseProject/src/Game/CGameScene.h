@@ -21,4 +21,5 @@ public:
 private:
 	CGameMenu* mpGameMenu;
 	CSound* mpGameBGM;
+	CSound* mpTitleBGM;
 };

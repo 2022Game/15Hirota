@@ -4,6 +4,7 @@
 #include "CRideableObject.h"
 #include "CModel.h"
 #include "CColliderSphere.h"
+class CSound;
 
 // レンガブロック
 class CRengaBlock : public CRideableObject
@@ -68,12 +69,14 @@ private:
 	///////////////////////////////////////////////////
 
 
-	//// モデル関連 ///////////////////////////////////
+	//// モデル・素材関連 ///////////////////////////////////
 
 	// レンガブロックのモデル
 	CModel* mpModel;
 	// レンガブロックのコライダー
 	CColliderSphere* mpColliderSphere;
+	// ブロックを叩いた時のSE
+	CSound* mpHitBlockSE;
 
 	///////////////////////////////////////////////////
 

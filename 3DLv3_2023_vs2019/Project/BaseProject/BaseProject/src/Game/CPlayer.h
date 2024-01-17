@@ -228,5 +228,7 @@ private:
 	float mInvincibleStartTime;
 
 	CSound* mpSlashSE;
+	CSound* mpHitDamageSE;
 	bool mIsPlayedSlashSE;
+	bool mIsPlayedHitDamageSE;
 };

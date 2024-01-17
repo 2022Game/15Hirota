@@ -24,8 +24,11 @@ CHatenaBlock::CHatenaBlock(const CVector& pos, const CVector& scale,
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mIsCollision(false)
 {
-	// ハテナブロックモデルを取得
+	// ハテナブロックモデル取得
 	mpModel = CResourceManager::Get<CModel>("HatenaBlock");
+
+	// ブロックを叩いた時のSE取得
+	mpHitBlockSE = CResourceManager::Get<CSound>("8bitShot");
 
 	// ハテナブロックの初期位置の保存
 	mStartPos = Position();
@@ -40,8 +43,8 @@ CHatenaBlock::CHatenaBlock(const CVector& pos, const CVector& scale,
 	// タグ付け
 	// レイヤー付け
 	// コライダーの位置を調整
-	mpColliderSphere->SetCollisionTags({ ETag::ePlayer, ETag::eItem });
-	mpColliderSphere->SetCollisionLayers({ ELayer::ePlayer, ELayer::eRecoverCol });
+	mpColliderSphere->SetCollisionTags({ ETag::ePlayer, ETag::eItemRecover, ETag::eItemInvincible });
+	mpColliderSphere->SetCollisionLayers({ ELayer::ePlayer, ELayer::eRecoverCol, ELayer::eInvincbleCol });
 	mpColliderSphere->Position(0.0f, 5.0f, 0.0f);
 
 	// 生成時に設定された触れた時に反応するオブジェクトタグと
@@ -117,6 +120,8 @@ void CHatenaBlock::UpdateIdle()
 // 当たった時の更新処理
 void CHatenaBlock::UpdateHit()
 {
+	mpHitBlockSE->Play(1.0f, false, 0.0f);
+
 	bool item = false;
 	// ステップごとに処理を切り替え
 	switch (mStateStep)

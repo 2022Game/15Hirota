@@ -31,9 +31,9 @@ void CTitleScene::Load()
 	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// タイトルBGMを読み込み
-	mpTitleBGM = CResourceManager::Load<CSound>("TitleBGM", "BGM\\title.wav");
+	mpTitleBGM = CResourceManager::Load<CSound>("TitleBGM", "Sound\\BGM\\title.wav");
 	// タイトルBGMをループ再生開始
-	mpTitleBGM->PlayLoop();
+	mpTitleBGM->PlayLoop(-1, 0.1f, false, 0.0f);
 
 	mpTitle = new CImage(TITLE_IMAGE);
 	mpTitle->SetSize(WINDOW_WIDTH, WINDOW_HEIGHT);

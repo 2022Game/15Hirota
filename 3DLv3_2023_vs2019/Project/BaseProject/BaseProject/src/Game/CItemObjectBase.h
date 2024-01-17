@@ -22,10 +22,8 @@ protected:
 	// すでに回復がヒットしているオブジェクトかどうか
 	bool IsAttachHitObj(CObjectBase* obj) const;
 
-	// 回復がヒット済みのオブジェクトリスト
+	// 回復アイテムヒット済みのオブジェクトリスト
 	std::list<CObjectBase*> mRecoveryObjects;
-	std::list<CObjectBase*> mInvincible;
-
-
+	
 };
 #endif

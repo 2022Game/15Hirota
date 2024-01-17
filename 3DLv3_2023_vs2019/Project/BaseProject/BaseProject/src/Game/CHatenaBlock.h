@@ -7,6 +7,7 @@
 
 class CRecoveryObject;
 class CInvincible;
+class CSound;
 
 // ハテナブロック
 class CHatenaBlock : public CRideableObject
@@ -72,7 +73,7 @@ private:
 	////////////////////////////////////////////////////
 
 
-	//// モデル関連 ////////////////////////////////////
+	//// モデル・素材関連 ////////////////////////////////////
 
 	// ハテナブロックのモデル
 	CModel* mpModel;
@@ -83,6 +84,8 @@ private:
 	CRecoveryObject* mpHeart;
 	// 無敵アイテムのポインター
 	CInvincible* mpStar;
+	// ブロックを叩いた時のSE
+	CSound* mpHitBlockSE;
 
 	////////////////////////////////////////////////////
 

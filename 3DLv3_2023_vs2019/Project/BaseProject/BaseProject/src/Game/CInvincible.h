@@ -2,13 +2,14 @@
 #define CINVINCIBLE_H
 
 #include "CObjectBase.h"
-#include "CItemObjectBase.h"
+#include "CInvincibleObjectBase.h"
 #include "CColliderLine.h"
 #include "CColliderSphere.h"
 #include "CModel.h"
+class CSound;
 
 // 無敵アイテム
-class CInvincible : public CItemObjectBase
+class CInvincible : public CInvincibleObjectBase
 {
 public:
 	CInvincible();
@@ -42,12 +43,15 @@ public:
 	//CMatrix Matrix() const override;
 
 private:
-	//// モデル関連/////////////////////////////
+	//// モデル・素材関連 /////////////////////////////
 	
 	// 無敵アイテムのモデル
-	CModel* mpRecoverModel;
+	CModel* mpInvincibleModel;
 	// 無敵アイテムのコライダー
-	CColliderSphere* mpRecoverCol;
+	CColliderSphere* mpInvincibleCol;
+
+	// 無敵アイテムを取った時のSE
+	CSound* mpInvincibleSE;
 
 	////////////////////////////////////////////
 
@@ -73,7 +77,7 @@ private:
 	// 床に接地しているか
 	bool mIsGround;
 	// 無敵になったかどうか
-	bool mRecoveryUsed;
+	bool mInvincibleUsed;
 
 	/////////////////////////////////////////////
 };

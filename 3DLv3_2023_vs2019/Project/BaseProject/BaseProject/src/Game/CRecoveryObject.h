@@ -5,6 +5,7 @@
 #include "CColliderLine.h"
 #include "CColliderSphere.h"
 #include "CModel.h"
+class CSound;
 
 // 回復アイテム
 class CRecoveryObject : public CItemObjectBase
@@ -45,12 +46,15 @@ public:
 	//CMatrix Matrix() const override;
 
 private:
-	//// モデル関連 /////////////////////////
+	//// モデル・素材関連 /////////////////////////
 	
 	// 回復モデル
 	CModel* mpRecoverModel;
 	// 回復判定用のコライダー
 	CColliderSphere* mpRecoverCol;
+
+	// 回復したときのSE
+	CSound* mpRecoberSE;
 
 	/////////////////////////////////////////
 

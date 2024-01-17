@@ -3,6 +3,7 @@
 #include "CCharaBase.h"
 #include "CPlayer.h"
 #include "Maths.h"
+#include "CSound.h"
 
 // 重力
 #define GRAVITY 0.0625f
@@ -24,6 +25,9 @@ CRecoveryObject::CRecoveryObject()
 {
 	// 回復アイテムモデル取得
 	mpRecoverModel = CResourceManager::Get<CModel>("Heart");
+
+	// 回復したときのSE取得
+	mpRecoberSE = CResourceManager::Get<CSound>("8bitKaifuku");
 
 	// 回復判定用のコライダー作成
 	mpRecoverCol = new CColliderSphere
@@ -62,6 +66,7 @@ void CRecoveryObject::Collision(CCollider* self, CCollider* other, const CHitInf
 			// すでに回復済みのキャラでなければ
 			if (!IsAttachHitObj(player) && !mRecoveryUsed)
 			{
+				mpRecoberSE->Play(1.0f, false, 0.0f);
 				mRecoveryUsed = true;
 				// 回復させる
 				player->TakeRecovery(1);

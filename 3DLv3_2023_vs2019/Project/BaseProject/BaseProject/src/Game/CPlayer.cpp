@@ -89,6 +89,7 @@ CPlayer::CPlayer()
 	, mElapsedTimeCol(0.0f)
 	, mInvincibleStartTime(10.0f)
 	, mIsPlayedSlashSE(false)
+	, mIsPlayedHitDamageSE(false)
 {
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
@@ -133,7 +134,7 @@ CPlayer::CPlayer()
 		this, ELayer::ePlayer,
 		9.0f
 	);
-	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol});
+	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, ELayer::eInvincbleCol});
 	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 
 
@@ -158,6 +159,7 @@ CPlayer::CPlayer()
 	mpSword->SetOwner(this);
 
 	mpSlashSE = CResourceManager::Get<CSound>("SlashSound");
+	mpHitDamageSE = CResourceManager::Get<CSound>("CreatureGrowl1");
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -525,12 +527,11 @@ void CPlayer::UpdateAttackWait()
 		}
 
 		// フレームが30まで行ったらAttackEndを呼び出す
-		if (mIsPlayedSlashSE && GetAnimationFrame() >= 30.0f)
+		if (!mIsPlayedSlashSE && GetAnimationFrame() >= 10.0f)
 		{
 			// 斬撃SEを再生
-			mpSlashSE->Play();
+			mpSlashSE->Play(1.0f, false, 0.0f);
 			mIsPlayedSlashSE = true;
-			mpSword->AttackEnd();
 		}
 	}
 	else
@@ -879,6 +880,7 @@ void CPlayer::UpdateHit()
 	{
 		if (mCharaStatus.hp > 0)
 		{
+			mIsPlayedHitDamageSE = false;
 			damageEnemy = false;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
@@ -924,6 +926,7 @@ void CPlayer::UpdateHitJ()
 	{
 		if (mCharaStatus.hp > 0)
 		{
+			mIsPlayedHitDamageSE = false;
 			mElapsedTime = 0.0f;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
@@ -1225,9 +1228,16 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 		else if (other->Layer() == ELayer::eRecoverCol)
 		{
-			if (other->Tag() == ETag::eItem)
+			if (other->Tag() == ETag::eItemRecover)
 			{
 				TakeRecovery(1);
+			}
+		}
+		else if (other->Layer() == ELayer::eInvincbleCol)
+		{
+			if (other->Tag() == ETag::eItemInvincible)
+			{
+				TakeInvincible();
 			}
 		}
 	}
@@ -1259,6 +1269,12 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 // 被ダメージ処理
 void CPlayer::TakeDamage(int damage)
 {
+	mIsPlayedHitDamageSE = false;
+	if (!mIsPlayedHitDamageSE)
+	{
+		mpHitDamageSE->Play(1.0f, false, 0.0f);
+		mIsPlayedHitDamageSE = true;
+	}
 	//// 死亡していたら、ダメージは受けない
 	//if (mCharaStatus.hp <= 0)return;
 

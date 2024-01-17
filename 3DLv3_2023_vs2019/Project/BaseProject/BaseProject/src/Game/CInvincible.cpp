@@ -3,6 +3,7 @@
 #include "CCharaBase.h"
 #include "CPlayer.h"
 #include "Maths.h"
+#include "CSound.h"
 
 // 重力
 #define GRAVITY 0.0625f
@@ -22,33 +23,36 @@ CInvincible::CInvincible()
 	, mMoveVector(0.0f, 0.0f, 0.0f)
 	, mElapsedTime(0.0f)
 	, mIsGround(false)
-	, mRecoveryUsed(false)
+	, mInvincibleUsed(false)
 {
 	// 無敵アイテムモデル取得
-	mpRecoverModel = CResourceManager::Get<CModel>("Star");
+	mpInvincibleModel = CResourceManager::Get<CModel>("Star");
+
+	// 無敵アイテムを取った時SE取得
+	mpInvincibleSE = CResourceManager::Get<CSound>("8bitMutekiTime");
 
 	// 無敵アイテムコライダー作成
-	mpRecoverCol = new CColliderSphere
+	mpInvincibleCol = new CColliderSphere
 	(
-		this, ELayer::eRecoverCol,
+		this, ELayer::eInvincbleCol,
 		1.5f
 	);
 	// 衝突定用のコライダーと衝突判定を行う
 	// タグ付け
 	// レイヤー付け
 	// コライダーの位置を調整
-	mpRecoverCol->SetCollisionTags({ ETag::ePlayer, ETag::eRideableObject, ETag::eField,});
-	mpRecoverCol->SetCollisionLayers({ ELayer::ePlayer, ELayer::eBlockCol, ELayer::eField,ELayer::eFieldWall });
-	mpRecoverCol->Position(0.0f, 1.0f, 0.0f);
+	mpInvincibleCol->SetCollisionTags({ ETag::ePlayer, ETag::eRideableObject, ETag::eField,});
+	mpInvincibleCol->SetCollisionLayers({ ELayer::ePlayer, ELayer::eBlockCol, ELayer::eField,ELayer::eFieldWall });
+	mpInvincibleCol->Position(0.0f, 1.0f, 0.0f);
 
 	// 最初はコライダーをオンにしておく
-	mpRecoverCol->SetEnable(true);
+	mpInvincibleCol->SetEnable(true);
 
 }
 
 CInvincible::~CInvincible()
 {
-	SAFE_DELETE(mpRecoverCol);
+	SAFE_DELETE(mpInvincibleCol);
 }
 
 
@@ -56,22 +60,24 @@ CInvincible::~CInvincible()
 void CInvincible::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	// 衝突した自分のコライダーが攻撃判定用のコライダーであれば
-	if (self == mpRecoverCol)
+	if (self == mpInvincibleCol)
 	{
 		CPlayer* player = dynamic_cast<CPlayer*>(other->Owner());
 		if (player)
 		{
 			// すでに無敵のキャラでなければ
-			if (!IsAttachHitObj(player) && !mRecoveryUsed)
+			if (!IsAttachHitObjInvincible(player) && !mInvincibleUsed)
 			{
+				mpInvincibleSE->Play(1.0f, false, 0.0f);
+				mInvincibleUsed = true;
 				// 無敵状態(コライダーオフ)
 				player->TakeInvincible();
 
 				// 無敵リストに追加
-				AddAttachHitObj(player);
+				AddAttachHitObjInvincible(player);
 
-				mRecoveryUsed = true;
-				if (mRecoveryUsed)
+				mInvincibleUsed = true;
+				if (mInvincibleUsed)
 				{
 					Kill();
 				}
@@ -222,5 +228,5 @@ void CInvincible::Update()
 // 描画
 void CInvincible::Render()
 {
-	mpRecoverModel->Render(Matrix());
+	mpInvincibleModel->Render(Matrix());
 }

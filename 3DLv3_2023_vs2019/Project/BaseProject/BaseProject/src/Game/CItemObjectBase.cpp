@@ -1,7 +1,7 @@
 #include "CItemObjectBase.h"
 
 CItemObjectBase::CItemObjectBase()
-	: CObjectBase(ETag::eItem, ETaskPriority::eItem)
+	: CObjectBase(ETag::eItemRecover, ETaskPriority::eItem)
 {
 }
 

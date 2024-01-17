@@ -8,7 +8,8 @@ enum class ETag
 
 	eField,				// フィールドを構成するオブジェクト
 	eRideableObject,	// 乗ることができるオブジェクト
-	eItem,				// アイテムのオブジェクト
+	eItemRecover,		// 回復アイテムのオブジェクト
+	eItemInvincible,	// 無敵アイテム
 	eGoalObject,		// クリア条件のオブジェクト
 	eJumpingObject,		// ジャンプするオブジェクト
 

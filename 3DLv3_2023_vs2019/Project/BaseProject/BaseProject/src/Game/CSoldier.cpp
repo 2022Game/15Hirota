@@ -35,6 +35,8 @@
 #define ATTACK_RANGE 70.0f
 // プレイヤーまでの距離(キック)
 #define ATTACK_RANGE_KICK 27.0f
+// プレイヤーまでの距離(バックステップ)
+#define BACKSTEP_RANGE 15.0f
 
 
 // HP関連
@@ -54,6 +56,9 @@
 
 // 敵を見失った後の時間
 #define PLAYER_LOST 10.0f
+
+// キックコライダーの時間
+#define KICKCOL 10.0f
 
 
 // CSoldierのインスタンス
@@ -79,6 +84,7 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 	{ "Character\\Gas mask soldier\\anim\\Rilfle_Aim_to_Dwon._91.x",				false,	 91.0f	},		// エイム解除
 	{ "Character\\Gas mask soldier\\anim\\Hit_27.x",								false,	 27.0f	},		// Hit
 	{ "Character\\Gas mask soldier\\anim\\Death_Fall down1_157.x",					false,	157.0f	},		// 死亡
+	{ "Character\\Gas mask soldier\\anim\\BackStep_101.x",							false,	101.0f	},		// バックステップ
 
 };
 
@@ -88,12 +94,15 @@ CSoldier::CSoldier()
 	, mState(EState::eIdle)
 	, mTimeShot(0)
 	, mTimeShotEnd(5)
+	, mStateStep(0)
 	, mElapsedTime(0.0f)
 	, mElapsedTime_End(0.0f)
+	, mTimeKickTime(0.0f)
 	, mTargetDir(0.0f, 0.0f, 1.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
-	, mTimeToChange(Math::Rand(2.0f, 5.0f))
 	, mInitialPosition(0.0f, 0.0f, 0.0f)
+	, mTimeToChange(Math::Rand(2.0f, 5.0f))
+	, mKickorbackstep(Math::Rand(0, 1))
 	, mIsGrounded(false)
 	, mpRideObject(nullptr)
 {
@@ -256,7 +265,7 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			if (mState != EState::eKick)
 			{
-				mState = EState::eHit;
+				ChangeState(EState::eHit);
 			}
 		}
 
@@ -272,6 +281,12 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 
 }
 
+void CSoldier::ChangeState(EState state)
+{
+	mState = state;
+	mStateStep = 0;
+}
+
 // 被ダメージ処理
 void CSoldier::TakeDamage(int damage)
 {
@@ -284,7 +299,7 @@ void CSoldier::TakeDamage(int damage)
 	// HPが0になったら
 	if (mCharaStatus.hp == 0)
 	{
-		mState = EState::eDeth;
+		ChangeState(EState::eDeth);
 	}
 }
 
@@ -324,22 +339,26 @@ void CSoldier::ChangeDerection()
 // 徘徊に遷移する条件
 bool CSoldier::ShouldTransitionWander()
 {
-	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	float randomValue = Math::Rand(0.0f, 1.0f);
 	return randomValue < 0.01f;  // 1%の確率で徘徊に遷移
 }
 
 // 待機状態に遷移する条件
 bool CSoldier::ShouldTransition()
 {
-	float randomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	float randomValue = Math::Rand(0.0f, 1.0f);
 	return randomValue < 0.01f;  // 0.1%の確率で徘徊に遷移
 }
 
 // 360度の角度を求めて、x軸とy軸から計算する
 CVector CSoldier::CalculateDirection(float angleDegrees)
 {
+	// 初期角度にランダムなオフセットを追加
+	float randomOffset = Math::Rand(0.0f, 1.0f);  // 0から1のランダムな値
+	float randomAngle = angleDegrees + 2.0f * M_PI * randomOffset;
+
 	// 角度からラジアンに変換
-	float angleRadians = angleDegrees * M_PI / 180.0f;
+	float angleRadians = randomAngle * M_PI / 180.0f;
 
 	// ベクトルの計算
 	float x = cos(angleRadians);
@@ -389,7 +408,7 @@ void CSoldier::UpdateIdle()
 	//プレイヤーを見つけたら、追跡状態へ移行
 	if (IsFoundPlayer())
 	{
-		mState = EState::eChase;
+		ChangeState(EState::eChase);
 	}
 	else
 	{
@@ -398,7 +417,7 @@ void CSoldier::UpdateIdle()
 		// 確率で徘徊状態に移行
 		if (ShouldTransition())
 		{
-			mState = EState::eWander;
+			ChangeState(EState::eWander);
 		}
 	}
 }
@@ -420,6 +439,16 @@ void CSoldier::UpdateAttack()
 
 	if (distancePlayer <= ATTACK_RANGE)
 	{
+		if (distancePlayer <= BACKSTEP_RANGE)
+		{
+			ChangeState(EState::eBackStep);
+			return;
+		}
+		if (distancePlayer <= ATTACK_RANGE_KICK)
+		{
+			ChangeState(EState::eKick);
+			return;
+		}
 		ChangeAnimation(EAnimType::eAttack);
 		// 弾丸発射間隔時間が経過するのを待つ
 		if (mElapsedTime < SHOT_INTERVAL)
@@ -446,20 +475,15 @@ void CSoldier::UpdateAttack()
 			if (mTimeShot >= mTimeShotEnd)
 			{
 				// 攻撃終了後の待機状態に遷移
-				mState = EState::eAttackWait;
+				ChangeState(EState::eAttackWait);
 				mTimeShot = 0;
 				mElapsedTime = 0.0f;
-			}
-			if (distancePlayer <= ATTACK_RANGE_KICK)
-			{
-				mState = EState::eKick;
-				return;
 			}
 		}
 	}
 	else
 	{
-		mState = EState::eChase;
+		ChangeState(EState::eChase);
 		mElapsedTime_End = 0.0f;
 	}
 }
@@ -475,11 +499,11 @@ void CSoldier::UpdateAttackWait()
 
 		if (distanceToPlayer <= ATTACK_RANGE)
 		{
-			mState = EState::eAttack;
+			ChangeState(EState::eAttack);
 		}
 		else
 		{
-			mState = EState::eAimDwon;
+			ChangeState(EState::eAimDwon);
 			mElapsedTime_End = 0.0f;
 		}
 	}
@@ -489,7 +513,7 @@ void CSoldier::UpdateAttackWait()
 void CSoldier::UpdateJumpStart()
 {
 	ChangeAnimation(EAnimType::eJumpStart);
-	mState = EState::eJump;
+	ChangeState(EState::eJump);
 
 	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
 	mIsGrounded = false;
@@ -501,7 +525,7 @@ void CSoldier::UpdateJump()
 	if (mMoveSpeed.Y() <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
-		mState = EState::eJumpEnd;
+		ChangeState(EState::eJumpEnd);
 	}
 }
 
@@ -510,7 +534,7 @@ void CSoldier::UpdateJumpEnd()
 {
 	if (IsAnimationFinished())
 	{
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 	}
 }
 
@@ -526,7 +550,7 @@ void CSoldier::UpdateChase()
 		CDebugPrint::Print("TimeEnd%f\n", mElapsedTime_End);
 		if (mElapsedTime_End >= PLAYER_LOST)
 		{
-			mState = EState::eAimDwon;
+			ChangeState(EState::eAimDwon);
 			mElapsedTime_End = 0.0f; // プレイヤーが視界から消えたら経過時間をリセット
 		}
 	}
@@ -547,7 +571,7 @@ void CSoldier::UpdateChase()
 		
 		if (distanceToPlayer <= ATTACK_RANGE)
 		{
-			mState = EState::eAttack;
+			ChangeState(EState::eAttack);
 		}
 	}
 }
@@ -572,7 +596,7 @@ void CSoldier::UpdateKick()
 	if (mAnimationFrame >= 45.0f)
 	{
 		mpAttackCol->SetEnable(true);
-		mState = EState::eKickWait;
+		ChangeState(EState::eKickWait);
 	}
 }
 
@@ -584,7 +608,7 @@ void CSoldier::UpdateKickWait()
 		mpAttackCol->SetEnable(false);
 		if (IsAnimationFinished())
 		{
-			mState = EState::eChase;
+			ChangeState(EState::eChase);
 			ChangeAnimation(EAnimType::eIdle);
 		}
 		
@@ -597,7 +621,7 @@ void CSoldier::UpdateAimDwon()
 	ChangeAnimation(EAnimType::eAimDwou);
 	if (IsAnimationFinished())
 	{
-		mState = EState::eIdle;
+		ChangeState(EState::eIdle);
 		mElapsedTime_End = 0.0f;
 	}
 }
@@ -623,12 +647,12 @@ void CSoldier::UpdateHit()
 
 		if (mCharaStatus.hp > 1)
 		{
-			mState = EState::eChase;
+			ChangeState(EState::eChase);
 		}
 		else if (mCharaStatus.hp <= 0)
 		{
 			mpDamageCol->SetEnable(false);
-			mState = EState::eDeth;
+			ChangeState(EState::eDeth);
 		}
 	}
 }
@@ -641,7 +665,7 @@ void CSoldier::UpdateDeth()
 	ChangeAnimation(EAnimType::eDeth);
 	if (IsAnimationFinished())
 	{
-		mState = EState::eDethEnd;
+		ChangeState(EState::eDethEnd);
 	}
 }
 
@@ -672,14 +696,33 @@ void CSoldier::UpdateWander()
 
 	if (IsFoundPlayer())
 	{
-		mState = EState::eChase;
+		ChangeState(EState::eChase);
 	}
 	else
 	{
 		if (ShouldTransitionWander())
 		{
-			mState = EState::eIdle;
+			ChangeState(EState::eIdle);
 		}
+	}
+}
+
+// バックステップ
+void CSoldier::UpdateBackStep()
+{
+	ChangeAnimation(EAnimType::eBackStep);
+
+	// バックステップする距離
+	const float backStepDistance = 15.0f;
+
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector soldierPos = Position();
+	CVector toPlayer = (playerPos - soldierPos).Normalized();
+
+	Position(Position() - toPlayer * backStepDistance * Time::DeltaTime());
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eChase);
 	}
 }
 
@@ -697,8 +740,6 @@ bool CSoldier::IsFoundPlayer() const
 	// 視野角の半分を計算する
 	float halfFOV = FOV_ANGLE * 0.5f;
 
-	//// acos関数を使用して実際の角度を計算する
-	//float angle = acos(dot) * (180.0f / M_PI);
 
 	// 視野角の半分より小さいかつプレイヤーとの距離が一定範囲以内であれば、プレイヤーを認識する
 	if (dot >= cosf(halfFOV * M_PI / 180.0f))
@@ -711,7 +752,6 @@ bool CSoldier::IsFoundPlayer() const
 	}
 
 	return false;
-
 }
 
 // 更新
@@ -778,6 +818,10 @@ void CSoldier::Update()
 		// 徘徊処理
 	case EState::eWander:
 		UpdateWander();
+		break;
+		// バックステップ
+	case EState::eBackStep:
+		UpdateBackStep();
 		break;
 	}
 
