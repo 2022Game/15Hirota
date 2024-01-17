@@ -5,6 +5,7 @@
 #include "CRideableObject.h"
 #include "CColliderSphere.h"
 #include "CImage.h"
+#include "CSound.h"
 
 class CUIGauge;
 class CStaminaGauge;
@@ -225,4 +226,7 @@ private:
 	float mElapsedTimeCol;	// コライダーの計測時間
 	float JumpCoolDownTime;
 	float mInvincibleStartTime;
+
+	CSound* mpSlashSE;
+	bool mIsPlayedSlashSE;
 };

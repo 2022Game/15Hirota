@@ -2,6 +2,7 @@
 #include "CSceneBase.h"
 #include "CInput.h"
 #include "CImage.h"
+class CSound;
 
 //タイトルシーン
 class CTitleScene :public CSceneBase
@@ -18,4 +19,5 @@ public:
 
 private:
 	CImage* mpTitle;
+	CSound* mpTitleBGM;	//タイトル画面のBGM
 };

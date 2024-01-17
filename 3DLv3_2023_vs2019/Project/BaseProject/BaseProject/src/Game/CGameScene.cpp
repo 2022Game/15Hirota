@@ -16,6 +16,7 @@
 #include "CEnemyManager.h"
 #include "CRisingObject.h"
 #include "CStage1.h"
+#include "CSound.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -82,6 +83,17 @@ void CGameScene::Load()
 
 	// エフェクト関連
 	CResourceManager::Load<CTexture>("Laser",			"Effect\\laser.png");			// 弾のエフェクト
+
+
+	// BGM関連
+	CResourceManager::Load<CSound>("SlashSound", "SE\\slash.wav");
+
+	// ゲームBGMを読み込み
+	mpGameBGM = CResourceManager::Load<CSound>("GameBGM", "BGM\\game.wav");
+	// ゲームBGMのループ範囲を設定
+	mpGameBGM->SetLoopRange(0, 2801203);
+	// ゲームBGMをループ再生開始
+	mpGameBGM->PlayLoop();
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

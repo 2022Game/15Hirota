@@ -3,6 +3,7 @@
 #include "CGameScene.h"
 #include "CCamera.h"
 #include "CPlayer.h"
+#include "CSound.h"
 
 #define TITLE_IMAGE "UI\\Title.png"
 
@@ -28,6 +29,11 @@ void CTitleScene::Load()
 {
 	// 背景色設定
 	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+	// タイトルBGMを読み込み
+	mpTitleBGM = CResourceManager::Load<CSound>("TitleBGM", "BGM\\title.wav");
+	// タイトルBGMをループ再生開始
+	mpTitleBGM->PlayLoop();
 
 	mpTitle = new CImage(TITLE_IMAGE);
 	mpTitle->SetSize(WINDOW_WIDTH, WINDOW_HEIGHT);

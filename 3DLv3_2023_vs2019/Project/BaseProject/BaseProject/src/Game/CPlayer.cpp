@@ -88,6 +88,7 @@ CPlayer::CPlayer()
 	, JumpCoolDownTime(5.0f)
 	, mElapsedTimeCol(0.0f)
 	, mInvincibleStartTime(10.0f)
+	, mIsPlayedSlashSE(false)
 {
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
@@ -155,6 +156,8 @@ CPlayer::CPlayer()
 	mpSword = new CMajicSword();
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpSword->SetOwner(this);
+
+	mpSlashSE = CResourceManager::Get<CSound>("SlashSound");
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -474,6 +477,9 @@ void CPlayer::UpdateAttack()
 	mpSword->AttackStart();
 	ChangeAnimation(EAnimType::eAttack);
 	ChangeState(EState::eAttackWait);
+
+	// 斬撃SEの再生済みフラグを初期化
+	mIsPlayedSlashSE = false;
 }
 
 // 強攻撃
@@ -519,8 +525,11 @@ void CPlayer::UpdateAttackWait()
 		}
 
 		// フレームが30まで行ったらAttackEndを呼び出す
-		if (mAnimationFrame >= 30.0f)
+		if (mIsPlayedSlashSE && GetAnimationFrame() >= 30.0f)
 		{
+			// 斬撃SEを再生
+			mpSlashSE->Play();
+			mIsPlayedSlashSE = true;
 			mpSword->AttackEnd();
 		}
 	}
