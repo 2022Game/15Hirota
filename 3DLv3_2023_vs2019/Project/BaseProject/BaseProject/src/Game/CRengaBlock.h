@@ -1,7 +1,6 @@
 #ifndef CRENGABLOCK_H
 #define CRENGABLOCK_H
 
-
 #include "CRideableObject.h"
 #include "CModel.h"
 #include "CColliderSphere.h"
@@ -40,6 +39,9 @@ public:
 	void Render();
 
 private:
+
+	//// 状態関連 /////////////////////////////////////
+	
 	// レンガブロックの状態
 	enum class EState
 	{
@@ -56,20 +58,51 @@ private:
 	// 当たった後の更新処理
 	void UpdateAfter();
 
-	CModel* mpModel;		// レンガブロックのモデル
-	CColliderSphere* mpColliderSphere;	// レンガブロックのコライダー
+	// 現在の状態
+	EState mState;
+	// 触れた時に反応するオブジェクトのタグ
+	ETag mReactionTag;
+	// 触れた時に反応するオブジェクトのレイヤー
+	ELayer mReactionLayer;
 
-	EState mState;	// 現在の状態
-	int mStateStep;	// 状態内のステップ
+	///////////////////////////////////////////////////
 
-	ETag mReactionTag;		// 触れた時に反応するオブジェクトのタグ
-	ELayer mReactionLayer;	// 触れた時に反応するオブジェクトのレイヤー
 
-	float mFadeTime;	// フェード時間
-	float mWaitTime;	// 待ち時間
-	bool mIsCollision;	// 衝突しているか
+	//// モデル関連 ///////////////////////////////////
 
+	// レンガブロックのモデル
+	CModel* mpModel;
+	// レンガブロックのコライダー
+	CColliderSphere* mpColliderSphere;
+
+	///////////////////////////////////////////////////
+
+
+	//// ベクトル関連 /////////////////////////////////
+
+	// 移動速度
 	CVector mMoveSpeed;
+	// レンガブロックの初期位置の保存
 	CVector mStartPos;
+
+	///////////////////////////////////////////////////
+
+
+	//// 変数関連 /////////////////////////////////////
+
+	// 状態内のステップ
+	int mStateStep;
+
+	// フェード時間
+	float mFadeTime;
+	// 待ち時間
+	float mWaitTime;
+
+	// 衝突しているか
+	bool mIsCollision;
+
+	///////////////////////////////////////////////////
+
+	
 };
 #endif

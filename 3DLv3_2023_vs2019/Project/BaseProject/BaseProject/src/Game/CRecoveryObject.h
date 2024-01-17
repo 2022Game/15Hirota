@@ -6,6 +6,7 @@
 #include "CColliderSphere.h"
 #include "CModel.h"
 
+// 回復アイテム
 class CRecoveryObject : public CItemObjectBase
 {
 public:
@@ -22,37 +23,60 @@ public:
 
 	// 回復開始
 	void RecoverStart();
-
+	// 回復終了
 	void RecoverEnd();
+
+	// 移動処理
+	// 手前
+	void MoveFront();
+	// 奥
+	void MoveBack();
+	// 右
+	void MoveLight();
+	// 左
+	void MoveReft();
+
+	// 更新処理
+	void Update();
+	// 描画処理
+	void Render();
 
 	// 回復アイテムの行列を取得
 	//CMatrix Matrix() const override;
 
-	void Update();
-	void Render();
-
-	void Move();	// 手前
-	void MoveZ();	// 奥
-	void MoveX();	// 右
-	void MoveY();	// 左
-
 private:
+	//// モデル関連 /////////////////////////
+	
+	// 回復モデル
 	CModel* mpRecoverModel;
 	// 回復判定用のコライダー
 	CColliderSphere* mpRecoverCol;
 
-	CVector moveVector;
+	/////////////////////////////////////////
+
+
+	//// ベクトル関連 ///////////////////////
+	
+	// 移動方向
+	CVector mMoveVector;
+	// 移動速度
 	CVector mMoveSpeed;
+	// 見る方向
 	CVector mTargetDir;
 
-	float mElapsedTime;
+	/////////////////////////////////////////
 
-	bool mIsGround;
+	//// 変数関連 ///////////////////////////
 
+	// カウント
 	int mSwitchCounter;
-
-	bool mIsEnabled;
-
+	// 計測時間
+	float mElapsedTime;
+	// 床に接地しているか
+	bool mIsGround;
+	// 回復したかどうか
 	bool mRecoveryUsed;
+
+	//////////////////////////////////////////
 };
 #endif

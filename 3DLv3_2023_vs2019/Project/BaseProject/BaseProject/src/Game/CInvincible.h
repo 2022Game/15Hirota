@@ -7,6 +7,7 @@
 #include "CColliderSphere.h"
 #include "CModel.h"
 
+// 無敵アイテム
 class CInvincible : public CItemObjectBase
 {
 public:
@@ -21,39 +22,59 @@ public:
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit);
 
-	//// 回復開始
-	//void RecoverStart();
+	// 移動処理
+	// 手前
+	void MoveFront();
+	// 奥
+	void MoveBack();
+	// 右
+	void MoveLight();
+	// 左
+	void MoveReft();
 
-	//void RecoverEnd();
+	// 更新処理
+	void Update();
+	// 描画処理
+	void Render();
+
 
 	// 無敵オブジェの行列を取得
 	//CMatrix Matrix() const override;
 
-	void Update();
-	void Render();
-
-	void Move();	// 手前
-	void MoveZ();	// 奥
-	void MoveX();	// 右
-	void MoveY();	// 左
-
 private:
+	//// モデル関連/////////////////////////////
+	
+	// 無敵アイテムのモデル
 	CModel* mpRecoverModel;
-	// 無敵オブジェのコライダー
+	// 無敵アイテムのコライダー
 	CColliderSphere* mpRecoverCol;
 
-	CVector moveVector;
+	////////////////////////////////////////////
+
+
+	//// ベクトル関連 //////////////////////////
+
+	// 移動方向
+	CVector mMoveVector;
+	// 移動速度
 	CVector mMoveSpeed;
+	// 見る方向
 	CVector mTargetDir;
 
-	float mElapsedTime;
+	/////////////////////////////////////////////
 
-	bool mIsGround;
 
+	//// 変数関連 ///////////////////////////////
+
+	// カウント
 	int mSwitchCounter;
-
-	bool mIsEnabled;
-
+	// 計測時間処理
+	float mElapsedTime;
+	// 床に接地しているか
+	bool mIsGround;
+	// 無敵になったかどうか
 	bool mRecoveryUsed;
+
+	/////////////////////////////////////////////
 };
 #endif

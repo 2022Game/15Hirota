@@ -514,6 +514,7 @@ void CPlayer::UpdateAttackWait()
 
 		if (CInput::PushKey(VK_SPACE))
 		{
+			mpSword->AttackEnd();
 			ChangeState(EState::eJumpStart);
 		}
 

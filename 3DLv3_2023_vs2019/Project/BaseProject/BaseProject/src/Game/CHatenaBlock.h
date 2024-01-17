@@ -33,6 +33,7 @@ public:
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
 
+	// ステージ開始時の位置を設定
 	void SetStartPosition(const CVector& pos);
 
 	// 更新
@@ -42,6 +43,9 @@ public:
 	void Render();
 
 private:
+
+	//// 状態関連 //////////////////////////////////////
+	
 	// ハテナブロックの状態
 	enum class EState
 	{
@@ -58,24 +62,54 @@ private:
 	// 当たった後の更新処理
 	void UpdateAfter();
 
-	CModel* mpModel;		// ハテナブロックのモデル
-	CModel* mpModelAfter;	// ハテナブロック使用後モデル
-	CColliderSphere* mpColliderSphere;	// ハテナブロックのコライダー
+	// 現在の状態
+	EState mState;
+	// 触れた時に反応するオブジェクトのタグ
+	ETag mReactionTag;
+	// 触れた時に反応するオブジェクトのレイヤー
+	ELayer mReactionLayer;
 
-	EState mState;	// 現在の状態
-	int mStateStep;	// 状態内のステップ
+	////////////////////////////////////////////////////
 
-	ETag mReactionTag;		// 触れた時に反応するオブジェクトのタグ
-	ELayer mReactionLayer;	// 触れた時に反応するオブジェクトのレイヤー
 
-	float mFadeTime;	// フェード時間
-	float mWaitTime;	// 待ち時間
-	bool mIsCollision;	// 衝突しているか
+	//// モデル関連 ////////////////////////////////////
 
+	// ハテナブロックのモデル
+	CModel* mpModel;
+	// ハテナブロックのコライダー
+	CColliderSphere* mpColliderSphere;
+
+	// 回復アイテムのポインター
+	CRecoveryObject* mpHeart;
+	// 無敵アイテムのポインター
+	CInvincible* mpStar;
+
+	////////////////////////////////////////////////////
+
+
+	//// ベクトル関連 //////////////////////////////////
+
+	// 移動速度
 	CVector mMoveSpeed;
+	// ハテナブロックの初期位置の保存
 	CVector mStartPos;
 
-	CRecoveryObject* mpHeart;
-	CInvincible* mpStar;
+	////////////////////////////////////////////////////
+
+
+	//// 変数関連 //////////////////////////////////////
+
+	// 状態内のステップ
+	int mStateStep;
+
+	// フェード時間
+	float mFadeTime;
+	// 待ち時間
+	float mWaitTime;
+
+	// 衝突しているか
+	bool mIsCollision;
+
+	////////////////////////////////////////////////////	
 };
 #endif

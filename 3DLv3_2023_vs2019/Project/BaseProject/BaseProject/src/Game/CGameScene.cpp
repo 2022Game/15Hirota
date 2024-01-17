@@ -54,19 +54,19 @@ void CGameScene::Load()
 
 
 	// キャラクター関連
-	CResourceManager::Load<CModelX>("Player",	"Character\\Monster1\\Monster_1.x");						// プレイヤー
-	CResourceManager::Load<CModelX>("Soldier",	"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
-	//CResourceManager::Load<CModelX>("UnityChan", "Character\\UnityChan\\unitychan.x");					// ユニティちゃん
-	CResourceManager::Load<CModelX>("Yukari",	"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
+	CResourceManager::Load<CModelX>("Player",			"Character\\Monster1\\Monster_1.x");						// プレイヤー
+	CResourceManager::Load<CModelX>("Soldier",			"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
+	//CResourceManager::Load<CModelX>("UnityChan",		"Character\\UnityChan\\unitychan.x");						// ユニティちゃん
+	CResourceManager::Load<CModelX>("Yukari",			"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
 
 
 	// アイテム関連
-	CResourceManager::Load<CModel>("Bullet",	 "Item\\Bullet1\\Bullet.obj");				// 弾
-	CResourceManager::Load<CModel>("Gun_M1G",	 "Item\\Gun_M1Garand\\Gun_M1Garand.obj");	// M1ガーランド(銃)
-	CResourceManager::Load<CModel>("MajicSword", "Item\\MajicSword\\MajicSword.obj");		// 魔法剣
-	CResourceManager::Load<CModel>("Heart",		 "Item\\StatusItem\\Heart.obj");			// 回復オブジェクト
-	CResourceManager::Load<CModel>("Star",		 "Item\\StatusItem\\Star.obj");				// 無敵オブジェクト
-	CResourceManager::Load<CModel>("Medal",		 "Item\\StatusItem\\Medal.obj");			// 得点オブジェクト
+	CResourceManager::Load<CModel>("Bullet",			"Item\\Bullet1\\Bullet.obj");				// 弾
+	CResourceManager::Load<CModel>("Gun_M1G",			"Item\\Gun_M1Garand\\Gun_M1Garand.obj");	// M1ガーランド(銃)
+	CResourceManager::Load<CModel>("MajicSword",		"Item\\MajicSword\\MajicSword.obj");		// 魔法剣
+	CResourceManager::Load<CModel>("Heart",				"Item\\StatusItem\\Heart.obj");				// 回復オブジェクト
+	CResourceManager::Load<CModel>("Star",				"Item\\StatusItem\\Star.obj");				// 無敵オブジェクト
+	CResourceManager::Load<CModel>("Medal",				"Item\\StatusItem\\Medal.obj");				// 得点オブジェクト
 
 
 	// UI関連
@@ -81,14 +81,9 @@ void CGameScene::Load()
 
 
 	// エフェクト関連
-	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");			// 弾のエフェクト
+	CResourceManager::Load<CTexture>("Laser",			"Effect\\laser.png");			// 弾のエフェクト
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	//// ユニティちゃん
-	//CUnityChan* unity = new CUnityChan();
-	//unity->Scale(1.0f, 1.0f, 1.0f);
-	//unity->Position(0.0f, 20.0f, 0.0f);
 
 
 	// フィールド

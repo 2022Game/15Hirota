@@ -3,30 +3,30 @@
 #include "CPlayer.h"
 #include "CSound.h"
 
-// 消えるのにかかる時間
-#define FADE_TIME 3.0f
-// 消えた後の待ち時間
-#define WAIT_TIME 3.0f
-
+// ブロックから上に上昇する際の最大値
 #define MAXHEIGHT 15.0f
+// ブロックの上昇スピード
+#define BLOCK_INCREASE_VALUE 120.0f
+// ブロックの下降スピード
+#define BLOCK_DESCENDING_VALUE 50.0f
 
 // コンストラクタ
 CRengaBlock::CRengaBlock(const CVector& pos, const CVector& scale,
 	ETag reactionTag, ELayer reactionLayer)
 	: CRideableObject(ETaskPriority::eHatenaOBJ)
 	, mState(EState::Idle)
-	, mStateStep(0)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
+	, mStateStep(0)
 	, mFadeTime(0.0f)
 	, mWaitTime(0.0f)
-	, mIsCollision(false)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
+	, mIsCollision(false)
 {
 	// レンガブロックモデルを取得
 	mpModel = CResourceManager::Get<CModel>("RengaBlock");
 
-
+	//  レンガブロックの初期位置の保存
 	mStartPos = Position();
 
 	// レンガロックのコライダーを作成
@@ -35,6 +35,10 @@ CRengaBlock::CRengaBlock(const CVector& pos, const CVector& scale,
 		this, ELayer::eBlockCol,
 		1.0f, true
 	);
+	// 衝突定用のコライダーと衝突判定を行う
+	// タグ付け
+	// レイヤー付け
+	// コライダーの位置を調整
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer,ETag::eItem });
 	mpColliderSphere->SetCollisionLayers({ ELayer::ePlayer,ELayer::eRecoverCol });
 	mpColliderSphere->Position(0.0f, 5.0f, 0.0f);
@@ -69,30 +73,36 @@ void CRengaBlock::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 		//float dot = CVector::Dot(-hit.adjust.Normalized(), CVector::down);
 		//// 下側に当たったと判断するためのcos関数に渡した角度を求める
 		//float cosAngle = cosf(Math::DegreeToRadian(10.0f)); && dot >= cosAngle
+
+		// メッシュにするのならば上記の処理を実行
+		// 下側に当たった時のみ処理
+
+		// プレイヤーに当たったら
 		if (player)
 		{
 			// 現在が待機状態であれば、当たった時の処理にする
 			if (mState == EState::Idle)
 			{
+				// 状態遷移
 				ChangeState(EState::Hit);
 			}
 		}
 	}
 }
 
-// 状態を切り替える
-void CRengaBlock::ChangeState(EState state)
-{
-	mState = state;
-	mStateStep = 0;
-}
-
-
 // ステージ開始時の位置を設定
 void CRengaBlock::SetStartPosition(const CVector& pos)
 {
 	mStartPos = pos;
 	Position(mStartPos);
+}
+
+
+// 状態を切り替える
+void CRengaBlock::ChangeState(EState state)
+{
+	mState = state;
+	mStateStep = 0;
 }
 
 // 待機状態の処理
@@ -113,18 +123,22 @@ void CRengaBlock::UpdateHit()
 		// 最大値まで
 		if (Position().Y() < mStartPos.Y() + MAXHEIGHT)
 		{
-			mMoveSpeed = CVector(0.0f, 100.0f * Time::DeltaTime(), 0.0f);
+			mMoveSpeed = CVector(0.0f, BLOCK_INCREASE_VALUE * Time::DeltaTime(), 0.0f);
 			Position(Position() + mMoveSpeed);
 		}
 		else
 		{
+			// 次のステップへ
 			mStateStep++;
 		}
 		break;
 		// ステップ1 元に戻す
 	case 1:
-		mMoveSpeed = CVector(0.0f, -50.0f * Time::DeltaTime(), 0.0f);
+		mMoveSpeed = CVector(0.0f, -BLOCK_DESCENDING_VALUE * Time::DeltaTime(), 0.0f);
 		Position(Position() + mMoveSpeed);
+
+		// オブジェクトの位置が0.5未満になったら
+		// 元の位置に戻す
 		if (CVector::Distance(Position(), mStartPos) < 0.5f)
 		{
 			Position(mStartPos);
@@ -139,6 +153,7 @@ void CRengaBlock::UpdateHit()
 // 当たった後の更新処理
 void CRengaBlock::UpdateAfter()
 {
+	// 消す
 	SetAlpha(0.0f);
 	mpColliderSphere->SetEnable(false);
 }
