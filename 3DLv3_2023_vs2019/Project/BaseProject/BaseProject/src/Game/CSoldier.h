@@ -56,7 +56,6 @@ public:
 	// ソルジャーの方向をランダムに変更する処理
 	void ChangeDerection();
 
-
 	// 1%の確率を求める処理
 	bool ShouldTransitionWander();
 	// 上記と同様
@@ -82,7 +81,7 @@ private:
 	static CSoldier* spInstance;
 
 
-	//// モデル関連 ///////////////////////////////////////
+	//// モデル・素材関連 /////////////////////////////////
 
 	// フィールドとの当たり判定を取るコライダー
 	CColliderLine* mpColliderLine;
@@ -94,12 +93,12 @@ private:
 	// ダメージを与えるコライダー
 	CColliderSphere* mpAttackCol;
 
-	// 銃モデルのポインター
+	// 銃モデル
 	CGun* mpGun;
 
-	// UIのフレームのポインター
+	// フレーム
 	CSoldierFrame* mpFrame;
-	// UIのゲージのポインタイー
+	// ゲージ
 	CSoldierGauge* mpGauge;
 
 	///////////////////////////////////////////////////////
@@ -157,6 +156,7 @@ private:
 		eWander,	// 徘徊処理
 		eBackStep,	// バックステップ
 	};
+	// 状態変更
 	void ChangeState(EState state);
 	// プレイヤーの状態
 	EState mState;
@@ -227,8 +227,6 @@ private:
 	int mTimeShotEnd;
 	// 状態内のステップ
 	int mStateStep;
-	// キックかバックステップか
-	int mKickorbackstep;
 	// 経過時間計測用
 	float mElapsedTime;
 	// 解除時間計測用
@@ -236,9 +234,13 @@ private:
 	// ランダム時間計算
 	float mTimeToChange;
 	// キックの時間計測用
-	float mTimeKickTime;
+	float mKickTime;
+	// バックステップの時間計測
+	float mBackStepTime;
 	// 接地しているかどうか
 	bool mIsGrounded;
+	// キックの待ち時間が終わったかどうか
+	bool mKickTimeEnd;
 	// プレイヤーを見つけたか
 	bool IsFoundPlayer() const;
 

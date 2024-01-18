@@ -16,6 +16,7 @@
 
 #define _USE_MATH_DEFINES
 
+// ソルジャー関連
 // ソルジャーの頭上
 #define ENEMY_HEIGHT 8.0f
 // 移動速度
@@ -34,9 +35,9 @@
 // プレイヤーまでの距離
 #define ATTACK_RANGE 70.0f
 // プレイヤーまでの距離(キック)
-#define ATTACK_RANGE_KICK 27.0f
+#define ATTACK_RANGE_KICK 25.0f
 // プレイヤーまでの距離(バックステップ)
-#define BACKSTEP_RANGE 15.0f
+#define BACKSTEP_RANGE 20.0f
 
 
 // HP関連
@@ -73,18 +74,18 @@ CSoldier* CSoldier::Instance()
 // CSoldierのアニメーションデータのテーブル
 const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 {
-	{ "",																				true,	  0.0f	},	// Tポーズ
-	{ "Character\\Gas mask soldier\\anim\\Rifle_Idle1_515.x",							true,   515.0f	},	// Idle時
-	{ "Character\\Gas mask soldier\\anim\\Rifle_Idle3_187.x",							true,   187.0f	},	// ライフルIdle時
-	{ "Character\\Gas mask soldier\\anim\\Rifle_walk_79.x",								true,	 79.0f	},	// 移動
-	{ "Character\\Gas mask soldier\\anim\\Alert_83.x",									true,	 83.0f	},	// 警戒
-	{ "Character\\Gas mask soldier\\anim\\Rifle_1shot_71.x",							true,	 71.0f	},	// プレイヤー発見時攻撃
-	{ "Character\\Gas mask soldier\\anim\\Right foot kick_121.x",					false,	121.0f	},		// 格闘
-	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",								true,	 99.0f	},	// リロード
-	{ "Character\\Gas mask soldier\\anim\\Rilfle_Aim_to_Dwon._91.x",				false,	 91.0f	},		// エイム解除
-	{ "Character\\Gas mask soldier\\anim\\Hit_27.x",								false,	 27.0f	},		// Hit
-	{ "Character\\Gas mask soldier\\anim\\Death_Fall down1_157.x",					false,	157.0f	},		// 死亡
-	{ "Character\\Gas mask soldier\\anim\\BackStep_101.x",							false,	101.0f	},		// バックステップ
+	{ "",																			true,	  0.0f	},	// Tポーズ
+	{ "Character\\Gas mask soldier\\anim\\Rifle_Idle1_515.x",						true,   515.0f	},	// Idle時
+	{ "Character\\Gas mask soldier\\anim\\Rifle_Idle3_187.x",						true,   187.0f	},	// ライフルIdle時
+	{ "Character\\Gas mask soldier\\anim\\Rifle_walk_79.x",							true,	 79.0f	},	// 移動
+	{ "Character\\Gas mask soldier\\anim\\Alert_83.x",								true,	 83.0f	},	// 警戒
+	{ "Character\\Gas mask soldier\\anim\\Rifle_1shot_71.x",						true,	 71.0f	},	// プレイヤー発見時攻撃
+	{ "Character\\Gas mask soldier\\anim\\Right foot kick_121.x",				false,	121.0f	},		// 格闘
+	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",							true,	 99.0f	},	// リロード
+	{ "Character\\Gas mask soldier\\anim\\Rilfle_Aim_to_Dwon._91.x",			false,	 91.0f	},		// エイム解除
+	{ "Character\\Gas mask soldier\\anim\\Hit_27.x",							false,	 27.0f	},		// Hit
+	{ "Character\\Gas mask soldier\\anim\\Death_Fall down1_157.x",				false,	157.0f	},		// 死亡
+	{ "Character\\Gas mask soldier\\anim\\BackStep_101.x",						false,	101.0f	},		// バックステップ
 
 };
 
@@ -97,27 +98,28 @@ CSoldier::CSoldier()
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
 	, mElapsedTime_End(0.0f)
-	, mTimeKickTime(0.0f)
+	, mKickTime(0.0f)
+	, mBackStepTime(0.0f)
 	, mTargetDir(0.0f, 0.0f, 1.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mInitialPosition(0.0f, 0.0f, 0.0f)
 	, mTimeToChange(Math::Rand(2.0f, 5.0f))
-	, mKickorbackstep(Math::Rand(0, 1))
 	, mIsGrounded(false)
+	, mKickTimeEnd(false)
 	, mpRideObject(nullptr)
 {
+	//インスタンスの設定
+	spInstance = this;
+
 	// 初期位置の保存
-	Position(mInitialPosition);
+	//Position(mInitialPosition);
+	mInitialPosition = Position();
 
 	// ソルジャーの数を取得
 	CEnemyManager::IncrementEnemyCount();
 
-	//インスタンスの設定
-	spInstance = this;
-
 	// モデルデータ取得
 	CModelX* model = CResourceManager::Get<CModelX>("Soldier");
-
 
 	// フレーム設定
 	mpFrame = new CSoldierFrame();
@@ -138,10 +140,8 @@ CSoldier::CSoldier()
 	// CXCharacterの初期化
 	Init(model);
 
-
 	// 最初は待機アニメーションを再生
 	ChangeAnimation(EAnimType::eIdle);
-
 
 	// フィールドとの当たり判定を取るコライダー
 	mpColliderLine = new CColliderLine
@@ -193,9 +193,11 @@ CSoldier::CSoldier()
 
 	// 銃を作成して持たせる
 	mpGun = new CGun();
+	// 右手
 	const CMatrix* gun = GetFrameMtx("Armature_mixamorig_RightHand");
 	mpGun->AttachMtx(gun);
 
+	mKickTimeEnd = false;
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -227,6 +229,7 @@ CSoldier::~CSoldier()
 // 衝突処理
 void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
+	// 乗れるコライダー
 	if (self == mpColliderLine)
 	{
 		if (other->Layer() == ELayer::eField)
@@ -242,6 +245,7 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 	}
 
+	// カプセルコライダができるまでのコライダー
 	if (self == mpColliderSphere)
 	{
 		if (other->Layer() == ELayer::eFieldWall)
@@ -259,6 +263,7 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 	}
 
+	// ダメージを受けるコライダー
 	if (self == mpDamageCol)
 	{
 		if (other->Layer() == ELayer::eAttackCol)
@@ -269,6 +274,7 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 
+		// 敵と当たるコライダー
 		if (other->Layer() == ELayer::eDamageCol)
 		{
 			(other->Tag() == ETag::eEnemy);
@@ -277,10 +283,9 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 	}
-
-
 }
 
+// 状態変更
 void CSoldier::ChangeState(EState state)
 {
 	mState = state;
@@ -290,14 +295,10 @@ void CSoldier::ChangeState(EState state)
 // 被ダメージ処理
 void CSoldier::TakeDamage(int damage)
 {
-	// 死亡していたらダメージは受けない
-	//if (mCharaStatus.hp <= 0) return;
-
-	// HPからダメージを引く
-	//mCharaStatus.hp = std::max(mCharaStatus.hp - damage, 0);
 	mCharaStatus.hp -= damage;
+
 	// HPが0になったら
-	if (mCharaStatus.hp == 0)
+	if (mCharaStatus.hp <= 0)
 	{
 		ChangeState(EState::eDeth);
 	}
@@ -309,7 +310,6 @@ void CSoldier::LevelUp()
 	int level = mCharaStatus.level;
 	ChangeLevel(level + 1);
 }
-
 
 // レベルを変更
 void CSoldier::ChangeLevel(int level)
@@ -331,7 +331,7 @@ void CSoldier::ChangeDerection()
 {
 	// ランダムな方向に変更
 	// ランダムな角度を求める
-	float randomAngle = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 360.0f;
+	float randomAngle = Math::Rand(0.0f, 1.0f) * M_PI;
 	// 方向の計算を角度に代入
 	mTargetDir = CalculateDirection(randomAngle);
 }
@@ -339,8 +339,9 @@ void CSoldier::ChangeDerection()
 // 徘徊に遷移する条件
 bool CSoldier::ShouldTransitionWander()
 {
-	float randomValue = Math::Rand(0.0f, 1.0f);
-	return randomValue < 0.01f;  // 1%の確率で徘徊に遷移
+	/*float randomValue = Math::Rand(0.0f, 1.0f)*/
+	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
+	return randomValue < 0.001f;  // 1%の確率で徘徊に遷移
 }
 
 // 待機状態に遷移する条件
@@ -373,9 +374,9 @@ void CSoldier::Move()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
-	// mMoveSpeed は敵の速度ベクトルでmMoveSpeed.X() が X 軸方向の速度を表します。
-	// 適切な速度を設定し、mMoveSpeedをmTargetDirにスケーリングして移動。
 
+	// mMoveSpeedは敵の速度ベクトル、mMoveSpeed.X()がX軸方向の速度
+	// 適切な速度を設定し、mMoveSpeedをmTargetDirにスケーリングして移動。
 	// 速度を設定
 	float moveSpeed = MOVE_AUTOMATIC_SPEED;
 
@@ -396,7 +397,6 @@ void CSoldier::ChangeAnimation(EAnimType type)
 	AnimData data = ANIM_DATA[(int)type];
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
 }
-
 
 // 待機
 void CSoldier::UpdateIdle()
@@ -444,9 +444,10 @@ void CSoldier::UpdateAttack()
 			ChangeState(EState::eBackStep);
 			return;
 		}
-		if (distancePlayer <= ATTACK_RANGE_KICK)
+		else if (distancePlayer <= ATTACK_RANGE_KICK && !mKickTimeEnd)
 		{
 			ChangeState(EState::eKick);
+			mKickTimeEnd = true;
 			return;
 		}
 		ChangeAnimation(EAnimType::eAttack);
@@ -710,7 +711,19 @@ void CSoldier::UpdateWander()
 // バックステップ
 void CSoldier::UpdateBackStep()
 {
+	mMoveSpeed.X(0.0f);
+
 	ChangeAnimation(EAnimType::eBackStep);
+
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
 
 	// バックステップする距離
 	const float backStepDistance = 15.0f;
@@ -759,6 +772,18 @@ void CSoldier::Update()
 {
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
+
+	// キックの待ち時間
+	if (mKickTimeEnd)
+	{
+		mKickTime += Time::DeltaTime();
+		if (mKickTime >= KICKCOL)
+		{
+			mKickTimeEnd = false;
+			mKickTime = 0.0f;
+		}
+	}
+	CDebugPrint::Print("kickTime%f\n", mKickTime);
 
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)

@@ -134,14 +134,14 @@ void CHatenaBlock::UpdateHit()
 		{
 			// アイテムを出現
 			// ランダムに
-			int randomValue = Math::Rand(0, 1);
+			int randomValue = Math::Rand(0, 10);
 
 			item = false;
 
 			bool obj = !mpHeart && !mpStar;
 
 			// 0 かつ 何も出現していない かつ falseだった場合
-			if ((randomValue == 0 && obj && !item))
+			if ((randomValue >= 0 && randomValue <= 5 && obj && !item))
 			{
 				item = true;
 				mpHeart = new CRecoveryObject();
@@ -150,7 +150,7 @@ void CHatenaBlock::UpdateHit()
 				mpHeart->Position(newPosition);
 			}
 			// 1 かつ 何も出現していない かつ falseだった場合
-			else if ((randomValue == 1 && obj && !item))
+			else if ((randomValue >= 6 && randomValue <= 10 && obj && !item))
 			{
 				item = true;
 				mpStar = new CInvincible();

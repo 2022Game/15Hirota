@@ -11,59 +11,69 @@
 #include "CGameManager.h"
 #include "CRecoveryObject.h"
 
-//// プレイヤーのモデルデータのパス
-//#define MODEL_PATH "Character\\Monster1\\Monster_1.x"
-
 // プレイヤー関連
-#define PLAYER_HEIGHT 16.0f		// 高さ
-#define MOVE_SPEED 0.9f			// スピード
-#define RUN_SPEED 1.3f			// 移動スピード
-#define JUMP_SPEED 1.5f			// ジャンプ
+// 高さ
+#define PLAYER_HEIGHT 16.0f
+// スピード
+#define MOVE_SPEED 0.9f
+// 移動スピード
+#define RUN_SPEED 1.3f
+// ジャンプ
+#define JUMP_SPEED 1.5f
+// 大ジャンプ
 #define JUMP_BOUNCE 2.0f
-#define GRAVITY 0.0625f			// 重力
-#define JUMP_END_Y 1.0f			// ジャンプ終了時
+// 重力
+#define GRAVITY 0.0625f
+// ジャンプ終了時
+#define JUMP_END_Y 1.0f
 
-#define FOV_ANGLE 45.0f			//視野の角度(ー角度+角度も出)
-#define FOV_LENGTH 5.0f			//視野の角度
+
+//視野の角度(ー角度+角度も出)
+#define FOV_ANGLE 45.0f
+//視野の角度
+#define FOV_LENGTH 5.0f
+
 
 // HP関連
 #define HP 100
-
 // レベル関連
 #define LEVEL 1
-
 // スタミナ関連
 #define STAMINA 109
 
 
+// その他
 // 色を描画する時間
 #define COLORSET 0.5f
-
 // ダメージコライダーの計測時間
 #define DAMAGECOL 2.0f
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
 
+CPlayer* CPlayer::Instance()
+{
+	return spInstance;
+}
 
 // プレイヤーのアニメーションデータのテーブル
 const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 {
-	{ "",														true,	0.0f	},	// Tポーズ
-	{ "Character\\Monster1\\anim\\Warrok_Idle.x",				true,	854.0f	},	// 待機
-	{ "Character\\Monster1\\anim\\Warrok_Walking.x",			true,	86.0f	},	// ダッシュ
-	{ "Character\\Monster1\\anim\\Warrok_Punchi.x",				false,	67.0f	},	// 攻撃
-	{ "Character\\Monster1\\anim\\Warrok_StrongAttack.x",		false,	161.0f	},	// 強攻撃
-	{ "Character\\Monster1\\anim\\jump_start.x",				false,	25.0f	},	// ジャンプ開始
-	{ "Character\\Monster1\\anim\\jump.x",						true,	1.0f	},	// ジャンプ中
-	{ "Character\\Monster1\\anim\\jump_end.x",					false,	26.0f	},	// ジャンプ終了
-	{ "Character\\Monster1\\anim\\Warrok_Run.x",				true,	53.0f	},	// 歩行
-	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	90.0f	},	// ダッシュ終了
-	{ "Character\\Monster1\\anim\\Rotate.x",					false,	71.0f	},	// 回避
-	{ "Character\\Monster1\\anim\\Guts pose_325.x",				false,	325.0f	},	// ガッツポーズ
-	{ "Character\\Monster1\\anim\\Hit_63.x",					false,	63.0f	},	// 敵の攻撃Hit
-	{ "Character\\Monster1\\anim\\Deth_276.x",					false,	276.0f	},	// 死亡Hit_107
-	{ "Character\\Monster1\\anim\\Hit_107.x",					false,	107.0f	},	// 敵の弾Hit
+	{ "",															true,	0.0f	},	// Tポーズ
+	{ "Character\\Monster1\\anim\\Warrok_Idle.x",					true,	854.0f	},	// 待機
+	{ "Character\\Monster1\\anim\\Warrok_Walking.x",				true,	86.0f	},	// ダッシュ
+	{ "Character\\Monster1\\anim\\Warrok_Punchi.x",				false,	67.0f	},		// 攻撃
+	{ "Character\\Monster1\\anim\\Warrok_StrongAttack.x",		false,	161.0f	},		// 強攻撃
+	{ "Character\\Monster1\\anim\\jump_start.x",				false,	25.0f	},		// ジャンプ開始
+	{ "Character\\Monster1\\anim\\jump.x",							true,	1.0f	},	// ジャンプ中
+	{ "Character\\Monster1\\anim\\jump_end.x",					false,	26.0f	},		// ジャンプ終了
+	{ "Character\\Monster1\\anim\\Warrok_Run.x",					true,	53.0f	},	// 歩行
+	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	90.0f	},		// ダッシュ終了
+	{ "Character\\Monster1\\anim\\Rotate.x",					false,	71.0f	},		// 回避
+	{ "Character\\Monster1\\anim\\Guts pose_325.x",				false,	325.0f	},		// ガッツポーズ
+	{ "Character\\Monster1\\anim\\Hit_63.x",					false,	63.0f	},		// 敵の攻撃Hit
+	{ "Character\\Monster1\\anim\\Deth_276.x",					false,	276.0f	},		// 死亡Hit_107
+	{ "Character\\Monster1\\anim\\Hit_107.x",					false,	107.0f	},		// 敵の弾Hit
 
 };
 
@@ -72,30 +82,22 @@ CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eIdle)
 	, mStateStep(0)
-	, mMoveSpeed(0.0f, 0.0f, 0.0f)
-	, mPosition(0.0f,0.0f,0.0f)//0.0f, 60.0f, -30.0f
-	, mpRideObject(nullptr)
-	, staminaDepleted(false)
-	, staminaLowerLimit(false)
-	, damageObject(false)
-	, damageEnemy(false)
-	, JumpObject(false)
-	, mInvincible(false)
-	, mHpHit(false)
-	, mLife(50)
 	, mElapsedTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
-	, JumpCoolDownTime(5.0f)
 	, mElapsedTimeCol(0.0f)
 	, mInvincibleStartTime(10.0f)
+	, mStartPos(0.0f, 0.0f, 0.0f)
+	, mMoveSpeed(0.0f, 0.0f, 0.0f)
+	, mHpHit(false)
+	, damageEnemy(false)
+	, mInvincible(false)
+	, damageObject(false)
+	, staminaDepleted(false)
 	, mIsPlayedSlashSE(false)
+	, staminaLowerLimit(false)
 	, mIsPlayedHitDamageSE(false)
+	, mpRideObject(nullptr)
 {
-	// HPゲージを作成
-	mpHpGauge = new CUIGauge();
-	// スタミナゲージを作成
-	mpStaminaGauge = new CStaminaGauge();
-
 	// インスタンスの設定
 	spInstance = this;
 	Position(0.0f, 60.0f, -30.0f);
@@ -103,6 +105,16 @@ CPlayer::CPlayer()
 
 	// モデルデータ取得
 	CModelX* model = CResourceManager::Get<CModelX>("Player");
+
+	// スラッシュSE取得
+	mpSlashSE = CResourceManager::Get<CSound>("SlashSound");
+	// ダメージ時のボイス取得
+	mpHitDamageSE = CResourceManager::Get<CSound>("CreatureGrowl1");
+
+	// HPゲージを作成
+	mpHpGauge = new CUIGauge();
+	// スタミナゲージを作成
+	mpStaminaGauge = new CStaminaGauge();
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
@@ -118,7 +130,7 @@ CPlayer::CPlayer()
 	// 最初は待機アニメーションを再生
 	ChangeAnimation(EAnimType::eIdle);
 
-	// 縦のコライダーライン
+	// フィールドとの当たり判定を取るコライダー
 	mpColliderLine = new CColliderLine
 	(
 		this, ELayer::ePlayer,
@@ -128,7 +140,7 @@ CPlayer::CPlayer()
 	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol, ELayer::eBlockCol });
 	
 
-	// 当たり判定を取るコライダー
+	// 一時的な当たり判定を取るコライダー
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::ePlayer,
@@ -136,7 +148,6 @@ CPlayer::CPlayer()
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, ELayer::eInvincbleCol});
 	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
-
 
 	// ダメージを受けるコライダーを作成
 	mpDamageCol = new CColliderSphere
@@ -158,8 +169,7 @@ CPlayer::CPlayer()
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpSword->SetOwner(this);
 
-	mpSlashSE = CResourceManager::Get<CSound>("SlashSound");
-	mpHitDamageSE = CResourceManager::Get<CSound>("CreatureGrowl1");
+	
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -255,10 +265,6 @@ void CPlayer::UpdateReady()
 	}
 }
 
-CPlayer* CPlayer::Instance()
-{
-	return spInstance;
-}
 
 // hp取得
 int CPlayer::GetHp()
@@ -304,14 +310,6 @@ void CPlayer::ChangeAnimation(EAnimType type)
 	if (!(EAnimType::None < type && type < EAnimType::Num)) return;
 	AnimData data = ANIM_DATA[(int)type];
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
-}
-
-// 回避可能かどうかの判定
-bool CPlayer::CanEvade()
-{
-	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
-	// QまたはEキーが押され、かつ回避条件を満たしている場合
-	return (CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush && (mCharaStatus.stamina <= mCharaMaxStatus.stamina) && (mCharaStatus.stamina - 50 >= 0);
 }
 
 // 待機
@@ -1075,7 +1073,9 @@ void CPlayer::Update()
 	}
 
 
-	if (JumpObject)
+	// なんの処理か忘れたが、消しても問題が無かったため
+	// コメントアウト
+	/*if (JumpObject)
 	{
 		JumpCoolDownTime -= Time::DeltaTime();
 
@@ -1083,9 +1083,7 @@ void CPlayer::Update()
 		{
 			JumpObject = false;
 		}
-	}
-	CDebugPrint::Print("JumpObject %s\n", JumpObject ? "true" : "false");
-	CDebugPrint::Print("JumpTime %f\n", JumpCoolDownTime);
+	}*/
 
 	// キャラクターのデバッグ表示
 	static bool debug = false;
