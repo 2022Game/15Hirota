@@ -18,16 +18,17 @@ CField::CField()
 	CModel* floorCol = CResourceManager::Get<CModel>("FloorCol");
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, floorCol, true);
 
+	CModel* enemywallCol = CResourceManager::Get<CModel>("EnemyWallCol");
+	mpEnemyWallCol = new CColliderMesh(this, ELayer::eFieldEnemyWall, enemywallCol, true);
+
 	CreateFieldObjects();
 }
 
 CField::~CField()
 {
-	if (mpColliderMesh != nullptr)
-	{
-		delete mpColliderMesh;
-		mpColliderMesh = nullptr;
-	}
+	// コライダーを破棄
+	SAFE_DELETE(mpColliderMesh);
+	SAFE_DELETE(mpEnemyWallCol);
 
 	if (mpWallCol != nullptr)
 	{

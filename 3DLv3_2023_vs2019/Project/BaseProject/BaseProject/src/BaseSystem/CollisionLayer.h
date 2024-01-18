@@ -9,6 +9,7 @@ enum class ELayer
 
 	eField,
 	eFieldWall,
+	eFieldEnemyWall,
 
 	eEffect,
 	ePlayer,

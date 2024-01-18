@@ -44,6 +44,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("Field",					"Field\\GameStage(1).obj");					// ‰¼1–Ê
 	CResourceManager::Load<CModel>("FloorCol",				"Field\\GameStageFloor(1).obj");			// ‰¼1–Ê‚Ì°
 	CResourceManager::Load<CModel>("WallCol",				"Field\\GameStageWall(1).obj");				// ‰¼1–Ê‚Ì•Ç
+	CResourceManager::Load<CModel>("EnemyWallCol",			"Field\\GameStageEnemyWall(1).obj");		// ‰¼1–Ê‚Ì“G‚Ì•Ç
 	CResourceManager::Load<CModel>("FieldCube",				"Field\\Object\\cube.obj");					// ‰Šú‚ÌlŠp‚Ìƒ‚ƒfƒ‹
 	CResourceManager::Load<CModel>("FieldCylinder",			"Field\\Object\\cylinder.obj");				// ‰Šú‚Ì‰ñ“]‚·‚élŠpƒ‚ƒfƒ‹
 	CResourceManager::Load<CModel>("GoalCube",				"Field\\Object\\GoalCube.obj");				// ƒS[ƒ‹‚Ì“y‘ä

@@ -158,7 +158,7 @@ CSoldier::CSoldier()
 		this, ELayer::eEnemy,
 		7.0f
 	);
-	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField });
+	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eFieldEnemyWall });
 	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 
 	// ƒ_ƒ[ƒW‚ğó‚¯‚éƒRƒ‰ƒCƒ_[
@@ -255,7 +255,11 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				mpRideObject = other->Owner();
 			}
 		}
-		if (other->Layer() == ELayer::eField)
+		else if (other->Layer() == ELayer::eField)
+		{
+			Position(Position() + hit.adjust);
+		}
+		else if (other->Layer() == ELayer::eFieldEnemyWall)
 		{
 			Position(Position() + hit.adjust);
 		}
@@ -329,24 +333,23 @@ void CSoldier::ChangeDerection()
 {
 	// ƒ‰ƒ“ƒ_ƒ€‚È•ûŒü‚É•ÏX
 	// ƒ‰ƒ“ƒ_ƒ€‚ÈŠp“x‚ğ‹‚ß‚é
-	float randomAngle = Math::Rand(0.0f, 1.0f) * M_PI;
+	float randomAngle = Math::Rand(0.0f, 1.0f) * 360.0f;
 	// •ûŒü‚ÌŒvZ‚ğŠp“x‚É‘ã“ü
 	mTargetDir = CalculateDirection(randomAngle);
 }
 
-// œpœj‚É‘JˆÚ‚·‚éğŒ
+// ‘Ò‹@ó‘Ô‘JˆÚ‚·‚éğŒ
 bool CSoldier::ShouldTransitionWander()
 {
-	/*float randomValue = Math::Rand(0.0f, 1.0f)*/
 	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
-	return randomValue < 0.001f;  // 1%‚ÌŠm—¦‚Åœpœj‚É‘JˆÚ
+	return randomValue < 0.01f;  // 0.1%‚ÌŠm—¦‚Å‘Ò‹@‚É‘JˆÚ
 }
 
-// ‘Ò‹@ó‘Ô‚É‘JˆÚ‚·‚éğŒ
+// œpœjó‘Ô‚É‘JˆÚ‚·‚éğŒ
 bool CSoldier::ShouldTransition()
 {
-	float randomValue = Math::Rand(0.0f, 1.0f);
-	return randomValue < 0.01f;  // 0.1%‚ÌŠm—¦‚Åœpœj‚É‘JˆÚ
+	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
+	return randomValue < 0.01f;  // 0.1%‚ÌŠm—¦‚Åœpœjó‘Ô‚É‘JˆÚ
 }
 
 // 360“x‚ÌŠp“x‚ğ‹‚ß‚ÄAx²‚Æy²‚©‚çŒvZ‚·‚é

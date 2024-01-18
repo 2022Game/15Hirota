@@ -23,13 +23,14 @@ void CApplication::Start()
 	CFade::Instance();
 	// ゲームポーズクラスを作成
 	new CGamePause();
+	// 看板ポーズを読み込み
+	new CSignboardPause();
 	// サウンド管理クラスを作成
 	CSoundManager::Instance();
 	// BGM管理クラスを作成
 	CBGMManager::Instance();
 
 	// 最初のシーンを読み込み
-	new CSignboardPause();
 	CSoundManager::Instance();
 	CSceneManager::Instance()->LoadScene(EScene::eBootMenu);
 }
@@ -40,6 +41,7 @@ void CApplication::End()
 	CTaskManager::ClearInstance();
 	CCollisionManager::ClearInstance();
 	CResourceManager::ClearInstance();
+	CBGMManager::ClearInstance();
 	CSoundManager::ClearInstance();
 }
 
