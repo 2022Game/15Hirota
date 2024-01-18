@@ -586,7 +586,7 @@ void CPlayer::UpdateIdle()
 			ChangeState(EState::eAttack);
 		}
 		// Kキーで強攻撃
-		else if (CInput::PushKey(VK_LBUTTON))
+		else if (CInput::PushKey(VK_RBUTTON))
 		{
 			mMoveSpeed.X(0.0f);
 			mMoveSpeed.Z(0.0f);
@@ -749,7 +749,8 @@ void CPlayer::UpdateAttackStrongWait()
 //回避開始
 void CPlayer::UpdateRotate()
 {
-	if (mElapsedTimeCol <= DAMAGECOL)
+	mpDamageCol->SetEnable(false);
+	/*if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
 		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
@@ -757,7 +758,7 @@ void CPlayer::UpdateRotate()
 			mElapsedTimeCol = DAMAGECOL;
 			mpDamageCol->SetEnable(true);
 		}
-	}
+	}*/
 
 	// 移動処理
 	// キーの入力ベクトルを取得
@@ -785,7 +786,8 @@ void CPlayer::UpdateRotate()
 //回避終了待ち
 void CPlayer::UpdateRotateEnd()
 {
-	if (mElapsedTimeCol <= DAMAGECOL)
+	mpDamageCol->SetEnable(true);
+	/*if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
 		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
@@ -793,7 +795,7 @@ void CPlayer::UpdateRotateEnd()
 			mElapsedTimeCol = DAMAGECOL;
 			mpDamageCol->SetEnable(true);
 		}
-	}
+	}*/
 
 	if (IsAnimationFinished())
 	{

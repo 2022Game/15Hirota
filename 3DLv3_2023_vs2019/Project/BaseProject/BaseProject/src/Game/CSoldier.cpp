@@ -22,7 +22,7 @@
 // 移動速度
 #define MOVE_SPEED 0.7f
 // 自動移動速度
-#define MOVE_AUTOMATIC_SPEED 25.0f
+#define MOVE_AUTOMATIC_SPEED 30.0f
 // ジャンプ速度
 #define JUMP_SPEED 1.5f
 // 重力加速度
@@ -37,7 +37,7 @@
 // プレイヤーまでの距離(キック)
 #define ATTACK_RANGE_KICK 25.0f
 // プレイヤーまでの距離(バックステップ)
-#define BACKSTEP_RANGE 20.0f
+#define BACKSTEP_RANGE 24.0f
 
 
 // HP関連
@@ -349,7 +349,7 @@ bool CSoldier::ShouldTransitionWander()
 bool CSoldier::ShouldTransition()
 {
 	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
-	return randomValue < 0.01f;  // 0.1%の確率で徘徊状態に遷移
+	return randomValue < 0.1f;  // 0.1%の確率で徘徊状態に遷移
 }
 
 // 360度の角度を求めて、x軸とy軸から計算する

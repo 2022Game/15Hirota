@@ -72,7 +72,7 @@ void CStage1::Load()
 
 	// ゴールオブジェクト
 	CGoalObject* goal = new CGoalObject(
-		CVector(0.0f, 0.0f, -100.0f),
+		CVector(20.0f, 95.0f, -450.0f),
 		CVector(1.5f, 1.5f, 1.5f),
 		CVector(0.0f, 90.0f, 0.0f));
 	AddTask(goal);
@@ -93,7 +93,7 @@ void CStage1::Load()
 	);
 	AddTask(dfloor);
 
-	// ジャンプする床
+	// ジャンプする床-100.0f, 20.0f, -450.0f
 	CJumpingObject* jump = new CJumpingObject
 	(
 		CVector(0.0f, -5.0f, -340.0f),
@@ -102,6 +102,16 @@ void CStage1::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(jump);
+
+	// ジャンプする床
+	CJumpingObject* jump1 = new CJumpingObject
+	(
+		CVector(-100.0f, 1.0f, -430.0f),
+		CVector(0.5f, 0.5f, 0.5f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(jump1);
 
 	// 看板		-380は対岸
 	CSignboard* board = new CSignboard
@@ -116,11 +126,11 @@ void CStage1::Load()
 	// 落下する床
 	CFallingObjects* fallobj = new CFallingObjects
 	(
-		CVector(150.0f, 8.0f, -430.0f),
+		CVector(20.0f, 95.0f, -500.0f),
 		CVector(1.0f, 1.0f, 1.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector fallobjpos = CVector(150.0f, 8.0f, -430.0f);
+	CVector fallobjpos = CVector(20.0f, 95.0f, -500.0f);
 	if (fallobj != nullptr)
 	{
 		fallobj->SetStartPosition(fallobjpos);
@@ -128,21 +138,31 @@ void CStage1::Load()
 	AddTask(fallobj);
 
 	//// 敵(ガスマスク兵士) ///////////////////////////////////////////
+
 	CSoldier* sol1 = new CSoldier();
 	sol1->Scale(1.0f, 1.0f, 1.0f);
 	sol1->Position(-100.0f, 150, -150);
 	AddTask(sol1);
-	
 
 	CSoldier* sol2 = new CSoldier();
 	sol2->Scale(1.0f, 1.0f, 1.0f);
 	sol2->Position(-50.0f, 150.0f, -150.0f);
 	AddTask(sol2);
 
-	//CSoldier* sol3 = new CSoldier();
-	//sol3->Scale(1.0f, 1.0f, 1.0f);
-	//sol3->Position(50.0f, 150.0f, -200.0f);
-	//AddTask(sol3);
+	CSoldier* sol3 = new CSoldier();
+	sol3->Scale(1.0f, 1.0f, 1.0f);
+	sol3->Position(50.0f, 150.0f, -200.0f);
+	AddTask(sol3);
+
+	CSoldier* sol4 = new CSoldier();
+	sol4->Scale(1.0f, 1.0f, 1.0f);
+	sol4->Position(0.0f, 150.0f, -500.0f);
+	AddTask(sol4);
+
+	/*CSoldier* sol5 = new CSoldier();
+	sol5->Scale(1.0f, 1.0f, 1.0f);
+	sol5->Position(0.0f, 50.0f, -550.0f);
+	AddTask(sol5);*/
 	
 	////////////////////////////////////////////////////////////////////
 
@@ -176,11 +196,11 @@ void CStage1::Load()
 
 	CHatenaBlock* hatena2 = new CHatenaBlock
 	(
-		CVector(7.3f, 6.0f, -250.0f),
+		CVector(7.3f, 6.0f, -450.0f),
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector hatenaPos2 = CVector(7.3f, 6.0f, -250.0f);
+	CVector hatenaPos2 = CVector(7.3f, 6.0f, -150.0f);
 	if (hatena2 != nullptr)
 	{
 		hatena2->SetStartPosition(hatenaPos2);
@@ -189,11 +209,11 @@ void CStage1::Load()
 
 	CHatenaBlock* hatena3 = new CHatenaBlock
 	(
-		CVector(-100.0f, 20.0f, -150.0f),
+		CVector(-100.0f, 20.0f, -450.0f),
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector hatenaPos3 = CVector(-100.0f, 20.0f, -150.0f);
+	CVector hatenaPos3 = CVector(-100.0f, 20.0f, -450.0f);
 	if (hatena3 != nullptr)
 	{
 		hatena3->SetStartPosition(hatenaPos3);

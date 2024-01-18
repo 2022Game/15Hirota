@@ -155,11 +155,11 @@ void CGameScene::Update()
 			// 上昇するオブジェクト
 			CRisingObject* rising = new CRisingObject
 			(
-				CVector(-30.0f, 3.0f, -450.0f),
+				CVector(20.0f, 1.0f, -550.0f),
 				CVector(0.5f, 0.5f, 0.5f),
 				ETag::ePlayer, ELayer::ePlayer
 			);
-			CVector risingPos = CVector(-30.0f, 3.0f, -450.0f);
+			CVector risingPos = CVector(20.0f, 1.0f, -550.0f);
 			if (rising != nullptr)
 			{
 				rising->SetStartPosition(risingPos);
