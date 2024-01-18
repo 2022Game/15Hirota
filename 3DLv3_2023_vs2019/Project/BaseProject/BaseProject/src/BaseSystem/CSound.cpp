@@ -145,11 +145,11 @@ int CSound::FindNotPlayingSourceVoice(bool force) const
 int CSound::Play(float volume, bool force, float fadeTime)
 {
 	// ループ回数を0で再生する
-	return PlayLoop(0, volume, force, fadeTime);
+	return PlayLoop(0, true, volume, force, fadeTime);
 }
 
 // サウンドをループ再生
-int CSound::PlayLoop(int loopCount, float volume, bool force, float fadeTime)
+int CSound::PlayLoop(int loopCount, bool fromBegin, float volume, bool force, float fadeTime)
 {
 	int index = FindNotPlayingSourceVoice(force);
 
@@ -175,18 +175,25 @@ int CSound::PlayLoop(int loopCount, float volume, bool force, float fadeTime)
 			source.info.LoopLength = mLoopLength;
 		}
 
-		HRESULT hr = source.voice->SubmitSourceBuffer(&source.info, NULL);
+		HRESULT hr;
+		if (fromBegin)
+		{
+			source.voice->FlushSourceBuffers();
+		}
+
+		hr = source.voice->SubmitSourceBuffer(&source.info, NULL);
 		if (FAILED(hr)) return -1;
 
 		float vol = fadeTime <= 0.0f ? volume : 0.0f;
 		hr = source.voice->SetVolume(mBaseVolume * vol);
 		if (FAILED(hr)) return -1;
 
-		if (fadeTime <= 0.0f)
-		{
-			source.voice->Start();
-		}
-		else
+		source.voice->Start();
+		//if (fadeTime <= 0.0f)
+		//{
+		//	source.voice->Start();
+		//}
+		//else
 		{
 			AddFadeSound(source.voice, fadeTime, volume, true);
 		}
@@ -214,8 +221,6 @@ void CSound::Stop(int index, float fadeTime)
 		}
 		else
 		{
-			source.voice->Stop();
-			source.voice->FlushSourceBuffers();
 		}
 	}
 	// インデックスが設定されていない
@@ -232,8 +237,6 @@ void CSound::Stop(int index, float fadeTime)
 			}
 			else
 			{
-				source.voice->Stop();
-				source.voice->FlushSourceBuffers();
 			}
 		}
 	}
@@ -318,6 +321,31 @@ void CSound::SetBaseVolume(float volume)
 	mBaseVolume = Math::Clamp01(volume);
 }
 
+// サウンドの音量を設定
+void CSound::SetVolume(float volume, int index)
+{
+	// インデックスが設定されてる
+	if (index >= 0)
+	{
+		// 範囲外チェック
+		if (index >= mAudioSources.size()) return;
+
+		const CAudioSource& source = mAudioSources[index];
+		IXAudio2SourceVoice* sv = source.voice;
+		sv->SetVolume(mBaseVolume * volume);
+	}
+	// インデックスが設定されていない
+	else
+	{
+		// 全てのサウンドを停止
+		for (const CAudioSource& source : mAudioSources)
+		{
+			IXAudio2SourceVoice* sv = source.voice;
+			sv->SetVolume(mBaseVolume * volume);
+		}
+	}
+}
+
 // ループ範囲を設定
 void CSound::SetLoopRange(int loopBegin, int loopLength)
 {
@@ -372,10 +400,10 @@ void CSound::Update()
 			if (!sound.isFadeIn) per = 1.0f - per;
 			float volume = mBaseVolume * sound.volume * per;
 			sound.voice->SetVolume(volume);
-			if (sound.isFadeIn && volume > 0.0f)
+			/*if (sound.isFadeIn && volume > 0.0f)
 			{
 				sound.voice->Start();
-			}
+			}*/
 			sound.elapsedTime += Time::DeltaTime();
 		}
 		else
@@ -383,7 +411,6 @@ void CSound::Update()
 			if (!sound.isFadeIn)
 			{
 				sound.voice->Stop();
-				sound.voice->FlushSourceBuffers();
 			}
 			itr = mFadeSounds.erase(itr);
 			continue;

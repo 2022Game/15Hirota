@@ -232,9 +232,8 @@ void CRecoveryObject::Update()
 	// ˆÚ“®
 	Position(Position() + mMoveVector + mMoveSpeed * 60.0f * Time::DeltaTime());
 
-	// Šm”F
+	// Œv‘ªŽžŠÔŠÄŽ‹
 	CDebugPrint::Print("TIme:%f\n", mElapsedTime);
-
 }
 
 

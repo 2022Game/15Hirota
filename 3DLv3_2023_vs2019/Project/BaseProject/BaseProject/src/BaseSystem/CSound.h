@@ -32,11 +32,12 @@ public:
 	/// サウンドをループ再生
 	/// </summary>
 	/// <param name="loopCount">ループ数（0:ループなし、-1:永続ループ）</param>
+	/// <param name="fromBegin">最初から再生するかどうか</param>
 	/// <param name="volume">ボリューム</param>
 	/// <param name="force">再生枠が足りない時に、既に再生中の音声を停止して再生するかどうか</param>
 	/// <param name="fadeTime">再生時のフェードイン時間</param>
 	/// <returns></returns>
-	int PlayLoop(int loopCount = -1, float volume = 1.0f, bool force = false, float fadeTime = 0.0f);
+	int PlayLoop(int loopCount = -1, bool fromBegin = true, float volume = 1.0f, bool force = false, float fadeTime = 0.0f);
 
 	/// <summary>
 	/// サウンドを停止
@@ -62,6 +63,13 @@ public:
 	/// </summary>
 	/// <param name="volume">ベース音量</param>
 	void SetBaseVolume(float volume);
+
+	/// <summary>
+	/// サウンドの音量を設定
+	/// </summary>
+	/// <param name="volume">設定する音量</param>
+	/// <param name="index">設定するインデックス（指定なければ、全てに設定）</param>
+	void SetVolume(float volume, int index = -1);
 
 	/// <summary>
 	/// ループ範囲を設定

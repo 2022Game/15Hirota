@@ -77,6 +77,12 @@ public:
 	void Render();
 
 private:
+	// モデル・素材関連
+	// 状態関連
+	// アニメーション関連
+	// ベクトル関連
+	// 変数関連
+
 	// プレイヤーのインスタンス
 	static CSoldier* spInstance;
 

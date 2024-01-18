@@ -436,6 +436,15 @@
     <ClCompile Include="src\Game\CInvincibleObjectBase.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseSystem\CFade.cpp">
+      <Filter>ソース ファイル\BaseSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CBGMManager.cpp">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CBGMData.cpp">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -800,6 +809,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CInvincibleObjectBase.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CFade.h">
+      <Filter>ソース ファイル\BaseSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CBGMManager.h">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CBGMData.h">
+      <Filter>ソース ファイル\BaseSystem\Sound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

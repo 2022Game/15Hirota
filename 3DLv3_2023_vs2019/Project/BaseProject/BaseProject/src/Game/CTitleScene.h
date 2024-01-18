@@ -18,6 +18,4 @@ public:
 	void Update();
 
 private:
-	CImage* mpTitle;
-	CSound* mpTitleBGM;	//ƒ^ƒCƒgƒ‹‰æ–Ê‚ÌBGM
 };

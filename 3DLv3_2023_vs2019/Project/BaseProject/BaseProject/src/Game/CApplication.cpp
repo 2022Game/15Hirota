@@ -4,9 +4,11 @@
 #include "CTaskManager.h"
 #include "CCollisionManager.h"
 #include "CSoundManager.h"
+#include "CBGMManager.h"
 #include "CSceneManager.h"
 #include "CGamePause.h"
 #include "CSignboardPause.h"
+#include "CFade.h"
 
 CApplication::~CApplication()
 {
@@ -14,7 +16,19 @@ CApplication::~CApplication()
 
 void CApplication::Start()
 {
+	// デバッグカメラを作成
+	CDebugCamera::DebugCamera();
+
+	// フェードクラスを作成
+	CFade::Instance();
+	// ゲームポーズクラスを作成
 	new CGamePause();
+	// サウンド管理クラスを作成
+	CSoundManager::Instance();
+	// BGM管理クラスを作成
+	CBGMManager::Instance();
+
+	// 最初のシーンを読み込み
 	new CSignboardPause();
 	CSoundManager::Instance();
 	CSceneManager::Instance()->LoadScene(EScene::eBootMenu);

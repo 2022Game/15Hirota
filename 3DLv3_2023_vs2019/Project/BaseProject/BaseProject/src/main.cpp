@@ -129,7 +129,7 @@ int main(void)
 	glfwMakeContextCurrent(window);
 
 
-	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// GLEW を初期化する
 	glewExperimental = GL_TRUE;
@@ -192,6 +192,13 @@ int main(void)
 int Time::TargetFPS()
 {
 	return gFPS;
+}
+
+// 計算上での1フレームの経過時間を取得
+float Time::CalcDeltaTime()
+{
+	if (gFPS == 0) return 0.0f;
+	return 1.0f / gFPS;
 }
 
 // 前回のフレームのFPSを取得

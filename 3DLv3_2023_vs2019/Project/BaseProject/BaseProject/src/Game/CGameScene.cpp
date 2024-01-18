@@ -17,6 +17,7 @@
 #include "CRisingObject.h"
 #include "CStage1.h"
 #include "CSound.h"
+#include "CBGMManager.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -93,13 +94,8 @@ void CGameScene::Load()
 	CResourceManager::Load<CSound>("CreatureGrowl1",		"Sound\\VOICE\\CreatureStereo5.wav");	// クリーチャーの唸り声1
 
 
-
-	// ゲーム中のBGM
-	mpGameBGM = CResourceManager::Load<CSound>("GameBGM",	"Sound\\BGM\\Pops_01.wav");		// ステージ1用のBGM
-	// ゲームBGMのループ範囲を設定
-	mpGameBGM->SetLoopRange(0, 2801203);
-	// ゲームBGMをループ再生開始
-	mpGameBGM->PlayLoop(-1, 0.3f, false, 0.0f);
+	// ゲーム内のBGM
+	CBGMManager::Instance()->Play(EBGMType::eGame);
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -134,7 +130,6 @@ void CGameScene::Update()
 	{
 		CSceneManager::Instance()->LoadScene(EScene::eTitle);
 	}
-
 
 	// ゲームメニューを開いてなければ、[Ｍ]キーでメニューを開く
 	if (!mpGameMenu->IsOpened())
@@ -177,8 +172,8 @@ void CGameScene::Update()
 
 	////////////////////////////////////////////////////////////////////////////////////
 
-	// ステージ番号の確認
-	CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
-	// ソルジャーの数の確認
-	CDebugPrint::Print("count:%d\n", CEnemyManager::GetEnemyCount());
+	//// ステージ番号の監視
+	//CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
+	//// ソルジャーの数の監視
+	//CDebugPrint::Print("count:%d\n", CEnemyManager::GetEnemyCount());
 }

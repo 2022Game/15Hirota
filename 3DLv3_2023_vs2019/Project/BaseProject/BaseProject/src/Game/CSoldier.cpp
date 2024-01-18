@@ -176,7 +176,6 @@ CSoldier::CSoldier()
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpDamageCol->SetAttachMtx(spineMtx);
 
-
 	// ダメージを与えるコライダー
 	mpAttackCol = new CColliderSphere
 	(
@@ -189,7 +188,6 @@ CSoldier::CSoldier()
 	// 右足
 	const CMatrix* spineMtxK = GetFrameMtx("Armature_mixamorig_RightToeBase");
 	mpAttackCol->SetAttachMtx(spineMtxK);
-
 
 	// 銃を作成して持たせる
 	mpGun = new CGun();
@@ -887,12 +885,6 @@ void CSoldier::Update()
 	CVector forward = CVector::Slerp(current, target, 0.125f);
 	Rotation(CQuaternion::LookRotation(forward));
 
-
-	CDebugPrint::Print("Shot%d\n", mTimeShot);
-	CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
-	CDebugPrint::Print("FPS:%f\n", Time::FPS());
-	
-
 	// HPゲージの座標を更新 (敵の座標の少し上の座標)
 	CVector gaugePos = Position() + CVector(0.0f, 25.0f, 0.0f);
 	mpGauge->SetWorldPos(gaugePos);
@@ -911,6 +903,13 @@ void CSoldier::Update()
 	mpGun->UpdateAttachMtx();
 
 	mIsGrounded = false;
+
+	//// 弾の開始値を監視
+	//CDebugPrint::Print("Shot%d\n", mTimeShot);
+	//// 弾の終了値を監視
+	//CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
+	//// 前フレームのFPSを監視
+	//CDebugPrint::Print("FPS:%f\n", Time::FPS());
 	
 }
 

@@ -50,7 +50,7 @@ public:
 	void TakeInvincible() override;
 
 	// レベル処理
-	//	レベルアップ
+	// レベルアップ
 	void LevelUp();
 	// レベル変更
 	void ChangeLevel(int level);
@@ -61,6 +61,10 @@ public:
 	// ステージ開始時の位置を設定
 	void SetStartPosition(const CVector& pos);
 
+	// hp取得
+	int GetHp();
+	int GetMaxHp();
+
 	// 他のクラスで使っている為publicに置いておく
 	// ジャンプ開始
 	void UpdateJumpStart();
@@ -68,8 +72,6 @@ public:
 	void UpdateJump();
 	// ジャンプ終了
 	void UpdateJumpEnd();
-	//ダッシュ終了
-	void UpdateDashEnd();
 	// 跳ねる
 	void UpdateJumpingStart();
 	// 跳ねてる途中
@@ -77,16 +79,18 @@ public:
 	// 跳ねるの終了
 	void UpdateJumpingEnd();
 
-	// hp取得
-	int GetHp();
-	int GetMaxHp();
-
 	// 更新
 	void Update();
 	// 描画
 	void Render();
 	
 private:
+	// モデル・素材関連
+	// 状態関連
+	// アニメーション関連
+	// ベクトル関連
+	// 変数関連
+
 	// プレイヤーのインスタンス
 	static CPlayer* spInstance;
 
@@ -123,17 +127,19 @@ private:
 	void UpdateReady();
 	// 待機状態
 	void UpdateIdle();
+	//ダッシュ終了
+	void UpdateDashEnd();
 	// 攻撃
 	void UpdateAttack();
 	// 強攻撃
 	void UpdateAttackStrong();
-	// 攻撃終了待ち1
+	// 攻撃終了待ち
 	void UpdateAttackWait();
-	// 攻撃終了待ち2
-	void UpdateAttackWait2();
+	// 強攻撃終了待ち
+	void UpdateAttackStrongWait();
 	//回避開始
 	void UpdateRotate();
-	//回避終了
+	//回避終了待ち
 	void UpdateRotateEnd();
 	// クリア
 	void UpdateClear();
@@ -148,32 +154,32 @@ private:
 	// 敵の攻撃Hit
 	void UpdateHit();
 	// 敵の弾Hit
-	void UpdateHitJ();
+	void UpdateHitBullet();
 	// プレイヤーの状態
 	enum class EState
 	{
-		eReady,			// 準備中
-		eIdle,			// 待機
-		eAttack,		// 攻撃
-		eAttackStrong,	// 強攻撃
-		eAttackWait,	// 攻撃終了待ち
-		eAttackWait2,	// 攻撃終了待ち2
-		eJumpStart,		// ジャンプ開始
-		eJump,			// ジャンプ中
-		eJumpEnd,		// ジャンプ終了
-		eJumpingStart,	// 跳ねる開始
-		eJumping,		// 跳ねる
-		eJumpingEnd,	// 跳ねる終了
-		eRotate,		// 回避開始
-		eRotateEnd,		// 回避終了待ち
-		eDashEnd,		// ダッシュ終了
-		eClear,			// クリア状態
-		eClearEnd,		// クリア終了
-		eDeth,			// 死亡
-		eDethEnd,		// 死亡終了
-		eReStart,		// 再起
-		eHit,			// ダメージヒット
-		eHitJ,			// 敵の弾ヒット
+		eReady,				// 準備中
+		eIdle,				// 待機
+		eAttack,			// 攻撃
+		eAttackStrong,		// 強攻撃
+		eAttackWait,		// 攻撃終了待ち
+		eAttackStrongWait,	// 攻撃終了待ち2
+		eJumpStart,			// ジャンプ開始
+		eJump,				// ジャンプ中
+		eJumpEnd,			// ジャンプ終了
+		eJumpingStart,		// 跳ねる開始
+		eJumping,			// 跳ねる
+		eJumpingEnd,		// 跳ねる終了
+		eRotate,			// 回避開始
+		eRotateEnd,			// 回避終了待ち
+		eDashEnd,			// ダッシュ終了
+		eClear,				// クリア状態
+		eClearEnd,			// クリア終了
+		eDeth,				// 死亡
+		eDethEnd,			// 死亡終了
+		eReStart,			// 再起
+		eHit,				// ダメージヒット
+		eHitBullet,			// 敵の弾ヒット
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);

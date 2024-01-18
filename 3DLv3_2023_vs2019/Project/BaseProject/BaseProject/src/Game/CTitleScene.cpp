@@ -4,24 +4,19 @@
 #include "CCamera.h"
 #include "CPlayer.h"
 #include "CSound.h"
+#include "CBGMManager.h"
 
 #define TITLE_IMAGE "UI\\Title.png"
 
 //コンストラクタ
 CTitleScene::CTitleScene()
 	: CSceneBase(EScene::eTitle)
-	, mpTitle(nullptr)
 {
 }
 
 //デストラクタ
 CTitleScene::~CTitleScene()
 {
-	if (mpTitle != nullptr)
-	{
-		delete mpTitle;
-		mpTitle = nullptr;
-	}
 }
 
 //シーン読み込み
@@ -30,13 +25,8 @@ void CTitleScene::Load()
 	// 背景色設定
 	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-	// タイトルBGMを読み込み
-	mpTitleBGM = CResourceManager::Load<CSound>("TitleBGM", "Sound\\BGM\\title.wav");
-	// タイトルBGMをループ再生開始
-	mpTitleBGM->PlayLoop(-1, 0.1f, false, 0.0f);
-
-	mpTitle = new CImage(TITLE_IMAGE);
-	mpTitle->SetSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	// タイトルBGMを再生
+	CBGMManager::Instance()->Play(EBGMType::eTitle);
 
 	CCamera* mainCamera = new CCamera
 	(

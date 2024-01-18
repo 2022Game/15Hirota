@@ -1,5 +1,6 @@
 #include "CSoundManager.h"
 #include "CSound.h"
+#include "CBGMManager.h"
 
 // サウンドマネージャーのインスタンス
 CSoundManager* CSoundManager::mpInstance = nullptr;
@@ -117,4 +118,7 @@ void CSoundManager::Update()
 	{
 		sound->Update();
 	}
+
+	// BGMマネージャーの更新
+	CBGMManager::Instance()->Update();
 }

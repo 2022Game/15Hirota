@@ -21,7 +21,7 @@
 #define TRANSLATE_SPEED 0.125f
 
 // デバッグカメラのインスタンス
-CDebugCamera* CDebugCamera::spDebugCamera = new CDebugCamera();
+CDebugCamera* CDebugCamera::spDebugCamera = nullptr;
 // デバッグカメラがオンになっているかどうか
 bool CDebugCamera::msIsOn = false;
 
@@ -37,11 +37,16 @@ CDebugCamera::CDebugCamera()
 // デストラクタ
 CDebugCamera::~CDebugCamera()
 {
+	spDebugCamera = nullptr;
 }
 
 // デバッグカメラを取得
 CDebugCamera* CDebugCamera::DebugCamera()
 {
+	if (spDebugCamera == nullptr)
+	{
+		spDebugCamera = new CDebugCamera();
+	}
 	return spDebugCamera;
 }
 
