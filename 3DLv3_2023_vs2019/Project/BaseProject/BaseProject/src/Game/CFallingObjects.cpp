@@ -2,12 +2,11 @@
 #include "Maths.h"
 #include "CPlayer.h"
 
-
 // 消えるのにかかる時間
 #define FADE_TIME 3.0f
 // 消えた後の待ち時間
 #define WAIT_TIME 3.0f
-
+// 落ちた時の最低値
 #define MINHEIGHT -30.0f
 
 // コンストラクタ
@@ -15,23 +14,22 @@ CFallingObjects::CFallingObjects(const CVector& pos, const CVector& scale,
 	ETag reactionTag, ELayer reactionLayer)
 	: CRideableObject(ETaskPriority::eFallingOBJ)
 	, mState(EState::Idle)
-	, mStateStep(0)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
+	, mStateStep(0)
 	, mFadeTime(0.0f)
 	, mWaitTime(0.0f)
+	, mStartPos(0.0f, 0.0f, 0.0f)
+	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mIsCollision(false)
-	, mMoveSpeed(0.0f,0.0f,0.0f)
-	, mPosition(0.0f,0.0f,0.0f)
 {
-
-	//Position(0.0f, 6.0f, -430.0f);
+	// 初期位置を設定
 	mStartPos = Position();
 
-	// 床のモデルを取得
+	// 落下する床モデルを取得
 	mpModel = CResourceManager::Get<CModel>("FieldCube");
 
-	// 消える床のコライダー作成
+	// 落下する床のコライダー作成
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer, ELayer::eEnemy });
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer, ETag::eEnemy });
@@ -54,13 +52,6 @@ CFallingObjects::~CFallingObjects()
 	SAFE_DELETE(mpColliderMesh);
 }
 
-// ステージ開始時の位置を設定
-void CFallingObjects::SetStartPosition(const CVector& pos)
-{
-	mStartPos = pos;
-	Position(mStartPos);
-}
-
 // 衝突処理
 void CFallingObjects::Collision(CCollider* slef, CCollider* other, const CHitInfo& hit)
 {
@@ -81,6 +72,13 @@ void CFallingObjects::Collision(CCollider* slef, CCollider* other, const CHitInf
 		// 衝突フラグをオン
 		mIsCollision = true;
 	}
+}
+
+// ステージ開始時の位置を設定
+void CFallingObjects::SetStartPosition(const CVector& pos)
+{
+	mStartPos = pos;
+	Position(mStartPos);
 }
 
 // 状態を切り替える

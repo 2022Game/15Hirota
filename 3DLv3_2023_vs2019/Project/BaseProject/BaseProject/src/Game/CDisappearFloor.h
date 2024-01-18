@@ -5,7 +5,7 @@
 #include "CModel.h"
 #include "CColliderMesh.h"
 
-// 消える床
+// 消える床クラス
 class CDisappearFloor : public CRideableObject
 {
 public:
@@ -32,11 +32,19 @@ public:
 
 	// 更新
 	void Update() override;
-
 	// 描画
 	void Render() override;
 
 private:
+
+	// モデル・素材関連
+	// 消える床のモデル
+	CModel* mpModel;
+	// 消える床のコライダー
+	CColliderMesh* mpColliderMesh;
+
+
+	// 状態関連
 	// 消える床の状態
 	enum class EState
 	{
@@ -52,17 +60,19 @@ private:
 	void UpdateFade();
 	// フェード後の待ち処理
 	void UpdateWait();
-
-	CModel* mpModel;	// 消える床のモデル
-	CColliderMesh* mpColliderMesh;	// 消える床のコライダー
-
 	EState mState;	// 現在の状態
-	int mStateStep;	// 状態内のステップ
 
-	ETag mReactionTag;	// 触れた時に反応するオブジェクトのタグ
-	ELayer mReactionLayer;	// 触れた時に反応するレイヤー
 
-	float mFadeTime;	// フェード時間
-	float mWaitTime;	// 待ち時間
+	// 変数関連
+	// 状態内のステップ
+	int mStateStep;
+	// フェード時間
+	float mFadeTime;
+	// 待ち時間
+	float mWaitTime;
+	// 触れた時に反応するオブジェクトのタグ
+	ETag mReactionTag;
+	// 触れた時に反応するレイヤー
+	ELayer mReactionLayer;
 };
 #endif

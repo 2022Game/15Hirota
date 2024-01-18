@@ -322,6 +322,8 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 // 被ダメージ処理
 void CPlayer::TakeDamage(int damage)
 {
+	// SEを再生するとたまにエラーが発生する
+	// 一旦保留
 	mIsPlayedHitDamageSE = false;
 	if (!mIsPlayedHitDamageSE)
 	{
@@ -491,21 +493,32 @@ void CPlayer::UpdateIdle()
 		// 移動処理
 		// キーの入力ベクトルを取得
 		CVector input;
-		if (CInput::Key('W'))		input.Z(-1.0f);
-		else if (CInput::Key('S'))	input.Z(1.0f);
-		if (CInput::Key('A'))		input.X(-1.0f);
-		else if (CInput::Key('D'))	input.X(1.0f);
+		// 垂直方向の入力
+		if (CInput::Key('W') && !CInput::Key('S'))
+			input.Z(-1.0f);
+		else if (CInput::Key('S') && !CInput::Key('W'))
+			input.Z(1.0f);
+		else
+			input.Z(0.0f);
+
+		// 水平方向の入力
+		if (CInput::Key('A') && !CInput::Key('D'))
+			input.X(-1.0f);
+		else if (CInput::Key('D') && !CInput::Key('A'))
+			input.X(1.0f);
+		else
+			input.X(0.0f);
 
 		// 入力ベクトルの長さで入力されているか判定
 		if (input.LengthSqr() > 0.0f)
 		{
 			// カメラの向きに合わせた移動ベクトルに変換
-			/*CCamera* mainCamera = CCamera::MainCamera();
+			CCamera* mainCamera = CCamera::MainCamera();
 			CVector camForward = mainCamera->VectorZ();
 			CVector camSide = CVector::Cross(CVector::up, camForward);
-			CVector move = camForward * input.Z() + camSide * input.X();*/
+			CVector move = camForward * input.Z() + camSide * input.X();
 			// カメラの向きに合わせた移動ベクトルに変換
-			CVector move = CCamera::MainCamera()->Rotation() * input;
+			//CVector move = CCamera::MainCamera()->Rotation() * input;
 			move.Y(0.0f);
 			move.Normalize();
 
@@ -566,14 +579,14 @@ void CPlayer::UpdateIdle()
 		}
 
 		// Jキーで攻撃状態へ移行
-		if (CInput::PushKey('J'))
+		if (CInput::PushKey(VK_LBUTTON))
 		{
 			mMoveSpeed.X(0.0f);
 			mMoveSpeed.Z(0.0f);
 			ChangeState(EState::eAttack);
 		}
 		// Kキーで強攻撃
-		else if (CInput::PushKey('K'))
+		else if (CInput::PushKey(VK_LBUTTON))
 		{
 			mMoveSpeed.X(0.0f);
 			mMoveSpeed.Z(0.0f);

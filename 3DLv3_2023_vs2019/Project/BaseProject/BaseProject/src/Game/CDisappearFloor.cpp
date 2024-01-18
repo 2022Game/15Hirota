@@ -17,7 +17,7 @@ CDisappearFloor::CDisappearFloor(const CVector& pos, const CVector& scale,
 	, mFadeTime(0.0f)
 	, mWaitTime(0.0f)
 {
-	// 床のモデルを取得
+	// 消える床のモデルを取得
 	mpModel = CResourceManager::Get<CModel>("FieldCube");
 
 	// 消える床のコライダー作成
@@ -34,7 +34,6 @@ CDisappearFloor::CDisappearFloor(const CVector& pos, const CVector& scale,
 	Scale(scale);
 
 	SetColor(CColor(1.0f, 0.0f, 1.0f, 1.0f));
-
 }
 
 // デストラクタ

@@ -1,6 +1,6 @@
 #include "CField.h"
 #include "CCollisionManager.h"
-#include "CMoveFloor.h"
+#include "CDamageObject.h"
 #include "CRotateFloor.h"
 #include "CGoalObject.h"
 #include "CStone1.h"

@@ -4,10 +4,6 @@
 #include "CInput.h"
 #include "CEffect.h"
 
-//#define M1GARAND_O "Item\\Gun_M1Garand\\Gun_M1Garand.obj"
-//#define M1GARAND_M "Item\\Gun_M1Garand\\Gun_M1Garand.mtl"
-
-
 CGun::CGun()
 {
 	// モデルデータ取得
@@ -18,17 +14,7 @@ CGun::~CGun()
 {
 }
 
-void CGun::Update()
-{
-
-}
-
-void CGun::Render()
-{
-	mpGun->Render(Matrix());
-}
-
-
+// 武器の行列を取得
 CMatrix CGun::Matrix() const
 {
 	const CMatrix* attachMtx = GetAttachMtx();
@@ -66,4 +52,16 @@ CMatrix CGun::Matrix() const
 
 		return sm * rotateZ * rotateY * positionX * positionY * positionZ * (*attachMtx);
 	}
+}
+
+// 更新
+void CGun::Update()
+{
+
+}
+
+// 描画
+void CGun::Render()
+{
+	mpGun->Render(Matrix());
 }

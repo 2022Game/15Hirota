@@ -6,6 +6,7 @@
 #include "CModel.h"
 #include "CXCharacter.h"
 
+// 足のコライダークラス
 class CKick :public CWeaponEnemy
 {
 public:
@@ -26,18 +27,20 @@ public:
 	// 攻撃終了
 	void AttackEnd() override;
 
-	// 武器の行列を取得
-	//CMatrix Matrix() const override;
-
+	// 更新処理
 	void Update();
+	// 描画処理
 	void Render();
 
 private:
-	CModelX* mpModel;				//モデルデータ
+	// モデルデータ
+	CModelX* mpModel;
 	// 攻撃判定用のコライダー
 	CColliderSphere* mpAttackCol;
 
-	const CMatrix* mpAttachMtx;	// くっつける行列のポインター
-	CMatrix mAttachMtx;			// くっつける行列の本体
+	// くっつける行列のポインター
+	const CMatrix* mpAttachMtx;
+	// くっつける行列の本体
+	CMatrix mAttachMtx;
 };
 #endif

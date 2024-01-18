@@ -1,9 +1,9 @@
 #include "CAppearFloor.h"
 #include "Maths.h"
 
-// 消えるのにかかる時間
+// 現れるのにかかる時間
 #define FADE_TIME 3.0f
-// 消えた後の待ち時間
+// 現れる後の待ち時間
 #define WAIT_TIME 3.0f
 
 // コンストラクタ
@@ -11,9 +11,9 @@ CAppearFloor::CAppearFloor(const CVector& pos, const CVector& scale,
 	ETag reactionTag, ELayer reactionLayer)
 	: CRideableObject(ETaskPriority::eTransparent)
 	, mState(EState::Idle)
-	, mStateStep(0)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
+	, mStateStep(0)
 	, mFadeTime(0.0f)
 	, mWaitTime(0.0f)
 	, mIsCollision(false)
@@ -21,7 +21,7 @@ CAppearFloor::CAppearFloor(const CVector& pos, const CVector& scale,
 	// 床のモデルを取得
 	mpModel = CResourceManager::Get<CModel>("FieldCube");
 
-	// 消える床のコライダー作成
+	// 現れる床のコライダー作成
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer, ELayer::eEnemy });
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer, ETag::eEnemy });
@@ -35,7 +35,6 @@ CAppearFloor::CAppearFloor(const CVector& pos, const CVector& scale,
 	Scale(scale);
 
 	SetColor(CColor(1.0f, 0.0f, 1.0f, 1.0f));
-
 }
 
 // デストラクタ

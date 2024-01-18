@@ -1,6 +1,7 @@
 #include "CRideableObject.h"
 #include "CPlayer.h"
 
+// Weapon‚Æ“¯‚¶
 CRideableObject::CRideableObject(ETaskPriority prio)
 	: CObjectBase(ETag::eRideableObject, prio, 0, ETaskPauseType::eGame)
 {

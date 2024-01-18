@@ -1,19 +1,21 @@
 #include "CEnemyManager.h"
 
-
 int CEnemyManager::enemyCount = 0;
 
-void CEnemyManager::IncrementEnemyCount()
+// ソルジャーの数を増やす
+void CEnemyManager::IncrementSoldierCount()
 {
     enemyCount++;
 }
 
-void CEnemyManager::DecrementEnemyCount()
+// ソルジャーの数を減らす
+void CEnemyManager::DecrementSoldierCount()
 {
     enemyCount--;
 }
 
-int CEnemyManager::GetEnemyCount()
+// ソルジャーの数を取得
+int CEnemyManager::GetSoldierCount()
 {
     return enemyCount;
 }

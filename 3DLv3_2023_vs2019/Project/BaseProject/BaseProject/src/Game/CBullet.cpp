@@ -29,6 +29,7 @@ CBullet::CBullet(const CVector& pos, const CVector& dir,
 	mpTrailEffect->SetTexture("Laser");
 	mpTrailEffect->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
 
+	// 弾丸のコライダー
 	mpSpherer = new CColliderSphere
 	(
 		this, ELayer::eBulletCol,

@@ -3,22 +3,25 @@
 #include "CInput.h"
 #include "Maths.h"
 
+// 消えた後の時間
 #define DELETE 5.0f
 #define WAIT 5.0f
 
-
+// コンストラクタ
 CJumpingObject::CJumpingObject(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
 	: CRideableObject(ETaskPriority::eBackground)
 	, mState(EState::Idle)
-	, mStateStep(0)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
+	, mStateStep(0)
 	, mFadeTime(0.0f)
 	, mWaitTime(0.0f)
 	, mIsCollision(false)
 {
+	// 跳ねさせる床のモデル取得
 	mpModel = CResourceManager::Get<CModel>("FieldCube");
+	// 跳ねさせる床のコライダー作成
 	mpColliderMesh = new CColliderMesh(this, ELayer::eJumpingCol, mpModel, true);
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
 
@@ -34,15 +37,16 @@ CJumpingObject::CJumpingObject(const CVector& pos, const CVector& scale, const C
 	SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
+// デストラクタ
 CJumpingObject::~CJumpingObject()
 {
 	SAFE_DELETE(mpColliderMesh);
 }
 
+// 衝突処理
 void CJumpingObject::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	bool KeyPush = CInput::PushKey(VK_SPACE);
-
 
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;
@@ -71,40 +75,6 @@ void CJumpingObject::Collision(CCollider* self, CCollider* other, const CHitInfo
 		}
 		mIsCollision = true;
 	}
-
-	//if (mState == EState::Idle)
-	//{
-	//	CPlayer* player = dynamic_cast<CPlayer*>(owner);
-	//	if (player && player->IsAnimationFinished())
-	//	{
-	//		player->UpdateJumpEnd();
-	//		player->UpdateJumpingEnd();
-	//		// 衝突しているのが、反応するオブジェクトであれば
-	//		if (owner->Tag() == mReactionTag && other->Layer() == mReactionLayer)
-	//		{
-	//			if (mState == EState::Idle && KeyPush)
-	//			{
-	//				CPlayer* player = dynamic_cast<CPlayer*>(owner);
-	//				if (player)
-	//				{
-	//					player->UpdateJumpingStart();
-	//				}
-	//				ChangeState(EState::Bounce);
-	//			}
-	//			else if (mState == EState::Idle)
-	//			{
-	//				CPlayer* player = dynamic_cast<CPlayer*>(owner);
-	//				if (player)
-	//				{
-	//					if (player)
-	//						player->UpdateJumpStart();
-	//				}
-	//				ChangeState(EState::Bounce);
-	//			}
-	//			mIsCollision = true;
-	//		}
-	//	}
-	//}
 }
 
 // 状態を切り替える
@@ -163,6 +133,7 @@ void CJumpingObject::UpdateBounce()
 	}
 }
 
+// 更新処理
 void CJumpingObject::Update()
 {
 	// 現在の状態に合わせて処理を切り替え
@@ -180,9 +151,9 @@ void CJumpingObject::Update()
 	}
 	// 衝突フラグを初期化
 	mIsCollision = false;
-
 }
 
+// 描画処理
 void CJumpingObject::Render()
 {
 	mpModel->SetColor(mColor);

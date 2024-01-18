@@ -1,17 +1,19 @@
 #ifndef CENEMYMANAGER_H
 #define CENEMYMANAGER_H
 
+// 敵の数のクラス
 class CEnemyManager
 {
 public:
     // ソルジャーの数を増やす
-    static void IncrementEnemyCount();
+    static void IncrementSoldierCount();
     // ソルジャーの数を減らす
-    static void DecrementEnemyCount();
+    static void DecrementSoldierCount();
     // ソルジャーの数を取得
-    static int GetEnemyCount();
+    static int GetSoldierCount();
 
 private:
+    // 敵の数
     static int enemyCount;
 };
 #endif

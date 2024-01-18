@@ -2,9 +2,6 @@
 #include "CCollisionManager.h"
 #include "CCharaBase.h"
 
-//#define SWORD_O "Item\\MajicSword\\MajicSword.obj"
-//#define SWORD_M "Item\\MajicSword\\MajicSword.mtl"
-
 CMajicSword::CMajicSword()
 {
 	mpSword = CResourceManager::Get<CModel>("MajicSword");
@@ -27,26 +24,8 @@ CMajicSword::CMajicSword()
 
 CMajicSword::~CMajicSword()
 {
-	if (mpAttackCol != nullptr)
-	{
-		delete mpAttackCol;
-		mpAttackCol = nullptr;
-	}
-	/*if (mpAttachMtx != nullptr)
-	{
-		delete mpAttachMtx;
-		mpAttachMtx = nullptr;
-	}*/
-}
-
-void CMajicSword::Update()
-{
-
-}
-
-void CMajicSword::Render()
-{
-	mpSword->Render(Matrix());
+	// コライダーを破棄
+	SAFE_DELETE(mpAttackCol);
 }
 
 // 衝突処理
@@ -73,6 +52,23 @@ void CMajicSword::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 	}
 }
 
+// 攻撃開始
+void CMajicSword::AttackStart()
+{
+	CWeapon::AttackStart();
+	// 攻撃が始まったら、攻撃判定用のコライダーをオフにする
+	mpAttackCol->SetEnable(true);
+}
+
+// 攻撃終了
+void CMajicSword::AttackEnd()
+{
+	CWeapon::AttackEnd();
+	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
+	mpAttackCol->SetEnable(false);
+}
+
+// 武器の行列を取得
 CMatrix CMajicSword::Matrix() const
 {
 	const CMatrix* attachMtx = GetAttachMtx();
@@ -101,18 +97,14 @@ CMatrix CMajicSword::Matrix() const
 	}
 }
 
-// 攻撃開始
-void CMajicSword::AttackStart()
+// 更新処理
+void CMajicSword::Update()
 {
-	CWeapon::AttackStart();
-	// 攻撃が始まったら、攻撃判定用のコライダーをオフにする
-	mpAttackCol->SetEnable(true);
+
 }
 
-// 攻撃終了
-void CMajicSword::AttackEnd()
+// 描画処理
+void CMajicSword::Render()
 {
-	CWeapon::AttackEnd();
-	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
-	mpAttackCol->SetEnable(false);
+	mpSword->Render(Matrix());
 }

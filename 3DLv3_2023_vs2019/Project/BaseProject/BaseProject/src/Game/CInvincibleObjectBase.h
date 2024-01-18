@@ -3,12 +3,12 @@
 #include "CObjectBase.h"
 class CCharaBase;
 
+// 無敵アイテムオブジェのベースクラス
 class CInvincibleObjectBase : public CObjectBase
 {
 public:
 	CInvincibleObjectBase();
 	virtual ~CInvincibleObjectBase();
-
 
 	// 無敵開始
 	virtual void InvincibleStart();

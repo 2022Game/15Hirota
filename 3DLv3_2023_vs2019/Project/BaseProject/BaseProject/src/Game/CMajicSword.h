@@ -5,6 +5,7 @@
 #include "CColliderLine.h"
 #include "CModel.h"
 
+// マジックソードクラス
 class CMajicSword :public CWeapon
 {
 public:
@@ -28,11 +29,13 @@ public:
 	// 武器の行列を取得
 	CMatrix Matrix() const override;
 
+	// 更新処理
 	void Update();
+	// 描画処理
 	void Render();
 
 private:
-
+	// マジックソードのモデル
 	CModel* mpSword;
 	// 攻撃判定用のコライダー
 	CColliderLine* mpAttackCol;

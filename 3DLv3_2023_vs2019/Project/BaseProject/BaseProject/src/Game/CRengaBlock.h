@@ -31,6 +31,7 @@ public:
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
 
+	// ステージ開始時の位置を設定
 	void SetStartPosition(const CVector& pos);
 
 	// 更新
@@ -41,8 +42,16 @@ public:
 
 private:
 
-	//// 状態関連 /////////////////////////////////////
-	
+	// モデル・素材関連
+	// レンガブロックのモデル
+	CModel* mpModel;
+	// レンガブロックのコライダー
+	CColliderSphere* mpColliderSphere;
+	// ブロックを叩いた時のSE
+	CSound* mpHitBlockSE;
+
+
+	// 状態関連
 	// レンガブロックの状態
 	enum class EState
 	{
@@ -58,54 +67,29 @@ private:
 	void UpdateHit();
 	// 当たった後の更新処理
 	void UpdateAfter();
-
 	// 現在の状態
 	EState mState;
-	// 触れた時に反応するオブジェクトのタグ
-	ETag mReactionTag;
-	// 触れた時に反応するオブジェクトのレイヤー
-	ELayer mReactionLayer;
-
-	///////////////////////////////////////////////////
 
 
-	//// モデル・素材関連 ///////////////////////////////////
-
-	// レンガブロックのモデル
-	CModel* mpModel;
-	// レンガブロックのコライダー
-	CColliderSphere* mpColliderSphere;
-	// ブロックを叩いた時のSE
-	CSound* mpHitBlockSE;
-
-	///////////////////////////////////////////////////
-
-
-	//// ベクトル関連 /////////////////////////////////
-
+	// ベクトル関連
 	// 移動速度
 	CVector mMoveSpeed;
 	// レンガブロックの初期位置の保存
 	CVector mStartPos;
 
-	///////////////////////////////////////////////////
 
-
-	//// 変数関連 /////////////////////////////////////
-
+	// 変数関連
 	// 状態内のステップ
 	int mStateStep;
-
 	// フェード時間
 	float mFadeTime;
 	// 待ち時間
 	float mWaitTime;
-
 	// 衝突しているか
 	bool mIsCollision;
-
-	///////////////////////////////////////////////////
-
-	
+	// 触れた時に反応するオブジェクトのタグ
+	ETag mReactionTag;
+	// 触れた時に反応するオブジェクトのレイヤー
+	ELayer mReactionLayer;
 };
 #endif

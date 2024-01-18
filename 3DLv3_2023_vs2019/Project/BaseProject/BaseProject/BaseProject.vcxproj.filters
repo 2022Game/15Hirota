@@ -226,7 +226,7 @@
     <ClCompile Include="src\Game\CImage.cpp">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CMoveFloor.cpp">
+    <ClCompile Include="src\Game\CDamageObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CRideabeObject.cpp">
@@ -597,7 +597,7 @@
     <ClInclude Include="src\Game\CImage.h">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CMoveFloor.h">
+    <ClInclude Include="src\Game\CDamageObject.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CRideableObject.h">

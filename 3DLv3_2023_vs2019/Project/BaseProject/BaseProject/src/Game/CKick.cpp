@@ -12,15 +12,6 @@ CKick::~CKick()
 
 }
 
-void CKick::Update()
-{
-
-}
-
-void CKick::Render()
-{
-}
-
 // 衝突処理
 void CKick::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
@@ -45,23 +36,6 @@ void CKick::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	}
 }
 
-//CMatrix CKick::Matrix() const
-//{
-//	//// 手に持っていないときは、自分自身の行列を返す
-//	//if (mpAttachMtx == nullptr)
-//	//{
-//	//	return CTransform::Matrix();
-//	//}
-//	//// 手に持っているときは、アタッチしている行列を返す
-//	//else
-//	//{
-//	//	CMatrix sm;
-//	//	sm.Scale(80.0f, 80.0f, 80.0f);
-//
-//	//	return sm * (*mpAttachMtx);
-//	//}
-//}
-
 // 攻撃開始
 void CKick::AttackStart()
 {
@@ -76,4 +50,15 @@ void CKick::AttackEnd()
 	CWeaponEnemy::AttackEnd();
 	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
 	mpAttackCol->SetEnable(false);
+}
+
+// 更新処理
+void CKick::Update()
+{
+
+}
+
+// 描画処理
+void CKick::Render()
+{
 }

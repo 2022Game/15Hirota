@@ -5,7 +5,7 @@
 #include "CModel.h"
 #include "CColliderMesh.h"
 
-// 消える床
+// 上昇する床クラス
 class CRisingObject : public CRideableObject
 {
 public:
@@ -30,43 +30,59 @@ public:
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
 
+	// ステージ開始時の位置を設定
 	void SetStartPosition(const CVector& pos);
 
 	// 更新
 	void Update() override;
-
 	// 描画
 	void Render() override;
 
 private:
-	// 上昇するオブジェクトの状態
+
+	// モデル・素材関連
+	// 上昇する床のモデル
+	CModel* mpModel;
+	// 上昇する床のコライダー
+	CColliderMesh* mpColliderMesh;
+
+
+	// 状態関連
+	// 上昇する床の状態
 	enum class EState
 	{
 		Idle,		// 待機状態
-		Rising,	// 上昇状態
+		Rising,		// 上昇状態
 	};
 	// 状態を切り替える
 	void ChangeState(EState state);
 	// 待機状態の更新処理
 	void UpdateIdle();
-	// 現れている状態の更新処理
+	// 上昇状態の更新処理
 	void UpdateRising();
+	// 現在の状態
+	EState mState;
 
-	CModel* mpModel;	// 消える床のモデル
-	CColliderMesh* mpColliderMesh;	// 消える床のコライダー
 
-	EState mState;	// 現在の状態
-	int mStateStep;	// 状態内のステップ
-
-	ETag mReactionTag;	// 触れた時に反応するオブジェクトのタグ
-	ELayer mReactionLayer;	// 触れた時に反応するレイヤー
-
-	float mFadeTime;	// フェード時間
-	float mWaitTime;	// 待ち時間
-	bool mIsCollision;	// 衝突しているか
-
+	// ベクトル関連
+	// 移動速度
 	CVector mMoveSpeed;
-	CVector mMaxHeight;
+	// 位置を設定
 	CVector mStartPos;
+
+
+	// 変数関連
+	// 状態内のステップ
+	int mStateStep;
+	// フェード時間
+	float mFadeTime;
+	// 待ち時間
+	float mWaitTime;
+	// 衝突しているか
+	bool mIsCollision;
+	// 触れた時に反応するオブジェクトのタグ
+	ETag mReactionTag;
+	// 触れた時に反応するレイヤー
+	ELayer mReactionLayer;
 };
 #endif

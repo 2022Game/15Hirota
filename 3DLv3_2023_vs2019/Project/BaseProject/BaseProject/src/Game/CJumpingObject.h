@@ -7,6 +7,7 @@
 #include "CColliderMesh.h"
 #include "CRideableObject.h"
 
+// 跳ねさせる床クラス
 class CJumpingObject : public CRideableObject
 {
 public:
@@ -22,37 +23,47 @@ public:
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
 
-
+	// 更新処理
 	void Update();
+	// 描画処理
 	void Render();
 
 private:
-	// 跳ねる床の状態
+
+	// モデル・素材関連
+	CModel* mpModel;
+	// 跳ねるモデルのコライダー
+	CColliderMesh* mpColliderMesh;
+
+
+	// 状態関連
+	// 跳ねさせる床の状態
 	enum class EState
 	{
 		Idle,		// 待機状態
-		Bounce,		// 跳ねる状態
+		Bounce,		// 跳ねさせる状態
 	};
 	// 状態を切り替える
 	void ChangeState(EState state);
 	// 待機状態の更新処理
 	void UpdateIdle();
-	// 現れている状態の更新処理
+	// 跳ねさせる状態の更新処理
 	void UpdateBounce();
-
 	EState mState;	// 現在の状態
-	int mStateStep;	// 状態内のステップ
-
-	ETag mReactionTag;	// 触れた時に反応するオブジェクトのタグ
-	ELayer mReactionLayer;	// 触れた時に反応するレイヤー
-
-	float mFadeTime;	// フェード時間
-	float mWaitTime;	// 待ち時間
-	bool mIsCollision;	// 衝突しているか
 
 
-	CModel* mpModel;
-
-	CColliderMesh* mpColliderMesh;
+	// 変数関連
+	// 状態内のステップ
+	int mStateStep;
+	// フェード時間
+	float mFadeTime;
+	// 待ち時間
+	float mWaitTime;
+	// 衝突しているか
+	bool mIsCollision;
+	// 触れた時に反応するオブジェクトのタグ
+	ETag mReactionTag;
+	// 触れた時に反応するレイヤー
+	ELayer mReactionLayer;
 };
 #endif

@@ -8,9 +8,9 @@
 #define FADE_TIME 3.0f
 // 消えた後の待ち時間
 #define WAIT_TIME 3.0f
-
+// 上昇する最大値
 #define MAXHEIGHT 100.0f
-
+// 下降するスピード
 #define FALLSPEED 20.0f
 
 
@@ -18,24 +18,22 @@
 CRisingObject::CRisingObject(const CVector& pos, const CVector& scale,
 	ETag reactionTag, ELayer reactionLayer)
 	: CRideableObject(ETaskPriority::eFallingOBJ)
-	, mState(EState::Idle)
-	, mStateStep(0)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
+	, mState(EState::Idle)
+	, mStateStep(0)
 	, mFadeTime(0.0f)
 	, mWaitTime(0.0f)
-	, mIsCollision(false)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
-	, mMaxHeight(0.0f, 15.0f, 0.0f)
+	, mIsCollision(false)
 {
-
-	//Position(0.0f, 6.0f, -430.0f);
+	// 初期位置の保存
 	mStartPos = Position();
 
-	// 床のモデルを取得
+	// 上昇する床のモデルを取得
 	mpModel = CResourceManager::Get<CModel>("FieldCube");
 
-	// 消える床のコライダー作成
+	// 上昇する床のコライダー作成
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer, ELayer::eEnemy });
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer, ETag::eEnemy });
@@ -56,13 +54,6 @@ CRisingObject::CRisingObject(const CVector& pos, const CVector& scale,
 CRisingObject::~CRisingObject()
 {
 	SAFE_DELETE(mpColliderMesh);
-}
-
-// ステージ開始時の位置を設定
-void CRisingObject::SetStartPosition(const CVector& pos)
-{
-	mStartPos = pos;
-	Position(mStartPos);
 }
 
 // 衝突処理
@@ -93,6 +84,13 @@ void CRisingObject::Collision(CCollider* slef, CCollider* other, const CHitInfo&
 	}
 }
 
+// ステージ開始時の位置を設定
+void CRisingObject::SetStartPosition(const CVector& pos)
+{
+	mStartPos = pos;
+	Position(mStartPos);
+}
+
 // 状態を切り替える
 void CRisingObject::ChangeState(EState state)
 {
@@ -106,7 +104,7 @@ void CRisingObject::UpdateIdle()
 
 }
 
-// 現れている状態の更新処理
+// 上昇状態の更新処理
 void CRisingObject::UpdateRising()
 {
 	// ステップごとに処理を切り替え

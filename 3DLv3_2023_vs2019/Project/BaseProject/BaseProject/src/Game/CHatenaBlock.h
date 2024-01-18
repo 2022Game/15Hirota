@@ -45,8 +45,21 @@ public:
 
 private:
 
-	//// 状態関連 //////////////////////////////////////
+	// モデル・素材関連
+	// ハテナブロックのモデル
+	CModel* mpModel;
+	// ハテナブロックのコライダー
+	CColliderSphere* mpColliderSphere;
+
+	// 回復アイテムのポインター
+	CRecoveryObject* mpHeart;
+	// 無敵アイテムのポインター
+	CInvincible* mpStar;
+	// ブロックを叩いた時のSE
+	CSound* mpHitBlockSE;
 	
+
+	// 状態関連
 	// ハテナブロックの状態
 	enum class EState
 	{
@@ -65,54 +78,27 @@ private:
 
 	// 現在の状態
 	EState mState;
-	// 触れた時に反応するオブジェクトのタグ
-	ETag mReactionTag;
-	// 触れた時に反応するオブジェクトのレイヤー
-	ELayer mReactionLayer;
 
-	////////////////////////////////////////////////////
-
-
-	//// モデル・素材関連 ////////////////////////////////////
-
-	// ハテナブロックのモデル
-	CModel* mpModel;
-	// ハテナブロックのコライダー
-	CColliderSphere* mpColliderSphere;
-
-	// 回復アイテムのポインター
-	CRecoveryObject* mpHeart;
-	// 無敵アイテムのポインター
-	CInvincible* mpStar;
-	// ブロックを叩いた時のSE
-	CSound* mpHitBlockSE;
-
-	////////////////////////////////////////////////////
-
-
-	//// ベクトル関連 //////////////////////////////////
-
+	
+	// ベクトル関連
 	// 移動速度
 	CVector mMoveSpeed;
 	// ハテナブロックの初期位置の保存
 	CVector mStartPos;
 
-	////////////////////////////////////////////////////
-
-
-	//// 変数関連 //////////////////////////////////////
-
+	
+	// 変数関連
 	// 状態内のステップ
 	int mStateStep;
-
 	// フェード時間
 	float mFadeTime;
 	// 待ち時間
 	float mWaitTime;
-
 	// 衝突しているか
 	bool mIsCollision;
-
-	////////////////////////////////////////////////////	
+	// 触れた時に反応するオブジェクトのタグ
+	ETag mReactionTag;
+	// 触れた時に反応するオブジェクトのレイヤー
+	ELayer mReactionLayer;
 };
 #endif

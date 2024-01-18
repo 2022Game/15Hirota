@@ -116,7 +116,7 @@ CSoldier::CSoldier()
 	mInitialPosition = Position();
 
 	// ソルジャーの数を取得
-	CEnemyManager::IncrementEnemyCount();
+	CEnemyManager::IncrementSoldierCount();
 
 	// モデルデータ取得
 	CModelX* model = CResourceManager::Get<CModelX>("Soldier");
@@ -217,7 +217,7 @@ CSoldier::~CSoldier()
 	mpGun->Kill();
 
 	// ソルジャーのカウントを破棄
-	CEnemyManager::DecrementEnemyCount();
+	CEnemyManager::DecrementSoldierCount();
 
 	// UI周りを破棄
 	mpGauge->Kill();

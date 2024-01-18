@@ -177,7 +177,7 @@ void CRecoveryObject::MoveReft()
 	mMoveVector *= Time::DeltaTime();
 }
 
-
+// XVˆ—
 void CRecoveryObject::Update()
 {
 	// d—Í

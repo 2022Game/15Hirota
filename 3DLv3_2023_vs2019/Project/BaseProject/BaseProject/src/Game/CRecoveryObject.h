@@ -7,7 +7,7 @@
 #include "CModel.h"
 class CSound;
 
-// 回復アイテム
+// 回復アイテムオブジェのベースクラス
 class CRecoveryObject : public CItemObjectBase
 {
 public:
@@ -46,8 +46,8 @@ public:
 	//CMatrix Matrix() const override;
 
 private:
-	//// モデル・素材関連 /////////////////////////
-	
+
+	// モデル・素材関連
 	// 回復モデル
 	CModel* mpRecoverModel;
 	// 回復判定用のコライダー
@@ -56,11 +56,8 @@ private:
 	// 回復したときのSE
 	CSound* mpRecoberSE;
 
-	/////////////////////////////////////////
 
-
-	//// ベクトル関連 ///////////////////////
-	
+	// ベクトル関連
 	// 移動方向
 	CVector mMoveVector;
 	// 移動速度
@@ -68,10 +65,8 @@ private:
 	// 見る方向
 	CVector mTargetDir;
 
-	/////////////////////////////////////////
 
-	//// 変数関連 ///////////////////////////
-
+	// 変数関連
 	// カウント
 	int mSwitchCounter;
 	// 計測時間
@@ -80,7 +75,5 @@ private:
 	bool mIsGround;
 	// 回復したかどうか
 	bool mRecoveryUsed;
-
-	//////////////////////////////////////////
 };
 #endif

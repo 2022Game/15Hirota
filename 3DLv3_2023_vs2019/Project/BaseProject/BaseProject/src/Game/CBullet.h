@@ -27,9 +27,14 @@ public:
 	void Render() override;
 
 private:
-	CTrailEffect* mpTrailEffect;	// 弾丸の軌跡のエフェクト
+	// 弾丸の軌跡のエフェクト
+	CTrailEffect* mpTrailEffect;
+	// 弾丸のコライダー
 	CColliderSphere* mpSpherer;
-	float mMoveSpeed;				// 移動速度
-	float mFlyingDistance;			// 飛距離
-	float mCurrentFlyingDistance;	// 現在の飛距離
+	// 移動速度
+	float mMoveSpeed;
+	// 飛距離
+	float mFlyingDistance;
+	// 現在の飛距離
+	float mCurrentFlyingDistance;
 };

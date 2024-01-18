@@ -4,12 +4,19 @@
 #include "CModelX.h"
 class CCharaBase;
 
+// 敵の武器クラス
 class CWeaponEnemy :public CObjectBase
 {
 public:
 	CWeaponEnemy();
 	virtual ~CWeaponEnemy();
+
+	// 追従する行列の設定
 	virtual void AttachMtx(const CMatrix* mtx);
+	// 追従する行列を取得
+	const CMatrix* GetAttachMtx() const;
+	// 追従する行列の値を更新
+	void UpdateAttachMtx();
 
 	// 攻撃開始
 	virtual void AttackStart();
@@ -23,18 +30,20 @@ public:
 	CCharaBase* GetOwner() const;
 
 protected:
-	CModelX* mpModel;
 	// 攻撃がヒットしたオブジェクトを追加
 	void AddAttackHitObj(CObjectBase* obj);
 	// すでに攻撃がヒットしているオブジェクトかどうか
 	bool IsAttackHitObj(CObjectBase* obj) const;
-
-	const CMatrix* mpAttachMtx;
 
 	// 攻撃がヒット済みのオブジェクトリスト
 	std::list<CObjectBase*> mAttackHitObjects;
 
 	// アイテムの所持キャラクター
 	CCharaBase* mOwner;
+private:
+	// 追従する行列のポインター
+	const CMatrix* mpAttachMtx;
+	// 追従する行列の現在地
+	CMatrix mAttachCurrentMtx;
 };
 #endif

@@ -11,16 +11,7 @@ CWeapon::~CWeapon()
 
 }
 
-void CWeapon::SetOwner(CCharaBase* owner)
-{
-	mOwner = owner;
-}
-
-CCharaBase* CWeapon::GetOwner() const
-{
-	return mOwner;
-}
-
+// 追従する行列の設定
 void CWeapon::AttachMtx(const CMatrix* mtx)
 {
 	mpAttachMtx = mtx;
@@ -52,12 +43,25 @@ void CWeapon::AttackEnd()
 {
 }
 
+// 武器の所持キャラクターを設定
+void CWeapon::SetOwner(CCharaBase* owner)
+{
+	mOwner = owner;
+}
+
+// 武器の所持キャラクターを取得
+CCharaBase* CWeapon::GetOwner() const
+{
+	return mOwner;
+}
+
 // 攻撃がヒットしたオブジェクトを追加
 void CWeapon::AddAttackHitObj(CObjectBase* obj)
 {
 	mAttackHitObjects.push_back(obj);
 }
 
+// すでに攻撃がヒットしているオブジェクトかどうか
 bool CWeapon::IsAttackHitObj(CObjectBase* obj) const
 {
 	// 既にリストに追加されているかを確認する

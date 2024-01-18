@@ -143,7 +143,7 @@ void CGameScene::Update()
 
 	// [CStage1] の処理 /////////////////////////////////////////////////////////////
 
-	int enemyCount = CEnemyManager::GetEnemyCount();	// ソルジャーの数
+	int enemyCount = CEnemyManager::GetSoldierCount();	// ソルジャーの数
 
 	static bool Rising = false;
 

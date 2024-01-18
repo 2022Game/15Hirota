@@ -26,7 +26,6 @@ CHatenaBlock::CHatenaBlock(const CVector& pos, const CVector& scale,
 {
 	// ハテナブロックモデル取得
 	mpModel = CResourceManager::Get<CModel>("HatenaBlock");
-
 	// ブロックを叩いた時のSE取得
 	mpHitBlockSE = CResourceManager::Get<CSound>("8bitShot");
 

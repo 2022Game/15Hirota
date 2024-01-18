@@ -1,5 +1,5 @@
 #include "CStage1.h"
-#include "CMoveFloor.h"
+#include "CDamageObject.h"
 #include "CGoalObject.h"
 #include "CStone1.h"
 #include "CField.h"
@@ -51,8 +51,8 @@ void CStage1::Load()
 		player->SetStartPosition(playerPos);
 	}
 
-	// CGameCamera* mainCamera = new CGameCamera
-	CCamera* mainCamera = new CCamera
+	CGameCamera* mainCamera = new CGameCamera
+	//CCamera* mainCamera = new CCamera
 	(
 		CVector(0.0f, 80.0f, 45.0f),
 		player->Position() + CVector(0.0f, 10.0f, 0.0f)
@@ -63,7 +63,7 @@ void CStage1::Load()
 
 
 	// ŽlŠpƒ‚ƒfƒ‹
-	CMoveFloor* floor = new CMoveFloor( 
+	CDamageObject* floor = new CDamageObject(
 		CVector(-20.0f, -20.0f, -340.0f), 
 		CVector(5.5f, 1.0f, 3.25f), 
 		CVector(0.0f, 0.0f, 0.0f), 
@@ -231,11 +231,11 @@ void CStage1::Load()
 
 	
 	
-	// ‚ä‚©‚è‚³‚ñ
-	CYukari* yukari = new CYukari();
-	yukari->Scale(1.0f, 1.0f, 1.0f);
-	yukari->Position(0.0f, 100.0f, -200.0f);
-	AddTask(yukari);
+	//// ‚ä‚©‚è‚³‚ñ
+	//CYukari* yukari = new CYukari();
+	//yukari->Scale(1.0f, 1.0f, 1.0f);
+	//yukari->Position(0.0f, 100.0f, -200.0f);
+	//AddTask(yukari);
 }
 
 

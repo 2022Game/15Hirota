@@ -1,14 +1,17 @@
 #include "CGoalObject.h"
 #include "CPlayer.h"
 
+// コンストラクタ
 CGoalObject::CGoalObject(const CVector& pos, const CVector& scale, const CVector& rot)
 {
+	// ゴールの土台モデル取得
 	mpModel = CResourceManager::Get<CModel>("GoalCube");
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
 
+	// ゴールのポストモデル取得
 	mpGoalPost = CResourceManager::Get<CModel>("GoalPost");
 
-
+	// ポストのコライダーを作成
 	mpColliderLine = new CColliderLine
 	(
 		this, ELayer::eGoalCol,
@@ -18,7 +21,7 @@ CGoalObject::CGoalObject(const CVector& pos, const CVector& scale, const CVector
 	mpColliderLine->SetCollisionLayers({ ELayer::eDamageCol });
 	mpColliderLine->SetCollisionTags({ ETag::ePlayer });
 
-
+	// てっぺんのコライダーを作成
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::eGoalCol,
@@ -28,39 +31,28 @@ CGoalObject::CGoalObject(const CVector& pos, const CVector& scale, const CVector
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
 	// ゴールコライダーを少し上へずらす
 	mpColliderSphere->Position(0.0f, 20.0f, 0.0f);
-	
+
 
 	Position(pos);
 	Scale(scale);
 	Rotate(rot);
 }
 
+// デストラクタ
 CGoalObject::~CGoalObject()
 {
-	if (mpColliderMesh != nullptr)
-	{
-		delete mpColliderMesh;
-		mpColliderMesh = nullptr;
-	}
-
-	if (mpColliderSphere != nullptr)
-	{
-		delete mpColliderSphere;
-		mpColliderSphere = nullptr;
-	}
-	
-	if (mpColliderLine != nullptr)
-	{
-		delete mpColliderLine;
-		mpColliderLine = nullptr;
-	}
+	SAFE_DELETE(mpColliderMesh);
+	SAFE_DELETE(mpColliderLine);
+	SAFE_DELETE(mpColliderSphere);
 }
 
+// 更新処理
 void CGoalObject::Update()
 {
 	
 }
 
+// 描画処理
 void CGoalObject::Render()
 {
 	mpModel->SetColor(mColor);

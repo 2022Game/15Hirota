@@ -3,8 +3,7 @@
 #include "CObjectBase.h"
 class CCharaBase;
 
-// オブジェクト継承
-
+// 武器クラス 
 class CWeapon :public CObjectBase
 {
 public:

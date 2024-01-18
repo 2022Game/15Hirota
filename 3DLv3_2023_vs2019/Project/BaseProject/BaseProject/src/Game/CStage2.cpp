@@ -1,5 +1,5 @@
 #include "CStage2.h"
-#include "CMoveFloor.h"
+#include "CDamageObject.h"
 #include "CGoalObject.h"
 #include "CStone1.h"
 #include "CField.h"
@@ -58,7 +58,7 @@ void CStage2::Load()
 
 
 	// ŽlŠpƒ‚ƒfƒ‹
-	CMoveFloor* floor = new CMoveFloor(
+	CDamageObject* floor = new CDamageObject(
 		CVector(-20.0f, -20.0f, -340.0f),
 		CVector(5.5f, 1.0f, 3.25f),
 		CVector(0.0f, 0.0f, 0.0f),

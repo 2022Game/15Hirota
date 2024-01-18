@@ -4,7 +4,7 @@
 class CCharaBase;
 
 // オブジェクト継承
-
+// 回復アイテムオブジェのクラス
 class CItemObjectBase : public CObjectBase
 {
 public:
