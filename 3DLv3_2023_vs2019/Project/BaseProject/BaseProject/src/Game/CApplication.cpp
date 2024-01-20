@@ -16,8 +16,10 @@ CApplication::~CApplication()
 
 void CApplication::Start()
 {
+#if _DEBUG
 	// デバッグカメラを作成
 	CDebugCamera::DebugCamera();
+#endif
 
 	// フェードクラスを作成
 	CFade::Instance();
@@ -30,9 +32,14 @@ void CApplication::Start()
 	// BGM管理クラスを作成
 	CBGMManager::Instance();
 
+#if _DEBUG
 	// 最初のシーンを読み込み
 	CSoundManager::Instance();
 	CSceneManager::Instance()->LoadScene(EScene::eBootMenu);
+#else
+	// リリースモードでは、タイトル画面を最初に開く
+	CSceneManager::Instance()->LoadScene(EScene::eTitle);
+#endif
 }
 
 void CApplication::End()

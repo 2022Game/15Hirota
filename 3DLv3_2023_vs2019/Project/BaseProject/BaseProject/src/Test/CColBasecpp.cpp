@@ -26,6 +26,7 @@ void CColBase::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 // 更新
 void CColBase::Update()
 {
+#if _DEBUG
 	mIsCollision = false;
 	// 選択状態でなければ、以降処理しない
 	if (!mIsSelect) return;
@@ -85,6 +86,7 @@ void CColBase::Update()
 			Position(Position() + move * moveSpeed);
 		}
 	}
+#endif
 }
 // 現在の色を取得
 CColor CColBase::GetColor() const

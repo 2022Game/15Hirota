@@ -1,4 +1,5 @@
 #include "CDebugCamera.h"
+#if _DEBUG
 #include "CDebugInput.h"
 #include "glut.h"
 #include "Maths.h"
@@ -180,3 +181,5 @@ void CDebugCamera::Update()
 	// カメラのベース更新
 	CCamera::Update();
 }
+
+#endif
