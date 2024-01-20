@@ -2,7 +2,6 @@
 #include "Maths.h"
 #include "CImage.h"
 
-
 // ƒtƒŒ[ƒ€‚Ìü‚Ì•
 #define FRAME_BORDER	(1.0f)
 

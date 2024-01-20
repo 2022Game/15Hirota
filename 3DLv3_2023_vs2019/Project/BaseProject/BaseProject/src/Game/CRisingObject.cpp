@@ -17,7 +17,7 @@
 // コンストラクタ
 CRisingObject::CRisingObject(const CVector& pos, const CVector& scale,
 	ETag reactionTag, ELayer reactionLayer)
-	: CRideableObject(ETaskPriority::eFallingOBJ)
+	: CRideableObject(ETaskPriority::eRising)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
 	, mState(EState::Idle)

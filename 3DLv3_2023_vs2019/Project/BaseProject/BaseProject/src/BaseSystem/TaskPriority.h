@@ -20,7 +20,9 @@ enum class ETaskPriority
 
 	eEffect,
 	eTransparent,	// 透明オブジェクト
-	eFallingOBJ,	// 落下オブジェクト
+	eFalling,		// 落下オブジェクト
+	eRising,		// 上昇するオブジェクト
+	eNumberFalling,	// 回数で落下するオブジェクト
 	eHatenaOBJ,		// ハテナブロックオブジェクト
 
 	eCamera,		// カメラ

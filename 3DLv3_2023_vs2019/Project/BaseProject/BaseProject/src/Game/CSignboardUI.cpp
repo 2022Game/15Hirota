@@ -9,7 +9,7 @@ CSignboardUI::CSignboardUI()
 	: mCenterRatio(0.0f,0.0f)
 	, mScale(0.0f)
 {
-	mpCSiUI = new CImage("CSignboardUI");
+	mpCSiUI = new CImage("SignboardUI");
 	mpCSiUI->SetSize(30.0f, 30.0f);
 }
 

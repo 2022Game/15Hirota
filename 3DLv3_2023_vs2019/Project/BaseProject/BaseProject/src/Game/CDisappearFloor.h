@@ -60,7 +60,8 @@ private:
 	void UpdateFade();
 	// フェード後の待ち処理
 	void UpdateWait();
-	EState mState;	// 現在の状態
+	// 現在の状態
+	EState mState;
 
 
 	// 変数関連

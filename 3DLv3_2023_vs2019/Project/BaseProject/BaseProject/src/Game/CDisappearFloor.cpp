@@ -17,18 +17,18 @@ CDisappearFloor::CDisappearFloor(const CVector& pos, const CVector& scale,
 	, mFadeTime(0.0f)
 	, mWaitTime(0.0f)
 {
-	// 消える床のモデルを取得
+	// 消える床のモデル取得
 	mpModel = CResourceManager::Get<CModel>("FieldCube");
 
 	// 消える床のコライダー作成
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
-	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer });
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
+	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer });
 
 	// 生成時に設定された触れた時に反応するオブジェクトタグと
 	// コライダーのレイヤーを個別に設定
-	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
 	mpColliderMesh->SetCollisionTag(mReactionTag, true);
+	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
 
 	Position(pos);
 	Scale(scale);

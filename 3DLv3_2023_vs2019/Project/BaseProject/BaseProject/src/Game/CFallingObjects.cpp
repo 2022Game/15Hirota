@@ -12,7 +12,7 @@
 // コンストラクタ
 CFallingObjects::CFallingObjects(const CVector& pos, const CVector& scale,
 	ETag reactionTag, ELayer reactionLayer)
-	: CRideableObject(ETaskPriority::eFallingOBJ)
+	: CRideableObject(ETaskPriority::eFalling)
 	, mState(EState::Idle)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)

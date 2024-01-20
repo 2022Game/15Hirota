@@ -54,6 +54,9 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("HatenaBlock",			"Field\\Object\\hatena.obj");				// ハテナブロック(アイテム保有)
 	CResourceManager::Load<CModel>("HatenaBlockAfter",		"Field\\Object\\UsedHatenaBlock.obj");		// ハテナブロック(アイテム不保有)
 	CResourceManager::Load<CModel>("RengaBlock",			"Field\\Object\\RengaBlock.obj");			// レンガブロック
+	CResourceManager::Load<CModel>("Number3",				"Field\\Object\\number3.obj");				// 三番目の床ブロック
+	CResourceManager::Load<CModel>("Number2",				"Field\\Object\\number2.obj");				// 二番目の床ブロック
+	CResourceManager::Load<CModel>("Number1",				"Field\\Object\\number1.obj");				// 一番目の床ブロック
 
 
 	// キャラクター関連
@@ -80,7 +83,8 @@ void CGameScene::Load()
 	CResourceManager::Load<CTexture>("SBar",				"UI\\Gauge.png");					// ソルジャーのバー
 	CResourceManager::Load<CTexture>("YFrame",				"UI\\Image_Gauge_Frame.png");		// ゆかりさんのフレーム
 	CResourceManager::Load<CTexture>("YBar",				"UI\\Gauge.png");					// ゆかりさんのバー
-	CResourceManager::Load<CTexture>("CSignboardUI",		"UI\\Ukye_1.png");					// Uキーの画像
+	CResourceManager::Load<CTexture>("SignboardUI",			"UI\\Ukye_1.png");					// Uキーの画像
+	CResourceManager::Load<CTexture>("ExclamationMark",		"UI\\bikkurimark.png");				// ビックリマーク画像
 
 
 	// エフェクト関連

@@ -2,6 +2,7 @@
 #include "CSceneBase.h"
 #include "CInput.h"
 #include "CImage.h"
+#include "CImage.h"
 class CSound;
 
 //タイトルシーン
@@ -18,4 +19,5 @@ public:
 	void Update();
 
 private:
+	CImage* mTitle;
 };

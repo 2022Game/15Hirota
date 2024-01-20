@@ -69,6 +69,7 @@
     <ClCompile Include="src\Game\CClearScene.cpp" />
     <ClCompile Include="src\Game\CEnemy.cpp" />
     <ClCompile Include="src\Game\CEnemyManager.cpp" />
+    <ClCompile Include="src\Game\CExclamationMark.cpp" />
     <ClCompile Include="src\Game\CFallingObjects.cpp" />
     <ClCompile Include="src\Game\CGameCamera.cpp" />
     <ClCompile Include="src\Game\CGameManager.cpp" />
@@ -78,6 +79,7 @@
     <ClCompile Include="src\Game\CInvincible.cpp" />
     <ClCompile Include="src\Game\CInvincibleObjectBase.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
+    <ClCompile Include="src\Game\CNumberFloor1.cpp" />
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
     <ClCompile Include="src\Game\CRisingObject.cpp" />
@@ -196,6 +198,7 @@
     <ClInclude Include="src\Game\CClearScene.h" />
     <ClInclude Include="src\Game\CEnemy.h" />
     <ClInclude Include="src\Game\CEnemyManager.h" />
+    <ClInclude Include="src\Game\CExclamationMark.h" />
     <ClInclude Include="src\Game\CFallingObjects.h" />
     <ClInclude Include="src\Game\CGameCamera.h" />
     <ClInclude Include="src\Game\CGameMenu.h" />
@@ -204,6 +207,7 @@
     <ClInclude Include="src\Game\CInvincible.h" />
     <ClInclude Include="src\Game\CInvincibleObjectBase.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
+    <ClInclude Include="src\Game\CNumberFloor1.h" />
     <ClInclude Include="src\Game\CRecoveryObject.h" />
     <ClInclude Include="src\Game\CRengaBlock.h" />
     <ClInclude Include="src\Game\CRisingObject.h" />

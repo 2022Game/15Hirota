@@ -26,6 +26,7 @@
 #include "Test/System.h"
 #include "Time.h"
 #include "CDebugCamera.h"
+#include "CDebugInput.h"
 #include "CDebugPrint.h"
 #include "CDebugProfiler.h"
 #include "CResourceManager.h"

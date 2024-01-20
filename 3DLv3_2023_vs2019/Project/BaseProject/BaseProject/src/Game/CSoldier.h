@@ -13,6 +13,7 @@ class CBullet;
 class CPlayer;
 class CSoldierFrame;
 class CSoldierGauge;
+class CExclamationMark;
 
 /*
 ソルジャークラス
@@ -55,6 +56,12 @@ public:
 
 	// ソルジャーの方向をランダムに変更する処理
 	void ChangeDerection();
+
+	// フレームとHPゲージの表示の確認をする処理
+	void UpdateGaugeAndFrame();
+
+	// ビックリマークの表示の確認をする処理
+	void UpdateExclamation();
 
 	// 1%の確率を求める処理
 	bool ShouldTransitionWander();
@@ -106,6 +113,8 @@ private:
 	CSoldierFrame* mpFrame;
 	// ゲージ
 	CSoldierGauge* mpGauge;
+	// ビックリマーク
+	CExclamationMark* mpExclamationMark;
 
 	///////////////////////////////////////////////////////
 
@@ -124,6 +133,8 @@ private:
 	void UpdateJump();
 	// ジャンプ終了
 	void UpdateJumpEnd();
+	// プレイヤー発見
+	void UpdateDiscovery();
 	// 追跡
 	void UpdateChase();
 	// キック
@@ -149,9 +160,7 @@ private:
 		eIdle,		// 待機
 		eAttack,	// 攻撃
 		eAttackWait,// 攻撃終了待ち
-		eJumpStart,	// ジャンプ開始
-		eJump,		// ジャンプ中
-		eJumpEnd,	// ジャンプ終了
+		eDiscovery,	// プレイヤー発見
 		eChase,		// 追跡
 		eKick,		// キック
 		eKickWait,	// キック終了
@@ -161,6 +170,9 @@ private:
 		eDethEnd,	// 死亡終了
 		eWander,	// 徘徊処理
 		eBackStep,	// バックステップ
+		eJumpStart,	// ジャンプ開始
+		eJump,		// ジャンプ中
+		eJumpEnd,	// ジャンプ終了
 	};
 	// 状態変更
 	void ChangeState(EState state);
@@ -243,10 +255,19 @@ private:
 	float mKickTime;
 	// バックステップの時間計測
 	float mBackStepTime;
+	// プレイヤー発見時の時間計測
+	float mDiscoveryTime;
+	// プレイヤー発見時の終了時間計測
+	float mDiscoveryTimeEnd;
 	// 接地しているかどうか
 	bool mIsGrounded;
 	// キックの待ち時間が終わったかどうか
 	bool mKickTimeEnd;
+	// プレイヤーを発見して一定時間経ったかどうか
+	bool mDiscovery;
+	// プレイヤーを発見し終わった後の時間がどれくらい経ったか
+	bool mDiscoveryEnd;
+
 	// プレイヤーを見つけたか
 	bool IsFoundPlayer() const;
 

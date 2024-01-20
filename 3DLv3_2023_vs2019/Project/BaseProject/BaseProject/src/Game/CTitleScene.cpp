@@ -11,6 +11,7 @@
 //コンストラクタ
 CTitleScene::CTitleScene()
 	: CSceneBase(EScene::eTitle)
+	, mTitle(nullptr)
 {
 }
 

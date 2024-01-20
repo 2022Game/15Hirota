@@ -13,6 +13,7 @@
 #include "CSoldierGauge.h"
 #include "CStageManager.h"
 #include "CEnemyManager.h"
+#include "CExclamationMark.h"
 
 #define _USE_MATH_DEFINES
 
@@ -61,6 +62,10 @@
 // キックコライダーの時間
 #define KICKCOL 10.0f
 
+// プレイヤーを発見した後の時間
+#define DISCOVERY 2.0f
+// プレイヤーを発見した後の待ち時間
+#define DISCOVERY_END 40.0f
 
 // CSoldierのインスタンス
 CSoldier* CSoldier::spInstance = nullptr;
@@ -100,12 +105,16 @@ CSoldier::CSoldier()
 	, mElapsedTime_End(0.0f)
 	, mKickTime(0.0f)
 	, mBackStepTime(0.0f)
+	, mDiscoveryTime(0.0f)
+	, mDiscoveryTimeEnd(0.0f)
 	, mTargetDir(0.0f, 0.0f, 1.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mInitialPosition(0.0f, 0.0f, 0.0f)
 	, mTimeToChange(Math::Rand(2.0f, 5.0f))
 	, mIsGrounded(false)
 	, mKickTimeEnd(false)
+	, mDiscovery(false)
+	, mDiscoveryEnd(false)
 	, mpRideObject(nullptr)
 {
 	//インスタンスの設定
@@ -128,6 +137,10 @@ CSoldier::CSoldier()
 	// ゲージ設定
 	mpGauge = new CSoldierGauge();
 	mpGauge->SetCenterRatio(CVector2(0.3f, 0.0f));
+	// ビックリマーク設定
+	mpExclamationMark = new CExclamationMark();
+	mpExclamationMark->SetCeneterRatio(CVector2(0.3f, 0.5f));
+
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
@@ -196,6 +209,7 @@ CSoldier::CSoldier()
 	mpGun->AttachMtx(gun);
 
 	mKickTimeEnd = false;
+	mDiscovery = false;
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -222,6 +236,7 @@ CSoldier::~CSoldier()
 	// UI周りを破棄
 	mpGauge->Kill();
 	mpFrame->Kill();
+	mpExclamationMark->Kill();
 }
 
 // 衝突処理
@@ -242,7 +257,6 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 	}
-
 	// カプセルコライダができるまでのコライダー
 	if (self == mpColliderSphere)
 	{
@@ -338,6 +352,40 @@ void CSoldier::ChangeDerection()
 	mTargetDir = CalculateDirection(randomAngle);
 }
 
+// フレームとHPゲージの表示の確認をする処理
+void CSoldier::UpdateGaugeAndFrame()
+{
+	if (mpExclamationMark && mDiscovery)
+	{
+		mpGauge->SetShow(false);
+		mpFrame->SetShow(false);
+	}
+	else
+	{
+		// HPゲージの座標を更新 (敵の座標の少し上の座標)
+		CVector gaugePos = Position() + CVector(0.0f, 25.0f, 0.0f);
+		mpGauge->SetWorldPos(gaugePos);
+		CVector framePos = Position() + CVector(0.0f, 25.0f, 0.0f);
+		mpFrame->SetWorldPos(framePos);
+	}
+}
+
+// ビックリマークの表示の確認をする処理
+void CSoldier::UpdateExclamation()
+{
+	if (mDiscovery && !mDiscoveryEnd)
+	{
+		// ビックリマーク画像の座標を更新
+		CVector exclamationMardPos = Position() + CVector(0.0f, 25.0f, 0.0f);
+		mpExclamationMark->SetWorldPos(exclamationMardPos);
+		mpExclamationMark->SetShow(true);
+	}
+	else
+	{
+		mpExclamationMark->SetShow(false);
+	}
+}
+
 // 待機状態遷移する条件
 bool CSoldier::ShouldTransitionWander()
 {
@@ -402,14 +450,22 @@ void CSoldier::ChangeAnimation(EAnimType type)
 // 待機
 void CSoldier::UpdateIdle()
 {
+	mDiscovery = false;
 	mpAttackCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	//プレイヤーを見つけたら、追跡状態へ移行
+	//プレイヤーを見つけたら、敵発見状態へ移行
 	if (IsFoundPlayer())
 	{
-		ChangeState(EState::eChase);
+		if (mDiscoveryTimeEnd <= DISCOVERY_END)
+		{
+			ChangeState(EState::eDiscovery);
+		}
+		else
+		{
+			ChangeState(EState::eChase);
+		}
 	}
 	else
 	{
@@ -426,6 +482,7 @@ void CSoldier::UpdateIdle()
 // 攻撃
 void CSoldier::UpdateAttack()
 {
+	mDiscovery = false;
 	// 攻撃するときは移動を停止
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
@@ -480,6 +537,7 @@ void CSoldier::UpdateAttack()
 				ChangeState(EState::eAttackWait);
 				mTimeShot = 0;
 				mElapsedTime = 0.0f;
+				mDiscoveryTime = 0.0f;
 			}
 		}
 	}
@@ -487,6 +545,8 @@ void CSoldier::UpdateAttack()
 	{
 		ChangeState(EState::eChase);
 		mElapsedTime_End = 0.0f;
+		mDiscoveryTime = 0.0f;
+		mDiscovery = false;
 	}
 }
 
@@ -507,49 +567,55 @@ void CSoldier::UpdateAttackWait()
 		{
 			ChangeState(EState::eAimDwon);
 			mElapsedTime_End = 0.0f;
+			mDiscoveryTime = 0.0f;
+			mDiscovery = false;
 		}
 	}
 }
 
-// ジャンプ開始
-void CSoldier::UpdateJumpStart()
+// プレイヤー発見
+void CSoldier::UpdateDiscovery()
 {
-	ChangeAnimation(EAnimType::eJumpStart);
-	ChangeState(EState::eJump);
+	mDiscovery = true;
+	mMoveSpeed.Y(0.0f);
+	mMoveSpeed.Z(0.0f);
+	ChangeAnimation(EAnimType::eRifleIdle);
 
-	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
-	mIsGrounded = false;
-}
-
-// ジャンプ中
-void CSoldier::UpdateJump()
-{
-	if (mMoveSpeed.Y() <= 0.0f)
+	// プレイヤーまでのベクトルを求める
+	CPlayer* player = CPlayer::Instance();
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+	
+	mDiscoveryTime += Time::DeltaTime();
+	if (mDiscoveryTime >= DISCOVERY)
 	{
-		ChangeAnimation(EAnimType::eJumpEnd);
-		ChangeState(EState::eJumpEnd);
+		if (IsFoundPlayer())
+		{
+			mDiscoveryEnd = true;
+			ChangeState(EState::eChase);
+		}
+		else
+		{
+			ChangeState(EState::eAimDwon);
+			mDiscoveryTime = 0.0f;
+		}
 	}
-}
-
-// ジャンプ終了
-void CSoldier::UpdateJumpEnd()
-{
-	if (IsAnimationFinished())
-	{
-		ChangeState(EState::eIdle);
-	}
+	CDebugPrint::Print("discovery:%f\n", mDiscoveryTime);
 }
 
 // 追跡
 void CSoldier::UpdateChase()
 {
+	mDiscovery = false;
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	if (!IsFoundPlayer())
 	{
 		ChangeAnimation(EAnimType::eRifleIdle);
 		mElapsedTime_End += Time::DeltaTime();
-		CDebugPrint::Print("TimeEnd%f\n", mElapsedTime_End);
+		//CDebugPrint::Print("TimeEnd%f\n", mElapsedTime_End);
 		if (mElapsedTime_End >= PLAYER_LOST)
 		{
 			ChangeState(EState::eAimDwon);
@@ -625,6 +691,7 @@ void CSoldier::UpdateAimDwon()
 	{
 		ChangeState(EState::eIdle);
 		mElapsedTime_End = 0.0f;
+		mDiscovery = false;
 	}
 }
 
@@ -683,6 +750,7 @@ void CSoldier::UpdateDethEnd()
 // 徘徊処理
 void CSoldier::UpdateWander()
 {
+	mDiscovery = false;
 	mpAttackCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eWalk);
 
@@ -698,7 +766,14 @@ void CSoldier::UpdateWander()
 
 	if (IsFoundPlayer())
 	{
-		ChangeState(EState::eChase);
+		if (mDiscoveryTimeEnd <= DISCOVERY_END)
+		{
+			ChangeState(EState::eDiscovery);
+		}
+		else
+		{
+			ChangeState(EState::eChase);
+		}
 	}
 	else
 	{
@@ -737,6 +812,35 @@ void CSoldier::UpdateBackStep()
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eChase);
+	}
+}
+
+// ジャンプ開始
+void CSoldier::UpdateJumpStart()
+{
+	ChangeAnimation(EAnimType::eJumpStart);
+	ChangeState(EState::eJump);
+
+	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
+	mIsGrounded = false;
+}
+
+// ジャンプ中
+void CSoldier::UpdateJump()
+{
+	if (mMoveSpeed.Y() <= 0.0f)
+	{
+		ChangeAnimation(EAnimType::eJumpEnd);
+		ChangeState(EState::eJumpEnd);
+	}
+}
+
+// ジャンプ終了
+void CSoldier::UpdateJumpEnd()
+{
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eIdle);
 	}
 }
 
@@ -786,6 +890,18 @@ void CSoldier::Update()
 	}
 	CDebugPrint::Print("kickTime%f\n", mKickTime);
 
+	// プレイヤーを発見した後の時間の計測
+	if (mDiscoveryTimeEnd <= DISCOVERY_END && mDiscoveryEnd)
+	{
+		mDiscoveryTimeEnd += Time::DeltaTime();
+		if (mDiscoveryTimeEnd >= DISCOVERY_END)
+		{
+			mDiscoveryEnd = false;
+			mDiscoveryTimeEnd = 0.0f;
+		}
+	}
+	CDebugPrint::Print("discoveryTimeEnd:%f\n", mDiscoveryTimeEnd);
+
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)
 	{
@@ -813,6 +929,10 @@ void CSoldier::Update()
 	case EState::eAttackWait:
 		UpdateAttackWait();
 		break;
+		// プレイヤー発見
+	case EState::eDiscovery:
+		UpdateDiscovery();
+		break;
 		// 追跡状態
 	case EState::eChase:
 		UpdateChase();
@@ -820,18 +940,6 @@ void CSoldier::Update()
 		// プレイヤーの攻撃Hit
 	case EState::eHit:
 		UpdateHit();
-		break;
-		// ジャンプ開始
-	case EState::eJumpStart:
-		UpdateJumpStart();
-		break;
-		// ジャンプ中
-	case EState::eJump:
-		UpdateJump();
-		break;
-		// ジャンプ終了
-	case EState::eJumpEnd:
-		UpdateJumpEnd();
 		break;
 		// 死亡
 	case EState::eDeth:
@@ -848,6 +956,18 @@ void CSoldier::Update()
 		// バックステップ
 	case EState::eBackStep:
 		UpdateBackStep();
+		break;
+		// ジャンプ開始
+	case EState::eJumpStart:
+		UpdateJumpStart();
+		break;
+		// ジャンプ中
+	case EState::eJump:
+		UpdateJump();
+		break;
+		// ジャンプ終了
+	case EState::eJumpEnd:
+		UpdateJumpEnd();
 		break;
 	}
 
@@ -888,12 +1008,10 @@ void CSoldier::Update()
 	CVector forward = CVector::Slerp(current, target, 0.125f);
 	Rotation(CQuaternion::LookRotation(forward));
 
-	// HPゲージの座標を更新 (敵の座標の少し上の座標)
-	CVector gaugePos = Position() + CVector(0.0f, 25.0f, 0.0f);
-	mpGauge->SetWorldPos(gaugePos);
-	CVector framePos = Position() + CVector(0.0f, 25.0f, 0.0f);
-	mpFrame->SetWorldPos(framePos);
-
+	// フレームとゲージの表示処理
+	UpdateGaugeAndFrame();
+	// ビックリマークの表示処理
+	UpdateExclamation();
 
 	// 現在のHpを設定
 	mpGauge->SetValue(mCharaStatus.hp);
