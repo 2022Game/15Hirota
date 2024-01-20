@@ -299,7 +299,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	{
 		if (other->Layer() == ELayer::eGoalCol)
 		{
-			CDebugPrint::Print("Player hit GoalObject!\n");
+			/*CDebugPrint::Print("Player hit GoalObject!\n");*/
 			mpDamageCol->SetEnable(false);
 			if (CGameManager::StageNo() == 0 || CGameManager::StageNo() == 1 || CGameManager::StageNo() == 2)
 			{
@@ -952,7 +952,7 @@ void CPlayer::UpdateHitBullet()
 		}
 	}
 
-	CDebugPrint::Print("Time%f\n", mElapsedTime);
+	//CDebugPrint::Print("Time%f\n", mElapsedTime);
 }
 
 // ジャンプ開始
@@ -1304,14 +1304,14 @@ void CPlayer::Update()
 
 	mIsGrounded = false;
 
-	// 縦方向の移動速度監視
-	CDebugPrint::Print("mMoveSpeed%f\n", mMoveSpeed.Y());
-	// 無敵時間の時間監視
-	CDebugPrint::Print("mInvincible:%f\n", mInvincibleStartTime);
-	// 現在の縦方向のポジション監視
-	CDebugPrint::Print("Position.Y %f\n", Position().Y());
-	// コライダーの復活時間監視
-	CDebugPrint::Print("TimeCol%f\n", mElapsedTimeCol);
+	//// 縦方向の移動速度監視
+	//CDebugPrint::Print("mMoveSpeed%f\n", mMoveSpeed.Y());
+	//// 無敵時間の時間監視
+	//CDebugPrint::Print("mInvincible:%f\n", mInvincibleStartTime);
+	//// 現在の縦方向のポジション監視
+	//CDebugPrint::Print("Position.Y %f\n", Position().Y());
+	//// コライダーの復活時間監視
+	//CDebugPrint::Print("TimeCol%f\n", mElapsedTimeCol);
 }
 
 // 描画

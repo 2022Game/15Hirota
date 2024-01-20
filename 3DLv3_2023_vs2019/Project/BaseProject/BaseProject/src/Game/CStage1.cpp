@@ -16,6 +16,7 @@
 #include "CEnemyManager.h"
 #include "CHatenaBlock.h"
 #include "CRengaBlock.h"
+#include "CNumberFloor1.h"
 
 
 // コンストラクタ
@@ -61,6 +62,14 @@ void CStage1::Load()
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(field->GetWallCol());
 
+
+	// 回数制限モデル
+	CNumberFloor1* number = new CNumberFloor1(
+		CVector(0.0f, 1.0f, -150.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(number);
 
 	// 四角モデル
 	CDamageObject* floor = new CDamageObject(

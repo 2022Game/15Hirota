@@ -61,7 +61,8 @@ private:
 	void UpdateIdle();
 	// 落下状態の更新処理
 	void UpdateFalling();
-	EState mState;	// 現在の状態
+	// 現在の状態
+	EState mState;
 
 
 	// ベクトル関連

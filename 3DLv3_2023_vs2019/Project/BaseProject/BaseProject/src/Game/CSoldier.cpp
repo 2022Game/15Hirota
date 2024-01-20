@@ -602,7 +602,7 @@ void CSoldier::UpdateDiscovery()
 			mDiscoveryTime = 0.0f;
 		}
 	}
-	CDebugPrint::Print("discovery:%f\n", mDiscoveryTime);
+	//CDebugPrint::Print("discovery:%f\n", mDiscoveryTime);
 }
 
 // 追跡
@@ -888,7 +888,7 @@ void CSoldier::Update()
 			mKickTime = 0.0f;
 		}
 	}
-	CDebugPrint::Print("kickTime%f\n", mKickTime);
+	//CDebugPrint::Print("kickTime%f\n", mKickTime);
 
 	// プレイヤーを発見した後の時間の計測
 	if (mDiscoveryTimeEnd <= DISCOVERY_END && mDiscoveryEnd)
@@ -900,7 +900,7 @@ void CSoldier::Update()
 			mDiscoveryTimeEnd = 0.0f;
 		}
 	}
-	CDebugPrint::Print("discoveryTimeEnd:%f\n", mDiscoveryTimeEnd);
+	//CDebugPrint::Print("discoveryTimeEnd:%f\n", mDiscoveryTimeEnd);
 
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)
