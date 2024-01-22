@@ -492,24 +492,32 @@ void CPlayer::UpdateIdle()
 	
 	if (mIsGrounded)
 	{
+		//// 移動処理
+		//// キーの入力ベクトルを取得
+		//CVector input;
+		//// 垂直方向の入力
+		//if (CInput::Key('W') && !CInput::Key('S'))
+		//	input.Z(-1.0f);
+		//else if (CInput::Key('S') && !CInput::Key('W'))
+		//	input.Z(1.0f);
+		//else
+		//	input.Z(0.0f);
+
+		//// 水平方向の入力
+		//if (CInput::Key('A') && !CInput::Key('D'))
+		//	input.X(-1.0f);
+		//else if (CInput::Key('D') && !CInput::Key('A'))
+		//	input.X(1.0f);
+		//else
+		//	input.X(0.0f);
+
 		// 移動処理
 		// キーの入力ベクトルを取得
 		CVector input;
-		// 垂直方向の入力
-		if (CInput::Key('W') && !CInput::Key('S'))
-			input.Z(-1.0f);
-		else if (CInput::Key('S') && !CInput::Key('W'))
-			input.Z(1.0f);
-		else
-			input.Z(0.0f);
-
-		// 水平方向の入力
-		if (CInput::Key('A') && !CInput::Key('D'))
-			input.X(-1.0f);
-		else if (CInput::Key('D') && !CInput::Key('A'))
-			input.X(1.0f);
-		else
-			input.X(0.0f);
+		if (CInput::Key('W'))		input.Z(-1.0f);
+		else if (CInput::Key('S'))	input.Z(1.0f);
+		if (CInput::Key('A'))		input.X(-1.0f);
+		else if (CInput::Key('D'))	input.X(1.0f);
 
 		// 入力ベクトルの長さで入力されているか判定
 		if (input.LengthSqr() > 0.0f)

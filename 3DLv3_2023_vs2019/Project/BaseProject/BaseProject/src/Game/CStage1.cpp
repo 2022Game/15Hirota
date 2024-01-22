@@ -46,21 +46,24 @@ void CStage1::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(0.0f, 60.0f, 0.0f);
+	CVector playerPos = CVector(0.0f, 60.0f, -20.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
 	}
 
+
 	CGameCamera* mainCamera = new CGameCamera
-	//CCamera* mainCamera = new CCamera
-	(
-		CVector(0.0f, 80.0f, 45.0f),
-		player->Position() + CVector(0.0f, 10.0f, 0.0f)
-	);
+		//CCamera* mainCamera = new CCamera
+		(
+			CVector(0.0f, 80.0f, 45.0f),
+			player->Position() + CVector(0.0f, 10.0f, 0.0f)
+		);
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(field->GetWallCol());
+	AddTask(player);
+
 
 	// 回数制限モデル
 	CNumberFloor1* number = new CNumberFloor1(

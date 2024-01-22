@@ -1,5 +1,4 @@
 #include "CDebugInput.h"
-
 #if _DEBUG
 
 // デバッグ入力モードがオンになっているかどうか
@@ -63,5 +62,4 @@ void CDebugInput::Off()
 {
 	msIsOn = false;
 }
-
 #endif

@@ -181,5 +181,4 @@ void CDebugCamera::Update()
 	// カメラのベース更新
 	CCamera::Update();
 }
-
 #endif

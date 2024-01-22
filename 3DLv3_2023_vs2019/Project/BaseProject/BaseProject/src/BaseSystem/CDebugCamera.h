@@ -39,5 +39,4 @@ private:
 	// ƒJƒƒ‰‚Ì‰ñ“]Šp“x
 	CVector mRotateAngle;
 };
-
 #endif
