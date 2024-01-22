@@ -23,7 +23,7 @@
 // 移動速度
 #define MOVE_SPEED 0.7f
 // 自動移動速度
-#define MOVE_AUTOMATIC_SPEED 50.0f
+#define MOVE_AUTOMATIC_SPEED 30.0f
 // ジャンプ速度
 #define JUMP_SPEED 1.5f
 // 重力加速度
