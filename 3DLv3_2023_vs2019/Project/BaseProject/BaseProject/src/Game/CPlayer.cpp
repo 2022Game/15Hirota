@@ -113,8 +113,10 @@ CPlayer::CPlayer()
 
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
+	mpHpGauge->SetShow(true);
 	// スタミナゲージを作成
 	mpStaminaGauge = new CStaminaGauge();
+	mpStaminaGauge->SetShow(true);
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);

@@ -12,8 +12,17 @@ public:
     // ソルジャーの数を取得
     static int GetSoldierCount();
 
+    // ヴァンガードの数を増やす
+    static void IncrementVanguardCount();
+    // ヴァンガードの数を減らす
+    static void DecrementVanguardCount();
+    // ヴァンガードの数を取得
+    static int GetVanguardCount();
+
 private:
-    // 敵の数
+    // ソルジャーの数
     static int enemyCount;
+    // ヴァンガードの数
+    static int VanguardCount;
 };
 #endif

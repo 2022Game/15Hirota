@@ -16,7 +16,7 @@ public:
 	/// <param name="scale">スケール値</param>
 	/// <param name="reactionTag">触れると反応するオブジェクトのタグ</param>
 	/// <param name="reactionLayer">触れると反応するオブジェクトのレイヤー</param>
-	CNumberFloor1(const CVector& pos, const CVector& scale,
+	CNumberFloor1(const CVector& pos, const CVector& scale, const CVector& rot,
 		ETag reactionTag, ELayer reactionLayer);
 
 	// デストラクタ
@@ -76,6 +76,10 @@ private:
 	// 変数関連
 	// 状態内のステップ
 	int mStateStep;
+	// 点滅回数
+	int mSwitchCount;
+	// 落下状態のステップ
+	int mFallingSwitch;
 	// フェード時間
 	float mFadeTime;
 	// 待ち時間

@@ -24,6 +24,9 @@ public:
 	// ゲージを削除
 	void Kill() override;
 
+	// 表示するかどうか設定
+	void SetShow(bool isShow) override;
+
 	// 最大値を設定
 	void SetMaxValue(int value);
 	// 現在地を設定

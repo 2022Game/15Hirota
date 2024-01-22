@@ -46,7 +46,7 @@ void CStage1::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(0.0f, 60.0f, -20.0f);
+	CVector playerPos = CVector(0.0f, 60.0f, 0.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
@@ -62,14 +62,33 @@ void CStage1::Load()
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(field->GetWallCol());
 
-
 	// 回数制限モデル
 	CNumberFloor1* number = new CNumberFloor1(
 		CVector(0.0f, 1.0f, -150.0f),
-		CVector(5.0f, 5.0f, 5.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, -90.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
+	CVector numberPos = CVector(0.0f, 1.0f, -150.0f);
+	if (number != nullptr)
+	{
+		number->SetStartPosition(numberPos);
+	}
 	AddTask(number);
+
+	// 回数制限モデル
+	CNumberFloor1* number1 = new CNumberFloor1(
+		CVector(-30.0f, 1.0f, -150.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, -90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector numberPos1 = CVector(-30.0f, 1.0f, -150.0f);
+	if (number != nullptr)
+	{
+		number1->SetStartPosition(numberPos1);
+	}
+	AddTask(number1);
 
 	// 四角モデル
 	CDamageObject* floor = new CDamageObject(

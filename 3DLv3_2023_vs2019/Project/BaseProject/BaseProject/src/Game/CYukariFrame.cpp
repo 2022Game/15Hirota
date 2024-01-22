@@ -50,6 +50,16 @@ void CYukariFrame::Kill()
 	mpFrameImage->Kill();
 }
 
+// 表示するかどうかを設定
+void CYukariFrame::SetShow(bool isShow)
+{
+	CTask::SetShow(isShow);
+
+	// ゲージの表示設定と同時に、
+	// ゲージで使用するUIのひょじ設定も変更する
+	mpFrameImage->SetShow(isShow);
+}
+
 // 中心位置の割合を設定
 void CYukariFrame::SetCenterRatio(const CVector2& ratio)
 {

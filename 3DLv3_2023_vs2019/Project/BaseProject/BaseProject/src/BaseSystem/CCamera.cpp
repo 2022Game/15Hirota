@@ -57,8 +57,8 @@ CCamera* CCamera::CurrentCamera()
 		return CDebugCamera::DebugCamera();
 	}
 	// デバッグカメラが無効であれば、
-#endif
 	else
+#endif
 	{
 		// 現在のカメラを返す
 		return spCurrentCamera;

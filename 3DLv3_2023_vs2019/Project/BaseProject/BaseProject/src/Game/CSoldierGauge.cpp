@@ -23,7 +23,7 @@
 // スケール値計算時のカメラとの距離の最小値
 #define SCALE_DIST_MIN 50.0f
 // スケール値計算時のカメラとの距離の最大値
-#define SCALE_DIST_MAX 100.0f
+#define SCALE_DIST_MAX 130.0f
 // スケール値の最小値
 #define SCALE_MIN 0.8f
 // スケール値の最大値
@@ -39,7 +39,8 @@ CSoldierGauge::CSoldierGauge()
 	mpBarImage = new CImage("SBar");
 	mpBarImage->SetSize(BAR_SIZE_X, BAR_SIZE_Y);
 	mpBarImage->SetUV(438, 0, 500, 62);
-	
+	// 最初は非表示にしておく
+	SetShow(false);
 }
 // デストラクタ
 CSoldierGauge::~CSoldierGauge()
@@ -52,6 +53,16 @@ void CSoldierGauge::Kill()
 {
 	CTask::Kill();
 	mpBarImage->Kill();
+}
+
+// 表示するかどうかを設定
+void CSoldierGauge::SetShow(bool isShow)
+{
+	CTask::SetShow(isShow);
+
+	// ゲージの表示設定と同時に、
+	// ゲージで使用するUIのひょじ設定も変更する
+	mpBarImage->SetShow(isShow);
 }
 
 void CSoldierGauge::SetCenterRatio(const CVector2& ratio)
@@ -79,25 +90,25 @@ void CSoldierGauge::SetWorldPos(const CVector& worldPos)
 		return;
 	}
 
-	float distanceToPlayer = (worldPos - playerPos).Length();
-	if (distanceToPlayer < 100.0f)
-	{
-		SetShow(true);
-	}
-	else
-	{
-		SetShow(false);
-	}
-
 	// 求めたスクリーン座標を自身の座標に設定
 	mPosition = screenPos;
 
 	// 設定されたワールド座標とカメラの距離を求める
 	float dist = (worldPos - cam->Position()).Length();
 
-	// カメラから離れるごとにスケール値を小さくする
-	float ratio = Math::Clamp01((dist - SCALE_DIST_MIN) / (SCALE_DIST_MAX -SCALE_DIST_MIN));
-	mScale = Math::Lerp(SCALE_MIN, SCALE_MAX, ratio);
+	// カメラとの距離がある程度近い場合は
+	if (dist <= SCALE_DIST_MAX)
+	{
+		// カメラから離れるごとにスケール値を小さくする
+		float ratio = Math::Clamp01((dist - SCALE_DIST_MIN) / (SCALE_DIST_MAX - SCALE_DIST_MIN));
+		mScale = Math::Lerp(SCALE_MIN, SCALE_MAX, ratio);
+		SetShow(true);
+	}
+	// カメラとの距離が遠い場合は、非表示
+	else
+	{
+		SetShow(false);
+	}
 }
 
 // 更新処理
@@ -131,8 +142,6 @@ void CSoldierGauge::Update()
 	else color = CColor(0.0f, 1.0f, 0.0f);
 	// ゲージに色を設定
 	mpBarImage->SetColor(color);
-
-	mpBarImage->SetShow(IsShow());
 }
 
 // 最大値

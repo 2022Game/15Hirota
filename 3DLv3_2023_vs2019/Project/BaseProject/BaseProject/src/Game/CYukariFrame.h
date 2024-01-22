@@ -22,6 +22,9 @@ public:
 	// フレームを削除
 	void Kill() override;
 
+	// 表示するかどうか設定
+	void SetShow(bool isShow) override;
+
 	// 中心位置の割合を設定
 	void SetCenterRatio(const CVector2& ratio);
 

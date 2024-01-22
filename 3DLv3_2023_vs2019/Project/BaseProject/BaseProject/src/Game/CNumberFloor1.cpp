@@ -8,17 +8,18 @@
 #define WAIT_TIME 3.0f
 
 // コンストラクタ
-CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale,
+CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
 	:CRideableObject(ETaskPriority::eNumberFalling)
 	, mState(EState::Idle)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
 	, mStateStep(0)
+	, mSwitchCount(0)
+	, mFallingSwitch(0)
 	, mFadeTime(0.0f)
 	, mWaitTime(0.0f)
 	, mElapsedTime(0.0f)
-	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mCase0End(false)
 	, mCase1End(false)
@@ -42,6 +43,7 @@ CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale,
 
 	Position(pos);
 	Scale(scale);
+	Rotate(rot);
 
 	mStateStep = 0;
 }
@@ -89,7 +91,8 @@ void CNumberFloor1::SetStartPosition(const CVector& pos)
 void CNumberFloor1::ChangeState(EState state)
 {
 	mState = state;
-	/*mStateStep = 0;*/
+	mStateStep = 0;
+	mFallingSwitch = 0;
 }
 
 // 待機状態の処理
@@ -100,20 +103,16 @@ void CNumberFloor1::UpdateIdle()
 
 // 待機状態の処理
 void CNumberFloor1::UpdateWaiting()
-{
-	/*if (mIsCollision)
+{	
+	if (mIsCollision)
 	{
-		mStateStep = 0;
-		if (mCase0End)
-		{
-			mStateStep = 1;
-		}
-		if (mCase1End)
-		{
-			mStateStep = 2;
-		}
-	}*/
-	
+		SetColor(CColor(0.5f, 0.1f, 0.1f, 1.0f));
+	}
+	else
+	{
+		SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
+	}
+
 	switch (mStateStep)
 	{
 		// ステップ0 オブジェクト表示の変更
@@ -121,14 +120,14 @@ void CNumberFloor1::UpdateWaiting()
 	{
 		if (!mCase0End)
 		{
-			mpModel = CResourceManager::Get<CModel>("Number2");
-
 			// プレイヤーが離れたらIdleに遷移
 			if (!mIsCollision)
 			{
+				mpModel = CResourceManager::Get<CModel>("Number2");
+
 				mCase0End = true;
-				ChangeState(EState::Idle);
 				mStateStep++;
+				ChangeState(EState::Idle);
 			}
 			break;
 		}
@@ -143,11 +142,11 @@ void CNumberFloor1::UpdateWaiting()
 	{
 		if (!mCase1End && mCase0End)
 		{
-			mpModel = CResourceManager::Get<CModel>("Number1");
-			
 			// プレイヤーが離れたらIdleに遷移
 			if (!mIsCollision)
 			{
+				mpModel = CResourceManager::Get<CModel>("Number1");
+
 				ChangeState(EState::Idle);
 				mStateStep++;
 				mCase1End = true;
@@ -156,6 +155,7 @@ void CNumberFloor1::UpdateWaiting()
 		}
 		if (!mIsCollision && mCase0End && mCase1End)
 		{
+			SetColor(CColor(0.5f, 0.0f, 0.0f, 1.0f));
 			mStateStep++;
 		}
 		break;
@@ -163,18 +163,68 @@ void CNumberFloor1::UpdateWaiting()
 	// ステップ2 状態遷移
 	case 2:
 	{
+		mpModel = CResourceManager::Get<CModel>("Number0");
 		ChangeState(EState::Falling);
 	}
 	break;
 	}
-	CDebugPrint::Print("mCase0: %s\n", mCase0End ? "true" : "false");
-	CDebugPrint::Print("mCase1: %s\n", mCase1End ? "true" : "false");
 }
 
 // 落下状態の更新処理
 void CNumberFloor1::UpdateFalling()
 {
-	
+	switch (mFallingSwitch)
+	{
+		// 赤色で点滅させる
+	case 0:
+	{
+		static const float time = 2.0f;
+		if (mElapsedTime < time)
+		{
+			mElapsedTime += Time::DeltaTime();
+			float red = 0.5f + 0.5f * sin(2.0f * M_PI * mElapsedTime);
+			CColor color = CColor(red, 0.0f, 0.0f, 1.0f);
+			SetColor(color);
+		}
+		else
+		{
+			mSwitchCount++;
+			mElapsedTime = 0.0f;
+			if (mSwitchCount == 2)
+			{
+				mFallingSwitch++;
+			}
+		}
+	}
+		break;
+		// 落下させる
+	case 1:
+	{
+		static const float fall = 10.0f;
+		mMoveSpeed = CVector(0.0f, -fall * Time::DeltaTime(), 0.0f);
+		Position(Position() + mMoveSpeed);
+		if (Position().Y() <= -20.0f)
+		{
+			mFallingSwitch++;
+			Position(mStartPos);
+		}
+	}
+		break;
+		// 元の状態に戻す
+	case 2:
+	{
+		mpModel = CResourceManager::Get<CModel>("Number3");
+		SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
+		mCase0End = false;
+		mCase1End = false;
+		mStateStep = 0;
+		mSwitchCount = 0;
+		mElapsedTime = 0;
+		mFallingSwitch = 0;
+		ChangeState(EState::Idle);
+	}
+	break;
+	}
 }
 
 // 更新処理
@@ -201,8 +251,9 @@ void CNumberFloor1::Update()
 	mIsCollision = false;
 
 	
-	CDebugPrint::Print("mIsCollsion:%s\n", mIsCollision ? "true" : "false");
-	CDebugPrint::Print("mStateStep: %d\n", mStateStep);
+	/*CDebugPrint::Print("mCase0: %s\n", mCase0End ? "true" : "false");
+	CDebugPrint::Print("mCase1: %s\n", mCase1End ? "true" : "false");
+	CDebugPrint::Print("mIsCollsion:%s\n", mIsCollision ? "true" : "false");*/
 }
 
 // 描画処理

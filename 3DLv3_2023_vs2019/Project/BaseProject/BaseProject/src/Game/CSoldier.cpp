@@ -23,7 +23,7 @@
 // 移動速度
 #define MOVE_SPEED 0.7f
 // 自動移動速度
-#define MOVE_AUTOMATIC_SPEED 30.0f
+#define MOVE_AUTOMATIC_SPEED 50.0f
 // ジャンプ速度
 #define JUMP_SPEED 1.5f
 // 重力加速度
@@ -85,12 +85,12 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 	{ "Character\\Gas mask soldier\\anim\\Rifle_walk_79.x",							true,	 79.0f	},	// 移動
 	{ "Character\\Gas mask soldier\\anim\\Alert_83.x",								true,	 83.0f	},	// 警戒
 	{ "Character\\Gas mask soldier\\anim\\Rifle_1shot_71.x",						true,	 71.0f	},	// プレイヤー発見時攻撃
-	{ "Character\\Gas mask soldier\\anim\\Right foot kick_121.x",				false,	121.0f	},		// 格闘
+	{ "Character\\Gas mask soldier\\anim\\Right foot kick_121.x",				false,		121.0f	},	// 格闘
 	{ "Character\\Gas mask soldier\\anim\\Reload_199.x",							true,	 99.0f	},	// リロード
-	{ "Character\\Gas mask soldier\\anim\\Rilfle_Aim_to_Dwon._91.x",			false,	 91.0f	},		// エイム解除
-	{ "Character\\Gas mask soldier\\anim\\Hit_27.x",							false,	 27.0f	},		// Hit
-	{ "Character\\Gas mask soldier\\anim\\Death_Fall down1_157.x",				false,	157.0f	},		// 死亡
-	{ "Character\\Gas mask soldier\\anim\\BackStep_101.x",						false,	101.0f	},		// バックステップ
+	{ "Character\\Gas mask soldier\\anim\\Rilfle_Aim_to_Dwon._91.x",			false,		91.0f	},	// エイム解除
+	{ "Character\\Gas mask soldier\\anim\\Hit_27.x",							false,		27.0f	},	// Hit
+	{ "Character\\Gas mask soldier\\anim\\Death_Fall down1_157.x",				false,		157.0f	},	// 死亡
+	{ "Character\\Gas mask soldier\\anim\\BackStep_101.x",						false,		101.0f	},	// バックステップ
 
 };
 
@@ -209,7 +209,6 @@ CSoldier::CSoldier()
 	mpGun->AttachMtx(gun);
 
 	mKickTimeEnd = false;
-	mDiscovery = false;
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -355,12 +354,7 @@ void CSoldier::ChangeDerection()
 // フレームとHPゲージの表示の確認をする処理
 void CSoldier::UpdateGaugeAndFrame()
 {
-	if (mpExclamationMark && mDiscovery)
-	{
-		mpGauge->SetShow(false);
-		mpFrame->SetShow(false);
-	}
-	else
+	if (!mDiscovery)
 	{
 		// HPゲージの座標を更新 (敵の座標の少し上の座標)
 		CVector gaugePos = Position() + CVector(0.0f, 25.0f, 0.0f);
@@ -368,17 +362,21 @@ void CSoldier::UpdateGaugeAndFrame()
 		CVector framePos = Position() + CVector(0.0f, 25.0f, 0.0f);
 		mpFrame->SetWorldPos(framePos);
 	}
+	else
+	{
+		mpGauge->SetShow(false);
+		mpFrame->SetShow(false);
+	}
 }
 
 // ビックリマークの表示の確認をする処理
 void CSoldier::UpdateExclamation()
 {
-	if (mDiscovery && !mDiscoveryEnd)
+	if (mDiscovery)
 	{
 		// ビックリマーク画像の座標を更新
 		CVector exclamationMardPos = Position() + CVector(0.0f, 25.0f, 0.0f);
 		mpExclamationMark->SetWorldPos(exclamationMardPos);
-		mpExclamationMark->SetShow(true);
 	}
 	else
 	{
@@ -593,13 +591,15 @@ void CSoldier::UpdateDiscovery()
 	{
 		if (IsFoundPlayer())
 		{
+			mDiscovery = false;
 			mDiscoveryEnd = true;
 			ChangeState(EState::eChase);
 		}
 		else
 		{
-			ChangeState(EState::eAimDwon);
+			mDiscovery = false;
 			mDiscoveryTime = 0.0f;
+			ChangeState(EState::eAimDwon);
 		}
 	}
 	//CDebugPrint::Print("discovery:%f\n", mDiscoveryTime);
@@ -900,7 +900,7 @@ void CSoldier::Update()
 			mDiscoveryTimeEnd = 0.0f;
 		}
 	}
-	//CDebugPrint::Print("discoveryTimeEnd:%f\n", mDiscoveryTimeEnd);
+	CDebugPrint::Print("discoveryTimeEnd:%f\n", mDiscoveryTimeEnd);
 
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)

@@ -15,6 +15,9 @@ public:
 	// ビックリマークを削除
 	void Kill() override;
 
+	// 表示するかどうか設定
+	void SetShow(bool isShow) override;
+
 	// 中心位置を設定
 	void SetCeneterRatio(const CVector2& ratio);
 

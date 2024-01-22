@@ -20,7 +20,6 @@ void CApplication::Start()
 	// デバッグカメラを作成
 	CDebugCamera::DebugCamera();
 #endif
-
 	// フェードクラスを作成
 	CFade::Instance();
 	// ゲームポーズクラスを作成
@@ -33,8 +32,7 @@ void CApplication::Start()
 	CBGMManager::Instance();
 
 #if _DEBUG
-	// 最初のシーンを読み込み
-	CSoundManager::Instance();
+	// デバッグモードでは、ブートメニューを最初に開く
 	CSceneManager::Instance()->LoadScene(EScene::eBootMenu);
 #else
 	// リリースモードでは、タイトル画面を最初に開く
@@ -61,9 +59,6 @@ void CApplication::Update()
 	// 衝突処理
 	CCollisionManager::Instance()->CollisionAll();
 
-	// サウンドの更新
-	CSoundManager::Instance()->Update();
-
 	// シーンの更新
 	CSceneManager::Instance()->Update();
 
@@ -71,4 +66,7 @@ void CApplication::Update()
 	CTaskManager::Instance()->Render();
 	// コライダの描画
 	CCollisionManager::Instance()->Render();
+
+	// サウンドの更新
+	CSoundManager::Instance()->Update();
 }

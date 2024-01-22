@@ -57,6 +57,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("Number3",				"Field\\Object\\number3.obj");				// 三番目の床ブロック
 	CResourceManager::Load<CModel>("Number2",				"Field\\Object\\number2.obj");				// 二番目の床ブロック
 	CResourceManager::Load<CModel>("Number1",				"Field\\Object\\number1.obj");				// 一番目の床ブロック
+	CResourceManager::Load<CModel>("Number0",				"Field\\Object\\number0.obj");				// 零番目の床
 
 
 	// キャラクター関連
@@ -64,6 +65,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModelX>("Soldier",				"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
 	//CResourceManager::Load<CModelX>("UnityChan",			"Character\\UnityChan\\unitychan.x");						// ユニティちゃん
 	CResourceManager::Load<CModelX>("Yukari",				"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
+	CResourceManager::Load<CModelX>("Vanguard",				"Character\\Vanguard\\Vanguard.x");							// ヴァンガード
 
 
 	// アイテム関連
