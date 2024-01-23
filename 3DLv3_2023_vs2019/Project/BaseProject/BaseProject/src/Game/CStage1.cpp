@@ -17,6 +17,7 @@
 #include "CHatenaBlock.h"
 #include "CRengaBlock.h"
 #include "CNumberFloor1.h"
+#include "CVanguard.h"
 
 
 // コンストラクタ
@@ -63,6 +64,11 @@ void CStage1::Load()
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(field->GetWallCol());
 	AddTask(player);
+
+	CVanguard* van = new CVanguard();
+	van->Scale(1.3f, 1.3f, 1.3f);
+	van->Position(-100.0f, 150, -150);
+	AddTask(van);
 
 
 	// 回数制限モデル
@@ -170,7 +176,7 @@ void CStage1::Load()
 
 	//// 敵(ガスマスク兵士) ///////////////////////////////////////////
 
-	CSoldier* sol1 = new CSoldier();
+	/*CSoldier* sol1 = new CSoldier();
 	sol1->Scale(1.0f, 1.0f, 1.0f);
 	sol1->Position(-100.0f, 150, -150);
 	AddTask(sol1);
@@ -188,7 +194,7 @@ void CStage1::Load()
 	CSoldier* sol4 = new CSoldier();
 	sol4->Scale(1.0f, 1.0f, 1.0f);
 	sol4->Position(0.0f, 150.0f, -500.0f);
-	AddTask(sol4);
+	AddTask(sol4);*/
 
 	/*CSoldier* sol5 = new CSoldier();
 	sol5->Scale(1.0f, 1.0f, 1.0f);
