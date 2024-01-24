@@ -97,7 +97,7 @@ const CVanguard::AnimData CVanguard::ANIM_DATA[] =
 	{"Character\\Vanguard\\anim\\Vanguard_Sword Draw_1_46.x",			false,		 46.0f  },	// 武器を取り出す1
 	{"Character\\Vanguard\\anim\\Vanguard_Sword Quick Draw_1_75.x",		false,		 75.0f  },	// 武器を取り出す2
 	{"Character\\Vanguard\\anim\\Vanguard_Sword Back Drawn_2_101.x",	false,		101.0f	},	// 武器後ろから取り出す
-	{"Character\\Vanguard\\anim\\Vanguard_Rolling_1_108.x",				false,		108.0f	},	// 回避行動
+	{"Character\\Vanguard\\anim\\Vanguard_Rolling_1_108.x",				false,		 95.0f	},	// 回避行動
 	{"Character\\Vanguard\\anim\\Vanguard_Hit Lean Back_1_43.x",		false,		 43.0f	},	// 微ダメージ1
 	{"Character\\Vanguard\\anim\\Vanguard_Hit Slight_1_63.x",			false,		 63.0f	},	// 微ダメージ2
 	{"Character\\Vanguard\\anim\\Vanguard_Hit Slight_2_96.x",			false,		 96.0f	},	// 微ダメージ3
@@ -756,7 +756,7 @@ void CVanguard::UpdateRolling()
 	CVector vp = player->Position() - Position();
 	float distancePlayer = vp.Length();
 	vp.Y(0.0f);
-	mTargetDir = vp.Normalized();
+	CVector targetDir = vp.Normalized();  // これは回避中に向くべき方向
 
 	// バックステップする距離
 	const float backStepDistance = 0.1f;
@@ -768,19 +768,22 @@ void CVanguard::UpdateRolling()
 	// 一定の距離だけバックステップ
 	Position(Position() - toPlayer * backStepDistance);
 
-	// ローリング中は向きを変更しないようにする
+	// ローリングが終了したらプレイヤーの方を向く
 	if (IsAnimationFinished())
 	{
-		// ローリングが終了したらプレイヤーの方を向く
+		// プレイヤーの方向を取得
 		CVector newFacingDirection = (player->Position() - Position()).Normalized();
 		// Y軸方向は変更しないようにする
 		newFacingDirection.Y(0.0f);
 
-		// 向きを変更
-		SetFacingDirection(newFacingDirection);
+		// 向きを直接更新
+		targetDir = newFacingDirection;
 
 		ChangeState(EState::eChase);
 	}
+
+	// 実際の向きを更新
+	mTargetDir = targetDir;
 }
 
 //// プレイヤーまでのベクトルを求める
