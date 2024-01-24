@@ -146,9 +146,9 @@ private:
 	// クリア終了
 	void UpdateClearEnd();
 	// 死亡
-	void UpdateDeth();
+	void UpdateDeath();
 	// 死亡処理終了
-	void UpdateDethEnd();
+	void UpdateDeathEnd();
 	// 再起
 	void UpdateReStart();
 	// 敵の攻撃Hit
@@ -175,8 +175,8 @@ private:
 		eDashEnd,			// ダッシュ終了
 		eClear,				// クリア状態
 		eClearEnd,			// クリア終了
-		eDeth,				// 死亡
-		eDethEnd,			// 死亡終了
+		eDeath,				// 死亡
+		eDeathEnd,			// 死亡終了
 		eReStart,			// 再起
 		eHit,				// ダメージヒット
 		eHitBullet,			// 敵の弾ヒット
@@ -211,7 +211,7 @@ private:
 		eRotate,		// 回避
 		eGuts,			// ガッツポーズ
 		eHit,			// 敵の攻撃Hit
-		eDeth,			// 死亡
+		eDeath,			// 死亡
 		eHitJ,			// 敵の弾Hit
 
 		Num

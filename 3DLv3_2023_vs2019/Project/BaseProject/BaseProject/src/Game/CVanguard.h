@@ -112,22 +112,22 @@ private:
 	void UpdateIdle();
 	// 攻撃
 	void UpdateAttack();
-	//// 攻撃終了待ち
-	//void UpdateAttackWait();
+	// 攻撃終了待ち
+	void UpdateAttackWait();
 	//// ジャンプ開始
 	//void UpdateJumpStart();
 	//// ジャンプ中
 	//void UpdateJump();
 	//// ジャンプ終了
 	//void UpdateJumpEnd();
-	//// プレイヤー発見
-	//void UpdateDiscovery();
-	//// 追跡
-	//void UpdateChase();
-	//// キック
-	//void UpdateKick();
-	//// キック終了
-	//void UpdateKickWait();
+	// プレイヤー発見
+	void UpdateDiscovery();
+	// 追跡
+	void UpdateChase();
+	// キック
+	void UpdateKick();
+	// キック終了
+	void UpdateKickWait();
 	//// エイム解除
 	//void UpdateDisarmament();
 	//// プレイヤーの攻撃Hit
@@ -136,10 +136,10 @@ private:
 	//void UpdateDeth();
 	//// 死亡処理終了
 	//void UpdateDethEnd();
-	//// 徘徊処理
-	//void UpdateWander();
-	//// バックステップ
-	//void UpdateBackStep();
+	// 徘徊処理
+	void UpdateWander();
+	// 回避行動
+	void UpdateRolling();
 
 	// 状態
 	enum class EState
@@ -159,7 +159,7 @@ private:
 		eDeth,			// 死亡
 		eDethEnd,		// 死亡終了
 		eWander,		// 徘徊処理
-		eBackStep,		// バックステップ
+		eRolling,		// バックステップ
 		eJumpStart,		// ジャンプ開始
 		eJump,			// ジャンプ中
 		eJumpEnd,		// ジャンプ終了
@@ -181,19 +181,47 @@ private:
 		None = -1,
 
 		eTpose,				// Tポーズ
-		eIdle,				// 待機状態1
-		eIdle1,				// 待機状態2
-		eMove1,				// 移動状態1
-		eMoveBack1,			// 後ろ移動1
-		eMoveShield1,		// 盾歩き1
-		eMoveBackShield1,	// 盾後ろ歩き1
-		eDash1,				// 走る1
-		eAttackSpin,		// スピン攻撃1
-		eAAttackKick,		// キック攻撃1
-		eGutsPose,			// ガッツポーズ1
-		eJumpStart,			// ジャンプ開始
-		eJump,				// ジャンプ中
-		eJumpEnd,			// ジャンプ終了
+		eIdle1,				// 待機状態1
+		eIdle2,				// 待機状態2
+		eWalk1,				// 移動状態1
+		//eWalkBack1,			// 後ろ移動1
+		eWalkMutant,		// 怪物歩き
+		eWalkWeapon,		// 武器歩き
+		eWalkShield1,		// 盾歩き
+		eWalkBackShield1,	// 盾後ろ歩き1
+		eWalkBackShield2,	// 盾後ろ歩き2
+		eDash,				
+		eWalkBrisk,			// 小走り
+		eRunShield,			// 盾走り
+		eJump,				// ジャンプ
+		eRunDashJump,		// 走りジャンプ
+		eDashJump,			// ダッシュジャンプ
+		eStandUp,			// 立ち上がる
+		eIdleWeapon,		// 武器持ち待機
+		eAttackSpin1,		// スピン攻撃1
+		eAttackSpin2,		// スピン攻撃2
+		eAttackSwing,		// 振り上げ攻撃
+		eAttacks3,			// 3連攻撃
+		eAttackKick,		// 右足キック
+		eAttackJump1,		// ジャンプ攻撃1
+		eAttackJump2,		// ジャンプ攻撃2
+		eSwordSheathing1,	// 武器を後ろにしまう1
+		eSwordSheathing2,	// 武器を後ろにしまう2
+		eShield,			// 盾構え
+		eSwordGuard,		// 武器防御
+		eSwordDrawn1,		// 武器を取り出す
+		eSwordDrawn2,		// 武器を取り出す2
+		eSwordBackDrawn,	// 武器を後ろから取り出す
+		eRolling,			// 回避行動
+		eHitSlight1,		// 微ダメージ1
+		eHitSlight2,		// 微ダメージ2
+		eHitSlight3,		// 微ダメージ3
+		eGutsPose1,			// ガッツポーズ1
+		eGutsPose2,			// ガッツポーズ2
+		eLoseSight,			// 見失い状態
+		ePointing,			// 指さし
+		eDeath,				// 死亡
+
 
 		Num
 	};

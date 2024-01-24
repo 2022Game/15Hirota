@@ -72,7 +72,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	71.0f	},		// ‰ñ”ğ
 	{ "Character\\Monster1\\anim\\Guts pose_325.x",				false,	325.0f	},		// ƒKƒbƒcƒ|[ƒY
 	{ "Character\\Monster1\\anim\\Hit_63.x",					false,	63.0f	},		// “G‚ÌUŒ‚Hit
-	{ "Character\\Monster1\\anim\\Deth_276.x",					false,	276.0f	},		// €–SHit_107
+	{ "Character\\Monster1\\anim\\Death_276.x",					false,	276.0f	},		// €–SHit_107
 	{ "Character\\Monster1\\anim\\Hit_107.x",					false,	107.0f	},		// “G‚Ì’eHit
 
 };
@@ -225,7 +225,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					else
 					{
 						damageObject = true;
-						ChangeState(EState::eDeth);
+						ChangeState(EState::eDeath);
 					}
 				}
 				mpRideObject = other->Owner();
@@ -341,7 +341,7 @@ void CPlayer::TakeDamage(int damage)
 	// HP‚ª0‚É‚È‚Á‚½‚ç
 	if (mCharaStatus.hp <= 0)
 	{
-		ChangeState(EState::eDeth);
+		ChangeState(EState::eDeath);
 	}
 }
 
@@ -836,20 +836,20 @@ void CPlayer::UpdateClearEnd()
 }
 
 // €–S
-void CPlayer::UpdateDeth()
+void CPlayer::UpdateDeath()
 {
 	mpDamageCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
-	ChangeAnimation(EAnimType::eDeth);
+	ChangeAnimation(EAnimType::eDeath);
 	if (IsAnimationFinished())
 	{
-		ChangeState(EState::eDethEnd);
+		ChangeState(EState::eDeathEnd);
 	}
 }
 
 // €–Sˆ—I—¹
-void CPlayer::UpdateDethEnd()
+void CPlayer::UpdateDeathEnd()
 {
 	if (IsAnimationFinished())
 	{
@@ -912,7 +912,7 @@ void CPlayer::UpdateHit()
 			damageEnemy = false;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
-			ChangeState(EState::eDeth);
+			ChangeState(EState::eDeath);
 		}
 	}
 }
@@ -958,7 +958,7 @@ void CPlayer::UpdateHitBullet()
 			mElapsedTime = 0.0f;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
-			ChangeState(EState::eDeth);
+			ChangeState(EState::eDeath);
 		}
 	}
 
@@ -1183,12 +1183,12 @@ void CPlayer::Update()
 			UpdateClearEnd();
 			break;
 		// €–S
-		case EState::eDeth:
-			UpdateDeth();
+		case EState::eDeath:
+			UpdateDeath();
 			break;
 		// €–Sˆ—I—¹
-		case EState::eDethEnd:
-			UpdateDethEnd();
+		case EState::eDeathEnd:
+			UpdateDeathEnd();
 			break;
 		// Ä‹N
 		case EState::eReStart:
