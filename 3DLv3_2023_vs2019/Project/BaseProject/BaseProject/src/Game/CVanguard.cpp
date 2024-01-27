@@ -289,21 +289,33 @@ void CVanguard::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 			bool hit3 = mState != EState::eAttackSwing;
 			if (hit || hit1 || hit2 || hit3)
 			{
+				// プレイヤーのポインタが0以外の時
+				CPlayer* player = CPlayer::Instance();
+
+				// プレイヤーまでのベクトルを求める
+				CVector vp = player->Position() - Position();
+				float distancePlayer = vp.Length();
+				vp.Y(0.0f);
+				mTargetDir = vp.Normalized();
+
 				int hitRand = Math::Rand(0, 100);
 				CDebugPrint::Print("hit1:%d\n", hitRand);
-				if (hitRand >= 50)
+				if (hitRand >= 80)
 				{
 					int random = Math::Rand(0, 2);
 					if (random == 0)
 					{
+						mpDamageCol->SetEnable(false);
 						ChangeState(EState::eHitSlight1);
 					}
 					else if (random == 1)
 					{
+						mpDamageCol->SetEnable(false);
 						ChangeState(EState::eHitSlight2);
 					}
 					else if (random == 2)
 					{
+						mpDamageCol->SetEnable(false);
 						ChangeState(EState::eHitSlight3);
 					}
 				}
@@ -571,6 +583,7 @@ void CVanguard::UpdateDashEnd()
 // 回避行動
 void CVanguard::UpdateRolling()
 {
+	mpDamageCol->SetEnable(false);
 	mRollingEnd = true;
 	CDebugPrint::Print("mMoveVector :%f\n", mMoveVector.Z());
 	CDebugPrint::Print("mTargetDir :%f\n", mTargetDir.Z());
@@ -601,6 +614,15 @@ void CVanguard::UpdateRolling()
 	{
 		if (IsAnimationFinished())
 		{
+			// プレイヤーのポインタが0以外の時
+			CPlayer* player = CPlayer::Instance();
+
+			// プレイヤーまでのベクトルを求める
+			CVector vp = player->Position() - Position();
+			float distancePlayer = vp.Length();
+			vp.Y(0.0f);
+			mTargetDir = vp.Normalized();
+
 			ChangeState(EState::eChase);
 		}
 	}
@@ -728,6 +750,15 @@ void CVanguard::UpdateAttackSpin1()
 	mMoveSpeed.Z(0.0f);
 
 	ChangeAnimation(EAnimType::eAttackSpin1);
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
 	if (IsAnimationFinished())
 	{
 		mpAttackCol->SetEnable(true);
@@ -743,6 +774,15 @@ void CVanguard::UpdateAttackSpin2()
 	mMoveSpeed.Z(0.0f);
 
 	ChangeAnimation(EAnimType::eAttackSpin2);
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
 	if (IsAnimationFinished())
 	{
 		mpAttackCol->SetEnable(true);
@@ -758,6 +798,15 @@ void CVanguard::UpdateAttackSwing()
 	mMoveSpeed.Z(0.0f);
 
 	ChangeAnimation(EAnimType::eAttackSwing);
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
 	if (IsAnimationFinished())
 	{
 		mpAttackCol->SetEnable(true);
@@ -773,6 +822,15 @@ void CVanguard::UpdateAttacks3()
 	mMoveSpeed.Z(0.0f);
 
 	ChangeAnimation(EAnimType::eAttacks3);
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
 	if (IsAnimationFinished())
 	{
 		mpAttackCol->SetEnable(true);
@@ -912,7 +970,7 @@ void CVanguard::UpdateHitSlight1()
 		vp.Y(0.0f);
 		mTargetDir = vp.Normalized();
 
-		if (mCharaStatus.hp > 1)
+		if (mCharaStatus.hp >= 1)
 		{
 			mpDamageCol->SetEnable(true);
 			mDamage = false;
@@ -946,7 +1004,7 @@ void CVanguard::UpdateHitSlight2()
 		vp.Y(0.0f);
 		mTargetDir = vp.Normalized();
 
-		if (mCharaStatus.hp > 1)
+		if (mCharaStatus.hp >= 1)
 		{
 			if (IsAnimationFinished())
 			{
@@ -983,7 +1041,7 @@ void CVanguard::UpdateHitSlight3()
 		vp.Y(0.0f);
 		mTargetDir = vp.Normalized();
 
-		if (mCharaStatus.hp > 1)
+		if (mCharaStatus.hp >= 1)
 		{
 			if (IsAnimationFinished())
 			{
@@ -1201,6 +1259,7 @@ bool CVanguard::IsFoundPlayer() const
 // 更新
 void CVanguard::Update()
 {
+	mpDamageCol->SetEnable(true);
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
 
