@@ -148,7 +148,7 @@ CPlayer::CPlayer()
 		this, ELayer::ePlayer,
 		9.0f
 	);
-	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, ELayer::eInvincbleCol});
+	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, ELayer::eInvincbleCol, ELayer::eEnemy});
 	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 
 	// ダメージを受けるコライダーを作成
@@ -293,6 +293,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				TakeInvincible();
 			}
+		}
+		else if (other->Layer() == ELayer::eEnemy)
+		{
+			Position(Position() + hit.adjust);
 		}
 	}
 
@@ -615,8 +619,8 @@ void CPlayer::UpdateIdle()
 			{
 			}
 		}
-		// Q,Eキーで回避へ移行
-		else if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+		// CTRLキーで回避へ移行
+		else if (((CInput::PushKey(VK_CONTROL)) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
 		{
 			// 回避行動前にスタミナが0以下になるかどうかを確認
 			if (mCharaStatus.stamina - 50 >= 0) {
@@ -696,24 +700,21 @@ void CPlayer::UpdateAttackWait()
 	if (mAnimationFrame >= 10.0f)
 	{
 		// 攻撃終了待ち状態へ移行
-		// Q,Eキーで回避へ移行
-		if (((CInput::PushKey('Q') || CInput::PushKey('E')) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+		// CTRLキーで回避へ移行
+		if (((CInput::PushKey(VK_CONTROL)) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
 		{
 			// 回避行動前にスタミナが0以下になるかどうかを確認
-			if (mCharaStatus.stamina - 50 >= 0) {
-
+			if (mCharaStatus.stamina - 50 >= 0) 
+			{
 				ChangeState(EState::eRotate);
 				// スタミナが0以下にならない場合は回避行動を実行
 				mCharaStatus.stamina -= 50;
+				mpSword->AttackEnd();
 
 			}
 			else
 			{
 			}
-		}
-		if (mState == EState::eRotate)
-		{
-			
 		}
 
 		if (CInput::PushKey(VK_SPACE))
@@ -722,12 +723,18 @@ void CPlayer::UpdateAttackWait()
 			ChangeState(EState::eJumpStart);
 		}
 
-		// フレームが30まで行ったらAttackEndを呼び出す
+		// SE
 		if (!mIsPlayedSlashSE && GetAnimationFrame() >= 10.0f)
 		{
 			// 斬撃SEを再生
 			mpSlashSE->Play(1.0f, false, 0.0f);
 			mIsPlayedSlashSE = true;
+		}
+
+		if (GetAnimationFrame() >= 50.0f)
+		{
+			// 剣に攻撃終了を伝える
+			mpSword->AttackEnd();
 		}
 	}
 	else
@@ -740,9 +747,6 @@ void CPlayer::UpdateAttackWait()
 		// 待機状態へ移行
 		ChangeState(EState::eIdle);
 		ChangeAnimation(EAnimType::eIdle);
-
-		// 剣に攻撃終了を伝える
-		mpSword->AttackEnd();
 	}
 }
 
@@ -909,7 +913,6 @@ void CPlayer::UpdateHit()
 		}
 		else if (mCharaStatus.hp <= 0)
 		{
-			damageEnemy = false;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eDeath);
@@ -948,6 +951,7 @@ void CPlayer::UpdateHitBullet()
 		if (mCharaStatus.hp > 0)
 		{
 			mIsPlayedHitDamageSE = false;
+			damageEnemy = true;
 			mElapsedTime = 0.0f;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);

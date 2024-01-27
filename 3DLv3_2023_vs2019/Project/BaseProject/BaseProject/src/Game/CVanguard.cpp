@@ -13,9 +13,9 @@
 // ヴァンガードの頭上
 #define VANGUARD_HEIGHT 8.0f
 // 移動速度
-#define MOVE_SPEED 0.9f
+#define MOVE_SPEED 0.8f
 // 自動移動速度
-#define MOVE_AUTOMATIC_SPEED 50.0f
+#define MOVE_AUTOMATIC_SPEED 40.0f
 // ジャンプ速度
 #define JUMP_SPEED 1.5f
 // 重力加速度
@@ -51,6 +51,8 @@
 #define DISCOVERY 2.0f
 // プレイヤーを発見した後の待ち時間
 #define DISCOVERY_END 40.0f
+// 回避の待ち時間
+#define ROLLING_END 30.0f
 
 // CVanguardのインスタンス
 CVanguard* CVanguard::spInstance = nullptr;
@@ -97,7 +99,7 @@ const CVanguard::AnimData CVanguard::ANIM_DATA[] =
 	{"Character\\Vanguard\\anim\\Vanguard_Sword Draw_1_46.x",			false,		 46.0f  },	// 武器を取り出す1
 	{"Character\\Vanguard\\anim\\Vanguard_Sword Quick Draw_1_75.x",		false,		 75.0f  },	// 武器を取り出す2
 	{"Character\\Vanguard\\anim\\Vanguard_Sword Back Drawn_2_101.x",	false,		101.0f	},	// 武器後ろから取り出す
-	{"Character\\Vanguard\\anim\\Vanguard_Rolling_1_108.x",				false,		 95.0f	},	// 回避行動
+	{"Character\\Vanguard\\anim\\Vanguard_Rolling_1_86.x",				false,		86.0f	},	// 回避行動
 	{"Character\\Vanguard\\anim\\Vanguard_Hit Lean Back_1_43.x",		false,		 43.0f	},	// 微ダメージ1
 	{"Character\\Vanguard\\anim\\Vanguard_Hit Slight_1_63.x",			false,		 63.0f	},	// 微ダメージ2
 	{"Character\\Vanguard\\anim\\Vanguard_Hit Slight_2_96.x",			false,		 96.0f	},	// 微ダメージ3
@@ -118,7 +120,9 @@ CVanguard::CVanguard()
 	, mBackStepTime(0.0f)
 	, mDiscoveryTime(0.0f)
 	, mDiscoveryTime_End(0.0f)
+	, mTimeRolling(0.0f)
 	, mTargetDir(0.0f, 0.0f, 1.0f)
+	, mMoveVector(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mInitialPosition(0.0f, 0.0f, 0.0f)
 	, mTimeToChange(Math::Rand(1.0f, 5.0f))
@@ -126,6 +130,8 @@ CVanguard::CVanguard()
 	, mKickTimeEnd(false)
 	, mDiscovery(false)
 	, mDiscoveryEnd(false)
+	, mRollingEnd(false)
+	, mDamage(false)
 	, mpRideObject(nullptr)
 {
 	// インスタンスの設定
@@ -173,7 +179,7 @@ CVanguard::CVanguard()
 		this, ELayer::eEnemy,
 		7.0f
 	);
-	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eFieldEnemyWall });
+	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eFieldEnemyWall, ELayer::ePlayer });
 	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 
 	// ダメージを受けるコライダー
@@ -266,6 +272,10 @@ void CVanguard::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 		{
 			Position(Position() + hit.adjust);
 		}
+		else if (other->Layer() == ELayer::ePlayer)
+		{
+			Position(Position() + hit.adjust);
+		}
 	}
 
 	// ダメージを受けるコライダー
@@ -273,9 +283,30 @@ void CVanguard::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 	{
 		if (other->Layer() == ELayer::eAttackCol)
 		{
-			if (mState != EState::eKick)
+			bool hit = mState != EState::eAttacks3;
+			bool hit1 = mState != EState::eAttackSpin1;
+			bool hit2 = mState != EState::eAttackSpin2;
+			bool hit3 = mState != EState::eAttackSwing;
+			if (hit || hit1 || hit2 || hit3)
 			{
-				ChangeState(EState::eHit);
+				int hitRand = Math::Rand(0, 100);
+				CDebugPrint::Print("hit1:%d\n", hitRand);
+				if (hitRand >= 50)
+				{
+					int random = Math::Rand(0, 2);
+					if (random == 0)
+					{
+						ChangeState(EState::eHitSlight1);
+					}
+					else if (random == 1)
+					{
+						ChangeState(EState::eHitSlight2);
+					}
+					else if (random == 2)
+					{
+						ChangeState(EState::eHitSlight3);
+					}
+				}
 			}
 		}
 
@@ -305,7 +336,7 @@ void CVanguard::TakeDamage(int damage)
 	// HPが0になったら
 	if (mCharaStatus.hp <= 0)
 	{
-		ChangeState(EState::eDeth);
+		ChangeState(EState::eDeath);
 	}
 }
 
@@ -439,6 +470,7 @@ void CVanguard::ChangeAnimation(EAnimType type)
 void CVanguard::UpdateIdle()
 {
 	mDiscovery = false;
+	mDamage = false;
 	mpAttackCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
@@ -462,23 +494,169 @@ void CVanguard::UpdateIdle()
 		if (random >= 0 && random <= 5 && IsAnimationFinished())
 		{
 			ChangeAnimation(EAnimType::eIdle1);
+			if (IsAnimationFinished())
+			{
+				// 確率で徘徊状態に移行
+				if (ShouldTransition())
+				{
+					ChangeState(EState::eWander);
+				}
+			}
 		}
 		else if (random >= 6 && random <= 10 && IsAnimationFinished())
 		{
-			ChangeAnimation(EAnimType::eAttackSpin1);
+			ChangeAnimation(EAnimType::eIdle2);
+			if (IsAnimationFinished())
+			{
+				// 確率で徘徊状態に移行
+				if (ShouldTransition())
+				{
+					ChangeState(EState::eWander);
+				}
+			}
 		}
-
-		//// 確率で徘徊状態に移行
-		//if (ShouldTransition())
-		//{
-		//	ChangeState(EState::eWander);
-		//}
 	}
 }
 
+// 移動状態
+void CVanguard::UpdateWalk()
+{
+}
+
+// 怪物歩き状態
+void CVanguard::UpdateWalkMutant()
+{
+}
+
+// 移動状態(武器持ち)
+void CVanguard::UpdateWalkWeapon()
+{
+}
+
+// 移動状態(盾持ち)
+void CVanguard::UpdateWalkShield()
+{
+}
+
+// 移動状態(盾持ち後ろ歩き1)
+void CVanguard::UpdateWalkBackShield1()
+{
+}
+
+// 移動状態(盾持ち後ろ歩き2)
+void CVanguard::UpdateWalkBackShield2()
+{
+}
+
+// ダッシュ状態
+void CVanguard::UpdateDash()
+{
+}
+
+// 小走り状態
+void CVanguard::UpdateDashBrisk()
+{
+}
+
+// 盾走り状態
+void CVanguard::UpdateDashShield()
+{
+}
+
+// ダッシュ終了
+void CVanguard::UpdateDashEnd()
+{
+}
+
+// 回避行動
+void CVanguard::UpdateRolling()
+{
+	mRollingEnd = true;
+	CDebugPrint::Print("mMoveVector :%f\n", mMoveVector.Z());
+	CDebugPrint::Print("mTargetDir :%f\n", mTargetDir.Z());
+	ChangeAnimation(EAnimType::eRolling);
+
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	// mMoveSpeedは敵の速度ベクトル、mMoveSpeed.X()がX軸方向の速度
+	// 適切な速度を設定し、mMoveSpeedをmTargetDirにスケーリングして移動。
+	// 速度を設定
+	float moveSpeed = 20.0f;
+
+	// mTargetDir に速度を掛けて移動ベクトルを得る
+	CVector moveVector = -mTargetDir * moveSpeed;
+
+	// deltaTime を考慮して移動量を計算
+	moveVector *= Time::DeltaTime();
+
+	// 現在の座標を更新
+	Position(Position() + moveVector + mMoveSpeed);
+	// 移動ベクトルを正規化して向きを取得
+	CVector forward = moveVector.Normalized();
+
+	// CSoldierを移動方向へ向ける
+	Rotation(CQuaternion::LookRotation(forward));
+	if (GetAnimationFrame() >= 50.0f)
+	{
+		if (IsAnimationFinished())
+		{
+			ChangeState(EState::eChase);
+		}
+	}
+}
+
+// ジャンプ開始状態
+void CVanguard::UpdateJumpStart()
+{
+}
+
+// ジャンプ中
+void CVanguard::UpdateJump()
+{
+}
+
+// 走りジャンプ開始状態
+void CVanguard::UpdateRunJumpStart()
+{
+}
+
+// 走りジャンプ中状態
+void CVanguard::UpdateRunJump()
+{
+}
+
+// ダッシュジャンプ開始状態
+void CVanguard::UpdateRunDashJumpStart()
+{
+}
+
+// ダッシュジャンプ中状態
+void CVanguard::UpdateRunDashJump()
+{
+}
+
+// ジャンプ終了
+void CVanguard::UpdateJumpEnd()
+{
+}
+
+// 立ち上がり状態
+void CVanguard::UpdateStandUp()
+{
+}
+
+// 武器持ち待機状態
+void CVanguard::UpdateIdleWeapon()
+{
+}
+
+// 攻撃状態
 void CVanguard::UpdateAttack()
 {
 	mDiscovery = false;
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
 
 	// プレイヤーのポインタが0以外の時
 	CPlayer* player = CPlayer::Instance();
@@ -491,119 +669,119 @@ void CVanguard::UpdateAttack()
 
 	if (distancePlayer <= ATTACK_RANGE)
 	{
-		if (distancePlayer <= BACKSTEP_RANGE)
+
+		CPlayer* player = CPlayer::Instance();
+		CVector playerPos = player->Position();
+		playerPos.Y(Position().Y());
+
+		CVector toPlayer = (playerPos - Position()).Normalized();
+		mMoveSpeed += toPlayer * 0.25;
+		mTargetDir = toPlayer;
+
+
+		if (distancePlayer <= BACKSTEP_RANGE && !mRollingEnd)
 		{
 			ChangeState(EState::eRolling);
 			return;
 		}
 		else if (distancePlayer <= ATTACK_RANGE_KICK && !mKickTimeEnd)
 		{
-			ChangeState(EState::eKick);
+			ChangeState(EState::eAttackKick);
 			mKickTimeEnd = true;
 			return;
 		}
-		ChangeAnimation(EAnimType::eAttackSpin1);
-	}
-	
-}
-// 攻撃終了待ち
-void CVanguard::UpdateAttackWait()
-{
-	ChangeAnimation(EAnimType::eSwordDrawn2);
-	if (IsAnimationFinished())
-	{
-		CPlayer* player = CPlayer::Instance();
-		float distanceToPlayer = (player->Position() - Position()).Length();
-
-		if (distanceToPlayer <= ATTACK_RANGE)
+		else if (distancePlayer <= 23.0f)
 		{
-			ChangeState(EState::eAttack);
-		}
-		else
-		{
-			ChangeState(EState::eAttackEnd);
-			mElapsedTime_End = 0.0f;
-			mDiscoveryTime = 0.0f;
-			mDiscovery = false;
-		}
-	}
-}
-
-// プレイヤー発見
-void CVanguard::UpdateDiscovery()
-{
-	mDiscovery = true;
-	mMoveSpeed.Y(0.0f);
-	mMoveSpeed.Z(0.0f);
-	ChangeAnimation(EAnimType::eWalkWeapon);
-
-	// プレイヤーまでのベクトルを求める
-	CPlayer* player = CPlayer::Instance();
-	CVector vp = player->Position() - Position();
-	float distancePlayer = vp.Length();
-	vp.Y(0.0f);
-	mTargetDir = vp.Normalized();
-
-	mDiscoveryTime += Time::DeltaTime();
-	if (mDiscoveryTime >= DISCOVERY)
-	{
-		if (IsFoundPlayer())
-		{
-			mDiscovery = false;
-			mDiscoveryEnd = true;
-			ChangeState(EState::eChase);
-		}
-		else
-		{
-			mDiscovery = false;
-			mDiscoveryTime = 0.0f;
-			ChangeState(EState::eAttackEnd);
-		}
-	}
-	//CDebugPrint::Print("discovery:%f\n", mDiscoveryTime);
-}
-
-// 追跡
-void CVanguard::UpdateChase()
-{
-	mDiscovery = false;
-	mMoveSpeed.X(0.0f);
-	mMoveSpeed.Z(0.0f);
-	if (!IsFoundPlayer())
-	{
-		ChangeAnimation(EAnimType::eLoseSight);
-		mElapsedTime_End += Time::DeltaTime();
-		//CDebugPrint::Print("TimeEnd%f\n", mElapsedTime_End);
-		if (mElapsedTime_End >= PLAYER_LOST)
-		{
-			ChangeState(EState::eAttackEnd);
-			mElapsedTime_End = 0.0f; // プレイヤーが視界から消えたら経過時間をリセット
+			int random = Math::Rand(0, 4);
+			if (random == 0)
+			{
+				ChangeState(EState::eAttacks3);
+			}
+			else if (random == 1)
+			{
+				ChangeState(EState::eAttackSpin1);
+			}
+			else if (random == 2)
+			{
+				ChangeState(EState::eAttackSpin2);
+			}
+			else if (random == 3)
+			{
+				ChangeState(EState::eAttackSwing);
+			}
 		}
 	}
 	else
 	{
+		ChangeState(EState::eChase);
 		mElapsedTime_End = 0.0f;
-		CPlayer* player = CPlayer::Instance();
-		CVector playerPos = player->Position();
-		playerPos.Y(Position().Y());
+		mDiscoveryTime = 0.0f;
+		mDiscovery = false;
+	}
+}
 
-		CVector toPlayer = (playerPos - Position()).Normalized();
-		mMoveSpeed += toPlayer * MOVE_SPEED;
-		mTargetDir = toPlayer;
+// スピン攻撃1
+void CVanguard::UpdateAttackSpin1()
+{
+	mDiscovery = false;
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
 
-		// プレイヤーとの距離が一定範囲以内であれば攻撃モードに切り替える
-		float distanceToPlayer = (player->Position() - Position()).Length();
-		ChangeAnimation(EAnimType::eWalkWeapon);
+	ChangeAnimation(EAnimType::eAttackSpin1);
+	if (IsAnimationFinished())
+	{
+		mpAttackCol->SetEnable(true);
+		ChangeState(EState::eAttackEnd);
+	}
+}
 
-		if (distanceToPlayer <= ATTACK_RANGE)
-		{
-			ChangeState(EState::eAttack);
-		}
+// スピン攻撃2
+void CVanguard::UpdateAttackSpin2()
+{
+	mDiscovery = false;
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	ChangeAnimation(EAnimType::eAttackSpin2);
+	if (IsAnimationFinished())
+	{
+		mpAttackCol->SetEnable(true);
+		ChangeState(EState::eAttackEnd);
+	}
+}
+
+// 振り上げ攻撃
+void CVanguard::UpdateAttackSwing()
+{
+	mDiscovery = false;
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	ChangeAnimation(EAnimType::eAttackSwing);
+	if (IsAnimationFinished())
+	{
+		mpAttackCol->SetEnable(true);
+		ChangeState(EState::eAttackEnd);
+	}
+}
+
+// 3連攻撃
+void CVanguard::UpdateAttacks3()
+{
+	mDiscovery = false;
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	ChangeAnimation(EAnimType::eAttacks3);
+	if (IsAnimationFinished())
+	{
+		mpAttackCol->SetEnable(true);
+		ChangeState(EState::eAttackEnd);
 	}
 }
 
 // キック
-void CVanguard::UpdateKick()
+void CVanguard::UpdateAttackKick()
 {
 	// 攻撃するときは移動を停止
 	mMoveSpeed.X(0.0f);
@@ -622,92 +800,263 @@ void CVanguard::UpdateKick()
 	if (mAnimationFrame >= 45.0f)
 	{
 		mpAttackCol->SetEnable(true);
-		ChangeState(EState::eKickEnd);
+		ChangeState(EState::eAttackKickEnd);
 	}
 }
 
 // キック終了
-void CVanguard::UpdateKickWait()
+void CVanguard::UpdateAttackKickEnd()
 {
-	if (mAnimationFrame >= 70.0f)
+	mpAttackCol->SetEnable(false);
+	if (IsAnimationFinished())
 	{
-		mpAttackCol->SetEnable(false);
-		if (IsAnimationFinished())
-		{
-			ChangeState(EState::eChase);
-			ChangeAnimation(EAnimType::eIdle1);
-		}
-
+		ChangeState(EState::eChase);
 	}
 }
 
-//// 武装解除
-//void CVanguard::UpdateDisarmament()
-//{
-//	ChangeAnimation(EAnimType::);
-//	if (IsAnimationFinished())
-//	{
-//		ChangeState(EState::eIdle);
-//		mElapsedTime_End = 0.0f;
-//		mDiscovery = false;
-//	}
-//}
-//
-//// プレイヤーの攻撃を受けた時
-//void CVanguard::UpdateHit()
-//{
-//	// ダメージを受けた時は移動を停止
-//	mMoveSpeed.X(0.0f);
-//	mMoveSpeed.Z(0.0f);
-//
-//	ChangeAnimation(EAnimType::eHit);
-//	if (IsAnimationFinished())
-//	{
-//		// プレイヤーのポインタが0以外の時
-//		CPlayer* player = CPlayer::Instance();
-//
-//		// プレイヤーまでのベクトルを求める
-//		CVector vp = player->Position() - Position();
-//		float distancePlayer = vp.Length();
-//		vp.Y(0.0f);
-//		mTargetDir = vp.Normalized();
-//
-//		if (mCharaStatus.hp > 1)
-//		{
-//			ChangeState(EState::eChase);
-//		}
-//		else if (mCharaStatus.hp <= 0)
-//		{
-//			mpDamageCol->SetEnable(false);
-//			ChangeState(EState::eDeth);
-//		}
-//	}
-//}
-//
-//// 死亡
-//void CVanguard::UpdateDeth()
-//{
-//	mMoveSpeed.X(0.0f);
-//	mMoveSpeed.Z(0.0f);
-//	ChangeAnimation(EAnimType::eDeth);
-//	if (IsAnimationFinished())
-//	{
-//		ChangeState(EState::eDethEnd);
-//	}
-//}
-//
-//// 死亡処理終了
-//void CVanguard::UpdateDethEnd()
-//{
-//	if (IsAnimationFinished())
-//	{
-//		Kill();
-//	}
-//}
-//
+// ジャンプ攻撃1
+void CVanguard::UpdateAttackJump1()
+{
+}
+
+// ジャンプ攻撃2
+void CVanguard::UpdateAttackJump2()
+{
+}
+
+// 攻撃終了待ち
+void CVanguard::UpdateAttackEnd()
+{
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eChase);
+	}
+}
+
+// 武器を後ろにしまう1
+void CVanguard::UpdateSwordSheathing1()
+{
+	ChangeAnimation(EAnimType::eSwordSheathing1);
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eIdle);
+	}
+}
+
+// 武器を後ろにしまう2
+void CVanguard::UpdateSwordSheathing2()
+{
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eIdle);
+	}
+}
+
+// 盾構え
+void CVanguard::UpdateShield()
+{
+}
+
+// 武器防御
+void CVanguard::UpdateSwordGuard()
+{
+}
+
+// 武器を取り出す1
+void CVanguard::UpdateSwordDrawn1()
+{
+	ChangeAnimation(EAnimType::eSwordDrawn1);
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eChase);
+	}
+}
+
+// 武器を取り出す2
+void CVanguard::UpdateSwordDrawn2()
+{
+	ChangeAnimation(EAnimType::eSwordDrawn2);
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eChase);
+	}
+}
+
+// 武器を後ろから取り出す
+void CVanguard::UpdateSwordBackDrawn()
+{
+	ChangeAnimation(EAnimType::eSwordBackDrawn);
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eChase);
+	}
+}
+
+// 微ダメージ1
+void CVanguard::UpdateHitSlight1()
+{
+	// ダメージを受けた時は移動を停止
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	ChangeAnimation(EAnimType::eHitSlight1);
+
+	if (IsAnimationFinished())
+	{
+		// プレイヤーのポインタが0以外の時
+		CPlayer* player = CPlayer::Instance();
+
+		// プレイヤーまでのベクトルを求める
+		CVector vp = player->Position() - Position();
+		float distancePlayer = vp.Length();
+		vp.Y(0.0f);
+		mTargetDir = vp.Normalized();
+
+		if (mCharaStatus.hp > 1)
+		{
+			mpDamageCol->SetEnable(true);
+			mDamage = false;
+			ChangeState(EState::eChase);
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eDeath);
+		}
+	}
+}
+
+// 微ダメージ2
+void CVanguard::UpdateHitSlight2()
+{
+	// ダメージを受けた時は移動を停止
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	ChangeAnimation(EAnimType::eHitSlight2);
+
+	if (IsAnimationFinished())
+	{
+		// プレイヤーのポインタが0以外の時
+		CPlayer* player = CPlayer::Instance();
+
+		// プレイヤーまでのベクトルを求める
+		CVector vp = player->Position() - Position();
+		float distancePlayer = vp.Length();
+		vp.Y(0.0f);
+		mTargetDir = vp.Normalized();
+
+		if (mCharaStatus.hp > 1)
+		{
+			if (IsAnimationFinished())
+			{
+				mpDamageCol->SetEnable(true);
+				mDamage = false;
+				ChangeState(EState::eChase);
+			}
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eDeath);
+		}
+	}
+}
+
+// 微ダメージ3
+void CVanguard::UpdateHitSlight3()
+{
+	// ダメージを受けた時は移動を停止
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	ChangeAnimation(EAnimType::eHitSlight3);
+
+	if (IsAnimationFinished())
+	{
+		// プレイヤーのポインタが0以外の時
+		CPlayer* player = CPlayer::Instance();
+
+		// プレイヤーまでのベクトルを求める
+		CVector vp = player->Position() - Position();
+		float distancePlayer = vp.Length();
+		vp.Y(0.0f);
+		mTargetDir = vp.Normalized();
+
+		if (mCharaStatus.hp > 1)
+		{
+			if (IsAnimationFinished())
+			{
+				mpDamageCol->SetEnable(true);
+				mDamage = false;
+				ChangeState(EState::eChase);
+			}
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eDeath);
+		}
+	}
+}
+
+// ガッツポーズ1
+void CVanguard::UpdateGutsPose1()
+{
+}
+
+// ガッツポーズ2
+void CVanguard::UpdateGutsPose2()
+{
+}
+
+// プレイヤー発見
+void CVanguard::UpdateDiscovery()
+{
+	mDiscovery = true;
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	ChangeState(EState::ePointing);
+}
+
+// 追跡
+void CVanguard::UpdateChase()
+{
+	mDiscovery = false;
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	if (!IsFoundPlayer())
+	{
+		ChangeState(EState::eLoseSight);
+	}
+	else
+	{
+		ChangeAnimation(EAnimType::eDashBrisk);
+		mElapsedTime_End = 0.0f;
+		CPlayer* player = CPlayer::Instance();
+		CVector playerPos = player->Position();
+		playerPos.Y(Position().Y());
+
+		CVector toPlayer = (playerPos - Position()).Normalized();
+		mMoveSpeed += toPlayer * MOVE_SPEED;
+		mTargetDir = toPlayer;
+
+		// プレイヤーとの距離が一定範囲以内であれば攻撃モードに切り替える
+		float distanceToPlayer = (player->Position() - Position()).Length();
+
+		if (distanceToPlayer <= 35.0f)
+		{
+			ChangeState(EState::eAttack);
+		}
+	}
+}
+
 // 徘徊処理
 void CVanguard::UpdateWander()
 {
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
 	mDiscovery = false;
 	mpAttackCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eWalkMutant);
@@ -742,86 +1091,84 @@ void CVanguard::UpdateWander()
 	}
 }
 
-// 回避行動
-void CVanguard::UpdateRolling()
+// 見失い状態
+void CVanguard::UpdateLoseSight()
 {
-	mMoveSpeed.X(0.0f);
+	ChangeAnimation(EAnimType::eLoseSight);
+	mElapsedTime_End += Time::DeltaTime();
+	//CDebugPrint::Print("TimeEnd%f\n", mElapsedTime_End);
 
-	ChangeAnimation(EAnimType::eRolling);
-
-	// プレイヤーのポインタが0以外の時
-	CPlayer* player = CPlayer::Instance();
-
-	// プレイヤーまでのベクトルを求める
-	CVector vp = player->Position() - Position();
-	float distancePlayer = vp.Length();
-	vp.Y(0.0f);
-	CVector targetDir = vp.Normalized();  // これは回避中に向くべき方向
-
-	// バックステップする距離
-	const float backStepDistance = 0.1f;
-
-	CVector playerPos = CPlayer::Instance()->Position();
-	CVector soldierPos = Position();
-	CVector toPlayer = (playerPos - soldierPos).Normalized();
-
-	// 一定の距離だけバックステップ
-	Position(Position() - toPlayer * backStepDistance);
-
-	// ローリングが終了したらプレイヤーの方を向く
-	if (IsAnimationFinished())
+	if (IsFoundPlayer())
 	{
-		// プレイヤーの方向を取得
-		CVector newFacingDirection = (player->Position() - Position()).Normalized();
-		// Y軸方向は変更しないようにする
-		newFacingDirection.Y(0.0f);
-
-		// 向きを直接更新
-		targetDir = newFacingDirection;
-
 		ChangeState(EState::eChase);
 	}
 
-	// 実際の向きを更新
-	mTargetDir = targetDir;
+	if (!IsFoundPlayer() && IsAnimationFinished())
+	{
+		if (mElapsedTime_End >= PLAYER_LOST)
+		{
+			ChangeState(EState::eSwordSheathing1);
+			mElapsedTime_End = 0.0f; // プレイヤーが視界から消えたら経過時間をリセット
+		}
+	}
+	CDebugPrint::Print("ElapsedTIme:%f\n", mElapsedTime_End);
 }
 
-//// プレイヤーまでのベクトルを求める
-	//CVector vp = player->Position() - Position();
-	//float distancePlayer = vp.Length();
-	//vp.Y(0.0f);
-	//mTargetDir = vp.Normalized();
+// 指さし
+void CVanguard::UpdatePointing()
+{
+	// プレイヤーまでのベクトルを求める
+	CPlayer* player = CPlayer::Instance();
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
 
+	ChangeAnimation(EAnimType::ePointing);
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eSwordBackDrawn);
+	}
 
+	mDiscoveryTime += Time::DeltaTime();
+	if (mDiscoveryTime >= DISCOVERY)
+	{
+		if (IsFoundPlayer() && GetAnimationFrame() >= 50.0f)
+		{
+			mDiscovery = false;
+			mDiscoveryEnd = true;
+			ChangeState(EState::eChase);
+		}
+		else
+		{
+			mDiscovery = false;
+			mDiscoveryTime = 0.0f;
+			ChangeState(EState::eIdleWeapon);
+		}
+	}
+	//CDebugPrint::Print("discovery:%f\n", mDiscoveryTime);
+}
 
-//// ジャンプ開始
-//void CVanguard::UpdateJumpStart()
-//{
-//	ChangeAnimation(EAnimType::eJumpStart);
-//	ChangeState(EState::eJump);
-//
-//	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
-//	mIsGrounded = false;
-//}
-//
-//// ジャンプ中
-//void CVanguard::UpdateJump()
-//{
-//	if (mMoveSpeed.Y() <= 0.0f)
-//	{
-//		ChangeAnimation(EAnimType::eJumpEnd);
-//		ChangeState(EState::eJumpEnd);
-//	}
-//}
-//
-//// ジャンプ終了
-//void CVanguard::UpdateJumpEnd()
-//{
-//	if (IsAnimationFinished())
-//	{
-//		ChangeState(EState::eIdle);
-//	}
-//}
+// 死亡
+void CVanguard::UpdateDeath()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	ChangeAnimation(EAnimType::eDeath);
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eDeathEnd);
+	}
+}
+
+// 死亡処理終了
+void CVanguard::UpdateDeathEnd()
+{
+	if (IsAnimationFinished())
+	{
+		Kill();
+	}
+}
 
 // プレイヤー追跡
 bool CVanguard::IsFoundPlayer() const
@@ -867,7 +1214,7 @@ void CVanguard::Update()
 			mKickTime = 0.0f;
 		}
 	}
-	//CDebugPrint::Print("kickTime%f\n", mKickTime);
+	CDebugPrint::Print("kickTime%f\n", mKickTime);
 
 	// プレイヤーを発見した後の時間の計測
 	if (mDiscoveryTime_End <= DISCOVERY_END && mDiscoveryEnd)
@@ -881,6 +1228,17 @@ void CVanguard::Update()
 	}
 	CDebugPrint::Print("discoveryTimeEnd:%f\n", mDiscoveryTime_End);
 
+	// 回避の時間の計測
+	if (mTimeRolling <= ROLLING_END && mRollingEnd)
+	{
+		mTimeRolling += Time::DeltaTime();
+		if (mTimeRolling >= ROLLING_END)
+		{
+			mRollingEnd = false;
+			mTimeRolling = 0.0f;
+		}
+	}
+
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)
 	{
@@ -888,21 +1246,172 @@ void CVanguard::Update()
 	case EState::eIdle:
 		UpdateIdle();
 		break;
-		// 攻撃
+		// 移動状態
+	case EState::eWalk:
+		UpdateWalk();
+		break;
+		// 怪物歩き状態
+	case EState::eWalkMutant:
+		UpdateWalkMutant();
+		break;
+		// 武器歩き状態
+	case EState::eWalkWeapon:
+		UpdateWalkWeapon();
+		break;
+		// 盾歩き
+	case EState::eWalkShield1:
+		UpdateWalkShield();
+		break;
+		// 盾後ろ歩き1
+	case EState::eWalkBackShield1:
+		UpdateWalkBackShield1();
+		break;
+		// 盾後ろ歩き2
+	case EState::eWalkBackShield2:
+		UpdateWalkBackShield2();
+		break;
+		// 走る
+	case EState::eDash:
+		UpdateDash();
+		break;
+		// 小走り
+	case EState::eDashBrisk:
+		UpdateDashBrisk();
+		break;
+		// 盾走り
+	case EState::eDashShield:
+		UpdateDashShield();
+		break;
+		// 走り止め
+	case EState::eDashEnd:
+		UpdateDashEnd();
+		break;
+		// 回避行動
+	case EState::eRolling:
+		UpdateRolling();
+		break;
+		// ジャンプ開始
+	case EState::eJumpStart:
+		UpdateJumpStart();
+		break;
+		// ジャンプ中
+	case EState::eJump:
+		UpdateJump();
+		break;
+		// 走りジャンプ開始
+	case EState::eRunDashJumpStart:
+		UpdateRunJumpStart();
+		break;
+		// 走りジャンプ中
+	case EState::eRunDashJump:
+		UpdateRunJump();
+		break;
+		// ダッシュジャンプ開始
+	case EState::eDashJumpStart:
+		UpdateRunDashJumpStart();
+		break;
+		// ダッシュジャンプ中
+	case EState::eDashJump:
+		UpdateRunDashJump();
+		break;
+		// ジャンプ終了
+	case EState::eJumpEnd:
+		UpdateJumpEnd();
+		break;
+		// 立ち上がる
+	case EState::eStandUp:
+		UpdateStandUp();
+		break;
+		// 武器持ち待機
+	case EState::eIdleWeapon:
+		UpdateIdleWeapon();
+		break;
 	case EState::eAttack:
 		UpdateAttack();
 		break;
-		// キック
-	case EState::eKick:
-		UpdateKick();
+		// スピン攻撃1
+	case EState::eAttackSpin1:
+		UpdateAttackSpin1();
 		break;
-		// キック終了
-	case EState::eKickEnd:
-		UpdateKickWait();
+		// スピン攻撃2
+	case EState::eAttackSpin2:
+		UpdateAttackSpin2();
+		break;
+		// 振り上げ攻撃
+	case EState::eAttackSwing:
+		UpdateAttackSwing();
+		break;
+		// 3連攻撃
+	case EState::eAttacks3:
+		UpdateAttacks3();
+		break;
+		// 右足キック
+	case EState::eAttackKick:
+		UpdateAttackKick();
+		break;
+		// 右足キック終了
+	case EState::eAttackKickEnd:
+		UpdateAttackKickEnd();
+		break;
+		// ジャンプ攻撃1
+	case EState::eAttackJump1:
+		UpdateAttackJump1();
+		break;
+		// ジャンプ攻撃2
+	case EState::eAttackJump2:
+		UpdateAttackJump2();
 		break;
 		// 攻撃終了待ち
 	case EState::eAttackEnd:
-		UpdateAttackWait();
+		UpdateAttackEnd();
+		break;
+		// 武器を後ろにしまう1
+	case EState::eSwordSheathing1:
+		UpdateSwordSheathing1();
+		break;
+		// 武器を後ろにしまう2
+	case EState::eSwordSheathing2:
+		UpdateSwordSheathing2();
+		break;
+		// 盾構え
+	case EState::eShield:
+		UpdateShield();
+		break;
+		// 武器防御
+	case EState::eSwordGuard:
+		UpdateSwordGuard();
+		break;
+		// 武器を取り出す1
+	case EState::eSwordDrawn1:
+		UpdateSwordDrawn1();
+		break;
+		// 武器を取り出す2
+	case EState::eSwordDrawn2:
+		UpdateSwordDrawn2();
+		break;
+		// 武器を後ろから取り出す
+	case EState::eSwordBackDrawn:
+		UpdateSwordBackDrawn();
+		break;
+		// 微ダメージ1
+	case EState::eHitSlight1:
+		UpdateHitSlight1();
+		break;
+		// 微ダメージ2
+	case EState::eHitSlight2:
+		UpdateHitSlight2();
+		break;
+		// 微ダメージ3
+	case EState::eHitSlight3:
+		UpdateHitSlight3();
+		break;
+		// ガッツポーズ1
+	case EState::eGutsPose1:
+		UpdateGutsPose1();
+		break;
+		// ガッツポーズ2
+	case EState::eGutsPose2:
+		UpdateGutsPose2();
 		break;
 		// プレイヤー発見
 	case EState::eDiscovery:
@@ -916,9 +1425,21 @@ void CVanguard::Update()
 	case EState::eWander:
 		UpdateWander();
 		break;
-		// バックステップ
-	case EState::eRolling:
-		UpdateRolling();
+		// 見失い状態
+	case EState::eLoseSight:
+		UpdateLoseSight();
+		break;
+		// 指さし
+	case EState::ePointing:
+		UpdatePointing();
+		break;
+		// 死亡
+	case EState::eDeath:
+		UpdateDeath();
+		break;
+		// 死亡終了
+	case EState::eDeathEnd:
+		UpdateDeathEnd();
 		break;
 	}
 
@@ -949,7 +1470,7 @@ void CVanguard::Update()
 	}
 
 	// 移動
-	Position(Position() + mMoveSpeed * 60.0f * Time::DeltaTime());
+	Position(Position() + mMoveVector + mMoveSpeed * 60.0f * Time::DeltaTime());
 
 	CVector PlayerPosition;
 
@@ -975,8 +1496,8 @@ void CVanguard::Update()
 
 	mIsGrounded = false;
 
-	//// 前フレームのFPSを監視
-	//CDebugPrint::Print("FPS:%f\n", Time::FPS());
+	// 前フレームのFPSを監視
+	CDebugPrint::Print("FPS:%f\n", Time::FPS());
 
 }
 

@@ -47,7 +47,7 @@ void CStage1::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(0.0f, 70.0f, -20.0f);
+	CVector playerPos = CVector(0.0f, 10.0f, -20.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
@@ -57,7 +57,7 @@ void CStage1::Load()
 	CGameCamera* mainCamera = new CGameCamera
 		//CCamera* mainCamera = new CCamera
 		(
-			CVector(0.0f, 80.0f, 45.0f),
+			CVector(0.0f, 30.0f, 45.0f),
 			player->Position() + CVector(0.0f, 10.0f, 0.0f)
 		);
 	mainCamera->SetFollowTargetTf(player);
