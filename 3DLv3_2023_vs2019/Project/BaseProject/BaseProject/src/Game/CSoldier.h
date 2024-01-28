@@ -267,6 +267,8 @@ private:
 	bool mDiscovery;
 	// プレイヤーを発見し終わった後の時間がどれくらい経ったか
 	bool mDiscoveryEnd;
+	// バックステップをするか
+	bool mBackStep;
 
 	// プレイヤーを見つけたか
 	bool IsFoundPlayer() const;

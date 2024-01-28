@@ -65,39 +65,33 @@ void CStage1::Load()
 	mainCamera->AddCollider(field->GetWallCol());
 	AddTask(player);
 
-	CVanguard* van = new CVanguard();
-	van->Scale(1.3f, 1.3f, 1.3f);
-	van->Position(-100.0f, 150, -150);
-	AddTask(van);
-
-
 	// 回数制限モデル
 	CNumberFloor1* number = new CNumberFloor1(
-		CVector(0.0f, 1.0f, -150.0f),
+		CVector(-100.0f, 1.0f, -430.0f),
 		CVector(2.0f, 2.0f, 2.0f),
 		CVector(0.0f, -90.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector numberPos = CVector(0.0f, 1.0f, -150.0f);
+	CVector numberPos = CVector(-100.0f, 1.0f, -430.0f);
 	if (number != nullptr)
 	{
 		number->SetStartPosition(numberPos);
 	}
 	AddTask(number);
 
-	// 回数制限モデル
-	CNumberFloor1* number1 = new CNumberFloor1(
-		CVector(-30.0f, 1.0f, -150.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, -90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector numberPos1 = CVector(-30.0f, 1.0f, -150.0f);
-	if (number != nullptr)
-	{
-		number1->SetStartPosition(numberPos1);
-	}
-	AddTask(number1);
+	//// 回数制限モデル
+	//CNumberFloor1* number1 = new CNumberFloor1(
+	//	CVector(-30.0f, 1.0f, -150.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, -90.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//CVector numberPos1 = CVector(-30.0f, 1.0f, -150.0f);
+	//if (number != nullptr)
+	//{
+	//	number1->SetStartPosition(numberPos1);
+	//}
+	//AddTask(number1);
 
 	// 四角モデル
 	CDamageObject* floor = new CDamageObject(
@@ -130,25 +124,16 @@ void CStage1::Load()
 	);
 	AddTask(dfloor);
 
-	// ジャンプする床-100.0f, 20.0f, -450.0f
-	CJumpingObject* jump = new CJumpingObject
-	(
-		CVector(0.0f, -5.0f, -340.0f),
-		CVector(0.5f, 0.5f, 0.5f),
-		CVector(0.0f,0.0f,0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(jump);
 
-	// ジャンプする床
-	CJumpingObject* jump1 = new CJumpingObject
-	(
-		CVector(-100.0f, 1.0f, -430.0f),
-		CVector(0.5f, 0.5f, 0.5f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(jump1);
+	//// ジャンプする床
+	//CJumpingObject* jump1 = new CJumpingObject
+	//(
+	//	CVector(-100.0f, 1.0f, -430.0f),
+	//	CVector(0.5f, 0.5f, 0.5f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(jump1);
 
 	// 看板		-380は対岸
 	CSignboard* board = new CSignboard
@@ -176,7 +161,7 @@ void CStage1::Load()
 
 	//// 敵(ガスマスク兵士) ///////////////////////////////////////////
 
-	/*CSoldier* sol1 = new CSoldier();
+	CSoldier* sol1 = new CSoldier();
 	sol1->Scale(1.0f, 1.0f, 1.0f);
 	sol1->Position(-100.0f, 150, -150);
 	AddTask(sol1);
@@ -186,12 +171,12 @@ void CStage1::Load()
 	sol2->Position(-50.0f, 150.0f, -150.0f);
 	AddTask(sol2);
 
-	CSoldier* sol3 = new CSoldier();
+	/*CSoldier* sol3 = new CSoldier();
 	sol3->Scale(1.0f, 1.0f, 1.0f);
 	sol3->Position(50.0f, 150.0f, -200.0f);
-	AddTask(sol3);
+	AddTask(sol3);*/
 
-	CSoldier* sol4 = new CSoldier();
+	/*CSoldier* sol4 = new CSoldier();
 	sol4->Scale(1.0f, 1.0f, 1.0f);
 	sol4->Position(0.0f, 150.0f, -500.0f);
 	AddTask(sol4);*/
@@ -202,6 +187,11 @@ void CStage1::Load()
 	AddTask(sol5);*/
 	
 	////////////////////////////////////////////////////////////////////
+
+	CVanguard* van = new CVanguard();
+	van->Scale(1.4f, 1.4f, 1.4f);
+	van->Position(0.0f, 150.0f, -500.0f);
+	AddTask(van);
 
 	// ハテナブロックとレンガブロックの間隔は約7.3f
 	// ハテナブロック
@@ -246,11 +236,11 @@ void CStage1::Load()
 
 	CHatenaBlock* hatena3 = new CHatenaBlock
 	(
-		CVector(-100.0f, 20.0f, -450.0f),
+		CVector(-100.0f, 19.0f, -430.0f),
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector hatenaPos3 = CVector(-100.0f, 20.0f, -450.0f);
+	CVector hatenaPos3 = CVector(-100.0f, 19.0f, -430.0f);
 	if (hatena3 != nullptr)
 	{
 		hatena3->SetStartPosition(hatenaPos3);

@@ -11,7 +11,7 @@ CMajicSword::CMajicSword()
 	(
 		this, ELayer::eAttackCol,
 		CVector(0.0f, 0.0f, 0.0f),
-		CVector(0.0f, 0.0f, 2.5f)
+		CVector(0.0f, 0.0f, 3.0f)
 	);
 	// 攻撃判定用のコライダーと衝突判定を行う
 	// レイヤーとタグを設定
@@ -81,7 +81,7 @@ CMatrix CMajicSword::Matrix() const
 	else
 	{
 		CMatrix sm;
-		sm.Scale(60.0f, 60.0f, 60.0f);
+		sm.Scale(75.0f, 75.0f, 75.0f);
 
 		// 90度回転を表す行列を作成
 		CMatrix rotateY;

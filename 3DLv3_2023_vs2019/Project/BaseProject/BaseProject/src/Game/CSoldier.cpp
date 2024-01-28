@@ -39,6 +39,8 @@
 #define ATTACK_RANGE_KICK 25.0f
 // プレイヤーまでの距離(バックステップ)
 #define BACKSTEP_RANGE 24.0f
+// バックステップの待機時間
+#define BACKSTEP_WEIT_TIME 5.0f
 
 
 // HP関連
@@ -115,6 +117,7 @@ CSoldier::CSoldier()
 	, mKickTimeEnd(false)
 	, mDiscovery(false)
 	, mDiscoveryEnd(false)
+	, mBackStep(false)
 	, mpRideObject(nullptr)
 {
 	//インスタンスの設定
@@ -209,6 +212,7 @@ CSoldier::CSoldier()
 	mpGun->AttachMtx(gun);
 
 	mKickTimeEnd = false;
+	mBackStep = false;
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -495,9 +499,10 @@ void CSoldier::UpdateAttack()
 
 	if (distancePlayer <= ATTACK_RANGE)
 	{
-		if (distancePlayer <= BACKSTEP_RANGE)
+		if (distancePlayer <= BACKSTEP_RANGE && !mBackStep)
 		{
 			ChangeState(EState::eBackStep);
+			mBackStep = true;
 			return;
 		}
 		else if (distancePlayer <= ATTACK_RANGE_KICK && !mKickTimeEnd)
@@ -714,7 +719,7 @@ void CSoldier::UpdateHit()
 		vp.Y(0.0f);
 		mTargetDir = vp.Normalized();
 
-		if (mCharaStatus.hp > 1)
+		if (mCharaStatus.hp >= 1)
 		{
 			ChangeState(EState::eChase);
 		}
@@ -889,6 +894,17 @@ void CSoldier::Update()
 		}
 	}
 	//CDebugPrint::Print("kickTime%f\n", mKickTime);
+
+	// バックステップの待ち時間
+	if (mBackStep)
+	{
+		mBackStepTime += Time::DeltaTime();
+		if (mBackStepTime >= BACKSTEP_WEIT_TIME)
+		{
+			mBackStep = false;
+			mBackStepTime = 0.0f;
+		}
+	}
 
 	// プレイヤーを発見した後の時間の計測
 	if (mDiscoveryTimeEnd <= DISCOVERY_END && mDiscoveryEnd)

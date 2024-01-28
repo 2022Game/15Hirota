@@ -18,6 +18,7 @@
 #include "CStage1.h"
 #include "CSound.h"
 #include "CBGMManager.h"
+#include "CJumpingObject.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -149,9 +150,11 @@ void CGameScene::Update()
 
 	// [CStage1] の処理 /////////////////////////////////////////////////////////////
 
-	int enemyCount = CEnemyManager::GetSoldierCount();	// ソルジャーの数
+	int enemyCount = CEnemyManager::GetVanguardCount();	// ヴァンガードの数
+	int enemyCount1 = CEnemyManager::GetSoldierCount();	// ソルジャーの数
 
 	static bool Rising = false;
+	static bool jumping = false;
 
 	if (enemyCount <= 0 && !Rising)	// ステージ番号
 	{
@@ -174,6 +177,25 @@ void CGameScene::Update()
 
 			// 二度目以降はオブジェクトが作成されないようにする
 			Rising = true;
+		}
+	}
+
+	if (enemyCount1 <= 0 && !jumping)
+	{
+		int currentStage1 = CGameManager::StageNo();
+		if (currentStage1 == 0)
+		{
+			// ジャンプする床-100.0f, 20.0f, -450.0f
+			CJumpingObject* jump = new CJumpingObject
+			(
+				CVector(0.0f, -5.0f, -340.0f),
+				CVector(0.5f, 0.5f, 0.5f),
+				CVector(0.0f, 0.0f, 0.0f),
+				ETag::ePlayer, ELayer::ePlayer
+			);
+			AddTask(jump);
+
+			jumping = true;
 		}
 	}
 

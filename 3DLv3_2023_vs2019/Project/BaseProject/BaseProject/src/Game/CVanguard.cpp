@@ -404,7 +404,7 @@ void CVanguard::ChangeDerection()
 // フレームとHPゲージの表示の確認をする処理
 void CVanguard::UpdateGaugeAndFrame()
 {
-	if (!mDiscovery && IsFoundPlayer())
+	if (!mDiscovery && mpExclamationMark && IsFoundPlayer())
 	{
 		mpGauge->SetShow(true);
 	}
@@ -420,7 +420,7 @@ void CVanguard::UpdateExclamation()
 	if (mDiscovery)
 	{
 		// ビックリマーク画像の座標を更新
-		CVector exclamationMardPos = Position() + CVector(0.0f, 25.0f, 0.0f);
+		CVector exclamationMardPos = Position() + CVector(0.0f, 35.0f, 0.0f);
 		mpExclamationMark->SetWorldPos(exclamationMardPos);
 	}
 	else
@@ -596,6 +596,7 @@ void CVanguard::UpdateDashEnd()
 void CVanguard::UpdateRolling()
 {
 	mpDamageCol->SetEnable(false);
+	mpSword->AttackEnd();
 	mRollingEnd = true;
 	CDebugPrint::Print("mMoveVector :%f\n", mMoveVector.Z());
 	CDebugPrint::Print("mTargetDir :%f\n", mTargetDir.Z());
@@ -1263,6 +1264,7 @@ void CVanguard::UpdatePointing()
 // 死亡
 void CVanguard::UpdateDeath()
 {
+	mpDamageCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	ChangeAnimation(EAnimType::eDeath);

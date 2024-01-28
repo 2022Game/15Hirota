@@ -500,32 +500,24 @@ void CPlayer::UpdateIdle()
 	
 	if (mIsGrounded)
 	{
-		//// 移動処理
-		//// キーの入力ベクトルを取得
-		//CVector input;
-		//// 垂直方向の入力
-		//if (CInput::Key('W') && !CInput::Key('S'))
-		//	input.Z(-1.0f);
-		//else if (CInput::Key('S') && !CInput::Key('W'))
-		//	input.Z(1.0f);
-		//else
-		//	input.Z(0.0f);
-
-		//// 水平方向の入力
-		//if (CInput::Key('A') && !CInput::Key('D'))
-		//	input.X(-1.0f);
-		//else if (CInput::Key('D') && !CInput::Key('A'))
-		//	input.X(1.0f);
-		//else
-		//	input.X(0.0f);
-
 		// 移動処理
 		// キーの入力ベクトルを取得
 		CVector input;
-		if (CInput::Key('W'))		input.Z(-1.0f);
-		else if (CInput::Key('S'))	input.Z(1.0f);
-		if (CInput::Key('A'))		input.X(-1.0f);
-		else if (CInput::Key('D'))	input.X(1.0f);
+		// 垂直方向の入力
+		if (CInput::Key('W') && !CInput::Key('S'))
+			input.Z(-1.0f);
+		else if (CInput::Key('S') && !CInput::Key('W'))
+			input.Z(1.0f);
+		else
+			input.Z(0.0f);
+
+		// 水平方向の入力
+		if (CInput::Key('A') && !CInput::Key('D'))
+			input.X(-1.0f);
+		else if (CInput::Key('D') && !CInput::Key('A'))
+			input.X(1.0f);
+		else
+			input.X(0.0f);
 
 		// 入力ベクトルの長さで入力されているか判定
 		if (input.LengthSqr() > 0.0f)
@@ -724,7 +716,15 @@ void CPlayer::UpdateAttackWait()
 		if (CInput::PushKey(VK_SPACE))
 		{
 			mpSword->AttackEnd();
-			ChangeState(EState::eJumpStart);
+			if (mCharaStatus.stamina - 20 >= 0)
+			{
+				ChangeState(EState::eJumpStart);
+				// スタミナが0以下にならない場合はジャンプを実行
+				mCharaStatus.stamina -= 20;
+			}
+			else
+			{
+			}
 		}
 
 		// SE
