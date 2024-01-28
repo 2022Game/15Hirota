@@ -596,7 +596,6 @@ void CVanguard::UpdateDashEnd()
 void CVanguard::UpdateRolling()
 {
 	mpDamageCol->SetEnable(false);
-	mpSword->AttackEnd();
 	mRollingEnd = true;
 	CDebugPrint::Print("mMoveVector :%f\n", mMoveVector.Z());
 	CDebugPrint::Print("mTargetDir :%f\n", mTargetDir.Z());
@@ -730,8 +729,6 @@ void CVanguard::UpdateAttack()
 			int random = Math::Rand(0, 4);
 			if (random == 0)
 			{
-				// Œ•‚ÉUŒ‚ŠJŽn‚ð“`‚¦‚é
-				mpSword->AttackStart();
 				ChangeState(EState::eAttacks3);
 			}
 			else if (random == 1)
@@ -777,12 +774,10 @@ void CVanguard::UpdateAttackSpin1()
 	if (GetAnimationFrame() >= 40.0f)
 	{
 		mpSword->AttackStart();
-	}
-
-	if (IsAnimationFinished())
-	{
-		mpAttackCol->SetEnable(true);
-		ChangeState(EState::eAttackEnd);
+		if (IsAnimationFinished())
+		{
+			ChangeState(EState::eAttackEnd);
+		}
 	}
 }
 
@@ -806,11 +801,10 @@ void CVanguard::UpdateAttackSpin2()
 	if (GetAnimationFrame() >= 40.0f)
 	{
 		mpSword->AttackStart();
-	}
-
-	if (IsAnimationFinished())
-	{
-		ChangeState(EState::eAttackEnd);
+		if (IsAnimationFinished())
+		{
+			ChangeState(EState::eAttackEnd);
+		}
 	}
 }
 
@@ -834,11 +828,10 @@ void CVanguard::UpdateAttackSwing()
 	if (GetAnimationFrame() >= 40.0f)
 	{
 		mpSword->AttackStart();
-	}
-
-	if (IsAnimationFinished())
-	{
-		ChangeState(EState::eAttackEnd);
+		if (IsAnimationFinished())
+		{
+			ChangeState(EState::eAttackEnd);
+		}
 	}
 }
 
@@ -859,10 +852,14 @@ void CVanguard::UpdateAttacks3()
 	vp.Y(0.0f);
 	mTargetDir = vp.Normalized();
 
-	if (IsAnimationFinished())
+	if (GetAnimationFrame() >= 20.0f)
 	{
-		mpAttackCol->SetEnable(true);
-		ChangeState(EState::eAttackEnd);
+		mpSword->AttackStart();
+		if (IsAnimationFinished())
+		{
+			mpAttackCol->SetEnable(true);
+			ChangeState(EState::eAttackEnd);
+		}
 	}
 }
 
@@ -1133,6 +1130,7 @@ void CVanguard::UpdateDiscovery()
 // ’ÇÕ
 void CVanguard::UpdateChase()
 {
+	mpSword->SetAlpha(1.0f);
 	mDiscovery = false;
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
@@ -1315,6 +1313,7 @@ bool CVanguard::IsFoundPlayer() const
 void CVanguard::Update()
 {
 	mpDamageCol->SetEnable(true);
+	mpAttackCol->SetEnable(false);
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
 

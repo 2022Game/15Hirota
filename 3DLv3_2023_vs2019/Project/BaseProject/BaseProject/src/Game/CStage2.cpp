@@ -33,50 +33,7 @@ void CStage2::Load()
 	AddTask(field);
 
 
-	// モンスター(プレイヤー)
-	CPlayer* player = CPlayer::Instance();
-	player->MaxStatus();
-	CVector playerPos = CVector(0.0f, 10.0f, -20.0f);
-	if (player != nullptr)
-	{
-		player->SetStartPosition(playerPos);
-	}
-
-
-	CGameCamera* mainCamera = new CGameCamera
-		//CCamera* mainCamera = new CCamera
-		(
-			CVector(0.0f, 30.0f, 45.0f),
-			player->Position() + CVector(0.0f, 10.0f, 0.0f)
-		);
-	mainCamera->SetFollowTargetTf(player);
-	// スフィアかメッシュぐらい
-	mainCamera->AddCollider(field->GetWallCol());
-	AddTask(player);
-
-
-	//// モンスター(プレイヤー)
-	//CPlayer* player = CPlayer::Instance();
-	//CVector playerPos = CVector(0.0f, 60.0f, -20.0f);
-	//if (player != nullptr)
-	//{
-	//	player->SetStartPosition(playerPos);
-	//}
-
-	//// カメラの位置と向きを設定
-	//CCamera* mainCamera = CCamera::MainCamera();
-	//if (mainCamera != nullptr)
-	//{
-	//	CVector eye = CVector(0.0f, 80.0f, 45.0f);
-	//	CVector at = playerPos + CVector(0.0f,10.0f,0.0f);
-	//	CVector forward = (at - eye).Normalized();
-	//	CVector side = CVector::Cross(forward, CVector::up);
-	//	CVector up = CVector::Cross(side, forward);
-	//	mainCamera->LookAt(eye, at, up);
-	//}
-	//mainCamera->SetFollowTargetTf(player);
-	//// スフィアかメッシュぐらい
-	//mainCamera->AddCollider(field->GetWallCol());
+	
 
 
 	// 四角モデル
@@ -122,6 +79,53 @@ void CStage2::Load()
 	sol2->Position(-50.0f, 150.0f, -150.0f);
 	AddTask(sol2);
 	/////////////////////////////////////////////////
+
+
+
+	//// モンスター(プレイヤー)
+	//CPlayer* player = CPlayer::Instance();
+	//player->MaxStatus();
+	//CVector playerPos = CVector(0.0f, 10.0f, -20.0f);
+	//if (player != nullptr)
+	//{
+	//	player->SetStartPosition(playerPos);
+	//}
+
+
+	//CGameCamera* mainCamera = new CGameCamera
+	//	//CCamera* mainCamera = new CCamera
+	//	(
+	//		CVector(0.0f, 30.0f, 45.0f),
+	//		player->Position() + CVector(0.0f, 10.0f, 0.0f)
+	//	);
+	//mainCamera->SetFollowTargetTf(player);
+	//// スフィアかメッシュぐらい
+	//mainCamera->AddCollider(field->GetWallCol());
+	//AddTask(player);
+
+
+	// モンスター(プレイヤー)
+	CPlayer* player = CPlayer::Instance();
+	CVector playerPos = CVector(0.0f, 10.0f, -20.0f);
+	if (player != nullptr)
+	{
+		player->SetStartPosition(playerPos);
+	}
+
+	// カメラの位置と向きを設定
+	CCamera* mainCamera = CCamera::MainCamera();
+	if (mainCamera != nullptr)
+	{
+		CVector eye = CVector(0.0f, 30.0f, 45.0f);
+		CVector at = playerPos + CVector(0.0f,10.0f,0.0f);
+		CVector forward = (at - eye).Normalized();
+		CVector side = CVector::Cross(forward, CVector::up);
+		CVector up = CVector::Cross(side, forward);
+		mainCamera->LookAt(eye, at, up);
+	}
+	mainCamera->SetFollowTargetTf(player);
+	// スフィアかメッシュぐらい
+	mainCamera->AddCollider(field->GetWallCol());
 }
 
 // ステージ破棄

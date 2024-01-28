@@ -156,7 +156,7 @@ void CGameScene::Update()
 	static bool Rising = false;
 	static bool jumping = false;
 
-	if (enemyCount <= 0 && !Rising)	// ステージ番号
+	if (enemyCount <= 0 && !Rising)
 	{
 		int currentStage = CGameManager::StageNo();
 		if (currentStage == 0)

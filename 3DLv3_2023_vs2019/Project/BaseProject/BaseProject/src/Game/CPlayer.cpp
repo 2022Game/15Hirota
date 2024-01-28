@@ -155,7 +155,7 @@ CPlayer::CPlayer()
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		0.5f
+		0.6f
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
@@ -324,7 +324,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 		else if (other->Layer() == ELayer::eAttackCol)
 		{
-			ChangeState(EState::eHitBullet);
+			ChangeState(EState::eHitSword);
 		}
 	}
 }
@@ -671,10 +671,13 @@ void CPlayer::UpdateDashEnd()
 void CPlayer::UpdateAttack()
 {
 	// 攻撃アニメーションを開始
-	// 剣に攻撃開始を伝える
-	mpSword->AttackStart();
 	ChangeAnimation(EAnimType::eAttack);
-	ChangeState(EState::eAttackWait);
+	if (GetAnimationFrame() >= 10.0f)
+	{
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+		ChangeState(EState::eAttackWait);
+	}
 
 	// 斬撃SEの再生済みフラグを初期化
 	mIsPlayedSlashSE = false;
@@ -828,10 +831,14 @@ void CPlayer::UpdateClearEnd()
 {
 	if (IsAnimationFinished())
 	{
-		// ステージをクリア
-		CGameManager::StageClear();
-		// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
-		ChangeState(EState::eReady);
+		if (CGameManager::StageNo() == 0)
+		{
+			// ステージをクリア
+			CGameManager::StageClear();
+			// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
+			ChangeState(EState::eReady);
+			Position(mStartPos);
+		}
 	}
 }
 
@@ -941,6 +948,56 @@ void CPlayer::UpdateHitBullet()
 	{
 		TakeDamage(1);
 		damageEnemy = true;
+		mpDamageCol->SetEnable(true);
+	}
+
+	if (mElapsedTime >= COLORSET)
+	{
+		if (mCharaStatus.hp > 0)
+		{
+			mIsPlayedHitDamageSE = false;
+			damageEnemy = true;
+			mElapsedTime = 0.0f;
+			mElapsedTimeCol = 0.0f;
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eIdle);
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mElapsedTime = 0.0f;
+			mElapsedTimeCol = 0.0f;
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eDeath);
+		}
+	}
+
+	//CDebugPrint::Print("Time%f\n", mElapsedTime);
+}
+
+// 敵の剣の攻撃を受けた時
+void CPlayer::UpdateHitSword()
+{
+	ChangeAnimation(EAnimType::eHit);
+
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	mElapsedTime += Time::DeltaTime();
+	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
+
+	if (!damageEnemy)
+	{
+		damageEnemy = true;
+		mpDamageCol->SetEnable(true);
 	}
 
 	if (mElapsedTime >= COLORSET)
@@ -1174,6 +1231,10 @@ void CPlayer::Update()
 		// 敵の弾Hit
 		case EState::eHitBullet:
 			UpdateHitBullet();
+			break;
+		// 敵の件Hit
+		case EState::eHitSword:
+			UpdateHitSword();
 			break;
 		// クリア
 		case EState::eClear:

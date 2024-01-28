@@ -155,6 +155,8 @@ private:
 	void UpdateHit();
 	// 敵の弾Hit
 	void UpdateHitBullet();
+	// 敵の剣攻撃hit
+	void UpdateHitSword();
 	// プレイヤーの状態
 	enum class EState
 	{
@@ -180,6 +182,7 @@ private:
 		eReStart,			// 再起
 		eHit,				// ダメージヒット
 		eHitBullet,			// 敵の弾ヒット
+		eHitSword,			// 敵の剣ヒット
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
