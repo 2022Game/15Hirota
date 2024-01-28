@@ -7,6 +7,8 @@
 #include "CRideableObject.h"
 
 class CExclamationMark;
+class CVanguardGauge;
+class CMajicSwordEnemy;
 
 /*
 ヴァンガードクラス
@@ -51,11 +53,11 @@ public:
 	// ヴァンガードの方向をランダムに変更する処理
 	void ChangeDerection();
 
-	//// フレームとHPゲージの表示の確認をする処理
-	//void UpdateGaugeAndFrame();
+	// フレームとHPゲージの表示の確認をする処理
+	void UpdateGaugeAndFrame();
 
-	//// ビックリマークの表示の確認をする処理
-	//void UpdateExclamation();
+	// ビックリマークの表示の確認をする処理
+	void UpdateExclamation();
 
 	// 1%の確率を求める処理
 	bool ShouldTransitionWander();
@@ -101,6 +103,11 @@ private:
 	// ダメージを与えるコライダー
 	CColliderSphere* mpAttackCol;
 
+	// マジックソードモデル
+	CMajicSwordEnemy* mpSword;
+
+	// ゲージ
+	CVanguardGauge* mpGauge;
 	// ビックリマーク
 	CExclamationMark* mpExclamationMark;
 

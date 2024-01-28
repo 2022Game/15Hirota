@@ -322,6 +322,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			ChangeState(EState::eHitBullet);
 		}
+		else if (other->Layer() == ELayer::eAttackCol)
+		{
+			ChangeState(EState::eHitBullet);
+		}
 	}
 }
 
@@ -764,15 +768,6 @@ void CPlayer::UpdateAttackStrongWait()
 void CPlayer::UpdateRotate()
 {
 	mpDamageCol->SetEnable(false);
-	/*if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}*/
 
 	// 移動処理
 	// キーの入力ベクトルを取得
@@ -800,19 +795,20 @@ void CPlayer::UpdateRotate()
 //回避終了待ち
 void CPlayer::UpdateRotateEnd()
 {
-	mpDamageCol->SetEnable(true);
-	/*if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}*/
-
 	if (IsAnimationFinished())
 	{
+		mpDamageCol->SetEnable(true);
+
+		if (mElapsedTimeCol <= DAMAGECOL)
+		{
+			mElapsedTimeCol += Time::DeltaTime();
+			if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+			{
+				mElapsedTimeCol = DAMAGECOL;
+				mpDamageCol->SetEnable(true);
+			}
+		}
+
 		ChangeState(EState::eIdle);
 		ChangeAnimation(EAnimType::eIdle);
 	}
@@ -843,6 +839,7 @@ void CPlayer::UpdateClearEnd()
 void CPlayer::UpdateDeath()
 {
 	mpDamageCol->SetEnable(false);
+	mpSword->AttackEnd();
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	ChangeAnimation(EAnimType::eDeath);

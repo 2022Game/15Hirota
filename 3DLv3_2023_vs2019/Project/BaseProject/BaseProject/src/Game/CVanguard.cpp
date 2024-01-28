@@ -6,6 +6,8 @@
 #include "CEnemyManager.h"
 #include "CExclamationMark.h"
 #include "CStageManager.h"
+#include "CVanguardGauge.h"
+#include "CMajicSwordEnemy.h"
 
 #define _USE_MATH_DEFINES
 
@@ -146,6 +148,9 @@ CVanguard::CVanguard()
 	// モデルデータ取得
 	CModelX* model = CResourceManager::Get<CModelX>("Vanguard");
 
+	// HPゲージを作成
+	mpGauge = new CVanguardGauge();
+	mpGauge->SetShow(true);
 	// ビックリマーク設定
 	mpExclamationMark = new CExclamationMark();
 	mpExclamationMark->SetCeneterRatio(CVector2(0.3f, 0.5f));
@@ -211,6 +216,14 @@ CVanguard::CVanguard()
 	mpAttackCol->SetAttachMtx(spineMtxK);
 
 	mKickTimeEnd = false;
+
+	// マジックソード作成
+	mpSword = new CMajicSwordEnemy();
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
+	mpSword->SetOwner(this);
+	mpSword->SetAlpha(0.0f);
+
+
 	// 最初に1レベルに設定
 	ChangeLevel(1);
 }
@@ -231,7 +244,11 @@ CVanguard::~CVanguard()
 	CEnemyManager::DecrementVanguardCount();
 
 	// UI周りを破棄
+	mpGauge->Kill();
 	mpExclamationMark->Kill();
+
+	// マジックソード破棄
+	mpSword->Kill();
 }
 
 // 衝突処理
@@ -369,9 +386,9 @@ void CVanguard::ChangeLevel(int level)
 	// 現在のステータスを最大値にすることで、HP回復
 	mCharaStatus = mCharaMaxStatus;
 
-	/* 最大HPと現在HPをHPゲージに反映
+	//最大HPと現在HPをHPゲージに反映
 	mpGauge->SetMaxValue(mCharaMaxStatus.hp);
-	mpGauge->SetValue(mCharaStatus.hp);*/
+	mpGauge->SetValue(mCharaStatus.hp);
 }
 
 // ヴァンガードの方向をランダムに変更する処理
@@ -383,39 +400,34 @@ void CVanguard::ChangeDerection()
 	// 方向の計算を角度に代入
 	mTargetDir = CalculateDirection(randomAngle);
 }
-//
-//// フレームとHPゲージの表示の確認をする処理
-//void CVanguard::UpdateGaugeAndFrame()
-//{
-//	if (!mDiscovery)
-//	{
-//		// HPゲージの座標を更新 (敵の座標の少し上の座標)
-//		CVector gaugePos = Position() + CVector(0.0f, 25.0f, 0.0f);
-//		mpGauge->SetWorldPos(gaugePos);
-//		CVector framePos = Position() + CVector(0.0f, 25.0f, 0.0f);
-//		mpFrame->SetWorldPos(framePos);
-//	}
-//	else
-//	{
-//		mpGauge->SetShow(false);
-//		mpFrame->SetShow(false);
-//	}
-//}
-//
-//// ビックリマークの表示の確認をする処理
-//void CVanguard::UpdateExclamation()
-//{
-//	if (mDiscovery)
-//	{
-//		// ビックリマーク画像の座標を更新
-//		CVector exclamationMardPos = Position() + CVector(0.0f, 25.0f, 0.0f);
-//		mpExclamationMark->SetWorldPos(exclamationMardPos);
-//	}
-//	else
-//	{
-//		mpExclamationMark->SetShow(false);
-//	}
-//}
+
+// フレームとHPゲージの表示の確認をする処理
+void CVanguard::UpdateGaugeAndFrame()
+{
+	if (!mDiscovery && IsFoundPlayer())
+	{
+		mpGauge->SetShow(true);
+	}
+	else
+	{
+		mpGauge->SetShow(false);
+	}
+}
+
+// ビックリマークの表示の確認をする処理
+void CVanguard::UpdateExclamation()
+{
+	if (mDiscovery)
+	{
+		// ビックリマーク画像の座標を更新
+		CVector exclamationMardPos = Position() + CVector(0.0f, 25.0f, 0.0f);
+		mpExclamationMark->SetWorldPos(exclamationMardPos);
+	}
+	else
+	{
+		mpExclamationMark->SetShow(false);
+	}
+}
 
 // 待機状態遷移する条件
 bool CVanguard::ShouldTransitionWander()
@@ -717,6 +729,8 @@ void CVanguard::UpdateAttack()
 			int random = Math::Rand(0, 4);
 			if (random == 0)
 			{
+				// 剣に攻撃開始を伝える
+				mpSword->AttackStart();
 				ChangeState(EState::eAttacks3);
 			}
 			else if (random == 1)
@@ -759,6 +773,11 @@ void CVanguard::UpdateAttackSpin1()
 	vp.Y(0.0f);
 	mTargetDir = vp.Normalized();
 
+	if (GetAnimationFrame() >= 40.0f)
+	{
+		mpSword->AttackStart();
+	}
+
 	if (IsAnimationFinished())
 	{
 		mpAttackCol->SetEnable(true);
@@ -783,9 +802,13 @@ void CVanguard::UpdateAttackSpin2()
 	vp.Y(0.0f);
 	mTargetDir = vp.Normalized();
 
+	if (GetAnimationFrame() >= 40.0f)
+	{
+		mpSword->AttackStart();
+	}
+
 	if (IsAnimationFinished())
 	{
-		mpAttackCol->SetEnable(true);
 		ChangeState(EState::eAttackEnd);
 	}
 }
@@ -807,9 +830,13 @@ void CVanguard::UpdateAttackSwing()
 	vp.Y(0.0f);
 	mTargetDir = vp.Normalized();
 
+	if (GetAnimationFrame() >= 40.0f)
+	{
+		mpSword->AttackStart();
+	}
+
 	if (IsAnimationFinished())
 	{
-		mpAttackCol->SetEnable(true);
 		ChangeState(EState::eAttackEnd);
 	}
 }
@@ -885,6 +912,7 @@ void CVanguard::UpdateAttackJump2()
 // 攻撃終了待ち
 void CVanguard::UpdateAttackEnd()
 {
+	mpSword->AttackEnd();
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eChase);
@@ -924,6 +952,12 @@ void CVanguard::UpdateSwordGuard()
 void CVanguard::UpdateSwordDrawn1()
 {
 	ChangeAnimation(EAnimType::eSwordDrawn1);
+	if (GetAnimationFrame() >= 20.0f)
+	{
+		// マジックソード作成
+		mpSword->SetAlpha(1.0f);
+	}
+
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eChase);
@@ -934,6 +968,12 @@ void CVanguard::UpdateSwordDrawn1()
 void CVanguard::UpdateSwordDrawn2()
 {
 	ChangeAnimation(EAnimType::eSwordDrawn2);
+	if (GetAnimationFrame() >= 60.0f)
+	{
+		// マジックソード作成
+		mpSword->SetAlpha(1.0f);
+	}
+
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eChase);
@@ -944,6 +984,12 @@ void CVanguard::UpdateSwordDrawn2()
 void CVanguard::UpdateSwordBackDrawn()
 {
 	ChangeAnimation(EAnimType::eSwordBackDrawn);
+	if (GetAnimationFrame() >= 90.0f)
+	{
+		// マジックソード作成
+		mpSword->SetAlpha(1.0f);
+	}
+
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eChase);
@@ -956,11 +1002,13 @@ void CVanguard::UpdateHitSlight1()
 	// ダメージを受けた時は移動を停止
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+	mpSword->AttackEnd();
 
 	ChangeAnimation(EAnimType::eHitSlight1);
 
 	if (IsAnimationFinished())
 	{
+		mpSword->SetAlpha(1.0f);
 		// プレイヤーのポインタが0以外の時
 		CPlayer* player = CPlayer::Instance();
 
@@ -990,11 +1038,13 @@ void CVanguard::UpdateHitSlight2()
 	// ダメージを受けた時は移動を停止
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+	mpSword->AttackEnd();
 
 	ChangeAnimation(EAnimType::eHitSlight2);
 
 	if (IsAnimationFinished())
 	{
+		mpSword->SetAlpha(1.0f);
 		// プレイヤーのポインタが0以外の時
 		CPlayer* player = CPlayer::Instance();
 
@@ -1027,11 +1077,13 @@ void CVanguard::UpdateHitSlight3()
 	// ダメージを受けた時は移動を停止
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+	mpSword->AttackEnd();
 
 	ChangeAnimation(EAnimType::eHitSlight3);
 
 	if (IsAnimationFinished())
 	{
+		mpSword->SetAlpha(1.0f);
 		// プレイヤーのポインタが0以外の時
 		CPlayer* player = CPlayer::Instance();
 
@@ -1166,6 +1218,7 @@ void CVanguard::UpdateLoseSight()
 		if (mElapsedTime_End >= PLAYER_LOST)
 		{
 			ChangeState(EState::eSwordSheathing1);
+			mpSword->SetAlpha(0.0f);
 			mElapsedTime_End = 0.0f; // プレイヤーが視界から消えたら経過時間をリセット
 		}
 	}
@@ -1539,19 +1592,20 @@ void CVanguard::Update()
 	CVector forward = CVector::Slerp(current, target, 0.125f);
 	Rotation(CQuaternion::LookRotation(forward));
 
-	//// フレームとゲージの表示処理
-	//UpdateGaugeAndFrame();
-	//// ビックリマークの表示処理
-	//UpdateExclamation();
+	// フレームとゲージの表示処理
+	UpdateGaugeAndFrame();
+	// ビックリマークの表示処理
+	UpdateExclamation();
 
-	//// 現在のHpを設定
-	//mpGauge->SetValue(mCharaStatus.hp);
+	// 現在のHpを設定
+	mpGauge->SetValue(mCharaStatus.hp);
 
 
 	// CSoldierの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
 	mpAttackCol->Update();
+	mpSword->UpdateAttachMtx();
 
 	mIsGrounded = false;
 

@@ -79,6 +79,7 @@
     <ClCompile Include="src\Game\CInvincible.cpp" />
     <ClCompile Include="src\Game\CInvincibleObjectBase.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
+    <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
     <ClCompile Include="src\Game\CNumberFloor1.cpp" />
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
@@ -90,6 +91,7 @@
     <ClCompile Include="src\Game\CStageBase.cpp" />
     <ClCompile Include="src\Game\CStageManager.cpp" />
     <ClCompile Include="src\Game\CVanguard.cpp" />
+    <ClCompile Include="src\Game\CVanguardGauge.cpp" />
     <ClCompile Include="src\Game\CWeaponEnemy.cpp" />
     <ClCompile Include="src\Game\CField.cpp" />
     <ClCompile Include="src\Game\CGameOverScene.cpp" />
@@ -208,6 +210,7 @@
     <ClInclude Include="src\Game\CInvincible.h" />
     <ClInclude Include="src\Game\CInvincibleObjectBase.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
+    <ClInclude Include="src\Game\CMajicSwordEnemy.h" />
     <ClInclude Include="src\Game\CNumberFloor1.h" />
     <ClInclude Include="src\Game\CRecoveryObject.h" />
     <ClInclude Include="src\Game\CRengaBlock.h" />
@@ -219,6 +222,7 @@
     <ClInclude Include="src\Game\CStageBase.h" />
     <ClInclude Include="src\Game\CStageManager.h" />
     <ClInclude Include="src\Game\CVanguard.h" />
+    <ClInclude Include="src\Game\CVanguardGauge.h" />
     <ClInclude Include="src\Game\CWeaponEnemy.h" />
     <ClInclude Include="src\Game\CField.h" />
     <ClInclude Include="src\Game\CGameOverScene.h" />

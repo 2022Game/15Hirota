@@ -454,6 +454,12 @@
     <ClCompile Include="src\Game\CVanguard.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CVanguardGauge.cpp">
+      <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CMajicSwordEnemy.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -836,6 +842,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CVanguard.h">
       <Filter>ソース ファイル\Game\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CVanguardGauge.h">
+      <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMajicSwordEnemy.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
