@@ -80,13 +80,13 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 // コンストラクタ
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
-	, mState(EState::eIdle)
+	, mState(EState::eReady)
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
 	, mElapsedTimeCol(0.0f)
 	, mInvincibleStartTime(10.0f)
-	, mStartPos(0.0f, 0.0f, 0.0f)
+	, mStartPos(0.0f, 30.0f, -20.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mHpHit(false)
 	, damageEnemy(false)
@@ -155,7 +155,7 @@ CPlayer::CPlayer()
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		0.6f
+		0.8f
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
@@ -177,6 +177,7 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
+	spInstance = nullptr;
 	// コライダー関連の破棄
 	SAFE_DELETE(mpColliderLine);
 	SAFE_DELETE(mpColliderSphere);

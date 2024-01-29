@@ -109,6 +109,8 @@ void CSceneManager::ChangeNextScene()
 	case EScene::eTitle:	mpScene = new CTitleScene();	break;
 		//ゲームシーン
 	case EScene::eGame:		mpScene = new CGameScene();		break;
+		// クリアシーン
+	case EScene::eClear:	mpScene = new CClearScene();	break;
 		//起動時メニュー
 	case EScene::eBootMenu:	mpScene = new CBootMenuScene();	break;
 		//衝突判定テスト

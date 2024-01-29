@@ -1,5 +1,6 @@
 #include "CGameManager.h"
 #include "CStageManager.h"
+#include "CSceneManager.h"
 
 CGameManager* CGameManager::spInstance = nullptr;
 
@@ -90,9 +91,10 @@ void CGameManager::UpdateGame()
 // ステージクリア時の更新処理
 void CGameManager::UpdateStageClear()
 {
-	// ステージをクリアしたら、次のステージを読み込み
-	mStageNo++;
-	CStageManager::LoadStage(mStageNo);
+	//// ステージをクリアしたら、次のステージを読み込み
+	//mStageNo++;
+	//CStageManager::LoadStage(mStageNo);
+	CSceneManager::Instance()->LoadScene(EScene::eClear);
 
 	// ステージの読み込みが終われば、ゲームを開始
 	ChangeState(EGameState::eGame);

@@ -4,8 +4,9 @@
 const BGMData BGM_DATA[] =
 {
 	//BGMの種類			リソースパス					ベース音量	ループ	ループ開始	ループ終了
-	{ EBGMType::eTitle,	"Sound\\BGM\\title.wav",		0.01f,		true,	0,			0		},
-	{ EBGMType::eGame,	"Sound\\BGM\\Pops_01.wav",		0.25f,		true,	0,			2801203	},
+	{ EBGMType::eTitle,	"Sound\\BGM\\title.wav",		0.1f,		true,	0,			0		},
+	{ EBGMType::eClear,	"Sound\\BGM\\Clear.wav",		1.25f,		true,	0,			0		},
+	{ EBGMType::eGame,	"Sound\\BGM\\Pops_01.wav",		0.15f,		true,	0,			2801203	},
 	{ EBGMType::eMenu,	"Sound\\BGM\\menu.wav",			0.25f,		true,	0,			0		},
 };
 

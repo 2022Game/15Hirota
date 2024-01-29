@@ -79,19 +79,19 @@ void CStage1::Load()
 		5.0f);
 	AddTask(floor);
 
-	//// ゴールオブジェクト
-	//CGoalObject* goal = new CGoalObject(
-	//	CVector(20.0f, 95.0f, -450.0f),
-	//	CVector(1.5f, 1.5f, 1.5f),
-	//	CVector(0.0f, 90.0f, 0.0f));
-	//AddTask(goal);
-
 	// ゴールオブジェクト
 	CGoalObject* goal = new CGoalObject(
-		CVector(0.0f, 0.0f, -10.0f),
+		CVector(20.0f, 95.0f, -450.0f),
 		CVector(1.5f, 1.5f, 1.5f),
 		CVector(0.0f, 90.0f, 0.0f));
 	AddTask(goal);
+
+	//// ゴールオブジェクト
+	//CGoalObject* goal = new CGoalObject(
+	//	CVector(0.0f, 0.0f, -100.0f),
+	//	CVector(1.5f, 1.5f, 1.5f),
+	//	CVector(0.0f, 90.0f, 0.0f));
+	//AddTask(goal);
 
 	// 岩1
 	CStone1* stone1 = new CStone1(
@@ -146,7 +146,7 @@ void CStage1::Load()
 
 	//// 敵(ガスマスク兵士) ///////////////////////////////////////////
 
-	/*CSoldier* sol1 = new CSoldier();
+	CSoldier* sol1 = new CSoldier();
 	sol1->Scale(1.0f, 1.0f, 1.0f);
 	sol1->Position(-100.0f, 150, -150);
 	AddTask(sol1);
@@ -154,7 +154,7 @@ void CStage1::Load()
 	CSoldier* sol2 = new CSoldier();
 	sol2->Scale(1.0f, 1.0f, 1.0f);
 	sol2->Position(-50.0f, 150.0f, -150.0f);
-	AddTask(sol2);*/
+	AddTask(sol2);
 
 	/*CSoldier* sol3 = new CSoldier();
 	sol3->Scale(1.0f, 1.0f, 1.0f);
@@ -173,15 +173,15 @@ void CStage1::Load()
 	
 	////////////////////////////////////////////////////////////////////
 
-	/*CVanguard* van = new CVanguard();
-	van->Scale(1.4f, 1.4f, 1.4f);
-	van->Position(0.0f, 150.0f, -500.0f);
-	AddTask(van);*/
-
 	CVanguard* van = new CVanguard();
 	van->Scale(1.4f, 1.4f, 1.4f);
-	van->Position(0.0f, 150.0f, -100.0f);
+	van->Position(0.0f, 150.0f, -500.0f);
 	AddTask(van);
+
+	/*CVanguard* van = new CVanguard();
+	van->Scale(1.4f, 1.4f, 1.4f);
+	van->Position(0.0f, 150.0f, -100.0f);
+	AddTask(van);*/
 
 	// ハテナブロックとレンガブロックの間隔は約7.3f
 	// ハテナブロック
@@ -270,7 +270,7 @@ void CStage1::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(0.0f, 10.0f, -20.0f);
+	CVector playerPos = CVector(0.0f, 30.0f, -20.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
@@ -280,16 +280,13 @@ void CStage1::Load()
 	CGameCamera* mainCamera = new CGameCamera
 		//CCamera* mainCamera = new CCamera
 		(
-			CVector(0.0f, 30.0f, 45.0f),
+			CVector(0.0f, 60.0f, 45.0f),
 			player->Position() + CVector(0.0f, 10.0f, 0.0f)
 		);
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(field->GetWallCol());
-	AddTask(player);
 
-
-	
 	
 	//// ゆかりさん
 	//CYukari* yukari = new CYukari();

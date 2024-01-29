@@ -24,6 +24,9 @@ public:
 	// 攻撃終了
 	virtual void AttackEnd();
 
+	// 攻撃中かどうか
+	bool IsAttack();
+
 	// 武器の所持キャラクターを設定
 	void SetOwner(CCharaBase* owner);
 	// 武器の所持キャラクターを取得
@@ -40,6 +43,8 @@ protected:
 
 	// アイテムの所持キャラクター
 	CCharaBase* mOwner;
+	// 攻撃中かどうか
+	bool mIsAttack;
 private:
 	// 追従する行列のポインター
 	const CMatrix* mpAttachMtx;

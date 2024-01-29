@@ -56,6 +56,9 @@ void CMajicSwordEnemy::Collision(CCollider* self, CCollider* other, const CHitIn
 // 攻撃開始
 void CMajicSwordEnemy::AttackStart()
 {
+	// すでに攻撃中であれば、サイド開始処理は実行しない
+	if (mIsAttack) return;
+
 	CWeaponEnemy::AttackStart();
 	// 攻撃が始まったら、攻撃判定用のコライダーをオフにする
 	mpAttackCol->SetEnable(true);

@@ -36,12 +36,23 @@ void CWeaponEnemy::UpdateAttachMtx()
 // 攻撃開始
 void CWeaponEnemy::AttackStart()
 {
+	// すでに攻撃中であれば、サイド開始処理は実行しない
+	if (mIsAttack) return;
+
+	mIsAttack = true;
 	mAttackHitObjects.clear();
 }
 
 // 攻撃終了
 void CWeaponEnemy::AttackEnd()
 {
+	mIsAttack = false;
+}
+
+// 攻撃中かどうか
+bool CWeaponEnemy::IsAttack()
+{
+	return mIsAttack;
 }
 
 // 武器の所持キャラクターを設定
