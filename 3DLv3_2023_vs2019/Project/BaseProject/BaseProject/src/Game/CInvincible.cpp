@@ -220,7 +220,7 @@ void CInvincible::Update()
 	Position(Position() + mMoveVector + mMoveSpeed * 60.0f * Time::DeltaTime());
 
 	// Šm”F
-	CDebugPrint::Print("TIme:%f\n", mElapsedTime);
+	//CDebugPrint::Print("TIme:%f\n", mElapsedTime);
 
 	mIsGround = false;
 }

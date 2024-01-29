@@ -62,7 +62,7 @@ void CSignboardUI::SetWorldPos(const CVector& worldPos)
 		SetShow(false);	
 	}
 
-	CDebugPrint::Print("SetShow %s\n", IsShow() ? "true" : "false");
+	//CDebugPrint::Print("SetShow %s\n", IsShow() ? "true" : "false");
 
 	// 求めたスクリーン座標を自身の座標に設定
 	mPosition = screenPos;

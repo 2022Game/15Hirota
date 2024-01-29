@@ -378,29 +378,29 @@ void CYukari::Update()
 
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 
-	// Yukariのデバッグ表示
-	static bool debug = false;
-	if (CInput::PushKey('F'))
-	{
-		debug = !debug;
-	}
-	if (debug)
-	{
-		//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
-		CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
-		CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
-		CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
-	}
-	// 1キーを押しながら、↑ ↓ でHP増減
-	if (CInput::Key('3'))
-	{
-		if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
-		else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
-	}
-	else if (CInput::Key('2'))
-	{
-		LevelUp();
-	}
+	//// Yukariのデバッグ表示
+	//static bool debug = false;
+	//if (CInput::PushKey('F'))
+	//{
+	//	debug = !debug;
+	//}
+	//if (debug)
+	//{
+	//	//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
+	//	CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
+	//	CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
+	//	CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
+	//}
+	//// 1キーを押しながら、↑ ↓ でHP増減
+	//if (CInput::Key('3'))
+	//{
+	//	if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
+	//	else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
+	//}
+	//else if (CInput::Key('2'))
+	//{
+	//	LevelUp();
+	//}
 
 	// 移動
 	Position(Position() + mMoveSpeed);
@@ -414,9 +414,9 @@ void CYukari::Update()
 	Rotation(CQuaternion::LookRotation(forward));
 
 
-	CDebugPrint::Print("Shot%d\n", mTimeShot);
-	CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
-	CDebugPrint::Print("FPS:%f\n", Time::FPS());
+	//CDebugPrint::Print("Shot%d\n", mTimeShot);
+	//CDebugPrint::Print("Shotend%d\n", mTimeShotEnd);
+	//CDebugPrint::Print("FPS:%f\n", Time::FPS());
 
 
 	// HPゲージの座標を更新 (敵の座標の少し上の座標)

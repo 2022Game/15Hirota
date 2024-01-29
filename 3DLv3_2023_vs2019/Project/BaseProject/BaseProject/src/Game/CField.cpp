@@ -11,6 +11,8 @@ CField::CField()
 {
 	// モデルデータ取得
 	mpModel = CResourceManager::Get<CModel>("Field");
+	// 空のデータ
+	mpModelSky = CResourceManager::Get<CModel>("Sky");
 
 	CModel* wallCol = CResourceManager::Get<CModel>("WallCol");
 	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);
@@ -20,6 +22,8 @@ CField::CField()
 
 	CModel* enemywallCol = CResourceManager::Get<CModel>("EnemyWallCol");
 	mpEnemyWallCol = new CColliderMesh(this, ELayer::eFieldEnemyWall, enemywallCol, true);
+
+	
 
 	CreateFieldObjects();
 }
@@ -62,4 +66,7 @@ void CField::Update()
 void CField::Render()
 {
 	mpModel->Render(Matrix());
+	mpModel->SetColor(mColor);
+	mpModelSky->Render(Matrix());
+	mpModelSky->SetColor(mColor);
 }

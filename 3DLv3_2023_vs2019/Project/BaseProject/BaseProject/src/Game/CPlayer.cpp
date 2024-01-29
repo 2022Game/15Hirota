@@ -1328,29 +1328,29 @@ void CPlayer::Update()
 		}
 	}*/
 
-	// キャラクターのデバッグ表示
-	static bool debug = false;
-	if (CInput::PushKey('R'))
-	{
-		debug = !debug;
-	}
-	if (debug)
-	{
-		//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
-		CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
-		CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
-		CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
-	}
-	// 1キーを押しながら、↑ ↓ でHP増減
-	if (CInput::Key('1'))
-	{
-		if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
-		else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
-	}
-	else if (CInput::Key('2'))
-	{
-		LevelUp();
-	}
+	//// キャラクターのデバッグ表示
+	//static bool debug = false;
+	//if (CInput::PushKey('R'))
+	//{
+	//	debug = !debug;
+	//}
+	//if (debug)
+	//{
+	//	//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
+	//	CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
+	//	CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
+	//	CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
+	//}
+	//// 1キーを押しながら、↑ ↓ でHP増減
+	//if (CInput::Key('1'))
+	//{
+	//	if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
+	//	else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
+	//}
+	//else if (CInput::Key('2'))
+	//{
+	//	LevelUp();
+	//}
 
 	// 現在のHPを設定
 	mpHpGauge->SetValue(mCharaStatus.hp);

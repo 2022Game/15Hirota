@@ -130,7 +130,7 @@ void CFallingObjects::UpdateFalling()
 			{
 				
 				mWaitTime -= Time::DeltaTime();
-				CDebugPrint::Print("mWaitTime %f\n", mWaitTime);
+				//CDebugPrint::Print("mWaitTime %f\n", mWaitTime);
 			}
 			// 待ち時間が経過したら、次のステップへ
 			else

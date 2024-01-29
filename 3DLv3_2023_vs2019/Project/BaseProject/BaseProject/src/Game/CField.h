@@ -19,6 +19,7 @@ private:
 	void CreateFieldObjects();
 
 	CModel* mpModel;
+	CModel* mpModelSky;
 	CColliderMesh* mpColliderMesh;
 	CColliderMesh* mpWallCol;
 	CColliderMesh* mpEnemyWallCol;

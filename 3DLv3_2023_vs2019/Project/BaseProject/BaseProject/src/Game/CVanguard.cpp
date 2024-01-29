@@ -316,7 +316,7 @@ void CVanguard::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 				mTargetDir = vp.Normalized();
 
 				int hitRand = Math::Rand(0, 100);
-				CDebugPrint::Print("hit1:%d\n", hitRand);
+				//CDebugPrint::Print("hit1:%d\n", hitRand);
 				if (hitRand >= 80)
 				{
 					int random = Math::Rand(0, 2);
@@ -597,8 +597,8 @@ void CVanguard::UpdateRolling()
 {
 	mpDamageCol->SetEnable(false);
 	mRollingEnd = true;
-	CDebugPrint::Print("mMoveVector :%f\n", mMoveVector.Z());
-	CDebugPrint::Print("mTargetDir :%f\n", mTargetDir.Z());
+	/*CDebugPrint::Print("mMoveVector :%f\n", mMoveVector.Z());
+	CDebugPrint::Print("mTargetDir :%f\n", mTargetDir.Z());*/
 	ChangeAnimation(EAnimType::eRolling);
 
 	mMoveSpeed.X(0.0f);
@@ -1221,7 +1221,7 @@ void CVanguard::UpdateLoseSight()
 			mElapsedTime_End = 0.0f; // プレイヤーが視界から消えたら経過時間をリセット
 		}
 	}
-	CDebugPrint::Print("ElapsedTIme:%f\n", mElapsedTime_End);
+	//CDebugPrint::Print("ElapsedTIme:%f\n", mElapsedTime_End);
 }
 
 // 指さし
@@ -1327,7 +1327,7 @@ void CVanguard::Update()
 			mKickTime = 0.0f;
 		}
 	}
-	CDebugPrint::Print("kickTime%f\n", mKickTime);
+	//CDebugPrint::Print("kickTime%f\n", mKickTime);
 
 	// プレイヤーを発見した後の時間の計測
 	if (mDiscoveryTime_End <= DISCOVERY_END && mDiscoveryEnd)
@@ -1339,7 +1339,7 @@ void CVanguard::Update()
 			mDiscoveryTime_End = 0.0f;
 		}
 	}
-	CDebugPrint::Print("discoveryTimeEnd:%f\n", mDiscoveryTime_End);
+	//CDebugPrint::Print("discoveryTimeEnd:%f\n", mDiscoveryTime_End);
 
 	// 回避の時間の計測
 	if (mTimeRolling <= ROLLING_END && mRollingEnd)
@@ -1558,29 +1558,29 @@ void CVanguard::Update()
 
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 
-	// CSoldierのデバッグ表示
-	static bool debug = false;
-	if (CInput::PushKey('F'))
-	{
-		debug = !debug;
-	}
-	if (debug)
-	{
-		//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
-		CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
-		CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
-		CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
-	}
-	// 1キーを押しながら、↑ ↓ でHP増減
-	if (CInput::Key('3'))
-	{
-		if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
-		else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
-	}
-	else if (CInput::Key('2'))
-	{
-		LevelUp();
-	}
+	//// CSoldierのデバッグ表示
+	//static bool debug = false;
+	//if (CInput::PushKey('F'))
+	//{
+	//	debug = !debug;
+	//}
+	//if (debug)
+	//{
+	//	//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
+	//	CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
+	//	CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
+	//	CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
+	//}
+	//// 1キーを押しながら、↑ ↓ でHP増減
+	//if (CInput::Key('3'))
+	//{
+	//	if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
+	//	else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
+	//}
+	//else if (CInput::Key('2'))
+	//{
+	//	LevelUp();
+	//}
 
 	// 移動
 	Position(Position() + mMoveVector + mMoveSpeed * 60.0f * Time::DeltaTime());
@@ -1611,7 +1611,7 @@ void CVanguard::Update()
 	mIsGrounded = false;
 
 	// 前フレームのFPSを監視
-	CDebugPrint::Print("FPS:%f\n", Time::FPS());
+	//CDebugPrint::Print("FPS:%f\n", Time::FPS());
 
 }
 
