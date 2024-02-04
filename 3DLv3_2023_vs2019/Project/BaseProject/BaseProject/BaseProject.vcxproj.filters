@@ -460,6 +460,12 @@
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CStageSelectionStage.cpp">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageSelection.cpp">
+      <Filter>ソース ファイル\Game\Field</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -848,6 +854,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CMajicSwordEnemy.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageSelectionStage.h">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageSelection.h">
+      <Filter>ソース ファイル\Game\Field</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

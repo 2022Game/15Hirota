@@ -1,5 +1,6 @@
 #include "CStageManager.h"
 #include "CStageBase.h"
+#include "CStageSelectionStage.h"
 #include "CStage1.h"
 #include "CStage2.h"
 
@@ -30,8 +31,7 @@ void CStageManager::LoadStage(int no)
 	// ステージ番号に合わせてステージを読み込み
 	switch (no)
 	{
-	case 0: spCurrentStage = new CStage1(); break;
-	/*case 1: spCurrentStage = new CStage2(); break;*/
+	case 0: spCurrentStage = new CStageSelectionStage(); break;
 	default:spCurrentStage = new CStage1(); break;
 	}
 	// ステージが作成出来たら、ステージ読み込み

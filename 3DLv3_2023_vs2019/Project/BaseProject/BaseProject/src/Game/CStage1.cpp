@@ -23,7 +23,7 @@
 // コンストラクタ
 CStage1::CStage1()
 {
-	mStageNo = 0;
+	mStageNo = 1;
 }
 
 // デストラクタ
