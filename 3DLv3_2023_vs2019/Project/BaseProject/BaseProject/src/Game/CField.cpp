@@ -23,8 +23,6 @@ CField::CField()
 	CModel* enemywallCol = CResourceManager::Get<CModel>("EnemyWallCol");
 	mpEnemyWallCol = new CColliderMesh(this, ELayer::eFieldEnemyWall, enemywallCol, true);
 
-	
-
 	CreateFieldObjects();
 }
 

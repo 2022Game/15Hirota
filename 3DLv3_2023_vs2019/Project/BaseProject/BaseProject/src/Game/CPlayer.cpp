@@ -86,7 +86,7 @@ CPlayer::CPlayer()
 	, mElapsedTimeEnd(0.0f)
 	, mElapsedTimeCol(0.0f)
 	, mInvincibleStartTime(10.0f)
-	, mStartPos(0.0f, 30.0f, -20.0f)
+	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mHpHit(false)
 	, damageEnemy(false)
@@ -170,6 +170,7 @@ CPlayer::CPlayer()
 	mpSword = new CMajicSword();
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpSword->SetOwner(this);
+
 
 	// Å‰‚É1ƒŒƒxƒ‹‚Éİ’è
 	ChangeLevel(1);

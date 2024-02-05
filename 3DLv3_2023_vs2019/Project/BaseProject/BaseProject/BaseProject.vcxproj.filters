@@ -466,6 +466,9 @@
     <ClCompile Include="src\Game\CStageSelection.cpp">
       <Filter>ソース ファイル\Game\Field</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CField1.cpp">
+      <Filter>ソース ファイル\Game\Field</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -859,6 +862,9 @@
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CStageSelection.h">
+      <Filter>ソース ファイル\Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CField1.h">
       <Filter>ソース ファイル\Game\Field</Filter>
     </ClInclude>
   </ItemGroup>

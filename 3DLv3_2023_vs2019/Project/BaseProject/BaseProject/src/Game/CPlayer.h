@@ -238,8 +238,8 @@ private:
 
 	//// ベクトル関連 /////////////////////////////////////
 
-	CVector mMoveSpeed;	// 移動速度
-	CVector mStartPos;	// プレイヤーの初期位置
+	CVector mMoveSpeed;		// 移動速度
+	CVector mStartPos;		// プレイヤーの初期位置
 
 	///////////////////////////////////////////////////////
 

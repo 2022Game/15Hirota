@@ -2,7 +2,7 @@
 #define CSTAGE2_H
 #include "CStageBase.h"
 
-// ステージ1「未定」
+// ステージ1 「大きな平原」
 class CStage2 : public CStageBase
 {
 public:

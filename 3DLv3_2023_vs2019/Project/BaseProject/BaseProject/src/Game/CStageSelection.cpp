@@ -7,7 +7,6 @@ CStageSelection::CStageSelection()
 {
 	// モデルデータ取得
 	mpModel = CResourceManager::Get<CModel>("StageSelection");
-	// 空のデータ
 
 
 	CModel* wallCol = CResourceManager::Get<CModel>("StageSelectionWallCol");
