@@ -95,6 +95,9 @@
     <Filter Include="ソース ファイル\BaseSystem\Sound">
       <UniqueIdentifier>{99ead9f6-35af-4e55-a66f-ec4ac8d90924}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Tree">
+      <UniqueIdentifier>{56c8349e-1aa1-4aba-83c4-df0dacdb2535}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -468,6 +471,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CField1.cpp">
       <Filter>ソース ファイル\Game\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTree1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -866,6 +872,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CField1.h">
       <Filter>ソース ファイル\Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTree1.h">
+      <Filter>ソース ファイル\Game\Field\Object\Tree</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

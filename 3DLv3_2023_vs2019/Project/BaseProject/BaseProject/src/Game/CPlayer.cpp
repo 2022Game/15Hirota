@@ -86,8 +86,10 @@ CPlayer::CPlayer()
 	, mElapsedTimeEnd(0.0f)
 	, mElapsedTimeCol(0.0f)
 	, mInvincibleStartTime(10.0f)
+	, mMoveSpeedY(0.0f)
 	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
+	, mGroundNormal(0.0f, 1.0f, 0.0f)
 	, mHpHit(false)
 	, damageEnemy(false)
 	, mInvincible(false)
@@ -140,7 +142,7 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol, ELayer::eBlockCol });
-	
+
 
 	// 一時的な当たり判定を取るコライダー
 	mpColliderSphere = new CColliderSphere
@@ -148,7 +150,7 @@ CPlayer::CPlayer()
 		this, ELayer::ePlayer,
 		9.0f
 	);
-	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, ELayer::eInvincbleCol, ELayer::eEnemy});
+	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, ELayer::eInvincbleCol, ELayer::eEnemy });
 	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 
 	// ダメージを受けるコライダーを作成
@@ -160,7 +162,7 @@ CPlayer::CPlayer()
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eKickCol, ELayer::eBulletCol });
-	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, ETag::eEnemy, ETag::eBullet});
+	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, ETag::eEnemy, ETag::eBullet });
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -183,7 +185,7 @@ CPlayer::~CPlayer()
 	SAFE_DELETE(mpColliderLine);
 	SAFE_DELETE(mpColliderSphere);
 	SAFE_DELETE(mpDamageCol);
-	
+
 	// マジックソードを破棄
 	mpSword->Kill();
 }
@@ -196,9 +198,16 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	{
 		if (other->Layer() == ELayer::eField)
 		{
-			mMoveSpeed.Y(0.0f);
-			Position(Position() + hit.adjust * hit.weight);
+			mMoveSpeedY = 0.0f;
+			CVector adjust = hit.adjust;
+			adjust.X(0.0f);
+			adjust.Z(0.0f);
+			Position(Position() + adjust * hit.weight);
+
+			// 接地した
 			mIsGrounded = true;
+			// 接地した地面の法線を記憶しておく
+			mGroundNormal = hit.adjust.Normalized();
 
 			if (other->Tag() == ETag::eRideableObject)
 			{
@@ -208,9 +217,13 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// プレイヤーにダメージを与えるコライダー
 		else if (other->Layer() == ELayer::eDamageObject)
 		{
-			mMoveSpeed.Y(0.0f);
+			mMoveSpeedY = 0.0f;
 			Position(Position() + hit.adjust);
+
+			// 接地した
 			mIsGrounded = true;
+			// 接地した地面の法線を記憶しておく
+			mGroundNormal = hit.adjust.Normalized();
 
 			if (other->Tag() == ETag::eRideableObject)
 			{
@@ -238,7 +251,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			if (mState == EState::eJumpEnd)
 			{
-				mMoveSpeed.Y(0.0f);
+				mMoveSpeedY = 0.0f;
 				Position(Position() + hit.adjust);
 				mpRideObject = other->Owner();
 			}
@@ -252,7 +265,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			if (mState == EState::eJump)
 			{
-				mMoveSpeed.Y(0.0f);
+				mMoveSpeedY = 0.0f;
 				Position(Position() + hit.adjust);
 				mpRideObject = other->Owner();
 			}
@@ -275,10 +288,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				mpRideObject = other->Owner();
 			}
-		}
-		else if (other->Layer() == ELayer::eField)
-		{
-			Position(Position() + hit.adjust);
 		}
 		// 回復アイテム
 		else if (other->Layer() == ELayer::eRecoverCol)
@@ -448,6 +457,43 @@ void CPlayer::ChangeAnimation(EAnimType type)
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
 }
 
+// キーの入力情報から移動ベクトルを求める
+CVector CPlayer::CalcMoveVec() const
+{
+	CVector move = CVector::zero;
+
+	// キーの入力ベクトルを取得
+	CVector input = CVector::zero;
+	if (CInput::Key('W'))		input.Z(-1.0f);
+	else if (CInput::Key('S'))	input.Z(1.0f);
+	if (CInput::Key('A'))		input.X(-1.0f);
+	else if (CInput::Key('D'))	input.X(1.0f);
+
+	// 入力ベクトルの長さで入力されているか判定
+	if (input.LengthSqr() > 0.0f)
+	{
+		// 上方向ベクトル(設置している場合は、地面の法線)
+		CVector up = mIsGrounded ? mGroundNormal : CVector::up;
+		// カメラの向きに合わせた移動ベクトルに変換
+		CCamera* mainCamera = CCamera::MainCamera();
+		CVector camForward = mainCamera->VectorZ();
+		camForward.Y(0.0f);
+		camForward.Normalize();
+		// カメラの正面方向ベクトルと上方向ベクトルの外積から
+		// 横方向の移動ベクトルを求める
+		CVector moveSide = CVector::Cross(up, camForward);
+		// 横方向の移動ベクトルと上方向ベクトルの外積から
+		// 正面方向の移動ベクトルを求める
+		CVector moveForward = CVector::Cross(moveSide, up);
+
+		// 求めた各方向の移動ベクトルから、
+		// 最終的なプレイヤーの移動ベクトルを求める
+		move = moveForward * input.Z() + moveSide * input.X();
+		move.Normalize();
+	}
+	return move;
+}
+
 // 準備中の状態
 void CPlayer::UpdateReady()
 {
@@ -460,6 +506,7 @@ void CPlayer::UpdateReady()
 		SetEnableCol(false);
 		// プレイヤーの移動速度を0にする
 		mMoveSpeed = CVector::zero;
+		mMoveSpeedY = 0.0f;
 		// 次のステップへ
 		mStateStep++;
 		break;
@@ -495,47 +542,20 @@ void CPlayer::UpdateIdle()
 	}
 
 	damageEnemy = false;
-	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
 
-	mMoveSpeed.X(0.0f);
-	mMoveSpeed.Z(0.0f);
-	
+	mMoveSpeed = CVector::zero;
+
 	if (mIsGrounded)
 	{
-		// 移動処理
-		// キーの入力ベクトルを取得
-		CVector input;
-		// 垂直方向の入力
-		if (CInput::Key('W') && !CInput::Key('S'))
-			input.Z(-1.0f);
-		else if (CInput::Key('S') && !CInput::Key('W'))
-			input.Z(1.0f);
-		else
-			input.Z(0.0f);
+		mStateStep = 0;
 
-		// 水平方向の入力
-		if (CInput::Key('A') && !CInput::Key('D'))
-			input.X(-1.0f);
-		else if (CInput::Key('D') && !CInput::Key('A'))
-			input.X(1.0f);
-		else
-			input.X(0.0f);
-
-		// 入力ベクトルの長さで入力されているか判定
-		if (input.LengthSqr() > 0.0f)
+		// プレイヤーの移動ベクトルを求める
+		CVector move = CalcMoveVec();
+		// 求めた移動ベクトルの長さで入力されているか判定
+		if (move.LengthSqr() > 0.0f)
 		{
-			// カメラの向きに合わせた移動ベクトルに変換
-			CCamera* mainCamera = CCamera::MainCamera();
-			CVector camForward = mainCamera->VectorZ();
-			CVector camSide = CVector::Cross(CVector::up, camForward);
-			CVector move = camForward * input.Z() + camSide * input.X();
-			// カメラの向きに合わせた移動ベクトルに変換
-			//CVector move = CCamera::MainCamera()->Rotation() * input;
-			move.Y(0.0f);
-			move.Normalize();
-
 			float speed = MOVE_SPEED;
-			if (CInput::Key(VK_SHIFT) && KeyPush)
+			if (CInput::Key(VK_SHIFT))
 			{
 				if ((mCharaStatus.stamina > 0 && !staminaLowerLimit))
 				{
@@ -593,15 +613,13 @@ void CPlayer::UpdateIdle()
 		// Jキーで攻撃状態へ移行
 		if (CInput::PushKey(VK_LBUTTON))
 		{
-			mMoveSpeed.X(0.0f);
-			mMoveSpeed.Z(0.0f);
+			mMoveSpeed = CVector::zero;
 			ChangeState(EState::eAttack);
 		}
 		// Kキーで強攻撃
 		else if (CInput::PushKey(VK_RBUTTON))
 		{
-			mMoveSpeed.X(0.0f);
-			mMoveSpeed.Z(0.0f);
+			mMoveSpeed = CVector::zero;
 			ChangeState(EState::eAttackStrong);
 		}
 		// SPACEキーでジャンプ開始へ移行
@@ -618,13 +636,12 @@ void CPlayer::UpdateIdle()
 			}
 		}
 		// CTRLキーで回避へ移行
-		else if (((CInput::PushKey(VK_CONTROL)) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+		else if (((CInput::PushKey(VK_CONTROL))) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
 		{
 			// 回避行動前にスタミナが0以下になるかどうかを確認
 			if (mCharaStatus.stamina - 50 >= 0) {
-				
-				mMoveSpeed.X(0.0f);
-				mMoveSpeed.Z(0.0f);
+
+				mMoveSpeed = CVector::zero;
 				ChangeState(EState::eRotate);
 				// スタミナが0以下にならない場合は回避行動を実行
 				mCharaStatus.stamina -= 50;
@@ -634,6 +651,7 @@ void CPlayer::UpdateIdle()
 			}
 		}
 	}
+	// プレイヤーが接地していない
 	else
 	{
 		if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
@@ -641,8 +659,17 @@ void CPlayer::UpdateIdle()
 			mCharaStatus.stamina += 1;
 		}
 
-		// 待機アニメーションに切り替え
-		ChangeAnimation(EAnimType::eIdle);
+		// 空中に飛び出したときに待機モーションへ切り替えるのを
+		// 数フレーム待つ
+		if (mStateStep <= 5)
+		{
+			mStateStep++;
+		}
+		else
+		{
+			// 待機アニメーションに切り替え
+			ChangeAnimation(EAnimType::eIdle);
+		}
 	}
 }
 
@@ -659,8 +686,7 @@ void CPlayer::UpdateDashEnd()
 		}
 	}
 
-	mMoveSpeed.Z(0.0f);
-	mMoveSpeed.X(0.0f);
+	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eDashStop);
 	if (IsAnimationFinished())
 	{
@@ -705,7 +731,7 @@ void CPlayer::UpdateAttackWait()
 		if (((CInput::PushKey(VK_CONTROL)) && KeyPush) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
 		{
 			// 回避行動前にスタミナが0以下になるかどうかを確認
-			if (mCharaStatus.stamina - 50 >= 0) 
+			if (mCharaStatus.stamina - 50 >= 0)
 			{
 				ChangeState(EState::eRotate);
 				// スタミナが0以下にならない場合は回避行動を実行
@@ -775,21 +801,11 @@ void CPlayer::UpdateRotate()
 	mpDamageCol->SetEnable(false);
 
 	// 移動処理
-	// キーの入力ベクトルを取得
-	CVector input;
-	if (CInput::Key('W'))		input.Z(-1.0f);
-	else if (CInput::Key('S'))	input.Z(1.0f);
-	if (CInput::Key('A'))		input.X(-1.0f);
-	else if (CInput::Key('D'))	input.X(1.0f);
+	CVector move = CalcMoveVec();
 
 	// 入力ベクトルの長さで入力されているか判定
-	if (input.LengthSqr() > 0.0f)
+	if (move.LengthSqr() > 0.0f)
 	{
-		// カメラの向きに合わせた移動ベクトルに変換
-		CVector move = CCamera::MainCamera()->Rotation() * input;
-		move.Y(0.0f);
-		move.Normalize();
-
 		float speed = MOVE_SPEED;
 		mMoveSpeed += move * speed * MOVE_SPEED * mCharaStatus.moveSpeed;
 	}
@@ -822,8 +838,7 @@ void CPlayer::UpdateRotateEnd()
 // クリア
 void CPlayer::UpdateClear()
 {
-	mMoveSpeed.X(0.0f);
-	mMoveSpeed.Z(0.0f);
+	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eGuts);
 	ChangeState(EState::eClearEnd);
 }
@@ -849,8 +864,7 @@ void CPlayer::UpdateDeath()
 {
 	mpDamageCol->SetEnable(false);
 	mpSword->AttackEnd();
-	mMoveSpeed.X(0.0f);
-	mMoveSpeed.Z(0.0f);
+	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eDeath);
 	if (IsAnimationFinished())
 	{
@@ -884,8 +898,7 @@ void CPlayer::UpdateReStart()
 // 敵の攻撃を受けた時
 void CPlayer::UpdateHit()
 {
-	mMoveSpeed.X(0.0f);
-	mMoveSpeed.Z(0.0f);
+	mMoveSpeed = CVector::zero;
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 	if (!damageEnemy)
 	{
@@ -903,9 +916,6 @@ void CPlayer::UpdateHit()
 		}
 	}
 
-	// ダメージを受けた時は移動を停止
-	mMoveSpeed.X(0.0f);
-	mMoveSpeed.Z(0.0f);
 	ChangeAnimation(EAnimType::eHitJ);
 	if (IsAnimationFinished())
 	{
@@ -941,8 +951,7 @@ void CPlayer::UpdateHitBullet()
 		}
 	}
 
-	mMoveSpeed.X(0.0f);
-	mMoveSpeed.Z(0.0f);
+	mMoveSpeed = CVector::zero;
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 
@@ -991,8 +1000,7 @@ void CPlayer::UpdateHitSword()
 		}
 	}
 
-	mMoveSpeed.X(0.0f);
-	mMoveSpeed.Z(0.0f);
+	mMoveSpeed = CVector::zero;
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 
@@ -1042,24 +1050,14 @@ void CPlayer::UpdateJumpStart()
 	}
 
 	// 移動処理
-	// キーの入力ベクトルを取得
-	CVector input;
-	if (CInput::Key('W'))		input.Z(-1.0f);
-	else if (CInput::Key('S'))	input.Z(1.0f);
-	if (CInput::Key('A'))		input.X(-1.0f);
-	else if (CInput::Key('D'))	input.X(1.0f);
+	CVector move = CalcMoveVec();
 
 	// 入力ベクトルの長さで入力されているか判定
-	if (input.LengthSqr() > 0.0f)
+	if (move.LengthSqr() > 0.0f)
 	{
-		// カメラの向きに合わせた移動ベクトルに変換
-		CVector move = CCamera::MainCamera()->Rotation() * input;
-		move.Y(0.0f);
-		move.Normalize();
-
 		mMoveSpeed = move;
 	}
-	mMoveSpeed += CVector(0.0f, JUMP_SPEED, 0.0f);
+	mMoveSpeedY += JUMP_SPEED;
 	mIsGrounded = false;
 }
 
@@ -1076,7 +1074,7 @@ void CPlayer::UpdateJump()
 		}
 	}
 
-	if (mMoveSpeed.Y() <= 0.0f)
+	if (mMoveSpeedY <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
 		ChangeState(EState::eJumpEnd);
@@ -1119,24 +1117,14 @@ void CPlayer::UpdateJumpingStart()
 	}
 
 	// 移動処理
-	// キーの入力ベクトルを取得
-	CVector input;
-	if (CInput::Key('W'))		input.Z(-1.0f);
-	else if (CInput::Key('S'))	input.Z(1.0f);
-	if (CInput::Key('A'))		input.X(-1.0f);
-	else if (CInput::Key('D'))	input.X(1.0f);
+	CVector move = CalcMoveVec();
 
 	// 入力ベクトルの長さで入力されているか判定
-	if (input.LengthSqr() > 0.0f)
+	if (move.LengthSqr() > 0.0f)
 	{
-		// カメラの向きに合わせた移動ベクトルに変換
-		CVector move = CCamera::MainCamera()->Rotation() * input;
-		move.Y(0.0f);
-		move.Normalize();
-
 		mMoveSpeed = move;
 	}
-	mMoveSpeed += CVector(0.0f, JUMP_BOUNCE, 0.0f);
+	mMoveSpeedY = JUMP_BOUNCE;
 	mIsGrounded = false;
 }
 
@@ -1153,7 +1141,7 @@ void CPlayer::UpdateJumping()
 		}
 	}
 
-	if (mMoveSpeed.Y() <= 0.0f)
+	if (mMoveSpeedY <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
 		ChangeState(EState::eJumpingEnd);
@@ -1195,107 +1183,108 @@ void CPlayer::Update()
 		UpdateReady();
 		break;
 		// 待機状態
-		case EState::eIdle:
-			UpdateIdle();
-			break;
+	case EState::eIdle:
+		UpdateIdle();
+		break;
 		// ダッシュ終了
-		case EState::eDashEnd:
-			UpdateDashEnd();
-			break;
+	case EState::eDashEnd:
+		UpdateDashEnd();
+		break;
 		// 攻撃
-		case EState::eAttack:
-			UpdateAttack();
-			break;
+	case EState::eAttack:
+		UpdateAttack();
+		break;
 		// 強攻撃
-		case EState::eAttackStrong:
-			UpdateAttackStrong();
-			break;
+	case EState::eAttackStrong:
+		UpdateAttackStrong();
+		break;
 		// 攻撃終了待ち
-		case EState::eAttackWait:
-			UpdateAttackWait();
-			break;
+	case EState::eAttackWait:
+		UpdateAttackWait();
+		break;
 		// 強攻撃終了待ち
-		case EState::eAttackStrongWait:
-			UpdateAttackStrongWait();
-			break;
+	case EState::eAttackStrongWait:
+		UpdateAttackStrongWait();
+		break;
 		// 回避開始
-		case EState::eRotate:
-			UpdateRotate();
-			break;
+	case EState::eRotate:
+		UpdateRotate();
+		break;
 		// 回避終了
-		case EState::eRotateEnd:
-			UpdateRotateEnd();
-			break;
+	case EState::eRotateEnd:
+		UpdateRotateEnd();
+		break;
 		// 敵のダメージHit
-		case EState::eHit:
-			UpdateHit();
-			break;
+	case EState::eHit:
+		UpdateHit();
+		break;
 		// 敵の弾Hit
-		case EState::eHitBullet:
-			UpdateHitBullet();
-			break;
+	case EState::eHitBullet:
+		UpdateHitBullet();
+		break;
 		// 敵の件Hit
-		case EState::eHitSword:
-			UpdateHitSword();
-			break;
+	case EState::eHitSword:
+		UpdateHitSword();
+		break;
 		// クリア
-		case EState::eClear:
-			UpdateClear();
-			break;
+	case EState::eClear:
+		UpdateClear();
+		break;
 		// クリア終了
-		case EState::eClearEnd:
-			UpdateClearEnd();
-			break;
+	case EState::eClearEnd:
+		UpdateClearEnd();
+		break;
 		// 死亡
-		case EState::eDeath:
-			UpdateDeath();
-			break;
+	case EState::eDeath:
+		UpdateDeath();
+		break;
 		// 死亡処理終了
-		case EState::eDeathEnd:
-			UpdateDeathEnd();
-			break;
+	case EState::eDeathEnd:
+		UpdateDeathEnd();
+		break;
 		// 再起
-		case EState::eReStart:
-			UpdateReStart();
-			break;
+	case EState::eReStart:
+		UpdateReStart();
+		break;
 
 		// ジャンプ開始
-		case EState::eJumpStart:
-			UpdateJumpStart();
-			break;
+	case EState::eJumpStart:
+		UpdateJumpStart();
+		break;
 		// ジャンプ中
-		case EState::eJump:
-			UpdateJump();
-			break;
+	case EState::eJump:
+		UpdateJump();
+		break;
 		// ジャンプ終了
-		case EState::eJumpEnd:
-			UpdateJumpEnd();
-			break;
+	case EState::eJumpEnd:
+		UpdateJumpEnd();
+		break;
 		// 跳ねる開始
-		case EState::eJumpingStart:
-			UpdateJumpingStart();
-			break;
+	case EState::eJumpingStart:
+		UpdateJumpingStart();
+		break;
 		// 跳ねる
-		case EState::eJumping:
-			UpdateJumping();
-			break;
+	case EState::eJumping:
+		UpdateJumping();
+		break;
 		// 跳ねる終了
-		case EState::eJumpingEnd:
-			UpdateJumpingEnd();
-			break;
+	case EState::eJumpingEnd:
+		UpdateJumpingEnd();
+		break;
 	}
 
 	// 準備中でなければ、移動処理などを行う
 	if (mState != EState::eReady)
 	{
-		mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
+		mMoveSpeedY -= GRAVITY;
+		CVector moveSpeed = mMoveSpeed + CVector(0.0f, mMoveSpeedY, 0.0f);
 
 		// 移動
-		Position(Position() + mMoveSpeed * 60.0f * Time::DeltaTime());
+		Position(Position() + moveSpeed * 60.0f * Time::DeltaTime());
 
 		// プレイヤーを移動方向へ向ける
 		CVector current = VectorZ();
-		CVector target = mMoveSpeed;
+		CVector target = moveSpeed;
 		target.Y(0.0f);
 		target.Normalize();
 		CVector forward = CVector::Slerp(current, target, 0.125f);
@@ -1370,7 +1359,7 @@ void CPlayer::Update()
 		Position(0.0f, 20.0f, -30.0f);
 	}
 	///////////////////////////////////////////
-	
+
 	// キャラクターの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();

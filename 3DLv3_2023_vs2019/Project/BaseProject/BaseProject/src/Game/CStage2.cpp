@@ -2,6 +2,7 @@
 #include "CDamageObject.h"
 #include "CGoalObject.h"
 #include "CStone1.h"
+#include "CTree1.h"
 #include "CField1.h"
 #include "CSoldier.h"
 #include "CPlayer.h"
@@ -36,34 +37,35 @@ void CStage2::Load()
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
-	CVector playerPos = CVector(1000.0f, 30.0f, 260.0f);
+	CVector playerPos = CVector(-1109.0f, 60.0f, 1133.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
+		player->Rotation(0.0f, 225.0f, 0.0f);
 	}
 
 	// カメラの位置と向きを設定
 	CGameCamera* mainCamera = new CGameCamera
 		//CCamera* mainCamera = new CCamera
 		(
-			CVector(1000.0f, 50.0f, 310.0f),
-			player->Position() + CVector(0.0f, 10.0f, 0.0f)
+			CVector(-1109.0f, 90.0f, 1200.0f),
+			player->Position() + CVector(0.0f, 0.0f, 0.0f)
 		);
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
-	//mainCamera->AddCollider(field->GetWallCol());
+	mainCamera->AddCollider(field->GetWallCol());
 
-	//// カメラの位置と向きを設定
-	//CCamera* mainCamera = CCamera::MainCamera();
-	//if (mainCamera != nullptr)
-	//{
-	//	CVector eye = CVector(0.0f, 80.0f, 45.0f);
-	//	CVector at = playerPos + CVector(0.0f, 0.0f, 0.0f);
-	//	mainCamera->LookAt(eye, at, CVector::up);
-	//}
-	//mainCamera->SetFollowTargetTf(player);
-	//// スフィアかメッシュぐらい
-	//mainCamera->AddCollider(field->GetWallCol());
+	//// 木1 //////////////////////////////////////////////
+
+	// 木1
+	CTree1Obj* tree1 = new CTree1Obj(
+		CVector(-1100.0f, 0.0f, 1100.0f),
+		CVector(10.0f, 10.0f, 10.0f),
+		CVector(0.0f, 0.0f, 0.0f));
+	AddTask(tree1);
+
+
+	///////////////////////////////////////////////////////
 }
 
 // ステージ破棄

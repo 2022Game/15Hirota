@@ -12,8 +12,8 @@ CField1::CField1()
 	// モデルデータ取得
 	mpModel = CResourceManager::Get<CModel>("Field1");
 
-	/*CModel* wallCol = CResourceManager::Get<CModel>("WallCol1");
-	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);*/
+	CModel* wallCol = CResourceManager::Get<CModel>("WallCol1");
+	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);
 
 	CModel* floorCol = CResourceManager::Get<CModel>("FloorCol1");
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, floorCol, true);
@@ -29,25 +29,25 @@ CField1::~CField1()
 	// コライダーを破棄
 	SAFE_DELETE(mpColliderMesh);
 
-	//if (mpWallCol != nullptr)
-	//{
-	//	// メインカメラから壁のコライダーへの参照を取り除く
-	//	CCamera* mainCamera = CCamera::MainCamera();
-	//	if (mainCamera != nullptr)
-	//	{
-	//		mainCamera->RemoveCollider(mpWallCol);
+	if (mpWallCol != nullptr)
+	{
+		// メインカメラから壁のコライダーへの参照を取り除く
+		CCamera* mainCamera = CCamera::MainCamera();
+		if (mainCamera != nullptr)
+		{
+			mainCamera->RemoveCollider(mpWallCol);
 
-	//	}
-	//	delete mpWallCol;
-	//	mpWallCol = nullptr;
-	//}
+		}
+		delete mpWallCol;
+		mpWallCol = nullptr;
+	}
 }
-//
-//// 壁のコライダー取得
-//CColliderMesh* CField1::GetWallCol() const
-//{
-//	return mpWallCol;
-//}
+
+// 壁のコライダー取得
+CColliderMesh* CField1::GetWallCol() const
+{
+	return mpWallCol;
+}
 
 void CField1::CreateFieldObjects()
 {

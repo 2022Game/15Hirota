@@ -238,8 +238,20 @@ private:
 
 	//// ベクトル関連 /////////////////////////////////////
 
-	CVector mMoveSpeed;		// 移動速度
+	CVector mMoveSpeed;		// 移動速度(X,Z)
 	CVector mStartPos;		// プレイヤーの初期位置
+	CVector mGroundNormal;	// 設置している地面の法線
+
+	///////////////////////////////////////////////////////
+
+
+	//// キー入力関連 /////////////////////////////////////
+
+	/// <summary>
+	/// キーの入力情報から移動ベクトルを求める
+	/// </summary>
+	/// <returns></returns>
+	CVector CalcMoveVec() const;
 
 	///////////////////////////////////////////////////////
 
@@ -256,6 +268,8 @@ private:
 	float mElapsedTimeCol;
 	// 無敵状態用の計測時間
 	float mInvincibleStartTime;
+	// 重力やジャンプによるY軸の移動速度
+	float mMoveSpeedY;
 	// 接地しているかどうか
 	bool mIsGrounded;
 	// 無敵かどうか
