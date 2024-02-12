@@ -11,6 +11,8 @@ CField1::CField1()
 {
 	// モデルデータ取得
 	mpModel = CResourceManager::Get<CModel>("Field1");
+	// 木のモデル取得
+	mpTree = CResourceManager::Get<CModel>("Stage2Tree");
 
 	CModel* wallCol = CResourceManager::Get<CModel>("WallCol1");
 	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);
@@ -62,4 +64,6 @@ void CField1::Render()
 {
 	mpModel->Render(Matrix());
 	mpModel->SetColor(mColor);
+	mpTree->Render(Matrix());
+	mpTree->SetColor(mColor);
 }

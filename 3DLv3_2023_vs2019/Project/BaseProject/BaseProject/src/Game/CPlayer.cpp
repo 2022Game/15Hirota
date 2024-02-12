@@ -1277,7 +1277,7 @@ void CPlayer::Update()
 	if (mState != EState::eReady)
 	{
 		mMoveSpeedY -= GRAVITY;
-		CVector moveSpeed = mMoveSpeed + CVector(0.0f, mMoveSpeedY, 0.0f);
+		CVector moveSpeed = mMoveSpeed + CVector(0.0f, mMoveSpeedY, 0.0f * Time::DeltaTime());
 
 		// ˆÚ“®
 		Position(Position() + moveSpeed * 60.0f * Time::DeltaTime());

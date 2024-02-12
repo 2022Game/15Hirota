@@ -23,6 +23,7 @@ private:
 	void CreateFieldObjects();
 
 	CModel* mpModel;
+	CModel* mpTree;
 	CColliderMesh* mpColliderMesh;
 	CColliderMesh* mpWallCol;
 	//CColliderMesh* mpEnemyWallCol;

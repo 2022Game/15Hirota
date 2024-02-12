@@ -64,6 +64,13 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f));
 	AddTask(tree1);
 
+	// –Ø2
+	CTree1Obj* tree2 = new CTree1Obj(
+		CVector(-1000.0f, 0.0f, 1000.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f));
+	AddTask(tree2);
+
 
 	///////////////////////////////////////////////////////
 }
