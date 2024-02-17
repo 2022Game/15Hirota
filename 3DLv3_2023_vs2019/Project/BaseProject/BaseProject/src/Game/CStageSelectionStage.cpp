@@ -3,11 +3,12 @@
 #include "CCamera.h"
 #include "CStageSelection.h"
 #include "CPlayer.h"
+#include "CStageButton.h"
 
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
 {
-	mStageNo = 2;
+	mStageNo = 0;
 }
 
 // デストラクタ
@@ -26,6 +27,13 @@ void CStageSelectionStage::Load()
 	CStageSelection* field = new CStageSelection();
 	AddTask(field);
 
+	// ステージ選択モデル
+	CStageButton* button = new CStageButton(
+		CVector(150.0f, 11.0f, 0.0f),
+		CVector(10.0f, 10.0f, 10.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer);
+	AddTask(button);
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
@@ -40,12 +48,12 @@ void CStageSelectionStage::Load()
 	CGameCamera* mainCamera = new CGameCamera
 		//CCamera* mainCamera = new CCamera
 		(
-			CVector(-245.0f, 80.0f, 45.0f),
+			CVector(-245.0f, 80.0f, 55.0f),
 			player->Position() + CVector(0.0f, 0.0f, 0.0f)
 		);
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
-	mainCamera->AddCollider(field->GetWallCol());
+	//mainCamera->AddCollider(field->GetWallCol());
 }
 
 // ステージ破棄

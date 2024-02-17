@@ -70,6 +70,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("Number1",				 "Field\\Object\\number1.obj");			// 一番目の床ブロック
 	CResourceManager::Load<CModel>("Number0",				 "Field\\Object\\number0.obj");			// 零番目の床
 	CResourceManager::Load<CModel>("Sky",					 "Field\\Sky.obj");						// 空のオブジェ
+	CResourceManager::Load<CModel>("StageButton",			 "Field\\Object\\StageBotan.obj");		// ステージボタン
 
 
 	// キャラクター関連

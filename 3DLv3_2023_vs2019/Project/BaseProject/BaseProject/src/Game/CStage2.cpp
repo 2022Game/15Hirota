@@ -13,7 +13,7 @@
 // コンストラクタ
 CStage2::CStage2()
 {
-	mStageNo = 0;
+	mStageNo = 2;
 }
 
 // デストラクタ

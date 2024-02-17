@@ -251,7 +251,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			if (mState == EState::eJumpEnd)
 			{
-				mMoveSpeedY = 0.0f;
+				//mMoveSpeedY = 0.0f;
 				Position(Position() + hit.adjust);
 				mpRideObject = other->Owner();
 			}

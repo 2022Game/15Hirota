@@ -68,8 +68,10 @@ void CJumpingObject::Collision(CCollider* self, CCollider* other, const CHitInfo
 			CPlayer* player = dynamic_cast<CPlayer*>(owner);
 			if (player)
 			{
-				if(player)
-				player->UpdateJumpStart();
+				if (player)
+				{
+					player->UpdateJumpingStart();
+				}
 			}
 			ChangeState(EState::Bounce);
 		}

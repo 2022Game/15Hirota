@@ -31,9 +31,9 @@ void CStageManager::LoadStage(int no)
 	// ステージ番号に合わせてステージを読み込み
 	switch (no)
 	{
-	case 0: spCurrentStage = new CStage2(); break;
+	case 0: spCurrentStage = new CStageSelectionStage(); break;
 	case 1: spCurrentStage = new CStage1(); break;
-	case 2: spCurrentStage = new CStageSelectionStage(); break;
+	case 2: spCurrentStage = new CStage2(); break;
 	default:spCurrentStage = new CStageSelectionStage(); break;
 	}
 	// ステージが作成出来たら、ステージ読み込み

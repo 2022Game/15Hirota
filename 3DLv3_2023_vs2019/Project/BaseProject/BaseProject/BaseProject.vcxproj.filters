@@ -98,6 +98,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Tree">
       <UniqueIdentifier>{56c8349e-1aa1-4aba-83c4-df0dacdb2535}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Stage\StageButton">
+      <UniqueIdentifier>{bb7528d6-387a-4e81-9128-6d76c0dc78ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -474,6 +477,15 @@
     </ClCompile>
     <ClCompile Include="src\Game\CTree1.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageTime.cpp">
+      <Filter>ソース ファイル\Game\UI\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageButton.cpp">
+      <Filter>ソース ファイル\Game\Stage\StageButton</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageMenu.cpp">
+      <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -875,6 +887,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CTree1.h">
       <Filter>ソース ファイル\Game\Field\Object\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageTime.h">
+      <Filter>ソース ファイル\Game\UI\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageButton.h">
+      <Filter>ソース ファイル\Game\Stage\StageButton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageMenu.h">
+      <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
