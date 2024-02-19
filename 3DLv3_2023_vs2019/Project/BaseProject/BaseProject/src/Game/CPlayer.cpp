@@ -18,6 +18,8 @@
 #define MOVE_SPEED 0.9f
 // 移動スピード
 #define RUN_SPEED 1.3f
+// ダッシュスピード
+#define DASH_SPEED 2.0f
 // ジャンプ
 #define JUMP_SPEED 1.5f
 // 大ジャンプ
@@ -64,9 +66,9 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Warrok_Walking.x",				true,	86.0f	},	// ダッシュ
 	{ "Character\\Monster1\\anim\\Warrok_Punchi.x",				false,	67.0f	},		// 攻撃
 	{ "Character\\Monster1\\anim\\Warrok_StrongAttack.x",		false,	161.0f	},		// 強攻撃
-	{ "Character\\Monster1\\anim\\jump_start.x",				false,	25.0f	},		// ジャンプ開始
-	{ "Character\\Monster1\\anim\\jump.x",							true,	1.0f	},	// ジャンプ中
-	{ "Character\\Monster1\\anim\\jump_end.x",					false,	26.0f	},		// ジャンプ終了
+	{ "Character\\Monster1\\anim\\jump_start1.x",				false,	25.0f	},		// ジャンプ開始
+	{ "Character\\Monster1\\anim\\jump1.x",							true,	1.0f	},	// ジャンプ中
+	{ "Character\\Monster1\\anim\\jump_end1.x",					false,	26.0f	},		// ジャンプ終了
 	{ "Character\\Monster1\\anim\\Warrok_Run.x",					true,	53.0f	},	// 歩行
 	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	90.0f	},		// ダッシュ終了
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	71.0f	},		// 回避
@@ -87,6 +89,7 @@ CPlayer::CPlayer()
 	, mElapsedTimeCol(0.0f)
 	, mInvincibleStartTime(10.0f)
 	, mMoveSpeedY(0.0f)
+	, mDashTime(0.0f)
 	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mGroundNormal(0.0f, 1.0f, 0.0f)
@@ -98,6 +101,9 @@ CPlayer::CPlayer()
 	, mIsPlayedSlashSE(false)
 	, staminaLowerLimit(false)
 	, mIsPlayedHitDamageSE(false)
+	, mQuickDash(false)
+	, mDashStamina(false)
+	, mDash(false)
 	, mpRideObject(nullptr)
 {
 	// インスタンスの設定
@@ -559,14 +565,47 @@ void CPlayer::UpdateIdle()
 			{
 				if ((mCharaStatus.stamina > 0 && !staminaLowerLimit))
 				{
-					// 速度を走行速度に変更
-					speed = RUN_SPEED;
-					mCharaStatus.stamina -= 1;
 					ChangeAnimation(EAnimType::eDash);
-
-					if (mCharaStatus.stamina == 0)
+					// 最初のダッシュをしたか
+					if (!mQuickDash)
 					{
+						mCharaStatus.stamina -= 1;
+						// 通常のダッシュよりも速いダッシュを開始
+						speed = DASH_SPEED;
+
+						// スタミナを-10消費
+						if (!mDashStamina)
+						{
+							if (mCharaStatus.stamina >= 10)
+							{
+								mCharaStatus.stamina -= 15;
+								mDashStamina = true;
+							}
+						}
+
+						// 速いダッシュを1秒間計測
+						mDashTime += Time::DeltaTime();
+						if (mDashTime >= 0.4f)
+						{
+							mQuickDash = true;
+						}
+					}
+					else
+					{
+						speed = RUN_SPEED;
+						mDash = true;
+						mDashStamina = false;
+						mDashTime = 0.0f;
+						mCharaStatus.stamina -= 1;
+					}
+
+					if (mCharaStatus.stamina <= 0)
+					{
+						mDash = false;
 						staminaLowerLimit = true;
+						mQuickDash = false;
+						mDashStamina = false;
+						mDashTime = 0.0f;
 						ChangeState(EState::eDashEnd);
 					}
 				}
@@ -575,6 +614,8 @@ void CPlayer::UpdateIdle()
 					if (staminaLowerLimit && mCharaStatus.stamina == mCharaMaxStatus.stamina)
 					{
 						staminaLowerLimit = false; // スタミナが再びMAXになったらリセット
+						mQuickDash = false;
+						mDashTime = 0.0f;
 					}
 					mCharaStatus.stamina += 1;
 					ChangeAnimation(EAnimType::eWalk);
@@ -585,15 +626,20 @@ void CPlayer::UpdateIdle()
 				if (mCharaStatus.stamina < mCharaMaxStatus.stamina && !staminaDepleted)
 				{
 					mCharaStatus.stamina += 1;
+					if (mDash)
+					{
+						mDash = false;
+						ChangeState(EState::eDashEnd);
+					}
 				}
 				else if (mCharaStatus.stamina >= mCharaMaxStatus.stamina)
 				{
 					staminaDepleted = false;  // スタミナが上限値より上になったらリセット
 				}
-
 				ChangeAnimation(EAnimType::eWalk);
 			}
 			mMoveSpeed += move * speed * MOVE_SPEED * mCharaStatus.moveSpeed;
+			
 		}
 		// 移動キーを入力していない
 		else
@@ -671,6 +717,8 @@ void CPlayer::UpdateIdle()
 			ChangeAnimation(EAnimType::eIdle);
 		}
 	}
+	CDebugPrint::Print("stamina:%d\n", mCharaStatus.stamina);
+	CDebugPrint::Print("mDashTime:%f\n", mDashTime);
 }
 
 // ダッシュ終了

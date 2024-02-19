@@ -89,6 +89,7 @@ private:
 	// 状態関連
 	// アニメーション関連
 	// ベクトル関連
+	// キー入力関連
 	// 変数関連
 
 	// プレイヤーのインスタンス
@@ -127,7 +128,11 @@ private:
 	void UpdateReady();
 	// 待機状態
 	void UpdateIdle();
-	//ダッシュ終了
+	// ダッシュ開始
+	void UpdateDashStart();
+	// ダッシュ中
+	void UpdateDash();
+	// ダッシュ終了
 	void UpdateDashEnd();
 	// 攻撃
 	void UpdateAttack();
@@ -174,6 +179,8 @@ private:
 		eJumpingEnd,		// 跳ねる終了
 		eRotate,			// 回避開始
 		eRotateEnd,			// 回避終了待ち
+		eDashStart,			// ダッシュ開始
+		eDash,				// ダッシュ中
 		eDashEnd,			// ダッシュ終了
 		eClear,				// クリア状態
 		eClearEnd,			// クリア終了
@@ -260,6 +267,7 @@ private:
 
 	// 状態内のステップ
 	int mStateStep;
+
 	// 計測時間
 	float mElapsedTime;
 	// 計測時間終了
@@ -270,6 +278,9 @@ private:
 	float mInvincibleStartTime;
 	// 重力やジャンプによるY軸の移動速度
 	float mMoveSpeedY;
+	// 最初のダッシュ時間計測
+	float mDashTime;
+
 	// 接地しているかどうか
 	bool mIsGrounded;
 	// 無敵かどうか
@@ -288,6 +299,12 @@ private:
 	bool mIsPlayedSlashSE;
 	// 攻撃が当たったか
 	bool mIsPlayedHitDamageSE;
+	// 最初のダッシュをしたか
+	bool mQuickDash;
+	// ダッシュの初回スタミナ消費
+	bool mDashStamina;
+	// ダッシュ状態か
+	bool mDash;
 
 	///////////////////////////////////////////////////////
 };
