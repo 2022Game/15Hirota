@@ -4,6 +4,7 @@
 #include "CStageSelection.h"
 #include "CPlayer.h"
 #include "CStageButton.h"
+#include "CNeedle.h"
 
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
@@ -34,6 +35,31 @@ void CStageSelectionStage::Load()
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer);
 	AddTask(button);
+
+	// 針モデル
+	CNeedle* needle = new CNeedle(
+		CVector(100.0f, 11.0f, 0.0f),
+		CVector(10.0f, 10.0f, 10.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer);
+	CVector needlePos = CVector(100.0f, 11.0f, 0.0f);
+	if (needle != nullptr)
+	{
+		needle->SetStartPosition(needlePos);
+	}
+	AddTask(needle);
+	// 針モデルベース
+	CNeedleBase* needlebase = new CNeedleBase(
+		CVector(100.0f, 11.0f, 0.0f),
+		CVector(10.0f, 10.0f, 10.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer);
+	CVector needlebasePos = CVector(100.0f, 11.0f, 0.0f);
+	if (needlebase != nullptr)
+	{
+		needlebase->SetStartPosition(needlebasePos);
+	}
+	AddTask(needlebase);
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();

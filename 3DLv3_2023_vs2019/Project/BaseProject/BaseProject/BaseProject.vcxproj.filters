@@ -101,6 +101,9 @@
     <Filter Include="ソース ファイル\Game\Stage\StageButton">
       <UniqueIdentifier>{bb7528d6-387a-4e81-9128-6d76c0dc78ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick">
+      <UniqueIdentifier>{36ee6e20-5892-4dae-864d-5f5dba831dd0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -486,6 +489,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CStageMenu.cpp">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNeedle.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -896,6 +902,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CStageMenu.h">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNeedle.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

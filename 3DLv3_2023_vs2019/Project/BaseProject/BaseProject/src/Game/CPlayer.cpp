@@ -19,7 +19,7 @@
 // 移動スピード
 #define RUN_SPEED 1.3f
 // ダッシュスピード
-#define DASH_SPEED 2.0f
+#define DASH_SPEED 2.5f
 // ジャンプ
 #define JUMP_SPEED 1.5f
 // 大ジャンプ
@@ -63,15 +63,16 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 {
 	{ "",															true,	0.0f	},	// Tポーズ
 	{ "Character\\Monster1\\anim\\Warrok_Idle.x",					true,	854.0f	},	// 待機
-	{ "Character\\Monster1\\anim\\Warrok_Walking.x",				true,	86.0f	},	// ダッシュ
-	{ "Character\\Monster1\\anim\\Warrok_Punchi.x",				false,	67.0f	},		// 攻撃
+	{ "Character\\Monster1\\anim\\Warrok_Walking.x",				true,	86.0f	},	// 歩行
+	{ "Character\\Monster1\\anim\\Warrok_Punchi.x",				false,	50.0f	},		// 攻撃
 	{ "Character\\Monster1\\anim\\Warrok_StrongAttack.x",		false,	161.0f	},		// 強攻撃
 	{ "Character\\Monster1\\anim\\jump_start1.x",				false,	25.0f	},		// ジャンプ開始
 	{ "Character\\Monster1\\anim\\jump1.x",							true,	1.0f	},	// ジャンプ中
 	{ "Character\\Monster1\\anim\\jump_end1.x",					false,	26.0f	},		// ジャンプ終了
-	{ "Character\\Monster1\\anim\\Warrok_Run.x",					true,	53.0f	},	// 歩行
-	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	90.0f	},		// ダッシュ終了
-	{ "Character\\Monster1\\anim\\Rotate.x",					false,	71.0f	},		// 回避
+	{ "Character\\Monster1\\anim\\Dash1_53.x",					true,	43.0f	},		// ダッシュ開始
+	{ "Character\\Monster1\\anim\\Warrok_Run.x",					true,	43.0f	},	// ダッシュ
+	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	40.0f	},		// ダッシュ終了
+	{ "Character\\Monster1\\anim\\Rotate.x",					false,	50.0f	},		// 回避
 	{ "Character\\Monster1\\anim\\Guts pose_325.x",				false,	325.0f	},		// ガッツポーズ
 	{ "Character\\Monster1\\anim\\Hit_63.x",					false,	63.0f	},		// 敵の攻撃Hit
 	{ "Character\\Monster1\\anim\\Death_276.x",					false,	276.0f	},		// 死亡Hit_107
@@ -147,7 +148,8 @@ CPlayer::CPlayer()
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
-	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol, ELayer::eBlockCol });
+	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol,
+		ELayer::eBlockCol });
 
 
 	// 一時的な当たり判定を取るコライダー
@@ -156,19 +158,22 @@ CPlayer::CPlayer()
 		this, ELayer::ePlayer,
 		9.0f
 	);
-	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, ELayer::eInvincbleCol, ELayer::eEnemy });
+	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
+		ELayer::eInvincbleCol, ELayer::eEnemy});
 	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 
 	// ダメージを受けるコライダーを作成
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		0.8f
+		0.9f
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eKickCol, ELayer::eBulletCol });
-	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, ETag::eEnemy, ETag::eBullet });
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eKickCol, ELayer::eBulletCol,
+		ELayer::eNeedleCol });
+	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, ETag::eEnemy, ETag::eBullet,
+		ETag::eRideableObject });
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -342,6 +347,12 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		else if (other->Layer() == ELayer::eAttackCol)
 		{
 			ChangeState(EState::eHitSword);
+		}
+		// 針ブロックのコライダー
+		else if (other->Layer() == ELayer::eNeedleCol)
+		{
+			ChangeState(EState::eHitObj);
+			mpRideObject = other->Owner();
 		}
 	}
 }
@@ -565,11 +576,11 @@ void CPlayer::UpdateIdle()
 			{
 				if ((mCharaStatus.stamina > 0 && !staminaLowerLimit))
 				{
-					ChangeAnimation(EAnimType::eDash);
 					// 最初のダッシュをしたか
 					if (!mQuickDash)
 					{
-						mCharaStatus.stamina -= 1;
+						ChangeAnimation(EAnimType::eDashStart);
+						//mCharaStatus.stamina -= 1;
 						// 通常のダッシュよりも速いダッシュを開始
 						speed = DASH_SPEED;
 
@@ -592,11 +603,12 @@ void CPlayer::UpdateIdle()
 					}
 					else
 					{
+						ChangeAnimation(EAnimType::eDash);
 						speed = RUN_SPEED;
 						mDash = true;
 						mDashStamina = false;
 						mDashTime = 0.0f;
-						mCharaStatus.stamina -= 1;
+						mCharaStatus.stamina -= 0.001;
 					}
 
 					if (mCharaStatus.stamina <= 0)
@@ -724,6 +736,9 @@ void CPlayer::UpdateIdle()
 // ダッシュ終了
 void CPlayer::UpdateDashEnd()
 {
+	mDashStamina = false;
+	mQuickDash = false;
+	mDashTime = 0.0f;
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
@@ -1081,6 +1096,52 @@ void CPlayer::UpdateHitSword()
 	//CDebugPrint::Print("Time%f\n", mElapsedTime);
 }
 
+// ダメージを受ける(オブジェクト)
+void CPlayer::UpdateHitObj()
+{
+	ChangeAnimation(EAnimType::eHit);
+
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	mMoveSpeed = CVector::zero;
+	mElapsedTime += Time::DeltaTime();
+	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
+
+	if (!damageEnemy)
+	{
+		damageEnemy = true;
+		mpDamageCol->SetEnable(true);
+	}
+
+	if (mElapsedTime >= COLORSET)
+	{
+		if (mCharaStatus.hp > 0)
+		{
+			mIsPlayedHitDamageSE = false;
+			damageEnemy = true;
+			mElapsedTime = 0.0f;
+			mElapsedTimeCol = 0.0f;
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eIdle);
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mElapsedTime = 0.0f;
+			mElapsedTimeCol = 0.0f;
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eDeath);
+		}
+	}
+}
+
 // ジャンプ開始
 void CPlayer::UpdateJumpStart()
 {
@@ -1273,6 +1334,10 @@ void CPlayer::Update()
 		// 敵の件Hit
 	case EState::eHitSword:
 		UpdateHitSword();
+		break;
+		// ダメージを受ける(オブジェクト)
+	case EState::eHitObj:
+		UpdateHitObj();
 		break;
 		// クリア
 	case EState::eClear:

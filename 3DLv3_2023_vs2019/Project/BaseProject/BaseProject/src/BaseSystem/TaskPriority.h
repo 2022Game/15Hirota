@@ -24,6 +24,7 @@ enum class ETaskPriority
 	eRising,		// 上昇するオブジェクト
 	eNumberFalling,	// 回数で落下するオブジェクト
 	eHatenaOBJ,		// ハテナブロックオブジェクト
+	eNeedle,		// 針オブジェクト
 
 	eCamera,		// カメラ
 

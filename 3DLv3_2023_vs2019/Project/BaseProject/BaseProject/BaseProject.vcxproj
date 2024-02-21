@@ -81,6 +81,7 @@
     <ClCompile Include="src\Game\CInvincibleObjectBase.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
+    <ClCompile Include="src\Game\CNeedle.cpp" />
     <ClCompile Include="src\Game\CNumberFloor1.cpp" />
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="src\Game\CInvincibleObjectBase.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
     <ClInclude Include="src\Game\CMajicSwordEnemy.h" />
+    <ClInclude Include="src\Game\CNeedle.h" />
     <ClInclude Include="src\Game\CNumberFloor1.h" />
     <ClInclude Include="src\Game\CRecoveryObject.h" />
     <ClInclude Include="src\Game\CRengaBlock.h" />

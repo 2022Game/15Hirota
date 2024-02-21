@@ -128,10 +128,6 @@ private:
 	void UpdateReady();
 	// 待機状態
 	void UpdateIdle();
-	// ダッシュ開始
-	void UpdateDashStart();
-	// ダッシュ中
-	void UpdateDash();
 	// ダッシュ終了
 	void UpdateDashEnd();
 	// 攻撃
@@ -162,6 +158,8 @@ private:
 	void UpdateHitBullet();
 	// 敵の剣攻撃hit
 	void UpdateHitSword();
+	// ダメージを受ける(オブジェクト)
+	void UpdateHitObj();
 	// プレイヤーの状態
 	enum class EState
 	{
@@ -179,8 +177,6 @@ private:
 		eJumpingEnd,		// 跳ねる終了
 		eRotate,			// 回避開始
 		eRotateEnd,			// 回避終了待ち
-		eDashStart,			// ダッシュ開始
-		eDash,				// ダッシュ中
 		eDashEnd,			// ダッシュ終了
 		eClear,				// クリア状態
 		eClearEnd,			// クリア終了
@@ -190,6 +186,7 @@ private:
 		eHit,				// ダメージヒット
 		eHitBullet,			// 敵の弾ヒット
 		eHitSword,			// 敵の剣ヒット
+		eHitObj,			// ダメージを受ける(オブジェクト)
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
@@ -216,6 +213,7 @@ private:
 		eJumpStart,		// ジャンプ開始
 		eJump,			// ジャンプ中
 		eJumpEnd,		// ジャンプ終了
+		eDashStart,		// ダッシュ開始
 		eDash,			// ダッシュ
 		eDashStop,		// ダッシュ終了
 		eRotate,		// 回避

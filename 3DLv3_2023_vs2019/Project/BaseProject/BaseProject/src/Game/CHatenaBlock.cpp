@@ -4,7 +4,7 @@
 #include "CRecoveryObject.h"
 #include "CInvincible.h"
 
-// ブロックから上に上昇する際の最大値
+// ブロックが上に上昇する際の最大値
 #define MAXHEIGHT 15.0f
 // ブロックの上昇スピード
 #define BLOCK_INCREASE_VALUE 120.0f
