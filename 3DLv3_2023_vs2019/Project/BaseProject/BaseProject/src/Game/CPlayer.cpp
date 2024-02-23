@@ -339,6 +339,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				}
 			}
 		}
+		else
+		{
+			mClimbWall = false;
+		}
 	}
 
 	// ダメージを受けるコライダー
