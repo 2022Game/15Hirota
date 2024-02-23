@@ -13,12 +13,17 @@ CField1::CField1()
 	mpModel = CResourceManager::Get<CModel>("Field1");
 	// 木のモデル取得
 	mpTree = CResourceManager::Get<CModel>("Stage2Tree");
+	// 登れるモデル取得
+	mpClimb = CResourceManager::Get<CModel>("Stage2Climb");
 
 	CModel* wallCol = CResourceManager::Get<CModel>("WallCol1");
 	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);
 
 	CModel* floorCol = CResourceManager::Get<CModel>("FloorCol1");
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, floorCol, true);
+
+	mpColliderMeshClimb = new CColliderMesh(this, ELayer::eClimb, mpClimb, true);
+	mpColliderMeshClimb->SetCollisionTags({ ETag::ePlayer });
 
 	/*CModel* enemywallCol = CResourceManager::Get<CModel>("EnemyWallCol1");
 	mpEnemyWallCol = new CColliderMesh(this, ELayer::eFieldEnemyWall, enemywallCol, true);*/
@@ -30,6 +35,7 @@ CField1::~CField1()
 {
 	// コライダーを破棄
 	SAFE_DELETE(mpColliderMesh);
+	SAFE_DELETE(mpColliderMeshClimb);
 
 	if (mpWallCol != nullptr)
 	{
@@ -66,4 +72,6 @@ void CField1::Render()
 	mpModel->SetColor(mColor);
 	mpTree->Render(Matrix());
 	mpTree->SetColor(mColor);
+	mpClimb->Render(Matrix());
+	mpClimb->SetColor(mColor);
 }

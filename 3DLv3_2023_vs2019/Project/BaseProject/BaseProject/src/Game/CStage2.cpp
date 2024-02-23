@@ -13,7 +13,7 @@
 // コンストラクタ
 CStage2::CStage2()
 {
-	mStageNo = 2;
+	mStageNo = 0;
 }
 
 // デストラクタ
@@ -37,18 +37,18 @@ void CStage2::Load()
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
-	CVector playerPos = CVector(-1109.0f, 60.0f, 1133.0f);
+	CVector playerPos = CVector(-757.0f, 60.0f, -858.0f);//-757,858-1109.0f, 60.0f, 1133.0f
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
-		player->Rotation(0.0f, 225.0f, 0.0f);
+		player->Rotation(0.0f, 225.0f, 0.0f);//0.0f, 225.0f, 0.0f
 	}
 
-	// カメラの位置と向きを設定
+	// カメラの位置と向きを設定 -1109.0f, 90.0f, 1200.0f
 	CGameCamera* mainCamera = new CGameCamera
 		//CCamera* mainCamera = new CCamera
 		(
-			CVector(-1109.0f, 90.0f, 1200.0f),
+			CVector(-757.0f, 90.0f, -958.0f),
 			player->Position() + CVector(0.0f, 0.0f, 0.0f)
 		);
 	mainCamera->SetFollowTargetTf(player);

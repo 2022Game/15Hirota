@@ -24,7 +24,9 @@ private:
 
 	CModel* mpModel;
 	CModel* mpTree;
+	CModel* mpClimb;
 	CColliderMesh* mpColliderMesh;
+	CColliderMesh* mpColliderMeshClimb;
 	CColliderMesh* mpWallCol;
 	//CColliderMesh* mpEnemyWallCol;
 };

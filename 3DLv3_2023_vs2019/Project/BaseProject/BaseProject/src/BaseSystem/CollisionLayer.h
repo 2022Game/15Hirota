@@ -10,6 +10,7 @@ enum class ELayer
 	eField,
 	eFieldWall,
 	eFieldEnemyWall,
+	eClimb,			// 登れるコライダー
 
 	eEffect,
 	ePlayer,

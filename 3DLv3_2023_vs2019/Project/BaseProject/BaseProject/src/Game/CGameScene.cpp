@@ -55,6 +55,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("WallCol1",				 "Field\\Stage2Wall.obj");						// ‰¼2–Ê•Ç
 	//CResourceManager::Load<CModel>("Field1",				 "Field\\Stage2.obj");							// ‰¼2–Ê“G‚Ì•Ç
 	CResourceManager::Load<CModel>("Stage2Tree",			 "Field\\Stage2(tree).obj");					// ‰¼2–Ê‚Ì–Ø
+	CResourceManager::Load<CModel>("Stage2Climb",			 "Field\\PlayerGimmick\\Stage2(Climb).obj");	// ‰¼2–Ê‚Ì“o‚ê‚é•Ç
 	CResourceManager::Load<CModel>("FieldCube",				 "Field\\Object\\cube.obj");					// ‰Šú‚ÌlŠp‚Ìƒ‚ƒfƒ‹
 	CResourceManager::Load<CModel>("FieldCylinder",			 "Field\\Object\\cylinder.obj");				// ‰Šú‚Ì‰ñ“]‚·‚élŠpƒ‚ƒfƒ‹
 	CResourceManager::Load<CModel>("GoalCube",				 "Field\\Object\\GoalCube.obj");				// ƒS[ƒ‹‚Ì“y‘ä

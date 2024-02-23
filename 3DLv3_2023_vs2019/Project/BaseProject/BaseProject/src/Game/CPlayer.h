@@ -160,6 +160,9 @@ private:
 	void UpdateHitSword();
 	// ダメージを受ける(オブジェクト)
 	void UpdateHitObj();
+	// 登る状態
+	void UpdateClimb();
+
 	// プレイヤーの状態
 	enum class EState
 	{
@@ -187,6 +190,7 @@ private:
 		eHitBullet,			// 敵の弾ヒット
 		eHitSword,			// 敵の剣ヒット
 		eHitObj,			// ダメージを受ける(オブジェクト)
+		eClimb,				// 登る状態
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
@@ -221,6 +225,9 @@ private:
 		eHit,			// 敵の攻撃Hit
 		eDeath,			// 死亡
 		eHitJ,			// 敵の弾Hit
+		eClimb,			// 壁を登る
+		eClimbDown,		// 壁を下る
+		eClimbIdle,		// 壁待機
 
 		Num
 	};
@@ -257,6 +264,7 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	CVector CalcMoveVec() const;
+	CVector ClimbMoveVec() const;
 
 	///////////////////////////////////////////////////////
 
@@ -303,6 +311,10 @@ private:
 	bool mDashStamina;
 	// ダッシュ状態か
 	bool mDash;
+	// 壁を登っているか
+	bool mClimb;
+	// 登れる壁に触れているか
+	bool mClimbWall;
 
 	///////////////////////////////////////////////////////
 };

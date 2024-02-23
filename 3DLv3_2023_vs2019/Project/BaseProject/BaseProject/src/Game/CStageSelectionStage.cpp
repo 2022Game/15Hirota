@@ -9,7 +9,7 @@
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
 {
-	mStageNo = 0;
+	mStageNo = 2;
 }
 
 // デストラクタ

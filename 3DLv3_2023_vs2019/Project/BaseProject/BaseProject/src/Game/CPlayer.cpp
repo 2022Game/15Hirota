@@ -77,6 +77,9 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Hit_63.x",					false,	63.0f	},		// 敵の攻撃Hit
 	{ "Character\\Monster1\\anim\\Death_276.x",					false,	276.0f	},		// 死亡Hit_107
 	{ "Character\\Monster1\\anim\\Hit_107.x",					false,	107.0f	},		// 敵の弾Hit
+	{ "Character\\Monster1\\anim\\Climb_121.x",						true,	121.0f	},	// 壁を登る
+	{ "Character\\Monster1\\anim\\Climb_Down121.x",					true,	121.0f	},	// 壁を下る
+	{ "Character\\Monster1\\anim\\ClimbIdle_1.x",					true,	1.0f	},	// 壁待機
 
 };
 
@@ -105,6 +108,8 @@ CPlayer::CPlayer()
 	, mQuickDash(false)
 	, mDashStamina(false)
 	, mDash(false)
+	, mClimb(false)
+	, mClimbWall(false)
 	, mpRideObject(nullptr)
 {
 	// インスタンスの設定
@@ -159,7 +164,7 @@ CPlayer::CPlayer()
 		9.0f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
-		ELayer::eInvincbleCol, ELayer::eEnemy});
+		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb});
 	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 
 	// ダメージを受けるコライダーを作成
@@ -319,6 +324,20 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		else if (other->Layer() == ELayer::eEnemy)
 		{
 			Position(Position() + hit.adjust);
+		}
+
+		// 登れるオブジェクト
+		if (other->Layer() == ELayer::eClimb)
+		{
+			mClimbWall = true;
+			Position(Position() + hit.adjust);
+			if (mState == EState::eIdle)
+			{
+				if (CInput::PushKey('E'))
+				{
+					ChangeState(EState::eClimb);
+				}
+			}
 		}
 	}
 
@@ -506,6 +525,44 @@ CVector CPlayer::CalcMoveVec() const
 		// 求めた各方向の移動ベクトルから、
 		// 最終的なプレイヤーの移動ベクトルを求める
 		move = moveForward * input.Z() + moveSide * input.X();
+		move.Normalize();
+	}
+	return move;
+}
+
+// キーの入力情報から移動ベクトルを求める
+CVector CPlayer::ClimbMoveVec() const
+{
+	CVector move = CVector::zero;
+
+	// キーの入力ベクトルを取得
+	CVector input = CVector::zero;
+
+	if (CInput::Key('W'))		input.Y(1.0f);
+	else if (CInput::Key('S'))	input.Y(-1.0f);
+	if (CInput::Key('A'))		input.X(-1.0f);
+	else if (CInput::Key('D'))	input.X(1.0f);
+
+	// 入力ベクトルの長さで入力されているか判定
+	if (input.LengthSqr() > 0.0f)
+	{
+		// 上方向ベクトル(設置している場合は、地面の法線)
+		CVector up = mIsGrounded ? mGroundNormal : CVector::up;
+		// カメラの向きに合わせた移動ベクトルに変換
+		CCamera* mainCamera = CCamera::MainCamera();
+		CVector camForward = mainCamera->VectorZ();
+		camForward.Y(0.0f);
+		camForward.Normalize();
+		// カメラの正面方向ベクトルと上方向ベクトルの外積から
+		// 横方向の移動ベクトルを求める
+		CVector moveSide = CVector::Cross(up, camForward);
+		// 横方向の移動ベクトルと上方向ベクトルの外積から
+		// 正面方向の移動ベクトルを求める
+		CVector moveForward = CVector::Cross(moveSide, up);
+
+		// 求めた各方向の移動ベクトルから、
+		// 最終的なプレイヤーの移動ベクトルを求める
+		move = moveForward * input.Y() + moveSide * input.X();
 		move.Normalize();
 	}
 	return move;
@@ -1142,6 +1199,48 @@ void CPlayer::UpdateHitObj()
 	}
 }
 
+// 登る状態
+void CPlayer::UpdateClimb()
+{
+	mClimb = true;
+	mMoveSpeed = CVector::zero;
+	// プレイヤーの移動ベクトルを求める
+	CVector move = ClimbMoveVec();
+
+	// 求めた移動ベクトルの長さで入力されているか判定
+	if (move.LengthSqr() > 0.0f)
+	{
+		if (CInput::Key('W'))
+		{
+			ChangeAnimation(EAnimType::eClimb);
+			mMoveSpeedY = MOVE_SPEED;
+		}
+		else if (CInput::Key('S'))
+		{
+			ChangeAnimation(EAnimType::eClimbDown);
+			mMoveSpeedY = -MOVE_SPEED;
+		}
+	}
+	else
+	{
+		mMoveSpeedY = 0.0f;
+		ChangeAnimation(EAnimType::eClimbIdle);
+	}
+	mMoveSpeedY += move.Y();
+
+	if (CInput::PushKey('E'))
+	{
+		mClimb = false;
+		ChangeState(EState::eJumpStart);
+	}
+
+	if (!mClimbWall)
+	{
+		ChangeState(EState::eIdle);
+	}
+	CDebugPrint::Print("mClimbWall", mClimbWall);
+}
+
 // ジャンプ開始
 void CPlayer::UpdateJumpStart()
 {
@@ -1283,6 +1382,10 @@ void CPlayer::Update()
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
 	mHpHit = false;
+	if (!mClimbWall)
+	{
+		mClimbWall = false;
+	}
 
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)
@@ -1339,6 +1442,10 @@ void CPlayer::Update()
 	case EState::eHitObj:
 		UpdateHitObj();
 		break;
+		// 登る状態
+	case EState::eClimb:
+		UpdateClimb();
+		break;
 		// クリア
 	case EState::eClear:
 		UpdateClear();
@@ -1389,7 +1496,10 @@ void CPlayer::Update()
 	// 準備中でなければ、移動処理などを行う
 	if (mState != EState::eReady)
 	{
-		mMoveSpeedY -= GRAVITY;
+		if (!mClimb)
+		{
+			mMoveSpeedY -= GRAVITY;
+		}
 		CVector moveSpeed = mMoveSpeed + CVector(0.0f, mMoveSpeedY, 0.0f * Time::DeltaTime());
 
 		// 移動
@@ -1488,6 +1598,7 @@ void CPlayer::Update()
 	//CDebugPrint::Print("Position.Y %f\n", Position().Y());
 	//// コライダーの復活時間監視
 	//CDebugPrint::Print("TimeCol%f\n", mElapsedTimeCol);
+	CDebugPrint::Print("mMoveSpeedY%f\n", mMoveSpeedY);
 }
 
 // 描画
