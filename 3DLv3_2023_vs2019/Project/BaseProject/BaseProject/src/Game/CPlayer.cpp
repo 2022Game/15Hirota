@@ -184,6 +184,17 @@ CPlayer::CPlayer()
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpDamageCol->SetAttachMtx(spineMtx);
 
+
+	// 登れるコライダーとの当たり判定を取るコライダー
+	mpClimbCol = new CColliderLine
+	(
+		this, ELayer::ePlayer,
+		CVector(0.0f, PLAYER_HEIGHT, 12.5f),
+		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
+	);
+	mpClimbCol->SetCollisionLayers({ ELayer::eClimb});
+
+
 	// マジックソード作成
 	mpSword = new CMajicSword();
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
@@ -201,6 +212,7 @@ CPlayer::~CPlayer()
 	SAFE_DELETE(mpColliderLine);
 	SAFE_DELETE(mpColliderSphere);
 	SAFE_DELETE(mpDamageCol);
+	SAFE_DELETE(mpClimbCol);
 
 	// マジックソードを破棄
 	mpSword->Kill();
@@ -329,19 +341,8 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// 登れるオブジェクト
 		if (other->Layer() == ELayer::eClimb)
 		{
-			mClimbWall = true;
+			// Climb状態の場合は位置を調整する
 			Position(Position() + hit.adjust);
-			if (mState == EState::eIdle)
-			{
-				if (CInput::PushKey('E'))
-				{
-					ChangeState(EState::eClimb);
-				}
-			}
-		}
-		else
-		{
-			mClimbWall = false;
 		}
 	}
 
@@ -376,6 +377,23 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			ChangeState(EState::eHitObj);
 			mpRideObject = other->Owner();
+		}
+	}
+
+	// 登れるコライダーとの当たり判定を取るコライダー
+	if (self == mpClimbCol)
+	{
+		if (other->Layer() == ELayer::eClimb)
+		{
+			mClimbWall = true;
+			if (mState == EState::eIdle && mIsGrounded)
+			{
+				if (CInput::PushKey('E'))
+				{
+					// Climb状態に移行する
+					ChangeState(EState::eClimb);
+				}
+			}
 		}
 	}
 }
@@ -1240,9 +1258,10 @@ void CPlayer::UpdateClimb()
 
 	if (!mClimbWall)
 	{
+		mClimb = false;
 		ChangeState(EState::eIdle);
 	}
-	CDebugPrint::Print("mClimbWall", mClimbWall);
+	CDebugPrint::Print("mClimbWall: %s\n", mClimbWall ? "true" : "false");
 }
 
 // ジャンプ開始
@@ -1386,10 +1405,6 @@ void CPlayer::Update()
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
 	mHpHit = false;
-	if (!mClimbWall)
-	{
-		mClimbWall = false;
-	}
 
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)
@@ -1593,6 +1608,7 @@ void CPlayer::Update()
 	mpSword->UpdateAttachMtx();
 
 	mIsGrounded = false;
+	mClimbWall = false;
 
 	//// 縦方向の移動速度監視
 	//CDebugPrint::Print("mMoveSpeed%f\n", mMoveSpeed.Y());

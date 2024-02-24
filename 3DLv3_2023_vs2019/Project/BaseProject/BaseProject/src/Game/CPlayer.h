@@ -105,6 +105,8 @@ private:
 	CColliderSphere* mpColliderSphere;
 	//ダメージを受けるコライダ
 	CColliderSphere* mpDamageCol;
+	// 登れるコライダーとの当たり判定を取るコライダー
+	CColliderLine* mpClimbCol;
 
 	// マジックソードモデル
 	CMajicSword* mpSword;
