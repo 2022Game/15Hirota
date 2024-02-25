@@ -557,15 +557,20 @@ CVector CPlayer::ClimbMoveVec() const
 {
 	CVector move = CVector::zero;
 
-	// キーの入力ベクトルを取得
+	// 上下方向の移動ベクトルを取得
+	float verticalMove = 0.0f;
+	if (CInput::Key('W'))       verticalMove = 1.0f;
+	else if (CInput::Key('S'))  verticalMove = -1.0f;
+
+	// 左右方向の移動ベクトルを取得
 	CVector input = CVector::zero;
+	if (CInput::Key('A'))       input.X(-1.0f);
+	else if (CInput::Key('D'))  input.X(1.0f);
 
-	if (CInput::Key('W'))		input.Y(1.0f);
-	else if (CInput::Key('S'))	input.Y(-1.0f);
-	if (CInput::Key('A'))		input.X(-1.0f);
-	else if (CInput::Key('D'))	input.X(1.0f);
+	// 上下方向の移動ベクトルを設定
+	move.Y(verticalMove);
 
-	// 入力ベクトルの長さで入力されているか判定
+	// 入力されている場合のみ、左右方向の移動ベクトルを設定
 	if (input.LengthSqr() > 0.0f)
 	{
 		// 上方向ベクトル(設置している場合は、地面の法線)
@@ -584,9 +589,10 @@ CVector CPlayer::ClimbMoveVec() const
 
 		// 求めた各方向の移動ベクトルから、
 		// 最終的なプレイヤーの移動ベクトルを求める
-		move = moveForward * input.Y() + moveSide * input.X();
+		move = moveForward * input.X();
 		move.Normalize();
 	}
+
 	return move;
 }
 
@@ -1226,28 +1232,21 @@ void CPlayer::UpdateClimb()
 {
 	mClimb = true;
 	mMoveSpeed = CVector::zero;
+	mMoveSpeedY = 0.0f;
 	// プレイヤーの移動ベクトルを求める
 	CVector move = ClimbMoveVec();
 
 	// 求めた移動ベクトルの長さで入力されているか判定
 	if (move.LengthSqr() > 0.0f)
 	{
-		if (CInput::Key('W'))
-		{
-			ChangeAnimation(EAnimType::eClimb);
-			mMoveSpeedY = MOVE_SPEED;
-		}
-		else if (CInput::Key('S'))
-		{
-			ChangeAnimation(EAnimType::eClimbDown);
-			mMoveSpeedY = -MOVE_SPEED;
-		}
+		mMoveSpeed += move * MOVE_SPEED * mCharaStatus.moveSpeed;
 	}
 	else
 	{
 		mMoveSpeedY = 0.0f;
 		ChangeAnimation(EAnimType::eClimbIdle);
 	}
+	mMoveSpeed = move;
 	mMoveSpeedY += move.Y();
 
 	if (CInput::PushKey('E'))
