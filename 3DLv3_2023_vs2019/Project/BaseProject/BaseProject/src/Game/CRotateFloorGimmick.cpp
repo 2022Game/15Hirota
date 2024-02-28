@@ -99,7 +99,7 @@ void CRotateFloorGimmick::UpdateIdle()
 void CRotateFloorGimmick::UpdateRotateStart()
 {
 	// 1•bŠÔ‚É90“x‰ñ“]‚·‚éê‡‚Ì‰ñ“]‘¬“x‚ðŒvŽZ
-	float rotationSpeed = 130.0f / 60.0f; // 1•bŠÔ‚É90“x‰ñ“]i60ƒtƒŒ[ƒ€‚Å1•bj
+	float rotationSpeed = 130.0f / 60.0f; // 1•bŠÔ‚É130“x‰ñ“]i60ƒtƒŒ[ƒ€‚Å1•bj
 
 	// ‰ñ“]ˆ—
 	Rotate(CVector(0.0f, 0.0f, rotationSpeed));
@@ -123,7 +123,7 @@ void CRotateFloorGimmick::UpdateRotateStart()
 void CRotateFloorGimmick::UpdateRotateEnd()
 {
 	// 1•bŠÔ‚É90“x‰ñ“]‚·‚éê‡‚Ì‰ñ“]‘¬“x‚ðŒvŽZ
-	float rotationSpeed = 130.0f / 60.0f; // 1•bŠÔ‚É90“x‰ñ“]i60ƒtƒŒ[ƒ€‚Å1•bj
+	float rotationSpeed = 130.0f / 60.0f; // 1•bŠÔ‚É130“x‰ñ“]i60ƒtƒŒ[ƒ€‚Å1•bj
 
 	// ‰ñ“]ˆ—
 	Rotate(CVector(0.0f, 0.0f, -rotationSpeed));
@@ -137,7 +137,8 @@ void CRotateFloorGimmick::UpdateRotateEnd()
 	// ZŽ²Žü‚è‚Ì‰ñ“]Šp“x‚ª–Ú•W‚ÌŠp“x‚É’B‚µ‚½‚©‚ðŠm”F
 	if (currentRotationAngle >= targetRotationAngle - 1.0f && currentRotationAngle <= targetRotationAngle + 1.0f) {
 		// –Ú•W‚ÌŠp“x‚É’B‚µ‚½‚ç‰ñ“]‚ð’âŽ~‚µAIdleó‘Ô‚É•ÏX
-		Rotate(CVector(0.0f, 0.0f, 0.0f)); // ‰ñ“]‘¬“x‚ðƒ[ƒ‚ÉÝ’è‚µ‚Ä’âŽ~
+		// ‰ñ“]‘¬“x‚ðƒ[ƒ‚ÉÝ’è‚µ‚Ä’âŽ~
+		Rotate(CVector(0.0f, 0.0f, 0.0f));
 		ChangeState(EState::Idle);
 		mIsJumping = false;
 	}
