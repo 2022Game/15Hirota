@@ -168,6 +168,21 @@ void CTransform::Rotation(const CVector& eulerAngles)
 	Rotation(CQuaternion(eulerAngles));
 }
 
+// 回転軸を取得
+CQuaternion CTransform::GetWorldRotation() const
+{
+	// 親が存在する場合は親のワールド回転値と自身のローカル回転値を組み合わせる
+	if (mpParent != nullptr)
+	{
+		return mpParent->GetWorldRotation() * mLocalRotation;
+	}
+	// 親が存在しない場合は自身のローカル回転値をそのまま返す
+	else
+	{
+		return mRotation;
+	}
+}
+
 // ローカル回転値を設定
 void CTransform::LocalRotation(const CQuaternion& rot)
 {

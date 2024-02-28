@@ -65,6 +65,9 @@ public:
 	int GetHp();
 	int GetMaxHp();
 
+	// ジャンプをしたかどうか取得
+	bool IsJumping();
+
 	// 他のクラスで使っている為publicに置いておく
 	// ジャンプ開始
 	void UpdateJumpStart();
@@ -317,6 +320,8 @@ private:
 	bool mClimb;
 	// 登れる壁に触れているか
 	bool mClimbWall;
+	// ジャンプをしたか
+	bool mIsJumping;
 
 	///////////////////////////////////////////////////////
 };

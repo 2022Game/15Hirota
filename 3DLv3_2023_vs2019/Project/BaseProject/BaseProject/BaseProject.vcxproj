@@ -86,6 +86,7 @@
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
     <ClCompile Include="src\Game\CRisingObject.cpp" />
+    <ClCompile Include="src\Game\CRotateFloorGimmick.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CStage1.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="src\Game\CRecoveryObject.h" />
     <ClInclude Include="src\Game\CRengaBlock.h" />
     <ClInclude Include="src\Game\CRisingObject.h" />
+    <ClInclude Include="src\Game\CRotateFloorGimmick.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CStage1.h" />

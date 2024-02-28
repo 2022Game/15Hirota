@@ -110,6 +110,7 @@ CPlayer::CPlayer()
 	, mDash(false)
 	, mClimb(false)
 	, mClimbWall(false)
+	, mIsJumping(false)
 	, mpRideObject(nullptr)
 {
 	// インスタンスの設定
@@ -505,6 +506,12 @@ int CPlayer::GetHp()
 int CPlayer::GetMaxHp()
 {
 	return mCharaMaxStatus.hp;
+}
+
+// ジャンプをしたかどうか取得
+bool CPlayer::IsJumping()
+{
+	return mIsJumping;
 }
 
 // アニメーション切り替え
@@ -1266,6 +1273,7 @@ void CPlayer::UpdateClimb()
 // ジャンプ開始
 void CPlayer::UpdateJumpStart()
 {
+	mIsJumping = true;
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eJump);
 
@@ -1326,6 +1334,7 @@ void CPlayer::UpdateJumpEnd()
 
 	if (IsAnimationFinished())
 	{
+		mIsJumping = false;
 		ChangeState(EState::eIdle);
 	}
 }

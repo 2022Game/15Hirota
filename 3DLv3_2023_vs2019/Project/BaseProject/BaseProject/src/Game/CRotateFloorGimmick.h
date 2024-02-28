@@ -1,0 +1,105 @@
+#ifndef CROTATEFLOORGIMMICK_H
+#define CROTATEFLOORGIMMICK_H
+
+#include "CRideableObject.h"
+#include "CModel.h"
+#include "CColliderMesh.h"
+class CPlayer;
+
+// マリオ風の回転ギミック
+class CRotateFloorGimmick : public CRideableObject
+{
+public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="pos">位置</param>
+	/// <param name="scale">大きさ</param>
+	/// <param name="rot">回転</param>
+	/// <param name="reactionTag">触れると反応するオブジェクトのタグ</param>
+	/// <param name="reactionLayer">触れると反応するオブジェクトのレイヤー</param>
+	CRotateFloorGimmick(const CVector& pos, const CVector& scale,
+		ETag reactionTag, ELayer reactionLayer);
+
+	// デストラクタ
+	~CRotateFloorGimmick();
+
+	/// <summary>
+	/// 衝突処理
+	/// </summary>
+	/// <param name="self">衝突した自身のコライダー</param>
+	/// <param name="other">衝突した相手のコライダー</param>
+	/// <param name="hit">衝突したときの情報</param>
+	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit)override;
+
+	// ステージの開始時の位置を設定
+	void SetStartPosition(const CVector& pos);
+
+	//プレイヤーを見つけたか
+	bool IsFoundPlayer() const;
+
+	// 現在の回転値の取得
+	float GetCurrentRotationAngle() const;
+
+	// 状態を切り替える
+	void ChangeRotationState();
+
+	// 更新
+	void Update() override;
+	// 描画
+	void Render() override;
+
+private:
+
+	// モデル・素材関連
+	// 回転する床のモデル
+	CModel* mpRotateFrame;
+	CModel* mpRotateFloor;
+	// 回転する床のコライダー
+	CColliderMesh* mpColliderMesh;
+
+
+	// 状態関連
+	// 回転する床の状態
+	enum class EState
+	{
+		Idle,		// 待機状態
+		Rotate1,	// 回転状態1
+		Rotate2,	// 回転状態2
+	};
+	// 状態を切り替える
+	void ChangeState(EState state);
+	// 待機状態の更新処理
+	void UpdateIdle();
+	// 回転状態の更新処理1
+	void UpdateRotateStart();
+	// 回転状態の更新処理2
+	void UpdateRotateEnd();
+	// 現在の状態
+	EState mState;
+
+
+	// ベクトル関連
+	// 移動速度
+	CVector mMoveSpeed;
+	// 位置を設定する
+	CVector mStartPos;
+
+
+	// 変数関連
+	// 状態内のステップ
+	int mStateStep;
+	// 衝突しているか
+	bool mIsCollision;
+	// プレイヤーがジャンプをしたかどうか
+	bool mIsJumping;
+	// 次の状態
+	bool mNextRotateIsRotate2;
+	// 回転した角度を保持する変数
+	float mRotationAngle;
+	// 触れた時に反応するオブジェクトのタグ
+	ETag mReactionTag;
+	// 触れた時に反応するレイヤー
+	ELayer mReactionLayer;
+};
+#endif

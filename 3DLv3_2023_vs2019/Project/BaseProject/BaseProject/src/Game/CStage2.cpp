@@ -9,6 +9,7 @@
 #include "CCamera.h"
 #include "CAppearFloor.h"
 #include "CGameCamera.h"
+#include "CRotateFloorGimmick.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -54,6 +55,20 @@ void CStage2::Load()
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(field->GetWallCol());
+
+
+	// 回転する床ギミック
+	CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
+		CVector(-770.0f, 7.0f, -888.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector rotategimmickPos = CVector(-770.0f, 7.0f, -888.0f);
+	if (rotategimmick != nullptr)
+	{
+		rotategimmick->SetStartPosition(rotategimmickPos);
+	}
+	AddTask(rotategimmick);
 
 	//// 木1 //////////////////////////////////////////////
 

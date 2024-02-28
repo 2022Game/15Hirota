@@ -90,6 +90,12 @@ public:
 	void Rotation(const CVector& eulerAngles);
 
 	/// <summary>
+	/// 回転値を取得
+	/// </summary>
+	/// <returns></returns>
+	CQuaternion GetWorldRotation() const;
+
+	/// <summary>
 	/// ローカル回転値を設定
 	/// </summary>
 	/// <param name="rot">ローカル回転値（クォータニオン）</param>
