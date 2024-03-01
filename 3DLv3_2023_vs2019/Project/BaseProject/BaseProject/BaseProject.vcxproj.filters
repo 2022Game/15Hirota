@@ -496,6 +496,9 @@
     <ClCompile Include="src\Game\CRotateFloorGimmick.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CRotateFloorTimeGimmick.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -910,6 +913,9 @@
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CRotateFloorGimmick.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CRotateFloorTimeGimmick.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>

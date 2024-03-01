@@ -1,13 +1,12 @@
-#ifndef CROTATEFLOORGIMMICK_H
-#define CROTATEFLOORGIMMICK_H
+#ifndef CROTATEFLOORTIMEGIMMICK_H
+#define CROTATEFLOORTIMEGIMMICK_H
 
 #include "CRideableObject.h"
 #include "CModel.h"
 #include "CColliderMesh.h"
-class CPlayer;
 
-// マリオ風の回転ギミック(プレイヤー反応)
-class CRotateFloorGimmick : public CRideableObject
+// マリオ風の回転ギミック(時間)
+class CRotateFloorTimeGimmick : public CRideableObject
 {
 public:
 	/// <summary>
@@ -15,14 +14,13 @@ public:
 	/// </summary>
 	/// <param name="pos">位置</param>
 	/// <param name="scale">大きさ</param>
-	/// <param name="rot">回転</param>
 	/// <param name="reactionTag">触れると反応するオブジェクトのタグ</param>
 	/// <param name="reactionLayer">触れると反応するオブジェクトのレイヤー</param>
-	CRotateFloorGimmick(const CVector& pos, const CVector& scale,
+	CRotateFloorTimeGimmick(const CVector& pos, const CVector& scale,
 		ETag reactionTag, ELayer reactionLayer);
 
 	// デストラクタ
-	~CRotateFloorGimmick();
+	~CRotateFloorTimeGimmick();
 
 	/// <summary>
 	/// 衝突処理
@@ -35,14 +33,11 @@ public:
 	// ステージの開始時の位置を設定
 	void SetStartPosition(const CVector& pos);
 
-	//プレイヤーを見つけたか
-	bool IsFoundPlayer() const;
+	// 状態を切り替える
+	void ChangeRotationState();
 
 	// 現在の回転値の取得
 	float GetCurrentRotationAngle() const;
-
-	// 状態を切り替える
-	void ChangeRotationState();
 
 	// 更新
 	void Update() override;
@@ -63,18 +58,21 @@ private:
 	// 回転する床の状態
 	enum class EState
 	{
-		Idle,		// 待機状態
-		Rotate1,	// 回転状態1
-		Rotate2,	// 回転状態2
+		Idle,	// 待機状態
+		Rotate1,// 回転状態1
+		Rotate2,// 回転状態2
+		Wait,	// 待ち状態
 	};
 	// 状態を切り替える
 	void ChangeState(EState state);
 	// 待機状態の更新処理
 	void UpdateIdle();
 	// 回転状態の更新処理1
-	void UpdateRotateStart();
+	void UpdateRotate1();
 	// 回転状態の更新処理2
-	void UpdateRotateEnd();
+	void UpdateRotate2();
+	// 待ち状態の更新処理
+	void UpdateWait();
 	// 現在の状態
 	EState mState;
 
@@ -89,14 +87,10 @@ private:
 	// 変数関連
 	// 状態内のステップ
 	int mStateStep;
+	// 待ち時間
+	float mWaitTime;
 	// 衝突しているか
 	bool mIsCollision;
-	// プレイヤーがジャンプをしたかどうか
-	bool mIsJumping;
-	// 次の状態
-	bool mNextRotateIsRotate2;
-	// 回転した角度を保持する変数
-	float mRotationAngle;
 	// 触れた時に反応するオブジェクトのタグ
 	ETag mReactionTag;
 	// 触れた時に反応するレイヤー
