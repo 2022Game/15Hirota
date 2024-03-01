@@ -1314,6 +1314,7 @@ void CPlayer::UpdateJump()
 
 	if (mMoveSpeedY <= 0.0f)
 	{
+		mIsJumping = false;
 		ChangeAnimation(EAnimType::eJumpEnd);
 		ChangeState(EState::eJumpEnd);
 	}
@@ -1334,7 +1335,6 @@ void CPlayer::UpdateJumpEnd()
 
 	if (IsAnimationFinished())
 	{
-		mIsJumping = false;
 		ChangeState(EState::eIdle);
 	}
 }
