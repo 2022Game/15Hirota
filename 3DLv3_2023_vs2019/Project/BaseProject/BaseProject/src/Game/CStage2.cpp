@@ -10,6 +10,7 @@
 #include "CAppearFloor.h"
 #include "CGameCamera.h"
 #include "CRotateFloorGimmick.h"
+#include "CRotateFloorTimeGimmick.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -57,7 +58,7 @@ void CStage2::Load()
 	mainCamera->AddCollider(field->GetWallCol());
 
 
-	// 回転する床ギミック
+	// 回転する床ギミック(プレイヤーに反応)
 	CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
 		CVector(-770.0f, 7.0f, -888.0f),
 		CVector(5.0f, 5.0f, 5.0f),
@@ -69,6 +70,19 @@ void CStage2::Load()
 		rotategimmick->SetStartPosition(rotategimmickPos);
 	}
 	AddTask(rotategimmick);
+
+	// 回転する床ギミック(常に)
+	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
+		CVector(-740.0f, 7.0f, -888.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector rotatetimegimmickPos = CVector(-740.0f, 7.0f, -888.0f);
+	if (rotatetimegimmick != nullptr)
+	{
+		rotatetimegimmick->SetStartPosition(rotatetimegimmickPos);
+	}
+	AddTask(rotatetimegimmick);
 
 	//// 木1 //////////////////////////////////////////////
 

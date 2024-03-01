@@ -17,6 +17,7 @@ CRotateFloorTimeGimmick::CRotateFloorTimeGimmick(const CVector& pos, const CVect
 	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mIsCollision(false)
+	, mNextRotateIsRotate2(false)
 {
 	// ‰ŠúˆÊ’u‚ğİ’è
 	mStartPos = Position();
@@ -73,13 +74,25 @@ void CRotateFloorTimeGimmick::ChangeState(EState state)
 // ‰ñ“]ó‘Ô‚ğØ‚è‘Ö‚¦‚é
 void CRotateFloorTimeGimmick::ChangeRotationState()
 {
-
+	mNextRotateIsRotate2 = !mNextRotateIsRotate2;
 }
 
 // ‘Ò‹@ó‘Ô‚Ìˆ—
 void CRotateFloorTimeGimmick::UpdateIdle()
 {
-
+	mWaitTime -= Time::DeltaTime();
+	if (mWaitTime <= 0.0f)
+	{
+		ChangeRotationState();
+		// Œ»İ‚Ì‰ñ“]ó‘Ô‚É‰‚¶‚Ä“KØ‚Èó‘Ô‚ğİ’è
+		if (mNextRotateIsRotate2) {
+			ChangeState(EState::Rotate1);
+		}
+		else {
+			ChangeState(EState::Rotate2);
+		}
+	}
+	CDebugPrint::Print("WaitTime:%f\n", mWaitTime);
 }
 
 // ‰ñ“]ó‘Ô‚ÌXVˆ—1
@@ -88,8 +101,11 @@ void CRotateFloorTimeGimmick::UpdateRotate1()
 	// 1•bŠÔ‚É90“x‰ñ“]‚·‚éê‡‚Ì‰ñ“]‘¬“x‚ğŒvZ
 	float rotationSpeed = 130.0f / 60.0f; // 1•bŠÔ‚É130“x‰ñ“]i60ƒtƒŒ[ƒ€‚Å1•bj
 
+	// ¶’[‚ÉˆÚ“®
+	Translate(CVector(25.0f, 15.0f, 0.0f));
 	// ‰ñ“]ˆ—
 	Rotate(CVector(0.0f, 0.0f, rotationSpeed));
+	Translate(CVector(-25.0f, -15.0f, 0.0f));
 
 	// Œ»İ‚Ì‰ñ“]Šp“x‚ğæ“¾
 	float currentRotationAngle = GetCurrentRotationAngle();
@@ -102,6 +118,7 @@ void CRotateFloorTimeGimmick::UpdateRotate1()
 		// –Ú•W‚ÌŠp“x‚É’B‚µ‚½‚ç‰ñ“]‚ğ’â~‚µAIdleó‘Ô‚É•ÏX
 		Rotate(CVector(0.0f, 0.0f, 0.0f)); // ‰ñ“]‘¬“x‚ğƒ[ƒ‚Éİ’è‚µ‚Ä’â~
 		ChangeState(EState::Idle);
+		mWaitTime = WAIT_TIME;
 	}
 }
 
@@ -111,8 +128,11 @@ void CRotateFloorTimeGimmick::UpdateRotate2()
 	// 1•bŠÔ‚É90“x‰ñ“]‚·‚éê‡‚Ì‰ñ“]‘¬“x‚ğŒvZ
 	float rotationSpeed = 130.0f / 60.0f; // 1•bŠÔ‚É130“x‰ñ“]i60ƒtƒŒ[ƒ€‚Å1•bj
 
+	// ¶’[‚ÉˆÚ“®
+	Translate(CVector(25.0f, 15.0f, 0.0f));
 	// ‰ñ“]ˆ—
 	Rotate(CVector(0.0f, 0.0f, -rotationSpeed));
+	Translate(CVector(-25.0f, -15.0f, 0.0f));
 
 	// Œ»İ‚Ì‰ñ“]Šp“x‚ğæ“¾
 	float currentRotationAngle = GetCurrentRotationAngle();
@@ -126,6 +146,7 @@ void CRotateFloorTimeGimmick::UpdateRotate2()
 		// ‰ñ“]‘¬“x‚ğƒ[ƒ‚Éİ’è‚µ‚Ä’â~
 		Rotate(CVector(0.0f, 0.0f, 0.0f));
 		ChangeState(EState::Idle);
+		mWaitTime = WAIT_TIME;
 	}
 }
 

@@ -91,6 +91,8 @@ private:
 	float mWaitTime;
 	// 衝突しているか
 	bool mIsCollision;
+	// 次の回転状態
+	bool mNextRotateIsRotate2;
 	// 触れた時に反応するオブジェクトのタグ
 	ETag mReactionTag;
 	// 触れた時に反応するレイヤー
