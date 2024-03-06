@@ -2,6 +2,8 @@
 #include "Maths.h"
 #include "CPlayer.h"
 #include "CSound.h"
+#include "CHealingPotion.h"
+#include "CInvincible.h"
 
 // ブロックから上に上昇する際の最大値
 #define MAXHEIGHT 15.0f
@@ -55,6 +57,8 @@ CRengaBlock::CRengaBlock(const CVector& pos, const CVector& scale,
 	Position(pos);
 	Scale(scale);
 
+	mpHealing = nullptr;
+	mpCinvincible = nullptr;
 }
 
 // デストラクタ
@@ -119,6 +123,7 @@ void CRengaBlock::UpdateIdle()
 void CRengaBlock::UpdateHit()
 {
 	mpHitBlockSE->Play(1.0f, false, 0.0f);
+	bool item = false;
 
 	// ステップごとに処理を切り替え
 	switch (mStateStep)
@@ -129,6 +134,16 @@ void CRengaBlock::UpdateHit()
 		// 最大値まで
 		if (Position().Y() < mStartPos.Y() + MAXHEIGHT)
 		{
+			bool obj = !mpCinvincible;
+			if (!item && obj)
+			{
+				item = true;
+				mpCinvincible = new CInvincible();
+				mpCinvincible->Scale(3.0f, 3.0f, 3.0f);
+				CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
+				mpCinvincible->Position(newPosition);
+			}
+
 			mMoveSpeed = CVector(0.0f, BLOCK_INCREASE_VALUE * Time::DeltaTime(), 0.0f);
 			Position(Position() + mMoveSpeed);
 		}
@@ -140,12 +155,13 @@ void CRengaBlock::UpdateHit()
 		break;
 		// ステップ1 元に戻す
 	case 1:
+		// 下降させる
 		mMoveSpeed = CVector(0.0f, -BLOCK_DESCENDING_VALUE * Time::DeltaTime(), 0.0f);
 		Position(Position() + mMoveSpeed);
 
 		// オブジェクトの位置が0.5未満になったら
 		// 元の位置に戻す
-		if (CVector::Distance(Position(), mStartPos) < 0.5f)
+		if (CVector::Distance(Position(), mStartPos) < 1.0f)
 		{
 			Position(mStartPos);
 			// 当たった後の状態に遷移

@@ -11,6 +11,8 @@
 #include "CGameCamera.h"
 #include "CRotateFloorGimmick.h"
 #include "CRotateFloorTimeGimmick.h"
+#include "CHatenaBlock.h"
+#include "CRengaBlock.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -56,6 +58,34 @@ void CStage2::Load()
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(field->GetWallCol());
+
+	// ハテナブロック
+	CHatenaBlock* hatena = new CHatenaBlock
+	(
+		CVector(-900.0f, 8.0f, -888.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector hatenaPos = CVector(-900.0f, 8.0f, -888.0f);
+	if (hatena != nullptr)
+	{
+		hatena->SetStartPosition(hatenaPos);
+	}
+	AddTask(hatena);
+
+	// レンガブロック
+	CRengaBlock* renga = new CRengaBlock
+	(
+		CVector(-850.0f, 8.0f, -888.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector rengaPos = CVector(-850.0f, 8.0f, -888.0f);
+	if (renga != nullptr)
+	{
+		renga->SetStartPosition(rengaPos);
+	}
+	AddTask(renga);
 
 
 	// 回転する床ギミック(プレイヤーに反応)

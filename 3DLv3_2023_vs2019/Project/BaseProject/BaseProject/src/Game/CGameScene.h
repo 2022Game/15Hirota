@@ -1,6 +1,7 @@
 #pragma once
 #include "CSceneBase.h"
 class CGameMenu;
+class CInventoryMenu;
 class CSound;
 class CPlayer;
 class CSoldier;
@@ -20,4 +21,5 @@ public:
 
 private:
 	CGameMenu* mpGameMenu;
+	CInventoryMenu* mpInventoryMenu;
 };

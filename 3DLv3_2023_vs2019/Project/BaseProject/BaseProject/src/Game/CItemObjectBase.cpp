@@ -39,3 +39,30 @@ bool CItemObjectBase::IsAttachHitObj(CObjectBase* obj) const
 	);
 	return find != mRecoveryObjects.end();
 }
+
+
+void CItemObjectBase::HealingStart()
+{
+	mHealingObjects.clear();
+}
+
+void CItemObjectBase::HealingEnd()
+{
+}
+
+void CItemObjectBase::AddAttachHitHealingObj(CObjectBase* obj)
+{
+	mHealingObjects.push_back(obj);
+}
+
+bool CItemObjectBase::IsAttachHitHealingObj(CObjectBase* obj) const
+{
+	// すでにリストに追加されているか確認をする
+	auto find = std::find
+	(
+		mHealingObjects.begin(),
+		mHealingObjects.end(),
+		obj
+	);
+	return find != mHealingObjects.end();
+}

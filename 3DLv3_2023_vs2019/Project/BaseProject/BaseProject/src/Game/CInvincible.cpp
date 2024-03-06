@@ -24,6 +24,7 @@ CInvincible::CInvincible()
 	, mElapsedTime(0.0f)
 	, mIsGround(false)
 	, mInvincibleUsed(false)
+	, mIsHeld(false)
 {
 	// 無敵アイテムモデル取得
 	mpInvincibleModel = CResourceManager::Get<CModel>("Star");
@@ -68,15 +69,14 @@ void CInvincible::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 			// すでに無敵のキャラでなければ
 			if (!IsAttachHitObjInvincible(player) && !mInvincibleUsed)
 			{
-				mpInvincibleSE->Play(1.0f, false, 0.0f);
+				//mpInvincibleSE->Play(1.0f, false, 0.0f);
 				mInvincibleUsed = true;
 				// 無敵状態(コライダーオフ)
-				player->TakeInvincible();
+				//player->TakeInvincible();
 
 				// 無敵リストに追加
 				AddAttachHitObjInvincible(player);
 
-				mInvincibleUsed = true;
 				if (mInvincibleUsed)
 				{
 					Kill();
@@ -158,6 +158,15 @@ void CInvincible::MoveReft()
 
 	// deltaTime を考慮して移動量を計算
 	mMoveVector *= Time::DeltaTime();
+}
+
+void CInvincible::OnTouch(CPlayer* player)
+{
+	if (mIsHeld)
+	{
+		player->AddItem(CPlayer::ItemType::INVINCIBLE);
+		mIsHeld = true;
+	}
 }
 
 void CInvincible::Update()

@@ -73,13 +73,13 @@ void CSignboardPause::Update()
 	if (!mIsPaused)
 	{
 		//「P」キーを押すと、ポーズ開始
-		if (CInput::PushKey('U') && CSignboard::Instance()->IsFoundPlayer())
-		{
-			//TaskManagerからポーズを設定する
-			CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
-			//ポーズ中のフラグも立てる
-			mIsPaused = true;
-		}
+		//if (CInput::PushKey('U') && CSignboard::Instance()->IsFoundPlayer())
+		//{
+		//	//TaskManagerからポーズを設定する
+		//	CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
+		//	//ポーズ中のフラグも立てる
+		//	mIsPaused = true;
+		//}
 	}
 	//ポーズ中
 	else

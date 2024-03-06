@@ -20,6 +20,7 @@ public:
 	// recovery == ‰ñ•œ
 	virtual void TakeRecovery(int recovery);
 	
+	// –³“Gˆ—
 	virtual void TakeInvincible();
 
 

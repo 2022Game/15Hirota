@@ -7,6 +7,7 @@
 #include "CColliderSphere.h"
 #include "CModel.h"
 class CSound;
+class CPlayer;
 
 // 無敵アイテム
 class CInvincible : public CInvincibleObjectBase
@@ -32,6 +33,8 @@ public:
 	void MoveLight();
 	// 左
 	void MoveReft();
+
+	void OnTouch(CPlayer* player);
 
 	// 更新処理
 	void Update();
@@ -72,5 +75,7 @@ private:
 	bool mIsGround;
 	// 無敵になったかどうか
 	bool mInvincibleUsed;
+	// 保持されているか
+	bool mIsHeld;
 };
 #endif

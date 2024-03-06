@@ -7,6 +7,7 @@
 #include "CColliderSphere.h"
 #include "CImage.h"
 #include "CSound.h"
+#include <map>
 
 class CUIGauge;
 class CStaminaGauge;
@@ -23,6 +24,32 @@ class CBullet;
 class CPlayer : public CXCharacter
 {
 public:
+	// プレイヤーが持っているアイテムのリスト
+	enum class ItemType
+	{
+		NONE,		// なにも保持していない
+
+		INVINCIBLE,	// 無敵アイテム
+		HEALING,	// 回復アイテム
+		ATTACK_UP,	// 攻撃力アップアイテム
+		DEFENSE,	// 防御力アップアイテム
+	};
+	// インベントリを管理
+	std::map<ItemType, int> mInventory;
+	// アイテムを取得
+	void AddItem(ItemType item);
+	// 取得したアイテムを判定
+	bool HasItem(ItemType item);
+	// プレイヤーのアイテムを一括削除
+	void ClearItems();
+	// アイテムの取得の条件付けを今後行うための処理
+	void PickUpItem(ItemType item);
+	// 無敵アイテムの使用
+	void UseInvincibleItem();
+	// 回復薬アイテムの使用
+	void UseHealingItem();
+	// インベントリから特定のアイテムを削除
+	void RemoveItem(ItemType item);
 
 	//インスタンスのポインタの取得
 	static CPlayer* Instance();
@@ -97,6 +124,7 @@ private:
 
 	// プレイヤーのインスタンス
 	static CPlayer* spInstance;
+	
 
 
 	//// モデル・素材関連 /////////////////////////////////

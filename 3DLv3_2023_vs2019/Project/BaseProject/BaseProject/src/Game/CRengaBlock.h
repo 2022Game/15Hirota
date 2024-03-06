@@ -5,6 +5,8 @@
 #include "CModel.h"
 #include "CColliderSphere.h"
 class CSound;
+class CHealingPotion;
+class CInvincible;
 
 // レンガブロック
 class CRengaBlock : public CRideableObject
@@ -49,6 +51,9 @@ private:
 	CColliderSphere* mpColliderSphere;
 	// ブロックを叩いた時のSE
 	CSound* mpHitBlockSE;
+
+	CHealingPotion* mpHealing;
+	CInvincible* mpCinvincible;
 
 
 	// 状態関連

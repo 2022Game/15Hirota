@@ -133,7 +133,7 @@ void CHatenaBlock::UpdateHit()
 		{
 			// アイテムを出現
 			// ランダムに
-			int randomValue = Math::Rand(0, 10);
+			int randomValue = Math::Rand(0, 5);
 
 			item = false;
 
@@ -148,15 +148,15 @@ void CHatenaBlock::UpdateHit()
 				CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
 				mpHeart->Position(newPosition);
 			}
-			// 1 かつ 何も出現していない かつ falseだった場合
-			else if ((randomValue >= 6 && randomValue <= 10 && obj && !item))
-			{
-				item = true;
-				mpStar = new CInvincible();
-				mpStar->Scale(3.0f, 3.0f, 3.0f);
-				CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
-				mpStar->Position(newPosition);
-			}
+			//// 1 かつ 何も出現していない かつ falseだった場合
+			//else if ((randomValue >= 6 && randomValue <= 10 && obj && !item))
+			//{
+			//	item = true;
+			//	mpStar = new CInvincible();
+			//	mpStar->Scale(3.0f, 3.0f, 3.0f);
+			//	CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
+			//	mpStar->Position(newPosition);
+			//}
 
 			// 上昇させる
 			CVector mSpd = mMoveSpeed;
@@ -177,7 +177,7 @@ void CHatenaBlock::UpdateHit()
 
 		// オブジェクトの位置が0.5未満になったら
 		// 元の位置に戻す
-		if (CVector::Distance(Position(), mStartPos) < 0.5f)
+		if (CVector::Distance(Position(), mStartPos) < 1.0f)
 		{
 			Position(mStartPos);
 			// 当たった後の状態に遷移

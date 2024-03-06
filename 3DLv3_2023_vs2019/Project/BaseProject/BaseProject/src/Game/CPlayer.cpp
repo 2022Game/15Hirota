@@ -87,6 +87,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eReady)
+	, mInventory(std::map<ItemType,int>())
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
@@ -113,6 +114,8 @@ CPlayer::CPlayer()
 	, mIsJumping(false)
 	, mpRideObject(nullptr)
 {
+	ClearItems();
+	//, mInventory(std::vector<ItemType>())
 	// インスタンスの設定
 	spInstance = this;
 	Position(0.0f, 60.0f, -30.0f);
@@ -323,7 +326,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			if (other->Tag() == ETag::eItemRecover)
 			{
-				TakeRecovery(1);
+				AddItem(ItemType::HEALING);
 			}
 		}
 		// 無敵アイテム
@@ -331,7 +334,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			if (other->Tag() == ETag::eItemInvincible)
 			{
-				TakeInvincible();
+				AddItem(ItemType::INVINCIBLE);
 			}
 		}
 		else if (other->Layer() == ELayer::eEnemy)
@@ -395,6 +398,63 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					ChangeState(EState::eClimb);
 				}
 			}
+		}
+	}
+}
+
+// アイテムを取得
+void CPlayer::AddItem(ItemType item)
+{
+	mInventory[item]++;
+}
+
+// 取得したアイテムを判定
+bool CPlayer::HasItem(ItemType item)
+{	
+	if (mInventory.empty()) {
+		return ItemType::NONE == item;
+	}
+	return mInventory.find(item) != mInventory.end() && mInventory[item] > 0;
+}
+
+// 取得したアイテムを判定
+void CPlayer::ClearItems()
+{
+	mInventory.clear();
+	//AddItem(ItemType::NONE);
+}
+
+// アイテムの取得の条件付けを今後行うための処理
+void CPlayer::PickUpItem(ItemType item)
+{
+	AddItem(item);
+}
+
+// 無敵アイテムの使用
+void CPlayer::UseInvincibleItem()
+{
+	if (HasItem(ItemType::INVINCIBLE)) {
+		TakeInvincible();
+		RemoveItem(ItemType::INVINCIBLE);
+	}
+}
+
+// 回復薬の使用
+void CPlayer::UseHealingItem()
+{
+	if (HasItem(ItemType::HEALING)) {
+		TakeRecovery(1);
+		RemoveItem(ItemType::HEALING);
+	}
+}
+
+// インベントリから特定のアイテムを削除
+void CPlayer::RemoveItem(ItemType item)
+{
+	if (mInventory[item] > 0) {
+		mInventory[item]--;
+		if (mInventory[item] == 0) {
+			mInventory.erase(item);	 // アイテムが0になったらインベントリから削除する
 		}
 	}
 }
@@ -1568,29 +1628,29 @@ void CPlayer::Update()
 		}
 	}*/
 
-	//// キャラクターのデバッグ表示
-	//static bool debug = false;
-	//if (CInput::PushKey('R'))
-	//{
-	//	debug = !debug;
-	//}
-	//if (debug)
-	//{
-	//	//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
-	//	CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
-	//	CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
-	//	CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
-	//}
-	//// 1キーを押しながら、↑ ↓ でHP増減
-	//if (CInput::Key('1'))
-	//{
-	//	if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
-	//	else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
-	//}
-	//else if (CInput::Key('2'))
-	//{
-	//	LevelUp();
-	//}
+	// キャラクターのデバッグ表示
+	static bool debug = false;
+	if (CInput::PushKey('R'))
+	{
+		debug = !debug;
+	}
+	if (debug)
+	{
+		//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
+		CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
+		CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
+		CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
+	}
+	// 1キーを押しながら、↑ ↓ でHP増減
+	if (CInput::Key('1'))
+	{
+		if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
+		else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
+	}
+	else if (CInput::Key('2'))
+	{
+		LevelUp();
+	}
 
 	// 現在のHPを設定
 	mpHpGauge->SetValue(mCharaStatus.hp);
