@@ -448,6 +448,16 @@ void CPlayer::UseHealingItem()
 	}
 }
 
+// 攻撃力アップアイテムの使用
+void CPlayer::UseAttackPotion()
+{
+	if (HasItem(ItemType::ATTACK_UP)) {
+		// 攻撃ポーションを使った時の処理を考える↓
+
+		RemoveItem(ItemType::ATTACK_UP);
+	}
+}
+
 // インベントリから特定のアイテムを削除
 void CPlayer::RemoveItem(ItemType item)
 {

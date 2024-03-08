@@ -48,6 +48,8 @@ public:
 	void UseInvincibleItem();
 	// 回復薬アイテムの使用
 	void UseHealingItem();
+	// 攻撃力アップアイテムの使用
+	void UseAttackPotion();
 	// インベントリから特定のアイテムを削除
 	void RemoveItem(ItemType item);
 

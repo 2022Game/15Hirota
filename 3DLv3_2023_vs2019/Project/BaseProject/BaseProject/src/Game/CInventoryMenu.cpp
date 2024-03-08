@@ -27,7 +27,7 @@ CInventoryMenu::CInventoryMenu()
 	mpBackground->SetPos(CVector2(WINDOW_WIDTH, WINDOW_HEIGHT) * 0.5f);
 	mpBackground->SetColor(1.0f, 1.0f, 1.0f, MENU_ALPHA);
 
-
+	// アイテムを持っていないときの画像
 	int menuItemCount = 3;
 	float spaceY = (float)WINDOW_HEIGHT / (menuItemCount + 1);
 	for (int i = 0; i < menuItemCount; i++)
@@ -48,8 +48,10 @@ CInventoryMenu::CInventoryMenu()
 	int ItemCount = 3;
 	float invinciblePosY = spaceY * 1; // 上から1番目の位置
 	float healingPosY = spaceY * 2; // 上から2番目の位置
+	float attackPotionPosY = spaceY * 3;
 	for (int i = 0; i < ItemCount; i++)
 	{
+		// 無敵アイテム
 		CImage* invincible = new CImage
 		(
 			"UI\\Item\\Invincible Item.png",
@@ -62,6 +64,7 @@ CInventoryMenu::CInventoryMenu()
 		invincible->SetColor(1.0f, 1.0f, 1.0f, MENU_ALPHA);
 		mPlayerItems.push_back(std::make_pair(PlayerItem::INVINCIBLE_ITEM, invincible));
 
+		// 回復アイテム
 		CImage* healing = new CImage
 		(
 			"UI\\Item\\Health Recovery Items.png",
@@ -73,8 +76,22 @@ CInventoryMenu::CInventoryMenu()
 		healing->SetPos(healingPosX, healingPosY);
 		healing->SetColor(1.0f, 1.0f, 1.0f, MENU_ALPHA);
 		mPlayerItems.push_back(std::make_pair(PlayerItem::HEALING_ITEM, healing));
+
+		// 攻撃力アップアイテム
+		CImage* attackPotion = new CImage
+		(
+			"UI\\Item\\AttackPotion.png",
+			ETaskPriority::eUI, 0, ETaskPauseType::eMenu,
+			false, false
+		);
+		attackPotion->SetCenter(attackPotion->GetSize() * 0.5f);
+		float attackPotionPosX = (1280.0f - 1034.0f + attackPotion->GetSize().X()) * 0.5f + 100.0f;
+		attackPotion->SetPos(attackPotionPosX, attackPotionPosY);
+		attackPotion->SetColor(1.0f, 1.0f, 1.0f, MENU_ALPHA);
+		mPlayerItems.push_back(std::make_pair(PlayerItem::ATTACK_UP_ITEM, attackPotion));
 	}
 
+	// アイテムの枠画像
 	mpSelectFrame = new CImage
 	(
 		"UI/menu_item_select.png",
@@ -91,6 +108,7 @@ CInventoryMenu::CInventoryMenu()
 CInventoryMenu::~CInventoryMenu()
 {
 }
+
 
 void CInventoryMenu::Open()
 {
@@ -142,42 +160,41 @@ void CInventoryMenu::Decide(int select)
 
 void CInventoryMenu::Update()
 {
-	bool playerHasInvincibleItem = !mPlayerItems.empty();
+	bool playerHasItem = !mPlayerItems.empty();
 	bool noItemExists = !mNoItems.empty();
+	CPlayer* player = CPlayer::Instance();
 
-	// アイテムの合計数を計算
-	int totalItemCount = playerHasInvincibleItem ? mPlayerItems.size() : mNoItems.size();
+	if (playerHasItem) {
 
-	if (CInput::PushKey('I')) {
-		Close();
-	}
-	else if (CInput::PushKey(VK_UP)) {
-		if (totalItemCount > 0)
-			mSelectIndex = (mSelectIndex + totalItemCount - 1) % totalItemCount;
-	}
-	else if (CInput::PushKey(VK_DOWN)) {
-		if (totalItemCount > 0)
-			mSelectIndex = (mSelectIndex + 1) % totalItemCount;
-	}
-	else if (CInput::PushKey(VK_RETURN)) {
-		Decide(mSelectIndex);
-	}
+		int itemCount = mPlayerItems.size();
+		if (CInput::PushKey(VK_UP))
+		{
+			mSelectIndex = (mSelectIndex + itemCount - 1) % itemCount;
+		}
+		else if (CInput::PushKey(VK_DOWN))
+		{
+			mSelectIndex = (mSelectIndex + 1) % itemCount;
+		}
+		else if (CInput::PushKey(VK_RETURN))
+		{
+			Decide(mSelectIndex);
+		}
 
-	// アイテムを更新
-	if (playerHasInvincibleItem) {
-		for (const auto& itemPair : mPlayerItems) {
-			CImage* item = itemPair.second;
-			item->Update();
+		mpBackground->Update();
+		// アイテムの更新と選択フレームの設定
+		for (int i = 0; i < mPlayerItems.size(); ++i) {
+			if (i == mSelectIndex) {
+				mpSelectFrame->SetPos(mPlayerItems[i].second->GetPos());
+			}
+			mPlayerItems[i].second->Update();
 		}
 	}
 	else if (noItemExists) {
+		// アイテムが存在しない場合は、通常のアップデート
 		for (const auto& itemPair : mNoItems) {
-			CImage* item = itemPair.second;
-			item->Update();
+			itemPair.second->Update();
 		}
 	}
-
-	mpBackground->Update();
 	mpSelectFrame->Update();
 }
 
@@ -186,14 +203,28 @@ void CInventoryMenu::Render()
 	CPlayer* player = CPlayer::Instance();
 	mpBackground->Render();
 
-	bool playerHasInvincibleItem = player->HasItem(CPlayer::ItemType::INVINCIBLE);
-	bool playerHasHealingItem = player->HasItem(CPlayer::ItemType::HEALING);
-
 	// 選択されているアイテムのみを描画する
 	for (int i = 0; i < mPlayerItems.size(); ++i) {
-		if ((playerHasInvincibleItem && mPlayerItems[i].first == PlayerItem::INVINCIBLE_ITEM) ||
-			(playerHasHealingItem && mPlayerItems[i].first == PlayerItem::HEALING_ITEM)) {
+		// アイテムがプレイヤーが持っているかどうかを確認
+		bool playerHasItem = false;
+		switch (mPlayerItems[i].first) {
+		case PlayerItem::INVINCIBLE_ITEM:
+			playerHasItem = player->HasItem(CPlayer::ItemType::INVINCIBLE);
+			break;
+		case PlayerItem::HEALING_ITEM:
+			playerHasItem = player->HasItem(CPlayer::ItemType::HEALING);
+			break;
+		case PlayerItem::ATTACK_UP_ITEM:
+			playerHasItem = player->HasItem(CPlayer::ItemType::ATTACK_UP);
+			break;
+		default:
+			break;
+		}
+
+		// アイテムがプレイヤーが持っている場合にのみ描画する
+		if (playerHasItem) {
 			if (i == mSelectIndex) {
+				// 選択されたアイテムの場合、選択フレームを描画する
 				CImage* selectedItem = mPlayerItems[i].second;
 				mpSelectFrame->SetPos(selectedItem->GetPos());
 				mpSelectFrame->Render();
@@ -203,13 +234,13 @@ void CInventoryMenu::Render()
 	}
 
 	// アイテムを持っていない場合は、mNoItemsの画像を描画する
-	if (!playerHasInvincibleItem && !playerHasHealingItem) {
+	if (!player->HasItem(CPlayer::ItemType::INVINCIBLE) &&
+		!player->HasItem(CPlayer::ItemType::HEALING) &&
+		!player->HasItem(CPlayer::ItemType::ATTACK_UP)) {
 		for (const auto& itemPair : mNoItems) {
 			itemPair.second->Render();
 		}
 	}
-
-	mpSelectFrame->Update();
 }
 
 void CInventoryMenu::SetPlayer(CPlayer* player)
