@@ -88,7 +88,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CModelX>("Soldier",				"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
 	//CResourceManager::Load<CModelX>("UnityChan",			"Character\\UnityChan\\unitychan.x");						// ユニティちゃん
 	CResourceManager::Load<CModelX>("Yukari",				"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
-	CResourceManager::Load<CModelX>("Vanguard",				"Character\\Vanguard\\VanguardModel.x");						// ヴァンガード
+	CResourceManager::Load<CModelX>("Vanguard",				"Character\\Vanguard\\VanguardModel.x");					// ヴァンガード
 
 
 	// アイテム関連
@@ -113,10 +113,10 @@ void CGameScene::Load()
 	CResourceManager::Load<CTexture>("ExclamationMark",		"UI\\bikkurimark.png");				// ビックリマーク画像
 
 	// アイテムUI関連
-	CResourceManager::Load<CTexture>("InvincibleUI",		"UI\\Item\\Invincible Item.png");			// 無敵アイテム用のUI
-	CResourceManager::Load<CTexture>("AttackUpUI",			"UI\\Item\\Increase Attack Power.png");		// 攻撃力アップアイテム用のUI
-	CResourceManager::Load<CTexture>("HealthUI",			"UI\\Item\\Health Recovery Items.png");		// 防御力アップアイテム用のUI
-	CResourceManager::Load<CTexture>("No ItemUI",			"UI\\Item\\NoItemUI.png");					// アイテム無し用のUI
+	//CResourceManager::Load<CTexture>("InvincibleUI",		"UI\\Item\\Invincible Item.png");			// 無敵アイテム用のUI
+	//CResourceManager::Load<CTexture>("AttackUpUI",			"UI\\Item\\Increase Attack Power.png");		// 攻撃力アップアイテム用のUI
+	//CResourceManager::Load<CTexture>("HealthUI",			"UI\\Item\\Health Recovery Items.png");		// 防御力アップアイテム用のUI
+	//CResourceManager::Load<CTexture>("No ItemUI",			"UI\\Item\\NoItemUI.png");					// アイテム無し用のUI
 
 
 
