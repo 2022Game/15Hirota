@@ -508,6 +508,9 @@
     <ClCompile Include="src\Game\CHealingPotion.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CClimbWall.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -935,6 +938,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CHealingPotion.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CClimbWall.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

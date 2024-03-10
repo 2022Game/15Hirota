@@ -82,6 +82,7 @@
     <ClCompile Include="src\Game\CInvincible.cpp" />
     <ClCompile Include="src\Game\CInvincibleObjectBase.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
+    <ClCompile Include="src\Game\CClimbWall.cpp" />
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
     <ClCompile Include="src\Game\CNeedle.cpp" />
     <ClCompile Include="src\Game\CNumberFloor1.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="src\Game\CApplication.h" />
     <ClInclude Include="src\Game\CBullet.h" />
     <ClInclude Include="src\Game\CClearScene.h" />
+    <ClInclude Include="src\Game\CClimbWall.h" />
     <ClInclude Include="src\Game\CEnemy.h" />
     <ClInclude Include="src\Game\CEnemyManager.h" />
     <ClInclude Include="src\Game\CExclamationMark.h" />

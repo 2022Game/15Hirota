@@ -109,19 +109,46 @@ CInventoryMenu::~CInventoryMenu()
 {
 }
 
-
 void CInventoryMenu::Open()
 {
+	mIsOpened = true;
 	SetEnable(true);
 	SetShow(true);
 
-	mSelectIndex = 0;
+	CPlayer* player = CPlayer::Instance();
+	// 現在のアイテムの数を取得
+	int numItems = mPlayerItems.size();
+
+	// プレイヤーがアイテムを持っている場合
+	if (numItems > 0) {
+		bool itemSelected = false;
+		// 最初のアイテムを選択状態にする（mSelectIndexを0に設定）
+		// プレイヤーがアイテムを持っていない場合は0に設定
+		mSelectIndex = 0;
+		for (int i = 0; i < mPlayerItems.size(); ++i) {
+			// アイテムがプレイヤーが持っているかどうかを確認
+			if (IsValidSelection(i)) {
+				mSelectIndex = i;
+				itemSelected = true;
+				break;
+			}
+		}
+	}
+
+	// アイテムを持っていないときの処理
+	bool noitemselect = !mNoItems.size();
+	if (noitemselect)
+	{
+		mSelectIndex = 0;
+	}
+
 	CBGMManager::Instance()->Play(EBGMType::eMenu, false);
 	CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
 }
 
 void CInventoryMenu::Close()
 {
+	mIsOpened = false;
 	SetEnable(false);
 	SetShow(false);
 	CBGMManager::Instance()->Play(EBGMType::eGame, false);
@@ -140,6 +167,7 @@ void CInventoryMenu::Decide(int select)
 	switch (selectedItem)
 	{
 	case PlayerItem::NONE:
+		Close();
 		break;
 		// 無敵アイテムを取得したときの処理
 	case PlayerItem::INVINCIBLE_ITEM:
@@ -160,42 +188,93 @@ void CInventoryMenu::Decide(int select)
 
 void CInventoryMenu::Update()
 {
-	bool playerHasItem = !mPlayerItems.empty();
-	bool noItemExists = !mNoItems.empty();
+	bool PlayerHasItem = !mPlayerItems.empty();
+	bool NoItemExists = !mNoItems.empty();
 	CPlayer* player = CPlayer::Instance();
 
-	if (playerHasItem) {
 
-		int itemCount = mPlayerItems.size();
-		if (CInput::PushKey(VK_UP))
-		{
-			mSelectIndex = (mSelectIndex + itemCount - 1) % itemCount;
-		}
-		else if (CInput::PushKey(VK_DOWN))
-		{
-			mSelectIndex = (mSelectIndex + 1) % itemCount;
-		}
-		else if (CInput::PushKey(VK_RETURN))
-		{
-			Decide(mSelectIndex);
-		}
-
-		mpBackground->Update();
-		// アイテムの更新と選択フレームの設定
-		for (int i = 0; i < mPlayerItems.size(); ++i) {
-			if (i == mSelectIndex) {
-				mpSelectFrame->SetPos(mPlayerItems[i].second->GetPos());
-			}
-			mPlayerItems[i].second->Update();
+	int ItemCount = mPlayerItems.size();
+	// 現在のアイテムの数をカウント
+	int CurrentItemCount = 0;
+	// 現在持っているアイテムの数を数える
+	for (int i = 0; i < ItemCount; ++i) {
+		if (IsValidSelection(i)) {
+			CurrentItemCount++;
 		}
 	}
-	else if (noItemExists) {
-		// アイテムが存在しない場合は、通常のアップデート
-		for (const auto& itemPair : mNoItems) {
-			itemPair.second->Update();
+
+	// 上キーが押された場合
+	int NewIndex = mSelectIndex;
+	// アイテムが選択可能かどうか
+	bool FoundValidItem = false;
+	if (CInput::PushKey(VK_UP)) {
+		while (!FoundValidItem) {
+			NewIndex = (NewIndex + ItemCount - 1) % ItemCount;
+			if (IsValidSelection(NewIndex)) {
+				FoundValidItem = true;
+			}
+			if (NewIndex == mSelectIndex) {
+				// 選択インデックスが最初の位置に戻った場合、ループを抜ける
+				break;
+			}
 		}
+		if (FoundValidItem) {
+			mSelectIndex = NewIndex;
+		}
+	}
+	else if (CInput::PushKey(VK_DOWN)) {
+		while (!FoundValidItem) {
+			NewIndex = (NewIndex + 1) % ItemCount;
+			if (IsValidSelection(NewIndex)) {
+				FoundValidItem = true;
+			}
+			if (NewIndex == mSelectIndex) {
+				// 選択インデックスが最後の位置に戻った場合、ループを抜ける
+				break;
+			}
+		}
+		if (FoundValidItem) {
+			mSelectIndex = NewIndex;
+		}
+	}
+	else if (CInput::PushKey(VK_RETURN)) {
+		Decide(mSelectIndex);
+	}
+	// アイテムを持っていない場合でもエンターキーで閉じる処理
+	else if (CurrentItemCount == 0 && CInput::PushKey(VK_RETURN)) {
+		Close();
+	}
+
+	mpBackground->Update();
+	for (const auto& itemPair : mNoItems) {
+		CImage* item = itemPair.second;
+		item->Update();
 	}
 	mpSelectFrame->Update();
+}
+
+// アイテムが選択可能かどうか
+bool CInventoryMenu::IsValidSelection(int index) {
+	// インベントリのアイテムと、プレイヤーのアイテムを確認
+	if (mPlayerItems[index].first == PlayerItem::INVINCIBLE_ITEM &&
+		CPlayer::Instance()->HasItem(CPlayer::ItemType::INVINCIBLE)) {
+		return true;
+	}
+	else if (mPlayerItems[index].first == PlayerItem::HEALING_ITEM &&
+		CPlayer::Instance()->HasItem(CPlayer::ItemType::HEALING)) {
+		return true;
+	}
+	else if (mPlayerItems[index].first == PlayerItem::ATTACK_UP_ITEM &&
+		CPlayer::Instance()->HasItem(CPlayer::ItemType::ATTACK_UP)) {
+		return true;
+	}
+	return false;
+
+	// いらないかも
+	//// index が mPlayerItems リストの範囲内にあることを確認
+	//if (index < 0 || index >= mPlayerItems.size()) {
+	//	return false;
+	//}
 }
 
 void CInventoryMenu::Render()

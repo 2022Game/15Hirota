@@ -13,6 +13,7 @@
 #include "CRotateFloorTimeGimmick.h"
 #include "CHatenaBlock.h"
 #include "CRengaBlock.h"
+#include "CClimbWall.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -37,6 +38,11 @@ void CStage2::Load()
 	CField1* field = new CField1();
 	field->Scale(10.0f, 10.0f, 10.0f);
 	AddTask(field);
+
+	// 登れる壁を作成
+	CClimbWall* climbWall = new CClimbWall();
+	climbWall->Scale(10.0f, 10.0f, 10.0f);
+	AddTask(climbWall);
 
 
 	// モンスター(プレイヤー)

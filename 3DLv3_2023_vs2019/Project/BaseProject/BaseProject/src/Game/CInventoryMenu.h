@@ -50,6 +50,8 @@ private:
 	std::vector<std::pair<PlayerItem, CImage*>> mPlayerItems;
 	// アイテムが無い場合の画像
 	std::vector<std::pair<PlayerItem, CImage*>> mNoItems;
+	// アイテムが選択可能か
+	bool CInventoryMenu::IsValidSelection(int index);
 
 	CPlayer* mPlayer;
 };

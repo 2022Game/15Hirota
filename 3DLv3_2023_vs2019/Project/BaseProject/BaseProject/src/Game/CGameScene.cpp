@@ -180,12 +180,21 @@ void CGameScene::Update()
 			mpGameMenu->Open();
 		}
 	}
+
 	// インベントリを開いていなければ、[I]キーでメニューを開く
 	if (!mpInventoryMenu->IsOpened())
 	{
 		if (CInput::PushKey('I'))
 		{
 			mpInventoryMenu->Open();
+		}
+	}
+	// インベントリを開いていたら、[I]キーでメニューを閉じる
+	else
+	{
+		if (CInput::PushKey('I'))
+		{
+			mpInventoryMenu->Close();
 		}
 	}
 

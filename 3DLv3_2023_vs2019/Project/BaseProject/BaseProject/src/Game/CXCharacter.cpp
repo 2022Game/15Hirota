@@ -10,6 +10,7 @@ CXCharacter::CXCharacter(ETag tag, ETaskPriority prio, int sortOrder, ETaskPause
 	, mAnimationIndex(0)
 	, mAnimationFrame(0.0f)
 	, mAnimationFrameSize(0.0f)
+	, mAnimationSpeed(1.0f)
 {
 }
 
@@ -73,36 +74,44 @@ matrix:移動、回転、拡大縮小の行列
 */
 void CXCharacter::Update(const CMatrix& matrix)
 {
-	if (mpModel == nullptr) return;
-	for (size_t i = 0; i < mpModel->AnimationSet().size(); i++)
+	auto& animSet = mpModel->AnimationSet();
+	CAnimationSet* currAnim = animSet[mAnimationIndex];
+
+	for (size_t i = 0; i < animSet.size(); i++)
 	{
-		mpModel->AnimationSet()[i]->mWeight = 0.0f;
-		mpModel->AnimationSet()[mAnimationIndex]->mWeight = 1.0f;
+		animSet[i]->mWeight = 0.0f;
+		currAnim->mWeight = 1.0f;
 	}
 	//最後まで再生する
-	if (mAnimationFrame <= mAnimationFrameSize)
+	if (0.0f <= mAnimationFrame && mAnimationFrame <= mAnimationFrameSize)
 	{
-		//アニメーションの時間を計算
-		mpModel->AnimationSet()[mAnimationIndex]->Time(
-			mpModel->AnimationSet()[mAnimationIndex]->MaxTime() *
-			mAnimationFrame / mAnimationFrameSize);
+		//アニメーションの時間を設定
+		currAnim->Time(mAnimationFrame);
 		//フレームを進める
-		mAnimationFrame++;
+		mAnimationFrame += mAnimationSpeed * 60.0f * Time::DeltaTime();
 	}
 	else
 	{
-		//繰り返しの場合は、フレームを0に戻す
+		//アニメーションを繰り返す場合
 		if (mAnimationLoopFlg)
 		{
-			//アニメーションのフレームを最初にする
-			mAnimationFrame = 0.0f;
-			mpModel->AnimationSet()[mAnimationIndex]->Time(mAnimationFrame);
+			//アニメーションのフレーム数をループさせる
+			float maxTime = currAnim->MaxTime();
+			if (maxTime > 0.0f)
+			{
+				mAnimationFrame = fmodf(mAnimationFrame + maxTime, maxTime);
+			}
+			else
+			{
+				mAnimationFrame = 0.0f;
+			}
+			currAnim->Time(mAnimationFrame);
 		}
+		//アニメーションを繰り返さない場合
 		else
 		{
-			mpModel->AnimationSet()[mAnimationIndex]->
-				Time(mpModel->AnimationSet()[mAnimationIndex]
-					->MaxTime());
+			//最終フレームに設定
+			currAnim->TimeProgress(mAnimationFrame >= 0.0f ? 1.0f : 0.0f);
 		}
 	}
 	//フレームの変換行列をアニメーションで更新する
@@ -171,4 +180,16 @@ const CMatrix* CXCharacter::GetFrameMtx(std::string name) const
 
 	// フレームの行列祖返す
 	return &frame->CombinedMatrix();
+}
+
+// アニメーションの再生速度を設定
+void CXCharacter::SetAnimationSpeed(float speed)
+{
+	mAnimationSpeed = speed;
+}
+
+// アニメーションの再生速度を取得
+float CXCharacter::GetAnimationSpeed() const
+{
+	return mAnimationSpeed;
 }

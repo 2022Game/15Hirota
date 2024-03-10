@@ -10,6 +10,7 @@
 #include "CBullet.h"
 #include "CGameManager.h"
 #include "CRecoveryObject.h"
+#include "CClimbWall.h"
 
 // プレイヤー関連
 // 高さ
@@ -78,8 +79,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Death_276.x",					false,	276.0f	},		// 死亡Hit_107
 	{ "Character\\Monster1\\anim\\Hit_107.x",					false,	107.0f	},		// 敵の弾Hit
 	{ "Character\\Monster1\\anim\\Climb_121.x",						true,	121.0f	},	// 壁を登る
-	{ "Character\\Monster1\\anim\\Climb_Down121.x",					true,	121.0f	},	// 壁を下る
-	{ "Character\\Monster1\\anim\\ClimbIdle_1.x",					true,	1.0f	},	// 壁待機
+	{ "Character\\Monster1\\anim\\Climb_to Top_241.x",				true,	241.0f	},	// 頂上へ登った
 
 };
 
@@ -87,7 +87,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 CPlayer::CPlayer()
 	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
 	, mState(EState::eReady)
-	, mInventory(std::map<ItemType,int>())
+	, mInventory(std::map<ItemType, int>())
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
@@ -98,6 +98,7 @@ CPlayer::CPlayer()
 	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mGroundNormal(0.0f, 1.0f, 0.0f)
+	, mClimbNormal(0.0f, 0.0f, 0.0f)
 	, mHpHit(false)
 	, damageEnemy(false)
 	, mInvincible(false)
@@ -396,7 +397,16 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				{
 					// Climb状態に移行する
 					ChangeState(EState::eClimb);
+					// 今から登る壁を記憶しておく
+					mpClimbWall = dynamic_cast<CClimbWall*>(other->Owner());
 				}
+			}
+
+			// 現在壁を登っている最中であれば、
+			if (mState == EState::eClimb)
+			{
+				// 登っている壁の法線を取得
+				mClimbNormal = hit.adjust.Normalized();
 			}
 		}
 	}
@@ -634,39 +644,26 @@ CVector CPlayer::ClimbMoveVec() const
 {
 	CVector move = CVector::zero;
 
-	// 上下方向の移動ベクトルを取得
-	float verticalMove = 0.0f;
-	if (CInput::Key('W'))       verticalMove = 1.0f;
-	else if (CInput::Key('S'))  verticalMove = -1.0f;
-
-	// 左右方向の移動ベクトルを取得
+	// キーの入力ベクトルを取得
 	CVector input = CVector::zero;
-	if (CInput::Key('A'))       input.X(-1.0f);
-	else if (CInput::Key('D'))  input.X(1.0f);
-
-	// 上下方向の移動ベクトルを設定
-	move.Y(verticalMove);
+	if (CInput::Key('W'))		input.Y(-1.0f);
+	else if (CInput::Key('S'))	input.Y(1.0f);
+	if (CInput::Key('A'))		input.X(-1.0f);
+	else if (CInput::Key('D'))	input.X(1.0f);
 
 	// 入力されている場合のみ、左右方向の移動ベクトルを設定
 	if (input.LengthSqr() > 0.0f)
 	{
-		// 上方向ベクトル(設置している場合は、地面の法線)
-		CVector up = mIsGrounded ? mGroundNormal : CVector::up;
-		// カメラの向きに合わせた移動ベクトルに変換
-		CCamera* mainCamera = CCamera::MainCamera();
-		CVector camForward = mainCamera->VectorZ();
-		camForward.Y(0.0f);
-		camForward.Normalize();
-		// カメラの正面方向ベクトルと上方向ベクトルの外積から
+		// ワールドの上方向ベクトルと登っている壁の法線の外積から、
 		// 横方向の移動ベクトルを求める
-		CVector moveSide = CVector::Cross(up, camForward);
-		// 横方向の移動ベクトルと上方向ベクトルの外積から
-		// 正面方向の移動ベクトルを求める
-		CVector moveForward = CVector::Cross(moveSide, up);
+		CVector moveSide = CVector::Cross(CVector::up, mClimbNormal);
+		// 求めた横方向の移動ベクトルと登っている壁の法線の外積から、
+		// 上下移動ベクトルを求める
+		CVector moveUp = CVector::Cross(moveSide, mClimbNormal);
 
-		// 求めた各方向の移動ベクトルから、
-		// 最終的なプレイヤーの移動ベクトルを求める
-		move = moveForward * input.X();
+		// プレイヤーの移動ベクトル =
+		// 横移動ベクトル×横入力　＋　上下移動ベクトル×上下入力
+		move = moveSide * input.X() + moveUp * input.Y();
 		move.Normalize();
 	}
 
@@ -1321,7 +1318,7 @@ void CPlayer::UpdateClimb()
 	else
 	{
 		mMoveSpeedY = 0.0f;
-		ChangeAnimation(EAnimType::eClimbIdle);
+		//ChangeAnimation(EAnimType::eClimbIdle);
 	}
 	mMoveSpeed = move;
 	mMoveSpeedY += move.Y();

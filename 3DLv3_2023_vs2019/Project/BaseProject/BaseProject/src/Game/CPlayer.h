@@ -13,6 +13,7 @@ class CUIGauge;
 class CStaminaGauge;
 class CMajicSword;
 class CBullet;
+class CClimbWall;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -117,7 +118,7 @@ public:
 	void Render();
 	
 private:
-	// モデル・素材関連
+	// モデル・ポインター・素材関連
 	// 状態関連
 	// アニメーション関連
 	// ベクトル関連
@@ -129,7 +130,7 @@ private:
 	
 
 
-	//// モデル・素材関連 /////////////////////////////////
+	//// モデル・ポインター・素材関連 /////////////////////////////////
 	
 	// 縦のコライダーライン
 	CColliderLine* mpColliderLine;
@@ -153,6 +154,9 @@ private:
 	CSound* mpSlashSE;
 	// 敵の攻撃が当たった時のSE
 	CSound* mpHitDamageSE;
+
+	// 登っている壁のポインター
+	CClimbWall* mpClimbWall;
 
 	///////////////////////////////////////////////////////
 	
@@ -197,6 +201,8 @@ private:
 	void UpdateHitObj();
 	// 登る状態
 	void UpdateClimb();
+	// 頂上まで登った
+	void UpdateClimbedTop();
 
 	// プレイヤーの状態
 	enum class EState
@@ -226,6 +232,7 @@ private:
 		eHitSword,			// 敵の剣ヒット
 		eHitObj,			// ダメージを受ける(オブジェクト)
 		eClimb,				// 登る状態
+		eClimbedTop,		// 頂上まで登った
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
@@ -261,8 +268,7 @@ private:
 		eDeath,			// 死亡
 		eHitJ,			// 敵の弾Hit
 		eClimb,			// 壁を登る
-		eClimbDown,		// 壁を下る
-		eClimbIdle,		// 壁待機
+		eClimbedTop,	// 壁を登り切った時
 
 		Num
 	};
@@ -288,6 +294,7 @@ private:
 	CVector mMoveSpeed;		// 移動速度(X,Z)
 	CVector mStartPos;		// プレイヤーの初期位置
 	CVector mGroundNormal;	// 設置している地面の法線
+	CVector mClimbNormal;	// 登っている壁の法線
 
 	///////////////////////////////////////////////////////
 

@@ -23,6 +23,7 @@ public:
 	void Update();
 	//描画処理
 	void Render();
+
 	//アニメーションの再生終了判定
 	//true:終了 false:再生中
 	bool IsAnimationFinished();
@@ -37,6 +38,11 @@ public:
 	// 指定したボーンの行列を取得
 	const CMatrix* GetFrameMtx(std::string name) const;
 
+	// アニメーションの再生速度を設定
+	void SetAnimationSpeed(float speed);
+	// アニメーションの再生速度を取得
+	float GetAnimationSpeed() const;
+
 protected:
 	CModelX* mpModel;				//モデルデータ
 	CMatrix* mpCombinedMatrix;		//合成行列退避
@@ -47,6 +53,7 @@ protected:
 
 	float mAnimationFrame;			//アニメーションの再生フレーム
 	float mAnimationFrameSize;		//アニメーションの再生フレーム数
+	float mAnimationSpeed;			//アニメーションの再生速度
 
 };
 #endif
