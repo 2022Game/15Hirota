@@ -291,10 +291,12 @@ private:
 
 	//// ベクトル関連 /////////////////////////////////////
 
-	CVector mMoveSpeed;		// 移動速度(X,Z)
-	CVector mStartPos;		// プレイヤーの初期位置
-	CVector mGroundNormal;	// 設置している地面の法線
-	CVector mClimbNormal;	// 登っている壁の法線
+	CVector mMoveSpeed;			// 移動速度(X,Z)
+	CVector mStartPos;			// プレイヤーの初期位置
+	CVector mGroundNormal;		// 設置している地面の法線
+	CVector mClimbNormal;		// 登っている壁の法線
+	CVector mClimbedStartPos;	// 頂上まで登り切った時の座標
+	CVector mClimbedEndPos;		// 頂上まで登り切った後に移動する座標
 
 	///////////////////////////////////////////////////////
 
@@ -357,6 +359,8 @@ private:
 	bool mClimb;
 	// 登れる壁に触れているか
 	bool mClimbWall;
+	// 登れる壁の頂上に触れているか
+	bool mClimbWallTop;
 	// ジャンプをしたか
 	bool mIsJumping;
 

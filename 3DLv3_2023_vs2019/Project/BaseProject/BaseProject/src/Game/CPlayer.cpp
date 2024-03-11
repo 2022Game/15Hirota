@@ -30,6 +30,11 @@
 // ジャンプ終了時
 #define JUMP_END_Y 1.0f
 
+// 壁を登る速度
+#define CLIMMB_SPEED 0.5f
+// 壁の頂上へ上るのにかかる時間
+#define CLIMBED_TOP_TIME 1.0f
+
 
 //視野の角度(ー角度+角度も出)
 #define FOV_ANGLE 45.0f
@@ -99,6 +104,8 @@ CPlayer::CPlayer()
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mGroundNormal(0.0f, 1.0f, 0.0f)
 	, mClimbNormal(0.0f, 0.0f, 0.0f)
+	, mClimbedStartPos(0.0f, 0.0f, 0.0f)
+	, mClimbedEndPos(0.0f, 0.0f, 0.0f)
 	, mHpHit(false)
 	, damageEnemy(false)
 	, mInvincible(false)
@@ -112,6 +119,7 @@ CPlayer::CPlayer()
 	, mDash(false)
 	, mClimb(false)
 	, mClimbWall(false)
+	, mClimbWallTop(false)
 	, mIsJumping(false)
 	, mpRideObject(nullptr)
 {
@@ -166,11 +174,13 @@ CPlayer::CPlayer()
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::ePlayer,
-		9.0f
+		0.5f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb});
-	mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
+	//mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
+	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
+	mpColliderSphere->SetAttachMtx(spineMtx);
 
 	// ダメージを受けるコライダーを作成
 	mpDamageCol = new CColliderSphere
@@ -186,8 +196,8 @@ CPlayer::CPlayer()
 		ETag::eRideableObject });
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
-	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
-	mpDamageCol->SetAttachMtx(spineMtx);
+	const CMatrix* spineMtx1 = GetFrameMtx("Armature_mixamorig_Spine1");
+	mpDamageCol->SetAttachMtx(spineMtx1);
 
 
 	// 登れるコライダーとの当たり判定を取るコライダー
@@ -197,7 +207,7 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 12.5f),
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
-	mpClimbCol->SetCollisionLayers({ ELayer::eClimb});
+	mpClimbCol->SetCollisionLayers({ ELayer::eClimb,ELayer::eClimbedTop });
 
 
 	// マジックソード作成
@@ -388,6 +398,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	// 登れるコライダーとの当たり判定を取るコライダー
 	if (self == mpClimbCol)
 	{
+		// 登れる壁のコライダー
 		if (other->Layer() == ELayer::eClimb)
 		{
 			mClimbWall = true;
@@ -408,6 +419,11 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				// 登っている壁の法線を取得
 				mClimbNormal = hit.adjust.Normalized();
 			}
+		}
+		// 登れる壁の頂上コライダー
+		else if (other->Layer() == ELayer::eClimbedTop)
+		{
+			mClimbWallTop = true;
 		}
 	}
 }
@@ -574,6 +590,8 @@ void CPlayer::ChangeState(EState state)
 {
 	mState = state;
 	mStateStep = 0;
+	// アニメーションの再生速度をもとに戻す
+	SetAnimationSpeed(1.0f);
 }
 
 // hp取得
@@ -1310,18 +1328,31 @@ void CPlayer::UpdateClimb()
 	// プレイヤーの移動ベクトルを求める
 	CVector move = ClimbMoveVec();
 
+	ChangeAnimation(EAnimType::eClimb);
+
 	// 求めた移動ベクトルの長さで入力されているか判定
 	if (move.LengthSqr() > 0.0f)
 	{
-		mMoveSpeed += move * MOVE_SPEED * mCharaStatus.moveSpeed;
+		// 上下キーが入力されている場合
+		if (move.Y() != 0.0f)
+		{
+			// 壁を登っている時は、アニメーションを通常再生し、
+			// 壁を降りているときはアニメーションを逆再生する
+			SetAnimationSpeed(move.Y() > 0.0f ? 1.0f : -1.0f);
+		}
+		// 左右キーのみが入力されている場合
+		else
+		{
+			SetAnimationSpeed(1.0f);
+		}
 	}
+	// 移動キーが入力されていない場合
 	else
 	{
-		mMoveSpeedY = 0.0f;
-		//ChangeAnimation(EAnimType::eClimbIdle);
+		// アニメーションを停止する
+		SetAnimationSpeed(0.0f);
 	}
-	mMoveSpeed = move;
-	mMoveSpeedY += move.Y();
+	mMoveSpeed = move * CLIMMB_SPEED;
 
 	if (CInput::PushKey('E'))
 	{
@@ -1329,12 +1360,81 @@ void CPlayer::UpdateClimb()
 		ChangeState(EState::eJumpStart);
 	}
 
+	// 登れる壁の範囲外に出た場合
 	if (!mClimbWall)
 	{
-		mClimb = false;
-		ChangeState(EState::eIdle);
+		// 登れる壁の頂上に触れていた場合
+		if (mClimbWallTop)
+		{
+			// 頂上へ上る状態へ移行
+			ChangeState(EState::eClimbedTop);
+		}
+		// 登れる壁の頂上に触れていなかった場合
+		else
+		{
+			// 登っている状態を解除して、待機状態へ移行
+			mClimb = false;
+			ChangeState(EState::eIdle);
+		}
 	}
 	CDebugPrint::Print("mClimbWall: %s\n", mClimbWall ? "true" : "false");
+	CDebugPrint::Print("mClimbWallTop: %s\n", mClimbWallTop ? "true" : "false");
+}
+
+// 頂上まで登った
+void CPlayer::UpdateClimbedTop()
+{
+	mClimb = true;
+	mMoveSpeed = CVector::zero;
+	mMoveSpeedY = 0.0f;
+
+	// ステップ管理
+	switch (mStateStep)
+	{
+		// ステップ0: 初期化処理
+	case 0:
+	{
+		// 頂上へ上り切った時の移動前の座標と移動後の座標を設定
+		mClimbedStartPos = Position();
+		CVector move = Rotation() * mpClimbWall->GetClimbedMoveVec();
+		mClimbedEndPos = mClimbedStartPos + move;
+
+		mElapsedTime = 0.0f;
+		// 頂上へ上り切った時のアニメーションを再生
+		ChangeAnimation(EAnimType::eClimbedTop);
+
+		// 次のステップへ
+		mStateStep++;
+		break;
+	}
+	// ステップ1: 登り切った時のアニメーションの経過待ち
+	case 1:
+		// 登り切った時のアニメーションの半分を超えたら、次のステップへ
+		if (GetAnimationFrameRatio() >= 0.5f)
+		{
+			mStateStep++;
+		}
+		break;
+		// ステップ2: 頂上へ上り切った後の移動処理
+	case 2:
+		// 経過時間に合わせて移動
+		if (mElapsedTime < CLIMBED_TOP_TIME)
+		{
+			float per = mElapsedTime / CLIMBED_TOP_TIME;
+			CVector pos = CVector::Lerp(mClimbedStartPos, mClimbedEndPos, per);
+			Position(pos);
+			mElapsedTime += Time::DeltaTime();
+		}
+		// 移動が終わった
+		else
+		{
+			Position(mClimbedEndPos);
+			// 壁を登っている状態を解除
+			mClimb = false;
+			ChangeState(EState::eIdle);
+		}
+		break;
+	}
 }
 
 // ジャンプ開始
@@ -1540,6 +1640,10 @@ void CPlayer::Update()
 	case EState::eClimb:
 		UpdateClimb();
 		break;
+		// 頂上まで登った
+	case EState::eClimbedTop:
+		UpdateClimbedTop();
+		break;
 		// クリア
 	case EState::eClear:
 		UpdateClear();
@@ -1599,11 +1703,21 @@ void CPlayer::Update()
 		// 移動
 		Position(Position() + moveSpeed * 60.0f * Time::DeltaTime());
 
-		// プレイヤーを移動方向へ向ける
+		// プレイヤーの向きを調整
 		CVector current = VectorZ();
 		CVector target = moveSpeed;
-		target.Y(0.0f);
-		target.Normalize();
+		if (mState == EState::eClimb)
+		{
+			// 壁の法線の反対方向を向く
+			target = -mClimbNormal;
+		}
+		// それ以外の時は、プレイヤーの移動方向へ向ける
+		else
+		{
+			target = moveSpeed;
+			target.Y(0.0f);
+			target.Normalize();
+		}
 		CVector forward = CVector::Slerp(current, target, 0.125f);
 		Rotation(CQuaternion::LookRotation(forward));
 	}
@@ -1680,10 +1794,12 @@ void CPlayer::Update()
 	// キャラクターの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
+	mpColliderSphere->Update();
 	mpSword->UpdateAttachMtx();
 
 	mIsGrounded = false;
 	mClimbWall = false;
+	mClimbWallTop = false;
 
 	//// 縦方向の移動速度監視
 	//CDebugPrint::Print("mMoveSpeed%f\n", mMoveSpeed.Y());

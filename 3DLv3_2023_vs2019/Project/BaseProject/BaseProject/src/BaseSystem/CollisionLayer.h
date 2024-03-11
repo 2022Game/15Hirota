@@ -11,6 +11,7 @@ enum class ELayer
 	eFieldWall,
 	eFieldEnemyWall,
 	eClimb,			// 登れるコライダー
+	eClimbedTop,	// 登れる壁の頂上コライダー
 
 	eEffect,
 	ePlayer,

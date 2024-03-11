@@ -30,6 +30,17 @@ CStage2::~CStage2()
 // ƒXƒe[ƒW“Ç‚İ‚İ
 void CStage2::Load()
 {
+	CResourceManager::Load<CModel>("Field1",			"Field\\Stage2.obj");								// ‰¼2–Ê
+	CResourceManager::Load<CModel>("FloorCol1",			"Field\\Stage2Floor.obj");							// ‰¼2–Ê°
+	CResourceManager::Load<CModel>("WallCol1",			"Field\\Stage2Wall.obj");							// ‰¼2–Ê•Ç
+	CResourceManager::Load<CModel>("Field1",			"Field\\Stage2.obj");								// ‰¼2–Ê“G‚Ì•Ç
+	CResourceManager::Load<CModel>("Stage2Tree",		"Field\\Stage2(tree).obj");							// ‰¼2–Ê‚Ì–Ø
+	CResourceManager::Load<CModel>("Stage2Climb",		"Field\\PlayerGimmick\\Stage2(Climb).obj");			// ‰¼2–Ê‚Ì“o‚ê‚é•Ç
+	CResourceManager::Load<CModel>("Stage2ClimbedTop",	"Field\\PlayerGimmick\\Stage2(ClimbedTop).obj");	// ‰¼2–Ê‚Ì“o‚ê‚é•Ç‚Ì’¸ãƒRƒ‰ƒCƒ_[
+	CResourceManager::Load<CModel>("RotateFloor",		"Field\\Gimmick\\RotateFloor.obj");					// ‰ñ“]‚·‚é°
+	CResourceManager::Load<CModel>("RotateFloorFrame",	"Field\\Gimmick\\RotateFloorFrame.obj");			// ‰ñ“]‚·‚é°˜g
+	CResourceManager::Load<CModel>("Tree1",				"Field\\Object\\Tree1.obj");						// –Ø1
+
 	// ”wŒiFİ’è
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
 
@@ -40,7 +51,11 @@ void CStage2::Load()
 	AddTask(field);
 
 	// “o‚ê‚é•Ç‚ğì¬
-	CClimbWall* climbWall = new CClimbWall();
+	CClimbWall* climbWall = new CClimbWall
+	(
+		"Stage2Climb", "Stage2ClimbedTop",
+		CVector(0.0f, 20.0f, 20.0f)
+	);
 	climbWall->Scale(10.0f, 10.0f, 10.0f);
 	AddTask(climbWall);
 

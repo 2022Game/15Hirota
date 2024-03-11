@@ -45,49 +45,18 @@ void CGameScene::Load()
 	//リソースの読み込みやクラスの生成を行う
 
 	// フィールド関連
-	CResourceManager::Load<CModel>("StageSelection",		 "Field\\StageSentaku.obj");					// ステージセレクトステージ
-	CResourceManager::Load<CModel>("StageSelectionFloorCol", "Field\\StageSentakuFloor.obj");				// ステージセレクトステージ(床)
-	CResourceManager::Load<CModel>("StageSelectionWallCol",	 "Field\\StageSentakuWall.obj");				// ステージセレクトステージ(壁)
-	CResourceManager::Load<CModel>("Field",					 "Field\\GameStage(1).obj");					// 仮1面
-	CResourceManager::Load<CModel>("FloorCol",				 "Field\\GameStageFloor(1).obj");				// 仮1面の床
-	CResourceManager::Load<CModel>("WallCol",				 "Field\\GameStageWall(1).obj");				// 仮1面の壁
-	CResourceManager::Load<CModel>("EnemyWallCol",			 "Field\\GameStageEnemyWall(1).obj");			// 仮1面の敵の壁
-	CResourceManager::Load<CModel>("Field1",				 "Field\\Stage2.obj");							// 仮2面
-	CResourceManager::Load<CModel>("FloorCol1",				 "Field\\Stage2Floor.obj");						// 仮2面床
-	CResourceManager::Load<CModel>("WallCol1",				 "Field\\Stage2Wall.obj");						// 仮2面壁
-	//CResourceManager::Load<CModel>("Field1",				 "Field\\Stage2.obj");							// 仮2面敵の壁
-	CResourceManager::Load<CModel>("Stage2Tree",			 "Field\\Stage2(tree).obj");					// 仮2面の木
-	CResourceManager::Load<CModel>("Stage2Climb",			 "Field\\PlayerGimmick\\Stage2(Climb).obj");	// 仮2面の登れる壁
-	CResourceManager::Load<CModel>("FieldCube",				 "Field\\Object\\cube.obj");					// 初期の四角のモデル
-	CResourceManager::Load<CModel>("FieldCylinder",			 "Field\\Object\\cylinder.obj");				// 初期の回転する四角モデル
-	CResourceManager::Load<CModel>("GoalCube",				 "Field\\Object\\GoalCube.obj");				// ゴールの土台
-	CResourceManager::Load<CModel>("GoalPost",				 "Field\\Object\\GoalPost.obj");				// ゴールのポスト
-	CResourceManager::Load<CModel>("Stone1",				 "Field\\Object\\Stone1.obj");					// 石1
-	CResourceManager::Load<CModel>("Tree1",					 "Field\\Object\\Tree1.obj");					// 木1
-	CResourceManager::Load<CModel>("Signboard",				 "Field\\Object\\signboard.obj");				// 看板オブジェクト(ジャンプヒント)
-	CResourceManager::Load<CModel>("HatenaBlock",			 "Field\\Object\\hatena.obj");					// ハテナブロック(アイテム保有)
-	CResourceManager::Load<CModel>("HatenaBlockAfter",		 "Field\\Object\\UsedHatenaBlock.obj");			// ハテナブロック(アイテム不保有)
-	CResourceManager::Load<CModel>("RengaBlock",			 "Field\\Object\\RengaBlock.obj");				// レンガブロック
-	CResourceManager::Load<CModel>("Number3",				 "Field\\Object\\number3.obj");					// 三番目の床ブロック
-	CResourceManager::Load<CModel>("Number2",				 "Field\\Object\\number2.obj");					// 二番目の床ブロック
-	CResourceManager::Load<CModel>("Number1",				 "Field\\Object\\number1.obj");					// 一番目の床ブロック
-	CResourceManager::Load<CModel>("Number0",				 "Field\\Object\\number0.obj");					// 零番目の床
-	CResourceManager::Load<CModel>("Sky",					 "Field\\Sky.obj");								// 空のオブジェ
-	CResourceManager::Load<CModel>("StageButton",			 "Field\\Object\\StageBotan.obj");				// ステージボタン
-	CResourceManager::Load<CModel>("Needle",				 "Field\\Gimmick\\NeedleObject(needle).obj");	// 針オブジェクトの針
-	CResourceManager::Load<CModel>("Needlebase",			 "Field\\Gimmick\\NeedleObject(base).obj");		// 針オブジェクトの土台
-	CResourceManager::Load<CModel>("NeedleCol",				 "Field\\Gimmick\\NeedleObjectCol.obj");		// 針オブジェクトのコライダー
-	CResourceManager::Load<CModel>("NeedleBaseCol",			 "Field\\Gimmick\\NeedleObjectBaseCol.obj");	// 針オブジェクトのベースコライダー
-	CResourceManager::Load<CModel>("RotateFloor",			 "Field\\Gimmick\\RotateFloor.obj");			// 回転する床
-	CResourceManager::Load<CModel>("RotateFloorFrame",		 "Field\\Gimmick\\RotateFloorFrame.obj");		// 回転する床枠
-
+	CResourceManager::Load<CModel>("FieldCube",				 "Field\\Object\\cube.obj");						// 初期の四角のモデル
+	CResourceManager::Load<CModel>("FieldCylinder",			 "Field\\Object\\cylinder.obj");					// 初期の回転する四角モデル
+	CResourceManager::Load<CModel>("HatenaBlock",			 "Field\\Object\\hatena.obj");						// ハテナブロック(アイテム保有)
+	CResourceManager::Load<CModel>("HatenaBlockAfter",		 "Field\\Object\\UsedHatenaBlock.obj");				// ハテナブロック(アイテム不保有)
+	CResourceManager::Load<CModel>("RengaBlock",			 "Field\\Object\\RengaBlock.obj");					// レンガブロック
 
 
 	// キャラクター関連
 	CResourceManager::Load<CModelX>("Player",				"Character\\Monster1\\Monster_1.x");						// プレイヤー
 	CResourceManager::Load<CModelX>("Soldier",				"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
 	//CResourceManager::Load<CModelX>("UnityChan",			"Character\\UnityChan\\unitychan.x");						// ユニティちゃん
-	CResourceManager::Load<CModelX>("Yukari",				"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
+	//CResourceManager::Load<CModelX>("Yukari",				"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
 	CResourceManager::Load<CModelX>("Vanguard",				"Character\\Vanguard\\VanguardModel.x");					// ヴァンガード
 
 
