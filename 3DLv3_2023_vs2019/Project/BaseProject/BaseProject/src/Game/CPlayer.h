@@ -296,7 +296,8 @@ private:
 	CVector mGroundNormal;		// 設置している地面の法線
 	CVector mClimbNormal;		// 登っている壁の法線
 	CVector mClimbedStartPos;	// 頂上まで登り切った時の座標
-	CVector mClimbedEndPos;		// 頂上まで登り切った後に移動する座標
+	CVector mClimbedMovedUpPos;	// 頂上まで登り切った後の上方向移動後の座標
+	CVector mClimbedMovedPos;	// 頂上まで登り切った後の移動後の座標
 
 	///////////////////////////////////////////////////////
 

@@ -1,8 +1,11 @@
 #include "CClimbWall.h"
 
 // コンストラクタ
-CClimbWall::CClimbWall(std::string climbName, std::string topName, const CVector& moveVec)
+CClimbWall::CClimbWall(std::string climbName, std::string topName,
+	const CVector& moveUp, const CVector& moveForward)
 	: CObjectBase(ETag::eField, ETaskPriority::eBackground)
+	, mClimbedMoveUp(moveUp)
+	, mClimbMoveForward(moveForward)
 {
 	// 登れるモデル取得
 	mpWallModel = CResourceManager::Get<CModel>(climbName);
@@ -24,9 +27,10 @@ CClimbWall::~CClimbWall()
 }
 
 // 頂上へ上り切った時の移動量を取得
-const CVector& CClimbWall::GetClimbedMoveVec() const
+void CClimbWall::GetClimbedMoveVec(CVector* outUp, CVector* outForward) const
 {
-	return mClimbedMoveVec;
+	*outUp = mClimbedMoveUp;
+	*outForward = mClimbMoveForward;
 }
 
 // 更新

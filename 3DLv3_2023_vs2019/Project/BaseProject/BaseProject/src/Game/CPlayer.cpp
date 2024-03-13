@@ -105,7 +105,8 @@ CPlayer::CPlayer()
 	, mGroundNormal(0.0f, 1.0f, 0.0f)
 	, mClimbNormal(0.0f, 0.0f, 0.0f)
 	, mClimbedStartPos(0.0f, 0.0f, 0.0f)
-	, mClimbedEndPos(0.0f, 0.0f, 0.0f)
+	, mClimbedMovedUpPos(0.0f, 0.0f, 0.0f)
+	, mClimbedMovedPos(0.0f, 0.0f, 0.0f)
 	, mHpHit(false)
 	, damageEnemy(false)
 	, mInvincible(false)
@@ -1396,8 +1397,10 @@ void CPlayer::UpdateClimbedTop()
 	{
 		// 頂上へ上り切った時の移動前の座標と移動後の座標を設定
 		mClimbedStartPos = Position();
-		CVector move = Rotation() * mpClimbWall->GetClimbedMoveVec();
-		mClimbedEndPos = mClimbedStartPos + move;
+		CVector  moveUp, moveForward;
+		mpClimbWall->GetClimbedMoveVec(&moveUp, &moveForward);
+		mClimbedMovedUpPos = mClimbedStartPos + Rotation() * moveUp;
+		mClimbedMovedPos = mClimbedMovedUpPos + Rotation() * moveForward;
 
 		mElapsedTime = 0.0f;
 		// 頂上へ上り切った時のアニメーションを再生
@@ -1409,26 +1412,38 @@ void CPlayer::UpdateClimbedTop()
 	}
 	// ステップ1: 登り切った時のアニメーションの経過待ち
 	case 1:
-		// 登り切った時のアニメーションの半分を超えたら、次のステップへ
-		if (GetAnimationFrameRatio() >= 0.5f)
+	{
+		float ratio = GetAnimationFrameRatio();
+		// 登り切った時のアニメーションの半分までは
+		// プレイヤーを上方向に移動する
+		if (ratio < 0.5f)
 		{
+			float per = ratio / 0.5f;
+			CVector pos = CVector::Lerp(mClimbedStartPos, mClimbedMovedUpPos, per);
+			Position(pos);
+		}
+		// 登り切った時のアニメーションの半分を超えたら、次のステップへ
+		else
+		{
+			Position(mClimbedMovedUpPos);
 			mStateStep++;
 		}
 		break;
+	}
 		// ステップ2: 頂上へ上り切った後の移動処理
 	case 2:
 		// 経過時間に合わせて移動
 		if (mElapsedTime < CLIMBED_TOP_TIME)
 		{
 			float per = mElapsedTime / CLIMBED_TOP_TIME;
-			CVector pos = CVector::Lerp(mClimbedStartPos, mClimbedEndPos, per);
+			CVector pos = CVector::Lerp(mClimbedMovedUpPos, mClimbedMovedPos, per);
 			Position(pos);
 			mElapsedTime += Time::DeltaTime();
 		}
 		// 移動が終わった
 		else
 		{
-			Position(mClimbedEndPos);
+			Position(mClimbedMovedPos);
 			// 壁を登っている状態を解除
 			mClimb = false;
 			ChangeState(EState::eIdle);

@@ -54,7 +54,8 @@ void CStage2::Load()
 	CClimbWall* climbWall = new CClimbWall
 	(
 		"Stage2Climb", "Stage2ClimbedTop",
-		CVector(0.0f, 20.0f, 20.0f)
+		CVector(0.0f,20.0f,0.0f),	// ã•ûŒü‚ÌˆÚ“®
+		CVector(0.0f, 10.0f, 20.0f)	// ³–Ê•ûŒü‚ÌˆÚ“®
 	);
 	climbWall->Scale(10.0f, 10.0f, 10.0f);
 	AddTask(climbWall);
