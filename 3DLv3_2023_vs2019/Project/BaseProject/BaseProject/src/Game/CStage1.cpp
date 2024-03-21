@@ -35,9 +35,6 @@ CStage1::~CStage1()
 // ステージ読み込み
 void CStage1::Load()
 {
-	CResourceManager::Load<CModel>("StageSelection", "Field\\StageSentaku.obj");				// ステージセレクトステージ
-	CResourceManager::Load<CModel>("StageSelectionFloorCol", "Field\\StageSentakuFloor.obj");	// ステージセレクトステージ(床)
-	CResourceManager::Load<CModel>("StageSelectionWallCol", "Field\\StageSentakuWall.obj");		// ステージセレクトステージ(壁)
 	CResourceManager::Load<CModel>("Field", "Field\\GameStage(1).obj");							// 仮1面
 	CResourceManager::Load<CModel>("FloorCol", "Field\\GameStageFloor(1).obj");					// 仮1面の床
 	CResourceManager::Load<CModel>("WallCol", "Field\\GameStageWall(1).obj");					// 仮1面の壁
@@ -52,11 +49,6 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("Number1", "Field\\Object\\number1.obj");					// 一番目の床ブロック
 	CResourceManager::Load<CModel>("Number0", "Field\\Object\\number0.obj");					// 零番目の床
 	CResourceManager::Load<CModel>("Sky", "Field\\Sky.obj");									// 空のオブジェ
-	CResourceManager::Load<CModel>("StageButton", "Field\\Object\\StageBotan.obj");				// ステージボタン
-	CResourceManager::Load<CModel>("Needle", "Field\\Gimmick\\NeedleObject(needle).obj");		// 針オブジェクトの針
-	CResourceManager::Load<CModel>("Needlebase", "Field\\Gimmick\\NeedleObject(base).obj");		// 針オブジェクトの土台
-	CResourceManager::Load<CModel>("NeedleCol", "Field\\Gimmick\\NeedleObjectCol.obj");			// 針オブジェクトのコライダー
-	CResourceManager::Load<CModel>("NeedleBaseCol", "Field\\Gimmick\\NeedleObjectBaseCol.obj");	// 針オブジェクトのベースコライダー
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);

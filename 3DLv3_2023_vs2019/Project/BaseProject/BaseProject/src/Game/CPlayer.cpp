@@ -75,7 +75,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\jump_start1.x",				false,	25.0f	},		// ジャンプ開始
 	{ "Character\\Monster1\\anim\\jump1.x",							true,	1.0f	},	// ジャンプ中
 	{ "Character\\Monster1\\anim\\jump_end1.x",					false,	26.0f	},		// ジャンプ終了
-	{ "Character\\Monster1\\anim\\Dash1_53.x",					true,	43.0f	},		// ダッシュ開始
+	{ "Character\\Monster1\\anim\\Dash1_53.x",						true,	43.0f	},	// ダッシュ開始
 	{ "Character\\Monster1\\anim\\Warrok_Run.x",					true,	43.0f	},	// ダッシュ
 	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	40.0f	},		// ダッシュ終了
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	50.0f	},		// 回避
@@ -752,12 +752,13 @@ void CPlayer::UpdateIdle()
 			float speed = MOVE_SPEED;
 			if (CInput::Key(VK_SHIFT))
 			{
+				ChangeAnimation(EAnimType::eDash);
 				if ((mCharaStatus.stamina > 0 && !staminaLowerLimit))
 				{
 					// 最初のダッシュをしたか
 					if (!mQuickDash)
 					{
-						ChangeAnimation(EAnimType::eDashStart);
+						//ChangeAnimation(EAnimType::eDashStart);
 						//mCharaStatus.stamina -= 1;
 						// 通常のダッシュよりも速いダッシュを開始
 						speed = DASH_SPEED;
@@ -781,26 +782,25 @@ void CPlayer::UpdateIdle()
 					}
 					else
 					{
-						ChangeAnimation(EAnimType::eDash);
 						speed = RUN_SPEED;
 						mDash = true;
 						mDashStamina = false;
-						mDashTime = 0.0f;
 						mCharaStatus.stamina -= 0.001;
 					}
 
 					if (mCharaStatus.stamina <= 0)
 					{
+						ChangeState(EState::eDashEnd);
 						mDash = false;
 						staminaLowerLimit = true;
 						mQuickDash = false;
 						mDashStamina = false;
 						mDashTime = 0.0f;
-						ChangeState(EState::eDashEnd);
 					}
 				}
 				else
 				{
+					//ChangeAnimation(EAnimType::eDash);
 					if (staminaLowerLimit && mCharaStatus.stamina == mCharaMaxStatus.stamina)
 					{
 						staminaLowerLimit = false; // スタミナが再びMAXになったらリセット
@@ -818,6 +818,7 @@ void CPlayer::UpdateIdle()
 					mCharaStatus.stamina += 1;
 					if (mDash)
 					{
+						mDashTime = 0.0f;
 						mDash = false;
 						ChangeState(EState::eDashEnd);
 					}
