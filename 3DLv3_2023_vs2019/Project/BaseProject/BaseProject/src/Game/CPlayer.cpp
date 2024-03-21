@@ -128,7 +128,7 @@ CPlayer::CPlayer()
 	//, mInventory(std::vector<ItemType>())
 	// インスタンスの設定
 	spInstance = this;
-	Position(0.0f, 60.0f, -30.0f);
+	Position(0.0f, 30.0f, -30.0f);
 	mStartPos = Position();
 
 	// モデルデータ取得

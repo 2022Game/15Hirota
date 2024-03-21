@@ -71,10 +71,12 @@ void CStage2::Load()
 	}
 
 	// ƒJƒƒ‰‚ÌˆÊ’u‚ÆŒü‚«‚ðÝ’è -1109.0f, 90.0f, 1200.0f
+	// CVector(-757.0f, 90.0f, -958.0f),
+	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);
 	CGameCamera* mainCamera = new CGameCamera
 		//CCamera* mainCamera = new CCamera
 		(
-			CVector(-757.0f, 90.0f, -958.0f),
+			camPos,
 			player->Position() + CVector(0.0f, 0.0f, 0.0f)
 		);
 	mainCamera->SetFollowTargetTf(player);

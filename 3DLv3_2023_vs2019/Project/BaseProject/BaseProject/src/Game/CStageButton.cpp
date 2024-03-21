@@ -3,6 +3,7 @@
 #include "Maths.h"
 #include "CInput.h"
 #include "CStageMenu.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CStageButton::CStageButton(const CVector& pos, const CVector& scale, const CVector& rot,
@@ -21,7 +22,10 @@ CStageButton::CStageButton(const CVector& pos, const CVector& scale, const CVect
 	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
 	mpColliderMesh->SetCollisionTag(mReactionTag, true);
 
+	// ステージメニューを作成し、
+	// ステージメニューのタスクを現在のステージのタスクリストに追加
 	mpStageMenu = new CStageMenu();
+	CStageManager::AddTask(mpStageMenu);
 
 	Position(pos);
 	Scale(scale);

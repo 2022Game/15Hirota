@@ -289,13 +289,15 @@ void CStage1::Load()
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
+		player->Rotation(0.0f, -180.0f, 0.0f);
 	}
 
 	// ƒJƒƒ‰‚ÌˆÊ’u‚ÆŒü‚«‚ðÝ’è
+	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);
 	CGameCamera* mainCamera = new CGameCamera
 		//CCamera* mainCamera = new CCamera
 		(
-			CVector(0.0f, 60.0f, 45.0f),
+			camPos,
 			player->Position() + CVector(0.0f, 10.0f, 0.0f)
 		);
 	mainCamera->SetFollowTargetTf(player);

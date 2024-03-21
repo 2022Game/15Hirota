@@ -58,26 +58,41 @@ CStageMenu::CStageMenu()
 // デストラクタ
 CStageMenu::~CStageMenu()
 {
-
+	// 削除されるときにメニューが開いたマンであれば、
+	// メニューを閉じる
+	if (mIsOpened)
+	{
+		Close();
+	}
 }
 
 // 開く
 void CStageMenu::Open()
 {
+	// 既に開いていたら、処理しない
+	if (mIsOpened) return;
+
 	SetEnable(true);
 	SetShow(true);
 	mSelectIndex = 0;
 	CBGMManager::Instance()->Play(EBGMType::eMenu, false);
 	CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
+	// メニューを開いたフラグを立てる
+	mIsOpened = true;
 }
 
 // 閉じる
 void CStageMenu::Close()
 {
+	// すでに閉じていたら、処理しない
+	if (!mIsOpened) return;
+
 	SetEnable(false);
 	SetShow(false);
 	CBGMManager::Instance()->Play(EBGMType::eGame, false);
 	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
+	// メニューを開いたフラグを下す
+	mIsOpened = false;
 }
 
 // 開いているかどうか
