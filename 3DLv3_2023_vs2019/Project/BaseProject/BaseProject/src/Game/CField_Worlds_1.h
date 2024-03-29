@@ -18,6 +18,7 @@ public:
 	void Render();
 
 private:
+
 	CModel* mpStageModel;
 	CModel* mpLoadModel;
 	CModel* mpCloudModel;

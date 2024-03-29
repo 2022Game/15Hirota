@@ -7,7 +7,7 @@
 class CPlayer;
 
 // マリオ風の回転ギミック(プレイヤー反応)
-class CRotateFloorGimmick : public CRideableObject
+class CRotateFloorGimmick : public CObjectBase
 {
 public:
 	/// <summary>
@@ -32,14 +32,8 @@ public:
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit)override;
 
-	// ステージの開始時の位置を設定
-	void SetStartPosition(const CVector& pos);
-
 	//プレイヤーを見つけたか
 	bool IsFoundPlayer() const;
-
-	// 現在の回転値の取得
-	float GetCurrentRotationAngle() const;
 
 	// 状態を切り替える
 	void ChangeRotationState();
@@ -53,10 +47,11 @@ private:
 
 	// モデル・素材関連
 	// 回転する床のモデル
-	CModel* mpRotateFrame;
 	CModel* mpRotateFloor;
-	// 回転する床のコライダー
-	CColliderMesh* mpColliderMesh;
+	// 回転する床の表側のコライダー
+	CColliderMesh* mpFrontFloorCol;
+	// 回転する床の裏側のコライダー
+	CColliderMesh* mpBackFloorCol;
 
 
 	// 状態関連
@@ -64,17 +59,14 @@ private:
 	enum class EState
 	{
 		Idle,		// 待機状態
-		Rotate1,	// 回転状態1
-		Rotate2,	// 回転状態2
+		Rotate,
 	};
 	// 状態を切り替える
 	void ChangeState(EState state);
 	// 待機状態の更新処理
 	void UpdateIdle();
-	// 回転状態の更新処理1
-	void UpdateRotateStart();
-	// 回転状態の更新処理2
-	void UpdateRotateEnd();
+	// 回転状態の更新処理
+	void UpdateRotate();
 	// 現在の状態
 	EState mState;
 
@@ -97,6 +89,12 @@ private:
 	bool mNextRotateIsRotate2;
 	// 回転した角度を保持する変数
 	float mRotationAngle;
+	// 回転開始時の角度
+	float mRotateStartAngle;
+	// 回転終了時の角度
+	float mRotateEndAngle;
+	// 経過時間を計測するよう
+	float mElapsedTime;
 	// 触れた時に反応するオブジェクトのタグ
 	ETag mReactionTag;
 	// 触れた時に反応するレイヤー

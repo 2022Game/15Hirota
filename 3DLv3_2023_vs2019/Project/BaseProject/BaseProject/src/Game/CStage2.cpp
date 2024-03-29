@@ -46,9 +46,9 @@ void CStage2::Load()
 
 
 	// フィールド
-	CField1* field = new CField1();
-	field->Scale(10.0f, 10.0f, 10.0f);
-	AddTask(field);
+	mpField1 = new CField1();
+	mpField1->Scale(10.0f, 10.0f, 10.0f);
+	AddTask(mpField1);
 
 	// 登れる壁を作成
 	CClimbWall* climbWall = new CClimbWall
@@ -73,15 +73,11 @@ void CStage2::Load()
 	// カメラの位置と向きを設定 -1109.0f, 90.0f, 1200.0f
 	// CVector(-757.0f, 90.0f, -958.0f),
 	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);
-	CGameCamera* mainCamera = new CGameCamera
-		//CCamera* mainCamera = new CCamera
-		(
-			camPos,
-			player->Position() + CVector(0.0f, 0.0f, 0.0f)
-		);
+	CCamera* mainCamera = CCamera::MainCamera();
+	mainCamera->LookAt(camPos, playerPos, CVector::up);
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
-	mainCamera->AddCollider(field->GetWallCol());
+	mainCamera->AddCollider(mpField1->GetWallCol());
 
 	// ハテナブロック
 	CHatenaBlock* hatena = new CHatenaBlock
@@ -118,11 +114,6 @@ void CStage2::Load()
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector rotategimmickPos = CVector(-770.0f, 7.0f, -888.0f);
-	if (rotategimmick != nullptr)
-	{
-		rotategimmick->SetStartPosition(rotategimmickPos);
-	}
 	AddTask(rotategimmick);
 
 	// 回転する床ギミック(常に)
@@ -131,11 +122,6 @@ void CStage2::Load()
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector rotatetimegimmickPos = CVector(-740.0f, 7.0f, -888.0f);
-	if (rotatetimegimmick != nullptr)
-	{
-		rotatetimegimmick->SetStartPosition(rotatetimegimmickPos);
-	}
 	AddTask(rotatetimegimmick);
 
 	//// 木1 //////////////////////////////////////////////
@@ -161,6 +147,8 @@ void CStage2::Load()
 // ステージ破棄
 void CStage2::Unload()
 {
+	CCamera* mainCamera = CCamera::MainCamera();
+	mainCamera->RemoveCollider(mpField1->GetWallCol());
 	// ベースステージ破棄処理
 	CStageBase::Unload();
 }

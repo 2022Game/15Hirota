@@ -6,7 +6,7 @@
 #include "CColliderMesh.h"
 
 // マリオ風の回転ギミック(時間)
-class CRotateFloorTimeGimmick : public CRideableObject
+class CRotateFloorTimeGimmick : public CObjectBase
 {
 public:
 	/// <summary>
@@ -30,14 +30,8 @@ public:
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit)override;
 
-	// ステージの開始時の位置を設定
-	void SetStartPosition(const CVector& pos);
-
 	// 状態を切り替える
 	void ChangeRotationState();
-
-	// 現在の回転値の取得
-	float GetCurrentRotationAngle() const;
 
 	// 更新
 	void Update() override;
@@ -48,10 +42,11 @@ private:
 
 	// モデル・素材関連
 	// 回転する床のモデル
-	CModel* mpRotateFrame;
 	CModel* mpRotateFloor;
-	// 回転する床のコライダー
-	CColliderMesh* mpColliderMesh;
+	// 回転する床の表側のコライダー
+	CColliderMesh* mpFrontFloorCol;
+	// 回転する床の裏側のコライダー
+	CColliderMesh* mpBackFloorCol;
 
 
 	// 状態関連
@@ -59,18 +54,15 @@ private:
 	enum class EState
 	{
 		Idle,	// 待機状態
-		Rotate1,// 回転状態1
-		Rotate2,// 回転状態2
+		Rotate,	// 回転状態
 		Wait,	// 待ち状態
 	};
 	// 状態を切り替える
 	void ChangeState(EState state);
 	// 待機状態の更新処理
 	void UpdateIdle();
-	// 回転状態の更新処理1
-	void UpdateRotate1();
-	// 回転状態の更新処理2
-	void UpdateRotate2();
+	// 回転状態の更新処理
+	void UpdateRotate();
 	// 待ち状態の更新処理
 	void UpdateWait();
 	// 現在の状態
@@ -93,6 +85,14 @@ private:
 	bool mIsCollision;
 	// 次の回転状態
 	bool mNextRotateIsRotate2;
+	// 回転した角度を保持する変数
+	float mRotationAngle;
+	// 回転開始時の角度
+	float mRotateStartAngle;
+	// 回転終了時の角度
+	float mRotateEndAngle;
+	// 経過時間を計測するよう
+	float mElapsedTime;
 	// 触れた時に反応するオブジェクトのタグ
 	ETag mReactionTag;
 	// 触れた時に反応するレイヤー

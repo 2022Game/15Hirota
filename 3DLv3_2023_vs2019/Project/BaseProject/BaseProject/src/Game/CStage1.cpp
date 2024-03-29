@@ -5,6 +5,7 @@
 #include "CGameCamera.h"
 #include "CEnemyManager.h"
 #include "CRotateFloorTimeGimmick.h"
+#include "CRotateFloorGimmick.h"
 
 
 // コンストラクタ
@@ -42,23 +43,24 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("TreeBranch",	"Field\\GameStage(Worlds_1)\\GameStage_1(Tree&Branch).obj");	// 木と切り株と木の枝モデル
 	CResourceManager::Load<CModel>("Arrowsign",		"Field\\GameStage(Worlds_1)\\GameStage_1(arrowsign).obj");		// 矢印看板モデル
 
-	CResourceManager::Load<CModel>("Signboard",		"Field\\Object\\signboard.obj");								// 看板オブジェクト(ジャンプヒント)
-	CResourceManager::Load<CModel>("Number0", "Field\\Object\\number0.obj");										// 零番目の床
-	CResourceManager::Load<CModel>("Number1", "Field\\Object\\number1.obj");										// 一番目の床ブロック
-	CResourceManager::Load<CModel>("Number2", "Field\\Object\\number2.obj");										// 二番目の床ブロック
-	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");
+	CResourceManager::Load<CModel>("Signboard",		"Field\\Object\\signboard.obj");									// 看板オブジェクト(ジャンプヒント)
+	CResourceManager::Load<CModel>("Number0",		"Field\\Object\\number0.obj");										// 零番目の床
+	CResourceManager::Load<CModel>("Number1",		"Field\\Object\\number1.obj");										// 一番目の床ブロック
+	CResourceManager::Load<CModel>("Number2",		"Field\\Object\\number2.obj");										// 二番目の床ブロック
+	CResourceManager::Load<CModel>("Number3",		"Field\\Object\\number3.obj");
 
-	CResourceManager::Load<CModel>("RotateFloor",		"Field\\Gimmick\\RotateFloor.obj");							// 回転する床
-	CResourceManager::Load<CModel>("RotateFloorFrame",	"Field\\Gimmick\\RotateFloorFrame.obj");					// 回転する床枠
+	CResourceManager::Load<CModel>("RotateFloor",			"Field\\Gimmick\\RotateFloor.obj");							// 回転する床
+	CResourceManager::Load<CModel>("RotateFloorFrontCol",	"Field\\Gimmick\\RotateFloorFrontCol.obj");					// 回転する床の前コライダー
+	CResourceManager::Load<CModel>("RotateFloorBackCol",	"Field\\Gimmick\\RotateFloorBackCol.obj");					// 回転する床の後ろコライダー
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
 
 
 	// フィールド
-	CField_Worlds_1* field = new CField_Worlds_1();
-	field->Scale(10.0f, 10.f, 10.f);
-	AddTask(field);
+	mpField_Worlds_1 = new CField_Worlds_1();
+	mpField_Worlds_1->Scale(9.0f, 9.f, 9.f);
+	AddTask(mpField_Worlds_1);
 
 	
 	// モンスター(プレイヤー)
@@ -68,40 +70,46 @@ void CStage1::Load()
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
-		player->Rotation(0.0f, -180.0f, 0.0f);
+		player->Rotation(0.0f, -90.0f, 0.0f);
 	}
 	// カメラの位置と向きを設定
 	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);
-	CGameCamera* mainCamera = new CGameCamera
-		//CCamera* mainCamera = new CCamera
-		(
-			camPos,
-			player->Position() + CVector(0.0f, 10.0f, 0.0f)
-		);
+	CCamera* mainCamera = CCamera::MainCamera();
+	mainCamera->LookAt(
+		camPos,
+		playerPos,
+		CVector::up
+	);
+	//  + CVector(0.0f, 10.0f, 0.0f)
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
-	mainCamera->AddCollider(field->GetWallCol());
+	mainCamera->AddCollider(mpField_Worlds_1->GetWallCol());
 
 
 	// 回転する床ギミック(常に)
 	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
-		CVector(285.0f, 170.0f, -24.0f),
+		CVector(285.0f, 140.0f, -24.0f),
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector rotatetimegimmickPos = CVector(285.0f, 170.0f, -24.0f);
-	if (rotatetimegimmick != nullptr)
-	{
-		rotatetimegimmick->SetStartPosition(rotatetimegimmickPos);
-		rotatetimegimmick->Rotation(0.0f, 0.0f, 180.0f);
-	}
 	AddTask(rotatetimegimmick);
+
+	// 回転する床ギミック(ジャンプ時)
+	CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
+		CVector(285.0f, 140.0f, -14.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rotategimmick);
 }
 
 
 // ステージ破棄
 void CStage1::Unload()
 {
+	// カメラから衝突するコライダーを取り除く
+	CCamera* mainCamera = CCamera::MainCamera();
+	mainCamera->RemoveCollider(mpField_Worlds_1->GetWallCol());
 	// ベースステージ破棄処理
 	CStageBase::Unload();
 }

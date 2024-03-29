@@ -2,6 +2,8 @@
 #define CSTAGE1_H
 #include "CStageBase.h"
 
+class CField_Worlds_1;
+
 // ステージ1「平原マップ」
 class CStage1 : public CStageBase
 {
@@ -17,5 +19,6 @@ public:
 	void Unload() override;
 
 private:
+	CField_Worlds_1* mpField_Worlds_1;	// フィールド
 };
 #endif

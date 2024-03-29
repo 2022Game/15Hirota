@@ -81,12 +81,8 @@ void CStageSelectionStage::Load()
 
 	// カメラの位置と向きを設定
 	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);
-	CGameCamera* mainCamera = new CGameCamera
-		//CCamera* mainCamera = new CCamera
-		(
-			camPos,
-			player->Position() + CVector(0.0f, 0.0f, 0.0f)
-		);
+	CCamera* mainCamera = CCamera::MainCamera();
+	mainCamera->LookAt(camPos, playerPos, CVector::up);
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	//mainCamera->AddCollider(field->GetWallCol());

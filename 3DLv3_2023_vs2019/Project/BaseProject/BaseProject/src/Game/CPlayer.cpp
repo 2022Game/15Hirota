@@ -1132,7 +1132,7 @@ void CPlayer::UpdateReStart()
 	if (IsAnimationFinished())
 	{
 		damageObject = false;
-		Position(0.0f, 10.0f, -30.0f);
+		Position(-195.0f, 200.0f, 9.0f);
 		ChangeState(EState::eIdle);
 	}
 }
@@ -1472,6 +1472,8 @@ void CPlayer::UpdateJumpStart()
 
 	// ˆÚ“®ˆ—
 	CVector move = CalcMoveVec();
+	move.Y(0.0f);
+	move.Normalize();
 
 	// “ü—ÍƒxƒNƒgƒ‹‚Ì’·‚³‚Å“ü—Í‚³‚ê‚Ä‚¢‚é‚©”»’è
 	if (move.LengthSqr() > 0.0f)
@@ -1803,7 +1805,7 @@ void CPlayer::Update()
 	{
 		ChangeAnimation(EAnimType::eHitJ);
 		TakeDamage(1);
-		Position(0.0f, 20.0f, -30.0f);
+		Position(-195.0f, 200.0f, 9.0f);
 	}
 	///////////////////////////////////////////
 

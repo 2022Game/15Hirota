@@ -113,6 +113,11 @@ void CGameScene::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = new CPlayer();
 
+	new CGameCamera
+	(
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
 
 	//CCamera* mainCamera = new CCamera
 	//(

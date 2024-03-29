@@ -2,44 +2,52 @@
 #include "Maths.h"
 #include "CPlayer.h"
 
-CPlayer* playerInstance = CPlayer::Instance();
+// 回転床の回転にかかる時間
+#define ROTATE_TIME 0.5f
 
 // コンストラクタ
 CRotateFloorGimmick::CRotateFloorGimmick(const CVector& pos, const CVector& scale,
-	 ETag reactionTag, ELayer reactionLayer)
-	: CRideableObject(ETaskPriority::eRotate)
+	ETag reactionTag, ELayer reactionLayer)
+	: CObjectBase(ETag::eField, ETaskPriority::eRotate, 0, ETaskPauseType::eGame)
 	, mState(EState::Idle)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
 	, mStateStep(0)
 	, mRotationAngle(0.0f)
+	, mRotateStartAngle(0.0f)
+	, mRotateEndAngle(0.0f)
+	, mElapsedTime(0.0f)
 	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mIsCollision(false)
 	, mIsJumping(false)
 	, mNextRotateIsRotate2(false)
 {
-	// 初期位置を設定
-	mStartPos = Position();
-
-	// 回転する床枠モデルを取得
-	mpRotateFrame = CResourceManager::Get<CModel>("RotateFloorFrame");
-
 	// 回転する床モデルを取得(コライダーも)
 	mpRotateFloor = CResourceManager::Get<CModel>("RotateFloor");
-	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpRotateFloor, true);
-	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer });
-	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
+	
+	// 回転する床の表側のコライダーを作成
+	CModel* frontCol = CResourceManager::Get<CModel>("RotateFloorFrontCol");
+	mpFrontFloorCol = new CColliderMesh(this, ELayer::eField, frontCol, true);
+	mpFrontFloorCol->SetCollisionLayers({ ELayer::ePlayer });
+	mpFrontFloorCol->SetCollisionTags({ ETag::ePlayer });
 
-	// 生成時に設定された触れた時に反応するオブジェクトタグと
-	// コライダーのレイヤーを個別に設定
-	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
-	mpColliderMesh->SetCollisionTag(mReactionTag, true);
-
+	// 回転する床の裏側を作成
+	CModel* backCol = CResourceManager::Get<CModel>("RotateFloorBackCol");
+	mpBackFloorCol = new CColliderMesh(this, ELayer::eField, backCol, true);
+	mpBackFloorCol->SetCollisionLayers({ ELayer::ePlayer });
+	mpBackFloorCol->SetCollisionTags({ ETag::ePlayer });
 	ChangeState(EState::Idle);
+
+	// 最初は表側をオン、裏側はオフ
+	mpFrontFloorCol->SetEnable(true);
+	mpBackFloorCol->SetEnable(false);
 
 	Position(pos);
 	Scale(scale);
+
+	// 初期位置を設定
+	mStartPos = Position();
 	
 	SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
 }
@@ -47,7 +55,8 @@ CRotateFloorGimmick::CRotateFloorGimmick(const CVector& pos, const CVector& scal
 // デストラクタ
 CRotateFloorGimmick::~CRotateFloorGimmick()
 {
-	SAFE_DELETE(mpColliderMesh);
+	SAFE_DELETE(mpFrontFloorCol);
+	SAFE_DELETE(mpBackFloorCol);
 }
 
 // 衝突処理
@@ -55,13 +64,6 @@ void CRotateFloorGimmick::Collision(CCollider* self, CCollider* other, const CHi
 {
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;
-}
-
-// ステージ開始時の位置を設定
-void CRotateFloorGimmick::SetStartPosition(const CVector& pos)
-{
-	mStartPos = pos;
-	Position(mStartPos);
 }
 
 // 状態を切り替える
@@ -87,122 +89,57 @@ void CRotateFloorGimmick::UpdateIdle()
 		ChangeRotationState(); // 回転状態を切り替え
 		 // 現在の回転状態に応じて適切な状態を設定
 		if (mNextRotateIsRotate2) {
-			ChangeState(EState::Rotate1);
+			mRotateStartAngle = 0.0f;
+			mRotateEndAngle = 180.0f;
 		}
 		else {
-			ChangeState(EState::Rotate2);
+			mRotateStartAngle = 180.0f;
+			mRotateEndAngle = 0.0f;
+		}
+		mElapsedTime = 0.0f;
+		ChangeState(EState::Rotate);
+	}
+}
+
+// 回転状態の更新処理
+void CRotateFloorGimmick::UpdateRotate()
+{
+	// 回転にかかる時間を経過していない
+	if (mElapsedTime < ROTATE_TIME)
+	{
+		// 回転開始時の角度から徐々に回転終了時の角度へ回転する
+		float per = mElapsedTime / ROTATE_TIME;
+		float angleZ = Math::Lerp
+		(	mRotateStartAngle,
+			mRotateEndAngle,
+			per
+		);
+		Rotation(CQuaternion(CVector(0.0f, 0.0f, angleZ)));
+		mElapsedTime += Time::DeltaTime();
+
+		// 回転する床の角度が90度以下であれば、
+		if (fabsf(angleZ) <= 90.0f)
+		{
+			// 床のコライダーの表側をオンにして、裏側をオフにする
+			mpFrontFloorCol->SetEnable(true);
+			mpBackFloorCol->SetEnable(false);
+		}
+		// 回転する床の角度が90度を越えれば、
+		else
+		{
+			// 床のコライダーの裏側をオンにして、表側をオフにする
+			mpFrontFloorCol->SetEnable(false);
+			mpBackFloorCol->SetEnable(true);
 		}
 	}
-}
-
-// 回転状態の更新処理1
-void CRotateFloorGimmick::UpdateRotateStart()
-{
-	// 目標の回転角度が0度の場合
-	float targetRotationAngle = 180.0f;
-
-	float totalNumberOfFrames = 180.0f / 15.0f;	// * 60.0f / 4.0f
-
-	// 現在の回転角度を取得
-	float currentRotationAngle = GetCurrentRotationAngle();
-
-	// 目標の回転角度と現在の回転角度の差を計算
-	float rotationDifference = targetRotationAngle - currentRotationAngle;
-
-	// 回転速度を1フレームごとの回転量に反映
-	float rotationSpeedPerFrame = rotationDifference / totalNumberOfFrames;
-
-	// 左端に移動
-	Translate(CVector(25.0f, 15.0f, 0.0f));
-	// 回転処理
-	Rotate(CVector(0.0f, 0.0f, rotationSpeedPerFrame));
-	Translate(CVector(-25.0f, -15.0f, 0.0f));
-
-	// 目標角度を正規化する
-	while (targetRotationAngle < 0.0f)
+	// 回転にかかる時間を経過した
+	else
 	{
-		targetRotationAngle += 360.0f;
-	}
-	while (targetRotationAngle >= 360.0f)
-	{
-		targetRotationAngle -= 360.0f;
-	}
-
-	const float rotationThreshold = 1.0f;
-
-	// Z軸周りの回転角度が目標の角度に達したかを確認
-	if (fabs(currentRotationAngle - targetRotationAngle) <= rotationThreshold)
-	{
-		// 目標の角度に達したら回転を停止し、Idle状態に変更
-		// 回転速度をゼロに設定して停止
-		Rotate(CVector(0.0f, 0.0f, 0.0f));
+		mElapsedTime = 0.0f;
+		Rotation(CQuaternion(CVector(0.0f, 0.0f, mRotateEndAngle)));
 		ChangeState(EState::Idle);
 		mIsJumping = false;
 	}
-}
-
-// 回転状態の更新処理2
-void CRotateFloorGimmick::UpdateRotateEnd()
-{
-	// 目標の回転角度が0度の場合
-	float targetRotationAngle = 0.0f;
-
-	float totalNumberOfFrames = 180.0f / 15.0f;	// * 60.0f / 4.0f
-
-	// 現在の回転角度を取得
-	float currentRotationAngle = GetCurrentRotationAngle();
-
-	// 目標の回転角度と現在の回転角度の差を計算
-	float rotationDifference = targetRotationAngle - currentRotationAngle;
-
-	// 回転速度を1フレームごとの回転量に反映
-	float rotationSpeedPerFrame = rotationDifference / totalNumberOfFrames;
-
-	// 左端に移動
-	Translate(CVector(25.0f, 15.0f, 0.0f));
-	// 回転処理
-	Rotate(CVector(0.0f, 0.0f, rotationSpeedPerFrame));
-	Translate(CVector(-25.0f, -15.0f, 0.0f));
-
-	// 目標角度を正規化する
-	while (targetRotationAngle < 0.0f)
-	{
-		targetRotationAngle += 360.0f;
-	}
-	while (targetRotationAngle >= 360.0f)
-	{
-		targetRotationAngle -= 360.0f;
-	}
-
-	const float rotationThreshold = 1.0f;
-
-	// Z軸周りの回転角度が目標の角度に達したかを確認
-	if (fabs(currentRotationAngle - targetRotationAngle) <= rotationThreshold)
-	{
-		// 目標の角度に達したら回転を停止し、Idle状態に変更
-		// 回転速度をゼロに設定して停止
-		Rotate(CVector(0.0f, 0.0f, 0.0f));
-		ChangeState(EState::Idle);
-		mIsJumping = false;
-	}
-}
-
-// 現在の回転値の取得
-float CRotateFloorGimmick::GetCurrentRotationAngle() const
-{
-	// クォータニオンからオイラー角に変換し、Z軸周りの回転角度を取得
-	float rotationAngle = GetWorldRotation().Euler().Z();
-	// 角度が負数の場合は正規化する
-	while (rotationAngle < 0.0f)
-	{
-		rotationAngle += 360.0f;
-	}
-	// 角度が360度を超えた場合は正規化する
-	while (rotationAngle >= 360.0f)
-	{
-		rotationAngle -= 360.0f;
-	}
-	return rotationAngle;
 }
 
 // 更新
@@ -215,13 +152,8 @@ void CRotateFloorGimmick::Update()
 	case EState::Idle:
 		UpdateIdle();
 		break;
-		// 回転状態1
-	case EState::Rotate1:
-		UpdateRotateStart();
-		break;
-		// 回転状態2
-	case EState::Rotate2:
-		UpdateRotateEnd();
+	case EState::Rotate:
+		UpdateRotate();
 		break;
 	}
 
@@ -234,8 +166,6 @@ void CRotateFloorGimmick::Render()
 {
 	mpRotateFloor->SetColor(mColor);
 	mpRotateFloor->Render(Matrix());
-	mpRotateFrame->SetColor(mColor);
-	mpRotateFrame->Render(Matrix());
 }
 
 //プレイヤーを見つけたか
