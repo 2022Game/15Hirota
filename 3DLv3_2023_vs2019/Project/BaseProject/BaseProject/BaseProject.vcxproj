@@ -72,6 +72,7 @@
     <ClCompile Include="src\Game\CExclamationMark.cpp" />
     <ClCompile Include="src\Game\CFallingObjects.cpp" />
     <ClCompile Include="src\Game\CField1.cpp" />
+    <ClCompile Include="src\Game\CField_Worlds_1.cpp" />
     <ClCompile Include="src\Game\CGameCamera.cpp" />
     <ClCompile Include="src\Game\CGameManager.cpp" />
     <ClCompile Include="src\Game\CGameMenu.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="src\Game\CExclamationMark.h" />
     <ClInclude Include="src\Game\CFallingObjects.h" />
     <ClInclude Include="src\Game\CField1.h" />
+    <ClInclude Include="src\Game\CField_Worlds_1.h" />
     <ClInclude Include="src\Game\CGameCamera.h" />
     <ClInclude Include="src\Game\CGameMenu.h" />
     <ClInclude Include="src\Game\CGoalBase.h" />

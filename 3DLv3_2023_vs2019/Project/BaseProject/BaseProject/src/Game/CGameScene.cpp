@@ -45,29 +45,29 @@ void CGameScene::Load()
 	//リソースの読み込みやクラスの生成を行う
 
 	// フィールド関連
-	CResourceManager::Load<CModel>("FieldCube",				 "Field\\Object\\cube.obj");						// 初期の四角のモデル
-	CResourceManager::Load<CModel>("FieldCylinder",			 "Field\\Object\\cylinder.obj");					// 初期の回転する四角モデル
-	CResourceManager::Load<CModel>("HatenaBlock",			 "Field\\Object\\hatena.obj");						// ハテナブロック(アイテム保有)
-	CResourceManager::Load<CModel>("HatenaBlockAfter",		 "Field\\Object\\UsedHatenaBlock.obj");				// ハテナブロック(アイテム不保有)
-	CResourceManager::Load<CModel>("RengaBlock",			 "Field\\Object\\RengaBlock.obj");					// レンガブロック
+	//CResourceManager::Load<CModel>("FieldCube",				 "Field\\Object\\cube.obj");						// 初期の四角のモデル
+	//CResourceManager::Load<CModel>("FieldCylinder",			 "Field\\Object\\cylinder.obj");					// 初期の回転する四角モデル
+	//CResourceManager::Load<CModel>("HatenaBlock",			 "Field\\Object\\hatena.obj");						// ハテナブロック(アイテム保有)
+	//CResourceManager::Load<CModel>("HatenaBlockAfter",		 "Field\\Object\\UsedHatenaBlock.obj");				// ハテナブロック(アイテム不保有)
+	//CResourceManager::Load<CModel>("RengaBlock",			 "Field\\Object\\RengaBlock.obj");					// レンガブロック
 
 
 	// キャラクター関連
 	CResourceManager::Load<CModelX>("Player",				"Character\\Monster1\\Monster_1.x");						// プレイヤー
-	CResourceManager::Load<CModelX>("Soldier",				"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
-	//CResourceManager::Load<CModelX>("UnityChan",			"Character\\UnityChan\\unitychan.x");						// ユニティちゃん
-	//CResourceManager::Load<CModelX>("Yukari",				"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
-	CResourceManager::Load<CModelX>("Vanguard",				"Character\\Vanguard\\VanguardModel.x");					// ヴァンガード
+	//CResourceManager::Load<CModelX>("Soldier",				"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
+	////CResourceManager::Load<CModelX>("UnityChan",			"Character\\UnityChan\\unitychan.x");						// ユニティちゃん
+	////CResourceManager::Load<CModelX>("Yukari",				"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
+	//CResourceManager::Load<CModelX>("Vanguard",				"Character\\Vanguard\\VanguardModel.x");					// ヴァンガード
 
 
 	// アイテム関連
-	CResourceManager::Load<CModel>("Bullet",				"Item\\Bullet1\\Bullet.obj");				// 弾
-	CResourceManager::Load<CModel>("Gun_M1G",				"Item\\Gun_M1Garand\\Gun_M1Garand.obj");	// M1ガーランド(銃)
+	//CResourceManager::Load<CModel>("Bullet",				"Item\\Bullet1\\Bullet.obj");				// 弾
+	//CResourceManager::Load<CModel>("Gun_M1G",				"Item\\Gun_M1Garand\\Gun_M1Garand.obj");	// M1ガーランド(銃)
 	CResourceManager::Load<CModel>("MajicSword",			"Item\\MajicSword\\MajicSword.obj");		// 魔法剣
-	CResourceManager::Load<CModel>("Heart",					"Item\\StatusItem\\Heart.obj");				// 回復オブジェクト
-	CResourceManager::Load<CModel>("Star",					"Item\\StatusItem\\Star.obj");				// 無敵オブジェクト
-	CResourceManager::Load<CModel>("Medal",					"Item\\StatusItem\\Medal.obj");				// 得点オブジェクト
-	CResourceManager::Load<CModel>("Healing",				"Item\\StatusItem\\HealingItem.obj");		// 回復薬オブジェクト
+	//CResourceManager::Load<CModel>("Heart",					"Item\\StatusItem\\Heart.obj");				// 回復オブジェクト
+	//CResourceManager::Load<CModel>("Star",					"Item\\StatusItem\\Star.obj");				// 無敵オブジェクト
+	//CResourceManager::Load<CModel>("Medal",					"Item\\StatusItem\\Medal.obj");				// 得点オブジェクト
+	//CResourceManager::Load<CModel>("Healing",				"Item\\StatusItem\\HealingItem.obj");		// 回復薬オブジェクト
 
 
 	// UI関連
@@ -169,54 +169,54 @@ void CGameScene::Update()
 
 	// [CStage1] の処理 /////////////////////////////////////////////////////////////
 
-	int enemyCount = CEnemyManager::GetVanguardCount();	// ヴァンガードの数
-	int enemyCount1 = CEnemyManager::GetSoldierCount();	// ソルジャーの数
+	//int enemyCount = CEnemyManager::GetVanguardCount();	// ヴァンガードの数
+	//int enemyCount1 = CEnemyManager::GetSoldierCount();	// ソルジャーの数
 
-	static bool Rising = false;
-	static bool jumping = false;
+	//static bool Rising = false;
+	//static bool jumping = false;
 
-	if (enemyCount <= 0 && !Rising)
-	{
-		int currentStage = CGameManager::StageNo();
-		if (currentStage == 0)
-		{
-			// 上昇するオブジェクト
-			CRisingObject* rising = new CRisingObject
-			(
-				CVector(20.0f, 1.0f, -550.0f),
-				CVector(0.5f, 0.5f, 0.5f),
-				ETag::ePlayer, ELayer::ePlayer
-			);
-			CVector risingPos = CVector(20.0f, 1.0f, -550.0f);
-			if (rising != nullptr)
-			{
-				rising->SetStartPosition(risingPos);
-			}
-			AddTask(rising);
+	//if (enemyCount <= 0 && !Rising)
+	//{
+	//	int currentStage = CGameManager::StageNo();
+	//	if (currentStage == 0)
+	//	{
+	//		// 上昇するオブジェクト
+	//		CRisingObject* rising = new CRisingObject
+	//		(
+	//			CVector(20.0f, 1.0f, -550.0f),
+	//			CVector(0.5f, 0.5f, 0.5f),
+	//			ETag::ePlayer, ELayer::ePlayer
+	//		);
+	//		CVector risingPos = CVector(20.0f, 1.0f, -550.0f);
+	//		if (rising != nullptr)
+	//		{
+	//			rising->SetStartPosition(risingPos);
+	//		}
+	//		AddTask(rising);
 
-			// 二度目以降はオブジェクトが作成されないようにする
-			Rising = true;
-		}
-	}
+	//		// 二度目以降はオブジェクトが作成されないようにする
+	//		Rising = true;
+	//	}
+	//}
 
-	if (enemyCount1 <= 0 && !jumping)
-	{
-		int currentStage1 = CGameManager::StageNo();
-		if (currentStage1 == 0)
-		{
-			// ジャンプする床-100.0f, 20.0f, -450.0f
-			CJumpingObject* jump = new CJumpingObject
-			(
-				CVector(0.0f, -5.0f, -340.0f),
-				CVector(0.5f, 0.5f, 0.5f),
-				CVector(0.0f, 0.0f, 0.0f),
-				ETag::ePlayer, ELayer::ePlayer
-			);
-			AddTask(jump);
+	//if (enemyCount1 <= 0 && !jumping)
+	//{
+	//	int currentStage1 = CGameManager::StageNo();
+	//	if (currentStage1 == 0)
+	//	{
+	//		// ジャンプする床-100.0f, 20.0f, -450.0f
+	//		CJumpingObject* jump = new CJumpingObject
+	//		(
+	//			CVector(0.0f, -5.0f, -340.0f),
+	//			CVector(0.5f, 0.5f, 0.5f),
+	//			CVector(0.0f, 0.0f, 0.0f),
+	//			ETag::ePlayer, ELayer::ePlayer
+	//		);
+	//		AddTask(jump);
 
-			jumping = true;
-		}
-	}
+	//		jumping = true;
+	//	}
+	//}
 
 	////////////////////////////////////////////////////////////////////////////////////
 

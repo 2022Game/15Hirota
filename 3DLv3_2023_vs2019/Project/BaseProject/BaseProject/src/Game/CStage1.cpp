@@ -1,23 +1,10 @@
 #include "CStage1.h"
-#include "CDamageObject.h"
-#include "CGoalObject.h"
-#include "CStone1.h"
-#include "CField.h"
-#include "CSoldier.h"
+#include "CField_Worlds_1.h"
 #include "CPlayer.h"
 #include "CCamera.h"
-#include "CDisappearFloor.h"
-#include "CYukari.h"
-#include "CJumpingObject.h"
-#include "CSignboard.h"
 #include "CGameCamera.h"
-#include "CFallingObjects.h"
-#include "CRisingObject.h"
 #include "CEnemyManager.h"
-#include "CHatenaBlock.h"
-#include "CRengaBlock.h"
-#include "CNumberFloor1.h"
-#include "CVanguard.h"
+#include "CRotateFloorTimeGimmick.h"
 
 
 // コンストラクタ
@@ -35,263 +22,54 @@ CStage1::~CStage1()
 // ステージ読み込み
 void CStage1::Load()
 {
-	CResourceManager::Load<CModel>("Field", "Field\\GameStage(1).obj");							// 仮1面
-	CResourceManager::Load<CModel>("FloorCol", "Field\\GameStageFloor(1).obj");					// 仮1面の床
-	CResourceManager::Load<CModel>("WallCol", "Field\\GameStageWall(1).obj");					// 仮1面の壁
-	CResourceManager::Load<CModel>("EnemyWallCol", "Field\\GameStageEnemyWall(1).obj");			// 仮1面の敵の壁
-	CResourceManager::Load<CModel>("GoalCube", "Field\\Object\\GoalCube.obj");					// ゴールの土台
-	CResourceManager::Load<CModel>("GoalPost", "Field\\Object\\GoalPost.obj");					// ゴールのポスト
-	CResourceManager::Load<CModel>("Stone1", "Field\\Object\\Stone1.obj");						// 石1
-	CResourceManager::Load<CModel>("Tree1", "Field\\Object\\Tree1.obj");						// 木1
-	CResourceManager::Load<CModel>("Signboard", "Field\\Object\\signboard.obj");				// 看板オブジェクト(ジャンプヒント)
-	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");					// 三番目の床ブロック
-	CResourceManager::Load<CModel>("Number2", "Field\\Object\\number2.obj");					// 二番目の床ブロック
-	CResourceManager::Load<CModel>("Number1", "Field\\Object\\number1.obj");					// 一番目の床ブロック
-	CResourceManager::Load<CModel>("Number0", "Field\\Object\\number0.obj");					// 零番目の床
-	CResourceManager::Load<CModel>("Sky", "Field\\Sky.obj");									// 空のオブジェ
+	// ステージ関連
+	CResourceManager::Load<CModel>("Stage",			"Field\\GameStage(Worlds_1)\\GameStage_1(Stage).obj");			// ステージモデル
+	CResourceManager::Load<CModel>("FloorCol",		"Field\\GameStage(Worlds_1)\\GameStage_1(floorCol).obj");		// 床のコライダー
+	CResourceManager::Load<CModel>("WallCol",		"Field\\GameStage(Worlds_1)\\GameStage_1(wallCol).obj");		// 壁のコライダー
+	CResourceManager::Load<CModel>("FallCol",		"Field\\GameStage(Worlds_1)\\GameStage_1(FallCol).obj");		// 落下判定コライダー
+	CResourceManager::Load<CModel>("ClimbWall_1",	"Field\\GameStage(Worlds_1)\\GameStage_1(ClimbWall(1)).obj");	// 登頂後斜めに移動する壁
+	CResourceManager::Load<CModel>("ClimbWall_2",	"Field\\GameStage(Worlds_1)\\GameStage_1(ClimbWall(2)).obj");	// 登頂後真横に移動する壁
+	CResourceManager::Load<CModel>("Load",			"Field\\GameStage(Worlds_1)\\GameStage_1(load).obj");			// 道モデル
+	CResourceManager::Load<CModel>("Cloud",			"Field\\GameStage(Worlds_1)\\GameStage_1(cloud).obj");			// 雲モデル
+	CResourceManager::Load<CModel>("Fance",			"Field\\GameStage(Worlds_1)\\GameStage_1(fance).obj");			// フェンスモデル
+	CResourceManager::Load<CModel>("Flowers",		"Field\\GameStage(Worlds_1)\\GameStage_1(flowers).obj");		// 花モデル
+	CResourceManager::Load<CModel>("GoalPost",		"Field\\GameStage(Worlds_1)\\GameStage_1(GoalPost).obj");		// ゴールポストモデル
+	CResourceManager::Load<CModel>("GoalBlock",		"Field\\GameStage(Worlds_1)\\GameStage_1(GoalBlock).obj");		// ゴールブロックモデル
+	CResourceManager::Load<CModel>("Grass",			"Field\\GameStage(Worlds_1)\\GameStage_1(grass).obj");			// 草モデル
+	CResourceManager::Load<CModel>("Mushroom",		"Field\\GameStage(Worlds_1)\\GameStage_1(mushroom).obj");		// キノコモデル
+	CResourceManager::Load<CModel>("RockShrub",		"Field\\GameStage(Worlds_1)\\GameStage_1(rock&shrub).obj");		// 岩と低木モデル
+	CResourceManager::Load<CModel>("SkyIsland",		"Field\\GameStage(Worlds_1)\\GameStage_1(skyisland).obj");		// 空島モデル
+	CResourceManager::Load<CModel>("TreeBranch",	"Field\\GameStage(Worlds_1)\\GameStage_1(Tree&Branch).obj");	// 木と切り株と木の枝モデル
+	CResourceManager::Load<CModel>("Arrowsign",		"Field\\GameStage(Worlds_1)\\GameStage_1(arrowsign).obj");		// 矢印看板モデル
+
+	CResourceManager::Load<CModel>("Signboard",		"Field\\Object\\signboard.obj");								// 看板オブジェクト(ジャンプヒント)
+	CResourceManager::Load<CModel>("Number0", "Field\\Object\\number0.obj");										// 零番目の床
+	CResourceManager::Load<CModel>("Number1", "Field\\Object\\number1.obj");										// 一番目の床ブロック
+	CResourceManager::Load<CModel>("Number2", "Field\\Object\\number2.obj");										// 二番目の床ブロック
+	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");
+
+	CResourceManager::Load<CModel>("RotateFloor",		"Field\\Gimmick\\RotateFloor.obj");							// 回転する床
+	CResourceManager::Load<CModel>("RotateFloorFrame",	"Field\\Gimmick\\RotateFloorFrame.obj");					// 回転する床枠
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
 
 
 	// フィールド
-	CField* field = new CField();
+	CField_Worlds_1* field = new CField_Worlds_1();
+	field->Scale(10.0f, 10.f, 10.f);
 	AddTask(field);
 
-	// 回数制限モデル
-	CNumberFloor1* number = new CNumberFloor1(
-		CVector(-100.0f, 1.0f, -430.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, -90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector numberPos = CVector(-100.0f, 1.0f, -430.0f);
-	if (number != nullptr)
-	{
-		number->SetStartPosition(numberPos);
-	}
-	AddTask(number);
-
-	//// 回数制限モデル
-	//CNumberFloor1* number1 = new CNumberFloor1(
-	//	CVector(-30.0f, 1.0f, -150.0f),
-	//	CVector(2.0f, 2.0f, 2.0f),
-	//	CVector(0.0f, -90.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//CVector numberPos1 = CVector(-30.0f, 1.0f, -150.0f);
-	//if (number != nullptr)
-	//{
-	//	number1->SetStartPosition(numberPos1);
-	//}
-	//AddTask(number1);
-
-	// 四角モデル
-	CDamageObject* floor = new CDamageObject(
-		CVector(-20.0f, -20.0f, -340.0f), 
-		CVector(5.5f, 1.0f, 3.25f), 
-		CVector(0.0f, 0.0f, 0.0f), 
-		5.0f);
-	AddTask(floor);
-
-	// ゴールオブジェクト
-	CGoalObject* goal = new CGoalObject(
-		CVector(20.0f, 95.0f, -450.0f),
-		CVector(1.5f, 1.5f, 1.5f),
-		CVector(0.0f, 90.0f, 0.0f));
-	AddTask(goal);
-
-	//// ゴールオブジェクト
-	//CGoalObject* goal = new CGoalObject(
-	//	CVector(0.0f, 0.0f, -100.0f),
-	//	CVector(1.5f, 1.5f, 1.5f),
-	//	CVector(0.0f, 90.0f, 0.0f));
-	//AddTask(goal);
-
-	// 岩1
-	CStone1* stone1 = new CStone1(
-		CVector(-80.0f, 0.0f, -200.0f),
-		CVector(10.0f, 10.0f, 10.0f),
-		CVector(0.0f, 0.0f, 0.0f));
-	AddTask(stone1);
-
-	// 消える床
-	CDisappearFloor* dfloor = new CDisappearFloor
-	(
-		CVector(0.0f, 10.0f, -200.0f),
-		CVector(0.5f, 2.0f, 0.5f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(dfloor);
-
-
-	//// ジャンプする床
-	//CJumpingObject* jump1 = new CJumpingObject
-	//(
-	//	CVector(-100.0f, 1.0f, -430.0f),
-	//	CVector(0.5f, 0.5f, 0.5f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(jump1);
-
-	// 看板		-380は対岸
-	CSignboard* board = new CSignboard
-	(
-		CVector(-50.0f, 1.0f, -300.0f),
-		CVector(15.0f, 15.0f, 15.0f),
-		CVector(0.0f, -30.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(board);
-
-	// 落下する床
-	CFallingObjects* fallobj = new CFallingObjects
-	(
-		CVector(20.0f, 95.0f, -500.0f),
-		CVector(1.0f, 1.0f, 1.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector fallobjpos = CVector(20.0f, 95.0f, -500.0f);
-	if (fallobj != nullptr)
-	{
-		fallobj->SetStartPosition(fallobjpos);
-	}
-	AddTask(fallobj);
-
-	//// 敵(ガスマスク兵士) ///////////////////////////////////////////
-
-	CSoldier* sol1 = new CSoldier();
-	sol1->Scale(1.0f, 1.0f, 1.0f);
-	sol1->Position(-100.0f, 150, -150);
-	AddTask(sol1);
-
-	CSoldier* sol2 = new CSoldier();
-	sol2->Scale(1.0f, 1.0f, 1.0f);
-	sol2->Position(-50.0f, 150.0f, -150.0f);
-	AddTask(sol2);
-
-	/*CSoldier* sol3 = new CSoldier();
-	sol3->Scale(1.0f, 1.0f, 1.0f);
-	sol3->Position(50.0f, 150.0f, -200.0f);
-	AddTask(sol3);*/
-
-	/*CSoldier* sol4 = new CSoldier();
-	sol4->Scale(1.0f, 1.0f, 1.0f);
-	sol4->Position(0.0f, 150.0f, -500.0f);
-	AddTask(sol4);*/
-
-	/*CSoldier* sol5 = new CSoldier();
-	sol5->Scale(1.0f, 1.0f, 1.0f);
-	sol5->Position(0.0f, 50.0f, -550.0f);
-	AddTask(sol5);*/
 	
-	////////////////////////////////////////////////////////////////////
-
-	CVanguard* van = new CVanguard();
-	van->Scale(1.4f, 1.4f, 1.4f);
-	van->Position(0.0f, 150.0f, -500.0f);
-	AddTask(van);
-
-	/*CVanguard* van = new CVanguard();
-	van->Scale(1.4f, 1.4f, 1.4f);
-	van->Position(0.0f, 150.0f, -100.0f);
-	AddTask(van);*/
-
-	// ハテナブロックとレンガブロックの間隔は約7.3f
-	// ハテナブロック
-	CHatenaBlock* hatena = new CHatenaBlock
-	(
-		CVector(30.0f, 6.0f, -50.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector hatenaPos = CVector(30.0f, 6.0f, -50.0f);
-	if (hatena != nullptr)
-	{
-		hatena->SetStartPosition(hatenaPos);
-	}
-	AddTask(hatena);
-
-	CHatenaBlock* hatena1 = new CHatenaBlock
-	(
-		CVector(0.0f, 6.0f, -250.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector hatenaPos1 = CVector(0.0f, 6.0f, -250.0f);
-	if (hatena1 != nullptr)
-	{
-		hatena1->SetStartPosition(hatenaPos1);
-	}
-	AddTask(hatena1);
-
-	CHatenaBlock* hatena2 = new CHatenaBlock
-	(
-		CVector(7.3f, 6.0f, -450.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector hatenaPos2 = CVector(7.3f, 6.0f, -150.0f);
-	if (hatena2 != nullptr)
-	{
-		hatena2->SetStartPosition(hatenaPos2);
-	}
-	AddTask(hatena2);
-
-	CHatenaBlock* hatena3 = new CHatenaBlock
-	(
-		CVector(-100.0f, 19.0f, -430.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector hatenaPos3 = CVector(-100.0f, 19.0f, -430.0f);
-	if (hatena3 != nullptr)
-	{
-		hatena3->SetStartPosition(hatenaPos3);
-	}
-	AddTask(hatena3);
-
-	// レンガブロック
-	CRengaBlock* renga = new CRengaBlock
-	(
-		CVector(37.3f, 6.0f, -50.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector rengaPos = CVector(37.3f, 6.0f, -50.0f);
-	if (renga != nullptr)
-	{
-		renga->SetStartPosition(rengaPos);
-	}
-	AddTask(renga);
-
-	// レンガブロック
-	CRengaBlock* renga1 = new CRengaBlock
-	(
-		CVector(22.7f, 6.0f, -50.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector rengaPos1 = CVector(22.7f, 6.0f, -50.0f);
-	if (renga1 != nullptr)
-	{
-		renga1->SetStartPosition(rengaPos1);
-	}
-	AddTask(renga1);
-
-
-
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(0.0f, 30.0f, -20.0f);
+	CVector playerPos = CVector(-195.0f, 200.0f, 9.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
 		player->Rotation(0.0f, -180.0f, 0.0f);
 	}
-
 	// カメラの位置と向きを設定
 	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);
 	CGameCamera* mainCamera = new CGameCamera
@@ -304,12 +82,20 @@ void CStage1::Load()
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(field->GetWallCol());
 
-	
-	//// ゆかりさん
-	//CYukari* yukari = new CYukari();
-	//yukari->Scale(1.0f, 1.0f, 1.0f);
-	//yukari->Position(0.0f, 100.0f, -200.0f);
-	//AddTask(yukari);
+
+	// 回転する床ギミック(常に)
+	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
+		CVector(285.0f, 170.0f, -24.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector rotatetimegimmickPos = CVector(285.0f, 170.0f, -24.0f);
+	if (rotatetimegimmick != nullptr)
+	{
+		rotatetimegimmick->SetStartPosition(rotatetimegimmickPos);
+		rotatetimegimmick->Rotation(0.0f, 0.0f, 180.0f);
+	}
+	AddTask(rotatetimegimmick);
 }
 
 

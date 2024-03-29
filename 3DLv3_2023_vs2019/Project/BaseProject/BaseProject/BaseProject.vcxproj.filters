@@ -511,6 +511,9 @@
     <ClCompile Include="src\Game\CClimbWall.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CField_Worlds_1.cpp">
+      <Filter>ソース ファイル\Game\Field</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -941,6 +944,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CClimbWall.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CField_Worlds_1.h">
+      <Filter>ソース ファイル\Game\Field</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

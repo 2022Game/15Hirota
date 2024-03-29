@@ -63,8 +63,8 @@ void CField::Update()
 
 void CField::Render()
 {
-	mpModel->Render(Matrix());
 	mpModel->SetColor(mColor);
-	mpModelSky->Render(Matrix());
+	mpModel->Render(Matrix());
 	mpModelSky->SetColor(mColor);
+	mpModelSky->Render(Matrix());
 }

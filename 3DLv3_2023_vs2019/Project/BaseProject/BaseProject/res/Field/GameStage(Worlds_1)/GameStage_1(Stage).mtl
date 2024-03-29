@@ -1,0 +1,52 @@
+# Blender 3.4.1 MTL File: 'GameStage_1(Stage).blend'
+# www.blender.org
+
+newmtl Nature_Mat_01.005
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/Manam.DESKTOP-RTRTCM3/OneDrive/デスクトップ/ゲーム業界用の3Dモデル/動植物/SimpleNaturePack/Textures/NaturePackLite_Texture_01.png
+
+newmtl Nature_Mat_01.013
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/Manam.DESKTOP-RTRTCM3/OneDrive/デスクトップ/ゲーム業界用の3Dモデル/動植物/SimpleNaturePack/Textures/NaturePackLite_Texture_01.png
+
+newmtl Nature_Mat_01.014
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/Manam.DESKTOP-RTRTCM3/OneDrive/デスクトップ/ゲーム業界用の3Dモデル/動植物/SimpleNaturePack/Textures/NaturePackLite_Texture_01.png
+
+newmtl マテリアル.014
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.090838 0.046317 0.003880
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl マテリアル.015
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.115391 0.273830 0.100007
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
