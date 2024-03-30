@@ -7,6 +7,8 @@ CField_Worlds_1::CField_Worlds_1()
 {
 	// ステージのモデルデータ取得
 	mpStageModel = CResourceManager::Get<CModel>("Stage");
+	// ステージの空のモデルデータ取得
+	mpStageSkyModel = CResourceManager::Get<CModel>("StageSky");
 	// 道のモデルデータ取得
 	mpLoadModel = CResourceManager::Get<CModel>("Load");
 	// 雲のモデルデータ取得
@@ -18,7 +20,16 @@ CField_Worlds_1::CField_Worlds_1()
 	// 草のモデルデータ取得
 	mpGrassModel = CResourceManager::Get<CModel>("Grass");
 	// 矢印看板のモデルデータ取得
-	//mpArrowSignModel = CResourceManager::Get<CModel>("Arrow sign");
+	mpArrowSignModel = CResourceManager::Get<CModel>("Arrowsign");
+	// 空島のモデルデータ取得
+	mpSkyIsland = CResourceManager::Get<CModel>("SkyIsland");
+
+	// 木のモデルデータ取得
+	mpTreeModel = CResourceManager::Get<CModel>("Tree");
+	mpTreeCol = new CColliderMesh(this, ELayer::eFieldWall, mpTreeModel, true);
+	// 切り株と木の枝モデルデータ取得
+	mpBranchModel = CResourceManager::Get<CModel>("Branch");
+	mpBranchCol = new CColliderMesh(this, ELayer::eField, mpBranchModel, true);
 
 	//// キノコのモデルデータ取得
 	//CModel* mushroom = CResourceManager::Get<CModel>("Mushroom");
@@ -36,10 +47,7 @@ CField_Worlds_1::CField_Worlds_1()
 	//	this, ELayer::eField,
 	//	1.0f
 	//);
-
-	//// 木と切り株と木の枝のモデルデータ取得
-	//CModel* tree_branch = CResourceManager::Get<CModel>("Tree & Branch");
-	//mpTree_BranchCol = new CColliderMesh(this, ELayer::eField, tree_branch, true);
+	
 
 	// 床のコライダー
 	CModel* floorCol = CResourceManager::Get<CModel>("FloorCol");
@@ -60,6 +68,8 @@ CField_Worlds_1::~CField_Worlds_1()
 	SAFE_DELETE(mpFloorCol);
 	SAFE_DELETE(mpWallCol);
 	SAFE_DELETE(mpFallCol);
+	SAFE_DELETE(mpTreeCol);
+	SAFE_DELETE(mpBranchCol);
 
 	if (mpWallCol != nullptr)
 	{
@@ -89,6 +99,8 @@ void CField_Worlds_1::Render()
 {
 	mpStageModel->SetColor(mColor);
 	mpStageModel->Render(Matrix());
+	mpStageSkyModel->SetColor(mColor);
+	mpStageSkyModel->Render(Matrix());
 	mpLoadModel->SetColor(mColor);
 	mpLoadModel->Render(Matrix());
 	mpCloudModel->SetColor(mColor);
@@ -99,6 +111,12 @@ void CField_Worlds_1::Render()
 	mpFlowersModel->Render(Matrix());
 	mpGrassModel->SetColor(mColor);
 	mpGrassModel->Render(Matrix());
-	/*mpArrowSignModel->SetColor(mColor);
-	mpArrowSignModel->Render(Matrix());*/
+	mpArrowSignModel->SetColor(mColor);
+	mpArrowSignModel->Render(Matrix());
+	mpSkyIsland->SetColor(mColor);
+	mpSkyIsland->Render(Matrix());
+	mpTreeModel->SetColor(mColor);
+	mpTreeModel->Render(Matrix());
+	mpBranchModel->SetColor(mColor);
+	mpBranchModel->Render(Matrix());
 }

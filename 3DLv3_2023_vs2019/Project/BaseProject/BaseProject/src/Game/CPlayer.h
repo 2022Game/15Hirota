@@ -14,6 +14,7 @@ class CStaminaGauge;
 class CMajicSword;
 class CBullet;
 class CClimbWall;
+class CWireMeshClimbWall;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -157,6 +158,8 @@ private:
 
 	// 登っている壁のポインター
 	CClimbWall* mpClimbWall;
+	// 登っている金網のポインター
+	CWireMeshClimbWall* mpWireWall;
 
 	///////////////////////////////////////////////////////
 	
@@ -203,6 +206,10 @@ private:
 	void UpdateClimb();
 	// 頂上まで登った
 	void UpdateClimbedTop();
+	// 金網に登る状態
+	void UpdateWireClimb();
+	// 金網の頂上に登った状態
+	void UpdateWireClimbedTop();
 
 	// プレイヤーの状態
 	enum class EState
@@ -233,6 +240,8 @@ private:
 		eHitObj,			// ダメージを受ける(オブジェクト)
 		eClimb,				// 登る状態
 		eClimbedTop,		// 頂上まで登った
+		eWireClimb,			// 金網に登る状態
+		eWireClimbedTop,	// 金網の頂上まで登った
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
@@ -331,6 +340,8 @@ private:
 	float mMoveSpeedY;
 	// 最初のダッシュ時間計測
 	float mDashTime;
+
+	float mClimbSt;
 
 	// 接地しているかどうか
 	bool mIsGrounded;

@@ -514,6 +514,12 @@
     <ClCompile Include="src\Game\CField_Worlds_1.cpp">
       <Filter>ソース ファイル\Game\Field</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CItemsUsed.cpp">
+      <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CWireMeshClimbWall.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -947,6 +953,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CField_Worlds_1.h">
       <Filter>ソース ファイル\Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CItemsUsed.h">
+      <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CWireMeshClimbWall.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

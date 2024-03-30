@@ -247,9 +247,9 @@ void CNeedle::Update()
 		UpdateAttackEnd();
 		break;
 	}
-	CDebugPrint::Print("wait%f\n", mWait);
-	CDebugPrint::Print("attackwait%f\n", mAttackWait);
-	CDebugPrint::Print("waitAttackTime%f\n", mWaitAttackTime);
+	//CDebugPrint::Print("wait%f\n", mWait);
+	//CDebugPrint::Print("attackwait%f\n", mAttackWait);
+	//CDebugPrint::Print("waitAttackTime%f\n", mWaitAttackTime);
 }
 
 // •`‰æ

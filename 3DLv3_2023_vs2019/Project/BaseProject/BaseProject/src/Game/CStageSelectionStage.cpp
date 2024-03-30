@@ -39,7 +39,7 @@ void CStageSelectionStage::Load()
 
 	// ステージ選択モデル
 	CStageButton* button = new CStageButton(
-		CVector(150.0f, 11.0f, 0.0f),
+		CVector(50.0f, 11.0f, 0.0f),
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer);

@@ -11,6 +11,7 @@
 #include "CGameManager.h"
 #include "CRecoveryObject.h"
 #include "CClimbWall.h"
+#include "CWireMeshClimbWall.h"
 
 // プレイヤー関連
 // 高さ
@@ -31,9 +32,11 @@
 #define JUMP_END_Y 1.0f
 
 // 壁を登る速度
-#define CLIMMB_SPEED 0.5f
+#define CLIMB_SPEED 0.5f
 // 壁の頂上へ上るのにかかる時間
 #define CLIMBED_TOP_TIME 1.0f
+// 金網の頂上へ上るのにかかる時間
+#define WIREMESH_TOP_TIEM 1.0f
 
 
 //視野の角度(ー角度+角度も出)
@@ -100,6 +103,7 @@ CPlayer::CPlayer()
 	, mInvincibleStartTime(10.0f)
 	, mMoveSpeedY(0.0f)
 	, mDashTime(0.0f)
+	, mClimbSt(0.0f)
 	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mGroundNormal(0.0f, 1.0f, 0.0f)
@@ -208,7 +212,7 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 12.5f),
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
-	mpClimbCol->SetCollisionLayers({ ELayer::eClimb,ELayer::eClimbedTop });
+	mpClimbCol->SetCollisionLayers({ ELayer::eClimb,ELayer::eClimbedTop, ELayer::eWireClimb,ELayer::eWireClimbedTop });
 
 
 	// マジックソード作成
@@ -426,6 +430,35 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			mClimbWallTop = true;
 		}
+
+		// 登れる金網のコライダー
+		if (other->Layer() == ELayer::eWireClimb)
+		{
+			mClimbWall = true;
+			if (mState == EState::eIdle && mIsGrounded)
+			{
+				if (CInput::PushKey('E'))
+				{
+					// Climib状態に移行する
+					ChangeState(EState::eWireClimb);
+					// 今から登る壁をお記憶しておく
+					mpWireWall = dynamic_cast<CWireMeshClimbWall*>(other->Owner());
+				}
+
+				// 現在金網を登っている最中であれば、
+				if (mState == EState::eWireClimb)
+				{
+					// 登っている壁の法線を取得
+					mClimbNormal = hit.adjust.Normalized();
+				}
+			}
+		}
+		// 登れる壁の頂上コライダー
+		else if (other->Layer() == ELayer::eWireClimbedTop)
+		{
+			mClimbWallTop = true;
+		}
+
 	}
 }
 
@@ -908,6 +941,7 @@ void CPlayer::UpdateIdle()
 			ChangeAnimation(EAnimType::eIdle);
 		}
 	}
+	// 確認中
 	CDebugPrint::Print("stamina:%d\n", mCharaStatus.stamina);
 	CDebugPrint::Print("mDashTime:%f\n", mDashTime);
 }
@@ -1354,7 +1388,7 @@ void CPlayer::UpdateClimb()
 		// アニメーションを停止する
 		SetAnimationSpeed(0.0f);
 	}
-	mMoveSpeed = move * CLIMMB_SPEED;
+	mMoveSpeed = move * CLIMB_SPEED;
 
 	if (CInput::PushKey('E'))
 	{
@@ -1379,8 +1413,8 @@ void CPlayer::UpdateClimb()
 			ChangeState(EState::eIdle);
 		}
 	}
-	CDebugPrint::Print("mClimbWall: %s\n", mClimbWall ? "true" : "false");
-	CDebugPrint::Print("mClimbWallTop: %s\n", mClimbWallTop ? "true" : "false");
+	//CDebugPrint::Print("mClimbWall: %s\n", mClimbWall ? "true" : "false");
+	//CDebugPrint::Print("mClimbWallTop: %s\n", mClimbWallTop ? "true" : "false");
 }
 
 // 頂上まで登った
@@ -1437,6 +1471,156 @@ void CPlayer::UpdateClimbedTop()
 		if (mElapsedTime < CLIMBED_TOP_TIME)
 		{
 			float per = mElapsedTime / CLIMBED_TOP_TIME;
+			CVector pos = CVector::Lerp(mClimbedMovedUpPos, mClimbedMovedPos, per);
+			Position(pos);
+			mElapsedTime += Time::DeltaTime();
+		}
+		// 移動が終わった
+		else
+		{
+			Position(mClimbedMovedPos);
+			// 壁を登っている状態を解除
+			mClimb = false;
+			ChangeState(EState::eIdle);
+		}
+		break;
+	}
+}
+
+// 金網に登る状態
+void CPlayer::UpdateWireClimb()
+{
+	mClimb = true;
+	mMoveSpeed = CVector::zero;
+	mMoveSpeedY = 0.0f;
+	// プレイヤーの移動ベクトルを求める
+	CVector move = ClimbMoveVec();
+
+	ChangeAnimation(EAnimType::eClimb);
+
+	// 求めた移動ベクトルの長さで入力されているか判定
+	if (move.LengthSqr() > 0.0f)
+	{
+		// 上下キーが入力されている場合
+		if (move.Y() != 0.0f)
+		{
+			// 壁を登っている時は、アニメーションを通常再生し、
+			// 壁を降りているときはアニメーションを逆再生する
+			SetAnimationSpeed(move.Y() > 0.0f ? 1.0f : -1.0f);
+		}
+		// 左右キーのみが入力されている場合
+		else
+		{
+			SetAnimationSpeed(1.0f);
+		}
+	}
+	// 移動キーが入力されていない場合
+	else
+	{
+		// アニメーションを停止する
+		SetAnimationSpeed(0.0f);
+	}
+	mMoveSpeed = move * CLIMB_SPEED;
+
+	if (CInput::PushKey('E'))
+	{
+		mClimb = false;
+		ChangeState(EState::eJumpStart);
+	}
+
+	// 登れる壁の範囲外に出た場合
+	if (!mClimbWall)
+	{
+		// 登れる壁の頂上に触れていた場合
+		if (mClimbWallTop)
+		{
+			// 頂上へ上る状態へ移行
+			ChangeState(EState::eWireClimbedTop);
+		}
+		// 登れる壁の頂上に触れていなかった場合
+		else
+		{
+			// 登っている状態を解除して、待機状態へ移行
+			mClimb = false;
+			ChangeState(EState::eIdle);
+		}
+	}
+
+	if (mClimbSt >= 0.2f)
+	{
+		mCharaStatus.stamina -= 2;
+		mClimbSt = 0.0f;
+	}
+	else
+	{
+		mClimbSt += Time::DeltaTime();
+	}
+
+	if (mCharaStatus.stamina <= 0)
+	{
+		mClimb = false;
+		ChangeState(EState::eIdle);
+	}
+	//CDebugPrint::Print("stamina:%f\n", mClimbSt);
+
+	//CDebugPrint::Print("mClimbWall: %s\n", mClimbWall ? "true" : "false");
+	//CDebugPrint::Print("mClimbWallTop: %s\n", mClimbWallTop ? "true" : "false");
+}
+
+// 金網の頂上に登った状態
+void CPlayer::UpdateWireClimbedTop()
+{
+	mClimb = true;
+	mMoveSpeed = CVector::zero;
+	mMoveSpeedY = 0.0f;
+
+	// ステップ管理
+	switch (mStateStep)
+	{
+		// ステップ0: 初期化処理
+	case 0:
+	{
+		// 頂上へ上り切った時の移動前の座標と移動後の座標を設定
+		mClimbedStartPos = Position();
+		CVector  moveUp, moveForward;
+		mpWireWall->GetClimbedMoveVec(&moveUp, &moveForward);
+		mClimbedMovedUpPos = mClimbedStartPos + Rotation() * moveUp;
+		mClimbedMovedPos = mClimbedMovedUpPos + Rotation() * moveForward;
+
+		mElapsedTime = 0.0f;
+		// 頂上へ上り切った時のアニメーションを再生
+		ChangeAnimation(EAnimType::eClimbedTop);
+
+		// 次のステップへ
+		mStateStep++;
+		break;
+	}
+	// ステップ1: 登り切った時のアニメーションの経過待ち
+	case 1:
+	{
+		float ratio = GetAnimationFrameRatio();
+		// 登り切った時のアニメーションの半分までは
+		// プレイヤーを上方向に移動する
+		if (ratio < 0.5f)
+		{
+			float per = ratio / 0.5f;
+			CVector pos = CVector::Lerp(mClimbedStartPos, mClimbedMovedUpPos, per);
+			Position(pos);
+		}
+		// 登り切った時のアニメーションの半分を超えたら、次のステップへ
+		else
+		{
+			Position(mClimbedMovedUpPos);
+			mStateStep++;
+		}
+		break;
+	}
+	// ステップ2: 頂上へ上り切った後の移動処理
+	case 2:
+		// 経過時間に合わせて移動
+		if (mElapsedTime < WIREMESH_TOP_TIEM)
+		{
+			float per = mElapsedTime / WIREMESH_TOP_TIEM;
 			CVector pos = CVector::Lerp(mClimbedMovedUpPos, mClimbedMovedPos, per);
 			Position(pos);
 			mElapsedTime += Time::DeltaTime();
@@ -1662,6 +1846,14 @@ void CPlayer::Update()
 	case EState::eClimbedTop:
 		UpdateClimbedTop();
 		break;
+		// 金網に登る状態
+	case EState::eWireClimb:
+		UpdateWireClimb();
+		break;
+		// 金網の頂上まで登った
+	case EState::eWireClimbedTop:
+		UpdateWireClimbedTop();
+		break;
 		// クリア
 	case EState::eClear:
 		UpdateClear();
@@ -1725,6 +1917,11 @@ void CPlayer::Update()
 		CVector current = VectorZ();
 		CVector target = moveSpeed;
 		if (mState == EState::eClimb)
+		{
+			// 壁の法線の反対方向を向く
+			target = -mClimbNormal;
+		}
+		else if (mState == EState::eWireClimb)
 		{
 			// 壁の法線の反対方向を向く
 			target = -mClimbNormal;
@@ -1805,7 +2002,8 @@ void CPlayer::Update()
 	{
 		ChangeAnimation(EAnimType::eHitJ);
 		TakeDamage(1);
-		Position(-195.0f, 200.0f, 9.0f);
+		// Stage(1)の初期地点
+		Position(-150.0f, 136.0f, -5.3f);
 	}
 	///////////////////////////////////////////
 
@@ -1827,7 +2025,8 @@ void CPlayer::Update()
 	//CDebugPrint::Print("Position.Y %f\n", Position().Y());
 	//// コライダーの復活時間監視
 	//CDebugPrint::Print("TimeCol%f\n", mElapsedTimeCol);
-	CDebugPrint::Print("mMoveSpeedY%f\n", mMoveSpeedY);
+	//CDebugPrint::Print("mMoveSpeedY%f\n", mMoveSpeedY);
+	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 }
 
 // 描画

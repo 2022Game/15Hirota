@@ -82,6 +82,7 @@
     <ClCompile Include="src\Game\CInventoryMenu.cpp" />
     <ClCompile Include="src\Game\CInvincible.cpp" />
     <ClCompile Include="src\Game\CInvincibleObjectBase.cpp" />
+    <ClCompile Include="src\Game\CItemsUsed.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
     <ClCompile Include="src\Game\CClimbWall.cpp" />
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
@@ -128,6 +129,7 @@
     <ClCompile Include="src\Game\CUIGauge.cpp" />
     <ClCompile Include="src\Game\CUnityChan.cpp" />
     <ClCompile Include="src\Game\CWeapon.cpp" />
+    <ClCompile Include="src\Game\CWireMeshClimbWall.cpp" />
     <ClCompile Include="src\Game\CXCharacter.cpp" />
     <ClCompile Include="src\Game\CYukari.cpp" />
     <ClCompile Include="src\Game\CMajicSword.cpp" />
@@ -229,6 +231,7 @@
     <ClInclude Include="src\Game\CInventoryMenu.h" />
     <ClInclude Include="src\Game\CInvincible.h" />
     <ClInclude Include="src\Game\CInvincibleObjectBase.h" />
+    <ClInclude Include="src\Game\CItemsUsed.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
     <ClInclude Include="src\Game\CMajicSwordEnemy.h" />
     <ClInclude Include="src\Game\CNeedle.h" />
@@ -274,6 +277,7 @@
     <ClInclude Include="src\Game\CUIGauge.h" />
     <ClInclude Include="src\Game\CUnityChan.h" />
     <ClInclude Include="src\Game\CWeapon.h" />
+    <ClInclude Include="src\Game\CWireMeshClimbWall.h" />
     <ClInclude Include="src\Game\CXCharacter.h" />
     <ClInclude Include="src\Game\CYukari.h" />
     <ClInclude Include="src\Game\CMajicSword.h" />

@@ -3,7 +3,7 @@
 #include "CPlayer.h"
 
 // ‘Ò‚¿ŠÔ
-#define WAIT_TIME 5.0f
+#define WAIT_TIME 3.0f
 // ‰ñ“]°‚Ì‰ñ“]‚É‘‚©k‚éŠÔ
 #define ROTATE_TIME 0.6f
 
@@ -103,7 +103,7 @@ void CRotateFloorTimeGimmick::UpdateIdle()
 		mElapsedTime = 0.0f;
 		ChangeState(EState::Rotate);
 	}
-	CDebugPrint::Print("WaitTime:%f\n", mWaitTime);
+	//CDebugPrint::Print("WaitTime:%f\n", mWaitTime);
 }
 
 

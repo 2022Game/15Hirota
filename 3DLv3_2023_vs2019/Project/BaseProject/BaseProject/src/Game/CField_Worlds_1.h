@@ -20,17 +20,22 @@ public:
 private:
 
 	CModel* mpStageModel;
+	CModel* mpStageSkyModel;
 	CModel* mpLoadModel;
 	CModel* mpCloudModel;
 	CModel* mpFanceModel;
 	CModel* mpFlowersModel;
 	CModel* mpGrassModel;
 	CModel* mpArrowSignModel;
+	CModel* mpSkyIsland;
+	CModel* mpTreeModel;
+	CModel* mpBranchModel;
 
 	CColliderMesh* mpFloorCol;
 	CColliderMesh* mpWallCol;
 	CColliderMesh* mpFallCol;
-	CColliderMesh* mpTree_BranchCol;
+	CColliderMesh* mpTreeCol;
+	CColliderMesh* mpBranchCol;
 
 	CColliderSphere* mpMushroomSphere;
 	CColliderSphere* mpRock_Shrud;
