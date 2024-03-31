@@ -268,7 +268,6 @@ private:
 		eJumpStart,		// ジャンプ開始
 		eJump,			// ジャンプ中
 		eJumpEnd,		// ジャンプ終了
-		eDashStart,		// ダッシュ開始
 		eDash,			// ダッシュ
 		eDashStop,		// ダッシュ終了
 		eRotate,		// 回避
@@ -338,8 +337,6 @@ private:
 	float mInvincibleStartTime;
 	// 重力やジャンプによるY軸の移動速度
 	float mMoveSpeedY;
-	// 最初のダッシュ時間計測
-	float mDashTime;
 
 	float mClimbSt;
 
@@ -361,10 +358,6 @@ private:
 	bool mIsPlayedSlashSE;
 	// 攻撃が当たったか
 	bool mIsPlayedHitDamageSE;
-	// 最初のダッシュをしたか
-	bool mQuickDash;
-	// ダッシュの初回スタミナ消費
-	bool mDashStamina;
 	// ダッシュ状態か
 	bool mDash;
 	// 壁を登っているか

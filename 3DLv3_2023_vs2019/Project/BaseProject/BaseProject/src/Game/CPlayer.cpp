@@ -78,8 +78,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\jump_start1.x",				false,	25.0f	},		// ジャンプ開始
 	{ "Character\\Monster1\\anim\\jump1.x",							true,	1.0f	},	// ジャンプ中
 	{ "Character\\Monster1\\anim\\jump_end1.x",					false,	26.0f	},		// ジャンプ終了
-	{ "Character\\Monster1\\anim\\Dash1_53.x",						true,	43.0f	},	// ダッシュ開始
-	{ "Character\\Monster1\\anim\\Warrok_Run.x",					true,	43.0f	},	// ダッシュ
+	{ "Character\\Monster1\\anim\\Dash1_53.x",						true,	53.0f	},	// ダッシュ
 	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	40.0f	},		// ダッシュ終了
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	50.0f	},		// 回避
 	{ "Character\\Monster1\\anim\\Guts pose_325.x",				false,	325.0f	},		// ガッツポーズ
@@ -102,7 +101,6 @@ CPlayer::CPlayer()
 	, mElapsedTimeCol(0.0f)
 	, mInvincibleStartTime(10.0f)
 	, mMoveSpeedY(0.0f)
-	, mDashTime(0.0f)
 	, mClimbSt(0.0f)
 	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
@@ -119,8 +117,6 @@ CPlayer::CPlayer()
 	, mIsPlayedSlashSE(false)
 	, staminaLowerLimit(false)
 	, mIsPlayedHitDamageSE(false)
-	, mQuickDash(false)
-	, mDashStamina(false)
 	, mDash(false)
 	, mClimb(false)
 	, mClimbWall(false)
@@ -776,7 +772,6 @@ void CPlayer::UpdateIdle()
 	if (mIsGrounded)
 	{
 		mStateStep = 0;
-
 		// プレイヤーの移動ベクトルを求める
 		CVector move = CalcMoveVec();
 		// 求めた移動ベクトルの長さで入力されているか判定
@@ -785,98 +780,60 @@ void CPlayer::UpdateIdle()
 			float speed = MOVE_SPEED;
 			if (CInput::Key(VK_SHIFT))
 			{
-				ChangeAnimation(EAnimType::eDash);
-				if ((mCharaStatus.stamina > 0 && !staminaLowerLimit))
+				if (mCharaStatus.stamina >= 0 && !staminaLowerLimit)
 				{
-					// 最初のダッシュをしたか
-					if (!mQuickDash)
-					{
-						//ChangeAnimation(EAnimType::eDashStart);
-						//mCharaStatus.stamina -= 1;
-						// 通常のダッシュよりも速いダッシュを開始
-						speed = DASH_SPEED;
-
-						// スタミナを-10消費
-						if (!mDashStamina)
-						{
-							if (mCharaStatus.stamina >= 10)
-							{
-								mCharaStatus.stamina -= 15;
-								mDashStamina = true;
-							}
-						}
-
-						// 速いダッシュを1秒間計測
-						mDashTime += Time::DeltaTime();
-						if (mDashTime >= 0.4f)
-						{
-							mQuickDash = true;
-						}
-					}
-					else
-					{
-						speed = RUN_SPEED;
-						mDash = true;
-						mDashStamina = false;
-						mCharaStatus.stamina -= 0.001;
-					}
-
+					ChangeAnimation(EAnimType::eDash);
+					mDash = true;
+					mCharaStatus.stamina -= 1;
 					if (mCharaStatus.stamina <= 0)
 					{
 						ChangeState(EState::eDashEnd);
-						mDash = false;
 						staminaLowerLimit = true;
-						mQuickDash = false;
-						mDashStamina = false;
-						mDashTime = 0.0f;
+						mDash = false;
 					}
 				}
 				else
 				{
-					//ChangeAnimation(EAnimType::eDash);
-					if (staminaLowerLimit && mCharaStatus.stamina == mCharaMaxStatus.stamina)
-					{
-						staminaLowerLimit = false; // スタミナが再びMAXになったらリセット
-						mQuickDash = false;
-						mDashTime = 0.0f;
-					}
-					mCharaStatus.stamina += 1;
+					mDash = false;
 					ChangeAnimation(EAnimType::eWalk);
+					if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
+					{
+						mCharaStatus.stamina += 1;
+						if (mCharaStatus.stamina >= mCharaMaxStatus.stamina)
+						{
+							staminaLowerLimit = false;
+						}
+					}
 				}
 			}
 			else
 			{
-				if (mCharaStatus.stamina < mCharaMaxStatus.stamina && !staminaDepleted)
+				mDash = false;
+				ChangeAnimation(EAnimType::eWalk);
+				if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
 				{
 					mCharaStatus.stamina += 1;
-					if (mDash)
-					{
-						mDashTime = 0.0f;
-						mDash = false;
-						ChangeState(EState::eDashEnd);
-					}
 				}
-				else if (mCharaStatus.stamina >= mCharaMaxStatus.stamina)
+			}
+
+			if (staminaLowerLimit)
+			{
+				if (mCharaStatus.stamina >= mCharaMaxStatus.stamina)
 				{
-					staminaDepleted = false;  // スタミナが上限値より上になったらリセット
+					staminaLowerLimit = false;
 				}
-				ChangeAnimation(EAnimType::eWalk);
 			}
 			mMoveSpeed += move * speed * MOVE_SPEED * mCharaStatus.moveSpeed;
-			
 		}
 		// 移動キーを入力していない
 		else
 		{
 			// 待機アニメーションに切り替え
 			ChangeAnimation(EAnimType::eIdle);
-			if (mCharaStatus.stamina < mCharaMaxStatus.stamina && !staminaDepleted)
+			mDash = false;
+			if (mCharaStatus.stamina < mCharaMaxStatus.stamina && !mDash)
 			{
 				mCharaStatus.stamina += 1;
-			}
-			else if (mCharaStatus.stamina >= mCharaMaxStatus.stamina)
-			{
-				staminaDepleted = false;  //  スタミナが上限値より上になったらリセット
 			}
 		}
 
@@ -905,30 +862,10 @@ void CPlayer::UpdateIdle()
 			{
 			}
 		}
-		// CTRLキーで回避へ移行
-		else if (((CInput::PushKey(VK_CONTROL))) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
-		{
-			// 回避行動前にスタミナが0以下になるかどうかを確認
-			if (mCharaStatus.stamina - 50 >= 0) {
-
-				mMoveSpeed = CVector::zero;
-				ChangeState(EState::eRotate);
-				// スタミナが0以下にならない場合は回避行動を実行
-				mCharaStatus.stamina -= 50;
-			}
-			else
-			{
-			}
-		}
 	}
 	// プレイヤーが接地していない
 	else
 	{
-		if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
-		{
-			mCharaStatus.stamina += 1;
-		}
-
 		// 空中に飛び出したときに待機モーションへ切り替えるのを
 		// 数フレーム待つ
 		if (mStateStep <= 5)
@@ -941,17 +878,11 @@ void CPlayer::UpdateIdle()
 			ChangeAnimation(EAnimType::eIdle);
 		}
 	}
-	// 確認中
-	CDebugPrint::Print("stamina:%d\n", mCharaStatus.stamina);
-	CDebugPrint::Print("mDashTime:%f\n", mDashTime);
 }
 
 // ダッシュ終了
 void CPlayer::UpdateDashEnd()
 {
-	mDashStamina = false;
-	mQuickDash = false;
-	mDashTime = 0.0f;
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
