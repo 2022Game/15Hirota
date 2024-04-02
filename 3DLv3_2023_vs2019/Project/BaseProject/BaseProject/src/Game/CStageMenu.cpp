@@ -3,6 +3,7 @@
 #include "CTaskManager.h"
 #include "CBGMManager.h"
 #include "CStageManager.h"
+#include "CGameManager.h"
 
 #define MENU_ALPHA 0.75f
 
@@ -110,6 +111,7 @@ void CStageMenu::Decide(int select)
 		break;
 	case 1:
 		CStageManager::LoadStage(1);
+		CGameManager::SetStageNo(1);
 		break;
 	case 2:
 		Close();

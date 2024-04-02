@@ -21,12 +21,14 @@
 #include "CBGMManager.h"
 #include "CJumpingObject.h"
 #include "CInventoryMenu.h"
+#include "CStageTime.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
 	, mpGameMenu(nullptr)
 	, mpInventoryMenu(nullptr)
+	, mTime(500)
 {
 }
 
@@ -34,8 +36,8 @@ CGameScene::CGameScene()
 //デストラクタ
 CGameScene::~CGameScene()
 {
+	mpTime->Kill();
 }
-
 
 //シーン読み込み
 void CGameScene::Load()
@@ -57,7 +59,6 @@ void CGameScene::Load()
 	//CResourceManager::Load<CModelX>("Soldier",				"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
 	////CResourceManager::Load<CModelX>("UnityChan",			"Character\\UnityChan\\unitychan.x");						// ユニティちゃん
 	////CResourceManager::Load<CModelX>("Yukari",				"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
-	//CResourceManager::Load<CModelX>("Vanguard",				"Character\\Vanguard\\VanguardModel.x");					// ヴァンガード
 
 
 	// アイテム関連
@@ -130,10 +131,21 @@ void CGameScene::Load()
 
 	// ゲームメニューを作成
 	mpGameMenu = new CGameMenu();
+	int currentStage = CGameManager::StageNo();
+	mpTime = new CStageTime();
+	if (currentStage == 0)
+	{
+		mpTime->SetShow(false);
+	}
+	else if (currentStage == 1)
+	{
+		mpTime->SetShow(true);
+	}
 	// インベントリを作成
 	mpInventoryMenu = new CInventoryMenu();
 	mpInventoryMenu->SetPlayer(player);
 
+	
 
 	CGameManager::GameStart();
 }
@@ -223,10 +235,31 @@ void CGameScene::Update()
 	//	}
 	//}
 
+	int currentStage = CGameManager::StageNo();
+	if (currentStage == 1)
+	{
+		// ゲーム時間の更新
+		if (mTime > 0) {
+			static float time = 1.0f; // time変数をstaticに変更
+			time -= Time::DeltaTime();
+			if (time <= 0)
+			{
+				mTime--;
+				time = 1.0f; // timeをリセット
+			}
+			mpTime->Time(mTime);
+			if (mTime < 0)
+			{
+				//mTime = 500;
+				CGameManager::GameOver();
+			}
+		}
+		mpTime->Render();
+	}
 	////////////////////////////////////////////////////////////////////////////////////
 
 	//// ステージ番号の監視
-	//CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
+	CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
 	//// ソルジャーの数の監視
 	//CDebugPrint::Print("count:%d\n", CEnemyManager::GetEnemyCount());
 }

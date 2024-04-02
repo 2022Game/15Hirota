@@ -5,8 +5,9 @@ class CInventoryMenu;
 class CSound;
 class CPlayer;
 class CSoldier;
+class CStageTime;
 
-//タイトルシーン
+// ゲームシーン
 class CGameScene :public CSceneBase
 {
 public:
@@ -22,4 +23,7 @@ public:
 private:
 	CGameMenu* mpGameMenu;
 	CInventoryMenu* mpInventoryMenu;
+
+	CStageTime* mpTime;
+	int mTime;
 };

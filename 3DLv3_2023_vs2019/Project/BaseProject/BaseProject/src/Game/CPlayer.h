@@ -99,6 +99,9 @@ public:
 	// ジャンプをしたかどうか取得
 	bool IsJumping();
 
+	// 敵を見つけたかどうか
+	bool IsFoundVanguard();
+
 	// 他のクラスで使っている為publicに置いておく
 	// ジャンプ開始
 	void UpdateJumpStart();
@@ -335,23 +338,25 @@ private:
 	float mElapsedTimeCol;
 	// 無敵状態用の計測時間
 	float mInvincibleStartTime;
+	// 壁のぼり中のスタミナ計測時間
+	float mClimbStaminaTime;
+	// 最初のダッシュの計測時間
+	float mStartDashTime;
 	// 重力やジャンプによるY軸の移動速度
 	float mMoveSpeedY;
-
-	float mClimbSt;
 
 	// 接地しているかどうか
 	bool mIsGrounded;
 	// 無敵かどうか
 	bool mInvincible;
 	// スタミナが上限値に到達した場合のフラグ
-	bool staminaDepleted;
+	bool mStaminaDepleted;
 	// スタミナが下限値に到達した場合のフラグ
-	bool staminaLowerLimit;
+	bool mStaminaLowerLimit;
 	// ダメージを与えるフラグ
-	bool damageObject;
+	bool mDamageObject;
 	// ダメージを与えるフラグ(敵)
-	bool damageEnemy;
+	bool mDamageEnemy;
 	// 回復したか
 	bool mHpHit;
 	// スラッシュのSEを再生したか

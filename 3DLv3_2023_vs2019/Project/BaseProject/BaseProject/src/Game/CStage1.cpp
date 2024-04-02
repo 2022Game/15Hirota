@@ -7,6 +7,8 @@
 #include "CRotateFloorTimeGimmick.h"
 #include "CRotateFloorGimmick.h"
 #include "CWireMeshClimbWall.h"
+#include "CVanguard.h"
+#include "CStageTime.h"
 
 
 // コンストラクタ
@@ -57,13 +59,15 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("RotateFloorFrontCol",	"Field\\Gimmick\\RotateFloorFrontCol.obj");					// 回転する床の前コライダー
 	CResourceManager::Load<CModel>("RotateFloorBackCol",	"Field\\Gimmick\\RotateFloorBackCol.obj");					// 回転する床の後ろコライダー
 
+	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");								// ヴァンガード
+
 	// 背景色設定
 	System::SetClearColor(0.1960784f, 0.6f, 0.8f, 1.0f);
 
 
 	// フィールド
 	mpField_Worlds_1 = new CField_Worlds_1();
-	mpField_Worlds_1->Scale(8.0f, 8.f, 8.f);
+	mpField_Worlds_1->Scale(8.0f, 8.0f, 8.0f);
 	AddTask(mpField_Worlds_1);
 
 	// 登れる金網を作成
@@ -86,11 +90,18 @@ void CStage1::Load()
 
 
 	/////////////////////////////////////////////////////////////////////////////////////
+
+	CVanguard* van = new CVanguard();
+	CVanguard* vanPos = CVanguard::Instance();
+	van->Scale(1.4f, 1.4f, 1.4f);
+	van->Position(496.0f, 335.0f, -167.0f);
+	AddTask(van);
 	
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
+	bool foundVan = player->IsFoundVanguard();
 	player->MaxStatus();
-	CVector playerPos = CVector(-150.0f, 136.0f, -5.3f);
+	CVector playerPos = CVector(-150.0f, 137.0f, -5.3f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
@@ -106,10 +117,13 @@ void CStage1::Load()
 	);
 	//  + CVector(0.0f, 10.0f, 0.0f)
 	mainCamera->SetFollowTargetTf(player);
+	if (foundVan)
+	{
+		mainCamera->SetFollowTargetTf(van);
+	}
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(mpField_Worlds_1->GetWallCol());
 }
-
 
 // ステージ破棄
 void CStage1::Unload()

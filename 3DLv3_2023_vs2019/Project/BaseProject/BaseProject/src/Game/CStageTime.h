@@ -1,0 +1,18 @@
+#ifndef CSTAGETIME_H
+#define CSTAGETIME_H
+
+#include "CTask.h"
+class CText;
+class CStageTime : public CTask
+{
+public:
+	CStageTime();
+	~CStageTime();
+	void Time(int time);
+	void Update() override;
+	void Render() override;
+private:
+	int mTime;
+	CText* mpTimerText;
+};
+#endif

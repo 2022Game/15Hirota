@@ -231,6 +231,7 @@ CVanguard::CVanguard()
 // デストラクタ
 CVanguard::~CVanguard()
 {
+	spInstance = nullptr;
 	// 作成したタスクを取り除く
 	CStageManager::RemoveTask(this);
 

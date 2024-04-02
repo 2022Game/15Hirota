@@ -26,6 +26,10 @@ public:
 	static EGameState GameState();
 	// 現在のステージ番号
 	static int StageNo();
+	// ステージ番号の設定
+	static void SetStageNo(int stageNo) {
+		Instance()->mStageNo = stageNo;
+	}
 	
 	// 更新処理
 	void Update();

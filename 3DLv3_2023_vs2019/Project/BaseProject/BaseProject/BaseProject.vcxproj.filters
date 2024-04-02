@@ -104,6 +104,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick">
       <UniqueIdentifier>{36ee6e20-5892-4dae-864d-5f5dba831dd0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Score">
+      <UniqueIdentifier>{b57e9b63-bf80-4405-9ce8-241d4961d7be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">

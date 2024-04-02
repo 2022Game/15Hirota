@@ -12,6 +12,7 @@
 #include "CRecoveryObject.h"
 #include "CClimbWall.h"
 #include "CWireMeshClimbWall.h"
+#include "CVanguard.h"
 
 // プレイヤー関連
 // 高さ
@@ -21,7 +22,7 @@
 // 移動スピード
 #define RUN_SPEED 1.3f
 // ダッシュスピード
-#define DASH_SPEED 2.5f
+#define DASH_SPEED 2.0f
 // ジャンプ
 #define JUMP_SPEED 1.5f
 // 大ジャンプ
@@ -36,7 +37,7 @@
 // 壁の頂上へ上るのにかかる時間
 #define CLIMBED_TOP_TIME 1.0f
 // 金網の頂上へ上るのにかかる時間
-#define WIREMESH_TOP_TIEM 1.0f
+#define WIREMESH_TOP_TIEM 0.2f
 
 
 //視野の角度(ー角度+角度も出)
@@ -100,8 +101,9 @@ CPlayer::CPlayer()
 	, mElapsedTimeEnd(0.0f)
 	, mElapsedTimeCol(0.0f)
 	, mInvincibleStartTime(10.0f)
+	, mClimbStaminaTime(0.0f)
+	, mStartDashTime(0.0f)
 	, mMoveSpeedY(0.0f)
-	, mClimbSt(0.0f)
 	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mGroundNormal(0.0f, 1.0f, 0.0f)
@@ -110,12 +112,12 @@ CPlayer::CPlayer()
 	, mClimbedMovedUpPos(0.0f, 0.0f, 0.0f)
 	, mClimbedMovedPos(0.0f, 0.0f, 0.0f)
 	, mHpHit(false)
-	, damageEnemy(false)
+	, mDamageEnemy(false)
 	, mInvincible(false)
-	, damageObject(false)
-	, staminaDepleted(false)
+	, mDamageObject(false)
+	, mStaminaDepleted(false)
 	, mIsPlayedSlashSE(false)
-	, staminaLowerLimit(false)
+	, mStaminaLowerLimit(false)
 	, mIsPlayedHitDamageSE(false)
 	, mDash(false)
 	, mClimb(false)
@@ -271,19 +273,19 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 
 			if (other->Tag() == ETag::eRideableObject)
 			{
-				if (!damageObject)
+				if (!mDamageObject)
 				{
 					TakeDamage(1);
 
 					if (mCharaStatus.hp > 0)
 					{
-						damageObject = true;
+						mDamageObject = true;
 						ChangeAnimation(EAnimType::eHit);
 						ChangeState(EState::eReStart);
 					}
 					else
 					{
-						damageObject = true;
+						mDamageObject = true;
 						ChangeState(EState::eDeath);
 					}
 				}
@@ -765,7 +767,7 @@ void CPlayer::UpdateIdle()
 		}
 	}
 
-	damageEnemy = false;
+	mDamageEnemy = false;
 
 	mMoveSpeed = CVector::zero;
 
@@ -780,20 +782,45 @@ void CPlayer::UpdateIdle()
 			float speed = MOVE_SPEED;
 			if (CInput::Key(VK_SHIFT))
 			{
-				if (mCharaStatus.stamina >= 0 && !staminaLowerLimit)
+				// スタミナが0以上かつ、スタミナの下限値フラグがfalseだったら
+				if (mCharaStatus.stamina >= 0 && !mStaminaLowerLimit)
 				{
+					// ダッシュ開始
 					ChangeAnimation(EAnimType::eDash);
-					mDash = true;
-					mCharaStatus.stamina -= 1;
-					if (mCharaStatus.stamina <= 0)
+					// スタートダッシュ
+					if (mStartDashTime <= 0.5f)
 					{
-						ChangeState(EState::eDashEnd);
-						staminaLowerLimit = true;
-						mDash = false;
+						speed = DASH_SPEED;
+						mDash = true;
+						mCharaStatus.stamina -= 1;
+						if (mCharaStatus.stamina <= 0)
+						{
+							ChangeState(EState::eDashEnd);
+							mStartDashTime = 0.0f;
+							mStaminaLowerLimit = true;
+							mDash = false;
+						}
+						mStartDashTime += Time::DeltaTime();
+					}
+					// ダッシュ
+					else
+					{
+						speed = RUN_SPEED;
+						mDash = true;
+						mCharaStatus.stamina -= 1;
+						if (mCharaStatus.stamina <= 0)
+						{
+							ChangeState(EState::eDashEnd);
+							mStaminaLowerLimit = true;
+							mDash = false;
+						}
 					}
 				}
+				// スタミナが0以下かつ、スタミナの下限値フラグがtrueだったら
 				else
 				{
+					// 歩く
+					mStartDashTime = 0.0f;
 					mDash = false;
 					ChangeAnimation(EAnimType::eWalk);
 					if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
@@ -801,13 +828,14 @@ void CPlayer::UpdateIdle()
 						mCharaStatus.stamina += 1;
 						if (mCharaStatus.stamina >= mCharaMaxStatus.stamina)
 						{
-							staminaLowerLimit = false;
+							mStaminaLowerLimit = false;
 						}
 					}
 				}
 			}
 			else
 			{
+				mStartDashTime = 0.0f;
 				mDash = false;
 				ChangeAnimation(EAnimType::eWalk);
 				if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
@@ -816,20 +844,36 @@ void CPlayer::UpdateIdle()
 				}
 			}
 
-			if (staminaLowerLimit)
+			if (mStaminaLowerLimit)
 			{
 				if (mCharaStatus.stamina >= mCharaMaxStatus.stamina)
 				{
-					staminaLowerLimit = false;
+					mStaminaLowerLimit = false;
 				}
 			}
-			mMoveSpeed += move * speed * MOVE_SPEED * mCharaStatus.moveSpeed;
+
+			// CTRLキーで回避へ移行
+			if (((CInput::PushKey(VK_CONTROL))) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+			{
+				// 回避行動前にスタミナが0以下になるかどうかを確認
+				if (mCharaStatus.stamina - 50 >= 0) {
+					mMoveSpeed = CVector::zero;
+					ChangeState(EState::eRotate);
+					// スタミナが0以下にならない場合は回避行動を実行
+					mCharaStatus.stamina -= 50;
+				}
+				else
+				{
+				}
+			}
+			mMoveSpeed += move * speed * mCharaStatus.moveSpeed;
 		}
 		// 移動キーを入力していない
 		else
 		{
 			// 待機アニメーションに切り替え
 			ChangeAnimation(EAnimType::eIdle);
+			mStartDashTime = 0.0f;
 			mDash = false;
 			if (mCharaStatus.stamina < mCharaMaxStatus.stamina && !mDash)
 			{
@@ -1006,6 +1050,7 @@ void CPlayer::UpdateAttackStrongWait()
 void CPlayer::UpdateRotate()
 {
 	mpDamageCol->SetEnable(false);
+	mMoveSpeed = CVector::zero;
 
 	// 移動処理
 	CVector move = CalcMoveVec();
@@ -1013,8 +1058,7 @@ void CPlayer::UpdateRotate()
 	// 入力ベクトルの長さで入力されているか判定
 	if (move.LengthSqr() > 0.0f)
 	{
-		float speed = MOVE_SPEED;
-		mMoveSpeed += move * speed * MOVE_SPEED * mCharaStatus.moveSpeed;
+		mMoveSpeed += move;
 	}
 	ChangeAnimation(EAnimType::eRotate);
 	ChangeState(EState::eRotateEnd);
@@ -1084,7 +1128,7 @@ void CPlayer::UpdateDeathEnd()
 {
 	if (IsAnimationFinished())
 	{
-		damageObject = false;
+		mDamageObject = false;
 		mCharaStatus = mCharaMaxStatus;
 		Position(0.0f, 20.0f, -30.0f);
 		ChangeState(EState::eIdle);
@@ -1096,7 +1140,7 @@ void CPlayer::UpdateReStart()
 {
 	if (IsAnimationFinished())
 	{
-		damageObject = false;
+		mDamageObject = false;
 		Position(-195.0f, 200.0f, 9.0f);
 		ChangeState(EState::eIdle);
 	}
@@ -1107,10 +1151,10 @@ void CPlayer::UpdateHit()
 {
 	mMoveSpeed = CVector::zero;
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
-	if (!damageEnemy)
+	if (!mDamageEnemy)
 	{
 		TakeDamage(3);
-		damageEnemy = true;
+		mDamageEnemy = true;
 	}
 
 	if (mElapsedTimeCol <= DAMAGECOL)
@@ -1129,7 +1173,7 @@ void CPlayer::UpdateHit()
 		if (mCharaStatus.hp > 0)
 		{
 			mIsPlayedHitDamageSE = false;
-			damageEnemy = false;
+			mDamageEnemy = false;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eIdle);
@@ -1162,10 +1206,10 @@ void CPlayer::UpdateHitBullet()
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 
-	if (!damageEnemy)
+	if (!mDamageEnemy)
 	{
 		TakeDamage(1);
-		damageEnemy = true;
+		mDamageEnemy = true;
 		mpDamageCol->SetEnable(true);
 	}
 
@@ -1174,7 +1218,7 @@ void CPlayer::UpdateHitBullet()
 		if (mCharaStatus.hp > 0)
 		{
 			mIsPlayedHitDamageSE = false;
-			damageEnemy = true;
+			mDamageEnemy = true;
 			mElapsedTime = 0.0f;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
@@ -1211,9 +1255,9 @@ void CPlayer::UpdateHitSword()
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 
-	if (!damageEnemy)
+	if (!mDamageEnemy)
 	{
-		damageEnemy = true;
+		mDamageEnemy = true;
 		mpDamageCol->SetEnable(true);
 	}
 
@@ -1222,7 +1266,7 @@ void CPlayer::UpdateHitSword()
 		if (mCharaStatus.hp > 0)
 		{
 			mIsPlayedHitDamageSE = false;
-			damageEnemy = true;
+			mDamageEnemy = true;
 			mElapsedTime = 0.0f;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
@@ -1259,9 +1303,9 @@ void CPlayer::UpdateHitObj()
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 
-	if (!damageEnemy)
+	if (!mDamageEnemy)
 	{
-		damageEnemy = true;
+		mDamageEnemy = true;
 		mpDamageCol->SetEnable(true);
 	}
 
@@ -1270,7 +1314,7 @@ void CPlayer::UpdateHitObj()
 		if (mCharaStatus.hp > 0)
 		{
 			mIsPlayedHitDamageSE = false;
-			damageEnemy = true;
+			mDamageEnemy = true;
 			mElapsedTime = 0.0f;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
@@ -1477,14 +1521,14 @@ void CPlayer::UpdateWireClimb()
 		}
 	}
 
-	if (mClimbSt >= 0.2f)
+	if (mClimbStaminaTime >= 0.2f)
 	{
 		mCharaStatus.stamina -= 2;
-		mClimbSt = 0.0f;
+		mClimbStaminaTime = 0.0f;
 	}
 	else
 	{
-		mClimbSt += Time::DeltaTime();
+		mClimbStaminaTime += Time::DeltaTime();
 	}
 
 	if (mCharaStatus.stamina <= 0)
@@ -1704,6 +1748,33 @@ void CPlayer::UpdateJumpingEnd()
 	{
 		ChangeState(EState::eIdle);
 	}
+}
+
+bool CPlayer::IsFoundVanguard()
+{
+	CVector vanguardPos = CVanguard::Instance()->Position();
+	CVector playerPos = Position();
+
+	CVector toVanguard = (vanguardPos - playerPos).Normalized();
+	CVector forward = Matrix().VectorZ().Normalized();
+
+	float dot = forward.Dot(toVanguard);
+
+	// 視野角の半分を計算する
+	float halfFOV = FOV_ANGLE * 0.5f;
+
+
+	// 視野角の半分より小さいかつヴァンガードとの距離が一定範囲以内であれば、プレイヤーを認識する
+	if (dot >= cosf(halfFOV * M_PI / 180.0f))
+	{
+		float distance = (vanguardPos - playerPos).Length();
+		const float chaseRange = 100.0f;
+
+		if (distance <= chaseRange)
+			return true;
+	}
+
+	return false;
 }
 
 // 更新
