@@ -1,5 +1,6 @@
 #include "CGameScene.h"
 #include "CSceneManager.h"
+#include "CTaskManager.h"
 #include "CGameOverScene.h"
 #include "CClearScene.h"
 #include "CField.h"
@@ -245,41 +246,47 @@ void CGameScene::Update()
 	//}
 
 	int currentStage = CGameManager::StageNo();
+	bool pose = CTaskManager::Instance()->IsPaused();
+
+	// ステージ1,2中のみタイマーを動かす
 	if (currentStage == 1 || currentStage == 2)
 	{
-		// 敵のスコアを加算する
-		mpScore->Score(CVanguard::GetScore() 
-			+ CBlueMedal::GetScore());
-		mpTime->Time(mTime);
-
-		// ゲーム時間の更新
-		static float starttime = 1.0f;
-		starttime -= Time::DeltaTime();
-		if (starttime <= 0.0f)
+		// ポーズ中でなければタイマーを動かす
+		if (!pose)
 		{
-			if (mTime > 0) {
-				static float time = 1.0f; // time変数をstaticに変更
-				time -= Time::DeltaTime();
-				if (time <= 0)
-				{
-					mTime--;
-					time = 1.0f; // timeをリセット
-				}
+			// ゲーム時間の更新
+			static float starttime = 1.0f;
+			starttime -= Time::DeltaTime();
+			if (starttime <= 0.0f)
+			{
+				if (mTime > 0) {
+					static float time = 1.0f;
+					time -= Time::DeltaTime();
+					if (time <= 0)
+					{
+						mTime--;
+						time = 1.0f;
+					}
 
-				if (mTime < 0)
-				{
-					//mTime = 500;
-					CGameManager::GameOver();
+					// タイマーが0になったら終了
+					if (mTime < 0)
+					{
+						//mTime = 500;
+						CGameManager::GameOver();
+					}
 				}
 			}
 		}
+
+		mpScore->Score(CVanguard::GetScore() + CBlueMedal::GetScore());
+		mpTime->Time(mTime);
 		mpTime->Render();
 		mpScore->Render();
 	}
 	////////////////////////////////////////////////////////////////////////////////////
 
 	//// ステージ番号の監視
-	CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
+	//CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
 	//// ソルジャーの数の監視
 	//CDebugPrint::Print("count:%d\n", CEnemyManager::GetEnemyCount());
 }

@@ -41,11 +41,11 @@ CField_Worlds_1::CField_Worlds_1()
 	//);
 
 	//// Šâ‚Æ’á–Øƒ‚ƒfƒ‹
-	//CModel* rock_shrub = CResourceManager::Get<CModel>("Rock & Shrub");
+	//CModel* rock_shrub = CResourceManager::Get<CModel>("RockShrub");
 	//mpRock_Shrud = new CColliderSphere
 	//(
 	//	this, ELayer::eField,
-	//	1.0f
+	//	2.0f
 	//);
 	
 
