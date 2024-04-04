@@ -65,6 +65,7 @@
     <ClCompile Include="src\BaseSystem\Maths.cpp" />
     <ClCompile Include="src\Game\CAppearFloor.cpp" />
     <ClCompile Include="src\Game\CApplication.cpp" />
+    <ClCompile Include="src\Game\CBlueMedal.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
     <ClCompile Include="src\Game\CClearScene.cpp" />
     <ClCompile Include="src\Game\CEnemy.cpp" />
@@ -86,6 +87,7 @@
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
     <ClCompile Include="src\Game\CClimbWall.cpp" />
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
+    <ClCompile Include="src\Game\CMedalObjectBase.cpp" />
     <ClCompile Include="src\Game\CNeedle.cpp" />
     <ClCompile Include="src\Game\CNumberFloor1.cpp" />
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
@@ -93,6 +95,7 @@
     <ClCompile Include="src\Game\CRisingObject.cpp" />
     <ClCompile Include="src\Game\CRotateFloorGimmick.cpp" />
     <ClCompile Include="src\Game\CRotateFloorTimeGimmick.cpp" />
+    <ClCompile Include="src\Game\CScore.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CStage1.cpp" />
@@ -214,6 +217,7 @@
     <ClInclude Include="src\Define.h" />
     <ClInclude Include="src\Game\CAppearFloor.h" />
     <ClInclude Include="src\Game\CApplication.h" />
+    <ClInclude Include="src\Game\CBlueMedal.h" />
     <ClInclude Include="src\Game\CBullet.h" />
     <ClInclude Include="src\Game\CClearScene.h" />
     <ClInclude Include="src\Game\CClimbWall.h" />
@@ -234,6 +238,7 @@
     <ClInclude Include="src\Game\CItemsUsed.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
     <ClInclude Include="src\Game\CMajicSwordEnemy.h" />
+    <ClInclude Include="src\Game\CMedalObjectBase.h" />
     <ClInclude Include="src\Game\CNeedle.h" />
     <ClInclude Include="src\Game\CNumberFloor1.h" />
     <ClInclude Include="src\Game\CRecoveryObject.h" />
@@ -241,6 +246,7 @@
     <ClInclude Include="src\Game\CRisingObject.h" />
     <ClInclude Include="src\Game\CRotateFloorGimmick.h" />
     <ClInclude Include="src\Game\CRotateFloorTimeGimmick.h" />
+    <ClInclude Include="src\Game\CScore.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CStage1.h" />

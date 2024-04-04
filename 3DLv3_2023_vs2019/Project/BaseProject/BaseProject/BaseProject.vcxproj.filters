@@ -89,9 +89,6 @@
     <Filter Include="ソース ファイル\Game\UI\PlayerUI">
       <UniqueIdentifier>{7162809b-e06e-4d22-91bf-02cf1bc08ac2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\UI\Stage">
-      <UniqueIdentifier>{65edd1ba-a62e-4bc5-b2bb-c2778c75654e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\BaseSystem\Sound">
       <UniqueIdentifier>{99ead9f6-35af-4e55-a66f-ec4ac8d90924}</UniqueIdentifier>
     </Filter>
@@ -104,8 +101,11 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick">
       <UniqueIdentifier>{36ee6e20-5892-4dae-864d-5f5dba831dd0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\UI\Score">
-      <UniqueIdentifier>{b57e9b63-bf80-4405-9ce8-241d4961d7be}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Game\UI\StageUI">
+      <UniqueIdentifier>{65edd1ba-a62e-4bc5-b2bb-c2778c75654e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Character\CharaObject\ItemObject\ScoreItem">
+      <UniqueIdentifier>{6b0a682a-82d7-4a26-b431-14798fec0f7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -485,7 +485,7 @@
       <Filter>ソース ファイル\Game\Field\Object\Tree</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CStageTime.cpp">
-      <Filter>ソース ファイル\Game\UI\Stage</Filter>
+      <Filter>ソース ファイル\Game\UI\StageUI</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CStageButton.cpp">
       <Filter>ソース ファイル\Game\Stage\StageButton</Filter>
@@ -522,6 +522,15 @@
     </ClCompile>
     <ClCompile Include="src\Game\CWireMeshClimbWall.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CScore.cpp">
+      <Filter>ソース ファイル\Game\UI\StageUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CBlueMedal.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\ScoreItem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CMedalObjectBase.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -925,7 +934,7 @@
       <Filter>ソース ファイル\Game\Field\Object\Tree</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CStageTime.h">
-      <Filter>ソース ファイル\Game\UI\Stage</Filter>
+      <Filter>ソース ファイル\Game\UI\StageUI</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CStageButton.h">
       <Filter>ソース ファイル\Game\Stage\StageButton</Filter>
@@ -962,6 +971,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CWireMeshClimbWall.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CScore.h">
+      <Filter>ソース ファイル\Game\UI\StageUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CBlueMedal.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\ScoreItem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMedalObjectBase.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

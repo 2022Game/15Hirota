@@ -1,19 +1,30 @@
 #include "CStageTime.h"
 #include "CText.h"
+#include "CImage.h"
+#include "CGameManager.h"
 
 // CStageTimeƒNƒ‰ƒX‚ÌŽÀ‘•
 CStageTime::CStageTime() 
     : mTime(500)
+    , mpTimer(nullptr)
 {
     mpTimerText = new CText(nullptr, 40, CVector2(0, 0),
-        CVector2(1250, 600), CColor(1.0f, 1.0f, 1.0f, 1.0f),
+        CVector2(1250, 600), CColor(1.0f, 0.5f, 0.5f, 1.0f),
         ETaskPriority::eUI, 0);
     mpTimerText->SetTextAlign(ETextAlignH::eRight, ETextAlignV::eTop);
+
+    mpTimer = new CImage("Timer");
+    mpTimer->SetSize(100.0f, 70.0f);
+    mpTimer->SetUV(0, 0, 1, 1);
+    mpTimer->SetPos(1020, 0);
+    mpTimer->SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
+    mpTimer->SetShow(false);
 }
 
 CStageTime::~CStageTime()
 {
     mpTimerText->Kill();
+    mpTimer->Kill();
 }
 
 void CStageTime::Time(int time) {
@@ -22,7 +33,15 @@ void CStageTime::Time(int time) {
 
 void CStageTime::Update()
 {
-
+    int currentStage = CGameManager::StageNo();
+    if (currentStage == 1 || currentStage == 2)
+    {
+        mpTimer->SetShow(true);
+    }
+    else
+    {
+        mpTimer->SetShow(false);
+    }
 }
 
 void CStageTime::Render()

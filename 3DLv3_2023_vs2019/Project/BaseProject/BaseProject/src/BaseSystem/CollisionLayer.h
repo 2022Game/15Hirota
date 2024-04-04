@@ -24,6 +24,7 @@ enum class ELayer
 	eVarious,		// 色々コライダー
 	eRecoverCol,	// 回復コライダー
 	eInvincbleCol,	// 無敵コライダー
+	eMedalCol,		// メダルコライダー
 	eAttackCol,		// 攻撃を与える時のコライダー
 	eBulletCol,		// 弾のコライダー
 	eKickCol,		// キックコライダー

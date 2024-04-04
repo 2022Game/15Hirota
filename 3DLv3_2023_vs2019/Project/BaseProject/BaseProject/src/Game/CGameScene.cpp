@@ -22,6 +22,9 @@
 #include "CJumpingObject.h"
 #include "CInventoryMenu.h"
 #include "CStageTime.h"
+#include "CScore.h"
+#include "CVanguard.h"
+#include "CBlueMedal.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -29,14 +32,15 @@ CGameScene::CGameScene()
 	, mpGameMenu(nullptr)
 	, mpInventoryMenu(nullptr)
 	, mTime(500)
+	, mScore(0)
 {
 }
-
 
 //デストラクタ
 CGameScene::~CGameScene()
 {
 	mpTime->Kill();
+	mpScore->Kill();
 }
 
 //シーン読み込み
@@ -81,6 +85,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CTexture>("YBar",				"UI\\Gauge.png");					// ゆかりさんのバー
 	CResourceManager::Load<CTexture>("SignboardUI",			"UI\\Ukye_1.png");					// Uキーの画像
 	CResourceManager::Load<CTexture>("ExclamationMark",		"UI\\bikkurimark.png");				// ビックリマーク画像
+	CResourceManager::Load<CTexture>("Timer", "UI\\StageUI\\Timer.png");											// タイマー画像
 
 	// アイテムUI関連
 	//CResourceManager::Load<CTexture>("InvincibleUI",		"UI\\Item\\Invincible Item.png");			// 無敵アイテム用のUI
@@ -133,13 +138,17 @@ void CGameScene::Load()
 	mpGameMenu = new CGameMenu();
 	int currentStage = CGameManager::StageNo();
 	mpTime = new CStageTime();
+	mpScore = new CScore();
 	if (currentStage == 0)
 	{
 		mpTime->SetShow(false);
+		mpScore->SetShow(false);
 	}
 	else if (currentStage == 1)
 	{
 		mpTime->SetShow(true);
+		mpScore->SetShow(true);
+
 	}
 	// インベントリを作成
 	mpInventoryMenu = new CInventoryMenu();
@@ -236,25 +245,36 @@ void CGameScene::Update()
 	//}
 
 	int currentStage = CGameManager::StageNo();
-	if (currentStage == 1)
+	if (currentStage == 1 || currentStage == 2)
 	{
+		// 敵のスコアを加算する
+		mpScore->Score(CVanguard::GetScore() 
+			+ CBlueMedal::GetScore());
+		mpTime->Time(mTime);
+
 		// ゲーム時間の更新
-		if (mTime > 0) {
-			static float time = 1.0f; // time変数をstaticに変更
-			time -= Time::DeltaTime();
-			if (time <= 0)
-			{
-				mTime--;
-				time = 1.0f; // timeをリセット
-			}
-			mpTime->Time(mTime);
-			if (mTime < 0)
-			{
-				//mTime = 500;
-				CGameManager::GameOver();
+		static float starttime = 1.0f;
+		starttime -= Time::DeltaTime();
+		if (starttime <= 0.0f)
+		{
+			if (mTime > 0) {
+				static float time = 1.0f; // time変数をstaticに変更
+				time -= Time::DeltaTime();
+				if (time <= 0)
+				{
+					mTime--;
+					time = 1.0f; // timeをリセット
+				}
+
+				if (mTime < 0)
+				{
+					//mTime = 500;
+					CGameManager::GameOver();
+				}
 			}
 		}
 		mpTime->Render();
+		mpScore->Render();
 	}
 	////////////////////////////////////////////////////////////////////////////////////
 

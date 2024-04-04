@@ -31,7 +31,7 @@ const CharaStatus ENEMY_STATUS[ENEMY_LEVEL_MAX] =
 const CharaStatus VANGUARD_STATUS[VANGUARD_LEVEL_MAX] =
 {
 	// レベル		HP		攻撃力			防御		スタミナ				バリア				移動速度
-	{	1,		    80,			 2,				0,				50,				 10,				1.1f},
+	{	1,		    10,			 2,				0,				50,				 10,				1.1f},
 	{	2,		   100,			 4,				0,				50,				  0,				1.1f},
 	{	3,		   100,			 6,				0,				50,				  0,				1.1f},
 	{	4,		   100,			 8,				0,				50,				  0,				1.1f},

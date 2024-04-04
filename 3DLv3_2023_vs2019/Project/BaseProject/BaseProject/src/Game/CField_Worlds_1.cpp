@@ -29,7 +29,7 @@ CField_Worlds_1::CField_Worlds_1()
 	mpTreeCol = new CColliderMesh(this, ELayer::eFieldWall, mpTreeModel, true);
 	// 切り株と木の枝モデルデータ取得
 	mpBranchModel = CResourceManager::Get<CModel>("Branch");
-	mpBranchCol = new CColliderMesh(this, ELayer::eField, mpBranchModel, true);
+	//mpBranchCol = new CColliderMesh(this, ELayer::eField, mpBranchModel, true);
 
 	//// キノコのモデルデータ取得
 	//CModel* mushroom = CResourceManager::Get<CModel>("Mushroom");
@@ -69,7 +69,7 @@ CField_Worlds_1::~CField_Worlds_1()
 	SAFE_DELETE(mpWallCol);
 	SAFE_DELETE(mpFallCol);
 	SAFE_DELETE(mpTreeCol);
-	SAFE_DELETE(mpBranchCol);
+	//SAFE_DELETE(mpBranchCol);
 
 	if (mpWallCol != nullptr)
 	{

@@ -19,6 +19,7 @@ enum class ETaskPriority
 	eEnemyWeapon,	// 敵の武器
 
 	eEffect,
+	eMedal,			// メダルオブジェクト
 	eTransparent,	// 透明オブジェクト
 	eFalling,		// 落下オブジェクト
 	eRising,		// 上昇するオブジェクト

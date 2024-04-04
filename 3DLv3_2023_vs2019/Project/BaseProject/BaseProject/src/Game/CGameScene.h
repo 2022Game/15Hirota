@@ -6,6 +6,7 @@ class CSound;
 class CPlayer;
 class CSoldier;
 class CStageTime;
+class CScore;
 
 // ÉQÅ[ÉÄÉVÅ[Éì
 class CGameScene :public CSceneBase
@@ -26,4 +27,7 @@ private:
 
 	CStageTime* mpTime;
 	int mTime;
+
+	CScore* mpScore;
+	int mScore;
 };

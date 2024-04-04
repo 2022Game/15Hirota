@@ -9,6 +9,7 @@
 #include "CWireMeshClimbWall.h"
 #include "CVanguard.h"
 #include "CStageTime.h"
+#include "CBlueMedal.h"
 
 
 // コンストラクタ
@@ -48,6 +49,9 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("Tree",			"Field\\GameStage(Worlds_1)\\GameStage_1(Tree).obj");				// 木モデル
 	CResourceManager::Load<CModel>("Branch",		"Field\\GameStage(Worlds_1)\\GameStage_1(Branch).obj");				// 切り株と木の枝モデル
 	CResourceManager::Load<CModel>("Arrowsign",		"Field\\GameStage(Worlds_1)\\GameStage_1(arrowsign).obj");			// 矢印看板モデル
+	CResourceManager::Load<CModel>("BlueMedal",		"Field\\Object\\Bluemedal.obj");									// 矢印看板モデル
+
+	
 
 	CResourceManager::Load<CModel>("Signboard",		"Field\\Object\\signboard.obj");									// 看板オブジェクト(ジャンプヒント)
 	CResourceManager::Load<CModel>("Number0",		"Field\\Object\\number0.obj");										// 零番目の床
@@ -88,6 +92,12 @@ void CStage1::Load()
 	);
 	AddTask(rotatetimegimmick);
 
+	CBlueMedal* blueMedal = new CBlueMedal
+	(
+		CVector(317.0f, 126.0f, -18.0f) ,
+		CVector(3.0f, 3.0f, 3.0f)
+	);
+	AddTask(blueMedal);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
@@ -101,7 +111,7 @@ void CStage1::Load()
 	CPlayer* player = CPlayer::Instance();
 	bool foundVan = player->IsFoundVanguard();
 	player->MaxStatus();
-	CVector playerPos = CVector(-150.0f, 137.0f, -5.3f);
+	CVector playerPos = CVector(-150.0f, 140.0f, -5.3f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

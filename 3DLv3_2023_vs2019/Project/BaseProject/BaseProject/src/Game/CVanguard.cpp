@@ -8,6 +8,7 @@
 #include "CStageManager.h"
 #include "CVanguardGauge.h"
 #include "CMajicSwordEnemy.h"
+#include "CScore.h"
 
 #define _USE_MATH_DEFINES
 
@@ -59,10 +60,21 @@
 // CVanguardのインスタンス
 CVanguard* CVanguard::spInstance = nullptr;
 
+int CVanguard::sScore = 0;
 
 CVanguard* CVanguard::Instance()
 {
 	return spInstance;
+}
+
+void CVanguard::SetScore(int score)
+{
+	sScore = score;
+}
+
+int CVanguard::GetScore()
+{
+	return sScore;
 }
 
 //Vanguard_Walk_1_86
@@ -138,6 +150,8 @@ CVanguard::CVanguard()
 {
 	// インスタンスの設定
 	spInstance = this;
+
+	sScore;
 
 	// 初期位置の保存
 	mInitialPosition = Position();
@@ -1278,6 +1292,7 @@ void CVanguard::UpdateDeathEnd()
 {
 	if (IsAnimationFinished())
 	{
+		sScore += 100;
 		Kill();
 	}
 }

@@ -10,6 +10,7 @@ enum class ETag
 	eRideableObject,	// 乗ることができるオブジェクト
 	eItemRecover,		// 回復アイテムのオブジェクト
 	eItemInvincible,	// 無敵アイテム
+	eMedal,				// メダルアイテム
 	eGoalObject,		// クリア条件のオブジェクト
 	eJumpingObject,		// ジャンプするオブジェクト
 

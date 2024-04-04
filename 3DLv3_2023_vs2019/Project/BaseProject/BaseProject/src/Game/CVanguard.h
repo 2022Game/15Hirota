@@ -74,6 +74,11 @@ public:
 	// ヴァンガードを勝手に移動させる処理
 	void Move();
 
+	//敵のスコアを設定
+	static void SetScore(int score);
+	//敵のスコアを取得
+	static int GetScore();
+
 
 	// 更新
 	void Update();
@@ -90,7 +95,7 @@ private:
 	// ヴァンガードのインスタンス
 	static CVanguard* spInstance;
 	// ヴァンガードのスコア
-	int mScore;
+	static int sScore;
 
 
 	//// モデル・素材関連 /////////////////////////////////

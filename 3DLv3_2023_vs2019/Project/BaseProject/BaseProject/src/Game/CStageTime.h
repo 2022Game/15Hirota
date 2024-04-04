@@ -3,6 +3,7 @@
 
 #include "CTask.h"
 class CText;
+class CImage;
 class CStageTime : public CTask
 {
 public:
@@ -14,5 +15,6 @@ public:
 private:
 	int mTime;
 	CText* mpTimerText;
+	CImage* mpTimer;
 };
 #endif

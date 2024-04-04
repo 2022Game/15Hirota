@@ -130,7 +130,7 @@ CPlayer::CPlayer()
 	//, mInventory(std::vector<ItemType>())
 	// インスタンスの設定
 	spInstance = this;
-	Position(0.0f, 30.0f, -30.0f);
+	Position(0.0f, 0.0f, 0.0f);
 	mStartPos = Position();
 
 	// モデルデータ取得
@@ -180,7 +180,7 @@ CPlayer::CPlayer()
 		0.5f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
-		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb});
+		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol});
 	//mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpColliderSphere->SetAttachMtx(spineMtx);
@@ -349,6 +349,14 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			if (other->Tag() == ETag::eItemInvincible)
 			{
 				AddItem(ItemType::INVINCIBLE);
+			}
+		}
+		// メダルアイテム
+		else if (other->Layer() == ELayer::eMedalCol)
+		{
+			if (other->Tag() == ETag::eMedal)
+			{
+
 			}
 		}
 		else if (other->Layer() == ELayer::eEnemy)
@@ -1130,7 +1138,7 @@ void CPlayer::UpdateDeathEnd()
 	{
 		mDamageObject = false;
 		mCharaStatus = mCharaMaxStatus;
-		Position(0.0f, 20.0f, -30.0f);
+		Position(-150.0f, 140.0f, -5.3f);
 		ChangeState(EState::eIdle);
 	}
 }
@@ -2005,7 +2013,7 @@ void CPlayer::Update()
 		ChangeAnimation(EAnimType::eHitJ);
 		TakeDamage(1);
 		// Stage(1)の初期地点
-		Position(-150.0f, 136.0f, -5.3f);
+		Position(-150.0f, 140.0f, -5.3f);
 	}
 	///////////////////////////////////////////
 

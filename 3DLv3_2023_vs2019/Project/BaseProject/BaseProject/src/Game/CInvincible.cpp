@@ -237,5 +237,6 @@ void CInvincible::Update()
 // •`‰æ
 void CInvincible::Render()
 {
+	mpInvincibleModel->SetColor(mColor);
 	mpInvincibleModel->Render(Matrix());
 }

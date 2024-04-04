@@ -16,8 +16,6 @@ public:
 
 	// ステージ読み込み
 	void Load() override;
-	// 更新処理
-	void Update();
 	// ステージ破棄
 	void Unload() override;
 
