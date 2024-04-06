@@ -7,9 +7,11 @@
 #include "CRotateFloorTimeGimmick.h"
 #include "CRotateFloorGimmick.h"
 #include "CWireMeshClimbWall.h"
+#include "CWireMeshMoveClimbWall.h"
 #include "CVanguard.h"
 #include "CStageTime.h"
 #include "CBlueMedal.h"
+#include "CRotationg.h"
 
 
 // コンストラクタ
@@ -28,28 +30,33 @@ CStage1::~CStage1()
 void CStage1::Load()
 {
 	// ステージ関連
-	CResourceManager::Load<CModel>("Stage",			"Field\\GameStage(Worlds_1)\\GameStage_1(Stage).obj");				// ステージモデル
-	CResourceManager::Load<CModel>("StageSky",		"Field\\GameStage(Worlds_1)\\GameStage_1(StageSky).obj");			// ステージ空モデル
-	CResourceManager::Load<CModel>("FloorCol",		"Field\\GameStage(Worlds_1)\\GameStage_1(floorCol).obj");			// 床のコライダー
-	CResourceManager::Load<CModel>("WallCol",		"Field\\GameStage(Worlds_1)\\GameStage_1(wallCol).obj");			// 壁のコライダー
-	CResourceManager::Load<CModel>("FallCol",		"Field\\GameStage(Worlds_1)\\GameStage_1(FallCol).obj");			// 落下判定コライダー
-	CResourceManager::Load<CModel>("WireMesh",		"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_Stop).obj");		// 金網モデル
-	CResourceManager::Load<CModel>("WireMeshCol",	"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_StopCol).obj");	// 金網コライダー
-	CResourceManager::Load<CModel>("WireMeshTopCol","Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_StopTopCol).obj");// 金網頂上コライダー
-	CResourceManager::Load<CModel>("Load",			"Field\\GameStage(Worlds_1)\\GameStage_1(load).obj");				// 道モデル
-	CResourceManager::Load<CModel>("Cloud",			"Field\\GameStage(Worlds_1)\\GameStage_1(cloud).obj");				// 雲モデル
-	CResourceManager::Load<CModel>("Fance",			"Field\\GameStage(Worlds_1)\\GameStage_1(fance).obj");				// フェンスモデル
-	CResourceManager::Load<CModel>("Flowers",		"Field\\GameStage(Worlds_1)\\GameStage_1(flowers).obj");			// 花モデル
-	CResourceManager::Load<CModel>("GoalPost",		"Field\\GameStage(Worlds_1)\\GameStage_1(GoalPost).obj");			// ゴールポストモデル
-	CResourceManager::Load<CModel>("GoalBlock",		"Field\\GameStage(Worlds_1)\\GameStage_1(GoalBlock).obj");			// ゴールブロックモデル
-	CResourceManager::Load<CModel>("Grass",			"Field\\GameStage(Worlds_1)\\GameStage_1(grass).obj");				// 草モデル
-	CResourceManager::Load<CModel>("Mushroom",		"Field\\GameStage(Worlds_1)\\GameStage_1(mushroom).obj");			// キノコモデル
-	CResourceManager::Load<CModel>("RockShrub",		"Field\\GameStage(Worlds_1)\\GameStage_1(rock&shrub).obj");			// 岩と低木モデル
-	CResourceManager::Load<CModel>("SkyIsland",		"Field\\GameStage(Worlds_1)\\GameStage_1(skyisland).obj");			// 空島モデル
-	CResourceManager::Load<CModel>("Tree",			"Field\\GameStage(Worlds_1)\\GameStage_1(Tree).obj");				// 木モデル
-	CResourceManager::Load<CModel>("Branch",		"Field\\GameStage(Worlds_1)\\GameStage_1(Branch).obj");				// 切り株と木の枝モデル
-	CResourceManager::Load<CModel>("Arrowsign",		"Field\\GameStage(Worlds_1)\\GameStage_1(arrowsign).obj");			// 矢印看板モデル
-	CResourceManager::Load<CModel>("BlueMedal",		"Field\\Object\\Bluemedal.obj");									// 矢印看板モデル
+	CResourceManager::Load<CModel>("Stage",				 "Field\\GameStage(Worlds_1)\\GameStage_1(Stage).obj");					// ステージモデル
+	CResourceManager::Load<CModel>("StageSky",			 "Field\\GameStage(Worlds_1)\\GameStage_1(StageSky).obj");				// ステージ空モデル
+	CResourceManager::Load<CModel>("FloorCol",			 "Field\\GameStage(Worlds_1)\\GameStage_1(floorCol).obj");				// 床のコライダー
+	CResourceManager::Load<CModel>("WallCol",			 "Field\\GameStage(Worlds_1)\\GameStage_1(wallCol).obj");				// 壁のコライダー
+	CResourceManager::Load<CModel>("FallCol",			 "Field\\GameStage(Worlds_1)\\GameStage_1(FallCol).obj");				// 落下判定コライダー
+	CResourceManager::Load<CModel>("WireMesh",			 "Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_Stop).obj");			// 金網モデル
+	CResourceManager::Load<CModel>("WireMeshCol",		 "Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_StopCol).obj");		// 金網コライダー
+	CResourceManager::Load<CModel>("WireMeshTopCol",	 "Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_StopTopCol).obj");	// 金網頂上コライダー
+	CResourceManager::Load<CModel>("WireMeshMove",		 "Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_Move).obj");			// 動く金網モデル
+	CResourceManager::Load<CModel>("WireMeshMoveCol",	 "Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_MoveCol).obj");		// 動く金網コライダー
+	CResourceManager::Load<CModel>("WireMeshMoveTopCol", "Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_MoveTopCol).obj");	// 動く金網頂上コライダー
+	CResourceManager::Load<CModel>("Load",				 "Field\\GameStage(Worlds_1)\\GameStage_1(load).obj");					// 道モデル
+	CResourceManager::Load<CModel>("Cloud",				 "Field\\GameStage(Worlds_1)\\GameStage_1(cloud).obj");					// 雲モデル
+	CResourceManager::Load<CModel>("Fance",				 "Field\\GameStage(Worlds_1)\\GameStage_1(fance).obj");					// フェンスモデル
+	CResourceManager::Load<CModel>("Flowers",			 "Field\\GameStage(Worlds_1)\\GameStage_1(flowers).obj");				// 花モデル
+	CResourceManager::Load<CModel>("GoalPost",			 "Field\\GameStage(Worlds_1)\\GameStage_1(GoalPost).obj");				// ゴールポストモデル
+	CResourceManager::Load<CModel>("GoalBlock",			 "Field\\GameStage(Worlds_1)\\GameStage_1(GoalBlock).obj");				// ゴールブロックモデル
+	CResourceManager::Load<CModel>("Grass",				 "Field\\GameStage(Worlds_1)\\GameStage_1(grass).obj");					// 草モデル
+	CResourceManager::Load<CModel>("Mushroom",			 "Field\\GameStage(Worlds_1)\\GameStage_1(mushroom).obj");				// キノコモデル
+	CResourceManager::Load<CModel>("RockShrub",			 "Field\\GameStage(Worlds_1)\\GameStage_1(rock&shrub).obj");			// 岩と低木モデル
+	CResourceManager::Load<CModel>("SkyIsland",			 "Field\\GameStage(Worlds_1)\\GameStage_1(skyisland).obj");				// 空島モデル
+	CResourceManager::Load<CModel>("Tree",				 "Field\\GameStage(Worlds_1)\\GameStage_1(Tree).obj");					// 木モデル
+	CResourceManager::Load<CModel>("Branch",			 "Field\\GameStage(Worlds_1)\\GameStage_1(Branch).obj");				// 切り株と木の枝モデル
+	CResourceManager::Load<CModel>("Arrowsign",			 "Field\\GameStage(Worlds_1)\\GameStage_1(arrowsign).obj");				// 矢印看板モデル
+	CResourceManager::Load<CModel>("BlueMedal",			 "Field\\Object\\Bluemedal.obj");										// ブルーメダルモデル
+	CResourceManager::Load<CModel>("Rotationg",			 "Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObject).obj");		// 回転する床のモデル
+	CResourceManager::Load<CModel>("RotationgCol",		 "Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObjectCol).obj");	// 回転する床のコライダー
 
 	
 
@@ -84,6 +91,19 @@ void CStage1::Load()
 	wiremeshWall->Scale(8.0f, 8.0f, 8.0f);
 	AddTask(wiremeshWall);
 
+	// 動く登れる金網を作成
+	CWireMeshMoveClimbWall* wiremeshmoveWall = new CWireMeshMoveClimbWall
+	(
+		"WireMeshMove", "WireMeshMoveTopCol",
+		CVector(0.0f, 14.5f, 0.0f),	// 上方向の移動
+		CVector(0.0f, 0.0f, 10.0f),	// 正面方向の移動
+		CVector(-0.5f,0.3f,40.0f),
+		CVector(0.0f,0.0f,40.0f),
+		10.0f
+	);
+	wiremeshmoveWall->Scale(8.0f, 8.0f, 8.0f);
+	AddTask(wiremeshmoveWall);
+
 	// 回転する床ギミック(常に)
 	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
 		CVector(216.0f, 112.0f, -18.0f),
@@ -92,26 +112,52 @@ void CStage1::Load()
 	);
 	AddTask(rotatetimegimmick);
 
-	CBlueMedal* blueMedal = new CBlueMedal
+	// ずっと回転するモデル
+	CRotationg* rotationg = new CRotationg
+	(
+		CVector(804.0f, 212.0f, -182.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		1.0f
+	);
+	AddTask(rotationg);
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	// ブルーメダル1
+	CBlueMedal* blueMedal1 = new CBlueMedal
 	(
 		CVector(317.0f, 126.0f, -18.0f) ,
 		CVector(3.0f, 3.0f, 3.0f)
 	);
-	AddTask(blueMedal);
+	AddTask(blueMedal1);
+	// ブルーメダル2
+	CBlueMedal* blueMedal2 = new CBlueMedal
+	(
+		CVector(330.0f, 126.0f, -83.0f),
+		CVector(3.0f, 3.0f, 3.0f)
+	);
+	AddTask(blueMedal2);
+	// ブルーメダル3
+	CBlueMedal* blueMedal3 = new CBlueMedal
+	(
+		CVector(401.0f, 140.0f, -436.0f),
+		CVector(3.0f, 3.0f, 3.0f)
+	);
+	AddTask(blueMedal3);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	CVanguard* van = new CVanguard();
+	// ヴァンガード
+	/*CVanguard* van = new CVanguard();
 	CVanguard* vanPos = CVanguard::Instance();
 	van->Scale(1.4f, 1.4f, 1.4f);
 	van->Position(496.0f, 335.0f, -167.0f);
-	AddTask(van);
+	AddTask(van);*/
 	
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
-	bool foundVan = player->IsFoundVanguard();
 	player->MaxStatus();
-	CVector playerPos = CVector(-150.0f, 140.0f, -5.3f);
+	CVector playerPos = CVector(1098.0f, 150.0f, -441.0f);	//-150.0f, 140.0f, -5.3f
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
@@ -125,12 +171,7 @@ void CStage1::Load()
 		playerPos,
 		CVector::up
 	);
-	//  + CVector(0.0f, 10.0f, 0.0f)
 	mainCamera->SetFollowTargetTf(player);
-	if (foundVan)
-	{
-		mainCamera->SetFollowTargetTf(van);
-	}
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(mpField_Worlds_1->GetWallCol());
 }

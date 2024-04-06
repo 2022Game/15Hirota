@@ -12,6 +12,7 @@
 #include "CRecoveryObject.h"
 #include "CClimbWall.h"
 #include "CWireMeshClimbWall.h"
+#include "CWireMeshMoveClimbWall.h"
 #include "CVanguard.h"
 
 // プレイヤー関連
@@ -177,7 +178,7 @@ CPlayer::CPlayer()
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::ePlayer,
-		0.5f
+		0.4f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol});
@@ -210,7 +211,9 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 12.5f),
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
-	mpClimbCol->SetCollisionLayers({ ELayer::eClimb,ELayer::eClimbedTop, ELayer::eWireClimb,ELayer::eWireClimbedTop });
+	mpClimbCol->SetCollisionLayers({ ELayer::eClimb,ELayer::eClimbedTop,
+		ELayer::eWireClimb,ELayer::eWireClimbedTop,
+		ELayer::eWireMoveClimb, ELayer::eWireMoveClimbedTop});
 
 
 	// マジックソード作成
@@ -441,13 +444,14 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		if (other->Layer() == ELayer::eWireClimb)
 		{
 			mClimbWall = true;
+
 			if (mState == EState::eIdle && mIsGrounded)
 			{
 				if (CInput::PushKey('E'))
 				{
 					// Climib状態に移行する
 					ChangeState(EState::eWireClimb);
-					// 今から登る壁をお記憶しておく
+					// 今から登る壁を記憶しておく
 					mpWireWall = dynamic_cast<CWireMeshClimbWall*>(other->Owner());
 				}
 
@@ -459,12 +463,33 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				}
 			}
 		}
+		if (other->Layer() == ELayer::eWireMoveClimb && mState == EState::eWireClimb)
+		{
+			mClimbWall = true;
+
+			// Climib状態に移行する
+			ChangeState(EState::eWireClimb);
+			// 今から登る壁を記憶しておく
+			mpRideObject = other->Owner();
+			mpWireMoveWall = dynamic_cast<CWireMeshMoveClimbWall*>(other->Owner());
+
+			// 現在金網を登っている最中であれば、
+			if (mState == EState::eWireClimb)
+			{
+				// 登っている壁の法線を取得
+				mClimbNormal = hit.adjust.Normalized();
+			}
+		}
 		// 登れる壁の頂上コライダー
 		else if (other->Layer() == ELayer::eWireClimbedTop)
 		{
 			mClimbWallTop = true;
 		}
-
+		// 登れる動く壁の頂上コライダー
+		else if (other->Layer() == ELayer::eWireMoveClimbedTop)
+		{
+			mClimbWallTop = true;
+		}
 	}
 }
 
@@ -1508,7 +1533,9 @@ void CPlayer::UpdateWireClimb()
 	if (CInput::PushKey('E'))
 	{
 		mClimb = false;
+		mpClimbCol->SetEnable(false);
 		ChangeState(EState::eJumpStart);
+		mMoveSpeed = CVector(-0.1f, 0.0f, 0.0f);
 	}
 
 	// 登れる壁の範囲外に出た場合
@@ -1689,6 +1716,8 @@ void CPlayer::UpdateJumpEnd()
 	{
 		ChangeState(EState::eIdle);
 	}
+
+	mpClimbCol->SetEnable(true);
 }
 
 // 跳ねる処理開始

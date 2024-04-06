@@ -15,6 +15,7 @@ class CMajicSword;
 class CBullet;
 class CClimbWall;
 class CWireMeshClimbWall;
+class CWireMeshMoveClimbWall;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -163,6 +164,8 @@ private:
 	CClimbWall* mpClimbWall;
 	// 登っている金網のポインター
 	CWireMeshClimbWall* mpWireWall;
+	// 登っている動く金網のポインター
+	CWireMeshMoveClimbWall* mpWireMoveWall;
 
 	///////////////////////////////////////////////////////
 	

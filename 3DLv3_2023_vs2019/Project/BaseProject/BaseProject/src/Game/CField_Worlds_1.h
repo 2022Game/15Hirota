@@ -30,14 +30,15 @@ private:
 	CModel* mpSkyIsland;
 	CModel* mpTreeModel;
 	CModel* mpBranchModel;
+	CModel* mpRockShrubModel;
 
 	CColliderMesh* mpFloorCol;
 	CColliderMesh* mpWallCol;
 	CColliderMesh* mpFallCol;
 	CColliderMesh* mpTreeCol;
 	CColliderMesh* mpBranchCol;
+	CColliderMesh* mpRockShrudCol;
 
 	CColliderSphere* mpMushroomSphere;
-	CColliderSphere* mpRock_Shrud;
 };
 #endif

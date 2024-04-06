@@ -40,14 +40,9 @@ CField_Worlds_1::CField_Worlds_1()
 	//	1.0f
 	//);
 
-	//// 岩と低木モデル
-	//CModel* rock_shrub = CResourceManager::Get<CModel>("RockShrub");
-	//mpRock_Shrud = new CColliderSphere
-	//(
-	//	this, ELayer::eField,
-	//	2.0f
-	//);
-	
+	// 岩と低木モデル
+	/*mpRockShrubModel = CResourceManager::Get<CModel>("RockShrub");
+	mpRockShrudCol = new CColliderMesh(this, ELayer::eFieldWall, mpRockShrubModel, true);*/
 
 	// 床のコライダー
 	CModel* floorCol = CResourceManager::Get<CModel>("FloorCol");
@@ -69,7 +64,7 @@ CField_Worlds_1::~CField_Worlds_1()
 	SAFE_DELETE(mpWallCol);
 	SAFE_DELETE(mpFallCol);
 	SAFE_DELETE(mpTreeCol);
-	//SAFE_DELETE(mpBranchCol);
+	//SAFE_DELETE(mpRockShrudCol);
 
 	if (mpWallCol != nullptr)
 	{
@@ -119,4 +114,6 @@ void CField_Worlds_1::Render()
 	mpTreeModel->Render(Matrix());
 	mpBranchModel->SetColor(mColor);
 	mpBranchModel->Render(Matrix());
+	/*mpRockShrubModel->SetColor(mColor);
+	mpRockShrubModel->Render(Matrix());*/
 }
