@@ -15,7 +15,6 @@ public:
 		ETaskPauseType pause = ETaskPauseType::eDefault);
 
 	void SetSize(const CVector2& size);
-	void SetColor(const CColor& color);
 	//XV
 	void Update() override;
 	//•`‰æ

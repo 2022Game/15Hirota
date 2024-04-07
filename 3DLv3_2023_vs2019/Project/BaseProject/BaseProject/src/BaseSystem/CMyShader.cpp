@@ -128,7 +128,7 @@ void CMyShader::SetShader(CModelX* model, CMaterial* material) {
 	GLint samplerId = glGetUniformLocation(GetProgram(), "Sampler");
 	GLint textureFlg = glGetUniformLocation(GetProgram(), "TextureFlg");
 	//if (material->mTextureId > 0) {
-	material->Enabled(model->GetColor(), true);
+	material->Enabled(model->GetColor());
 	if (material->mpTexture != nullptr && material->mpTexture->Id()) {
 		glUniform1i(samplerId, 0);//GL_TEXTURE0を適用
 		glUniform1i(textureFlg, 0);//GL_TEXTURE0を適用
