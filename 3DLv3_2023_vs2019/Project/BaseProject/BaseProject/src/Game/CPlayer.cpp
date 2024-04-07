@@ -226,7 +226,8 @@ CPlayer::CPlayer()
 	mpFlamethrower = new CFlamethrower
 	(
 		this, nullptr,
-		CVector(0.0f, 14.0f, -1.0f)
+		CVector(0.0f, 14.0f, -1.0f),
+		CQuaternion(0.0f, 90.0f, 0.0f).Matrix()
 	);
 
 
