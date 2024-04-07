@@ -71,9 +71,9 @@ CVector CFlamethrower::GetThrowPos() const
 	if (mpAttachMtx != nullptr)
 	{
 		CVector pos = mpAttachMtx->Position();
-		pos += mpAttachMtx->VectorX() * mThrowOffsetPos.X()
-			+ mpAttachMtx->VectorY() * mThrowOffsetPos.Y()
-			+ mpAttachMtx->VectorZ() * mThrowOffsetPos.Z();
+		pos += mpAttachMtx->VectorX().Normalized() * mThrowOffsetPos.X()
+			+ mpAttachMtx->VectorY().Normalized() * mThrowOffsetPos.Y()
+			+ mpAttachMtx->VectorZ().Normalized() * mThrowOffsetPos.Z();
 		return pos;
 	}
 	// ‚¿å‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚¿å‚ÌÀ•W‚ğ•Ô‚·
