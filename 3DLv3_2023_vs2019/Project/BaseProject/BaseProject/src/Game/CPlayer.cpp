@@ -14,6 +14,7 @@
 #include "CWireMeshClimbWall.h"
 #include "CWireMeshMoveClimbWall.h"
 #include "CVanguard.h"
+#include "CFlamethrower.h"
 
 // プレイヤー関連
 // 高さ
@@ -220,6 +221,13 @@ CPlayer::CPlayer()
 	mpSword = new CMajicSword();
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpSword->SetOwner(this);
+
+
+	mpFlamethrower = new CFlamethrower
+	(
+		this, nullptr,
+		CVector(0.0f, 14.0f, -1.0f)
+	);
 
 
 	// 最初に1レベルに設定
@@ -1939,6 +1947,20 @@ void CPlayer::Update()
 		UpdateJumpingEnd();
 		break;
 	}
+
+	// 「E」キーで炎の発射をオンオフする
+	if (CInput::PushKey('F'))
+	{
+		if (!mpFlamethrower->IsThrowing())
+		{
+			mpFlamethrower->Start();
+		}
+		else
+		{
+			mpFlamethrower->Stop();
+		}
+	}
+
 
 	// 準備中でなければ、移動処理などを行う
 	if (mState != EState::eReady)

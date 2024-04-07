@@ -21,11 +21,14 @@ enum class ETag
 	eWeapon,			// プレイヤーの武器
 	eEnemyWeapon,		// 敵の武器
 	eBullet,			// 弾丸
+	eFlame,				// 炎
 
 	eBakuhatu,
 	eGauge,
 	eEnemyFrame,
 
+	eEffect,	// エフェクト
+	eBillboard,	// ビルボードイメージ
 
 	eCamera,			// カメラ
 	

@@ -16,6 +16,7 @@ class CBullet;
 class CClimbWall;
 class CWireMeshClimbWall;
 class CWireMeshMoveClimbWall;
+class CFlamethrower;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -159,6 +160,9 @@ private:
 	CSound* mpSlashSE;
 	// 敵の攻撃が当たった時のSE
 	CSound* mpHitDamageSE;
+
+	// 火炎放射エフェクト
+	CFlamethrower* mpFlamethrower;
 
 	// 登っている壁のポインター
 	CClimbWall* mpClimbWall;

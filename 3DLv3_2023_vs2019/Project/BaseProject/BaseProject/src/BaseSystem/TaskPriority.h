@@ -14,11 +14,13 @@ enum class ETaskPriority
 	ePlayer,		// プレイヤー
 	eEnemy,			// エネミー
 
+
 	eItem,			// アイテム
 	eWeapon,		// プレイヤー武器
 	eEnemyWeapon,	// 敵の武器
 
 	eEffect,
+	eBillboard,		// ビルボードイメージ
 	eMedal,			// メダルオブジェクト
 	eTransparent,	// 透明オブジェクト
 	eFalling,		// 落下オブジェクト

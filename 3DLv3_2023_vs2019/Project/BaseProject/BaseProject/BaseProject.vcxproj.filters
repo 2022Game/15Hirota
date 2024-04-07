@@ -107,6 +107,9 @@
     <Filter Include="ソース ファイル\Game\Character\CharaObject\ItemObject\ScoreItem">
       <UniqueIdentifier>{6b0a682a-82d7-4a26-b431-14798fec0f7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Frame">
+      <UniqueIdentifier>{960f9dc4-3473-475d-8bbc-7c479f820381}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -543,6 +546,15 @@
     </ClCompile>
     <ClCompile Include="src\Test\CColCapsule.cpp">
       <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\Easing.cpp">
+      <Filter>ソース ファイル\BaseSystem\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CFlame.cpp">
+      <Filter>ソース ファイル\Game\UI\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CFlamethrower.cpp">
+      <Filter>ソース ファイル\Game\UI\Frame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1004,6 +1016,15 @@
     </ClInclude>
     <ClInclude Include="src\Test\CColCapsule.h">
       <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\Easing.h">
+      <Filter>ソース ファイル\BaseSystem\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CFlame.h">
+      <Filter>ソース ファイル\Game\UI\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CFlamethrower.h">
+      <Filter>ソース ファイル\Game\UI\Frame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
