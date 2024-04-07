@@ -27,7 +27,7 @@ public:
 	void Get(std::list<STVertex>* tris) const;
 
 	// コライダー描画
-	void Render();
+	void Render() override;
 
 private:
 	//三角コライダの配列作成

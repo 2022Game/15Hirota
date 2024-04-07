@@ -538,6 +538,9 @@
     <ClCompile Include="src\Game\CWireMeshMoveClimbWall.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseSystem\CColliderCapsule.cpp">
+      <Filter>ソース ファイル\BaseSystem\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -992,6 +995,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CWireMeshMoveClimbWall.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CColliderCapsule.h">
+      <Filter>ソース ファイル\BaseSystem\Collider</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,7 +4,6 @@
 
 #define EPSILON 1e-6f
 
-
 namespace Math
 {
 	/// <summary>

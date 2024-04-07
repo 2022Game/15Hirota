@@ -34,7 +34,7 @@ public:
 	void Get(CVector* pos, float* rad) const;
 
 	// コライダー描画
-	void Render();
+	void Render() override;
 
 private:
 	float mRadius;	// 球の半径

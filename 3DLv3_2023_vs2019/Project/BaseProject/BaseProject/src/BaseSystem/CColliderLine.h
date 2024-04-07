@@ -40,7 +40,7 @@ public:
 	float Radius() const;
 
 	// コライダー描画
-	void Render();
+	void Render() override;
 
 private:
 	CVector mV[2];	// 線分の頂点の配列
