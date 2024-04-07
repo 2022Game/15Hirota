@@ -556,6 +556,9 @@
     <ClCompile Include="src\Game\CFlamethrower.cpp">
       <Filter>ソース ファイル\Game\UI\Frame</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseSystem\CBounds.cpp">
+      <Filter>ソース ファイル\BaseSystem\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1025,6 +1028,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CFlamethrower.h">
       <Filter>ソース ファイル\Game\UI\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CBounds.h">
+      <Filter>ソース ファイル\BaseSystem\Collider</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

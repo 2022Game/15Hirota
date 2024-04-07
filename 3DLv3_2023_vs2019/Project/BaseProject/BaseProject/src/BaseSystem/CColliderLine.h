@@ -42,7 +42,12 @@ public:
 	// コライダー描画
 	void Render() override;
 
+protected:
+	// コライダーの情報を更新
+	void UpdateCol() override;
+
 private:
 	CVector mV[2];	// 線分の頂点の配列
+	CVector mWV[2];	// 線分の頂点のワールド座標
 	float mRadius;
 };

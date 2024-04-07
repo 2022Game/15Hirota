@@ -4,12 +4,23 @@
 #include "ColliderType.h"
 #include "CVertex.h"
 #include "ObjectTag.h"
+#include "CBounds.h"
+
 
 class CObjectBase;
 class CCollisionManager;
 class CColliderLine;
 class CColliderSphere;
 class CColliderTriangle;
+class CColliderCapsule;
+class CColliderMesh;
+
+struct STVertexData
+{
+	STVertex lv;
+	STVertex wv;
+	CBounds bounds;
+};
 
 // ヒット情報
 class CHitInfo
@@ -131,6 +142,9 @@ public:
 
 	// 行列を取得
 	CMatrix Matrix() const;
+
+	// バウンディングボックスを取得
+	CBounds Bounds() const;
 
 	// コライダー更新
 	void Update();
@@ -302,10 +316,11 @@ public:
 	/// <param name="tris">メッシュを構成する三角形ポリゴンのリスト</param>
 	/// <param name="ls">線分の始点</param>
 	/// <param name="le">線分の終点</param>
+	/// <param name="lb">線分のバウンディングボックス</param>
 	/// <param name="hit">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
-	static bool CollisionMeshLine(const std::list<STVertex>& tris,
-		const CVector& ls, const CVector& le,
+	static bool CollisionMeshLine(const std::list<STVertexData>& tris,
+		const CVector& ls, const CVector& le, const CBounds& lb,
 		CHitInfo* hit, bool isLeftMain);
 
 	/// <summary>
@@ -314,11 +329,11 @@ public:
 	/// <param name="tris">メッシュを構成する三角形ポリゴンのリスト</param>
 	/// <param name="sp">球の座標</param>
 	/// <param name="sr">球の半径</param>
+	/// <param name="sphereCol">球コライダー</param>
 	/// <param name="hit">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
-	static bool CollisionMeshSpehre(const std::list<STVertex>& tris,
-		const CVector& sp, const float sr,
-		CHitInfo* hit, bool isLeftMain);
+	static bool CollisionMeshSpehre(const std::list<STVertexData>& tris,
+		CColliderSphere* sphereCol, CHitInfo* hit, bool isLeftMain);
 
 	/// <summary>
 	/// メッシュと三角形の衝突判定
@@ -327,24 +342,22 @@ public:
 	/// <param name="t0">三角形の頂点1</param>
 	/// <param name="t1">三角形の頂点2</param>
 	/// <param name="t2">三角形の頂点3</param>
+	/// <param name="triCol">三角形コライダー</param>
 	/// <param name="hit">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
-	static bool CollisionMeshTriangle(const std::list<STVertex>& tris,
-		const CVector& t0, const CVector& t1, const CVector& t2,
-		CHitInfo* hit, bool isLeftMain);
+	static bool CollisionMeshTriangle(const std::list<STVertexData>& tris,
+		CColliderTriangle* triCol, CHitInfo* hit, bool isLeftMain);
 
 	/// <summary>
 	/// メッシュとカプセルの衝突判定
 	/// </summary>
 	/// <param name="tris">メッシュを構成する三角形ポリゴンのリスト</param>
-	/// <param name="cs">カプセルを構成する線分の始点</param>
-	/// <param name="ce">カプセルを構成する線分の終点</param>
-	/// <param name="cr">カプセルの半径</param>
+	/// <param name="capsuleCol">カプセルコライダー</param>
 	/// <param name="hit">衝突した時の情報</param>
 	/// <returns>trueならば、衝突している</returns>
-	static bool CollisionMeshCapsule(const std::list<STVertex>& tris,
-		const CVector& cs, const CVector& ce, float cr,
-		CHitInfo* hit, bool isLeftMain);
+	static bool CollisionMeshCapsule(const std::list<STVertexData>& tris,
+		CColliderCapsule* capsuleCol, CHitInfo* hit, bool isLeftMain);
+
 
 	/// <summary>
 	/// 点から線分までの最短距離を求める
@@ -405,12 +418,17 @@ public:
 	static float CalcPushBackRatio(CCollider* self, CCollider* other);
 
 protected:
+	// コライダーの情報を更新
+	virtual void UpdateCol() = 0;
+
 	/// <summary>
 	/// コライダーの設定
 	/// </summary>
 	/// <param name="owner">コライダーの持ち主</param>
 	/// <param name="layer">衝突判定用レイヤー</param>
 	void Set(CObjectBase* owner, ELayer layer);
+
+	CBounds mBounds;		// バウンディングボックス
 
 private:
 	ELayer mLayer;			// 衝突判定レイヤー

@@ -69,6 +69,13 @@ void CCollisionManager::Collision(CCollider* col0, CCollider* col1)
 	if (!col0->IsCollision(col1)) return;
 	if (!col1->IsCollision(col0)) return;
 
+	// どちらのコライダーもメッシュコライダーでなければ、
+	if (col0->mType != EColliderType::eMesh && col1->mType != EColliderType::eMesh)
+	{
+		// バウンディングボックス同士が交差していない場合は、衝突判定を行わない
+		if (!CBounds::Intersect(col0->Bounds(), col1->Bounds())) return;
+	}
+
 	// 衝突判定を行う
 	CHitInfo hit;
 	bool collision = CCollider::Collision(col0, col1, &hit);
@@ -110,6 +117,12 @@ void CCollisionManager::Collision(CCollider* col)
 // 全てのコライダーの衝突処理を行う
 void CCollisionManager::CollisionAll()
 {
+	// 衝突判定を行う前に全てのコライダーの情報を更新
+	for (CCollider* c : mColliderList)
+	{
+		c->UpdateCol();
+	}
+
 	// リストの先頭から順番に衝突処理を行う
 	auto it = mColliderList.begin();
 	auto end = mColliderList.end();

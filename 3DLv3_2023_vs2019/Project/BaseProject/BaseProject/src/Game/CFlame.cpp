@@ -2,7 +2,7 @@
 #include "Easing.h"
 
 // 炎のスケール値の最大値
-#define FLAME_SCALE 3.0f
+#define FLAME_SCALE 10.0f
 // 炎のスケール値が最大値になるまでの時間
 #define FLAME_SCALE_ANIM_TIME 3.0f
 
@@ -19,11 +19,21 @@ CFlame::CFlame(ETag tag)
 	, mIsDeath(false)
 {
 	SetAnimData(&msAnimData);
+
+	mpCollider = new CColliderSphere
+	(
+		this,
+		ELayer::eAttackCol,
+		1.0f
+	);
+	mpCollider->SetCollisionTags({ ETag::eField, ETag::eRideableObject });
+	mpCollider->SetCollisionLayers({ ELayer::eField });
 }
 
 // デストラクタ
 CFlame::~CFlame()
 {
+	SAFE_DELETE(mpCollider);
 }
 
 // 各パラメータを設定
@@ -55,19 +65,33 @@ void CFlame::SetBlendType(EBlend type)
 	mMaterial.SetBlendType(type);
 }
 
+// 衝突処理
+void CFlame::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+{
+	if (other->Layer() == ELayer::eField)
+	{
+		float length = mMoveSpeed.Length();
+		CVector n = hit.adjust.Normalized();
+		float d = CVector::Dot(n, mMoveSpeed);
+		mMoveSpeed = (mMoveSpeed - n * d).Normalized() * length;
+		Position(Position() + hit.adjust * hit.weight);
+	}
+}
+
 // 更新
 void CFlame::Update()
 {
 	// 基底クラスの更新処理
 	CBillBoardImage::Update();
 
+	// 炎のエフェクトを移動
+	CVector move = mMoveSpeed * Time::DeltaTime();
+	Position(Position() + move);
+
+
 	// スケール変更時間を経過していない
 	if (mElapsedTime < FLAME_SCALE_ANIM_TIME)
 	{
-		// 炎のエフェクトを移動
-		CVector move = mMoveSpeed * Time::DeltaTime();
-		Position(Position() + move);
-
 		// 経過時間に合わせて、徐々に炎を大きくする
 		float per = mElapsedTime / FLAME_SCALE_ANIM_TIME;
 		if (per < 1.0f)

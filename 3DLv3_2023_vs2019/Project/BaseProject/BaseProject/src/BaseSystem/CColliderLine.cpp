@@ -29,9 +29,8 @@ void CColliderLine::Set(CObjectBase* owner, ELayer layer,
 // 線分の始点と終点を取得
 void CColliderLine::Get(CVector* v0, CVector* v1) const
 {
-	CMatrix m = Matrix();
-	*v0 = mV[0] * m;
-	*v1 = mV[1] * m;
+	*v0 = mWV[0];
+	*v1 = mWV[1];
 }
 
 float CColliderLine::Radius() const
@@ -75,4 +74,16 @@ void CColliderLine::Render()
 
 	// 描画前の行列に戻す
 	glPopMatrix();
+}
+
+// コライダーの情報を更新
+void CColliderLine::UpdateCol()
+{
+	// 頂点のワールド座標を算出
+	CMatrix m = Matrix();
+	mWV[0] = mV[0] * m;
+	mWV[1] = mV[1] * m;
+
+	// バウンディングボックスを更新
+	mBounds = CBounds::GetLineBounds(mWV[0], mWV[1]);
 }
