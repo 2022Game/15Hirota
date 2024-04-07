@@ -65,7 +65,10 @@ void CColBase::Update()
 		else
 		{
 			if (CDebugInput::Key(VK_UP))		input.Z(-1.0f);
-			else if (CDebugInput::Key(VK_DOWN))	input.Z(1.0f);
+			else if (CDebugInput::Key(VK_DOWN))
+			{
+				input.Y(-1.0f);
+			}
 			if (CDebugInput::Key(VK_LEFT))		input.X(-1.0f);
 			else if (CDebugInput::Key(VK_RIGHT))input.X(1.0f);
 		}
