@@ -9,7 +9,7 @@
 // アニメーションの1コマ表示時間
 #define ANIM_TIME 0.0625f
 // 炎のエフェクトのアニメーションデータ
-TexAnimData CFlame::msAnimData = TexAnimData(8, 8, false, 40, ANIM_TIME);
+TexAnimData CFlame::msAnimData = TexAnimData(8, 8, false, 64, ANIM_TIME);
 
 // コンストラクタ
 CFlame::CFlame(ETag tag)

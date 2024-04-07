@@ -10,7 +10,7 @@
 // 炎の移動速度
 #define FLAME_MOVE_SPEED 75.0f
 // 炎の色
-#define FLAME_COLOR CColor(1.0f, 0.25f, 0.0f)
+#define FLAME_COLOR CColor(1.0f, 0.25f, 0.1f)
 
 // コンストラクタ
 CFlamethrower::CFlamethrower(CObjectBase* owner, const CMatrix* attach, const CVector& offset)
@@ -56,7 +56,11 @@ CVector CFlamethrower::GetThrowPos() const
 	// アタッチする行列が設定されている場合は、行列の座標を返す
 	if (mpAttachMtx != nullptr)
 	{
-		return mpAttachMtx->Position() + (*mpAttachMtx * mThrowOffsetPos);
+		CVector pos = mpAttachMtx->Position();
+		pos += mpAttachMtx->VectorX() * mThrowOffsetPos.X()
+			+ mpAttachMtx->VectorY() * mThrowOffsetPos.Y()
+			+ mpAttachMtx->VectorZ() * mThrowOffsetPos.Z();
+		return pos;
 	}
 	// 持ち主が設定されている場合は、持ち主の座標を返す
 	else if (mpOwner != nullptr)
