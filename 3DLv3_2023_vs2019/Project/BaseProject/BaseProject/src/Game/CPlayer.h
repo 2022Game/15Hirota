@@ -381,5 +381,7 @@ private:
 	// ƒWƒƒƒ“ƒv‚ð‚µ‚½‚©
 	bool mIsJumping;
 
+	bool mIsSpawnedSlashEffect;
+
 	///////////////////////////////////////////////////////
 };

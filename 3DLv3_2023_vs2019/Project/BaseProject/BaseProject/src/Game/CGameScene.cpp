@@ -98,6 +98,7 @@ void CGameScene::Load()
 
 	// エフェクト関連
 	CResourceManager::Load<CTexture>("Laser",				"Effect\\laser.png");				// 弾のエフェクト
+	CResourceManager::Load<CModel>("Slash",					"Effect\\slash.obj");
 
 
 	// BGM・SE関連

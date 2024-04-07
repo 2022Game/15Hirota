@@ -22,6 +22,7 @@ enum class ETag
 	eEnemyWeapon,		// “G‚Ì•Ší
 	eBullet,			// ’eŠÛ
 	eFlame,				// ‰Š
+	eSlash,				// aŒ‚
 
 	eBakuhatu,
 	eGauge,

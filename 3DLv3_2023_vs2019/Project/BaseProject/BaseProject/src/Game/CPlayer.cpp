@@ -15,6 +15,7 @@
 #include "CWireMeshMoveClimbWall.h"
 #include "CVanguard.h"
 #include "CFlamethrower.h"
+#include "CSlash.h"
 
 // プレイヤー関連
 // 高さ
@@ -121,6 +122,7 @@ CPlayer::CPlayer()
 	, mIsPlayedSlashSE(false)
 	, mStaminaLowerLimit(false)
 	, mIsPlayedHitDamageSE(false)
+	, mIsSpawnedSlashEffect(false)
 	, mDash(false)
 	, mClimb(false)
 	, mClimbWall(false)
@@ -132,6 +134,12 @@ CPlayer::CPlayer()
 	//, mInventory(std::vector<ItemType>())
 	// インスタンスの設定
 	spInstance = this;
+
+	// 斬撃SEの再生済みフラグを初期化
+	mIsPlayedSlashSE = false;
+	// 斬撃エフェクトの生成済みフラグを初期化
+	mIsSpawnedSlashEffect = false;
+
 	Position(0.0f, 0.0f, 0.0f);
 	mStartPos = Position();
 
@@ -1058,6 +1066,25 @@ void CPlayer::UpdateAttackWait()
 			mpSlashSE->Play(1.0f, false, 0.0f);
 			mIsPlayedSlashSE = true;
 		}
+
+		// 斬撃エフェクトを生成していないかつ、アニメーションが35%以上進行したら、
+		if (!mIsSpawnedSlashEffect && GetAnimationFrameRatio() >= 0.35f)
+		{
+			// 斬撃エフェクトを生成して、正面方向へ飛ばす
+			CSlash* slash = new CSlash
+			(
+				this,
+				Position() + CVector(0.0f, 10.0f, 0.0f),
+				VectorZ(),
+				300.0f,
+				100.0f
+			);
+			// 斬撃エフェクトの色設定
+			slash->SetColor(CColor(0.15f, 0.5f, 0.5f));
+
+			mIsSpawnedSlashEffect = true;
+		}
+
 
 		if (GetAnimationFrame() >= 50.0f)
 		{
