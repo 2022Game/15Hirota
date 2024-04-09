@@ -568,6 +568,9 @@
     <ClCompile Include="src\Game\CSlash.cpp">
       <Filter>ソース ファイル\Game\Efect\Slash</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CFixedFlamethrower.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1043,6 +1046,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSlash.h">
       <Filter>ソース ファイル\Game\Efect\Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CFixedFlamethrower.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

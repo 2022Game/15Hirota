@@ -8,9 +8,13 @@ class CUIGauge :public CUIBase
 private:
 	CImage* mpFrameImage;		// 枠画像
 	CImage* mpBarImage;			// バー画像
+	CImage* mpDecreaseBarImage;	// 差分画像
 
 	int mMaxValue;				// 最大値
 	int mValue;					// 現在値
+	int mPreviousValue;
+	float mElapsedTime;
+	
 public:
 	// コンストラクタ
 	CUIGauge();

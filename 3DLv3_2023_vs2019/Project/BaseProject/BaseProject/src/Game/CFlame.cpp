@@ -23,11 +23,11 @@ CFlame::CFlame(ETag tag)
 	mpCollider = new CColliderSphere
 	(
 		this,
-		ELayer::eAttackCol,
+		ELayer::eFlame,
 		1.0f
 	);
-	mpCollider->SetCollisionTags({ ETag::eField, ETag::eRideableObject });
-	mpCollider->SetCollisionLayers({ ELayer::eField });
+	mpCollider->SetCollisionTags({ ETag::eField, ETag::eRideableObject, ETag::ePlayer });
+	mpCollider->SetCollisionLayers({ ELayer::eField, ELayer::eDamageCol });
 }
 
 // デストラクタ

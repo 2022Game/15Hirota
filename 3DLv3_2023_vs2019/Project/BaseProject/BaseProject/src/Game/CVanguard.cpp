@@ -210,7 +210,7 @@ CVanguard::CVanguard()
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy });
-	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy });
+	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy, ETag::eSlash });
 	// ダメージを受けるコライダーを少し下へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");

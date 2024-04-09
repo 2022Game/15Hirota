@@ -203,10 +203,10 @@ CPlayer::CPlayer()
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eKickCol, ELayer::eBulletCol,
-		ELayer::eNeedleCol });
-	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, ETag::eEnemy, ETag::eBullet,
-		ETag::eRideableObject });
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, 
+		ELayer::eKickCol, ELayer::eBulletCol,ELayer::eNeedleCol, ELayer::eFlame });
+	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, 
+		ETag::eEnemy, ETag::eBullet,ETag::eRideableObject, ETag::eFlame });
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx1 = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -423,6 +423,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			ChangeState(EState::eHitObj);
 			mpRideObject = other->Owner();
+		}
+		else if (other->Layer() == ELayer::eFlame)
+		{
+			ChangeState(EState::eHit);
 		}
 	}
 
@@ -1068,7 +1072,7 @@ void CPlayer::UpdateAttackWait()
 		}
 
 		// 斬撃エフェクトを生成していないかつ、アニメーションが35%以上進行したら、
-		if (!mIsSpawnedSlashEffect && GetAnimationFrameRatio() >= 0.35f)
+		if (!mIsSpawnedSlashEffect && GetAnimationFrameRatio() >= 0.15f)
 		{
 			// 斬撃エフェクトを生成して、正面方向へ飛ばす
 			CSlash* slash = new CSlash
@@ -1100,6 +1104,7 @@ void CPlayer::UpdateAttackWait()
 	if (IsAnimationFinished())
 	{
 		// 待機状態へ移行
+		mIsSpawnedSlashEffect = false;
 		ChangeState(EState::eIdle);
 		ChangeAnimation(EAnimType::eIdle);
 	}
@@ -1976,18 +1981,18 @@ void CPlayer::Update()
 		break;
 	}
 
-	// 「E」キーで炎の発射をオンオフする
-	if (CInput::PushKey('F'))
-	{
-		if (!mpFlamethrower->IsThrowing())
-		{
-			mpFlamethrower->Start();
-		}
-		else
-		{
-			mpFlamethrower->Stop();
-		}
-	}
+	//// 「E」キーで炎の発射をオンオフする
+	//if (CInput::PushKey('F'))
+	//{
+	//	if (!mpFlamethrower->IsThrowing())
+	//	{
+	//		mpFlamethrower->Start();
+	//	}
+	//	else
+	//	{
+	//		mpFlamethrower->Stop();
+	//	}
+	//}
 
 
 	// 準備中でなければ、移動処理などを行う

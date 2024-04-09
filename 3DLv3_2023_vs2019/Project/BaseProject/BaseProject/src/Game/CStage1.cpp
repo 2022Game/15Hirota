@@ -12,6 +12,7 @@
 #include "CStageTime.h"
 #include "CBlueMedal.h"
 #include "CRotationg.h"
+#include "CFixedFlamethrower.h"
 
 
 // コンストラクタ
@@ -57,6 +58,9 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("BlueMedal",			 "Field\\Object\\Bluemedal.obj");										// ブルーメダルモデル
 	CResourceManager::Load<CModel>("Rotationg",			 "Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObject).obj");		// 回転する床のモデル
 	CResourceManager::Load<CModel>("RotationgCol",		 "Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObjectCol).obj");	// 回転する床のコライダー
+	CResourceManager::Load<CModel>("FlamethrowerModel",	 "Field\\Gimmick\\Flamethrower(foundation).obj");						// 火炎放射器(土台)
+	CResourceManager::Load<CModel>("FlamethrowerTank",	 "Field\\Gimmick\\Flamethrower(tank).obj");								// 火炎放射器(タンク)
+	CResourceManager::Load<CModel>("FlamethrowerCol",	 "Field\\Gimmick\\Flamethrower(WallCol).obj");							// 火炎放射器(コライダー)
 
 	
 
@@ -121,6 +125,15 @@ void CStage1::Load()
 	);
 	AddTask(rotationg);
 
+	// 火炎放射器モデル
+	CFixedFlamethrower* flamethrower = new CFixedFlamethrower
+	(
+		CVector(810.0f, 125.0f, -384.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(flamethrower);
+
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	// ブルーメダル1
@@ -148,11 +161,11 @@ void CStage1::Load()
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	// ヴァンガード
-	/*CVanguard* van = new CVanguard();
+	CVanguard* van = new CVanguard();
 	CVanguard* vanPos = CVanguard::Instance();
 	van->Scale(1.4f, 1.4f, 1.4f);
 	van->Position(496.0f, 335.0f, -167.0f);
-	AddTask(van);*/
+	AddTask(van);
 	
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();

@@ -24,6 +24,8 @@ enum class ELayer
 	eEnemy,
 
 	eVarious,		// 色々コライダー
+	eFlame,			// 炎のコライダー
+	eFlameWall,		// 火炎放射器のコライダー
 	eRecoverCol,	// 回復コライダー
 	eInvincbleCol,	// 無敵コライダー
 	eMedalCol,		// メダルコライダー
