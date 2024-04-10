@@ -127,6 +127,7 @@ CPlayer::CPlayer()
 	, mClimb(false)
 	, mClimbWall(false)
 	, mClimbWallTop(false)
+	, mSavePoint(false)
 	, mIsJumping(false)
 	, mpRideObject(nullptr)
 {
@@ -190,7 +191,8 @@ CPlayer::CPlayer()
 		0.4f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
-		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol});
+		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
+		ELayer::eSavePoint });
 	//mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpColliderSphere->SetAttachMtx(spineMtx);
@@ -204,9 +206,9 @@ CPlayer::CPlayer()
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, 
-		ELayer::eKickCol, ELayer::eBulletCol,ELayer::eNeedleCol, ELayer::eFlame });
+		ELayer::eKickCol, ELayer::eBulletCol,ELayer::eNeedleCol, ELayer::eFlame});
 	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, 
-		ETag::eEnemy, ETag::eBullet,ETag::eRideableObject, ETag::eFlame });
+		ETag::eEnemy, ETag::eBullet,ETag::eRideableObject, ETag::eFlame,});
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx1 = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -389,6 +391,12 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			// Climb状態の場合は位置を調整する
 			Position(Position() + hit.adjust);
+		}
+
+		// セーブポイント
+		if (other->Layer() == ELayer::eSavePoint)
+		{
+			mSavePoint = true;
 		}
 	}
 
@@ -1175,6 +1183,7 @@ void CPlayer::UpdateClearEnd()
 	{
 		if (CGameManager::StageNo() == 0)
 		{
+			mSavePoint = false;
 			// ステージをクリア
 			CGameManager::StageClear();
 			// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
@@ -1202,6 +1211,7 @@ void CPlayer::UpdateDeathEnd()
 {
 	if (IsAnimationFinished())
 	{
+		mSavePoint = false;
 		mDamageObject = false;
 		mCharaStatus = mCharaMaxStatus;
 		Position(-150.0f, 140.0f, -5.3f);
@@ -1224,7 +1234,6 @@ void CPlayer::UpdateReStart()
 void CPlayer::UpdateHit()
 {
 	mMoveSpeed = CVector::zero;
-	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 	if (!mDamageEnemy)
 	{
 		TakeDamage(3);
@@ -1233,6 +1242,20 @@ void CPlayer::UpdateHit()
 
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
+		// 点滅の速度を調整するための定数
+		const float blinkSpeed = 16.5f;
+
+		// 経過時間を更新
+		mElapsedTime += Time::DeltaTime();
+
+		// sin関数を使って点滅する色のアルファ値を計算
+		//float alpha = sin(mElapsedTime * blinkSpeed);
+		// 0.5～1.0
+		float alpha = 0.5f + 0.5f * sin(mElapsedTime * blinkSpeed);
+
+		// 色をセット
+		SetColor(CColor(1.0, 0.0, 0.0, alpha));
+
 		mElapsedTimeCol += Time::DeltaTime();
 		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
 		{
@@ -2045,19 +2068,6 @@ void CPlayer::Update()
 		}
 	}
 
-	// なんの処理か忘れたが、消しても問題が無かったため
-	// コメントアウト
-	// 恐らくジャンプコライダー関連
-	/*if (JumpObject)
-	{
-		JumpCoolDownTime -= Time::DeltaTime();
-
-		if (JumpCoolDownTime <= 0.0f)
-		{
-			JumpObject = false;
-		}
-	}*/
-
 	// キャラクターのデバッグ表示
 	static bool debug = false;
 	if (CInput::PushKey('R'))
@@ -2089,16 +2099,29 @@ void CPlayer::Update()
 
 
 	///////////////////////////////////////////
+	
 	// 仮の落下ダメージ処理
 	// 変更予定
 	float minHeaight = -100.0f;
 	if (Position().Y() < minHeaight)
 	{
-		ChangeAnimation(EAnimType::eHitJ);
-		TakeDamage(1);
-		// Stage(1)の初期地点
-		Position(-150.0f, 140.0f, -5.3f);
+		// セーブポイント
+		if (mSavePoint)
+		{
+			ChangeAnimation(EAnimType::eHitJ);
+			TakeDamage(1);
+			Position(1293.0f, 318.0f, -209.0f);
+		}
+		else
+		{
+			ChangeAnimation(EAnimType::eHitJ);
+			TakeDamage(1);
+			// Stage(1)の初期地点
+			Position(-150.0f, 140.0f, -5.3f);
+		}
 	}
+	//CDebugPrint::Print("mSavePoint: %s\n", mSavePoint ? "true" : "false");
+
 	///////////////////////////////////////////
 
 	// キャラクターの更新

@@ -81,7 +81,7 @@ void CFixedFlamethrower::UpdateIdle()
 			}
 		}
 	}
-	CDebugPrint::Print("wait:%f\n", mWaitTime);
+	//CDebugPrint::Print("wait:%f\n", mWaitTime);
 }
 
 void CFixedFlamethrower::Update()

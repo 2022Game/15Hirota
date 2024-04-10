@@ -25,8 +25,8 @@ CField_Worlds_1::CField_Worlds_1()
 	mpSkyIsland = CResourceManager::Get<CModel>("SkyIsland");
 
 	// 木のモデルデータ取得
-	mpTreeModel = CResourceManager::Get<CModel>("Tree");
-	mpTreeCol = new CColliderMesh(this, ELayer::eFieldWall, mpTreeModel, true);
+	/*mpTreeModel = CResourceManager::Get<CModel>("Tree");
+	mpTreeCol = new CColliderMesh(this, ELayer::eFieldWall, mpTreeModel, true);*/
 	// 切り株と木の枝モデルデータ取得
 	mpBranchModel = CResourceManager::Get<CModel>("Branch");
 	//mpBranchCol = new CColliderMesh(this, ELayer::eField, mpBranchModel, true);
@@ -63,7 +63,7 @@ CField_Worlds_1::~CField_Worlds_1()
 	SAFE_DELETE(mpFloorCol);
 	SAFE_DELETE(mpWallCol);
 	SAFE_DELETE(mpFallCol);
-	SAFE_DELETE(mpTreeCol);
+	//SAFE_DELETE(mpTreeCol);
 	//SAFE_DELETE(mpRockShrudCol);
 
 	if (mpWallCol != nullptr)
@@ -110,8 +110,8 @@ void CField_Worlds_1::Render()
 	mpArrowSignModel->Render(Matrix());
 	mpSkyIsland->SetColor(mColor);
 	mpSkyIsland->Render(Matrix());
-	mpTreeModel->SetColor(mColor);
-	mpTreeModel->Render(Matrix());
+	//mpTreeModel->SetColor(mColor);
+	//mpTreeModel->Render(Matrix());
 	mpBranchModel->SetColor(mColor);
 	mpBranchModel->Render(Matrix());
 	/*mpRockShrubModel->SetColor(mColor);

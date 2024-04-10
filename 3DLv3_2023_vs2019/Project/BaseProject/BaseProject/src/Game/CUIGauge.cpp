@@ -32,7 +32,7 @@
 
 #define VERTICAL_SHAKE_AMOUNT 20.0f
 
-#define CHANGE_SPEED 1.5f
+#define CHANGE_SPEED 1.0f
 
 #define DAMAGE_DELAY 0.1f
 
@@ -76,7 +76,7 @@ void CUIGauge::Update()
 	// HP‚ªŒ¸­‚µ‚Ä‚¢‚éê‡‚ÍÔF‚Éİ’è
 	if (targetPercent < currentPercent) {
 
-		color2 = CColor(1.0f, 0.0f, 0.0f);
+		color2 = CColor(0.8f, 0.3f, 0.0f);
 	}
 	// ·•ª‚ÉF‚ğİ’è
 	mpDecreaseBarImage->SetColor(color2);

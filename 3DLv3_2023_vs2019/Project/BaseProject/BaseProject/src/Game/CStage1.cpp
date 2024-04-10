@@ -13,6 +13,8 @@
 #include "CBlueMedal.h"
 #include "CRotationg.h"
 #include "CFixedFlamethrower.h"
+#include "CJumpingObject.h"
+#include "CSavePoint.h"
 
 
 // コンストラクタ
@@ -55,26 +57,28 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("Tree",				 "Field\\GameStage(Worlds_1)\\GameStage_1(Tree).obj");					// 木モデル
 	CResourceManager::Load<CModel>("Branch",			 "Field\\GameStage(Worlds_1)\\GameStage_1(Branch).obj");				// 切り株と木の枝モデル
 	CResourceManager::Load<CModel>("Arrowsign",			 "Field\\GameStage(Worlds_1)\\GameStage_1(arrowsign).obj");				// 矢印看板モデル
-	CResourceManager::Load<CModel>("BlueMedal",			 "Field\\Object\\Bluemedal.obj");										// ブルーメダルモデル
-	CResourceManager::Load<CModel>("Rotationg",			 "Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObject).obj");		// 回転する床のモデル
-	CResourceManager::Load<CModel>("RotationgCol",		 "Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObjectCol).obj");	// 回転する床のコライダー
-	CResourceManager::Load<CModel>("FlamethrowerModel",	 "Field\\Gimmick\\Flamethrower(foundation).obj");						// 火炎放射器(土台)
-	CResourceManager::Load<CModel>("FlamethrowerTank",	 "Field\\Gimmick\\Flamethrower(tank).obj");								// 火炎放射器(タンク)
-	CResourceManager::Load<CModel>("FlamethrowerCol",	 "Field\\Gimmick\\Flamethrower(WallCol).obj");							// 火炎放射器(コライダー)
 
 	
+	// ステージギミック関連
+	CResourceManager::Load<CModel>("Rotationg",				"Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObject).obj");	// 回転する床のモデル
+	CResourceManager::Load<CModel>("RotationgCol",			"Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObjectCol).obj");	// 回転する床のコライダー
+	CResourceManager::Load<CModel>("Signboard",				"Field\\Object\\signboard.obj");									// 看板オブジェクト(ジャンプヒント)
+	CResourceManager::Load<CModel>("Number0",				"Field\\Object\\number0.obj");										// 零番目の床
+	CResourceManager::Load<CModel>("Number1",				"Field\\Object\\number1.obj");										// 一番目の床ブロック
+	CResourceManager::Load<CModel>("Number2",				"Field\\Object\\number2.obj");										// 二番目の床ブロック
+	CResourceManager::Load<CModel>("Number3",				"Field\\Object\\number3.obj");										// 三番目の床ブロック
+	CResourceManager::Load<CModel>("FieldCube",				"Field\\Object\\cube.obj");											// 初期の四角のモデル
+	CResourceManager::Load<CModel>("BlueMedal",				"Field\\Object\\Bluemedal.obj");									// ブルーメダルモデル
+	CResourceManager::Load<CModel>("RotateFloor",			"Field\\Gimmick\\RotateFloor.obj");									// 回転する床
+	CResourceManager::Load<CModel>("RotateFloorFrontCol",	"Field\\Gimmick\\RotateFloorFrontCol.obj");							// 回転する床の前コライダー
+	CResourceManager::Load<CModel>("RotateFloorBackCol",	"Field\\Gimmick\\RotateFloorBackCol.obj");							// 回転する床の後ろコライダー
+	CResourceManager::Load<CModel>("FlamethrowerModel",		"Field\\Gimmick\\Flamethrower(foundation).obj");					// 火炎放射器(土台)
+	CResourceManager::Load<CModel>("FlamethrowerTank",		"Field\\Gimmick\\Flamethrower(tank).obj");							// 火炎放射器(タンク)
+	CResourceManager::Load<CModel>("FlamethrowerCol",		"Field\\Gimmick\\Flamethrower(WallCol).obj");						// 火炎放射器(コライダー)
+	CResourceManager::Load<CModel>("SavePoint",				"Field\\Gimmick\\SavePoint.obj");									// セーブポイントモデル
 
-	CResourceManager::Load<CModel>("Signboard",		"Field\\Object\\signboard.obj");									// 看板オブジェクト(ジャンプヒント)
-	CResourceManager::Load<CModel>("Number0",		"Field\\Object\\number0.obj");										// 零番目の床
-	CResourceManager::Load<CModel>("Number1",		"Field\\Object\\number1.obj");										// 一番目の床ブロック
-	CResourceManager::Load<CModel>("Number2",		"Field\\Object\\number2.obj");										// 二番目の床ブロック
-	CResourceManager::Load<CModel>("Number3",		"Field\\Object\\number3.obj");										// 三番目の床ブロック
-
-	CResourceManager::Load<CModel>("RotateFloor",			"Field\\Gimmick\\RotateFloor.obj");							// 回転する床
-	CResourceManager::Load<CModel>("RotateFloorFrontCol",	"Field\\Gimmick\\RotateFloorFrontCol.obj");					// 回転する床の前コライダー
-	CResourceManager::Load<CModel>("RotateFloorBackCol",	"Field\\Gimmick\\RotateFloorBackCol.obj");					// 回転する床の後ろコライダー
-
-	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");								// ヴァンガード
+	// キャラクター関連
+	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");										// ヴァンガード
 
 	// 背景色設定
 	System::SetClearColor(0.1960784f, 0.6f, 0.8f, 1.0f);
@@ -84,6 +88,10 @@ void CStage1::Load()
 	mpField_Worlds_1 = new CField_Worlds_1();
 	mpField_Worlds_1->Scale(8.0f, 8.0f, 8.0f);
 	AddTask(mpField_Worlds_1);
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	// ステージギミック
 
 	// 登れる金網を作成
 	CWireMeshClimbWall* wiremeshWall = new CWireMeshClimbWall
@@ -126,15 +134,57 @@ void CStage1::Load()
 	AddTask(rotationg);
 
 	// 火炎放射器モデル
-	CFixedFlamethrower* flamethrower = new CFixedFlamethrower
+	// 正面方向
+	CFixedFlamethrower* flamethrower1 = new CFixedFlamethrower
 	(
 		CVector(810.0f, 125.0f, -384.0f),
 		CVector(2.0f, 2.0f, 2.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
-	AddTask(flamethrower);
+	AddTask(flamethrower1);
+
+	// 火炎放射器モデル
+	// 右方向
+	CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
+	(
+		CVector(1115.0f, 213.0f, -447.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	flamethrower2->Rotate(-90.0f, 0.0f, -90.0f);
+	AddTask(flamethrower2);
+
+	// ジャンプオブジェクト
+	CJumpingObject* jumping1 = new CJumpingObject
+	(
+		CVector(1183.0f, 250.0f, -350.0f),
+		CVector(0.5f, 0.5f, 0.5f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(jumping1);
+
+	// ジャンプオブジェクト
+	CJumpingObject* jumping2 = new CJumpingObject
+	(
+		CVector(1244.0f, 285.0f, -211.0f),
+		CVector(0.5f, 0.5f, 0.5f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(jumping2);
+
+	// セーブポイント
+	CSavePoint* savepoint = new CSavePoint
+	(
+		CVector(1293.0f, 318.0f, -210.0f),
+		CVector(8.0f, 8.0f, 8.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
 
 	/////////////////////////////////////////////////////////////////////////////////////
+
+	// スコアアイテム
 
 	// ブルーメダル1
 	CBlueMedal* blueMedal1 = new CBlueMedal
@@ -159,6 +209,8 @@ void CStage1::Load()
 	AddTask(blueMedal3);
 
 	/////////////////////////////////////////////////////////////////////////////////////
+
+	// キャラクター
 
 	// ヴァンガード
 	CVanguard* van = new CVanguard();

@@ -52,7 +52,6 @@ void CGameScene::Load()
 	//リソースの読み込みやクラスの生成を行う
 
 	// フィールド関連
-	//CResourceManager::Load<CModel>("FieldCube",				 "Field\\Object\\cube.obj");						// 初期の四角のモデル
 	//CResourceManager::Load<CModel>("FieldCylinder",			 "Field\\Object\\cylinder.obj");					// 初期の回転する四角モデル
 	//CResourceManager::Load<CModel>("HatenaBlock",			 "Field\\Object\\hatena.obj");						// ハテナブロック(アイテム保有)
 	//CResourceManager::Load<CModel>("HatenaBlockAfter",		 "Field\\Object\\UsedHatenaBlock.obj");				// ハテナブロック(アイテム不保有)

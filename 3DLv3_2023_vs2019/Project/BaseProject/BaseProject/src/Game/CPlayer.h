@@ -380,6 +380,8 @@ private:
 	bool mClimbWallTop;
 	// ジャンプをしたか
 	bool mIsJumping;
+	// 中間地点
+	bool mSavePoint;
 
 	bool mIsSpawnedSlashEffect;
 

@@ -35,7 +35,7 @@ CGoalObject::CGoalObject(const CVector& pos, const CVector& scale, const CVector
 
 	Position(pos);
 	Scale(scale);
-	Rotate(rot);
+	Rotation(rot);
 }
 
 // デストラクタ

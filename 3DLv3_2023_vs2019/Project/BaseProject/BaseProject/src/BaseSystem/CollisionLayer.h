@@ -23,7 +23,9 @@ enum class ELayer
 	ePlayer,
 	eEnemy,
 
+
 	eVarious,		// 色々コライダー
+	eSavePoint,		// セーブポイントのコライダー
 	eFlame,			// 炎のコライダー
 	eFlameWall,		// 火炎放射器のコライダー
 	eRecoverCol,	// 回復コライダー
