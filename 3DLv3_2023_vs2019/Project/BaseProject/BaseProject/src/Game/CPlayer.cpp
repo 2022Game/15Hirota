@@ -122,6 +122,7 @@ CPlayer::CPlayer()
 	, mIsPlayedSlashSE(false)
 	, mStaminaLowerLimit(false)
 	, mIsPlayedHitDamageSE(false)
+	, mIsAttack(false)
 	, mIsSpawnedSlashEffect(false)
 	, mDash(false)
 	, mClimb(false)
@@ -229,7 +230,8 @@ CPlayer::CPlayer()
 
 	// マジックソード作成
 	mpSword = new CMajicSword();
-	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
+	//mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 	mpSword->SetOwner(this);
 
 
@@ -706,6 +708,11 @@ bool CPlayer::IsJumping()
 	return mIsJumping;
 }
 
+bool CPlayer::IsAttack()
+{
+	return mIsAttack;
+}
+
 // アニメーション切り替え
 void CPlayer::ChangeAnimation(EAnimType type)
 {
@@ -826,6 +833,16 @@ void CPlayer::UpdateIdle()
 		{
 			mElapsedTimeCol = DAMAGECOL;
 			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	if (mpSword)
+	{
+		mElapsedTime += Time::DeltaTime();
+		if (mElapsedTime >= 10.0f)
+		{
+			mIsAttack = false;
+			mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 		}
 	}
 
@@ -1011,6 +1028,9 @@ void CPlayer::UpdateDashEnd()
 // 攻撃
 void CPlayer::UpdateAttack()
 {
+	mIsAttack = true;
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHandMiddle1"));
+
 	// 攻撃アニメーションを開始
 	ChangeAnimation(EAnimType::eAttack);
 	if (GetAnimationFrame() >= 10.0f)
@@ -1111,6 +1131,8 @@ void CPlayer::UpdateAttackWait()
 	// 攻撃アニメーションが終了したら、
 	if (IsAnimationFinished())
 	{
+		mIsAttack = false;
+		mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 		// 待機状態へ移行
 		mIsSpawnedSlashEffect = false;
 		ChangeState(EState::eIdle);
@@ -1355,26 +1377,29 @@ void CPlayer::UpdateHitSword()
 	if (!mDamageEnemy)
 	{
 		mDamageEnemy = true;
-		mpDamageCol->SetEnable(true);
+		mpDamageCol->SetEnable(false);
 	}
 
 	if (mElapsedTime >= COLORSET)
 	{
-		if (mCharaStatus.hp > 0)
+		if (IsAnimationFinished())
 		{
-			mIsPlayedHitDamageSE = false;
-			mDamageEnemy = true;
-			mElapsedTime = 0.0f;
-			mElapsedTimeCol = 0.0f;
-			mpDamageCol->SetEnable(false);
-			ChangeState(EState::eIdle);
-		}
-		else if (mCharaStatus.hp <= 0)
-		{
-			mElapsedTime = 0.0f;
-			mElapsedTimeCol = 0.0f;
-			mpDamageCol->SetEnable(false);
-			ChangeState(EState::eDeath);
+			if (mCharaStatus.hp > 0)
+			{
+				mIsPlayedHitDamageSE = false;
+				mDamageEnemy = true;
+				mElapsedTime = 0.0f;
+				mElapsedTimeCol = 0.0f;
+				mpDamageCol->SetEnable(false);
+				ChangeState(EState::eIdle);
+			}
+			else if (mCharaStatus.hp <= 0)
+			{
+				mElapsedTime = 0.0f;
+				mElapsedTimeCol = 0.0f;
+				mpDamageCol->SetEnable(false);
+				ChangeState(EState::eDeath);
+			}
 		}
 	}
 

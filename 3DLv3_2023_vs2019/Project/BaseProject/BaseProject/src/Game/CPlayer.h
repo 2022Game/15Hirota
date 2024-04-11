@@ -100,6 +100,8 @@ public:
 
 	// ジャンプをしたかどうか取得
 	bool IsJumping();
+	// 攻撃したかどうか取得
+	bool IsAttack();
 
 	// 敵を見つけたかどうか
 	bool IsFoundVanguard();
@@ -370,6 +372,8 @@ private:
 	bool mIsPlayedSlashSE;
 	// 攻撃が当たったか
 	bool mIsPlayedHitDamageSE;
+	// 攻撃中か
+	bool mIsAttack;
 	// ダッシュ状態か
 	bool mDash;
 	// 壁を登っているか

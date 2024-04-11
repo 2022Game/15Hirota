@@ -29,6 +29,7 @@ public:
 	// 武器の行列を取得
 	CMatrix Matrix() const override;
 
+
 	// 更新処理
 	void Update();
 	// 描画処理
@@ -39,5 +40,9 @@ private:
 	CModel* mpSword;
 	// 攻撃判定用のコライダー
 	CColliderLine* mpAttackCol;
+
+	const CMatrix* mpSpine1Mtx;
+	const CMatrix* mpRightHandMtx;
+
 };
 #endif
