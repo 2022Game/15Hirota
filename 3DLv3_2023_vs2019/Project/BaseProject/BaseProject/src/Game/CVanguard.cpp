@@ -233,7 +233,7 @@ CVanguard::CVanguard()
 
 	// マジックソード作成
 	mpSword = new CMajicSwordEnemy();
-	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHandMiddle1"));
 	mpSword->SetOwner(this);
 	mpSword->SetAlpha(0.0f);
 

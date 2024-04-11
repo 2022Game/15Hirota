@@ -5,14 +5,14 @@
 
 CMajicSwordEnemy::CMajicSwordEnemy()
 {
-	mpSword = CResourceManager::Get<CModel>("MajicSword");
+	mpSword = CResourceManager::Get<CModel>("MajicSwordVan");
 
 	// 攻撃判定用のコライダーを作成
 	mpAttackCol = new CColliderLine
 	(
 		this, ELayer::eAttackCol,
 		CVector(0.0f, 0.0f, 0.0f),
-		CVector(-1.0f, -3.0f, 0.0f)
+		CVector(0.5f, 3.0f, -0.9f)
 	);
 	// 攻撃判定用のコライダーと衝突判定を行う
 	// レイヤーとタグを設定
@@ -85,19 +85,21 @@ CMatrix CMajicSwordEnemy::Matrix() const
 	else
 	{
 		CMatrix sm;
-		sm.Scale(65.0f, 65.0f, 65.0f);
+		sm.Scale(75.0f, 75.0f, 75.0f);
+
+		CMatrix translate;
+		translate.Translate(0.0f, 0.0f, -0.5f);
 
 		// 90度回転を表す行列を作成
 		CMatrix rotateY;
 		CMatrix rotateZ;
 		CMatrix rotateX;
 
-		rotateY.RotateY(90.0f);		// Y軸周りに90度回転
-		//rotateZ.RotateZ(90.0f);		// Z軸周りに90度回転
-		rotateX.RotateX(180.0f);		// X軸周り身90度回転
+		rotateY.RotateY(45.0f);		// Y軸周りに90度回転
+		rotateX.RotateX(0.0f);		// X軸周り身90度回転
+		rotateZ.RotateZ(-60.0f);		// Z軸周りに90度回転
 
-
-		return sm * rotateY * rotateX * (*attachMtx);
+		return sm * rotateY * rotateX * rotateZ * translate * (*attachMtx);
 	}
 }
 

@@ -12,7 +12,7 @@ CMajicSword::CMajicSword()
 	(
 		this, ELayer::eAttackCol,
 		CVector(0.0f, 0.0f, 0.0f),
-		CVector(-1.0f, -3.0f, 0.0f)
+		CVector(0.0f, -2.0f, 0.0f)
 	);
 	// 攻撃判定用のコライダーと衝突判定を行う
 	// レイヤーとタグを設定
@@ -82,26 +82,28 @@ CMatrix CMajicSword::Matrix() const
 	else
 	{	
 		CMatrix sm;
-		sm.Scale(65.0f, 65.0f, 65.0f);
+		sm.Scale(75.0f, 75.0f, 75.0f);
 
 		CPlayer* player = CPlayer::Instance();
 		if (player->IsAttack())
 		{
+			CMatrix translate;
+			translate.Translate(65.0f, -35.0f, 10.0f);
+
 			// 90度回転を表す行列を作成
 			CMatrix rotateY;
 			CMatrix rotateZ;
 			CMatrix rotateX;
 
-			rotateY.RotateY(90.0f);		// Y軸周りに90度回転
-			//rotateZ.RotateZ(90.0f);		// Z軸周りに90度回転
-			rotateX.RotateX(90.0f);		// X軸周り身90度回転
+			rotateY.RotateY(-90.0f);		// Y軸周りに90度回転
+			rotateX.RotateX(0.0f);		// X軸周り身90度回転
+			rotateZ.RotateZ(60.0f);		// Z軸周りに90度回転
 
-
-			return sm * rotateY * rotateX * (*attachMtx);
+			return sm * rotateY * rotateX * rotateZ * translate * (*attachMtx);
 		}
 
 		CMatrix translate;
-		translate.Translate(20.0f, 50.0f, -50.0f);
+		translate.Translate(0.0f, 0.0f, -50.0f);
 		return sm * translate * (*attachMtx);
 	}
 }

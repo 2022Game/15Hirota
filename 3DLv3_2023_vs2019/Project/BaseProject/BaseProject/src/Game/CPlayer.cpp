@@ -106,6 +106,7 @@ CPlayer::CPlayer()
 	, mInvincibleStartTime(10.0f)
 	, mClimbStaminaTime(0.0f)
 	, mStartDashTime(0.0f)
+	, mWeaponTime(0.0f)
 	, mMoveSpeedY(0.0f)
 	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
@@ -836,14 +837,9 @@ void CPlayer::UpdateIdle()
 		}
 	}
 
-	if (mpSword)
+	if (mIsAttack)
 	{
-		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime >= 10.0f)
-		{
-			mIsAttack = false;
-			mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
-		}
+		mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHandMiddle1"));
 	}
 
 	mDamageEnemy = false;
@@ -1029,6 +1025,7 @@ void CPlayer::UpdateDashEnd()
 void CPlayer::UpdateAttack()
 {
 	mIsAttack = true;
+	mWeaponTime = 0.0f;
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHandMiddle1"));
 
 	// 攻撃アニメーションを開始
@@ -1047,6 +1044,8 @@ void CPlayer::UpdateAttack()
 // 強攻撃
 void CPlayer::UpdateAttackStrong()
 {
+	//mIsAttack = true;
+	mWeaponTime = 0.0f;
 	// 強攻撃アニメーションを開始
 	ChangeAnimation(EAnimType::eAttackStrong);
 	// 攻撃終了待ち状態へ移行
@@ -1131,8 +1130,6 @@ void CPlayer::UpdateAttackWait()
 	// 攻撃アニメーションが終了したら、
 	if (IsAnimationFinished())
 	{
-		mIsAttack = false;
-		mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 		// 待機状態へ移行
 		mIsSpawnedSlashEffect = false;
 		ChangeState(EState::eIdle);
@@ -1910,6 +1907,23 @@ void CPlayer::Update()
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
 	mHpHit = false;
+
+	if (!(mState == EState::eAttack || mState == EState::eAttackStrong ||
+		mState == EState::eAttackWait || mState == EState::eAttackStrongWait))
+	{
+		if (mIsAttack)
+		{
+			mWeaponTime += Time::DeltaTime();
+			if (mWeaponTime >= 6.0f)
+			{
+				mIsAttack = false;
+				mWeaponTime = 0.0f;
+				mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
+			}
+		}
+	}
+	/*CDebugPrint::Print("mWeaponTime:%f\n", mWeaponTime);
+	CDebugPrint::Print("mIsAttack: %s\n", mIsAttack ? "true" : "false");*/
 
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)

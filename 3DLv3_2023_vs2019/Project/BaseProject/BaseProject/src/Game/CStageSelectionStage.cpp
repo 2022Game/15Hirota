@@ -5,6 +5,7 @@
 #include "CPlayer.h"
 #include "CStageButton.h"
 #include "CNeedle.h"
+#include "CVanguard.h"
 
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
@@ -25,10 +26,12 @@ void CStageSelectionStage::Load()
 	CResourceManager::Load<CModel>("StageSelectionFloorCol", "Field\\StageSentakuFloor.obj");	// ステージセレクトステージ(床)
 	CResourceManager::Load<CModel>("StageSelectionWallCol", "Field\\StageSentakuWall.obj");		// ステージセレクトステージ(壁)
 	CResourceManager::Load<CModel>("StageButton", "Field\\Object\\StageBotan.obj");				// ステージボタン
-	CResourceManager::Load<CModel>("Needle", "Field\\Gimmick\\NeedleObject(needle).obj");		// 針オブジェクトの針
-	CResourceManager::Load<CModel>("Needlebase", "Field\\Gimmick\\NeedleObject(base).obj");		// 針オブジェクトの土台
-	CResourceManager::Load<CModel>("NeedleCol", "Field\\Gimmick\\NeedleObjectCol.obj");			// 針オブジェクトのコライダー
-	CResourceManager::Load<CModel>("NeedleBaseCol", "Field\\Gimmick\\NeedleObjectBaseCol.obj");	// 針オブジェクトのベースコライダー
+	//CResourceManager::Load<CModel>("Needle", "Field\\Gimmick\\NeedleObject(needle).obj");		// 針オブジェクトの針
+	//CResourceManager::Load<CModel>("Needlebase", "Field\\Gimmick\\NeedleObject(base).obj");		// 針オブジェクトの土台
+	//CResourceManager::Load<CModel>("NeedleCol", "Field\\Gimmick\\NeedleObjectCol.obj");			// 針オブジェクトのコライダー
+	//CResourceManager::Load<CModel>("NeedleBaseCol", "Field\\Gimmick\\NeedleObjectBaseCol.obj");	// 針オブジェクトのベースコライダー
+
+	//CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -45,30 +48,37 @@ void CStageSelectionStage::Load()
 		ETag::ePlayer, ELayer::ePlayer);
 	AddTask(button);
 
-	// 針モデル
-	CNeedle* needle = new CNeedle(
-		CVector(100.0f, 11.0f, 0.0f),
-		CVector(10.0f, 10.0f, 10.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer);
-	CVector needlePos = CVector(100.0f, 11.0f, 0.0f);
-	if (needle != nullptr)
-	{
-		needle->SetStartPosition(needlePos);
-	}
-	AddTask(needle);
-	// 針モデルベース
-	CNeedleBase* needlebase = new CNeedleBase(
-		CVector(100.0f, 11.0f, 0.0f),
-		CVector(10.0f, 10.0f, 10.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer);
-	CVector needlebasePos = CVector(100.0f, 11.0f, 0.0f);
-	if (needlebase != nullptr)
-	{
-		needlebase->SetStartPosition(needlebasePos);
-	}
-	AddTask(needlebase);
+	//// 針モデル
+	//CNeedle* needle = new CNeedle(
+	//	CVector(100.0f, 11.0f, 0.0f),
+	//	CVector(10.0f, 10.0f, 10.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer);
+	//CVector needlePos = CVector(100.0f, 11.0f, 0.0f);
+	//if (needle != nullptr)
+	//{
+	//	needle->SetStartPosition(needlePos);
+	//}
+	//AddTask(needle);
+	//// 針モデルベース
+	//CNeedleBase* needlebase = new CNeedleBase(
+	//	CVector(100.0f, 11.0f, 0.0f),
+	//	CVector(10.0f, 10.0f, 10.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer);
+	//CVector needlebasePos = CVector(100.0f, 11.0f, 0.0f);
+	//if (needlebase != nullptr)
+	//{
+	//	needlebase->SetStartPosition(needlebasePos);
+	//}
+	//AddTask(needlebase);
+
+	//// ヴァンガード
+	//CVanguard* van = new CVanguard();
+	//CVanguard* vanPos = CVanguard::Instance();
+	//van->Scale(1.4f, 1.4f, 1.4f);
+	//van->Position(50.0f, 60.0f, 0.0f);
+	//AddTask(van);
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();

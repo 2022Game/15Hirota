@@ -351,6 +351,8 @@ private:
 	float mClimbStaminaTime;
 	// 最初のダッシュの計測時間
 	float mStartDashTime;
+	// 武器をしまう時間
+	float mWeaponTime;
 	// 重力やジャンプによるY軸の移動速度
 	float mMoveSpeedY;
 
