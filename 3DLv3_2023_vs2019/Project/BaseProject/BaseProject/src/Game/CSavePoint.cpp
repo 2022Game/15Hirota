@@ -17,8 +17,6 @@ CSavePoint::CSavePoint(const CVector& pos, const CVector& scale, const CVector& 
 	mpSaveColLine->SetCollisionLayers({ ELayer::ePlayer });
 	mpSaveColLine->SetCollisionTags({ ETag::ePlayer });
 
-	SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
-
 	Position(pos);
 	Scale(scale);
 	Rotation(rot);

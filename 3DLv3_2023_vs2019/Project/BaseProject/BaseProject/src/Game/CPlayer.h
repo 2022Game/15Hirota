@@ -192,6 +192,10 @@ private:
 	void UpdateAttackWait();
 	// 強攻撃終了待ち
 	void UpdateAttackStrongWait();
+	// ダッシュアタック
+	void UpdateDashAttack();
+	// ダッシュアタック終了
+	void UpdateDashAttackWait();
 	//回避開始
 	void UpdateRotate();
 	//回避終了待ち
@@ -230,8 +234,10 @@ private:
 		eIdle,				// 待機
 		eAttack,			// 攻撃
 		eAttackStrong,		// 強攻撃
+		eAttackDash,		// ダッシュアタック
 		eAttackWait,		// 攻撃終了待ち
-		eAttackStrongWait,	// 攻撃終了待ち2
+		eAttackStrongWait,	// 強攻撃終了待ち
+		eAttackDashWait,	// ダッシュアタック終了待ち
 		eJumpStart,			// ジャンプ開始
 		eJump,				// ジャンプ中
 		eJumpEnd,			// ジャンプ終了
@@ -277,6 +283,7 @@ private:
 		eWalk,			// 歩行
 		eAttack,		// 攻撃
 		eAttackStrong,	// 強攻撃
+		eAttackDash,	// ダッシュアタック
 		eJumpStart,		// ジャンプ開始
 		eJump,			// ジャンプ中
 		eJumpEnd,		// ジャンプ終了
@@ -388,7 +395,7 @@ private:
 	bool mIsJumping;
 	// 中間地点
 	bool mSavePoint;
-
+	// スラッシュエフェクトを鳴らしたか
 	bool mIsSpawnedSlashEffect;
 
 	///////////////////////////////////////////////////////

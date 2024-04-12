@@ -54,6 +54,6 @@ void CStageSelection::Update()
 
 void CStageSelection::Render()
 {
-	mpModel->Render(Matrix());
 	mpModel->SetColor(mColor);
+	mpModel->Render(Matrix());
 }

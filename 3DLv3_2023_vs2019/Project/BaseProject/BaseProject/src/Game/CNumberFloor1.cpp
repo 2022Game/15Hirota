@@ -103,7 +103,7 @@ void CNumberFloor1::UpdateIdle()
 
 // ‘Ò‹@ó‘Ô‚Ìˆ—
 void CNumberFloor1::UpdateWaiting()
-{	
+{
 	if (mIsCollision)
 	{
 		SetColor(CColor(0.5f, 0.1f, 0.1f, 1.0f));
@@ -196,8 +196,8 @@ void CNumberFloor1::UpdateFalling()
 			}
 		}
 	}
-		break;
-		// —‰º‚³‚¹‚é
+	break;
+	// —‰º‚³‚¹‚é
 	case 1:
 	{
 		static const float fall = 10.0f;
@@ -209,8 +209,8 @@ void CNumberFloor1::UpdateFalling()
 			Position(mStartPos);
 		}
 	}
-		break;
-		// Œ³‚Ìó‘Ô‚É–ß‚·
+	break;
+	// Œ³‚Ìó‘Ô‚É–ß‚·
 	case 2:
 	{
 		mpModel = CResourceManager::Get<CModel>("Number3");
@@ -250,7 +250,6 @@ void CNumberFloor1::Update()
 	// Õ“Ëƒtƒ‰ƒO‚ğ‰Šú‰»
 	mIsCollision = false;
 
-	
 	/*CDebugPrint::Print("mCase0: %s\n", mCase0End ? "true" : "false");
 	CDebugPrint::Print("mCase1: %s\n", mCase1End ? "true" : "false");
 	CDebugPrint::Print("mIsCollsion:%s\n", mIsCollision ? "true" : "false");*/

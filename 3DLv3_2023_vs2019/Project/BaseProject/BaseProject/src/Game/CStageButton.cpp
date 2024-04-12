@@ -27,6 +27,8 @@ CStageButton::CStageButton(const CVector& pos, const CVector& scale, const CVect
 	mpStageMenu = new CStageMenu();
 	CStageManager::AddTask(mpStageMenu);
 
+	SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+
 	Position(pos);
 	Scale(scale);
 	Rotate(rot);
@@ -68,12 +70,12 @@ void CStageButton::Collision(CCollider* self, CCollider* other, const CHitInfo& 
 // XVˆ—
 void CStageButton::Update()
 {
-
+	CDebugPrint::Print("color: %f %f %f %f\n", mColor.R(), mColor.G(), mColor.B(), mColor.A());
 }
 
 // •`‰æˆ—
 void CStageButton::Render()
 {
-	mpModel->Render(Matrix());
 	mpModel->SetColor(mColor);
+	mpModel->Render(Matrix());
 }

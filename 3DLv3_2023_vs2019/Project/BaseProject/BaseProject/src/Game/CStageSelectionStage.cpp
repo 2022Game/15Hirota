@@ -30,7 +30,7 @@ void CStageSelectionStage::Load()
 	//CResourceManager::Load<CModel>("Needlebase", "Field\\Gimmick\\NeedleObject(base).obj");		// 針オブジェクトの土台
 	//CResourceManager::Load<CModel>("NeedleCol", "Field\\Gimmick\\NeedleObjectCol.obj");			// 針オブジェクトのコライダー
 	//CResourceManager::Load<CModel>("NeedleBaseCol", "Field\\Gimmick\\NeedleObjectBaseCol.obj");	// 針オブジェクトのベースコライダー
-
+	
 	//CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");
 
 	// 背景色設定

@@ -15,6 +15,7 @@
 #include "CFixedFlamethrower.h"
 #include "CJumpingObject.h"
 #include "CSavePoint.h"
+#include "CNumberFloor1.h"
 
 
 // コンストラクタ
@@ -82,7 +83,6 @@ void CStage1::Load()
 
 	// 背景色設定
 	System::SetClearColor(0.1960784f, 0.6f, 0.8f, 1.0f);
-
 
 	// フィールド
 	mpField_Worlds_1 = new CField_Worlds_1();
@@ -174,6 +174,21 @@ void CStage1::Load()
 	);
 	AddTask(jumping2);
 
+	// 回数オブジェクト
+	CNumberFloor1* numberfloor1 = new CNumberFloor1
+	(
+		CVector(1340.0f, 300.0f, -55.0f),
+		CVector(4.0f, 3.0f, 4.0f),
+		CVector(0.0f, 90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector numberfloor1Pos = CVector(1340.0f, 300.0f, -55.0f);
+	if (numberfloor1 != nullptr)
+	{
+		numberfloor1->SetStartPosition(numberfloor1Pos);
+	}
+	AddTask(numberfloor1);
+
 	// セーブポイント
 	CSavePoint* savepoint = new CSavePoint
 	(
@@ -181,6 +196,7 @@ void CStage1::Load()
 		CVector(8.0f, 8.0f, 8.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
+	AddTask(savepoint);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
@@ -239,6 +255,7 @@ void CStage1::Load()
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	mainCamera->AddCollider(mpField_Worlds_1->GetWallCol());
+
 }
 
 // ステージ破棄

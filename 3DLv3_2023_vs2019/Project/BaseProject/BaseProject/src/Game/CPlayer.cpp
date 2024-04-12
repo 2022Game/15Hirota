@@ -79,6 +79,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Warrok_Walking.x",				true,	86.0f	},	// 歩行
 	{ "Character\\Monster1\\anim\\Warrok_Punchi.x",				false,	50.0f	},		// 攻撃
 	{ "Character\\Monster1\\anim\\Warrok_StrongAttack.x",		false,	161.0f	},		// 強攻撃
+	{ "Character\\Monster1\\anim\\Warrok_SpinAttack(1)_79.x",	false,	79.0f	},		// ダッシュアタック
 	{ "Character\\Monster1\\anim\\jump_start1.x",				false,	25.0f	},		// ジャンプ開始
 	{ "Character\\Monster1\\anim\\jump1.x",							true,	1.0f	},	// ジャンプ中
 	{ "Character\\Monster1\\anim\\jump_end1.x",					false,	26.0f	},		// ジャンプ終了
@@ -889,6 +890,22 @@ void CPlayer::UpdateIdle()
 							mStaminaLowerLimit = true;
 							mDash = false;
 						}
+
+						// ダッシュアタック移行
+						if (((CInput::PushKey(VK_MBUTTON))) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+						{
+							// ダッシュアタック移行時に、
+							// スタミナが0以下になるかどうかを確認
+							if (mCharaStatus.stamina - 20 >= 0) {
+								mMoveSpeed = CVector::zero;
+								ChangeState(EState::eAttackDash);
+								// スタミナが0以下にならない場合はダッシュアタックを実行
+								mCharaStatus.stamina -= 20;
+							}
+							else
+							{
+							}
+						}
 					}
 				}
 				// スタミナが0以下かつ、スタミナの下限値フラグがtrueだったら
@@ -1052,6 +1069,41 @@ void CPlayer::UpdateAttackStrong()
 	ChangeState(EState::eAttackStrongWait);
 }
 
+// ダッシュアタック
+void CPlayer::UpdateDashAttack()
+{
+	// ダッシュアタックアニメーションを開始
+	ChangeAnimation(EAnimType::eAttackDash);
+	mMoveSpeed = CVector::zero;
+	mIsAttack = true;
+	mWeaponTime = 0.0f;
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHandMiddle1"));
+
+	if (GetAnimationFrame() >= 20.0f)
+	{
+		// 剣に攻撃開始を伝える
+		mpSword->AttackStart();
+	}
+
+	if (GetAnimationFrame() <= 69.0f)
+	{
+		// 移動処理
+		CVector move = CalcMoveVec();
+
+		// 入力ベクトルの長さで入力されているか判定
+		if (move.LengthSqr() > 0.0f)
+		{
+			mMoveSpeed += move;
+		}
+		mMoveSpeed = move * MOVE_SPEED;
+	}
+	else
+	{
+		// ダッシュアタック終了待ち状態へ移行
+		ChangeState(EState::eAttackDashWait);
+	}
+}
+
 // 攻撃終了待ち
 void CPlayer::UpdateAttackWait()
 {
@@ -1147,10 +1199,28 @@ void CPlayer::UpdateAttackStrongWait()
 	}
 }
 
+// ダッシュアタック終了待ち
+void CPlayer::UpdateDashAttackWait()
+{
+	// 剣に攻撃終了を伝える
+	mpSword->AttackEnd();
+	mMoveSpeed = CVector::zero;
+	// 剣に攻撃終了を伝える
+	mpSword->AttackEnd();
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eIdle);
+		ChangeAnimation(EAnimType::eIdle);
+	}
+}
+
 //回避開始
 void CPlayer::UpdateRotate()
 {
 	mpDamageCol->SetEnable(false);
+	mIsAttack = false;
+	mWeaponTime = 0.0f;
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 	mMoveSpeed = CVector::zero;
 
 	// 移動処理
@@ -1453,6 +1523,9 @@ void CPlayer::UpdateHitObj()
 void CPlayer::UpdateClimb()
 {
 	mClimb = true;
+	mIsAttack = false;
+	mWeaponTime = 0.0f;
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = 0.0f;
 	// プレイヤーの移動ベクトルを求める
@@ -1585,6 +1658,9 @@ void CPlayer::UpdateClimbedTop()
 void CPlayer::UpdateWireClimb()
 {
 	mClimb = true;
+	mIsAttack = false;
+	mWeaponTime = 0.0f;
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = 0.0f;
 	// プレイヤーの移動ベクトルを求める
@@ -1948,6 +2024,10 @@ void CPlayer::Update()
 	case EState::eAttackStrong:
 		UpdateAttackStrong();
 		break;
+		// ダッシュアタック
+	case EState::eAttackDash:
+		UpdateDashAttack();
+		break;
 		// 攻撃終了待ち
 	case EState::eAttackWait:
 		UpdateAttackWait();
@@ -1955,6 +2035,10 @@ void CPlayer::Update()
 		// 強攻撃終了待ち
 	case EState::eAttackStrongWait:
 		UpdateAttackStrongWait();
+		break;
+		// ダッシュアタック終了待ち
+	case EState::eAttackDashWait:
+		UpdateDashAttackWait();
 		break;
 		// 回避開始
 	case EState::eRotate:

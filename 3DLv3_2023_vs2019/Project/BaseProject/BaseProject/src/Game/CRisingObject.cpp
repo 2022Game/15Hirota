@@ -46,7 +46,7 @@ CRisingObject::CRisingObject(const CVector& pos, const CVector& scale,
 	Position(pos);
 	Scale(scale);
 
-	SetColor(CColor(0.0f, 1.0f, 1.0f, 1.0f));
+	SetColor(CColor(0.0f, 1.0f, 0.0f, 1.0f));
 
 }
 
