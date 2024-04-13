@@ -112,6 +112,7 @@ void CStage2::Load()
 	CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
 		CVector(-770.0f, 7.0f, -888.0f),
 		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f,90.0f,0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rotategimmick);
@@ -120,6 +121,7 @@ void CStage2::Load()
 	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
 		CVector(-740.0f, 7.0f, -888.0f),
 		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f,90.0f,0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rotatetimegimmick);

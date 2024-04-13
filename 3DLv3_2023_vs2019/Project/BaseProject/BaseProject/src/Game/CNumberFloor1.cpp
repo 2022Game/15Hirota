@@ -25,9 +25,6 @@ CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale, const CVe
 	, mCase1End(false)
 	, mIsCollision(false)
 {
-	// ‰ŠúˆÊ’u‚ğİ’è
-	mStartPos = Position();
-
 	// ‰ñ”‚Å—‚¿‚é°(3‰ñ)‚Ìƒ‚ƒfƒ‹æ“¾
 	mpModel = CResourceManager::Get<CModel>("Number3");
 
@@ -44,6 +41,9 @@ CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale, const CVe
 	Position(pos);
 	Scale(scale);
 	Rotate(rot);
+
+	// ‰ŠúˆÊ’u‚ğİ’è
+	mStartPos = Position();
 
 	mStateStep = 0;
 }
@@ -203,7 +203,7 @@ void CNumberFloor1::UpdateFalling()
 		static const float fall = 10.0f;
 		mMoveSpeed = CVector(0.0f, -fall * Time::DeltaTime(), 0.0f);
 		Position(Position() + mMoveSpeed);
-		if (Position().Y() <= -20.0f)
+		if (Position().Y() <= mStartPos.Y() - 30.0f)
 		{
 			mFallingSwitch++;
 			Position(mStartPos);

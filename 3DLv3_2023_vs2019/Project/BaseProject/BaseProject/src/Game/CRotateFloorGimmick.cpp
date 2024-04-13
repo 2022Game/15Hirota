@@ -6,7 +6,7 @@
 #define ROTATE_TIME 0.5f
 
 // コンストラクタ
-CRotateFloorGimmick::CRotateFloorGimmick(const CVector& pos, const CVector& scale,
+CRotateFloorGimmick::CRotateFloorGimmick(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
 	: CObjectBase(ETag::eField, ETaskPriority::eRotate, 0, ETaskPauseType::eGame)
 	, mState(EState::Idle)
@@ -45,6 +45,7 @@ CRotateFloorGimmick::CRotateFloorGimmick(const CVector& pos, const CVector& scal
 
 	Position(pos);
 	Scale(scale);
+	Rotate(rot);
 
 	// 初期位置を設定
 	mStartPos = Position();

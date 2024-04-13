@@ -16,7 +16,7 @@ public:
 	/// <param name="scale">大きさ</param>
 	/// <param name="reactionTag">触れると反応するオブジェクトのタグ</param>
 	/// <param name="reactionLayer">触れると反応するオブジェクトのレイヤー</param>
-	CRotateFloorTimeGimmick(const CVector& pos, const CVector& scale,
+	CRotateFloorTimeGimmick(const CVector& pos, const CVector& scale, const CVector& rot,
 		ETag reactionTag, ELayer reactionLayer);
 
 	// デストラクタ

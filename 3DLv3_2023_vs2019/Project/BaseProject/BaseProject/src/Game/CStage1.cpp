@@ -116,14 +116,6 @@ void CStage1::Load()
 	wiremeshmoveWall->Scale(8.0f, 8.0f, 8.0f);
 	AddTask(wiremeshmoveWall);
 
-	// 回転する床ギミック(常に)
-	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
-		CVector(216.0f, 112.0f, -18.0f),
-		CVector(6.0f, 6.0f, 6.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rotatetimegimmick);
-
 	// ずっと回転するモデル
 	CRotationg* rotationg = new CRotationg
 	(
@@ -182,19 +174,42 @@ void CStage1::Load()
 		CVector(0.0f, 90.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector numberfloor1Pos = CVector(1340.0f, 300.0f, -55.0f);
-	if (numberfloor1 != nullptr)
-	{
-		numberfloor1->SetStartPosition(numberfloor1Pos);
-	}
 	AddTask(numberfloor1);
+
+	// 回数オブジェクト2
+	CNumberFloor1* numberfloor2 = new CNumberFloor1
+	(
+		CVector(1352.0f, 318.0f, -209.0f),
+		CVector(4.0f, 3.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(numberfloor2);
+
+	// 回転する床ギミック(常に)
+	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
+		CVector(216.0f, 112.0f, -18.0f),
+		CVector(2.5f, 2.5f, 2.5f),
+		CVector(90.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rotatetimegimmick);
+
+	// 回転する床ギミック(常に)
+	CRotateFloorTimeGimmick* rotatetimegimmick2 = new CRotateFloorTimeGimmick(
+		CVector(1400.0f, 330.0f, -209.0f),
+		CVector(2.5f, 2.5f, 2.5f),
+		CVector(0.0f,0.0f,90.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rotatetimegimmick2);
 
 	// セーブポイント
 	CSavePoint* savepoint = new CSavePoint
 	(
 		CVector(1293.0f, 318.0f, -210.0f),
 		CVector(8.0f, 8.0f, 8.0f),
-		CVector(0.0f, 0.0f, 0.0f)
+		CVector(0.0f, 10.0f, 0.0f)
 	);
 	AddTask(savepoint);
 
@@ -238,7 +253,7 @@ void CStage1::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(1098.0f, 150.0f, -441.0f);	//-150.0f, 140.0f, -5.3f
+	CVector playerPos = CVector(1293.0f, 360.0f, -210.0f);	//-150.0f, 140.0f, -5.3f
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

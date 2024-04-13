@@ -18,7 +18,7 @@ public:
 	/// <param name="rot">回転</param>
 	/// <param name="reactionTag">触れると反応するオブジェクトのタグ</param>
 	/// <param name="reactionLayer">触れると反応するオブジェクトのレイヤー</param>
-	CRotateFloorGimmick(const CVector& pos, const CVector& scale,
+	CRotateFloorGimmick(const CVector& pos, const CVector& scale, const CVector& rot,
 		ETag reactionTag, ELayer reactionLayer);
 
 	// デストラクタ
