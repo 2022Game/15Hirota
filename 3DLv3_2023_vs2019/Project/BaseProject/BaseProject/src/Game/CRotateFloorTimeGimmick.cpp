@@ -14,6 +14,7 @@ CRotateFloorTimeGimmick::CRotateFloorTimeGimmick(const CVector& pos, const CVect
 	, mState(EState::Idle)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
+	, mDefaultRot(rot)
 	, mStateStep(0)
 	, mWaitTime(0.0f)
 	, mRotationAngle(0.0f)
@@ -49,7 +50,7 @@ CRotateFloorTimeGimmick::CRotateFloorTimeGimmick(const CVector& pos, const CVect
 
 	Position(pos);
 	Scale(scale);
-	Rotation(rot);
+	Rotation(mDefaultRot);
 
 	// 初期位置を設定
 	mStartPos = Position();
@@ -121,7 +122,7 @@ void CRotateFloorTimeGimmick::UpdateRotate()
 			mRotateEndAngle,
 			per
 		);
-		Rotation(CQuaternion(CVector(0.0f, 0.0f, angleZ)));
+		Rotation(mDefaultRot * CQuaternion(CVector(0.0f, 0.0f, angleZ)));
 		mElapsedTime += Time::DeltaTime();
 
 		// 回転する床の角度が90度以下であれば、
@@ -144,7 +145,7 @@ void CRotateFloorTimeGimmick::UpdateRotate()
 	{
 		mElapsedTime = 0.0f;
 		mWaitTime = WAIT_TIME;
-		Rotation(CQuaternion(CVector(0.0f, 0.0f, mRotateEndAngle)));
+		Rotation(mDefaultRot * CQuaternion(CVector(0.0f, 0.0f, mRotateEndAngle)));
 		ChangeState(EState::Idle);
 	}
 }

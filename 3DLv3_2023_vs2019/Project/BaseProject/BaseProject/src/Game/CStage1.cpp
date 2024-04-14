@@ -190,19 +190,37 @@ void CStage1::Load()
 	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
 		CVector(216.0f, 112.0f, -18.0f),
 		CVector(2.5f, 2.5f, 2.5f),
-		CVector(90.0f, 0.0f, 0.0f),
+		CVector(0.0f, 90.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rotatetimegimmick);
 
 	// 回転する床ギミック(常に)
 	CRotateFloorTimeGimmick* rotatetimegimmick2 = new CRotateFloorTimeGimmick(
-		CVector(1400.0f, 330.0f, -209.0f),
-		CVector(2.5f, 2.5f, 2.5f),
-		CVector(0.0f,0.0f,90.0f),
+		CVector(1450.0f, 340.0f, -209.0f),
+		CVector(3.5f, 3.5f, 3.5f),
+		CVector(0.0f, 90.0f,0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rotatetimegimmick2);
+
+	// 回転する床ギミック(ジャンプ)
+	CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
+		CVector(1500.0f, 360.0f, -209.0f),
+		CVector(2.5f, 2.5f, 2.5f),
+		CVector(0.0f, 90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rotategimmick);
+
+	// 回転する床ギミック(ジャンプ)
+	CRotateFloorGimmick* rotategimmick2 = new CRotateFloorGimmick(
+		CVector(1560.0f, 370.0f, -209.0f),
+		CVector(2.5f, 2.5f, 2.5f),
+		CVector(0.0f, 90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rotategimmick2);
 
 	// セーブポイント
 	CSavePoint* savepoint = new CSavePoint

@@ -76,6 +76,8 @@ private:
 	CVector mMoveSpeed;
 	// ˆÊ’u‚ğİ’è‚·‚é
 	CVector mStartPos;
+	// ‰Šú‰ñ“]’l
+	CQuaternion mDefaultRot;
 
 
 	// •Ï”ŠÖ˜A
