@@ -14,6 +14,9 @@ private:
 	int mValue;					// 現在値
 	int mPreviousValue;
 	float mElapsedTime;
+	bool mGauge;
+	bool mDamaged;
+	bool mStartDamaged;
 	
 public:
 	// コンストラクタ

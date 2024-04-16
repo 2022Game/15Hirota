@@ -574,6 +574,9 @@
     <ClCompile Include="src\Game\CSavePoint.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CTreasureChest.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1054,6 +1057,9 @@
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CSavePoint.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTreasureChest.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>

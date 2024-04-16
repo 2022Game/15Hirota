@@ -51,7 +51,7 @@ CRotateFloorGimmick::CRotateFloorGimmick(const CVector& pos, const CVector& scal
 	// 初期位置を設定
 	mStartPos = Position();
 	
-	SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
+	SetColor(CColor(0.9f, 1.0f, 1.0f, 1.0f));
 }
 
 // デストラクタ
@@ -85,7 +85,7 @@ void CRotateFloorGimmick::UpdateIdle()
 {
 	CPlayer* player = CPlayer::Instance();
 	bool isPlayerJumping = player->IsJumping();
-	if (isPlayerJumping && IsFoundPlayer() && !mIsJumping) {
+	if (isPlayerJumping && /*IsFoundPlayer() &&*/ !mIsJumping) {
 		// プレイヤーがジャンプしているかどうかを使用して判別処理を行う
 		mIsJumping = true;
 		ChangeRotationState(); // 回転状態を切り替え

@@ -116,6 +116,7 @@
     <ClCompile Include="src\Game\CStageSelection.cpp" />
     <ClCompile Include="src\Game\CStageSelectionStage.cpp" />
     <ClCompile Include="src\Game\CStageTime.cpp" />
+    <ClCompile Include="src\Game\CTreasureChest.cpp" />
     <ClCompile Include="src\Game\CTree1.cpp" />
     <ClCompile Include="src\Game\CVanguard.cpp" />
     <ClCompile Include="src\Game\CVanguardGauge.cpp" />
@@ -278,6 +279,7 @@
     <ClInclude Include="src\Game\CStageSelection.h" />
     <ClInclude Include="src\Game\CStageSelectionStage.h" />
     <ClInclude Include="src\Game\CStageTime.h" />
+    <ClInclude Include="src\Game\CTreasureChest.h" />
     <ClInclude Include="src\Game\CTree1.h" />
     <ClInclude Include="src\Game\CVanguard.h" />
     <ClInclude Include="src\Game\CVanguardGauge.h" />

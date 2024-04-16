@@ -34,9 +34,6 @@ CNeedle::CNeedle(const CVector& pos, const CVector& scale, const CVector& rot,
 	, mIsCollision(false)
 	, mIsAttack(false)
 {
-	// 初期位置を設定
-	mStartPos = Position();
-
 	// 針モデル取得
 	mpNeedle = CResourceManager::Get<CModel>("Needle");
 
@@ -77,6 +74,9 @@ CNeedle::CNeedle(const CVector& pos, const CVector& scale, const CVector& rot,
 	Position(pos);
 	Scale(scale);
 	Rotation(rot);
+
+	// 初期位置を設定
+	mStartPos = Position();
 }
 
 // デストラクタ
@@ -267,15 +267,15 @@ CNeedleBase::CNeedleBase(const CVector& pos, const CVector& scale, const CVector
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
 {
-	// 初期位置を設定
-	mStartPos = Position();
-
 	// 針ベースモデル
 	mpNeedleBase = CResourceManager::Get<CModel>("Needlebase");
 
 	Position(pos);
 	Scale(scale);
 	Rotation(rot);
+
+	// 初期位置を設定
+	mStartPos = Position();
 }
 
 // デストラクタ

@@ -16,6 +16,7 @@
 #include "CJumpingObject.h"
 #include "CSavePoint.h"
 #include "CNumberFloor1.h"
+#include "CTreasureChest.h"
 
 
 // コンストラクタ
@@ -77,6 +78,10 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("FlamethrowerTank",		"Field\\Gimmick\\Flamethrower(tank).obj");							// 火炎放射器(タンク)
 	CResourceManager::Load<CModel>("FlamethrowerCol",		"Field\\Gimmick\\Flamethrower(WallCol).obj");						// 火炎放射器(コライダー)
 	CResourceManager::Load<CModel>("SavePoint",				"Field\\Gimmick\\SavePoint.obj");									// セーブポイントモデル
+	CResourceManager::Load<CModel>("TreasureChest",			"Field\\Gimmick\\TreasureChest.obj");								// 宝箱
+	CResourceManager::Load<CModel>("TreasureChestTwo",		"Field\\Gimmick\\TreasureChestTwo.obj");							// 宝箱(蓋)
+	CResourceManager::Load<CModel>("TreasureChestCol",		"Field\\Gimmick\\TreasureChest(FloorCol).obj");						// 宝箱(蓋コライダー)
+	CResourceManager::Load<CModel>("TreasureChestWallCol",	"Field\\Gimmick\\TreasureChest(WallCol).obj");						// 宝箱(壁コライダー)
 
 	// キャラクター関連
 	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");										// ヴァンガード
@@ -169,7 +174,7 @@ void CStage1::Load()
 	// 回数オブジェクト
 	CNumberFloor1* numberfloor1 = new CNumberFloor1
 	(
-		CVector(1340.0f, 300.0f, -55.0f),
+		CVector(1340.0f, 300.0f, -45.0f),
 		CVector(4.0f, 3.0f, 4.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
@@ -186,7 +191,7 @@ void CStage1::Load()
 	);
 	AddTask(numberfloor2);
 
-	// 回転する床ギミック(常に)
+	// 回転する床ギミック(時間)
 	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
 		CVector(216.0f, 112.0f, -18.0f),
 		CVector(2.5f, 2.5f, 2.5f),
@@ -195,7 +200,7 @@ void CStage1::Load()
 	);
 	AddTask(rotatetimegimmick);
 
-	// 回転する床ギミック(常に)
+	// 回転する床ギミック(時間)
 	CRotateFloorTimeGimmick* rotatetimegimmick2 = new CRotateFloorTimeGimmick(
 		CVector(1450.0f, 340.0f, -209.0f),
 		CVector(3.5f, 3.5f, 3.5f),
@@ -207,7 +212,7 @@ void CStage1::Load()
 	// 回転する床ギミック(ジャンプ)
 	CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
 		CVector(1500.0f, 360.0f, -209.0f),
-		CVector(2.5f, 2.5f, 2.5f),
+		CVector(3.3f, 3.3f, 3.3f),
 		CVector(0.0f, 90.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
@@ -216,11 +221,30 @@ void CStage1::Load()
 	// 回転する床ギミック(ジャンプ)
 	CRotateFloorGimmick* rotategimmick2 = new CRotateFloorGimmick(
 		CVector(1560.0f, 370.0f, -209.0f),
-		CVector(2.5f, 2.5f, 2.5f),
+		CVector(3.3f, 3.3f, 3.3f),
 		CVector(0.0f, 90.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rotategimmick2);
+
+	// 回転する床ギミック(ジャンプ)
+	CRotateFloorGimmick* rotategimmick3 = new CRotateFloorGimmick(
+		CVector(1620.0f, 400.0f, -209.0f),
+		CVector(3.3f, 3.3f, 3.3f),
+		CVector(0.0f, 90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rotategimmick3);
+
+	// 回転する床ギミック(ジャンプ)
+	CRotateFloorGimmick* rotategimmick4 = new CRotateFloorGimmick(
+		CVector(1680.0f, 400.0f, -209.0f),
+		CVector(3.3f, 3.3f, 3.3f),
+		CVector(0.0f, 90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rotategimmick4);
+
 
 	// セーブポイント
 	CSavePoint* savepoint = new CSavePoint

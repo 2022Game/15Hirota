@@ -32,7 +32,7 @@
 
 #define VERTICAL_SHAKE_AMOUNT 20.0f
 
-#define CHANGE_SPEED 1.0f
+#define CHANGE_SPEED 0.2f
 
 #define DAMAGE_DELAY 0.1f
 
@@ -41,6 +41,9 @@ CUIGauge::CUIGauge()
     : mMaxValue(100)
     , mValue(100)
     , mElapsedTime(0.0f)
+	, mGauge(false)
+	, mDamaged(false)
+	, mStartDamaged(false)
 {
 	mpFrameImage = new CImage("PFrame");
 	mpFrameImage->SetSize(FRAME_SIZE_X, FRAME_SIZE_Y);
@@ -74,16 +77,38 @@ void CUIGauge::Update()
 	// HPの割合でバーの色を変更
 	CColor color2;
 	// HPが減少している場合は赤色に設定
-	if (targetPercent < currentPercent) {
-
-		color2 = CColor(0.8f, 0.3f, 0.0f);
+	if (targetPercent < currentPercent)
+	{
+		mGauge = true;
+		color2 = CColor(0.9f, 0.2f, 0.0f); // 赤色に設定
+		if (mGauge)
+		{
+			// 2秒経過後にサイズを更新
+			// バーのサイズを更新
+			CVector2 size = CVector2(BAR_SIZE_X * newPercent, BAR_SIZE_Y);
+			mpDecreaseBarImage->SetSize(size);
+		}
 	}
+
+	// サイズが目標に達した場合、mElapsedTimeをリセット
+	if (fabs(targetPercent - currentPercent) < 0.001000)
+	{
+		mGauge = false;
+		mElapsedTime = 0.0f;
+	}
+
+	/*CDebugPrint::Print("mGauge: %s\n", mGauge ? "true" : "false");
+	CDebugPrint::Print("mDamaged: %s\n", mDamaged ? "true" : "false");
+	CDebugPrint::Print("mStartDamaged: %s\n", mStartDamaged ? "true" : "false");
+	CDebugPrint::Print("mElapsedTime: %f\n", mElapsedTime);
+	CDebugPrint::Print("targetPercent: %f\n", targetPercent);
+	CDebugPrint::Print("currentPercent: %f\n", currentPercent);*/
+
 	// 差分に色を設定
 	mpDecreaseBarImage->SetColor(color2);
+
 	CVector2 position = mPosition + CVector2(BARPOSITION_X, BARPOSITION_Y);
 	mpDecreaseBarImage->SetPos(position);
-	CVector2 size = CVector2(BAR_SIZE_X * newPercent, BAR_SIZE_Y);
-	mpDecreaseBarImage->SetSize(size);
 
 
 	// フレーム位置を設定
@@ -96,15 +121,16 @@ void CUIGauge::Update()
 
 	
 	// HPの割合でゲージの色を変更
-	CColor color;
-	// 10%以下
-	if (percent <= 0.2f) color = CColor(1.0f, 0.0f, 0.0f);
-	// 50%以下
-	else if (percent <= 0.5f) color = CColor(0.9f, 0.3f, 0.5f);
-	// それ以外
-	else color = CColor(0.0f, 1.0f, 0.0f);
-	// ゲージに色を設定
-	mpBarImage->SetColor(color);
+	//CColor color;
+	//// 10%以下
+	//if (percent <= 0.2f) color = CColor(1.0f, 0.0f, 0.0f);
+	//// 50%以下
+	//else if (percent <= 0.5f) color = CColor(0.9f, 0.3f, 0.5f);
+	//// それ以外
+	//else color = CColor(0.0f, 1.0f, 0.0f);
+	//// ゲージに色を設定
+	//mpBarImage->SetColor(color);
+	mpBarImage->SetColor(CColor(0.0f, 1.0f, 0.0f));
 
     CVector2 size2 = CVector2(BAR_SIZE_X * percent, BAR_SIZE_Y);
     mpBarImage->SetSize(size2);

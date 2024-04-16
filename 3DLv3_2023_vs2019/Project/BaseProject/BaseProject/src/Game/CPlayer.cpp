@@ -191,7 +191,7 @@ CPlayer::CPlayer()
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::ePlayer,
-		0.4f
+		0.5f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
