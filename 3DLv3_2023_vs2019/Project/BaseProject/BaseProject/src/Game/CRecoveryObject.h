@@ -27,15 +27,6 @@ public:
 	// 回復終了
 	void RecoverEnd();
 
-	// 移動処理
-	// 手前
-	void MoveFront();
-	// 奥
-	void MoveBack();
-	// 右
-	void MoveLight();
-	// 左
-	void MoveReft();
 
 	// 更新処理
 	void Update();
@@ -46,6 +37,16 @@ public:
 	//CMatrix Matrix() const override;
 
 private:
+
+	// 移動処理
+	// 手前
+	void MoveFront();
+	// 奥
+	void MoveBack();
+	// 右
+	void MoveRight();
+	// 左
+	void MoveLeft();
 
 	// モデル・素材関連
 	// 回復モデル

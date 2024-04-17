@@ -30,9 +30,9 @@ public:
 	// 奥
 	void MoveBack();
 	// 右
-	void MoveLight();
+	void MoveRight();
 	// 左
-	void MoveReft();
+	void MoveLeft();
 
 	void OnTouch(CPlayer* player);
 
@@ -46,12 +46,15 @@ public:
 	//CMatrix Matrix() const override;
 
 private:
+
+	void UpdateGet();
 	
 	// モデル・素材関連
 	// 無敵アイテムのモデル
 	CModel* mpInvincibleModel;
 	// 無敵アイテムのコライダー
 	CColliderSphere* mpInvincibleCol;
+	CColliderSphere* mpFieldCol;
 
 	// 無敵アイテムを取った時のSE
 	CSound* mpInvincibleSE;
@@ -64,6 +67,7 @@ private:
 	CVector mMoveSpeed;
 	// 見る方向
 	CVector mTargetDir;
+	CVector mStartPos;
 
 
 	// 変数関連

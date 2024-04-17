@@ -66,6 +66,7 @@ void CRecoveryObject::Collision(CCollider* self, CCollider* other, const CHitInf
 			// すでに回復済みのキャラでなければ
 			if (!IsAttachHitObj(player) && !mRecoveryUsed)
 			{
+				//CPlayer* player = CPlayer::Instance();
 				mpRecoberSE->Play(1.0f, false, 0.0f);
 				mRecoveryUsed = true;
 				// 回復させる
@@ -145,7 +146,7 @@ void CRecoveryObject::MoveBack()
 	mMoveVector *= Time::DeltaTime();
 }
 
-void CRecoveryObject::MoveLight()
+void CRecoveryObject::MoveRight()
 {
 	// 速度を設定
 	float moveSpeed = ITEM_SPEED;
@@ -161,7 +162,7 @@ void CRecoveryObject::MoveLight()
 	mMoveVector *= Time::DeltaTime();
 }
 
-void CRecoveryObject::MoveReft()
+void CRecoveryObject::MoveLeft()
 {
 	// 速度を設定
 	float moveSpeed = ITEM_SPEED;
@@ -215,11 +216,11 @@ void CRecoveryObject::Update()
 			break;
 		case 2:
 			// 右に移動
-			MoveLight();
+			MoveRight();
 			break;
 		case 3:
 			// 左に移動
-			MoveReft();
+			MoveLeft();
 			break;
 		default:
 			break;

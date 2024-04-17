@@ -21,6 +21,7 @@ CInvincible::CInvincible()
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mTargetDir(0.0f, 0.0f, 1.0f)
 	, mMoveVector(0.0f, 0.0f, 0.0f)
+	, mStartPos(0.0f, 0.0f, 0.0f)
 	, mElapsedTime(0.0f)
 	, mIsGround(false)
 	, mInvincibleUsed(false)
@@ -46,14 +47,24 @@ CInvincible::CInvincible()
 	mpInvincibleCol->SetCollisionLayers({ ELayer::ePlayer, ELayer::eBlockCol, ELayer::eField,ELayer::eFieldWall });
 	mpInvincibleCol->Position(0.0f, 1.0f, 0.0f);
 
+	// 無敵アイテムコライダー作成
+	mpFieldCol = new CColliderSphere
+	(
+		this, ELayer::eInvincbleCol,
+		1.5f
+	);
+	mpFieldCol->SetCollisionTags({ ETag::eRideableObject, ETag::eField, });
+	mpFieldCol->SetCollisionLayers({ ELayer::eField,ELayer::eFieldWall });
+
 	// 最初はコライダーをオンにしておく
 	mpInvincibleCol->SetEnable(true);
-
+	mpFieldCol->SetEnable(true);
 }
 
 CInvincible::~CInvincible()
 {
 	SAFE_DELETE(mpInvincibleCol);
+	SAFE_DELETE(mpFieldCol);
 }
 
 
@@ -69,25 +80,11 @@ void CInvincible::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 			// すでに無敵のキャラでなければ
 			if (!IsAttachHitObjInvincible(player) && !mInvincibleUsed)
 			{
-				//mpInvincibleSE->Play(1.0f, false, 0.0f);
 				mInvincibleUsed = true;
-				// 無敵状態(コライダーオフ)
-				//player->TakeInvincible();
-
-				// 無敵リストに追加
+				mpInvincibleCol->SetEnable(false);
 				AddAttachHitObjInvincible(player);
-
-				if (mInvincibleUsed)
-				{
-					Kill();
-				}
+				UpdateGet();
 			}
-		}
-		else if (other->Layer() == ELayer::eField)
-		{
-			mIsGround = true;
-			mMoveSpeed.Y(0.0f);
-			Position(Position() + hit.adjust);
 		}
 		else if (other->Layer() == ELayer::eBlockCol)
 		{
@@ -100,8 +97,17 @@ void CInvincible::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 			Position(Position() + hit.adjust);
 		}
 	}
-}
 
+	if (self == mpFieldCol)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mIsGround = true;
+			mMoveSpeed.Y(0.0f);
+			Position(Position() + hit.adjust);
+		}
+	}
+}
 
 // 移動処理
 void CInvincible::MoveFront()
@@ -128,7 +134,7 @@ void CInvincible::MoveBack()
 	mMoveVector *= Time::DeltaTime();
 }
 
-void CInvincible::MoveLight()
+void CInvincible::MoveRight()
 {
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
@@ -144,7 +150,29 @@ void CInvincible::MoveLight()
 	mMoveVector *= Time::DeltaTime();
 }
 
-void CInvincible::MoveReft()
+// アイテムを取った後の処理
+void CInvincible::UpdateGet()
+{
+	mMoveVector = CVector::zero;
+	mMoveSpeed = CVector::zero;
+	// 速度を設定
+	float moveSpeed = INVINCIBLE_SPEED;
+
+	// mTargetDir を横方向に変更（右に動く）
+	CVector moveDirection(mTargetDir.Z(), 0.0f, mTargetDir.X());
+	moveDirection.Normalize();
+
+	// mTargetDir に速度を掛けて移動ベクトルを得る
+	mMoveVector = moveDirection * moveSpeed;
+
+	// deltaTime を考慮して移動量を計算
+	mMoveVector *= Time::DeltaTime();
+
+
+	// ここでkillを呼ぶ予定
+}
+
+void CInvincible::MoveLeft()
 {
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
@@ -171,58 +199,62 @@ void CInvincible::OnTouch(CPlayer* player)
 
 void CInvincible::Update()
 {
+	CDebugPrint::Print("mMoveVector:%f\n", Position().X());
 	// 重力
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
-
-	if (mIsGround)
-	{
-		mMoveSpeed += CVector(0.0f, BOUNCE_FORCE, 0.0f);
-		mIsGround = false;
-	}
-
-	// 回転
-	float rot = 1.0f;
-	Rotate(0.0f, rot, 0.0f);
 
 	// タイム加算
 	mElapsedTime += Time::DeltaTime();
 	
-	// タイムが2秒以下だったら
-	if (mElapsedTime >= TIMERETURN)
+	if (!mInvincibleUsed)
 	{
-		// カウントを増加
-		mSwitchCounter++;
-		// カウントが15回になるとKill処理を実行
-		if (mSwitchCounter == SWITCHCOUNTER)
+		if (mIsGround)
 		{
-			Kill();
-		}
-		// ランダムに移動させる処理
-		int random = Math::Rand(0, 3);
-		switch (random)
-		{
-		case 0:
-			// 手前に移動
-			MoveFront();
-			break;
-		case 1:
-			// 奥に移動
-			MoveBack();
-			break;
-		case 2:
-			// 右に移動
-			MoveLight();
-			break;
-		case 3:
-			// 左に移動
-			MoveReft();
-			break;
-		default:
-			break;
+			mMoveSpeed += CVector(0.0f, BOUNCE_FORCE, 0.0f);
+			mIsGround = false;
 		}
 
-		// 処理が一つ終わるとタイムを初期化
-		mElapsedTime = 0.0f;
+		// 回転
+		float rot = 1.0f;
+		Rotate(0.0f, rot, 0.0f);
+
+		// タイムが2秒以下だったら
+		if (mElapsedTime >= TIMERETURN)
+		{
+			// カウントを増加
+			mSwitchCounter++;
+			// カウントが15回になるとKill処理を実行
+			if (mSwitchCounter == SWITCHCOUNTER)
+			{
+				Kill();
+			}
+			// ランダムに移動させる処理
+			int random = Math::Rand(0, 3);
+			switch (random)
+			{
+			case 0:
+				// 手前に移動
+				MoveFront();
+				break;
+			case 1:
+				// 奥に移動
+				MoveBack();
+				break;
+			case 2:
+				// 右に移動
+				MoveRight();
+				break;
+			case 3:
+				// 左に移動
+				MoveLeft();
+				break;
+			default:
+				break;
+			}
+
+			// 処理が一つ終わるとタイムを初期化
+			mElapsedTime = 0.0f;
+		}
 	}
 
 	// 移動

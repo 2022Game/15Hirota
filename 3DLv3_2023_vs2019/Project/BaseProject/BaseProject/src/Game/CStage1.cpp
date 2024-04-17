@@ -17,6 +17,8 @@
 #include "CSavePoint.h"
 #include "CNumberFloor1.h"
 #include "CTreasureChest.h"
+#include "CHatenaBlock.h"
+#include "CRengaBlock.h"
 
 
 // コンストラクタ
@@ -81,7 +83,17 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("TreasureChest",			"Field\\Gimmick\\TreasureChest.obj");								// 宝箱
 	CResourceManager::Load<CModel>("TreasureChestTwo",		"Field\\Gimmick\\TreasureChestTwo.obj");							// 宝箱(蓋)
 	CResourceManager::Load<CModel>("TreasureChestCol",		"Field\\Gimmick\\TreasureChest(FloorCol).obj");						// 宝箱(蓋コライダー)
-	CResourceManager::Load<CModel>("TreasureChestWallCol",	"Field\\Gimmick\\TreasureChest(WallCol).obj");						// 宝箱(壁コライダー)
+	CResourceManager::Load<CModel>("TreasureChestWallCol",	"Field\\Gimmick\\TreasureChest(WallCol).obj");					// 宝箱(壁コライダー)
+
+
+	CResourceManager::Load<CModel>("HatenaBlock",			 "Field\\Object\\hatena.obj");						// ハテナブロック(アイテム保有)
+	CResourceManager::Load<CModel>("HatenaBlockAfter",		 "Field\\Object\\UsedHatenaBlock.obj");				// ハテナブロック(アイテム不保有)
+	CResourceManager::Load<CModel>("RengaBlock",			 "Field\\Object\\RengaBlock.obj");					// レンガブロック
+	
+	CResourceManager::Load<CModel>("Heart",					"Item\\StatusItem\\Heart.obj");				// 回復オブジェクト
+	CResourceManager::Load<CModel>("Star",					"Item\\StatusItem\\Star.obj");				// 無敵オブジェクト
+	CResourceManager::Load<CModel>("Medal",					"Item\\StatusItem\\Medal.obj");				// 得点オブジェクト
+	CResourceManager::Load<CModel>("Healing",				"Item\\StatusItem\\HealingItem.obj");		// 回復薬オブジェクト
 
 	// キャラクター関連
 	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");										// ヴァンガード
@@ -286,25 +298,38 @@ void CStage1::Load()
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	// 宝箱
-	CTreasureChest* treasure = new CTreasureChest
-	(
-		CVector(1300.0f, 319.0f, -210.0f),
-		CVector(4.0f, 4.0f, 4.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(treasure);
-	// 宝箱蓋
-	CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
-	(
-		CVector(1300.0f, 319.0f, -210.0f),
-		CVector(4.0f, 4.0f, 4.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(treasureTwo);
+	//// 宝箱
+	//CTreasureChest* treasure = new CTreasureChest
+	//(
+	//	CVector(1300.0f, 319.0f, -210.0f),
+	//	CVector(4.0f, 4.0f, 4.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(treasure);
+	//// 宝箱蓋
+	//CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
+	//(
+	//	CVector(1300.0f, 319.0f, -210.0f),
+	//	CVector(4.0f, 4.0f, 4.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(treasureTwo);
 
+
+	// ハテナブロック
+	CRengaBlock* hatena = new CRengaBlock(
+		CVector(1280.0f, 320.0f, -210.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector hatenaPos = CVector(1280.0f, 320.0f, -210.0f);
+	if (hatena != nullptr)
+	{
+		hatena->SetStartPosition(hatenaPos);
+	}
+	AddTask(hatena);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
