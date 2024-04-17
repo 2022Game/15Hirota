@@ -7,6 +7,7 @@
 #include "CNeedle.h"
 #include "CVanguard.h"
 #include "CFixedFlamethrower.h"
+#include "CTreasureChest.h"
 
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
@@ -30,6 +31,10 @@ void CStageSelectionStage::Load()
 	CResourceManager::Load<CModel>("FlamethrowerModel", "Field\\Gimmick\\Flamethrower(foundation).obj");					// 火炎放射器(土台)
 	CResourceManager::Load<CModel>("FlamethrowerTank", "Field\\Gimmick\\Flamethrower(tank).obj");							// 火炎放射器(タンク)
 	CResourceManager::Load<CModel>("FlamethrowerCol", "Field\\Gimmick\\Flamethrower(WallCol).obj");						// 火炎放射器(コライ
+	CResourceManager::Load<CModel>("TreasureChest", "Field\\Gimmick\\TreasureChest.obj");								// 宝箱
+	CResourceManager::Load<CModel>("TreasureChestTwo", "Field\\Gimmick\\TreasureChestTwo.obj");							// 宝箱(蓋)
+	CResourceManager::Load<CModel>("TreasureChestCol", "Field\\Gimmick\\TreasureChest(FloorCol).obj");						// 宝箱(蓋コライダー)
+	CResourceManager::Load<CModel>("TreasureChestWallCol", "Field\\Gimmick\\TreasureChest(WallCol).obj");						// 宝箱(壁コライダー)
 	//CResourceManager::Load<CModel>("Needle", "Field\\Gimmick\\NeedleObject(needle).obj");		// 針オブジェクトの針
 	//CResourceManager::Load<CModel>("Needlebase", "Field\\Gimmick\\NeedleObject(base).obj");		// 針オブジェクトの土台
 	//CResourceManager::Load<CModel>("NeedleCol", "Field\\Gimmick\\NeedleObjectCol.obj");			// 針オブジェクトのコライダー
@@ -54,13 +59,32 @@ void CStageSelectionStage::Load()
 
 	// 火炎放射器モデル
 	// 右方向
-	CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
+	/*CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
 	(
 		CVector(-10.0f, 12.0f, 0.0f),
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
-	AddTask(flamethrower2);
+	AddTask(flamethrower2);*/
+
+	// 宝箱
+	CTreasureChest* treasure = new CTreasureChest
+	(
+		CVector(-10.0f, 11.0f, 0.0f),
+		CVector(7.0f, 7.0f, 7.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasure);
+	// 宝箱蓋
+	CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
+	(
+		CVector(-10.0f, 15.8f, 0.0f),
+		CVector(7.0f, 7.0f, 7.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasureTwo);
 
 
 	//// 針モデル

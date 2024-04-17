@@ -5,6 +5,7 @@
 #include "CColliderSphere.h"
 #include "CColliderMesh.h"
 
+// 宝箱
 class CTreasureChest : public CObjectBase
 {
 public:
@@ -17,16 +18,6 @@ public:
 	void Update() override;
 	void Render() override;
 private:
-	enum class EState
-	{
-		Idle,
-		GetItem,
-	};
-	void UpdateIdle();
-	void UpdateGetItem();
-	EState mState;
-	void ChangeState(EState state);
-
 
 	CModel* mpChest;
 	CColliderSphere* mpChestSphere;
@@ -37,16 +28,13 @@ private:
 	// 宝箱モデルの初期位置
 	CVector mStartPos;
 
-	// 変数関連
-	// 状態内のステップ
-	int mStateStep;
-	// 待ち時間
-	float mWaitTime;
+
 	ETag mReactionTag;
 	ELayer mReactionLayer;
 
 };
 
+// 宝箱の蓋
 class CTreasureChestTwo : public CObjectBase
 {
 public:
@@ -54,17 +42,19 @@ public:
 		ETag reactionTag, ELayer reactionLayer);
 	~CTreasureChestTwo();
 
-	void Update();
-	void Render();
+	void Update() override;
+	void Render() override;
 
 private:
 	enum class EState
 	{
 		Idle,
 		Two,
+		End,
 	};
 	void UpdateIdle();
 	void UpdateTwo();
+	void UpdateEnd();
 	EState mState;
 	void ChangeState(EState state);
 
@@ -77,6 +67,8 @@ private:
 	// ベクトル関連
 	// 宝箱モデルの初期位置
 	CVector mStartPos;
+	// 初期回転値
+	CQuaternion mDefaultRot;
 
 	// 変数関連
 	// 状態内のステップ
@@ -89,5 +81,7 @@ private:
 	float mRotateEndAngle;
 	ETag mReactionTag;
 	ELayer mReactionLayer;
+
+	bool IsFoundPlayer() const;
 };
 #endif

@@ -1,15 +1,17 @@
 #include "CTreasureChest.h"
 #include "CCollisionManager.h"
+#include "CPlayer.h"
+#include "CInput.h"
+#include "Maths.h"
 
 #define WAIT_TIME 5.0f
+#define FOV_ANGLE 100.0f
+#define ROTATE_TIME 0.5f
 
 CTreasureChest::CTreasureChest(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
-	: mStateStep(0)
-	, mReactionTag(reactionTag)
+	: mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
-	, mWaitTime(0.0f)
-	, mStartPos(0.0f, 0.0f, 0.0f)
 {
 	// 宝箱モデル
 	mpChest =  CResourceManager::Get<CModel>("TreasureChest");
@@ -22,11 +24,6 @@ CTreasureChest::CTreasureChest(const CVector& pos, const CVector& scale, const C
 	// コライダーの位置を調整
 	mpChestCol->SetCollisionTags({ ETag::ePlayer});
 	mpChestCol->SetCollisionLayers({ ELayer::ePlayer});
-
-	// 宝箱(蓋)モデル
-	CResourceManager::Get<CModel>("TreasureChestlid");
-
-	ChangeState(EState::Idle);
 
 	Position(pos);
 	Scale(scale);
@@ -47,36 +44,9 @@ void CTreasureChest::Collision(CCollider* self, CCollider* other, const CHitInfo
 {
 }
 
-void CTreasureChest::ChangeState(EState state)
-{
-	mState = state;
-	mStateStep = 0;
-	mWaitTime = WAIT_TIME;
-}
-
-// 待機状態
-void CTreasureChest::UpdateIdle()
-{
-}
-
-// アイテムゲット状態
-void CTreasureChest::UpdateGetItem()
-{
-}
-
 void CTreasureChest::Update()
 {
-	switch (mState)
-	{
-	case 
-	EState::Idle:
-		UpdateIdle();
-		break;
-	case 
-	EState::GetItem:
-		UpdateGetItem();
-		break;
-	}
+	
 }
 
 void CTreasureChest::Render()
@@ -95,8 +65,16 @@ CTreasureChestTwo::CTreasureChestTwo(const CVector& pos, const CVector& scale, c
 	, mRotateEndAngle(0.0f)
 	, mStartPos(0.0f, 0.0f, 0.0f)
 {
-	// 宝箱モデル
+	// 宝箱蓋モデル
 	mpChestTwo =  CResourceManager::Get<CModel>("TreasureChestTwo");
+
+	ChangeState(EState::Idle);
+
+	Position(pos);
+	Scale(scale);
+	Rotation(mDefaultRot);
+
+	mStartPos = Position();
 }
 
 CTreasureChestTwo::~CTreasureChestTwo()
@@ -109,21 +87,102 @@ void CTreasureChestTwo::ChangeState(EState state)
 	mStateStep = 0;
 }
 
-
+// 待機状態
 void CTreasureChestTwo::UpdateIdle()
 {
+	CPlayer* player = CPlayer::Instance();
+	// プレイヤーを見つけた状態
+	// Rキーを押すとアイテムを入手して宝箱の蓋を開ける処理
+	if (IsFoundPlayer())
+	{
+		if (CInput::PushKey('T'))
+		{
+			int Rondom = Math::Rand(1, 2);
+			// 回復アイテム
+			if (Rondom == 1)
+			{
+				player->AddItem(CPlayer::ItemType::HEALING);
+			}
+			// 無敵アイテム
+			else if (Rondom == 2)
+			{
+				player->AddItem(CPlayer::ItemType::INVINCIBLE);
+			}
+			mWaitTime = 0.0f;
+			mRotateStartAngle = 0.0f;
+			mRotateEndAngle = 85.0f;
+			ChangeState(EState::Two);
+		}
+	}
 }
 
+// 宝箱の蓋を開く処理
 void CTreasureChestTwo::UpdateTwo()
 {
+	if (mWaitTime < ROTATE_TIME)
+	{
+		// 回転開始時の角度から徐々に回転終了時の角度へ回転する
+		float per = mWaitTime / ROTATE_TIME;
+		float angleZ = Math::Lerp
+		(
+			mRotateStartAngle,
+			mRotateEndAngle,
+			per
+		);
+		Rotation(mDefaultRot * CQuaternion(CVector(0.0f, 0.0f, angleZ)));
+		mWaitTime += Time::DeltaTime();
+	}
+	else
+	{
+		mWaitTime = 0.0f;
+		Rotation(mDefaultRot * CQuaternion(CVector(0.0f, 0.0f, mRotateEndAngle)));
+		ChangeState(EState::End);
+	}
 }
 
+void CTreasureChestTwo::UpdateEnd()
+{
+}
+
+// 更新
 void CTreasureChestTwo::Update()
 {
-
+	switch (mState)
+	{
+	case EState::Idle:
+		UpdateIdle();
+		break;
+	case EState::Two:
+		UpdateTwo();
+		break;
+	case EState::End:
+		UpdateEnd();
+		break;
+	}
 }
 
+// プレイヤー追跡
+bool CTreasureChestTwo::IsFoundPlayer() const
+{
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector object = Position();
+
+	// プレイヤーとの距離を計算する
+	float distance = (playerPos - object).Length();
+	const float detectionRadius = 20.0f;
+
+	// プレイヤーとの距離が検出半径以内であれば、プレイヤーを認識する
+	if (distance <= detectionRadius)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+// 描画
 void CTreasureChestTwo::Render()
 {
-
+	mpChestTwo->SetColor(mColor);
+	mpChestTwo->Render(Matrix());
 }

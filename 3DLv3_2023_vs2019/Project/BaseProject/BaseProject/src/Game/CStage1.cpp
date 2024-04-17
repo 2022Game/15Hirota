@@ -283,6 +283,31 @@ void CStage1::Load()
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	// 宝箱
+	CTreasureChest* treasure = new CTreasureChest
+	(
+		CVector(1300.0f, 319.0f, -210.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasure);
+	// 宝箱蓋
+	CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
+	(
+		CVector(1300.0f, 319.0f, -210.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasureTwo);
+
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	// キャラクター
 
 	// ヴァンガード
