@@ -8,7 +8,7 @@
 // 重力
 #define GRAVITY 0.0625f
 // 無敵アイテムのスピード
-#define INVINCIBLE_SPEED 45.0f
+#define INVINCIBLE_SPEED 25.0f
 // 無敵アイテムの時間切り替え処理
 #define TIMERETURN 2.0f
 // 無敵アイテムの跳ねる速度
@@ -164,25 +164,24 @@ void CInvincible::UpdateGet()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
-	CVector moveDirection = (CVector::right).Normalized();
-
-	CPlayer* player = CPlayer::Instance();
-	if (player->Position().X() > Position().X())
-	{
-
-	}
-	else
-	{
-		moveDirection *= -1.0f;
-	}
+	// rightにしたら左に移動する
+	CVector moveDirection = (CVector::left).Normalized();
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
-	mMoveVector = moveDirection * moveSpeed;
+	mMoveVector = moveDirection * moveSpeed * Time::DeltaTime();
 
-	// 移動量を計算
-	mMoveVector *= Time::DeltaTime();
+	// 現在のX座標を計算
+	float currentX = mStartPos.X() + mMoveVector.X();
 
-	// ここでkillを呼ぶ予定
+	// X座標が50.0fを超えるかどうかを確認
+	if (currentX > 50.0f)
+	{
+		Kill();
+	}
+
+	// 現在位置を更新
+	mStartPos += mMoveVector;
+	CDebugPrint::Print("currentX:%f\n", currentX);
 }
 
 // 左に移動する

@@ -333,16 +333,42 @@ void CStage1::Load()
 	}
 	AddTask(hatena);
 
+	// ハテナブロック
+	CRengaBlock* hatena1 = new CRengaBlock(
+		CVector(-19.0f, 322.0f, -1243.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector hatenaPos1 = CVector(-19.0f, 322.0f, -1243.0f);
+	if (hatena1 != nullptr)
+	{
+		hatena1->SetStartPosition(hatenaPos1);
+	}
+	AddTask(hatena1);
+
+	// ハテナブロック
+	CRengaBlock* hatena2 = new CRengaBlock(
+		CVector(9.0f, 322.0f, -1243.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	CVector hatenaPos2 = CVector(9.0f, 322.0f, -1243.0f);
+	if (hatena2 != nullptr)
+	{
+		hatena2->SetStartPosition(hatenaPos2);
+	}
+	AddTask(hatena2);
+
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	// キャラクター
 
-	// ヴァンガード
-	CVanguard* van = new CVanguard();
-	CVanguard* vanPos = CVanguard::Instance();
-	van->Scale(1.4f, 1.4f, 1.4f);
-	van->Position(496.0f, 335.0f, -167.0f);
-	AddTask(van);
+	//// ヴァンガード
+	//CVanguard* van = new CVanguard();
+	//CVanguard* vanPos = CVanguard::Instance();
+	//van->Scale(1.4f, 1.4f, 1.4f);
+	//van->Position(496.0f, 335.0f, -167.0f);
+	//AddTask(van);
 	
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
