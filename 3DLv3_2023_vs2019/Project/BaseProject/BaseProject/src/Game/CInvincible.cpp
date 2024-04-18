@@ -115,8 +115,10 @@ void CInvincible::MoveFront()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
+	CVector moveDirection(CVector::forward);
+
 	// mTargetDir に速度を掛けて移動ベクトルを得る
-	mMoveVector = mTargetDir * moveSpeed;
+	mMoveVector = moveDirection * moveSpeed;
 
 	// deltaTime を考慮して移動量を計算
 	mMoveVector *= Time::DeltaTime();
@@ -127,8 +129,10 @@ void CInvincible::MoveBack()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
+	CVector moveDirection(CVector::back);
+
 	// mTargetDir に速度を掛けて移動ベクトルを得る
-	mMoveVector = mTargetDir * -moveSpeed;
+	mMoveVector = moveDirection * moveSpeed;
 
 	// deltaTime を考慮して移動量を計算
 	mMoveVector *= Time::DeltaTime();
@@ -139,9 +143,7 @@ void CInvincible::MoveRight()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
-	// mTargetDir を横方向に変更（左右に動く）
-	CVector moveDirection(mTargetDir.Z(), 0.0f, mTargetDir.X());
-	moveDirection.Normalize();
+	CVector moveDirection(CVector::right);
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
 	mMoveVector = moveDirection * moveSpeed;
@@ -159,15 +161,15 @@ void CInvincible::UpdateGet()
 	float moveSpeed = INVINCIBLE_SPEED;
 
 	// mTargetDir を横方向に変更（右に動く）
-	CVector moveDirection(mTargetDir.Z(), 0.0f, mTargetDir.X());
-	moveDirection.Normalize();
+	/*CVector moveDirection(mTargetDir.Z(), 0.0f, mTargetDir.X());
+	moveDirection.Normalize();*/
+	CVector moveDirection(CVector::right);
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
 	mMoveVector = moveDirection * moveSpeed;
 
-	// deltaTime を考慮して移動量を計算
+	// 移動量を計算
 	mMoveVector *= Time::DeltaTime();
-
 
 	// ここでkillを呼ぶ予定
 }
@@ -177,9 +179,7 @@ void CInvincible::MoveLeft()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
-	// mTargetDir を横方向に変更（左右に動く）
-	CVector moveDirection(-mTargetDir.Z(), 0.0f, mTargetDir.X());
-	moveDirection.Normalize();
+	CVector moveDirection(CVector::left);
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
 	mMoveVector = moveDirection * moveSpeed;
