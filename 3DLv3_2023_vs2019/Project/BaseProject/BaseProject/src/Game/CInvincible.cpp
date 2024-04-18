@@ -116,7 +116,7 @@ void CInvincible::MoveFront()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
-	CVector moveDirection(CVector::forward);
+	CVector moveDirection = (CVector::forward).Normalized();
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
 	mMoveVector = moveDirection * moveSpeed;
@@ -131,7 +131,7 @@ void CInvincible::MoveBack()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
-	CVector moveDirection(CVector::back);
+	CVector moveDirection = (CVector::back).Normalized();
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
 	mMoveVector = moveDirection * moveSpeed;
@@ -146,7 +146,7 @@ void CInvincible::MoveRight()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
-	CVector moveDirection(CVector::right);
+	CVector moveDirection = (CVector::right).Normalized();
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
 	mMoveVector = moveDirection * moveSpeed;
@@ -164,7 +164,7 @@ void CInvincible::UpdateGet()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
-	CVector moveDirection = (CVector::right).Normalized();;
+	CVector moveDirection = (CVector::right).Normalized();
 
 	CPlayer* player = CPlayer::Instance();
 	if (player->Position().X() > Position().X())

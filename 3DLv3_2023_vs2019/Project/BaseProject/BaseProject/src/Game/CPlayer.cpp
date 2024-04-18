@@ -2246,14 +2246,14 @@ void CPlayer::Update()
 		{
 			ChangeAnimation(EAnimType::eHitJ);
 			TakeDamage(1);
-			Position(1293.0f, 318.0f, -209.0f);
+			Position(-9.0f, 340.0f, -1173.0f);
 		}
 		else
 		{
 			ChangeAnimation(EAnimType::eHitJ);
 			TakeDamage(1);
 			// Stage(1)ÇÃèâä˙ínì_
-			Position(-150.0f, 140.0f, -5.3f);
+			Position(197.0f, 1235.0f, 279.0f);
 		}
 	}
 	//CDebugPrint::Print("mSavePoint: %s\n", mSavePoint ? "true" : "false");
