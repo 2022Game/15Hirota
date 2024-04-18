@@ -22,6 +22,7 @@ CInvincible::CInvincible()
 	, mTargetDir(0.0f, 0.0f, 1.0f)
 	, mMoveVector(0.0f, 0.0f, 0.0f)
 	, mStartPos(0.0f, 0.0f, 0.0f)
+	, mTotalMovement(0.0f, 0.0f, 0.0f)
 	, mElapsedTime(0.0f)
 	, mIsGround(false)
 	, mInvincibleUsed(false)
@@ -60,12 +61,19 @@ CInvincible::CInvincible()
 	// 最初はコライダーをオンにしておく
 	mpInvincibleCol->SetEnable(true);
 	mpFieldCol->SetEnable(true);
+
+	mStartPos = Position();
 }
 
 CInvincible::~CInvincible()
 {
 	SAFE_DELETE(mpInvincibleCol);
 	SAFE_DELETE(mpFieldCol);
+}
+
+void CInvincible::ChangeState(EState state)
+{
+	mState = state;
 }
 
 // 衝突処理
@@ -80,10 +88,12 @@ void CInvincible::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 			// すでに無敵のキャラでなければ
 			if (!IsAttachHitObjInvincible(player) && !mInvincibleUsed)
 			{
+				mMoveVector = CVector::zero;
+				mMoveSpeed = CVector::zero;
 				mInvincibleUsed = true;
 				mpInvincibleCol->SetEnable(false);
 				AddAttachHitObjInvincible(player);
-				UpdateGet();
+				ChangeState(EState::Get);
 			}
 		}
 		else if (other->Layer() == ELayer::eBlockCol)
@@ -155,35 +165,6 @@ void CInvincible::MoveRight()
 	mMoveVector *= Time::DeltaTime();
 }
 
-// アイテムを取った後の処理
-// 右に移動したのち消す
-void CInvincible::UpdateGet()
-{
-	mMoveVector = CVector::zero;
-	mMoveSpeed = CVector::zero;
-	// 速度を設定
-	float moveSpeed = INVINCIBLE_SPEED;
-
-	// rightにしたら左に移動する
-	CVector moveDirection = (CVector::left).Normalized();
-
-	// mTargetDir に速度を掛けて移動ベクトルを得る
-	mMoveVector = moveDirection * moveSpeed * Time::DeltaTime();
-
-	// 現在のX座標を計算
-	float currentX = mStartPos.X() + mMoveVector.X();
-
-	// X座標が50.0fを超えるかどうかを確認
-	if (currentX > 50.0f)
-	{
-		Kill();
-	}
-
-	// 現在位置を更新
-	mStartPos += mMoveVector;
-	CDebugPrint::Print("currentX:%f\n", currentX);
-}
-
 // 左に移動する
 void CInvincible::MoveLeft()
 {
@@ -199,6 +180,29 @@ void CInvincible::MoveLeft()
 	mMoveVector *= Time::DeltaTime();
 }
 
+// アイテムを取った後の処理
+// 右に移動したのち消す
+void CInvincible::UpdateGet()
+{
+	// 速度を設定
+	float moveSpeed = INVINCIBLE_SPEED;
+
+	// rightにしたら左に移動する
+	CVector moveDirection = (CVector::left).Normalized();
+
+	// mTargetDir に速度を掛けて移動ベクトルを得る
+	mMoveVector = moveDirection * moveSpeed * Time::DeltaTime();
+
+	mTotalMovement += mMoveVector;
+
+	// killを呼ぶ
+	if (mTotalMovement.X() >= 50.0f)
+	{
+		Kill();
+	}
+}
+
+
 void CInvincible::OnTouch(CPlayer* player)
 {
 	if (mIsHeld)
@@ -211,6 +215,7 @@ void CInvincible::OnTouch(CPlayer* player)
 // 更新処理
 void CInvincible::Update()
 {
+	CDebugPrint::Print("mTotalMovement:%f\n", mTotalMovement.X());
 	// 重力
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 
@@ -266,6 +271,13 @@ void CInvincible::Update()
 			// 処理が一つ終わるとタイムを初期化
 			mElapsedTime = 0.0f;
 		}
+	}
+
+	switch (mState)
+	{
+	case EState::Get:
+		UpdateGet();
+		break;
 	}
 
 	// 移動

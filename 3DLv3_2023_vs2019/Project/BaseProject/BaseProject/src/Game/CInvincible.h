@@ -47,7 +47,13 @@ public:
 
 private:
 
+	enum class EState
+	{
+		Get,
+	};
+	EState mState;
 	void UpdateGet();
+	void ChangeState(EState state);
 	
 	// モデル・素材関連
 	// 無敵アイテムのモデル
@@ -68,6 +74,7 @@ private:
 	// 見る方向
 	CVector mTargetDir;
 	CVector mStartPos;
+	CVector mTotalMovement;
 
 
 	// 変数関連
