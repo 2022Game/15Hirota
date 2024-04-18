@@ -23,6 +23,9 @@ public:
 	// 無敵処理
 	virtual void TakeInvincible();
 
+	// 攻撃力アップ処理
+	virtual void TakeAttackPotion(int attack);
+
 
 	// 最大ステータスを取得
 	const CharaStatus& MaxStatus() const;

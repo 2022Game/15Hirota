@@ -82,6 +82,9 @@ public:
 	// 無敵状態にする(コライダーをオフにする)
 	void TakeInvincible() override;
 
+	// 攻撃力アップ処理
+	void TakeAttackPotion(int attack) override;
+
 	// レベル処理
 	// レベルアップ
 	void LevelUp();

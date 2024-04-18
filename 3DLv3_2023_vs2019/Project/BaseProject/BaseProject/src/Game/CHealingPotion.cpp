@@ -134,5 +134,6 @@ void CHealingPotion::Update()
 // •`‰æ
 void CHealingPotion::Render()
 {
+	mpHealingPotion->SetColor(mColor);
 	mpHealingPotion->Render(Matrix());
 }

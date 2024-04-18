@@ -86,7 +86,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CTexture>("YBar",				"UI\\Gauge.png");					// ゆかりさんのバー
 	CResourceManager::Load<CTexture>("SignboardUI",			"UI\\Ukye_1.png");					// Uキーの画像
 	CResourceManager::Load<CTexture>("ExclamationMark",		"UI\\bikkurimark.png");				// ビックリマーク画像
-	CResourceManager::Load<CTexture>("Timer", "UI\\StageUI\\Timer.png");											// タイマー画像
+	CResourceManager::Load<CTexture>("Timer",				"UI\\StageUI\\Timer.png");			// タイマー画像
 
 	// アイテムUI関連
 	//CResourceManager::Load<CTexture>("InvincibleUI",		"UI\\Item\\Invincible Item.png");			// 無敵アイテム用のUI

@@ -25,6 +25,10 @@ void CCharaBase::TakeInvincible()
 {
 }
 
+void CCharaBase::TakeAttackPotion(int attack)
+{
+}
+
 
 // 最大ステータスを取得
 const CharaStatus& CCharaBase::MaxStatus() const

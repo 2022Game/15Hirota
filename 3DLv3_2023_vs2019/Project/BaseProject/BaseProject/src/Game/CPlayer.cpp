@@ -195,7 +195,7 @@ CPlayer::CPlayer()
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
-		ELayer::eSavePoint });
+		ELayer::eSavePoint, ELayer::eAttackCol });
 	//mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpColliderSphere->SetAttachMtx(spineMtx);
@@ -359,6 +359,14 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			if (other->Tag() == ETag::eRideableObject)
 			{
 				mpRideObject = other->Owner();
+			}
+		}
+		// 攻撃力アップポーション
+		else if (other->Layer() == ELayer::eAttackCol)
+		{
+			if (other->Tag() == ETag::eAttackObject)
+			{
+				AddItem(ItemType::ATTACK_UP);
 			}
 		}
 		// 回復アイテム
@@ -576,8 +584,7 @@ void CPlayer::UseHealingItem()
 void CPlayer::UseAttackPotion()
 {
 	if (HasItem(ItemType::ATTACK_UP)) {
-		// 攻撃ポーションを使った時の処理を考える↓
-
+		TakeAttackPotion(1);
 		RemoveItem(ItemType::ATTACK_UP);
 	}
 }
@@ -637,6 +644,12 @@ void CPlayer::TakeInvincible()
 		mpDamageCol->SetEnable(false);
 		mInvincible = true;
 	}
+}
+
+// 攻撃力を上昇させる
+void CPlayer::TakeAttackPotion(int attack)
+{
+	mCharaStatus.power += attack;
 }
 
 // レベルアップ

@@ -37,6 +37,5 @@ protected:
 
 	// 回復薬ヒット済みのオブジェクトリスト
 	std::list<CObjectBase*> mHealingObjects;
-	
 };
 #endif

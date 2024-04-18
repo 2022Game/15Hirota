@@ -67,24 +67,24 @@ void CStageSelectionStage::Load()
 	);
 	AddTask(flamethrower2);*/
 
-	//// •ó” 
-	//CTreasureChest* treasure = new CTreasureChest
-	//(
-	//	CVector(-10.0f, 11.0f, 0.0f),
-	//	CVector(7.0f, 7.0f, 7.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(treasure);
-	//// •ó” ŠW
-	//CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
-	//(
-	//	CVector(-10.0f, 15.8f, 0.0f),
-	//	CVector(7.0f, 7.0f, 7.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(treasureTwo);
+	// •ó” 
+	CTreasureChest* treasure = new CTreasureChest
+	(
+		CVector(-15.0f, 11.0f, 0.0f),
+		CVector(7.0f, 7.0f, 7.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasure);
+	// •ó” ŠW
+	CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
+	(
+		CVector(-15.0f, 15.8f, 0.0f),
+		CVector(7.0f, 7.0f, 7.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasureTwo);
 
 
 	//// jƒ‚ƒfƒ‹

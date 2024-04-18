@@ -83,7 +83,7 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("TreasureChest",			"Field\\Gimmick\\TreasureChest.obj");								// 宝箱
 	CResourceManager::Load<CModel>("TreasureChestTwo",		"Field\\Gimmick\\TreasureChestTwo.obj");							// 宝箱(蓋)
 	CResourceManager::Load<CModel>("TreasureChestCol",		"Field\\Gimmick\\TreasureChest(FloorCol).obj");						// 宝箱(蓋コライダー)
-	CResourceManager::Load<CModel>("TreasureChestWallCol",	"Field\\Gimmick\\TreasureChest(WallCol).obj");					// 宝箱(壁コライダー)
+	CResourceManager::Load<CModel>("TreasureChestWallCol",	"Field\\Gimmick\\TreasureChest(WallCol).obj");						// 宝箱(壁コライダー)
 
 
 	CResourceManager::Load<CModel>("HatenaBlock",			 "Field\\Object\\hatena.obj");						// ハテナブロック(アイテム保有)
@@ -94,6 +94,7 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("Star",					"Item\\StatusItem\\Star.obj");				// 無敵オブジェクト
 	CResourceManager::Load<CModel>("Medal",					"Item\\StatusItem\\Medal.obj");				// 得点オブジェクト
 	CResourceManager::Load<CModel>("Healing",				"Item\\StatusItem\\HealingItem.obj");		// 回復薬オブジェクト
+	CResourceManager::Load<CModel>("AttackPotion",			"Item\\StatusItem\\AttackPotion.obj");		// 攻撃力アップモデル
 
 	// キャラクター関連
 	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");										// ヴァンガード
@@ -126,8 +127,8 @@ void CStage1::Load()
 		"WireMeshMove", "WireMeshMoveTopCol",
 		CVector(0.0f, 14.5f, 0.0f),	// 上方向の移動
 		CVector(0.0f, 0.0f, 10.0f),	// 正面方向の移動
-		CVector(-0.5f,0.3f,40.0f),
-		CVector(0.0f,0.0f,40.0f),
+		CVector(-0.5f,0.3f,0.0f),
+		CVector(40.0f,0.0f,0.0f),
 		10.0f
 	);
 	wiremeshmoveWall->Scale(8.0f, 8.0f, 8.0f);
@@ -261,37 +262,38 @@ void CStage1::Load()
 	// セーブポイント
 	CSavePoint* savepoint = new CSavePoint
 	(
-		CVector(1293.0f, 318.0f, -210.0f),
+		CVector(-9.0f, 320.0f, -1173.0f),
 		CVector(8.0f, 8.0f, 8.0f),
 		CVector(0.0f, 10.0f, 0.0f)
 	);
+	savepoint->Rotation(0.0f, 90.0f, 0.0f);
 	AddTask(savepoint);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	// スコアアイテム
 
-	// ブルーメダル1
-	CBlueMedal* blueMedal1 = new CBlueMedal
-	(
-		CVector(317.0f, 126.0f, -18.0f) ,
-		CVector(3.0f, 3.0f, 3.0f)
-	);
-	AddTask(blueMedal1);
-	// ブルーメダル2
-	CBlueMedal* blueMedal2 = new CBlueMedal
-	(
-		CVector(330.0f, 126.0f, -83.0f),
-		CVector(3.0f, 3.0f, 3.0f)
-	);
-	AddTask(blueMedal2);
-	// ブルーメダル3
-	CBlueMedal* blueMedal3 = new CBlueMedal
-	(
-		CVector(401.0f, 140.0f, -436.0f),
-		CVector(3.0f, 3.0f, 3.0f)
-	);
-	AddTask(blueMedal3);
+	//// ブルーメダル1
+	//CBlueMedal* blueMedal1 = new CBlueMedal
+	//(
+	//	CVector(317.0f, 126.0f, -18.0f) ,
+	//	CVector(3.0f, 3.0f, 3.0f)
+	//);
+	//AddTask(blueMedal1);
+	//// ブルーメダル2
+	//CBlueMedal* blueMedal2 = new CBlueMedal
+	//(
+	//	CVector(330.0f, 126.0f, -83.0f),
+	//	CVector(3.0f, 3.0f, 3.0f)
+	//);
+	//AddTask(blueMedal2);
+	//// ブルーメダル3
+	//CBlueMedal* blueMedal3 = new CBlueMedal
+	//(
+	//	CVector(401.0f, 140.0f, -436.0f),
+	//	CVector(3.0f, 3.0f, 3.0f)
+	//);
+	//AddTask(blueMedal3);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
@@ -320,11 +322,11 @@ void CStage1::Load()
 
 	// ハテナブロック
 	CRengaBlock* hatena = new CRengaBlock(
-		CVector(1280.0f, 320.0f, -210.0f),
+		CVector(-9.0f, 322.0f, -1243.0f),
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector hatenaPos = CVector(1280.0f, 320.0f, -210.0f);
+	CVector hatenaPos = CVector(-9.0f, 322.0f, -1243.0f);
 	if (hatena != nullptr)
 	{
 		hatena->SetStartPosition(hatenaPos);
@@ -345,11 +347,11 @@ void CStage1::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(1293.0f, 360.0f, -210.0f);	//-150.0f, 140.0f, -5.3f
+	CVector playerPos = CVector(-9.0f,340.0f,-1173.0f);	//197.0f,1235.0f,279.0f
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
-		player->Rotation(0.0f, -90.0f, 0.0f);
+		player->Rotation(0.0f, 180.0f, 0.0f);
 	}
 	// カメラの位置と向きを設定
 	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);

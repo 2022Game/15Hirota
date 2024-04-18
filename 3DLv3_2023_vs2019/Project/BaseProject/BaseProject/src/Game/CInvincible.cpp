@@ -55,6 +55,7 @@ CInvincible::CInvincible()
 	);
 	mpFieldCol->SetCollisionTags({ ETag::eRideableObject, ETag::eField, });
 	mpFieldCol->SetCollisionLayers({ ELayer::eField,ELayer::eFieldWall });
+	mpFieldCol->Position(0.0f, 1.0f, 0.0f);
 
 	// 最初はコライダーをオンにしておく
 	mpInvincibleCol->SetEnable(true);
@@ -66,7 +67,6 @@ CInvincible::~CInvincible()
 	SAFE_DELETE(mpInvincibleCol);
 	SAFE_DELETE(mpFieldCol);
 }
-
 
 // 衝突処理
 void CInvincible::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
@@ -110,6 +110,7 @@ void CInvincible::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 }
 
 // 移動処理
+// 前に移動する
 void CInvincible::MoveFront()
 {
 	// 速度を設定
@@ -124,6 +125,7 @@ void CInvincible::MoveFront()
 	mMoveVector *= Time::DeltaTime();
 }
 
+// 後ろに移動する
 void CInvincible::MoveBack()
 {
 	// 速度を設定
@@ -138,6 +140,7 @@ void CInvincible::MoveBack()
 	mMoveVector *= Time::DeltaTime();
 }
 
+// 右に移動する
 void CInvincible::MoveRight()
 {
 	// 速度を設定
@@ -153,6 +156,7 @@ void CInvincible::MoveRight()
 }
 
 // アイテムを取った後の処理
+// 右に移動したのち消す
 void CInvincible::UpdateGet()
 {
 	mMoveVector = CVector::zero;
@@ -160,10 +164,17 @@ void CInvincible::UpdateGet()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
-	// mTargetDir を横方向に変更（右に動く）
-	/*CVector moveDirection(mTargetDir.Z(), 0.0f, mTargetDir.X());
-	moveDirection.Normalize();*/
-	CVector moveDirection(CVector::right);
+	CVector moveDirection = (CVector::right).Normalized();;
+
+	CPlayer* player = CPlayer::Instance();
+	if (player->Position().X() > Position().X())
+	{
+
+	}
+	else
+	{
+		moveDirection *= -1.0f;
+	}
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
 	mMoveVector = moveDirection * moveSpeed;
@@ -174,6 +185,7 @@ void CInvincible::UpdateGet()
 	// ここでkillを呼ぶ予定
 }
 
+// 左に移動する
 void CInvincible::MoveLeft()
 {
 	// 速度を設定
@@ -197,9 +209,9 @@ void CInvincible::OnTouch(CPlayer* player)
 	}
 }
 
+// 更新処理
 void CInvincible::Update()
 {
-	CDebugPrint::Print("mMoveVector:%f\n", Position().X());
 	// 重力
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 

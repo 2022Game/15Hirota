@@ -80,7 +80,7 @@ CInventoryMenu::CInventoryMenu()
 		// 攻撃力アップアイテム
 		CImage* attackPotion = new CImage
 		(
-			"UI\\Item\\AttackPotion.png",
+			"UI\\Item\\Attack Power.png",
 			ETaskPriority::eUI, 0, ETaskPauseType::eMenu,
 			false, false
 		);
@@ -178,6 +178,7 @@ void CInventoryMenu::Decide(int select)
 		player->UseHealingItem();
 		break;
 	case PlayerItem::ATTACK_UP_ITEM:
+		player->UseAttackPotion();
 		break;
 	case PlayerItem::DEFENSE_ITEM:
 		break;

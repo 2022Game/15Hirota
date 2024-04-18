@@ -106,7 +106,7 @@ void CTreasureChestTwo::UpdateIdle()
 			// –³“GƒAƒCƒeƒ€
 			else if (Rondom == 2)
 			{
-				player->AddItem(CPlayer::ItemType::INVINCIBLE);
+				player->AddItem(CPlayer::ItemType::ATTACK_UP);
 			}
 			mWaitTime = 0.0f;
 			mRotateStartAngle = 0.0f;

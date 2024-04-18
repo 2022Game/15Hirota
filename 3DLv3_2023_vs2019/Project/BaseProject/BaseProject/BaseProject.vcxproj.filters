@@ -577,6 +577,12 @@
     <ClCompile Include="src\Game\CTreasureChest.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CAttackObjectBase.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CAttackPotion.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1061,6 +1067,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CTreasureChest.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CAttackObjectBase.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CAttackPotion.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
