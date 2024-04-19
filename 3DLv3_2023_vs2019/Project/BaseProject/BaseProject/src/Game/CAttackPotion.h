@@ -10,6 +10,7 @@ class CSound;
 class CPlayer;
 
 // 攻撃力アップポーション
+// ポーションのmtlにはTextures/を先頭に入れる
 class CAttackPotion : public CAttackObjectBase
 {
 public:

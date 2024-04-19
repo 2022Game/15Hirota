@@ -215,6 +215,7 @@ void CInvincible::OnTouch(CPlayer* player)
 // 更新処理
 void CInvincible::Update()
 {
+	// 新しいポジションからX軸に50.0f移動したかどうか
 	CDebugPrint::Print("mTotalMovement:%f\n", mTotalMovement.X());
 	// 重力
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);

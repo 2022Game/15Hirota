@@ -1,14 +1,14 @@
-#include "CNumberFloor1.h"
+#include "CNumberFloorOnce.h"
 #include "Maths.h"
 #include "CPlayer.h"
 
 // 消えるのにかかる時間
-#define FADE_TIME 3.0f
+#define FADE_TIME 4.0f
 // 消えた後の待ち時間
-#define WAIT_TIME 3.0f
+#define WAIT_TIME 4.0f
 
 // コンストラクタ
-CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale, const CVector& rot,
+CNumberFloorOnce::CNumberFloorOnce(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
 	: CRideableObject(ETaskPriority::eNumberFalling)
 	, mState(EState::Idle)
@@ -21,15 +21,13 @@ CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale, const CVe
 	, mWaitTime(0.0f)
 	, mElapsedTime(0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
-	, mCase0End(false)
-	, mCase1End(false)
 	, mIsCollision(false)
 {
-	// 回数で落ちる床(3回)のモデル取得
-	mpModel = CResourceManager::Get<CModel>("Number3");
+	// 1回で消滅する床のモデル取得
+	mpNumberOnce = CResourceManager::Get<CModel>("Number1");
 
-	// 回数で落ちる床(3回)のコライダー作成
-	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpModel, true);
+	// 1回で消滅する床のコライダー作成
+	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpNumberOnce, true);
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
 	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer });
 
@@ -37,6 +35,7 @@ CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale, const CVe
 	// コライダーのレイヤーを個別に設定
 	mpColliderMesh->SetCollisionTag(mReactionTag, true);
 	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
+
 
 	Position(pos);
 	Scale(scale);
@@ -49,13 +48,13 @@ CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale, const CVe
 }
 
 // デストラクタ
-CNumberFloor1::~CNumberFloor1()
+CNumberFloorOnce::~CNumberFloorOnce()
 {
 	SAFE_DELETE(mpColliderMesh);
 }
 
 // 衝突処理
-void CNumberFloor1::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+void CNumberFloorOnce::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;
@@ -80,15 +79,8 @@ void CNumberFloor1::Collision(CCollider* self, CCollider* other, const CHitInfo&
 	}
 }
 
-// ステージ開始時の位置を設定
-void CNumberFloor1::SetStartPosition(const CVector& pos)
-{
-	mStartPos = pos;
-	Position(mStartPos);
-}
-
 // 状態を切り替える
-void CNumberFloor1::ChangeState(EState state)
+void CNumberFloorOnce::ChangeState(EState state)
 {
 	mState = state;
 	mStateStep = 0;
@@ -96,13 +88,13 @@ void CNumberFloor1::ChangeState(EState state)
 }
 
 // 待機状態の処理
-void CNumberFloor1::UpdateIdle()
+void CNumberFloorOnce::UpdateIdle()
 {
 
 }
 
 // 待ち状態の処理
-void CNumberFloor1::UpdateWaiting()
+void CNumberFloorOnce::UpdateWaiting()
 {
 	if (mIsCollision)
 	{
@@ -118,50 +110,13 @@ void CNumberFloor1::UpdateWaiting()
 		// ステップ0 オブジェクト表示の変更
 	case 0:
 	{
-		if (!mCase0End)
-		{
-			// プレイヤーが離れたらIdleに遷移
-			if (!mIsCollision)
-			{
-				mpModel = CResourceManager::Get<CModel>("Number2");
-
-				mCase0End = true;
-				mStateStep++;
-				ChangeState(EState::Idle);
-			}
-			break;
-		}
-		else
+		if (!mIsCollision)
 		{
 			mStateStep++;
 		}
 		break;
 	}
-	// ステップ1 オブジェクト表示の変更
 	case 1:
-	{
-		if (!mCase1End && mCase0End)
-		{
-			// プレイヤーが離れたらIdleに遷移
-			if (!mIsCollision)
-			{
-				mpModel = CResourceManager::Get<CModel>("Number1");
-
-				ChangeState(EState::Idle);
-				mStateStep++;
-				mCase1End = true;
-			}
-			break;
-		}
-		if (!mIsCollision && mCase0End && mCase1End)
-		{
-			SetColor(CColor(0.5f, 0.0f, 0.0f, 1.0f));
-			mStateStep++;
-		}
-		break;
-	}
-	// ステップ2 状態遷移
-	case 2:
 	{
 		mpModel = CResourceManager::Get<CModel>("Number0");
 		ChangeState(EState::Falling);
@@ -170,8 +125,8 @@ void CNumberFloor1::UpdateWaiting()
 	}
 }
 
-// 落下状態の更新処理
-void CNumberFloor1::UpdateFalling()
+// 落下状態の処理
+void CNumberFloorOnce::UpdateFalling()
 {
 	switch (mFallingSwitch)
 	{
@@ -213,10 +168,8 @@ void CNumberFloor1::UpdateFalling()
 	// 元の状態に戻す
 	case 2:
 	{
-		mpModel = CResourceManager::Get<CModel>("Number3");
+		mpModel = CResourceManager::Get<CModel>("Number1");
 		SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
-		mCase0End = false;
-		mCase1End = false;
 		mStateStep = 0;
 		mSwitchCount = 0;
 		mElapsedTime = 0;
@@ -228,16 +181,16 @@ void CNumberFloor1::UpdateFalling()
 }
 
 // 更新処理
-void CNumberFloor1::Update()
+void CNumberFloorOnce::Update()
 {
-	// 減殺の状態に合わせて処理を切り替え
+	// 床の状態に合わせて処理を切り替え
 	switch (mState)
 	{
 		// 待機状態
 	case EState::Idle:
 		UpdateIdle();
 		break;
-		// 待機状態
+		// 待ち状態
 	case EState::Waiting:
 		UpdateWaiting();
 		break;
@@ -250,14 +203,11 @@ void CNumberFloor1::Update()
 	// 衝突フラグを初期化
 	mIsCollision = false;
 
-	/*CDebugPrint::Print("mCase0: %s\n", mCase0End ? "true" : "false");
-	CDebugPrint::Print("mCase1: %s\n", mCase1End ? "true" : "false");
-	CDebugPrint::Print("mIsCollsion:%s\n", mIsCollision ? "true" : "false");*/
 }
 
 // 描画処理
-void CNumberFloor1::Render()
+void CNumberFloorOnce::Render()
 {
-	mpModel->SetColor(mColor);
-	mpModel->Render(Matrix());
+	mpNumberOnce->SetColor(mColor);
+	mpNumberOnce->Render(Matrix());
 }

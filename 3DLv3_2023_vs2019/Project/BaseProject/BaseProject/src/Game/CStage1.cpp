@@ -16,6 +16,7 @@
 #include "CJumpingObject.h"
 #include "CSavePoint.h"
 #include "CNumberFloor1.h"
+#include "CNumberFloorOnce.h"
 #include "CTreasureChest.h"
 #include "CHatenaBlock.h"
 #include "CRengaBlock.h"
@@ -184,25 +185,16 @@ void CStage1::Load()
 	);
 	AddTask(jumping2);
 
-	// 回数オブジェクト
-	CNumberFloor1* numberfloor1 = new CNumberFloor1
+	// 回数オブジェクト(一回)
+	CNumberFloorOnce* numberfloor1 = new CNumberFloorOnce
 	(
-		CVector(1340.0f, 300.0f, -45.0f),
+		CVector(-9.0f, 323.0f, -1273.0f),
 		CVector(4.0f, 3.0f, 4.0f),
-		CVector(0.0f, 90.0f, 0.0f),
+		CVector(0.0f, -90.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(numberfloor1);
 
-	// 回数オブジェクト2
-	CNumberFloor1* numberfloor2 = new CNumberFloor1
-	(
-		CVector(1352.0f, 318.0f, -209.0f),
-		CVector(4.0f, 3.0f, 4.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(numberfloor2);
 
 	// 回転する床ギミック(時間)
 	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
@@ -212,15 +204,6 @@ void CStage1::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rotatetimegimmick);
-
-	// 回転する床ギミック(時間)
-	CRotateFloorTimeGimmick* rotatetimegimmick2 = new CRotateFloorTimeGimmick(
-		CVector(1450.0f, 340.0f, -209.0f),
-		CVector(3.5f, 3.5f, 3.5f),
-		CVector(0.0f, 90.0f,0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rotatetimegimmick2);
 
 	// 回転する床ギミック(ジャンプ)
 	CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
@@ -239,25 +222,6 @@ void CStage1::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rotategimmick2);
-
-	// 回転する床ギミック(ジャンプ)
-	CRotateFloorGimmick* rotategimmick3 = new CRotateFloorGimmick(
-		CVector(1620.0f, 400.0f, -209.0f),
-		CVector(3.3f, 3.3f, 3.3f),
-		CVector(0.0f, 90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rotategimmick3);
-
-	// 回転する床ギミック(ジャンプ)
-	CRotateFloorGimmick* rotategimmick4 = new CRotateFloorGimmick(
-		CVector(1680.0f, 400.0f, -209.0f),
-		CVector(3.3f, 3.3f, 3.3f),
-		CVector(0.0f, 90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rotategimmick4);
-
 
 	// セーブポイント
 	CSavePoint* savepoint = new CSavePoint
@@ -373,7 +337,7 @@ void CStage1::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(-9.0f,340.0f,-1173.0f);	//197.0f,1235.0f,279.0f
+	CVector playerPos = CVector(-9.0f, 320.0f, -1173.0f);	//197.0f,1235.0f,279.0f
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

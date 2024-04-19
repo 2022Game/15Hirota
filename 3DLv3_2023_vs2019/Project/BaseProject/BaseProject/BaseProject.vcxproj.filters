@@ -247,13 +247,7 @@
     <ClCompile Include="src\Game\CImage.cpp">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CDamageObject.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CRideabeObject.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CRotateFloor.cpp">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CharaStatus.cpp">
@@ -385,20 +379,8 @@
     <ClCompile Include="src\Game\CGameManager.cpp">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CDisappearFloor.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CAppearFloor.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CYukariFrame.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CJumpingObject.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CSignboard.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CSignboardPause.cpp">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
@@ -418,12 +400,6 @@
     <ClCompile Include="src\Game\CGameMenu.cpp">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CFallingObjects.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CRisingObject.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CEnemyManager.cpp">
       <Filter>ソース ファイル\Game\Character\Count</Filter>
     </ClCompile>
@@ -432,12 +408,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CUIGauge.cpp">
       <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CHatenaBlock.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CRengaBlock.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CItemObjectBase.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
@@ -468,9 +438,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CExclamationMark.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CNumberFloor1.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CVanguard.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
@@ -582,6 +549,42 @@
     </ClCompile>
     <ClCompile Include="src\Game\CAttackPotion.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CAppearFloor.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CDamageObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CDisappearFloor.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CFallingObjects.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CHatenaBlock.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CJumpingObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNumberFloor1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CRengaBlock.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CRisingObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CRotateFloor.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSignboard.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNumberFloorOnce.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -735,13 +738,7 @@
     <ClInclude Include="src\Game\CImage.h">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CDamageObject.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CRideableObject.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CRotateFloor.h">
       <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CUnityChan.h">
@@ -873,20 +870,8 @@
     <ClInclude Include="src\Game\CGameManager.h">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CDisappearFloor.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CAppearFloor.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CYukariFrame.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CJumpingObject.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CSignboard.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CSignboardPause.h">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
@@ -909,12 +894,6 @@
     <ClInclude Include="src\Game\CGameMenu.h">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CFallingObjects.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CRisingObject.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CEnemyManager.h">
       <Filter>ソース ファイル\Game\Character\Count</Filter>
     </ClInclude>
@@ -923,12 +902,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CUIGauge.h">
       <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CHatenaBlock.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CRengaBlock.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CItemObjectBase.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
@@ -959,9 +932,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CExclamationMark.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CNumberFloor1.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CVanguard.h">
       <Filter>ソース ファイル\Game\Character</Filter>
@@ -1073,6 +1043,42 @@
     </ClInclude>
     <ClInclude Include="src\Game\CAttackPotion.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CAppearFloor.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CDamageObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CDisappearFloor.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CFallingObjects.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CHatenaBlock.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNumberFloor1.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CRengaBlock.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CRisingObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CRotateFloor.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSignboard.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNumberFloorOnce.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

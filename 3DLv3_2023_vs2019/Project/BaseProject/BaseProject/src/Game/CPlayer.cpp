@@ -2246,7 +2246,7 @@ void CPlayer::Update()
 		{
 			ChangeAnimation(EAnimType::eHitJ);
 			TakeDamage(1);
-			Position(-9.0f, 340.0f, -1173.0f);
+			Position(-9.0f, 320.0f, -1173.0f);
 		}
 		else
 		{

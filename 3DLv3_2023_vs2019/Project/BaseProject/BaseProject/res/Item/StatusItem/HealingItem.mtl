@@ -9,5 +9,5 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd その他/RPG Pack/Textures/Bottle_green_diff.png
-map_Bump -bm 1.000000 その他/RPG Pack/Models/Bottles/bottle_normals.jpg
+map_Kd Textures/Bottle_green_diff.png
+map_Bump -bm 1.000000 bottle_normals.jpg
