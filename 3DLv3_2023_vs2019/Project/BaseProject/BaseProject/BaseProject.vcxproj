@@ -97,6 +97,7 @@
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
     <ClCompile Include="src\Game\CMedalObjectBase.cpp" />
     <ClCompile Include="src\Game\CNeedle.cpp" />
+    <ClCompile Include="src\Game\CNumberField.cpp" />
     <ClCompile Include="src\Game\CNumberFloor1.cpp" />
     <ClCompile Include="src\Game\CNumberFloorOnce.cpp" />
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
@@ -263,6 +264,7 @@
     <ClInclude Include="src\Game\CMajicSwordEnemy.h" />
     <ClInclude Include="src\Game\CMedalObjectBase.h" />
     <ClInclude Include="src\Game\CNeedle.h" />
+    <ClInclude Include="src\Game\CNumberField.h" />
     <ClInclude Include="src\Game\CNumberFloor1.h" />
     <ClInclude Include="src\Game\CNumberFloorOnce.h" />
     <ClInclude Include="src\Game\CRecoveryObject.h" />

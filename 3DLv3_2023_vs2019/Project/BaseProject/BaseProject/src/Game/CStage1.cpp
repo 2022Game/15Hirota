@@ -233,6 +233,7 @@ void CStage1::Load()
 	savepoint->Rotation(0.0f, 90.0f, 0.0f);
 	AddTask(savepoint);
 
+
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	// スコアアイテム
@@ -264,27 +265,29 @@ void CStage1::Load()
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	//// 宝箱
-	//CTreasureChest* treasure = new CTreasureChest
-	//(
-	//	CVector(1300.0f, 319.0f, -210.0f),
-	//	CVector(4.0f, 4.0f, 4.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(treasure);
-	//// 宝箱蓋
-	//CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
-	//(
-	//	CVector(1300.0f, 319.0f, -210.0f),
-	//	CVector(4.0f, 4.0f, 4.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(treasureTwo);
+	// 438,358,-1221
+
+	// 宝箱
+	CTreasureChest* treasure = new CTreasureChest
+	(
+		CVector(438.0f, 350.0f, -1221.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasure);
+	// 宝箱蓋
+	CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
+	(
+		CVector(438.0f, 354.8f, -1221.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasureTwo);
 
 
-	// ハテナブロック
+	// レンガブロック
 	CRengaBlock* hatena = new CRengaBlock(
 		CVector(-9.0f, 322.0f, -1243.0f),
 		CVector(5.0f, 5.0f, 5.0f),
@@ -297,7 +300,7 @@ void CStage1::Load()
 	}
 	AddTask(hatena);
 
-	// ハテナブロック
+	// レンガブロック
 	CRengaBlock* hatena1 = new CRengaBlock(
 		CVector(-19.0f, 322.0f, -1243.0f),
 		CVector(5.0f, 5.0f, 5.0f),
@@ -310,7 +313,7 @@ void CStage1::Load()
 	}
 	AddTask(hatena1);
 
-	// ハテナブロック
+	// レンガブロック
 	CRengaBlock* hatena2 = new CRengaBlock(
 		CVector(9.0f, 322.0f, -1243.0f),
 		CVector(5.0f, 5.0f, 5.0f),

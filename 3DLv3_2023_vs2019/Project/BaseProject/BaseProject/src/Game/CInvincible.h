@@ -76,6 +76,8 @@ private:
 	CVector mStartPos;
 	CVector mTotalMovement;
 
+	CVector2 mPosition;
+
 
 	// 変数関連
 	// カウント

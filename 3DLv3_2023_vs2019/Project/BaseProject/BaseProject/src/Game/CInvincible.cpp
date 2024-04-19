@@ -188,12 +188,25 @@ void CInvincible::UpdateGet()
 	float moveSpeed = INVINCIBLE_SPEED;
 
 	// rightにしたら左に移動する
-	CVector moveDirection = (CVector::left).Normalized();
+	CVector moveDirection = (CVector::left + CVector::forward).Normalized();
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
 	mMoveVector = moveDirection * moveSpeed * Time::DeltaTime();
 
 	mTotalMovement += mMoveVector;
+
+
+
+	//// 現在のカメラを取得
+	//CCamera* cam = CCamera::CurrentCamera();
+	//if (cam == nullptr) return;
+
+	//CVector itemWorldPos = Position();
+
+	//// 設定されたワールド座標をスクリーン座標に変換
+	//CVector itemScreenPos = cam->WorldToScreenPos(itemWorldPos);
+	//// 設定されたスクリーン座標をワールド座標に変換
+	//CVector newItemWorldPos = cam->ScreenToWorldPos(itemScreenPos);
 
 	// killを呼ぶ
 	if (mTotalMovement.X() >= 50.0f)

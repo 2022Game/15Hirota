@@ -51,7 +51,7 @@ void CStageSelectionStage::Load()
 
 	// ステージ選択モデル
 	CStageButton* button = new CStageButton(
-		CVector(10.0f, 11.0f, 0.0f),
+		CVector(-160.0f, 11.0f, 0.0f),
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer);
@@ -67,24 +67,24 @@ void CStageSelectionStage::Load()
 	);
 	AddTask(flamethrower2);*/
 
-	// 宝箱
-	CTreasureChest* treasure = new CTreasureChest
-	(
-		CVector(-15.0f, 11.0f, 0.0f),
-		CVector(7.0f, 7.0f, 7.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(treasure);
-	// 宝箱蓋
-	CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
-	(
-		CVector(-15.0f, 15.8f, 0.0f),
-		CVector(7.0f, 7.0f, 7.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(treasureTwo);
+	//// 宝箱
+	//CTreasureChest* treasure = new CTreasureChest
+	//(
+	//	CVector(-15.0f, 11.0f, 0.0f),
+	//	CVector(7.0f, 7.0f, 7.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(treasure);
+	//// 宝箱蓋
+	//CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
+	//(
+	//	CVector(-15.0f, 15.8f, 0.0f),
+	//	CVector(7.0f, 7.0f, 7.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(treasureTwo);
 
 
 	//// 針モデル

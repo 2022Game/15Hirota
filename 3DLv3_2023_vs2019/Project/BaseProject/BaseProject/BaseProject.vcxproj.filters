@@ -586,6 +586,9 @@
     <ClCompile Include="src\Game\CNumberFloorOnce.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CNumberField.cpp">
+      <Filter>ソース ファイル\Game\Field</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1079,6 +1082,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CNumberFloorOnce.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNumberField.h">
+      <Filter>ソース ファイル\Game\Field</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
