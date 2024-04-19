@@ -171,7 +171,7 @@ void CInvincible::MoveLeft()
 	// 速度を設定
 	float moveSpeed = INVINCIBLE_SPEED;
 
-	CVector moveDirection(CVector::left);
+	CVector moveDirection = (CVector::left).Normalized();
 
 	// mTargetDir に速度を掛けて移動ベクトルを得る
 	mMoveVector = moveDirection * moveSpeed;
