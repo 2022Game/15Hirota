@@ -109,13 +109,13 @@ CPlayer::CPlayer()
 	, mStartDashTime(0.0f)
 	, mWeaponTime(0.0f)
 	, mMoveSpeedY(0.0f)
-	, mStartPos(0.0f, 0.0f, 0.0f)
-	, mMoveSpeed(0.0f, 0.0f, 0.0f)
-	, mGroundNormal(0.0f, 1.0f, 0.0f)
-	, mClimbNormal(0.0f, 0.0f, 0.0f)
-	, mClimbedStartPos(0.0f, 0.0f, 0.0f)
-	, mClimbedMovedUpPos(0.0f, 0.0f, 0.0f)
-	, mClimbedMovedPos(0.0f, 0.0f, 0.0f)
+	, mStartPos(CVector::zero)
+	, mMoveSpeed(CVector::zero)
+	, mGroundNormal(CVector::up)
+	, mClimbNormal(CVector::zero)
+	, mClimbedStartPos(CVector::zero)
+	, mClimbedMovedUpPos(CVector::zero)
+	, mClimbedMovedPos(CVector::zero)
 	, mHpHit(false)
 	, mDamageEnemy(false)
 	, mInvincible(false)
@@ -1074,7 +1074,9 @@ void CPlayer::UpdateAttack()
 // 強攻撃
 void CPlayer::UpdateAttackStrong()
 {
-	//mIsAttack = true;
+	mIsAttack = false;
+	mWeaponTime = 0.0f;
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 	mWeaponTime = 0.0f;
 	// 強攻撃アニメーションを開始
 	ChangeAnimation(EAnimType::eAttackStrong);
@@ -2238,22 +2240,22 @@ void CPlayer::Update()
 	
 	// 仮の落下ダメージ処理
 	// 変更予定
+	int currentStage = CGameManager::StageNo();
 	float minHeaight = -100.0f;
 	if (Position().Y() < minHeaight)
 	{
-		// セーブポイント
-		if (mSavePoint)
+		if (currentStage == 3)
 		{
 			ChangeAnimation(EAnimType::eHitJ);
 			TakeDamage(1);
-			Position(-9.0f, 320.0f, -1173.0f);
-		}
-		else
-		{
-			ChangeAnimation(EAnimType::eHitJ);
-			TakeDamage(1);
-			// Stage(1)の初期地点
-			Position(197.0f, 1235.0f, 279.0f);
+			Position(0.0f, 15.0f, -70.0f);
+			// 3面のセーブポイント
+			if (mSavePoint)
+			{
+				ChangeAnimation(EAnimType::eHitJ);
+				TakeDamage(1);
+				Position(0.0f, 15.0f, 350.0f);
+			}
 		}
 	}
 	//CDebugPrint::Print("mSavePoint: %s\n", mSavePoint ? "true" : "false");

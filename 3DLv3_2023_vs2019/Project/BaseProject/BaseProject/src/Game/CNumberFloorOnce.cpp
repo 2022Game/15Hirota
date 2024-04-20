@@ -100,10 +100,10 @@ void CNumberFloorOnce::UpdateWaiting()
 	{
 		SetColor(CColor(0.5f, 0.1f, 0.1f, 1.0f));
 	}
-	else
+	/*else
 	{
 		SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
-	}
+	}*/
 
 	switch (mStateStep)
 	{
@@ -118,7 +118,7 @@ void CNumberFloorOnce::UpdateWaiting()
 	}
 	case 1:
 	{
-		mpModel = CResourceManager::Get<CModel>("Number0");
+		mpNumberOnce = CResourceManager::Get<CModel>("Number0");
 		ChangeState(EState::Falling);
 	}
 	break;
@@ -158,23 +158,30 @@ void CNumberFloorOnce::UpdateFalling()
 		static const float fall = 10.0f;
 		mMoveSpeed = CVector(0.0f, -fall * Time::DeltaTime(), 0.0f);
 		Position(Position() + mMoveSpeed);
-		if (Position().Y() <= mStartPos.Y() - 30.0f)
+		if (Position().Y() <= mStartPos.Y() - 40.0f)
 		{
+			mpColliderMesh->SetEnable(false);
+			SetColor(CColor(0.0f, 0.0f, 0.0f, 0.0f));
 			mFallingSwitch++;
-			Position(mStartPos);
 		}
 	}
 	break;
 	// å≥ÇÃèÛë‘Ç…ñﬂÇ∑
 	case 2:
 	{
-		mpModel = CResourceManager::Get<CModel>("Number1");
-		SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
-		mStateStep = 0;
-		mSwitchCount = 0;
-		mElapsedTime = 0;
-		mFallingSwitch = 0;
-		ChangeState(EState::Idle);
+		mElapsedTime += Time::DeltaTime();
+		if (mElapsedTime >= 10.0f)
+		{
+			mStateStep = 0;
+			mSwitchCount = 0;
+			mElapsedTime = 0;
+			mFallingSwitch = 0;
+			Position(mStartPos);
+			mpColliderMesh->SetEnable(true);
+			SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
+			mpNumberOnce = CResourceManager::Get<CModel>("Number1");
+			ChangeState(EState::Idle);
+		}
 	}
 	break;
 	}

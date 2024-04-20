@@ -1,0 +1,183 @@
+#include "CStage3.h"
+#include "CPlayer.h"
+#include "CNumberFloor1.h"
+#include "CNumberFloorOnce.h"
+#include "CRisingObject.h"
+#include "CTreasureChest.h"
+#include "CSavePoint.h"
+#include "CFixedFlamethrower.h"
+
+// コンストラクタ
+CStage3::CStage3()
+{
+	mStageNo = 3;
+}
+
+// デストラクタ
+CStage3::~CStage3()
+{
+
+}
+
+// ステージ読み込み
+void CStage3::Load()
+{
+	// ギミック関連
+	CResourceManager::Load<CModel>("Number0",				"Field\\Object\\number0.obj");					// 零番目の床
+	CResourceManager::Load<CModel>("Number1",				"Field\\Object\\number1.obj");					// 一番目の床ブロック
+	CResourceManager::Load<CModel>("Number2",				"Field\\Object\\number2.obj");					// 二番目の床ブロック
+	CResourceManager::Load<CModel>("Number3",				"Field\\Object\\number3.obj");					// 三番目の床ブロック
+	CResourceManager::Load<CModel>("FieldCube",				"Field\\Object\\cube.obj");						// 初期の四角のモデル
+	CResourceManager::Load<CModel>("TreasureChest",			"Field\\Gimmick\\TreasureChest.obj");			// 宝箱
+	CResourceManager::Load<CModel>("TreasureChestTwo",		"Field\\Gimmick\\TreasureChestTwo.obj");		// 宝箱(蓋)
+	CResourceManager::Load<CModel>("TreasureChestCol",		"Field\\Gimmick\\TreasureChest(FloorCol).obj");	// 宝箱(蓋コライダー)
+	CResourceManager::Load<CModel>("TreasureChestWallCol",	"Field\\Gimmick\\TreasureChest(WallCol).obj");	// 宝箱(壁コライダー)
+	CResourceManager::Load<CModel>("SavePoint",				"Field\\Gimmick\\SavePoint.obj");				// セーブポイントモデル
+	CResourceManager::Load<CModel>("FlamethrowerModel",		"Field\\Gimmick\\Flamethrower(foundation).obj");// 火炎放射器(土台)
+	CResourceManager::Load<CModel>("FlamethrowerTank",		"Field\\Gimmick\\Flamethrower(tank).obj");		// 火炎放射器(タンク)
+	CResourceManager::Load<CModel>("FlamethrowerCol",		"Field\\Gimmick\\Flamethrower(WallCol).obj");	// 火炎放射器(コライダー)
+
+	// 背景色設定
+	System::SetClearColor(0.1960784f, 0.6f, 0.8f, 1.0f);
+
+	// 初期値点
+	CRisingObject* rising = new CRisingObject
+	(
+		CVector(0.0f, 12.0f, -70.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rising);
+
+	// 中間値点
+	CRisingObject* rising1 = new CRisingObject
+	(
+		CVector(0.0f, 12.0f, 350.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rising1);
+
+	// オブジェクトを配置するループ
+	for (int i = 0; i < 14; ++i) {
+
+		// X軸の位置を設定
+		float xPos = 0.0f;
+		if (i == 5) xPos	=	70.0f;
+		if (i == 6) xPos	= -	70.0f;
+		if (i == 7) xPos	=	70.0f;
+		if (i == 8) xPos	= -	70.0f;
+		if (i == 9) xPos	=	70.0f;
+		if (i == 10) xPos	= -	70.0f;
+		if (i == 11) xPos	=	50.0f;
+		if (i == 12) xPos	= -	50.0f;
+		if (i == 13) xPos	=	 0.0f;
+		
+		// Y軸の位置を設定
+		float yPos = i * 0.0f;
+		if (i == 4) yPos = 2.5f;
+
+		// Z軸の位置を設定
+		float zPos = i * 70.0f;
+		if (i == 5)   zPos = 5 * 70.0f;
+		if (i == 6)   zPos = 5 * 70.0f;
+		if (i == 7)   zPos = 6 * 70.0f;
+		if (i == 8)   zPos = 6 * 70.0f;
+		if (i == 9)   zPos = 7 * 70.0f;
+		if (i == 10)  zPos = 7 * 70.0f;
+		if (i == 11)  zPos = 8 * 70.0f;
+		if (i == 12)  zPos = 8 * 70.0f;
+		if (i == 13)  zPos = 9 * 70.0f;
+		
+		// オブジェクトを作成してタスクに追加
+		CNumberFloorOnce* numberfloor = new CNumberFloorOnce
+		(
+			CVector(xPos, yPos, zPos),
+			CVector(4.0f, 3.0f, 4.0f),
+			CVector(0.0f, 90.0f, 0.0f),
+			ETag::ePlayer, ELayer::ePlayer
+		);
+
+		AddTask(numberfloor); // タスクに追加
+	}
+
+	// セーブポイント
+	CSavePoint* savepoint = new CSavePoint
+	(
+		CVector(0.0f, 15.0f, 350.0f),
+		CVector(8.0f, 8.0f, 8.0f),
+		CVector(0.0f, 10.0f, 0.0f)
+	);
+	savepoint->Rotation(0.0f, 90.0f, 0.0f);
+	AddTask(savepoint);
+
+
+	// 宝箱
+	CTreasureChest* treasure = new CTreasureChest
+	(
+		CVector(-60.0f, 18.0f, 420.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasure);
+	// 宝箱蓋
+	CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
+	(
+		CVector(-60.0f, 20.8f, 420.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasureTwo);
+
+
+	// 火炎放射器モデル
+	// 正面方向
+	CFixedFlamethrower* flamethrower1 = new CFixedFlamethrower
+	(
+		CVector(-100.0f, 15.0f, 140.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(flamethrower1);
+	// 火炎放射器の土台
+	CRisingObject* dodai = new CRisingObject
+	(
+		CVector(-100.0f, 15.0f, 140.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(dodai);
+
+
+	// モンスター(プレイヤー)
+	CPlayer* player = CPlayer::Instance();
+	player->MaxStatus();
+	CVector playerPos = CVector(0.0f, 14.5f, -70.0f);	//197.0f,1235.0f,279.0f
+	if (player != nullptr)
+	{
+		player->SetStartPosition(playerPos);
+		player->Rotation(0.0f, 0.0f, 0.0f);
+	}
+	// カメラの位置と向きを設定
+	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);
+	CCamera* mainCamera = CCamera::MainCamera();
+	mainCamera->LookAt(
+		camPos,
+		playerPos,
+		CVector::up
+	);
+	mainCamera->SetFollowTargetTf(player);
+	// スフィアかメッシュぐらい
+	//mainCamera->AddCollider(mpField_Worlds_1->GetWallCol());
+}
+
+// ステージ破棄
+void CStage3::Unload()
+{
+	// カメラから衝突するコライダーを取り除く
+	//CCamera* mainCamera = CCamera::MainCamera();
+	//mainCamera->RemoveCollider(mpField_Worlds_1->GetWallCol());
+	CStageBase::Unload();
+}

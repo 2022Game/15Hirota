@@ -108,10 +108,6 @@ void CNumberFloor1::UpdateWaiting()
 	{
 		SetColor(CColor(0.5f, 0.1f, 0.1f, 1.0f));
 	}
-	else
-	{
-		SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
-	}
 
 	switch (mStateStep)
 	{

@@ -60,6 +60,7 @@ CTreasureChestTwo::CTreasureChestTwo(const CVector& pos, const CVector& scale, c
 	: mStateStep(0)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
+	, mDefaultRot(rot)
 	, mWaitTime(0.0f)
 	, mRotateStartAngle(0.0f)
 	, mRotateEndAngle(0.0f)

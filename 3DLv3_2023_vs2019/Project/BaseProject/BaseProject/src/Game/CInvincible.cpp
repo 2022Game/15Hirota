@@ -196,7 +196,6 @@ void CInvincible::UpdateGet()
 	mTotalMovement += mMoveVector;
 
 
-
 	//// Œ»İ‚ÌƒJƒƒ‰‚ğæ“¾
 	//CCamera* cam = CCamera::CurrentCamera();
 	//if (cam == nullptr) return;

@@ -113,6 +113,7 @@
     <ClCompile Include="src\Game\CSlash.cpp" />
     <ClCompile Include="src\Game\CStage1.cpp" />
     <ClCompile Include="src\Game\CStage2.cpp" />
+    <ClCompile Include="src\Game\CStage3.cpp" />
     <ClCompile Include="src\Game\CStageBase.cpp" />
     <ClCompile Include="src\Game\CStageButton.cpp" />
     <ClCompile Include="src\Game\CStageManager.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="src\Game\CSlash.h" />
     <ClInclude Include="src\Game\CStage1.h" />
     <ClInclude Include="src\Game\CStage2.h" />
+    <ClInclude Include="src\Game\CStage3.h" />
     <ClInclude Include="src\Game\CStageBase.h" />
     <ClInclude Include="src\Game\CStageButton.h" />
     <ClInclude Include="src\Game\CStageManager.h" />

@@ -23,7 +23,6 @@ public:
 
 private:
 	// モデル・素材関連
-	CModel* mpModel;
 	// 1回で消滅する床のモデル
 	CModel* mpNumberOnce;
 	// 1回で消滅する床のモデル

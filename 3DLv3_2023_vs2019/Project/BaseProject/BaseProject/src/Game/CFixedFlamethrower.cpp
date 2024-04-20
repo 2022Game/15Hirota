@@ -71,17 +71,17 @@ void CFixedFlamethrower::UpdateIdle()
 	}
 	else
 	{
-		if (mWaitTime < WAIT_TIME)
+		if (mWaitTime <= WAIT_TIME)
 		{
 			mWaitTime += Time::DeltaTime();
-			if (mWaitTime > WAIT_TIME)
+			if (mWaitTime >= WAIT_TIME)
 			{
 				mWaitTime = WAIT_TIME;
 				fire = true;
 			}
 		}
 	}
-	//CDebugPrint::Print("wait:%f\n", mWaitTime);
+	CDebugPrint::Print("wait:%f\n", mWaitTime);
 }
 
 void CFixedFlamethrower::Update()

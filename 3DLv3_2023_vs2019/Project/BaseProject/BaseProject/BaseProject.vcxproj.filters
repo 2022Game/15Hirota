@@ -589,6 +589,9 @@
     <ClCompile Include="src\Game\CNumberField.cpp">
       <Filter>ソース ファイル\Game\Field</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CStage3.cpp">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1085,6 +1088,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CNumberField.h">
       <Filter>ソース ファイル\Game\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStage3.h">
+      <Filter>ソース ファイル\Game\Stage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
