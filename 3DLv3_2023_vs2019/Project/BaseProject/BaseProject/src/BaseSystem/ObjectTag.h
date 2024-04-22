@@ -6,6 +6,10 @@ enum class ETag
 {
 	eNone = -1,
 
+	eBullet,			// 弾丸
+	eFlame,				// 炎
+	eSlash,				// 斬撃
+
 	eField,				// フィールドを構成するオブジェクト
 	eRideableObject,	// 乗ることができるオブジェクト
 	eItemRecover,		// 回復アイテムのオブジェクト
@@ -14,6 +18,7 @@ enum class ETag
 	eMedal,				// メダルアイテム
 	eGoalObject,		// クリア条件のオブジェクト
 	eJumpingObject,		// ジャンプするオブジェクト
+	eFall,				// 落下判定用オブジェクト
 
 	ePlayer,			// プレイヤー
 	eEnemy,				// エネミー
@@ -21,9 +26,6 @@ enum class ETag
 
 	eWeapon,			// プレイヤーの武器
 	eEnemyWeapon,		// 敵の武器
-	eBullet,			// 弾丸
-	eFlame,				// 炎
-	eSlash,				// 斬撃
 
 	eBakuhatu,
 	eGauge,

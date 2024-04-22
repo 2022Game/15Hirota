@@ -61,7 +61,7 @@
 // 色を描画する時間
 #define COLORSET 0.5f
 // ダメージコライダーの計測時間
-#define DAMAGECOL 2.0f
+#define DAMAGECOL 1.0f
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -88,10 +88,13 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	50.0f	},		// 回避
 	{ "Character\\Monster1\\anim\\Guts pose_325.x",				false,	325.0f	},		// ガッツポーズ
 	{ "Character\\Monster1\\anim\\Hit_63.x",					false,	63.0f	},		// 敵の攻撃Hit
-	{ "Character\\Monster1\\anim\\Death_276.x",					false,	276.0f	},		// 死亡Hit_107
 	{ "Character\\Monster1\\anim\\Hit_107.x",					false,	107.0f	},		// 敵の弾Hit
+	{ "Character\\Monster1\\anim\\Death_276.x",					false,	276.0f	},		// 死亡
 	{ "Character\\Monster1\\anim\\Climb_121.x",						true,	121.0f	},	// 壁を登る
 	{ "Character\\Monster1\\anim\\Climb_to Top_241.x",				true,	241.0f	},	// 頂上へ登った
+	{ "Character\\Monster1\\anim\\Warrok_Falling_643.x",			true,	643.0f	},	// 落下状態
+	{ "Character\\Monster1\\anim\\Warrok_Falling Flat_93.x",	false,	93.0f	},		// 落下状態から着地した
+	{ "Character\\Monster1\\anim\\Warrok_Stand Up_141.x",		false,	141.0f	},		// 立ち上がる
 
 };
 
@@ -101,37 +104,38 @@ CPlayer::CPlayer()
 	, mState(EState::eReady)
 	, mInventory(std::map<ItemType, int>())
 	, mStateStep(0)
-	, mElapsedTime(0.0f)
-	, mElapsedTimeEnd(0.0f)
-	, mElapsedTimeCol(0.0f)
-	, mInvincibleStartTime(10.0f)
-	, mClimbStaminaTime(0.0f)
-	, mStartDashTime(0.0f)
 	, mWeaponTime(0.0f)
 	, mMoveSpeedY(0.0f)
+	, mElapsedTime(0.0f)
+	, mStartDashTime(0.0f)
+	, mElapsedTimeEnd(0.0f)
+	, mElapsedTimeCol(0.0f)
+	, mClimbStaminaTime(0.0f)
+	, mInvincibleStartTime(10.0f)
 	, mStartPos(CVector::zero)
 	, mMoveSpeed(CVector::zero)
 	, mGroundNormal(CVector::up)
 	, mClimbNormal(CVector::zero)
 	, mClimbedStartPos(CVector::zero)
-	, mClimbedMovedUpPos(CVector::zero)
 	, mClimbedMovedPos(CVector::zero)
+	, mClimbedMovedUpPos(CVector::zero)
+	, mDash(false)
+	, mClimb(false)
 	, mHpHit(false)
-	, mDamageEnemy(false)
+	, mIsAttack(false)
+	, mSavePoint(false)
+	, mIsJumping(false)
+	, mClimbWall(false)
 	, mInvincible(false)
+	, mFallDamage(false)
+	, mDamageEnemy(false)
+	, mClimbWallTop(false)
 	, mDamageObject(false)
 	, mStaminaDepleted(false)
 	, mIsPlayedSlashSE(false)
 	, mStaminaLowerLimit(false)
 	, mIsPlayedHitDamageSE(false)
-	, mIsAttack(false)
 	, mIsSpawnedSlashEffect(false)
-	, mDash(false)
-	, mClimb(false)
-	, mClimbWall(false)
-	, mClimbWallTop(false)
-	, mSavePoint(false)
-	, mIsJumping(false)
 	, mpRideObject(nullptr)
 {
 	ClearItems();
@@ -209,9 +213,11 @@ CPlayer::CPlayer()
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, 
-		ELayer::eKickCol, ELayer::eBulletCol,ELayer::eNeedleCol, ELayer::eFlame});
+		ELayer::eKickCol, ELayer::eBulletCol,ELayer::eNeedleCol,
+		ELayer::eFlame,ELayer::eFall});
 	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, 
-		ETag::eEnemy, ETag::eBullet,ETag::eRideableObject, ETag::eFlame,});
+		ETag::eEnemy, ETag::eBullet,ETag::eRideableObject, ETag::eFlame,
+		ETag::eFall});
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx1 = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -270,8 +276,8 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	{
 		if (other->Layer() == ELayer::eField)
 		{
-			mMoveSpeedY = 0.0f;
 			CVector adjust = hit.adjust;
+			mMoveSpeedY = 0.0f;
 			adjust.X(0.0f);
 			adjust.Z(0.0f);
 			Position(Position() + adjust * hit.weight);
@@ -419,7 +425,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			/*CDebugPrint::Print("Player hit GoalObject!\n");*/
 			mpDamageCol->SetEnable(false);
-			if (CGameManager::StageNo() == 0 || CGameManager::StageNo() == 1 || CGameManager::StageNo() == 2)
+			if (CGameManager::StageNo() == 0 ||
+				CGameManager::StageNo() == 1 ||
+				CGameManager::StageNo() == 2 ||
+				CGameManager::StageNo() == 3)
 			{
 				ChangeState(EState::eClear);
 			}
@@ -444,6 +453,25 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			ChangeState(EState::eHitObj);
 			mpRideObject = other->Owner();
 		}
+		// 落下判定用のコライダーに触れたら
+		else if (other->Layer() == ELayer::eFall)
+		{
+			// 落下ダメージ処理
+			int currentStage = CGameManager::StageNo();
+			if (currentStage == 3)
+			{
+				ChangeState(EState::eFallDamege);
+				Position(0.0f, 17.0f, -70.0f);
+				// 3面のセーブポイント
+				if (mSavePoint)
+				{
+					ChangeState(EState::eFallDamege);
+					Position(0.0f, 17.0f, 350.0f);
+				}
+			}
+			//CDebugPrint::Print("mSavePoint: %s\n", mSavePoint ? "true" : "false");
+		}
+		// 炎に当たったら
 		else if (other->Layer() == ELayer::eFlame)
 		{
 			ChangeState(EState::eHit);
@@ -838,6 +866,7 @@ void CPlayer::UpdateReady()
 // 待機
 void CPlayer::UpdateIdle()
 {
+	mMoveSpeed = CVector::zero;
 	// 剣に攻撃終了を伝える
 	mpSword->AttackEnd();
 
@@ -863,13 +892,66 @@ void CPlayer::UpdateIdle()
 	if (mIsGrounded)
 	{
 		mStateStep = 0;
-		// プレイヤーの移動ベクトルを求める
-		CVector move = CalcMoveVec();
-		// 求めた移動ベクトルの長さで入力されているか判定
-		if (move.LengthSqr() > 0.0f)
+
+		// Jキーで攻撃状態へ移行
+		if (CInput::PushKey(VK_LBUTTON))
 		{
-			float speed = MOVE_SPEED;
-			if (CInput::Key(VK_SHIFT))
+			mMoveSpeed = CVector::zero;
+			ChangeState(EState::eAttack);
+		}
+		// Kキーで強攻撃
+		else if (CInput::PushKey(VK_RBUTTON))
+		{
+			mMoveSpeed = CVector::zero;
+			ChangeState(EState::eAttackStrong);
+		}
+		// SPACEキーでジャンプ開始へ移行
+		else if (CInput::PushKey(VK_SPACE))
+		{
+			if (mCharaStatus.stamina - 20 >= 0)
+			{
+				ChangeState(EState::eJumpStart);
+				// スタミナが0以下にならない場合はジャンプを実行
+				mCharaStatus.stamina -= 20;
+			}
+			else
+			{
+			}
+		}
+	}
+	// プレイヤーが接地していない
+	else
+	{
+		// 空中に飛び出したときに待機モーションへ切り替えるのを
+		// 数フレーム待つ
+		if (mStateStep <= 5)
+		{
+			mStateStep++;
+		}
+		else
+		{
+			// 待機アニメーションに切り替え
+			ChangeAnimation(EAnimType::eIdle);
+		}
+	}
+}
+
+// 移動状態
+void CPlayer::UpdateMove()
+{
+	mDamageEnemy = false;
+	mMoveSpeed = CVector::zero;
+
+	// プレイヤーの移動ベクトルを求める
+	CVector move = CalcMoveVec();
+	// 求めた移動ベクトルの長さで入力されているか判定
+	if (move.LengthSqr() > 0.0f)
+	{
+		float speed = MOVE_SPEED;
+		// 待機状態であれば、歩行モーションに切り替え
+		if (mState == EState::eIdle)
+		{
+			if (CInput::Key(VK_SHIFT) && mIsGrounded)
 			{
 				// スタミナが0以上かつ、スタミナの下限値フラグがfalseだったら
 				if (mCharaStatus.stamina >= 0 && !mStaminaLowerLimit)
@@ -971,10 +1053,13 @@ void CPlayer::UpdateIdle()
 				{
 				}
 			}
-			mMoveSpeed += move * speed * mCharaStatus.moveSpeed;
 		}
-		// 移動キーを入力していない
-		else
+		mMoveSpeed += move * speed * mCharaStatus.moveSpeed;
+	}
+	// 移動キーを入力していない
+	else
+	{
+		if (mState == EState::eIdle)
 		{
 			// 待機アニメーションに切り替え
 			ChangeAnimation(EAnimType::eIdle);
@@ -984,47 +1069,6 @@ void CPlayer::UpdateIdle()
 			{
 				mCharaStatus.stamina += 1;
 			}
-		}
-
-		// Jキーで攻撃状態へ移行
-		if (CInput::PushKey(VK_LBUTTON))
-		{
-			mMoveSpeed = CVector::zero;
-			ChangeState(EState::eAttack);
-		}
-		// Kキーで強攻撃
-		else if (CInput::PushKey(VK_RBUTTON))
-		{
-			mMoveSpeed = CVector::zero;
-			ChangeState(EState::eAttackStrong);
-		}
-		// SPACEキーでジャンプ開始へ移行
-		else if (CInput::PushKey(VK_SPACE))
-		{
-			if (mCharaStatus.stamina - 20 >= 0)
-			{
-				ChangeState(EState::eJumpStart);
-				// スタミナが0以下にならない場合はジャンプを実行
-				mCharaStatus.stamina -= 20;
-			}
-			else
-			{
-			}
-		}
-	}
-	// プレイヤーが接地していない
-	else
-	{
-		// 空中に飛び出したときに待機モーションへ切り替えるのを
-		// 数フレーム待つ
-		if (mStateStep <= 5)
-		{
-			mStateStep++;
-		}
-		else
-		{
-			// 待機アニメーションに切り替え
-			ChangeAnimation(EAnimType::eIdle);
 		}
 	}
 }
@@ -1294,6 +1338,16 @@ void CPlayer::UpdateClearEnd()
 			ChangeState(EState::eReady);
 			Position(mStartPos);
 		}
+
+		if (CGameManager::StageNo() == 3)
+		{
+			mSavePoint = false;
+			// ステージをクリア
+			CGameManager::StageClear();
+			// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
+			ChangeState(EState::eReady);
+			Position(mStartPos);
+		}
 	}
 }
 
@@ -1318,7 +1372,8 @@ void CPlayer::UpdateDeathEnd()
 		mSavePoint = false;
 		mDamageObject = false;
 		mCharaStatus = mCharaMaxStatus;
-		Position(-150.0f, 140.0f, -5.3f);
+		mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
+		Position(0.0f, 14.5f, -70.0f);
 		ChangeState(EState::eIdle);
 	}
 }
@@ -1353,12 +1408,11 @@ void CPlayer::UpdateHit()
 		mElapsedTime += Time::DeltaTime();
 
 		// sin関数を使って点滅する色のアルファ値を計算
-		//float alpha = sin(mElapsedTime * blinkSpeed);
-		// 0.5～1.0
+		// 0.0～1.0の間を往復する
 		float alpha = 0.5f + 0.5f * sin(mElapsedTime * blinkSpeed);
 
-		// 色をセット
-		SetColor(CColor(1.0, 0.0, 0.0, alpha));
+		// 色をセット (白色でalpha値を指定)
+		SetColor(CColor(1.0f, 1.0f, 1.0f, alpha));
 
 		mElapsedTimeCol += Time::DeltaTime();
 		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
@@ -1391,6 +1445,7 @@ void CPlayer::UpdateHit()
 // 敵の弾の攻撃を受けた時
 void CPlayer::UpdateHitBullet()
 {
+	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eHit);
 
 	if (mElapsedTimeCol <= DAMAGECOL)
@@ -1403,7 +1458,6 @@ void CPlayer::UpdateHitBullet()
 		}
 	}
 
-	mMoveSpeed = CVector::zero;
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 
@@ -1440,6 +1494,7 @@ void CPlayer::UpdateHitBullet()
 // 敵の剣の攻撃を受けた時
 void CPlayer::UpdateHitSword()
 {
+	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eHit);
 
 	if (mElapsedTimeCol <= DAMAGECOL)
@@ -1452,7 +1507,6 @@ void CPlayer::UpdateHitSword()
 		}
 	}
 
-	mMoveSpeed = CVector::zero;
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 
@@ -1491,6 +1545,7 @@ void CPlayer::UpdateHitSword()
 // ダメージを受ける(オブジェクト)
 void CPlayer::UpdateHitObj()
 {
+	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eHit);
 
 	if (mElapsedTimeCol <= DAMAGECOL)
@@ -1503,7 +1558,6 @@ void CPlayer::UpdateHitObj()
 		}
 	}
 
-	mMoveSpeed = CVector::zero;
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
 
@@ -1530,6 +1584,78 @@ void CPlayer::UpdateHitObj()
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eDeath);
+		}
+	}
+}
+
+// 落下ダメージ
+void CPlayer::UpdateFallDamage()
+{
+	mMoveSpeed = CVector::zero;
+	ChangeAnimation(EAnimType::eFallingFlat);
+
+	if (!mFallDamage)
+	{
+		mFallDamage = true;
+		TakeDamage(1);
+		mpDamageCol->SetEnable(false);
+	}
+
+	if (mElapsedTime >= COLORSET)
+	{
+		if (IsAnimationFinished())
+		{
+			if (mCharaStatus.hp > 0)
+			{
+				mIsPlayedHitDamageSE = false;
+				mFallDamage = false;
+				mElapsedTime = 0.0f;
+				mElapsedTimeCol = 0.0f;
+				mpDamageCol->SetEnable(false);
+				ChangeAnimation(EAnimType::eStandUp);
+				ChangeState(EState::eStandUp);
+			}
+			else if (mCharaStatus.hp <= 0)
+			{
+				mElapsedTime = 0.0f;
+				mElapsedTimeCol = 0.0f;
+				mpDamageCol->SetEnable(false);
+				ChangeState(EState::eDeath);
+			}
+		}
+	}
+
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	mElapsedTime += Time::DeltaTime();
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		// 点滅の速度を調整するための定数
+		const float blinkSpeed = 16.5f;
+
+		// 経過時間を更新
+		mElapsedTime += Time::DeltaTime();
+
+		// sin関数を使って点滅する色のアルファ値を計算
+		// 0.0～1.0の間を往復する
+		float alpha = 0.5f + 0.5f * sin(mElapsedTime * blinkSpeed);
+
+		// 色をセット (白色でalpha値を指定)
+		SetColor(CColor(1.0f, 1.0f, 1.0f, alpha));
+
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
 		}
 	}
 }
@@ -1824,6 +1950,26 @@ void CPlayer::UpdateWireClimbedTop()
 	}
 }
 
+// 落下状態
+void CPlayer::UpdateFalling()
+{
+	mMoveSpeedY = -2.0f;
+	ChangeAnimation(EAnimType::eFalling);
+	if (mIsGrounded)
+	{
+		ChangeState(EState::eStandUp);
+	}
+}
+
+// 立ち上がる
+void CPlayer::UpdateStandUp()
+{
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eIdle);
+	}
+}
+
 // ジャンプ開始
 void CPlayer::UpdateJumpStart()
 {
@@ -1841,16 +1987,6 @@ void CPlayer::UpdateJumpStart()
 		}
 	}
 
-	// 移動処理
-	CVector move = CalcMoveVec();
-	move.Y(0.0f);
-	move.Normalize();
-
-	// 入力ベクトルの長さで入力されているか判定
-	if (move.LengthSqr() > 0.0f)
-	{
-		mMoveSpeed = move;
-	}
 	mMoveSpeedY += JUMP_SPEED;
 	mIsGrounded = false;
 }
@@ -1879,6 +2015,7 @@ void CPlayer::UpdateJump()
 // ジャンプ終了
 void CPlayer::UpdateJumpEnd()
 {
+	mMoveSpeed = CVector::zero;
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
@@ -1889,7 +2026,7 @@ void CPlayer::UpdateJumpEnd()
 		}
 	}
 
-	if (IsAnimationFinished())
+	if (IsAnimationFinished() && mIsGrounded)
 	{
 		ChangeState(EState::eIdle);
 	}
@@ -1911,15 +2048,6 @@ void CPlayer::UpdateJumpingStart()
 			mElapsedTimeCol = DAMAGECOL;
 			mpDamageCol->SetEnable(true);
 		}
-	}
-
-	// 移動処理
-	CVector move = CalcMoveVec();
-
-	// 入力ベクトルの長さで入力されているか判定
-	if (move.LengthSqr() > 0.0f)
-	{
-		mMoveSpeed = move;
 	}
 	mMoveSpeedY = JUMP_BOUNCE;
 	mIsGrounded = false;
@@ -1999,6 +2127,11 @@ void CPlayer::Update()
 	mpRideObject = nullptr;
 	mHpHit = false;
 
+	if (mMoveSpeedY <= -3.0f)
+	{
+		ChangeState(EState::eFalling);
+	}
+
 	if (!(mState == EState::eAttack || mState == EState::eAttackStrong ||
 		mState == EState::eAttackWait || mState == EState::eAttackStrongWait))
 	{
@@ -2071,13 +2204,17 @@ void CPlayer::Update()
 	case EState::eHitBullet:
 		UpdateHitBullet();
 		break;
-		// 敵の件Hit
+		// 敵の剣Hit
 	case EState::eHitSword:
 		UpdateHitSword();
 		break;
 		// ダメージを受ける(オブジェクト)
 	case EState::eHitObj:
 		UpdateHitObj();
+		break;
+		// 落下ダメージ
+	case EState::eFallDamege:
+		UpdateFallDamage();
 		break;
 		// 登る状態
 	case EState::eClimb:
@@ -2115,7 +2252,14 @@ void CPlayer::Update()
 	case EState::eReStart:
 		UpdateReStart();
 		break;
-
+		// 落下状態
+	case EState::eFalling:
+		UpdateFalling();
+		break;
+		// 立ち上がる
+	case EState::eStandUp:
+		UpdateStandUp();
+		break;
 		// ジャンプ開始
 	case EState::eJumpStart:
 		UpdateJumpStart();
@@ -2140,6 +2284,19 @@ void CPlayer::Update()
 	case EState::eJumpingEnd:
 		UpdateJumpingEnd();
 		break;
+	}
+
+	// 待機中とジャンプ中は、移動処理を行う
+	if ((mState == EState::eIdle && mIsGrounded)
+		|| mState == EState::eJumpStart
+		|| mState == EState::eJump
+		|| mState == EState::eJumpEnd
+		|| mState == EState::eJumpingStart
+		|| mState == EState::eJumping
+		|| mState == EState::eJumpingEnd
+		|| mState == EState::eFalling)
+	{
+		UpdateMove();
 	}
 
 	//// 「E」キーで炎の発射をオンオフする
@@ -2235,33 +2392,6 @@ void CPlayer::Update()
 	// 現在のスタミナを設定
 	mpStaminaGauge->SetSutaminaValue(mCharaStatus.stamina);
 
-
-	///////////////////////////////////////////
-	
-	// 仮の落下ダメージ処理
-	// 変更予定
-	int currentStage = CGameManager::StageNo();
-	float minHeaight = -100.0f;
-	if (Position().Y() < minHeaight)
-	{
-		if (currentStage == 3)
-		{
-			ChangeAnimation(EAnimType::eHitJ);
-			TakeDamage(1);
-			Position(0.0f, 15.0f, -70.0f);
-			// 3面のセーブポイント
-			if (mSavePoint)
-			{
-				ChangeAnimation(EAnimType::eHitJ);
-				TakeDamage(1);
-				Position(0.0f, 15.0f, 350.0f);
-			}
-		}
-	}
-	//CDebugPrint::Print("mSavePoint: %s\n", mSavePoint ? "true" : "false");
-
-	///////////////////////////////////////////
-
 	// キャラクターの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
@@ -2280,7 +2410,8 @@ void CPlayer::Update()
 	//CDebugPrint::Print("Position.Y %f\n", Position().Y());
 	//// コライダーの復活時間監視
 	//CDebugPrint::Print("TimeCol%f\n", mElapsedTimeCol);
-	//CDebugPrint::Print("mMoveSpeedY%f\n", mMoveSpeedY);
+	CDebugPrint::Print("mMoveSpeedY%f\n", mMoveSpeedY);
+	//CDebugPrint::Print("State:%d\n", mState);
 	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 }
 

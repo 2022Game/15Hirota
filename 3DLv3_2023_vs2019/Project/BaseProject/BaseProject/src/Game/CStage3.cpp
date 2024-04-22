@@ -1,4 +1,5 @@
 #include "CStage3.h"
+#include "CNumberField.h"
 #include "CPlayer.h"
 #include "CNumberFloor1.h"
 #include "CNumberFloorOnce.h"
@@ -6,6 +7,7 @@
 #include "CTreasureChest.h"
 #include "CSavePoint.h"
 #include "CFixedFlamethrower.h"
+#include "CGoalObject.h"
 
 // コンストラクタ
 CStage3::CStage3()
@@ -22,6 +24,8 @@ CStage3::~CStage3()
 // ステージ読み込み
 void CStage3::Load()
 {
+	CResourceManager::Load<CModel>("NumberFallCol",			"Field\\FallCol.obj");							// 落下判定コライダー
+
 	// ギミック関連
 	CResourceManager::Load<CModel>("Number0",				"Field\\Object\\number0.obj");					// 零番目の床
 	CResourceManager::Load<CModel>("Number1",				"Field\\Object\\number1.obj");					// 一番目の床ブロック
@@ -36,9 +40,16 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("FlamethrowerModel",		"Field\\Gimmick\\Flamethrower(foundation).obj");// 火炎放射器(土台)
 	CResourceManager::Load<CModel>("FlamethrowerTank",		"Field\\Gimmick\\Flamethrower(tank).obj");		// 火炎放射器(タンク)
 	CResourceManager::Load<CModel>("FlamethrowerCol",		"Field\\Gimmick\\Flamethrower(WallCol).obj");	// 火炎放射器(コライダー)
+	CResourceManager::Load<CModel>("GoalPost",				"Field\\Object\\GoalPost.obj");					// ゴールポストモデル
+	CResourceManager::Load<CModel>("GoalCube",				"Field\\Object\\GoalCube.obj");					// ゴールブロックモデル
 
 	// 背景色設定
-	System::SetClearColor(0.1960784f, 0.6f, 0.8f, 1.0f);
+	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+	CNumberField* field = new CNumberField();
+	field->Scale(1.0f, 1.0f, 1.0f);
+	field->Position(0.0f, -150.0f, 0.0f);
+	AddTask(field);
 
 	// 初期値点
 	CRisingObject* rising = new CRisingObject
@@ -57,6 +68,24 @@ void CStage3::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rising1);
+
+	// ゴール値点
+	CRisingObject* rising2 = new CRisingObject
+	(
+		CVector(0.0f, 12.0f, 740.0f),
+		CVector(2.0f, 1.0f, 2.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rising2);
+
+	// ゴールポスト
+	CGoalObject* goal = new CGoalObject
+	(
+		CVector(0.0f, 10.0f, 720.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 90.0f, 0.0f)
+	);
+	AddTask(goal);
 
 	// オブジェクトを配置するループ
 	for (int i = 0; i < 14; ++i) {
@@ -88,12 +117,21 @@ void CStage3::Load()
 		if (i == 11)  zPos = 8 * 70.0f;
 		if (i == 12)  zPos = 8 * 70.0f;
 		if (i == 13)  zPos = 9 * 70.0f;
+
+		// X軸のスケール値を設定
+		float xScale = 4.0f;
+		if (i == 2) xScale = 6.0f;
+
+
+		// Z軸のスケール値を設定
+		float zScale = 4.0f;
+		if (i == 2) zScale = 6.0f;
 		
 		// オブジェクトを作成してタスクに追加
 		CNumberFloorOnce* numberfloor = new CNumberFloorOnce
 		(
 			CVector(xPos, yPos, zPos),
-			CVector(4.0f, 3.0f, 4.0f),
+			CVector(xScale, 3.0f, zScale),
 			CVector(0.0f, 90.0f, 0.0f),
 			ETag::ePlayer, ELayer::ePlayer
 		);
@@ -133,7 +171,7 @@ void CStage3::Load()
 
 
 	// 火炎放射器モデル
-	// 正面方向
+	// 左方向
 	CFixedFlamethrower* flamethrower1 = new CFixedFlamethrower
 	(
 		CVector(-100.0f, 15.0f, 140.0f),
@@ -149,6 +187,24 @@ void CStage3::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(dodai);
+
+	// 火炎放射器モデル
+	// 右方向 
+	CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
+	(
+		CVector(-100.0f, 15.0f, 630.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(flamethrower2);
+	// 火炎放射器の土台
+	CRisingObject* dodai2 = new CRisingObject
+(
+		CVector(-100.0f, 15.0f, 630.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(dodai2);
 
 
 	// モンスター(プレイヤー)

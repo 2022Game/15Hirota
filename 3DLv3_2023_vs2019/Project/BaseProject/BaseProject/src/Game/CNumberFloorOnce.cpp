@@ -170,7 +170,7 @@ void CNumberFloorOnce::UpdateFalling()
 	case 2:
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime >= 10.0f)
+		if (mElapsedTime >= 5.0f)
 		{
 			mStateStep = 0;
 			mSwitchCount = 0;

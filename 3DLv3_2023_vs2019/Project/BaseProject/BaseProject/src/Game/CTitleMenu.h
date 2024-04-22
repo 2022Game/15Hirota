@@ -1,0 +1,39 @@
+#ifndef CTITLEMENU_H
+#define CTITLEMENU_H
+
+#include "CTask.h"
+#include "CImage.h"
+#include <vector>
+
+// タイトル画面選択メニュー
+class CTitleMenu : public CTask
+{
+public:
+	// コンストラクタ
+	CTitleMenu();
+	// デストラクタ
+	~CTitleMenu();
+
+	// 開く
+	void Open();
+	// 閉じる
+	void Close();
+
+	void HandleMouseInput();
+
+	bool IsOpened() const;
+	
+	// どのメニューにするか
+	void Decide(int select);
+
+	void Update();
+	void Render();
+
+private:
+	CImage* mpTitleMenu;
+	std::vector<CImage*> mTitleMenuItems;
+	CImage* mpTitleMenuFrame;
+	int mSelectIndex;
+	bool mIsOpened;
+};
+#endif

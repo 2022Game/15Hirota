@@ -11,6 +11,9 @@ public:
 
 	void Open();
 	void Close();
+
+	void HandleMouseInput();
+
 	bool IsOpened() const;
 
 	void Decide(int select);

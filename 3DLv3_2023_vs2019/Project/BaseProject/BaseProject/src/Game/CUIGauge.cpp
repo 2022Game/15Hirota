@@ -32,7 +32,7 @@
 
 #define VERTICAL_SHAKE_AMOUNT 20.0f
 
-#define CHANGE_SPEED 0.2f
+#define CHANGE_SPEED 0.7f
 
 #define DAMAGE_DELAY 0.1f
 
@@ -88,15 +88,24 @@ void CUIGauge::Update()
 			CVector2 size = CVector2(BAR_SIZE_X * newPercent, BAR_SIZE_Y);
 			mpDecreaseBarImage->SetSize(size);
 		}
+		else
+		{
+			CVector2 size2 = CVector2(BAR_SIZE_X * targetPercent, BAR_SIZE_Y);
+			mpDecreaseBarImage->SetSize(size2);
+		}
+	}
+	else
+	{
+		CVector2 size2 = CVector2(BAR_SIZE_X * targetPercent, BAR_SIZE_Y);
+		mpDecreaseBarImage->SetSize(size2);
 	}
 
 	// サイズが目標に達した場合、mElapsedTimeをリセット
-	if (fabs(targetPercent - currentPercent) < 0.001000)
+	if (fabs(targetPercent - currentPercent) < 0.010000)
 	{
 		mGauge = false;
 		mElapsedTime = 0.0f;
 	}
-
 	/*CDebugPrint::Print("mGauge: %s\n", mGauge ? "true" : "false");
 	CDebugPrint::Print("mDamaged: %s\n", mDamaged ? "true" : "false");
 	CDebugPrint::Print("mStartDamaged: %s\n", mStartDamaged ? "true" : "false");

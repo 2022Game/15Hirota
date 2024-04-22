@@ -92,9 +92,10 @@ void CGameManager::UpdateGame()
 void CGameManager::UpdateStageClear()
 {
 	//// ステージをクリアしたら、次のステージを読み込み
-	//mStageNo++;
+	mStageNo = 0;
 	//CStageManager::LoadStage(mStageNo);
-	CSceneManager::Instance()->LoadScene(EScene::eClear);
+	//CSceneManager::Instance()->LoadScene(EScene::eClear);
+	CStageManager::LoadStage(mStageNo);
 
 	// ステージの読み込みが終われば、ゲームを開始
 	ChangeState(EGameState::eGame);

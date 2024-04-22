@@ -1,4 +1,5 @@
 #include "CTitleScene.h"
+#include "CTitleMenu.h"
 #include "CSceneManager.h"
 #include "CGameScene.h"
 #include "CCamera.h"
@@ -12,6 +13,7 @@
 CTitleScene::CTitleScene()
 	: CSceneBase(EScene::eTitle)
 	, mTitle(nullptr)
+	, mpTitleMenu(nullptr)
 {
 }
 
@@ -23,6 +25,8 @@ CTitleScene::~CTitleScene()
 //シーン読み込み
 void CTitleScene::Load()
 {
+	// タイトルメニューを作成
+	mpTitleMenu = new CTitleMenu();
 	// 背景色設定
 	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -39,8 +43,5 @@ void CTitleScene::Load()
 //シーンの更新処理
 void CTitleScene::Update()
 {
-	if (CInput::PushKey('T'))
-	{
-		CSceneManager::Instance()->LoadScene(EScene::eGame);
-	}
+	mpTitleMenu->Open();
 }

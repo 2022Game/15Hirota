@@ -250,7 +250,9 @@ void CGameScene::Update()
 	bool pose = CTaskManager::Instance()->IsPaused();
 
 	// ステージ1,2中のみタイマーを動かす
-	if (currentStage == 1 || currentStage == 2)
+	if (currentStage == 1 ||
+		currentStage == 2 ||
+		currentStage == 3)
 	{
 		// ポーズ中でなければタイマーを動かす
 		if (!pose)

@@ -185,6 +185,8 @@ private:
 	void UpdateReady();
 	// 待機状態
 	void UpdateIdle();
+	// 移動状態
+	void UpdateMove();
 	// ダッシュ終了
 	void UpdateDashEnd();
 	// 攻撃
@@ -221,6 +223,8 @@ private:
 	void UpdateHitSword();
 	// ダメージを受ける(オブジェクト)
 	void UpdateHitObj();
+	// 落下ダメージオブジェクト
+	void UpdateFallDamage();
 	// 登る状態
 	void UpdateClimb();
 	// 頂上まで登った
@@ -229,6 +233,10 @@ private:
 	void UpdateWireClimb();
 	// 金網の頂上に登った状態
 	void UpdateWireClimbedTop();
+	// 落下状態
+	void UpdateFalling();
+	// 立ち上がる
+	void UpdateStandUp();
 
 	// プレイヤーの状態
 	enum class EState
@@ -259,10 +267,13 @@ private:
 		eHitBullet,			// 敵の弾ヒット
 		eHitSword,			// 敵の剣ヒット
 		eHitObj,			// ダメージを受ける(オブジェクト)
+		eFallDamege,		// 落下ダメージ
 		eClimb,				// 登る状態
 		eClimbedTop,		// 頂上まで登った
 		eWireClimb,			// 金網に登る状態
 		eWireClimbedTop,	// 金網の頂上まで登った
+		eFalling,			// 落下状態
+		eStandUp,			// 立ち上がる
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
@@ -295,10 +306,13 @@ private:
 		eRotate,		// 回避
 		eGuts,			// ガッツポーズ
 		eHit,			// 敵の攻撃Hit
-		eDeath,			// 死亡
 		eHitJ,			// 敵の弾Hit
+		eDeath,			// 死亡
 		eClimb,			// 壁を登る
 		eClimbedTop,	// 壁を登り切った時
+		eFalling,		// 落下状態
+		eFallingFlat,	// 落下状態から着地した
+		eStandUp,		// 立ち上がる
 
 		Num
 	};
@@ -400,6 +414,8 @@ private:
 	bool mSavePoint;
 	// スラッシュエフェクトを鳴らしたか
 	bool mIsSpawnedSlashEffect;
+	// 落下ダメージを受けたか
+	bool mFallDamage;
 
 	///////////////////////////////////////////////////////
 };

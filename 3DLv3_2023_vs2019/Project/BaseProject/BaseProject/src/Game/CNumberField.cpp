@@ -3,17 +3,20 @@
 #include "CCamera.h"
 
 CNumberField::CNumberField()
-	: CObjectBase(ETag::eField,ETaskPriority::eBackground)
+	: CObjectBase(ETag::eFall,ETaskPriority::eFall)
 {
-	// ステージの背景などを追加
+	// 落下判定用のコライダー
+	mpStageModel = CResourceManager::Get<CModel>("NumberFallCol");
 
-
-	// ステージのコライダーなどを追加
+	// 1回で消滅する床のコライダー作成
+	mpFallCol = new CColliderMesh(this, ELayer::eFall, mpStageModel, true);
+	mpFallCol->SetCollisionTags({ ETag::ePlayer });
+	mpFallCol->SetCollisionLayers({ ELayer::eDamageCol });
 }
 
 CNumberField::~CNumberField()
 {
-
+	SAFE_DELETE(mpFallCol);
 }
 
 // 壁のコライダーが必要であれば実装
@@ -29,5 +32,6 @@ void CNumberField::Update()
 
 void CNumberField::Render()
 {
-
+	mpStageModel->SetColor(mColor);
+	mpStageModel->Render(Matrix());
 }

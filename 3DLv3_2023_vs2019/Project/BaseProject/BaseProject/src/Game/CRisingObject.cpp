@@ -27,9 +27,6 @@ CRisingObject::CRisingObject(const CVector& pos, const CVector& scale,
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mIsCollision(false)
 {
-	// ‰ŠúˆÊ’u‚Ì•Û‘¶
-	mStartPos = Position();
-
 	// ã¸‚·‚é°‚Ìƒ‚ƒfƒ‹‚ğæ“¾
 	mpModel = CResourceManager::Get<CModel>("FieldCube");
 
@@ -45,6 +42,9 @@ CRisingObject::CRisingObject(const CVector& pos, const CVector& scale,
 
 	Position(pos);
 	Scale(scale);
+
+	// ‰ŠúˆÊ’u‚Ì•Û‘¶
+	mStartPos = Position();
 
 	SetColor(CColor(0.0f, 1.0f, 0.0f, 1.0f));
 

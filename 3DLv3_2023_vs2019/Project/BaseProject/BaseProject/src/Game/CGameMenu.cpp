@@ -52,24 +52,73 @@ CGameMenu::CGameMenu()
 
 CGameMenu::~CGameMenu()
 {
+	// 削除されるときにメニューが開いたままであれば、
+	// メニューを閉じる
+	if (mIsOpened)
+	{
+		Close();
+	}
 }
 
 void CGameMenu::Open()
 {
+	// 既に開いていたら、処理しない
+	if (mIsOpened) return;
+
 	SetEnable(true);
 	SetShow(true);
 	mSelectIndex = 0;
 	CBGMManager::Instance()->Play(EBGMType::eMenu, false);
 	CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
+	// メニューを開いたフラグを立てる
+	mIsOpened = true;
 }
 
 void CGameMenu::Close()
 {
+	// すでに閉じていたら、処理しない
+	if (!mIsOpened) return;
+
 	SetEnable(false);
 	SetShow(false);
 	CBGMManager::Instance()->Play(EBGMType::eGame, false);
 	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
+	// メニューを開いたフラグを下す
+	mIsOpened = false;
 }
+
+void CGameMenu::HandleMouseInput()
+{
+	// マウスがクリックされたかどうかをチェック
+	if (CInput::PushKey(VK_LBUTTON))
+	{
+		// マウスの座標を取得
+		CVector2 mousePos = CInput::GetMousePos();
+
+		// マウスがクリックされた位置をチェックし、該当するメニュー項目を特定
+		for (int i = 0; i < mMenuItems.size(); i++)
+		{
+			CImage* item = mMenuItems[i];
+			// メニュー項目の左上の座標と右下の座標を取得
+			CVector2 itemPos = item->GetPos();
+			CVector2 itemSize = item->GetSize();
+			float left = itemPos.X() - itemSize.X() / 2.2f;		// 左端の座標
+			float right = itemPos.X() + itemSize.X() / 2.2f;	// 右端の座標
+			float top = itemPos.Y() - itemSize.Y() / 3.5f;		// 上端の座標
+			float bottom = itemPos.Y() + itemSize.Y() / 3.5f;	// 下端の座標
+
+			// マウスがメニュー項目の上にあるかどうか
+			if (mousePos.X() >= left && mousePos.X() <= right &&
+				mousePos.Y() >= top && mousePos.Y() <= bottom)
+			{
+				// メニュー項目がクリックされた場合の処理を実行
+				Decide(i);
+				break;
+			}
+		}
+	}
+}
+
 
 bool CGameMenu::IsOpened() const
 {
@@ -91,6 +140,16 @@ void CGameMenu::Decide(int select)
 
 void CGameMenu::Update()
 {
+	HandleMouseInput(); // マウス入力を処理
+	if (IsOpened())
+	{
+		CInput::ShowCursor(true);
+	}
+	else
+	{
+		CInput::ShowCursor(false);
+	}
+
 	int itemCount = mMenuItems.size();
 	if (CInput::PushKey(VK_UP))
 	{

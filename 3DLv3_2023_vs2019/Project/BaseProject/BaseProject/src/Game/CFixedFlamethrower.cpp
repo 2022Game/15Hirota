@@ -3,7 +3,7 @@
 #include "CFlamethrower.h"
 #include "Maths.h"
 
-#define WAIT_TIME 5.0f
+#define WAIT_TIME 4.0f
 
 CFixedFlamethrower::CFixedFlamethrower(const CVector& pos, const CVector& scale, const CVector& rot)
 	: CObjectBase(ETag::eField, ETaskPriority::eBackground)
@@ -81,7 +81,7 @@ void CFixedFlamethrower::UpdateIdle()
 			}
 		}
 	}
-	CDebugPrint::Print("wait:%f\n", mWaitTime);
+	//CDebugPrint::Print("wait:%f\n", mWaitTime);
 }
 
 void CFixedFlamethrower::Update()
