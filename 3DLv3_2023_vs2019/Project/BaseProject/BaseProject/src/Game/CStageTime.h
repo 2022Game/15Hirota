@@ -16,9 +16,5 @@ private:
 	int mTime;
 	CText* mpTimerText;
 	CImage* mpTimer;
-
-	bool mIsStage1;
-	bool mIsStage2;
-	bool mIsStage3;
 };
 #endif

@@ -49,11 +49,19 @@ private:
 
 	enum class EState
 	{
-		Get,
+		Idle,	// 待機状態
+		Get,	// 取得状態
 	};
 	EState mState;
-	void UpdateGet();
+	int mStateStep;
 	void ChangeState(EState state);
+	void UpdateIdle();
+	void UpdateGet();
+
+	// 取得処理に必要なメンバ変数
+	CVector mGetStartPos;	// 取得開始時のアイテムの座標
+	CVector mGetTargetPos;	// 取得時のアイテムの移動先の座標
+	float mGetCameraDist;			// 主と育児のカメラからの距離
 	
 	// モデル・素材関連
 	// 無敵アイテムのモデル

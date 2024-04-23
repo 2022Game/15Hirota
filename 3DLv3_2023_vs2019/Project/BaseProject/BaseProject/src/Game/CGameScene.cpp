@@ -240,9 +240,13 @@ void CGameScene::Update()
 
 	int currentStage = CGameManager::StageNo();
 	bool pose = CTaskManager::Instance()->IsPaused();
-	if (currentStage == 0 && (!mIsStage1 && !mIsStage2 && !mIsStage3))
+	if (currentStage == 0)
 	{
+		mIsStage1 = false;
+		mIsStage2 = false;
+		mIsStage3 = false;
 		mTime = 0;
+		mScore = 0;
 	}
 	else
 	{	

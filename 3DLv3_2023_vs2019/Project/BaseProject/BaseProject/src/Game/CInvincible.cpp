@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "Maths.h"
 #include "CSound.h"
+#include "Easing.h"
 
 // 重力
 #define GRAVITY 0.0625f
@@ -16,8 +17,18 @@
 // カウント処理
 #define SWITCHCOUNTER 15
 
+// アイテムの移動時間
+#define GET_MOVE_TIME 0.75f
+// アイテム取得時の上移動
+#define GET_MOVE_UP 50.0f
+
 CInvincible::CInvincible()
 	: mSwitchCounter(0)
+	, mState(EState::Idle)
+	, mStateStep(0)
+	, mGetStartPos(0.0f, 0.0f, 0.0f)
+	, mGetTargetPos(0.0f, 0.0f, 0.0f)
+	, mGetCameraDist(0.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mTargetDir(0.0f, 0.0f, 1.0f)
 	, mMoveVector(0.0f, 0.0f, 0.0f)
@@ -74,6 +85,7 @@ CInvincible::~CInvincible()
 void CInvincible::ChangeState(EState state)
 {
 	mState = state;
+	mStateStep = 0;
 }
 
 // 衝突処理
@@ -180,52 +192,7 @@ void CInvincible::MoveLeft()
 	mMoveVector *= Time::DeltaTime();
 }
 
-// アイテムを取った後の処理
-// 右に移動したのち消す
-void CInvincible::UpdateGet()
-{
-	// 速度を設定
-	float moveSpeed = INVINCIBLE_SPEED;
-
-	// rightにしたら左に移動する
-	CVector moveDirection = (CVector::left + CVector::forward).Normalized();
-
-	// mTargetDir に速度を掛けて移動ベクトルを得る
-	mMoveVector = moveDirection * moveSpeed * Time::DeltaTime();
-
-	mTotalMovement += mMoveVector;
-
-
-	//// 現在のカメラを取得
-	//CCamera* cam = CCamera::CurrentCamera();
-	//if (cam == nullptr) return;
-
-	//CVector itemWorldPos = Position();
-
-	//// 設定されたワールド座標をスクリーン座標に変換
-	//CVector itemScreenPos = cam->WorldToScreenPos(itemWorldPos);
-	//// 設定されたスクリーン座標をワールド座標に変換
-	//CVector newItemWorldPos = cam->ScreenToWorldPos(itemScreenPos);
-
-	// killを呼ぶ
-	if (mTotalMovement.X() >= 50.0f)
-	{
-		Kill();
-	}
-}
-
-
-void CInvincible::OnTouch(CPlayer* player)
-{
-	if (mIsHeld)
-	{
-		player->AddItem(CPlayer::ItemType::INVINCIBLE);
-		mIsHeld = true;
-	}
-}
-
-// 更新処理
-void CInvincible::Update()
+void CInvincible::UpdateIdle()
 {
 	// 新しいポジションからX軸に50.0f移動したかどうか
 	CDebugPrint::Print("mTotalMovement:%f\n", mTotalMovement.X());
@@ -234,7 +201,7 @@ void CInvincible::Update()
 
 	// タイム加算
 	mElapsedTime += Time::DeltaTime();
-	
+
 	if (!mInvincibleUsed)
 	{
 		if (mIsGround)
@@ -286,13 +253,6 @@ void CInvincible::Update()
 		}
 	}
 
-	switch (mState)
-	{
-	case EState::Get:
-		UpdateGet();
-		break;
-	}
-
 	// 移動
 	Position(Position() + mMoveVector + mMoveSpeed * 60.0f * Time::DeltaTime());
 
@@ -302,9 +262,135 @@ void CInvincible::Update()
 	mIsGround = false;
 }
 
+// アイテムを取った後の処理
+// 右に移動したのち消す
+void CInvincible::UpdateGet()
+{
+	// 現在のカメラを取得
+	CCamera* cam = CCamera::CurrentCamera();
+	if (cam == nullptr) return;
+
+	// ステップごとに処理を分ける
+	switch (mStateStep)
+	{
+		// ステップ0 : アイテムを移動開始
+	case 0:
+		// 移動開始時の座標を記憶しておく
+		mGetStartPos = Position();
+		// カメラまでの距離を記録しておく
+		mGetCameraDist = (mGetStartPos - cam->Position()).Length();
+
+		mElapsedTime = 0.0f;
+		SetEnableCol(false);
+
+		mStateStep++;
+		break;
+		// ステップ1 : アイテムを目的地まで移動
+	case 1:
+		// UIのアイテムボックスの2D座標を
+		// 3D空間の座標に変換
+		mGetTargetPos = cam->ScreenToWorldPos
+		(
+			CVector
+			(
+				WINDOW_WIDTH * 0.8f,
+				WINDOW_HEIGHT * 0.9f,
+				mGetCameraDist
+			)
+		);
+
+		// カメラの方向へ向ける
+		Rotation
+		(
+			CQuaternion::LookRotation
+			(
+				(cam->Position() - Position()).Normalized()
+			)
+		);
+
+		// 移動時間を経過していない
+		if (mElapsedTime < GET_MOVE_TIME)
+		{
+			float per = mElapsedTime / GET_MOVE_TIME;
+			float per2 = Easing::SineIn(mElapsedTime, GET_MOVE_TIME, 0.0f, 1.0f);
+			CVector pos = CVector::Lerp(mGetStartPos, mGetTargetPos, per2);
+			pos += CVector::up * sinf(M_PI * per) * GET_MOVE_UP;
+			Position(pos);
+			mElapsedTime += Time::DeltaTime();
+		}
+		// 移動時間を経過した
+		else
+		{
+			// アイテムボックスの位置まで移動したら、削除
+			Position(mGetTargetPos);
+			Kill();
+		}
+		break;
+	}
+
+	//// 速度を設定
+	//float moveSpeed = INVINCIBLE_SPEED;
+
+	//// rightにしたら左に移動する
+	//CVector moveDirection = (CVector::left + CVector::forward).Normalized();
+
+	//// mTargetDir に速度を掛けて移動ベクトルを得る
+	//mMoveVector = moveDirection * moveSpeed * Time::DeltaTime();
+
+	//mTotalMovement += mMoveVector;
+
+
+	
+
+	//CVector itemWorldPos = Position();
+
+	//// 設定されたワールド座標をスクリーン座標に変換
+	//CVector itemScreenPos = cam->WorldToScreenPos(itemWorldPos);
+	//// 設定されたスクリーン座標をワールド座標に変換
+	//CVector newItemWorldPos = cam->ScreenToWorldPos(itemScreenPos);
+
+	//// killを呼ぶ
+	//if (mTotalMovement.X() >= 50.0f)
+	//{
+	//	Kill();
+	//}
+}
+
+
+void CInvincible::OnTouch(CPlayer* player)
+{
+	if (mIsHeld)
+	{
+		player->AddItem(CPlayer::ItemType::INVINCIBLE);
+		mIsHeld = true;
+	}
+}
+
+// 更新処理
+void CInvincible::Update()
+{
+	switch (mState)
+	{
+	case EState::Idle:
+		UpdateIdle();
+		break;
+	case EState::Get:
+		UpdateGet();
+		break;
+	}
+}
+
 // 描画
 void CInvincible::Render()
 {
+	// 取得時の移動処理中のみ、デプステストをオフにして。
+	// 床のオブジェクトより手前に表示
+	if (mState == EState::Get)
+	{
+		glDisable(GL_DEPTH_TEST);
+	}
 	mpInvincibleModel->SetColor(mColor);
 	mpInvincibleModel->Render(Matrix());
+	
+	glEnable(GL_DEPTH_TEST);
 }
