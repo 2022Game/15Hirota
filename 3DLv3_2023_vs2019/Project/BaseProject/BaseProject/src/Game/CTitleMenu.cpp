@@ -138,6 +138,7 @@ void CTitleMenu::Decide(int select)
 		CGameManager::SetStageNo(0);*/
 		break;
 	case 1:
+		System::ExitGame();
 		break;
 	case 2:
 		break;
