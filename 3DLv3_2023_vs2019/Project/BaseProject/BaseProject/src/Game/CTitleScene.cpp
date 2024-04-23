@@ -20,6 +20,7 @@ CTitleScene::CTitleScene()
 //デストラクタ
 CTitleScene::~CTitleScene()
 {
+	mpTitleMenu->Kill();
 }
 
 //シーン読み込み

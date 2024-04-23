@@ -134,6 +134,7 @@ void CGameMenu::Decide(int select)
 		break;
 	case 2:
 		Close();
+		CInput::ShowCursor(false);
 		break;
 	}
 }
