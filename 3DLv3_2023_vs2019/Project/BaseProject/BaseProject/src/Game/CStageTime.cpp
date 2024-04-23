@@ -34,6 +34,7 @@ void CStageTime::Time(int time) {
 void CStageTime::Update()
 {
     int currentStage = CGameManager::StageNo();
+    // ステージ0以外の場合は表示
     if (currentStage == 1 || currentStage == 2 || currentStage == 3)
     {
         mpTimer->SetShow(true);

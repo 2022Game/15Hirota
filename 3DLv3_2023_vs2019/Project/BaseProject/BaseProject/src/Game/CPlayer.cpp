@@ -1961,6 +1961,8 @@ void CPlayer::UpdateFalling()
 	ChangeAnimation(EAnimType::eFalling);
 	if (mIsGrounded)
 	{
+		TakeDamage(1);
+		ChangeAnimation(EAnimType::eStandUp);
 		ChangeState(EState::eStandUp);
 	}
 }
@@ -1968,6 +1970,8 @@ void CPlayer::UpdateFalling()
 // óßÇøè„Ç™ÇÈ
 void CPlayer::UpdateStandUp()
 {
+	mMoveSpeed = CVector::zero;
+	mMoveSpeedY = 0.0f;
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eIdle);
