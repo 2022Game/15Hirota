@@ -48,7 +48,7 @@ void CStage3::Load()
 
 	CNumberField* field = new CNumberField();
 	field->Scale(1.0f, 1.0f, 1.0f);
-	field->Position(0.0f, -150.0f, 0.0f);
+	field->Position(0.0f, -190.0f, 0.0f);
 	AddTask(field);
 
 	// ‰Šú’l“_
@@ -153,7 +153,7 @@ void CStage3::Load()
 	// •ó” 
 	CTreasureChest* treasure = new CTreasureChest
 	(
-		CVector(-60.0f, 18.0f, 420.0f),
+		CVector(0.0f, 18.0f, 779.0f),
 		CVector(4.0f, 4.0f, 4.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
@@ -162,7 +162,7 @@ void CStage3::Load()
 	// •ó” ŠW
 	CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
 	(
-		CVector(-60.0f, 20.8f, 420.0f),
+		CVector(0.0f, 20.8f, 779.0f),
 		CVector(4.0f, 4.0f, 4.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer

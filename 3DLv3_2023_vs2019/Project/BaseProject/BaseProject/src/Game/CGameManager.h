@@ -10,6 +10,7 @@ enum class EGameState
 	eStageClear,	// ステージクリア
 	eGameClear,		// ゲームクリア
 	eGameOver,		// ゲームオーバー
+	eResult,		// リザルト
 };
 
 //ゲームクラスを管理するクラス
@@ -22,6 +23,8 @@ public:
 	static void StageClear();
 	// ゲームオーバー
 	static void GameOver();
+	// リザルト
+	static void Result();
 	// 現在のゲームの状態を取得
 	static EGameState GameState();
 	// 現在のステージ番号
@@ -55,6 +58,8 @@ private:
 	void UpdateGameClear();
 	// ゲームオーバー時の更新処理
 	void UpdateGameOver();
+	// リザルト時の更新処理
+	void UpdateResult();
 
 	static CGameManager* spInstance;
 	int mStageNo;		// 現在のステージ番号

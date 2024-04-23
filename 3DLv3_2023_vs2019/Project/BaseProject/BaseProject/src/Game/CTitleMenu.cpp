@@ -24,34 +24,25 @@ CTitleMenu::CTitleMenu()
 	mpTitleMenu->SetPos(CVector2(WINDOW_WIDTH, WINDOW_HEIGHT) * 0.5f);
 	mpTitleMenu->SetColor(1.0f, 1.0f, 1.0f, MENU_ALPHA);
 
-	int stageMenuCount = 3;
+	const char* menuItems[] = { "UI/TitleUI/GameStart.png", "UI/TitleUI/EXIT.png" };
+	int stageMenuCount = 2;	// 後で変更
 	float spaceX = (float)WINDOW_WIDTH / (stageMenuCount + 1);
 	for (int i = 0; i < stageMenuCount; i++)
 	{
 		CImage* item = new CImage
 		(
-			"UI/menu_item.png",
+			menuItems[i],
 			ETaskPriority::eUI, 0, ETaskPauseType::eMenu,
 			false, false
 		);
-		item->SetSize(200.0f, 150.0f);
+		item->SetSize(400.0f, 300.0f);
 		item->SetCenter(item->GetSize() * 0.5f);
-		float posX = spaceX * (i + 1) - item->GetSize().X() / 2.0f + 100.0f;
-		float posY = (float)WINDOW_HEIGHT / 2.0f;
+		float posX = spaceX * (i + 1) - item->GetSize().X() / 2.0f + 200.0f;
+		float posY = (float)WINDOW_HEIGHT / 2.0f + 100.0f;
 		item->SetPos(posX, posY);
 		item->SetColor(1.0f, 1.0f, 1.0f, MENU_ALPHA);
 		mTitleMenuItems.push_back(item);
 	}
-
-	mpTitleMenuFrame = new CImage
-	(
-		"UI/menu_item_select.png",
-		ETaskPriority::eUI, 0, ETaskPauseType::eMenu,
-		false, false
-	);
-	mpTitleMenuFrame->SetSize(200.0f, 150.0f);
-	mpTitleMenuFrame->SetCenter(mpTitleMenuFrame->GetSize() * 0.5f);
-	mpTitleMenuFrame->SetColor(1.0f, 0.1f, 0.0f, MENU_ALPHA);
 
 	SetEnable(false);
 	SetShow(false);
@@ -97,6 +88,7 @@ void CTitleMenu::Close()
 	mIsOpened = false;
 }
 
+// マウス処理
 void CTitleMenu::HandleMouseInput()
 {
 	// マウスがクリックされたかどうかをチェック
@@ -112,10 +104,10 @@ void CTitleMenu::HandleMouseInput()
 			// メニュー項目の左上の座標と右下の座標を取得
 			CVector2 itemPos = item->GetPos();
 			CVector2 itemSize = item->GetSize();
-			float left = itemPos.X() - itemSize.X() / 2.2f;		// 左端の座標
-			float right = itemPos.X() + itemSize.X() / 2.2f;	// 右端の座標
-			float top = itemPos.Y() - itemSize.Y() / 3.5f;		// 上端の座標
-			float bottom = itemPos.Y() + itemSize.Y() / 3.5f;	// 下端の座標
+			float left = itemPos.X() - itemSize.X() / 2.6f;		// 左端の座標
+			float right = itemPos.X() + itemSize.X() / 2.6f;	// 右端の座標
+			float top = itemPos.Y() - itemSize.Y() / 9.0f;		// 上端の座標
+			float bottom = itemPos.Y() + itemSize.Y() / 9.0f;	// 下端の座標
 
 			// マウスがメニュー項目の上にあるかどうか
 			if (mousePos.X() >= left && mousePos.X() <= right &&
@@ -140,12 +132,12 @@ void CTitleMenu::Decide(int select)
 	switch (select)
 	{
 	case 0:
-		break;
-	case 1:
 		CTitleMenu::Close();
 		CSceneManager::Instance()->LoadScene(EScene::eGame);
 		/*CStageManager::LoadStage(0);
 		CGameManager::SetStageNo(0);*/
+		break;
+	case 1:
 		break;
 	case 2:
 		break;
@@ -183,7 +175,7 @@ void CTitleMenu::Update()
 	{
 		item->Update();
 	}
-	mpTitleMenuFrame->Update();
+	//mpTitleMenuFrame->Update();
 }
 
 // 描画処理
@@ -195,10 +187,10 @@ void CTitleMenu::Render()
 		CImage* item = mTitleMenuItems[i];
 		item->Render();
 
-		if (i == mSelectIndex)
+		/*if (i == mSelectIndex)
 		{
 			mpTitleMenuFrame->SetPos(item->GetPos());
 			mpTitleMenuFrame->Render();
-		}
+		}*/
 	}
 }

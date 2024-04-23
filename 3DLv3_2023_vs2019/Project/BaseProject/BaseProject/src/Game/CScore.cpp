@@ -1,5 +1,6 @@
 #include "CScore.h"
 #include "CText.h"
+#include "CGameManager.h"
 
 // CScoreƒNƒ‰ƒX‚ÌŽÀ‘•
 CScore::CScore()
@@ -22,7 +23,15 @@ void CScore::Score(int score)
 
 void CScore::Update()
 {
-
+	int currentStage = CGameManager::StageNo();
+	if (currentStage == 1 || currentStage == 2 || currentStage == 3)
+	{
+		mpScoreText->SetShow(true);
+	}
+	else
+	{
+		mpScoreText->SetShow(false);
+	}
 }
 
 void CScore::Render()

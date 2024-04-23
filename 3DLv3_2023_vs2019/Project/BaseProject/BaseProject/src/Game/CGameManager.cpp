@@ -55,6 +55,12 @@ void CGameManager::GameOver()
 	Instance()->ChangeState(EGameState::eGameOver);
 }
 
+// リザルト
+void CGameManager::Result()
+{
+	Instance()->ChangeState(EGameState::eResult);
+}
+
 // 現在のゲームの状態を取得
 EGameState CGameManager::GameState()
 {
@@ -113,6 +119,12 @@ void CGameManager::UpdateGameOver()
 
 }
 
+// リザルト時の更新処理
+void CGameManager::UpdateResult()
+{
+
+}
+
 // 更新
 void CGameManager::Update()
 {
@@ -138,6 +150,10 @@ void CGameManager::Update()
 		// ゲームオーバー
 	case EGameState::eGameOver:
 		UpdateGameOver();
+		break;
+		// リザルト
+	case EGameState::eResult:
+		UpdateResult();
 		break;
 	}
 }

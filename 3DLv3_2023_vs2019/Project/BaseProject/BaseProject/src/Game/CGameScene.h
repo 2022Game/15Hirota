@@ -27,6 +27,9 @@ private:
 
 	CStageTime* mpTime;
 	int mTime;
+	bool mIsStage1;
+	bool mIsStage2;
+	bool mIsStage3;
 
 	CScore* mpScore;
 	int mScore;

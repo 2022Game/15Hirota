@@ -34,13 +34,15 @@ void CStageTime::Time(int time) {
 void CStageTime::Update()
 {
     int currentStage = CGameManager::StageNo();
-    if (currentStage == 1 || currentStage == 2)
+    if (currentStage == 1 || currentStage == 2 || currentStage == 3)
     {
         mpTimer->SetShow(true);
+        mpTimerText->SetShow(true);
     }
     else
     {
         mpTimer->SetShow(false);
+        mpTimerText->SetShow(false);
     }
 }
 

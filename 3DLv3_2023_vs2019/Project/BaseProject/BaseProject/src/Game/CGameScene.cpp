@@ -34,6 +34,9 @@ CGameScene::CGameScene()
 	, mpInventoryMenu(nullptr)
 	, mTime(500)
 	, mScore(0)
+	, mIsStage1(false)
+	, mIsStage2(false)
+	, mIsStage3(false)
 {
 }
 
@@ -138,20 +141,9 @@ void CGameScene::Load()
 
 	// ゲームメニューを作成
 	mpGameMenu = new CGameMenu();
-	int currentStage = CGameManager::StageNo();
 	mpTime = new CStageTime();
 	mpScore = new CScore();
-	if (currentStage == 0)
-	{
-		mpTime->SetShow(false);
-		mpScore->SetShow(false);
-	}
-	else if (currentStage == 1)
-	{
-		mpTime->SetShow(true);
-		mpScore->SetShow(true);
 
-	}
 	// インベントリを作成
 	mpInventoryMenu = new CInventoryMenu();
 	mpInventoryMenu->SetPlayer(player);
@@ -248,48 +240,123 @@ void CGameScene::Update()
 
 	int currentStage = CGameManager::StageNo();
 	bool pose = CTaskManager::Instance()->IsPaused();
-
-	// ステージ1,2中のみタイマーを動かす
-	if (currentStage == 1 ||
-		currentStage == 2 ||
-		currentStage == 3)
+	if (currentStage == 0 && (!mIsStage1 && !mIsStage2 && !mIsStage3))
 	{
-		// ポーズ中でなければタイマーを動かす
+		mTime = 0;
+	}
+	else
+	{	
 		if (!pose)
 		{
-			// ゲーム時間の更新
-			static float starttime = 1.0f;
-			starttime -= Time::DeltaTime();
-			if (starttime <= 0.0f)
+			// ステージ1
+			if (currentStage == 1)
 			{
-				if (mTime > 0) {
-					static float time = 1.0f;
-					time -= Time::DeltaTime();
-					if (time <= 0)
-					{
-						mTime--;
-						time = 1.0f;
-					}
+				if (!mIsStage1)
+				{
+					mTime = 500;
+					mIsStage1 = true;
+					mIsStage2 = false;
+					mIsStage3 = false;
+				}
 
-					// タイマーが0になったら終了
-					if (mTime < 0)
-					{
-						//mTime = 500;
-						CGameManager::GameOver();
+				// ゲーム時間の更新
+				static float starttime = 1.0f;
+				starttime -= Time::DeltaTime();
+				if (starttime <= 0.0f)
+				{
+					if (mTime > 0) {
+						static float time = 1.0f;
+						time -= Time::DeltaTime();
+						if (time <= 0)
+						{
+							mTime--;
+							time = 1.0f;
+						}
+
+						// タイマーが0になったら終了
+						if (mTime <= 0)
+						{
+							CGameManager::GameOver();
+						}
+					}
+				}
+			}
+			// ステージ2
+			if (currentStage == 2)
+			{
+				if (!mIsStage2)
+				{
+					mTime = 300;
+					mIsStage1 = false;
+					mIsStage2 = true;
+					mIsStage3 = false;
+				}
+
+				// ゲーム時間の更新
+				static float starttime = 1.0f;
+				starttime -= Time::DeltaTime();
+				if (starttime <= 0.0f)
+				{
+					if (mTime > 0) {
+						static float time = 1.0f;
+						time -= Time::DeltaTime();
+						if (time <= 0)
+						{
+							mTime--;
+							time = 1.0f;
+						}
+
+						// タイマーが0になったら終了
+						if (mTime <= 0)
+						{
+							CGameManager::GameOver();
+						}
+					}
+				}
+			}
+			// ステージ3
+			if (currentStage == 3)
+			{
+				if (!mIsStage3)
+				{
+					mTime = 300;
+					mIsStage1 = false;
+					mIsStage2 = false;
+					mIsStage3 = true;
+				}
+
+				// ゲーム時間の更新
+				static float starttime = 1.0f;
+				starttime -= Time::DeltaTime();
+				if (starttime <= 0.0f)
+				{
+					if (mTime > 0) {
+						static float time = 1.0f;
+						time -= Time::DeltaTime();
+						if (time <= 0)
+						{
+							mTime--;
+							time = 1.0f;
+						}
+
+						// タイマーが0になったら終了
+						if (mTime <= 0)
+						{
+							CGameManager::GameOver();
+						}
 					}
 				}
 			}
 		}
-
 		mpScore->Score(CVanguard::GetScore() + CBlueMedal::GetScore());
 		mpTime->Time(mTime);
-		mpTime->Render();
-		mpScore->Render();
 	}
+
 	////////////////////////////////////////////////////////////////////////////////////
 
 	//// ステージ番号の監視
-	CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
+	//CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
+	//CDebugPrint::Print("mIsStage3:%s\n", mIsStage3 ? "true" : "false");
 	//// ソルジャーの数の監視
 	//CDebugPrint::Print("count:%d\n", CEnemyManager::GetEnemyCount());
 }

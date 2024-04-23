@@ -29,7 +29,7 @@ void CTitleScene::Load()
 	// タイトルメニューを作成
 	mpTitleMenu = new CTitleMenu();
 	// 背景色設定
-	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	System::SetClearColor(0.2f, 0.2f, 0.2f, 0.9f);
 
 	// タイトルBGMを再生
 	CBGMManager::Instance()->Play(EBGMType::eTitle);

@@ -1344,6 +1344,7 @@ void CPlayer::UpdateClearEnd()
 			mSavePoint = false;
 			// ステージをクリア
 			CGameManager::StageClear();
+			CGameManager::SetStageNo(0);
 			// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
 			ChangeState(EState::eReady);
 			Position(mStartPos);
@@ -1354,13 +1355,16 @@ void CPlayer::UpdateClearEnd()
 // 死亡
 void CPlayer::UpdateDeath()
 {
-	mpDamageCol->SetEnable(false);
-	mpSword->AttackEnd();
-	mMoveSpeed = CVector::zero;
-	ChangeAnimation(EAnimType::eDeath);
 	if (IsAnimationFinished())
 	{
-		ChangeState(EState::eDeathEnd);
+		mpDamageCol->SetEnable(false);
+		mpSword->AttackEnd();
+		mMoveSpeed = CVector::zero;
+		ChangeAnimation(EAnimType::eDeath);
+		if (IsAnimationFinished())
+		{
+			ChangeState(EState::eDeathEnd);
+		}
 	}
 }
 
@@ -2410,7 +2414,7 @@ void CPlayer::Update()
 	//CDebugPrint::Print("Position.Y %f\n", Position().Y());
 	//// コライダーの復活時間監視
 	//CDebugPrint::Print("TimeCol%f\n", mElapsedTimeCol);
-	CDebugPrint::Print("mMoveSpeedY%f\n", mMoveSpeedY);
+	//CDebugPrint::Print("mMoveSpeedY%f\n", mMoveSpeedY);
 	//CDebugPrint::Print("State:%d\n", mState);
 	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 }

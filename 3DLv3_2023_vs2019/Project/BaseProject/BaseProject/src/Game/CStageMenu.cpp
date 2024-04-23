@@ -108,6 +108,8 @@ void CStageMenu::Decide(int select)
 	switch (select)
 	{
 	case 0:
+		CStageManager::LoadStage(1);
+		CGameManager::SetStageNo(1);
 		break;
 	case 1:
 		CStageManager::LoadStage(3);
