@@ -319,6 +319,25 @@ void CStage1::Load()
 	);
 	AddTask(hatena3);
 
+	// 宝箱
+	CTreasureChest* treasure1 = new CTreasureChest
+	(
+		CVector(9.0f, 320.0f, -1173.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasure1);
+	// 宝箱蓋
+	CTreasureChestTwo* treasureTwo1 = new CTreasureChestTwo
+	(
+		CVector(9.0f, 322.8f, -1173.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasureTwo1);
+
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	// キャラクター

@@ -69,7 +69,7 @@ CInventoryMenu::CInventoryMenu()
 		// 回復アイテム
 		CImage* healing = new CImage
 		(
-			"UI\\Item\\Health Recovery Items.png",
+			"UI\\Item\\ScreenItems(Healing).png",
 			ETaskPriority::eUI, 0, ETaskPauseType::eMenu,
 			false, false
 		);
@@ -82,7 +82,7 @@ CInventoryMenu::CInventoryMenu()
 		// 攻撃力アップアイテム
 		CImage* attackPotion = new CImage
 		(
-			"UI\\Item\\Attack Power.png",
+			"UI\\Item\\ScreenItems(Attack).png",
 			ETaskPriority::eUI, 0, ETaskPauseType::eMenu,
 			false, false
 		);

@@ -67,11 +67,11 @@ CScreenItem::CScreenItem()
 		{
 		case 0:
 			playerItemType = PlayerItem::ATTACK_UP_ITEM;
-			imagePath = "UI/Item/Attack Power.png";
+			imagePath = "UI/Item/ScreenItems(Attack).png";
 			break;
 		case 1:
 			playerItemType = PlayerItem::HEALING_ITEM;
-			imagePath = "UI/Item/Health Recovery Items.png";
+			imagePath = "UI/Item/ScreenItems(Healing).png";
 			break;
 		case 2:
 			playerItemType = PlayerItem::INVINCIBLE_ITEM;
@@ -179,7 +179,9 @@ void CScreenItem::Decide(int select)
 
 void CScreenItem::Update()
 {
-	// 1番キーを押した場合は無敵アイテム、2番キーを押した場合は回復アイテム、3番キーを押した場合は攻撃力アップアイテムを選択する
+	// 1番キーを押した場合は無敵アイテム、
+	// 2番キーを押した場合は回復アイテム、
+	// 3番キーを押した場合は攻撃力アップアイテムを選択する
 	if (CInput::PushKey('3'))
 	{
 		Decide(0); // 無敵アイテムを選択
@@ -199,22 +201,28 @@ void CScreenItem::Render()
 	CPlayer* player = CPlayer::Instance();
 	bool hasItem = false;
 
-	// アイテムを持っているかどうかをチェックし、描画するべきアイテムの種類を決定する
-	PlayerItem drawItem = PlayerItem::NONE;
-	if (player->HasItem(CPlayer::ItemType::INVINCIBLE))
-	{
-		drawItem = PlayerItem::INVINCIBLE_ITEM;
-		hasItem = true;
-	}
-	else if (player->HasItem(CPlayer::ItemType::HEALING))
-	{
-		drawItem = PlayerItem::HEALING_ITEM;
-		hasItem = true;
-	}
-	else if (player->HasItem(CPlayer::ItemType::ATTACK_UP))
-	{
-		drawItem = PlayerItem::ATTACK_UP_ITEM;
-		hasItem = true;
+	// 選択されているアイテムのみを描画する
+	for (int i = 0; i < mPlayerItems.size(); ++i) {
+		// アイテムがプレイヤーが持っているかどうかを確認
+		bool playerHasItem = false;
+		switch (mPlayerItems[i].first) {
+		case PlayerItem::INVINCIBLE_ITEM:
+			playerHasItem = player->HasItem(CPlayer::ItemType::INVINCIBLE);
+			break;
+		case PlayerItem::HEALING_ITEM:
+			playerHasItem = player->HasItem(CPlayer::ItemType::HEALING);
+			break;
+		case PlayerItem::ATTACK_UP_ITEM:
+			playerHasItem = player->HasItem(CPlayer::ItemType::ATTACK_UP);
+			break;
+		default:
+			break;
+		}
+
+		if (playerHasItem)
+		{
+			mPlayerItems[i].second->Render();
+		}
 	}
 
 	// mNoItemsの画像を描画する
@@ -227,16 +235,6 @@ void CScreenItem::Render()
 	{
 		CImage* item = mNumberItems[i];
 		item->Render();
-	}
-
-	// アイテムを持っている場合は、そのアイテムの画像のみを描画する
-	if (hasItem) {
-		for (const auto& itemPair : mPlayerItems) {
-			if (itemPair.first == drawItem) {
-				itemPair.second->Render();
-				break;
-			}
-		}
 	}
 }
 

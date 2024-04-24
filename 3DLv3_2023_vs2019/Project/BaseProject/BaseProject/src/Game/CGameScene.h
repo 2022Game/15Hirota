@@ -24,7 +24,7 @@ public:
 
 private:
 	CGameMenu* mpGameMenu;
-	CInventoryMenu* mpInventoryMenu;
+	//CInventoryMenu* mpInventoryMenu;
 	CScreenItem* mpScreenItem;
 
 	CStageTime* mpTime;

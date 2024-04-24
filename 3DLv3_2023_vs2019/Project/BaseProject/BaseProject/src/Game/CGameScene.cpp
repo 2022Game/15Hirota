@@ -32,7 +32,7 @@
 CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
 	, mpGameMenu(nullptr)
-	, mpInventoryMenu(nullptr)
+	//, mpInventoryMenu(nullptr)
 	, mpScreenItem(nullptr)
 	, mTime(500)
 	, mScore(0)
@@ -147,8 +147,8 @@ void CGameScene::Load()
 	mpScore = new CScore();
 
 	// インベントリを作成
-	mpInventoryMenu = new CInventoryMenu();
-	mpInventoryMenu->SetPlayer(player);
+	//mpInventoryMenu = new CInventoryMenu();
+	//mpInventoryMenu->SetPlayer(player);
 
 	mpScreenItem = new CScreenItem();
 	mpScreenItem->SetPlayer(player);
@@ -176,22 +176,22 @@ void CGameScene::Update()
 		}
 	}
 
-	// インベントリを開いていなければ、[I]キーでメニューを開く
-	if (!mpInventoryMenu->IsOpened())
-	{
-		if (CInput::PushKey('I'))
-		{
-			mpInventoryMenu->Open();
-		}
-	}
-	// インベントリを開いていたら、[I]キーでメニューを閉じる
-	else
-	{
-		if (CInput::PushKey('I'))
-		{
-			mpInventoryMenu->Close();
-		}
-	}
+	//// インベントリを開いていなければ、[I]キーでメニューを開く
+	//if (!mpInventoryMenu->IsOpened())
+	//{
+	//	if (CInput::PushKey('I'))
+	//	{
+	//		mpInventoryMenu->Open();
+	//	}
+	//}
+	//// インベントリを開いていたら、[I]キーでメニューを閉じる
+	//else
+	//{
+	//	if (CInput::PushKey('I'))
+	//	{
+	//		mpInventoryMenu->Close();
+	//	}
+	//}
 
 	// [CStage1] の処理 /////////////////////////////////////////////////////////////
 
