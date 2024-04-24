@@ -293,11 +293,6 @@ void CStage1::Load()
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector hatenaPos = CVector(-9.0f, 322.0f, -1243.0f);
-	if (hatena != nullptr)
-	{
-		hatena->SetStartPosition(hatenaPos);
-	}
 	AddTask(hatena);
 
 	// レンガブロック
@@ -306,11 +301,6 @@ void CStage1::Load()
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector hatenaPos1 = CVector(-19.0f, 322.0f, -1243.0f);
-	if (hatena1 != nullptr)
-	{
-		hatena1->SetStartPosition(hatenaPos1);
-	}
 	AddTask(hatena1);
 
 	// レンガブロック
@@ -319,12 +309,15 @@ void CStage1::Load()
 		CVector(5.0f, 5.0f, 5.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	CVector hatenaPos2 = CVector(9.0f, 322.0f, -1243.0f);
-	if (hatena2 != nullptr)
-	{
-		hatena2->SetStartPosition(hatenaPos2);
-	}
 	AddTask(hatena2);
+
+	// レンガブロック
+	CRengaBlock* hatena3 = new CRengaBlock(
+		CVector(19.0f, 322.0f, -1243.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(hatena3);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 

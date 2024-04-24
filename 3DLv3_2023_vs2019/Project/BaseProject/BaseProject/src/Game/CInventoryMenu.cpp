@@ -1,7 +1,9 @@
 #include "CInventoryMenu.h"
 #include "CInput.h"
+#include "CImage.h"
 #include "CTaskManager.h"
 #include "CBGMManager.h"
+#include "CPlayer.h"
 
 
 //new CImage("UI\\Item\\Invincible Item.png", ETaskPriority::eUI, 0, ETaskPauseType::eMenu, false, false);
@@ -111,6 +113,9 @@ CInventoryMenu::~CInventoryMenu()
 
 void CInventoryMenu::Open()
 {
+	// 既に開いていたら、処理しない
+	if (mIsOpened) return;
+
 	mIsOpened = true;
 	SetEnable(true);
 	SetShow(true);
@@ -148,11 +153,16 @@ void CInventoryMenu::Open()
 
 void CInventoryMenu::Close()
 {
+	// すでに閉じていたら、処理しない
+	if (!mIsOpened) return;
+
 	mIsOpened = false;
 	SetEnable(false);
 	SetShow(false);
 	CBGMManager::Instance()->Play(EBGMType::eGame, false);
 	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
+	// メニューを開いたフラグを下す
+	mIsOpened = false;
 }
 
 bool CInventoryMenu::IsOpened() const

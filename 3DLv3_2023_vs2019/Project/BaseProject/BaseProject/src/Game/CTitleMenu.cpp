@@ -25,7 +25,7 @@ CTitleMenu::CTitleMenu()
 	mpTitleMenu->SetColor(1.0f, 1.0f, 1.0f, MENU_ALPHA);
 
 	const char* menuItems[] = { "UI/TitleUI/GameStart.png", "UI/TitleUI/EXIT.png" };
-	int stageMenuCount = 2;	// å„Ç≈ïœçX
+	int stageMenuCount = 2;
 	float spaceX = (float)WINDOW_WIDTH / (stageMenuCount + 1);
 	for (int i = 0; i < stageMenuCount; i++)
 	{

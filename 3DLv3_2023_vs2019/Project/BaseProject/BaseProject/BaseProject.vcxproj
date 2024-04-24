@@ -91,7 +91,6 @@
     <ClCompile Include="src\Game\CInventoryMenu.cpp" />
     <ClCompile Include="src\Game\CInvincible.cpp" />
     <ClCompile Include="src\Game\CInvincibleObjectBase.cpp" />
-    <ClCompile Include="src\Game\CItemsUsed.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
     <ClCompile Include="src\Game\CClimbWall.cpp" />
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
@@ -108,6 +107,7 @@
     <ClCompile Include="src\Game\CRotationg.cpp" />
     <ClCompile Include="src\Game\CSavePoint.cpp" />
     <ClCompile Include="src\Game\CScore.cpp" />
+    <ClCompile Include="src\Game\CScreenItem.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CSlash.cpp" />
@@ -261,7 +261,6 @@
     <ClInclude Include="src\Game\CInventoryMenu.h" />
     <ClInclude Include="src\Game\CInvincible.h" />
     <ClInclude Include="src\Game\CInvincibleObjectBase.h" />
-    <ClInclude Include="src\Game\CItemsUsed.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
     <ClInclude Include="src\Game\CMajicSwordEnemy.h" />
     <ClInclude Include="src\Game\CMedalObjectBase.h" />
@@ -277,6 +276,7 @@
     <ClInclude Include="src\Game\CRotationg.h" />
     <ClInclude Include="src\Game\CSavePoint.h" />
     <ClInclude Include="src\Game\CScore.h" />
+    <ClInclude Include="src\Game\CScreenItem.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CSlash.h" />

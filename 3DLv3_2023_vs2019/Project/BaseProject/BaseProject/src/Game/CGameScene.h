@@ -2,6 +2,7 @@
 #include "CSceneBase.h"
 class CGameMenu;
 class CInventoryMenu;
+class CScreenItem;
 class CSound;
 class CPlayer;
 class CSoldier;
@@ -24,6 +25,7 @@ public:
 private:
 	CGameMenu* mpGameMenu;
 	CInventoryMenu* mpInventoryMenu;
+	CScreenItem* mpScreenItem;
 
 	CStageTime* mpTime;
 	int mTime;

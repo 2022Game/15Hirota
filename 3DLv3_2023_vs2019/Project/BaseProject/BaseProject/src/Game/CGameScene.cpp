@@ -26,12 +26,14 @@
 #include "CScore.h"
 #include "CVanguard.h"
 #include "CBlueMedal.h"
+#include "CScreenItem.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
 	, mpGameMenu(nullptr)
 	, mpInventoryMenu(nullptr)
+	, mpScreenItem(nullptr)
 	, mTime(500)
 	, mScore(0)
 	, mIsStage1(false)
@@ -148,6 +150,9 @@ void CGameScene::Load()
 	mpInventoryMenu = new CInventoryMenu();
 	mpInventoryMenu->SetPlayer(player);
 
+	mpScreenItem = new CScreenItem();
+	mpScreenItem->SetPlayer(player);
+
 	
 
 	CGameManager::GameStart();
@@ -156,6 +161,7 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
+	mpScreenItem->Open();
 	if (CInput::PushKey('H'))
 	{
 		CSceneManager::Instance()->LoadScene(EScene::eTitle);

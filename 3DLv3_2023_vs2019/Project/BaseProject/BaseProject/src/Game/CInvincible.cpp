@@ -293,7 +293,7 @@ void CInvincible::UpdateGet()
 		(
 			CVector
 			(
-				WINDOW_WIDTH * 0.8f,
+				WINDOW_WIDTH * 0.71f,
 				WINDOW_HEIGHT * 0.9f,
 				mGetCameraDist
 			)
@@ -321,39 +321,14 @@ void CInvincible::UpdateGet()
 		// 移動時間を経過した
 		else
 		{
+			CPlayer* player = CPlayer::Instance();
+			player->AddItem(CPlayer::ItemType::INVINCIBLE);
 			// アイテムボックスの位置まで移動したら、削除
 			Position(mGetTargetPos);
 			Kill();
 		}
 		break;
 	}
-
-	//// 速度を設定
-	//float moveSpeed = INVINCIBLE_SPEED;
-
-	//// rightにしたら左に移動する
-	//CVector moveDirection = (CVector::left + CVector::forward).Normalized();
-
-	//// mTargetDir に速度を掛けて移動ベクトルを得る
-	//mMoveVector = moveDirection * moveSpeed * Time::DeltaTime();
-
-	//mTotalMovement += mMoveVector;
-
-
-	
-
-	//CVector itemWorldPos = Position();
-
-	//// 設定されたワールド座標をスクリーン座標に変換
-	//CVector itemScreenPos = cam->WorldToScreenPos(itemWorldPos);
-	//// 設定されたスクリーン座標をワールド座標に変換
-	//CVector newItemWorldPos = cam->ScreenToWorldPos(itemScreenPos);
-
-	//// killを呼ぶ
-	//if (mTotalMovement.X() >= 50.0f)
-	//{
-	//	Kill();
-	//}
 }
 
 

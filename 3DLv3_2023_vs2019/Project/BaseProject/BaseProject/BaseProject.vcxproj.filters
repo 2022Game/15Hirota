@@ -493,9 +493,6 @@
     <ClCompile Include="src\Game\CField_Worlds_1.cpp">
       <Filter>ソース ファイル\Game\Field</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CItemsUsed.cpp">
-      <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CWireMeshClimbWall.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
@@ -593,6 +590,9 @@
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CTitleMenu.cpp">
+      <Filter>ソース ファイル\Game\UI\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CScreenItem.cpp">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClCompile>
   </ItemGroup>
@@ -996,9 +996,6 @@
     <ClInclude Include="src\Game\CField_Worlds_1.h">
       <Filter>ソース ファイル\Game\Field</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CItemsUsed.h">
-      <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CWireMeshClimbWall.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
@@ -1096,6 +1093,9 @@
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CTitleMenu.h">
+      <Filter>ソース ファイル\Game\UI\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CScreenItem.h">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClInclude>
   </ItemGroup>

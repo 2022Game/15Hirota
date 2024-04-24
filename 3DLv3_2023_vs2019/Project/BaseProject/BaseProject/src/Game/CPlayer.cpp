@@ -388,7 +388,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			if (other->Tag() == ETag::eItemInvincible)
 			{
-				AddItem(ItemType::INVINCIBLE);
+				//AddItem(ItemType::INVINCIBLE);
 			}
 		}
 		// メダルアイテム
@@ -2392,7 +2392,8 @@ void CPlayer::Update()
 	}
 	else if (CInput::Key('2'))
 	{
-		LevelUp();
+		// 何故かデバッグでなくても体力が増加するため削除
+		//LevelUp();
 	}
 
 	// 現在のHPを設定

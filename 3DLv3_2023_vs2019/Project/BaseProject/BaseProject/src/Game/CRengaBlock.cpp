@@ -31,10 +31,6 @@ CRengaBlock::CRengaBlock(const CVector& pos, const CVector& scale,
 	// ブロックを叩いた時のSE取得
 	mpHitBlockSE = CResourceManager::Get<CSound>("8bitShot");
 
-
-	//  レンガブロックの初期位置の保存
-	mStartPos = Position();
-
 	// レンガロックのコライダーを作成
 	mpColliderSphere = new CColliderSphere
 	(
@@ -56,6 +52,10 @@ CRengaBlock::CRengaBlock(const CVector& pos, const CVector& scale,
 
 	Position(pos);
 	Scale(scale);
+
+	//  レンガブロックの初期位置の保存
+	mStartPos = Position();
+
 
 	mpHealing = nullptr;
 	mpCinvincible = nullptr;
@@ -122,7 +122,7 @@ void CRengaBlock::UpdateIdle()
 // 当たった時の更新処理
 void CRengaBlock::UpdateHit()
 {
-	mpHitBlockSE->Play(1.0f, false, 0.0f);
+	//mpHitBlockSE->Play(1.0f, false, 0.0f);
 	bool item = false;
 
 	// ステップごとに処理を切り替え
