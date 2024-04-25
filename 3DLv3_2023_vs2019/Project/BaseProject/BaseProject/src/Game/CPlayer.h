@@ -5,8 +5,6 @@
 #include "CColliderLine.h"
 #include "CRideableObject.h"
 #include "CColliderSphere.h"
-#include "CImage.h"
-#include "CSound.h"
 #include <map>
 
 class CUIGauge;
@@ -17,6 +15,9 @@ class CClimbWall;
 class CWireMeshClimbWall;
 class CWireMeshMoveClimbWall;
 class CFlamethrower;
+class CStage3;
+class CImage;
+class CSound;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 

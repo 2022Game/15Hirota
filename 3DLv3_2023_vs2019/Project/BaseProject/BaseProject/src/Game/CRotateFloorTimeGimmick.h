@@ -2,8 +2,8 @@
 #define CROTATEFLOORTIMEGIMMICK_H
 
 #include "CRideableObject.h"
-#include "CModel.h"
 #include "CColliderMesh.h"
+class CModel;
 
 // マリオ風の回転ギミック(時間)
 class CRotateFloorTimeGimmick : public CObjectBase

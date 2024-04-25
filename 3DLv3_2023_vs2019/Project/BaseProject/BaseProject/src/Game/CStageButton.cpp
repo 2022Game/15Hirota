@@ -4,6 +4,7 @@
 #include "CInput.h"
 #include "CStageMenu.h"
 #include "CStageManager.h"
+#include "CModel.h"
 
 // コンストラクタ
 CStageButton::CStageButton(const CVector& pos, const CVector& scale, const CVector& rot,

@@ -1,11 +1,11 @@
 #ifndef CSIGNBOARD_H
 #define CSIGNBOARD_H
 
-#include "CModel.h"
 #include "CColliderMesh.h"
 #include "CRideableObject.h"
-#include "CSignboardUI.h"
 class CImage;
+class CModel;
+class CSignboardUI;
 
 // ŠÅ”ÂƒNƒ‰ƒX
 class CSignboard : public CRideableObject

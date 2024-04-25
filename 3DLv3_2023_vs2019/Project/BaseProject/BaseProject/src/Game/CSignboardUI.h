@@ -1,9 +1,9 @@
 #ifndef CSIGNBOARDUI_H
 #define CSIGNBOARDUI_H
-class CImage;
 
 #include "CUIBase.h"
 #include "CVector.h"
+class CImage;
 
 class CSignboardUI : public CUIBase
 {

@@ -1,9 +1,9 @@
 #ifndef CTREASURECHEST_H
 #define CTREASURECHEST_H
 #include "CObjectBase.h"
-#include "CModel.h"
 #include "CColliderSphere.h"
 #include "CColliderMesh.h"
+class CModel;
 
 // •ó” 
 class CTreasureChest : public CObjectBase

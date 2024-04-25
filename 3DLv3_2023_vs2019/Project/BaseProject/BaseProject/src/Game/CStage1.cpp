@@ -98,7 +98,7 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("AttackPotion",			"Item\\StatusItem\\AttackPotion.obj");		// 攻撃力アップモデル
 
 	// キャラクター関連
-	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");										// ヴァンガード
+	//CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");										// ヴァンガード
 
 	// 背景色設定
 	System::SetClearColor(0.1960784f, 0.6f, 0.8f, 1.0f);

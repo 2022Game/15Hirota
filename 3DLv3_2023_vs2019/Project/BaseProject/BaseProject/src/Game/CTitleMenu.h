@@ -2,8 +2,8 @@
 #define CTITLEMENU_H
 
 #include "CTask.h"
-#include "CImage.h"
 #include <vector>
+class CImage;
 
 // タイトル画面選択メニュー
 class CTitleMenu : public CTask

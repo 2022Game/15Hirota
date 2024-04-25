@@ -2,9 +2,9 @@
 #define CROTATEFLOORGIMMICK_H
 
 #include "CRideableObject.h"
-#include "CModel.h"
 #include "CColliderMesh.h"
 class CPlayer;
+class CModel;
 
 // マリオ風の回転ギミック(プレイヤー反応)
 class CRotateFloorGimmick : public CObjectBase

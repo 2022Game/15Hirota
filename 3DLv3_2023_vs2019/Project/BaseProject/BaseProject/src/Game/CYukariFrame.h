@@ -1,9 +1,9 @@
 #ifndef CYUKARIFRAME_H
 #define CYUKARIFRAME_H
-class CImage;
 
 #include "CUIBase.h"
 #include "CVector.h"
+class CImage;
 
 class CYukariFrame : public CUIBase
 {

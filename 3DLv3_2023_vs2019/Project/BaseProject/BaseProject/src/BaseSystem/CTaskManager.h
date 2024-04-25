@@ -73,6 +73,9 @@ private:
 	// 削除フラグが立っているタスクを全て削除
 	void Delete(std::list<CTask*>& list);
 
+	// タスクの並び替え
+	void Sort();
+
 	// 更新するかどうか
 	bool IsUpdate(CTask* task) const;
 

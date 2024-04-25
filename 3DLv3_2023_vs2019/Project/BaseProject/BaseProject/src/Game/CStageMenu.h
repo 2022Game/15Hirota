@@ -2,8 +2,8 @@
 #define CSTAGEMENU_H
 
 #include "CTask.h"
-#include "CImage.h"
 #include <vector>
+class CImage;
 
 // ステージ選択メニュー
 class CStageMenu : public CTask

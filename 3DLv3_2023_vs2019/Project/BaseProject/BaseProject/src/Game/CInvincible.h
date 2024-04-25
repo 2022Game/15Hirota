@@ -61,7 +61,7 @@ private:
 	// 取得処理に必要なメンバ変数
 	CVector mGetStartPos;	// 取得開始時のアイテムの座標
 	CVector mGetTargetPos;	// 取得時のアイテムの移動先の座標
-	float mGetCameraDist;			// 主と育児のカメラからの距離
+	float mGetCameraDist;	// 主と育児のカメラからの距離
 	
 	// モデル・素材関連
 	// 無敵アイテムのモデル

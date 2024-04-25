@@ -121,11 +121,13 @@ void CStage3::Load()
 		// X軸のスケール値を設定
 		float xScale = 4.0f;
 		if (i == 2) xScale = 6.0f;
+		if (i == 13)xScale = 6.0f;
 
 
 		// Z軸のスケール値を設定
 		float zScale = 4.0f;
 		if (i == 2) zScale = 6.0f;
+		if (i == 13) zScale = 6.0f;
 		
 		// オブジェクトを作成してタスクに追加
 		CNumberFloorOnce* numberfloor = new CNumberFloorOnce

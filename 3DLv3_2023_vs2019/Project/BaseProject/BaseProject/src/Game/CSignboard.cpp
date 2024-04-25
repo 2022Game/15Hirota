@@ -6,6 +6,7 @@
 #include "CSignboardPause.h"
 #include "Maths.h"
 #include "CSignboardUI.h"
+#include "CModel.h"
 
 // プレイヤーのインスタンス
 CSignboard* CSignboard::spInstance = nullptr;

@@ -3,6 +3,7 @@
 #include "CPlayer.h"
 #include "CInput.h"
 #include "Maths.h"
+#include "CModel.h"
 
 #define WAIT_TIME 5.0f
 #define FOV_ANGLE 100.0f

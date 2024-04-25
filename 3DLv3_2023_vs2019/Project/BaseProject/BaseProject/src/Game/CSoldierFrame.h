@@ -1,9 +1,9 @@
 #ifndef CSOLDIERFRAME_H
 #define CSOLDIERFRAME_H
-class CImage;
 
 #include "CUIBase.h"
 #include "CVector.h"
+class CImage;
 
 class CSoldierFrame :public CUIBase
 {

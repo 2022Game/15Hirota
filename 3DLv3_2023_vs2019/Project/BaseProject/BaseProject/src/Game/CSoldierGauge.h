@@ -1,9 +1,9 @@
 #ifndef CSOLDIERGAUGE_H
 #define CSOLDIERGAUGE_H
-class CImage;
 
 #include "CUIBase.h"
 #include "CVector.h"
+class CImage;
 
 class CSoldierGauge :public CUIBase
 {

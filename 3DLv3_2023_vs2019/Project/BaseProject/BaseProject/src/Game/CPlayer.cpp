@@ -16,6 +16,8 @@
 #include "CVanguard.h"
 #include "CFlamethrower.h"
 #include "CSlash.h"
+#include "CSound.h"
+#include "CImage.h"
 
 // プレイヤー関連
 // 高さ

@@ -1,7 +1,7 @@
 #pragma once
 #include "CRideableObject.h"
-#include "CModel.h"
 #include "CColliderMesh.h"
+class CModel;
 
 class CRotateFloor : public CRideableObject
 {

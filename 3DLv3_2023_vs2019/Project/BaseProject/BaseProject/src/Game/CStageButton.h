@@ -1,10 +1,10 @@
 #ifndef CSTAGEBUTTON_H
 #define CSTAGEBUTTON_H
 
-#include "CModel.h"
 #include "CColliderMesh.h"
 #include "CRideableObject.h"
 class CStageMenu;
+class CModel;
 
 // ステージ選択ボタン
 class CStageButton : public CRideableObject

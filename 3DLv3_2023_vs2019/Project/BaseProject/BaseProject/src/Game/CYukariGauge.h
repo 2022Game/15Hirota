@@ -1,9 +1,9 @@
 #ifndef CYUKARIGAUGE_H
 #define CYUKARIGAUGE_H
-class CImage;
 
 #include "CUIBase.h"
 #include "CVector.h"
+class CImage;
 
 class CYukariGauge :public CUIBase
 

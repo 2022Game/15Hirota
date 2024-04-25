@@ -1,6 +1,7 @@
 #include "CRotateFloorTimeGimmick.h"
 #include "Maths.h"
 #include "CPlayer.h"
+#include "CModel.h"
 
 // ‘Ò‚¿ŽžŠÔ
 #define WAIT_TIME 3.0f

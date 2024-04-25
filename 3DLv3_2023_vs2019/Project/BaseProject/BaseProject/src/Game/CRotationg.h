@@ -2,8 +2,8 @@
 #define CROTATIONG_H
 
 #include "CRideableObject.h"
-#include "CModel.h"
 #include "CColliderMesh.h"
+class CModel;
 
 class CRotationg : public CRideableObject
 {

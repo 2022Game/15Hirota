@@ -3,8 +3,8 @@
 #include "CObjectBase.h"
 #include "CWeaponEnemy.h"
 #include "CColliderSphere.h"
-#include "CModel.h"
 #include "CXCharacter.h"
+class CModel;
 
 // 足のコライダークラス
 class CKick :public CWeaponEnemy

@@ -1,5 +1,6 @@
 #include "CSavePoint.h"
 #include "CPlayer.h"
+#include "CModel.h"
 
 // コストラクタ
 CSavePoint::CSavePoint(const CVector& pos, const CVector& scale, const CVector& rot)

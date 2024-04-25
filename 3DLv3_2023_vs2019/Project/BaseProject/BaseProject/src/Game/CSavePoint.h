@@ -1,10 +1,10 @@
 #ifndef CSAVEPOINT_H
 #define CSAVEPOINT_H
 
-#include "CModel.h"
 #include "CColliderLine.h"
 #include "CColliderSphere.h"
 #include "CObjectBase.h"
+class CModel;
 
 // セーブポイントクラス
 class CSavePoint : public CObjectBase

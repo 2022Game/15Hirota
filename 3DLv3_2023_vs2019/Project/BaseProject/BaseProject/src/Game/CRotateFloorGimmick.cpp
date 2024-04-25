@@ -1,6 +1,7 @@
 #include "CRotateFloorGimmick.h"
 #include "Maths.h"
 #include "CPlayer.h"
+#include "CModel.h"
 
 // ‰ñ“]°‚Ì‰ñ“]‚É‚©‚©‚éŠÔ
 #define ROTATE_TIME 0.5f

@@ -3,6 +3,7 @@
 #include "CPlayer.h"
 #include "CRecoveryObject.h"
 #include "CInvincible.h"
+#include "CSound.h"
 
 // ブロックが上に上昇する際の最大値
 #define MAXHEIGHT 15.0f

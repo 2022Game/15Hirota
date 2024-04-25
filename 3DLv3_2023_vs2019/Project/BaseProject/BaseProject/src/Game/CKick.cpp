@@ -1,6 +1,7 @@
 #include "CKick.h"
 #include "CCollisionManager.h"
 #include "CCharaBase.h"
+#include "CModel.h"
 
 CKick::CKick()
 {

@@ -1,5 +1,6 @@
 #include "CRotateFloor.h"
 #include "Maths.h"
+#include "CModel.h"
 
 #define ROTATE_Y 1.0f
 

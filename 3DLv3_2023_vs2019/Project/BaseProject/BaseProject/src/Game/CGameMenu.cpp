@@ -2,6 +2,7 @@
 #include "CInput.h"
 #include "CTaskManager.h"
 #include "CBGMManager.h"
+#include "CImage.h"
 
 #define MENU_ALPHA 0.75f
 
