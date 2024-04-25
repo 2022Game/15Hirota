@@ -57,7 +57,6 @@ CInvincible::CInvincible()
 	// コライダーの位置を調整
 	mpInvincibleCol->SetCollisionTags({ ETag::ePlayer, ETag::eRideableObject, ETag::eField,});
 	mpInvincibleCol->SetCollisionLayers({ ELayer::ePlayer, ELayer::eBlockCol, ELayer::eField,ELayer::eFieldWall });
-	mpInvincibleCol->Position(0.0f, 1.0f, 0.0f);
 
 	// 無敵アイテムコライダー作成
 	mpFieldCol = new CColliderSphere
@@ -67,7 +66,6 @@ CInvincible::CInvincible()
 	);
 	mpFieldCol->SetCollisionTags({ ETag::eRideableObject, ETag::eField, });
 	mpFieldCol->SetCollisionLayers({ ELayer::eField,ELayer::eFieldWall });
-	mpFieldCol->Position(0.0f, 1.0f, 0.0f);
 
 	// 最初はコライダーをオンにしておく
 	mpInvincibleCol->SetEnable(true);
@@ -275,13 +273,16 @@ void CInvincible::UpdateGet()
 	{
 		// ステップ0 : アイテムを移動開始
 	case 0:
-		// 移動開始時の座標を記憶しておく
-		mGetStartPos = Position();
 		// カメラまでの距離を記録しておく
-		mGetCameraDist = (mGetStartPos - cam->Position()).Length();
+		mGetCameraDist = (Position() - cam->Position()).Length();
+		// 移動開始時の座標を記憶しておく
+		mGetStartPos = cam->WorldToScreenPos(Position());
 
 		mElapsedTime = 0.0f;
 		SetEnableCol(false);
+
+		// 更新タイミングをカメラより後に変更
+		SetPriority(ETaskPriority::eLeteCamera);
 
 		mStateStep++;
 		break;
@@ -299,21 +300,16 @@ void CInvincible::UpdateGet()
 			)
 		);
 
-		// カメラの方向へ向ける
-		Rotation
-		(
-			CQuaternion::LookRotation
-			(
-				(cam->Position() - Position()).Normalized()
-			)
-		);
+		// アイテム取得時の3D空間での座標をスクリーン座標から求める
+		mGetStartPos.Z(mGetCameraDist);
+		CVector startPos = cam->ScreenToWorldPos(mGetStartPos);
 
 		// 移動時間を経過していない
 		if (mElapsedTime < GET_MOVE_TIME)
 		{
 			float per = mElapsedTime / GET_MOVE_TIME;
 			float per2 = Easing::SineIn(mElapsedTime, GET_MOVE_TIME, 0.0f, 1.0f);
-			CVector pos = CVector::Lerp(mGetStartPos, mGetTargetPos, per2);
+			CVector pos = CVector::Lerp(startPos, mGetTargetPos, per2);
 			pos += CVector::up * sinf(M_PI * per) * GET_MOVE_UP;
 			Position(pos);
 			mElapsedTime += Time::DeltaTime();
@@ -327,6 +323,16 @@ void CInvincible::UpdateGet()
 			Position(mGetTargetPos);
 			Kill();
 		}
+
+		// カメラの方向へ向ける
+		Rotation
+		(
+			CQuaternion::LookRotation
+			(
+				(cam->Position() - Position()).Normalized(),
+				CVector::up
+			)
+		);
 		break;
 	}
 }

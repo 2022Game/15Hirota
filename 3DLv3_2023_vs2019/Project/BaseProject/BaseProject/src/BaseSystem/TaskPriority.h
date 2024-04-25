@@ -29,6 +29,7 @@ enum class ETaskPriority
 	eEnemyWeapon,	// 敵の武器
 
 	eCamera,		// カメラ
+	eLeteCamera,	// カメラ後の更新
 
 	// 2D関連
 	eUI,			// UI関連のデフォルト
