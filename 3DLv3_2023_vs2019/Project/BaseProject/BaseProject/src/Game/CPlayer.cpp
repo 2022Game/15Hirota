@@ -18,6 +18,7 @@
 #include "CSlash.h"
 #include "CSound.h"
 #include "CImage.h"
+#include "CStageManager.h"
 
 // プレイヤー関連
 // 高さ
@@ -102,7 +103,8 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 
 // コンストラクタ
 CPlayer::CPlayer()
-	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer)
+	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer,0, 
+		ETaskPauseType::ePlayer)
 	, mState(EState::eReady)
 	, mInventory(std::map<ItemType, int>())
 	, mStateStep(0)
@@ -252,6 +254,9 @@ CPlayer::CPlayer()
 		CQuaternion(0.0f, 90.0f, 0.0f).Matrix()
 	);
 
+	mpCutInDeath = new CCutInDeath();
+	mpCutInClear = new CCutInClear();
+
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -268,6 +273,9 @@ CPlayer::~CPlayer()
 
 	// マジックソードを破棄
 	mpSword->Kill();
+
+	mpCutInDeath->Kill();
+	mpCutInClear->Kill();
 }
 
 // 衝突処理
@@ -1320,37 +1328,62 @@ void CPlayer::UpdateRotateEnd()
 
 // クリア
 void CPlayer::UpdateClear()
-{
+{	
 	mMoveSpeed = CVector::zero;
-	ChangeAnimation(EAnimType::eGuts);
+	mElapsedTime = 0.0f;
+
+	mpDamageCol->SetEnable(false);
+	mpSword->AttackEnd();
 	ChangeState(EState::eClearEnd);
 }
 
 // クリア終了
 void CPlayer::UpdateClearEnd()
 {
-	if (IsAnimationFinished())
-	{
-		if (CGameManager::StageNo() == 0)
-		{
-			mSavePoint = false;
-			// ステージをクリア
-			CGameManager::StageClear();
-			// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
-			ChangeState(EState::eReady);
-			Position(mStartPos);
-		}
+	ChangeAnimation(EAnimType::eGuts);
 
-		if (CGameManager::StageNo() == 3)
+	if (mpCutInClear->IsPlaying())
+	{
+		// キャラクターの更新
+		if (IsAnimationFinished())
 		{
-			mSavePoint = false;
-			// ステージをクリア
-			CGameManager::StageClear();
-			CGameManager::SetStageNo(0);
-			// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
-			ChangeState(EState::eReady);
-			Position(mStartPos);
+			if (mElapsedTime < 2.0f)
+			{
+				mElapsedTime += Time::DeltaTime();
+			}
+			else
+			{
+				mElapsedTime = 0.0f;
+				mpCutInClear->End();
+				if (CGameManager::StageNo() == 0)
+				{
+					mSavePoint = false;
+					// ステージをクリア
+					CGameManager::StageClear();
+					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
+					ChangeState(EState::eReady);
+					Position(mStartPos);
+				}
+
+				if (CGameManager::StageNo() == 3)
+				{
+					mSavePoint = false;
+					// ステージをクリア
+					CGameManager::StageClear();
+					CGameManager::SetStageNo(0);
+					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
+					ChangeState(EState::eReady);
+					Position(mStartPos);
+				}
+			}
 		}
+		//CXCharacter::Update();
+		return;
+	}
+	else
+	{
+		mpCutInClear->Setup(this);
+		mpCutInClear->Start();
 	}
 }
 
@@ -1362,11 +1395,19 @@ void CPlayer::UpdateDeath()
 		mpDamageCol->SetEnable(false);
 		mpSword->AttackEnd();
 		mMoveSpeed = CVector::zero;
-		ChangeAnimation(EAnimType::eDeath);
-		if (IsAnimationFinished())
+		if (mpCutInDeath->IsPlaying())
 		{
-			ChangeState(EState::eDeathEnd);
+			// キャラクターの更新
+			CXCharacter::Update();
+			return;
 		}
+		else
+		{
+			mpCutInDeath->Setup(this);
+			mpCutInDeath->Start();
+		}
+		ChangeAnimation(EAnimType::eDeath);
+		ChangeState(EState::eDeathEnd);
 	}
 }
 
@@ -1375,11 +1416,14 @@ void CPlayer::UpdateDeathEnd()
 {
 	if (IsAnimationFinished())
 	{
+		mpCutInDeath->End();
 		mSavePoint = false;
 		mDamageObject = false;
 		mCharaStatus = mCharaMaxStatus;
 		mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
-		Position(0.0f, 14.5f, -70.0f);
+		CStageManager::LoadStage(0);
+		CGameManager::SetStageNo(0);
+		Position(-245.0f, 60.0f, 0.0f);
 		ChangeState(EState::eIdle);
 	}
 }
@@ -1959,13 +2003,21 @@ void CPlayer::UpdateWireClimbedTop()
 // 落下状態
 void CPlayer::UpdateFalling()
 {
-	mMoveSpeedY = -2.0f;
+	mMoveSpeedY = -2.5f;
 	ChangeAnimation(EAnimType::eFalling);
 	if (mIsGrounded)
 	{
-		TakeDamage(1);
-		ChangeAnimation(EAnimType::eStandUp);
-		ChangeState(EState::eStandUp);
+		if (mCharaStatus.hp > 0)
+		{
+			TakeDamage(1);
+			ChangeAnimation(EAnimType::eStandUp);
+			ChangeState(EState::eStandUp);
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			ChangeAnimation(EAnimType::eDeath);
+			ChangeState(EState::eDeath);
+		}
 	}
 }
 

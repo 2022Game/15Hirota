@@ -5,6 +5,8 @@
 #include "CColliderLine.h"
 #include "CRideableObject.h"
 #include "CColliderSphere.h"
+#include "CCutInDeath.h"
+#include "CCutInClear.h"
 #include <map>
 
 class CUIGauge;
@@ -131,6 +133,7 @@ public:
 	
 private:
 	// モデル・ポインター・素材関連
+	// カメラ関連
 	// 状態関連
 	// アニメーション関連
 	// ベクトル関連
@@ -176,6 +179,13 @@ private:
 	CWireMeshClimbWall* mpWireWall;
 	// 登っている動く金網のポインター
 	CWireMeshMoveClimbWall* mpWireMoveWall;
+
+	///////////////////////////////////////////////////////
+
+	//// カメラ関連 ///////////////////////////////////////
+
+	CCutInDeath* mpCutInDeath;
+	CCutInClear* mpCutInClear;
 
 	///////////////////////////////////////////////////////
 	

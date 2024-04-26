@@ -93,7 +93,7 @@ void CTitleMenu::Close()
 void CTitleMenu::HandleMouseInput()
 {
 	// マウスがクリックされたかどうかをチェック
-	if (CInput::PushKey(VK_LBUTTON))
+	if (CInput::PullKey(VK_LBUTTON))
 	{
 		// マウスの座標を取得
 		CVector2 mousePos = CInput::GetMousePos();

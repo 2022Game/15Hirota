@@ -73,6 +73,10 @@
     <ClCompile Include="src\Game\CBlueMedal.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
     <ClCompile Include="src\Game\CClearScene.cpp" />
+    <ClCompile Include="src\Game\CCutInCamera.cpp" />
+    <ClCompile Include="src\Game\CCutInClear.cpp" />
+    <ClCompile Include="src\Game\CCutInDeath.cpp" />
+    <ClCompile Include="src\Game\CCutInTest.cpp" />
     <ClCompile Include="src\Game\CEnemy.cpp" />
     <ClCompile Include="src\Game\CEnemyManager.cpp" />
     <ClCompile Include="src\Game\CExclamationMark.cpp" />
@@ -244,6 +248,10 @@
     <ClInclude Include="src\Game\CBullet.h" />
     <ClInclude Include="src\Game\CClearScene.h" />
     <ClInclude Include="src\Game\CClimbWall.h" />
+    <ClInclude Include="src\Game\CCutInCamera.h" />
+    <ClInclude Include="src\Game\CCutInClear.h" />
+    <ClInclude Include="src\Game\CCutInDeath.h" />
+    <ClInclude Include="src\Game\CCutInTest.h" />
     <ClInclude Include="src\Game\CEnemy.h" />
     <ClInclude Include="src\Game\CEnemyManager.h" />
     <ClInclude Include="src\Game\CExclamationMark.h" />

@@ -116,6 +116,9 @@
     <Filter Include="ソース ファイル\Game\Efect\Slash">
       <UniqueIdentifier>{3c696925-e909-43f7-bc6b-122af3e1de4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Cutin">
+      <UniqueIdentifier>{4974ca3f-ffce-45f3-bd28-b769e581a665}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -594,6 +597,18 @@
     </ClCompile>
     <ClCompile Include="src\Game\CScreenItem.cpp">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCutInCamera.cpp">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCutInTest.cpp">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCutInDeath.cpp">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCutInClear.cpp">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1097,6 +1112,18 @@
     </ClInclude>
     <ClInclude Include="src\Game\CScreenItem.h">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutInCamera.h">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutInTest.h">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutInDeath.h">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutInClear.h">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

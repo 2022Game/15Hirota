@@ -78,10 +78,10 @@ void CStage3::Load()
 	);
 	AddTask(rising2);
 
-	// ゴールポスト
+	// ゴールポスト0.0f, 10.0f, 720.0f
 	CGoalObject* goal = new CGoalObject
 	(
-		CVector(0.0f, 10.0f, 720.0f),
+		CVector(0.0f, 4.5f, -50.0f),
 		CVector(2.0f, 2.0f, 2.0f),
 		CVector(0.0f, 90.0f, 0.0f)
 	);

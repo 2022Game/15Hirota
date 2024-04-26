@@ -59,13 +59,14 @@ void CTreasureChest::Render()
 CTreasureChestTwo::CTreasureChestTwo(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
 	: mStateStep(0)
+	, mState(EState::Idle)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
 	, mDefaultRot(rot)
 	, mWaitTime(0.0f)
-	, mRotateStartAngle(0.0f)
 	, mRotateEndAngle(0.0f)
-	, mStartPos(0.0f, 0.0f, 0.0f)
+	, mRotateStartAngle(0.0f)
+	, mStartPos(CVector::zero)
 {
 	// •ó” ŠWƒ‚ƒfƒ‹
 	mpChestTwo =  CResourceManager::Get<CModel>("TreasureChestTwo");
