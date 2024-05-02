@@ -28,8 +28,6 @@ public:
 	// ‚Ç‚Ìƒƒjƒ…[‚É‚·‚é‚©
 	void Decide(int select);
 
-	const char* GetImagePath(int score);
-
 	void Update() override;
 	void Render() override;
 
@@ -47,5 +45,7 @@ private:
 	std::vector<std::pair<Result, CImage*>> mABCItems;
 	int mSelectIndex;
 	bool mIsOpened;
+	float mElapsedTime;
+	float mAlpha;
 };
 #endif

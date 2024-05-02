@@ -1,4 +1,5 @@
 #include "CResultAnnouncement.h"
+#include "Maths.h"
 #include "CInput.h"
 #include "CSceneManager.h"
 #include "CTaskManager.h"
@@ -14,9 +15,11 @@
 CResultAnnouncement::CResultAnnouncement()
 	: CTask(ETaskPriority::eUI, 0, ETaskPauseType::eMenu)
 	, mSelectIndex(0)
+	, mElapsedTime(0.0f)
+	, mAlpha(0.0f)
 	, mIsOpened(false)
 {
-	mpResultsMenu = new CImage
+	/*mpResultsMenu = new CImage
 	(
 		"UI/menu_back.png",
 		ETaskPriority::eUI, 0, ETaskPauseType::eMenu,
@@ -24,7 +27,7 @@ CResultAnnouncement::CResultAnnouncement()
 	);
 	mpResultsMenu->SetCenter(mpResultsMenu->GetSize() * 0.5f);
 	mpResultsMenu->SetPos(CVector2(WINDOW_WIDTH, WINDOW_HEIGHT) * 0.5f);
-	mpResultsMenu->SetColor(1.0f, 1.0f, 1.0f, MENU_ALPHA);
+	mpResultsMenu->SetColor(1.0f, 1.0f, 1.0f, MENU_ALPHA);*/
 
 	const char* menuItems[] = { "UI/ResultUI/Continue.png", "UI/ResultUI/End.png" };
 	int stageMenuCount = 2;
@@ -79,10 +82,10 @@ CResultAnnouncement::CResultAnnouncement()
 		);
 		abc->SetSize(200.0f, 250.0f);
 		abc->SetCenter(abc->GetSize() * 0.5f);
-		float posX = (float)WINDOW_WIDTH * 0.8f;
-		float posY = (float)WINDOW_HEIGHT* 0.8f;
+		float posX = (float)WINDOW_WIDTH * 0.65f;
+		float posY = (float)WINDOW_HEIGHT* 0.4f;
 		abc->SetPos(posX, posY);
-		abc->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+		abc->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
 		mABCItems.push_back(std::make_pair(Result, abc));
 	}
 
@@ -192,23 +195,61 @@ void CResultAnnouncement::Update()
 	if (IsOpened())
 	{
 		CInput::ShowCursor(true);
+		for (const auto& itemPair : mABCItems)
+		{
+			CImage* item = itemPair.second;
+
+			// 表示＆非表示に掛ける時間（秒）
+			static const float fadeTime = 5.0f;
+			// 最大アルファ値
+			static const float fadeAlpha = 1.0f;
+
+			//フェード背景の表示時間が経過していない
+			if (mElapsedTime < fadeTime)
+			{
+				//経過時間に合わせてアルファ値を設定
+				float alpha = mElapsedTime / fadeTime;
+				item->SetAlpha(fadeAlpha * alpha);
+				//1フレームの経過時間を加算（仮）
+				mElapsedTime += 0.0016f;
+			}
+			//フェード背景の表示時間が経過した
+			else
+			{
+				//フェード背景を完全に表示して
+				item->SetAlpha(fadeAlpha);
+				return;
+			}
+		}
 	}
 	else
 	{
 		CInput::ShowCursor(false);
+		for (const auto& itemPair : mABCItems)
+		{
+			CImage* item = itemPair.second;
+			
+			item->SetAlpha(0.0f);
+			mElapsedTime = 0.0f;
+		}
 	}
 
-	mpResultsMenu->Update();
+	//mpResultsMenu->Update();
 	for (CImage* item : mResultsMenuItems)
 	{
 		item->Update();
 	}
+
+	// アニメーションの時間
+	float animationDuration = 3.0f;
+	// アニメーションの経過時間
+	float animationTime = 0.0f;
 }
 
 // 描画処理
 void CResultAnnouncement::Render()
 {
-	mpResultsMenu->Render();
+	//mpResultsMenu->Render();
 	for (int i = 0; i < mResultsMenuItems.size(); i++)
 	{
 		CImage* item = mResultsMenuItems[i];

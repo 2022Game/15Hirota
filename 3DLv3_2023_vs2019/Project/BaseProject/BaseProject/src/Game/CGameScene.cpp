@@ -161,9 +161,9 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-	CResult* result = CResult::Instance();
+	/*CResult* result = CResult::Instance();
 	int score = result->GetTotalScore();
-	CDebugPrint::Print("total: %d\n", score);
+	CDebugPrint::Print("total: %d\n", score);*/
 	mpScreenItem->Open();
 	if (CInput::PushKey('H'))
 	{
