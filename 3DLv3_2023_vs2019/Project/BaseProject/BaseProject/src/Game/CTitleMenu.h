@@ -26,8 +26,8 @@ public:
 	// ‚Ç‚Ìƒƒjƒ…[‚É‚·‚é‚©
 	void Decide(int select);
 
-	void Update();
-	void Render();
+	void Update() override;
+	void Render() override;
 
 private:
 	CImage* mpTitleMenu;

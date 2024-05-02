@@ -105,6 +105,7 @@
     <ClCompile Include="src\Game\CNumberFloorOnce.cpp" />
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
+    <ClCompile Include="src\Game\CResult.cpp" />
     <ClCompile Include="src\Game\CRisingObject.cpp" />
     <ClCompile Include="src\Game\CRotateFloorGimmick.cpp" />
     <ClCompile Include="src\Game\CRotateFloorTimeGimmick.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="src\Game\CDisappearFloor.cpp" />
     <ClCompile Include="src\Game\CItemObjectBase.cpp" />
     <ClCompile Include="src\Game\PlayerItem.cpp" />
+    <ClCompile Include="src\Game\CResultAnnouncement.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Test\CBootMenuScene.cpp" />
     <ClCompile Include="src\Test\CColBasecpp.cpp" />
@@ -278,6 +280,7 @@
     <ClInclude Include="src\Game\CNumberFloorOnce.h" />
     <ClInclude Include="src\Game\CRecoveryObject.h" />
     <ClInclude Include="src\Game\CRengaBlock.h" />
+    <ClInclude Include="src\Game\CResult.h" />
     <ClInclude Include="src\Game\CRisingObject.h" />
     <ClInclude Include="src\Game\CRotateFloorGimmick.h" />
     <ClInclude Include="src\Game\CRotateFloorTimeGimmick.h" />
@@ -336,6 +339,7 @@
     <ClInclude Include="src\Game\CDisappearFloor.h" />
     <ClInclude Include="src\Game\CItemObjectBase.h" />
     <ClInclude Include="src\Game\PlayerItem.h" />
+    <ClInclude Include="src\Game\CResultAnnouncement.h" />
     <ClInclude Include="src\Test\CBootMenuScene.h" />
     <ClInclude Include="src\Test\CColBase.h" />
     <ClInclude Include="src\Test\CColCapsule.h" />

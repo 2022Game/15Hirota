@@ -1365,6 +1365,7 @@ void CPlayer::UpdateClearEnd()
 					Position(mStartPos);
 				}
 
+				// 「ワンショット・フロア」
 				if (CGameManager::StageNo() == 3)
 				{
 					mSavePoint = false;

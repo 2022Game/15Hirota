@@ -1,6 +1,11 @@
 #include "CGameManager.h"
 #include "CStageManager.h"
 #include "CSceneManager.h"
+#include "CScore.h"
+#include "CStageTime.h"
+#include "CResult.h"
+#include "CInput.h"
+#include "CResultAnnouncement.h"
 
 CGameManager* CGameManager::spInstance = nullptr;
 
@@ -10,14 +15,15 @@ CGameManager::CGameManager()
 	, mState(EGameState::eRaady)
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
+	, mpResult(nullptr)
 {
-
+	mpResult = new CResultAnnouncement();
 }
 
 // デストラクタ
 CGameManager::~CGameManager()
 {
-
+	mpResult->Kill();
 }
 
 // インスタンス取得
@@ -97,13 +103,13 @@ void CGameManager::UpdateGame()
 // ステージクリア時の更新処理
 void CGameManager::UpdateStageClear()
 {
-	//// ステージをクリアしたら、次のステージを読み込み
+	// ステージをクリアしたら、次のステージを読み込み
 	mStageNo = 0;
 	//CSceneManager::Instance()->LoadScene(EScene::eClear);
 	CStageManager::LoadStage(mStageNo);
 
-	// ステージの読み込みが終われば、ゲームを開始
-	ChangeState(EGameState::eGame);
+	// ステージの読み込みが終われば、リザルトを表示
+	ChangeState(EGameState::eResult);
 }
 
 // ゲームクリア時の更新処理
@@ -121,7 +127,8 @@ void CGameManager::UpdateGameOver()
 // リザルト時の更新処理
 void CGameManager::UpdateResult()
 {
-
+	CResult::Instance()->SetTimeAndScore(CStageTime::Instance(), CScore::Instance());
+	mpResult->Open();
 }
 
 // 更新

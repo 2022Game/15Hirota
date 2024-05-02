@@ -8,9 +8,10 @@ class CPlayer;
 class CSoldier;
 class CStageTime;
 class CScore;
+class CResult;
 
 // ゲームシーン
-class CGameScene :public CSceneBase
+class CGameScene : public CSceneBase
 {
 public:
 	//コンストラクタ
@@ -28,11 +29,6 @@ private:
 	CScreenItem* mpScreenItem;
 
 	CStageTime* mpTime;
-	int mTime;
-	bool mIsStage1;
-	bool mIsStage2;
-	bool mIsStage3;
-
 	CScore* mpScore;
-	int mScore;
+	CResult* mpResult;
 };

@@ -610,6 +610,12 @@
     <ClCompile Include="src\Game\CCutInClear.cpp">
       <Filter>ソース ファイル\Game\Cutin</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CResult.cpp">
+      <Filter>ソース ファイル\Game\UI\StageUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CResultAnnouncement.cpp">
+      <Filter>ソース ファイル\Game\UI\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1124,6 +1130,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CCutInClear.h">
       <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CResult.h">
+      <Filter>ソース ファイル\Game\UI\StageUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CResultAnnouncement.h">
+      <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

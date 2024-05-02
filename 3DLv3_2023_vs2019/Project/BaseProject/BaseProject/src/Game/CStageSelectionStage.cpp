@@ -57,35 +57,6 @@ void CStageSelectionStage::Load()
 		ETag::ePlayer, ELayer::ePlayer);
 	AddTask(button);
 
-	// 火炎放射器モデル
-	// 右方向
-	/*CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
-	(
-		CVector(-10.0f, 12.0f, 0.0f),
-		CVector(1.0f, 1.0f, 1.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(flamethrower2);*/
-
-	//// 宝箱
-	//CTreasureChest* treasure = new CTreasureChest
-	//(
-	//	CVector(-15.0f, 11.0f, 0.0f),
-	//	CVector(7.0f, 7.0f, 7.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(treasure);
-	//// 宝箱蓋
-	//CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
-	//(
-	//	CVector(-15.0f, 15.8f, 0.0f),
-	//	CVector(7.0f, 7.0f, 7.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(treasureTwo);
-
 
 	//// 針モデル
 	//CNeedle* needle = new CNeedle(
@@ -112,16 +83,9 @@ void CStageSelectionStage::Load()
 	//}
 	//AddTask(needlebase);
 
-	//// ヴァンガード
-	//CVanguard* van = new CVanguard();
-	//CVanguard* vanPos = CVanguard::Instance();
-	//van->Scale(1.4f, 1.4f, 1.4f);
-	//van->Position(50.0f, 60.0f, 0.0f);
-	//AddTask(van);
-
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
-	CVector playerPos = CVector(-245.0f, 60.0f, 0.0f);
+	CVector playerPos = CVector(-245.0f, 20.0f, 0.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

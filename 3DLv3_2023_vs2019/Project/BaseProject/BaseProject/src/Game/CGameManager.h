@@ -1,6 +1,8 @@
 #ifndef CGAMEMANAGER_H
 #define CGAMEMANAGER_H
 #include "CTask.h"
+class CResultAnnouncement;
+class CResult;
 
 //	ゲームの状態
 enum class EGameState
@@ -8,9 +10,9 @@ enum class EGameState
 	eRaady,			// 準備中
 	eGame,			// ゲーム実行中
 	eStageClear,	// ステージクリア
+	eResult,		// リザルト
 	eGameClear,		// ゲームクリア
 	eGameOver,		// ゲームオーバー
-	eResult,		// リザルト
 };
 
 //ゲームクラスを管理するクラス
@@ -33,6 +35,12 @@ public:
 	static void SetStageNo(int stageNo) {
 		Instance()->mStageNo = stageNo;
 	}
+
+	// privateから移動
+	// リザルトで使うため
+	static CGameManager* Instance();
+	// 現在のゲームの状態を切り替え
+	void ChangeState(EGameState state);
 	
 	// 更新処理
 	void Update();
@@ -42,11 +50,6 @@ private:
 	CGameManager();
 	// デストラクタ
 	~CGameManager();
-
-	static CGameManager* Instance();
-
-	// 現在のゲームの状態を切り替え
-	void ChangeState(EGameState state);
 
 	// 準備状態の更新処理
 	void UpdateReady();
@@ -61,10 +64,14 @@ private:
 	// リザルト時の更新処理
 	void UpdateResult();
 
+
 	static CGameManager* spInstance;
 	int mStageNo;		// 現在のステージ番号
 	EGameState mState;	// 現在のゲームの状態
 	int mStateStep;		// 状態内でのステップ
 	float mElapsedTime;	// 経過時間計測用
+
+	CResultAnnouncement* mpResult;
+	CResult* mpResults;
 };
 #endif
