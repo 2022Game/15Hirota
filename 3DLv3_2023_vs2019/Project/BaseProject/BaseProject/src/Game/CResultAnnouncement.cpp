@@ -80,7 +80,7 @@ CResultAnnouncement::CResultAnnouncement()
 			ETaskPriority::eUI, 0, ETaskPauseType::eGame,
 			false, false
 		);
-		abc->SetSize(200.0f, 250.0f);
+		abc->SetSize(300.0f, 350.0f);
 		abc->SetCenter(abc->GetSize() * 0.5f);
 		float posX = (float)WINDOW_WIDTH * 0.65f;
 		float posY = (float)WINDOW_HEIGHT* 0.4f;
@@ -129,7 +129,7 @@ void CResultAnnouncement::Close()
 	SetShow(false);
 	CBGMManager::Instance()->Play(EBGMType::eGame, false);
 	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
-	// メニューを開いたフラグを下す
+	// メニューを開いたフラグをおろす
 	mIsOpened = false;
 }
 
@@ -203,6 +203,7 @@ void CResultAnnouncement::Update()
 			static const float fadeTime = 5.0f;
 			// 最大アルファ値
 			static const float fadeAlpha = 1.0f;
+
 
 			//フェード背景の表示時間が経過していない
 			if (mElapsedTime < fadeTime)

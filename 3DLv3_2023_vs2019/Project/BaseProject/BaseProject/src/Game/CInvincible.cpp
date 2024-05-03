@@ -261,7 +261,6 @@ void CInvincible::UpdateIdle()
 }
 
 // アイテムを取った後の処理
-// 右に移動したのち消す
 void CInvincible::UpdateGet()
 {
 	// 現在のカメラを取得
