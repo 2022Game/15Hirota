@@ -26,11 +26,11 @@ CBlueMedal::CBlueMedal(const CVector& pos, const CVector& scale)
 	mpBlueMedalCol = new CColliderSphere
 	(
 		this, ELayer::eMedalCol,
-		1.5f
+		1.3f
 	);
 	mpBlueMedalCol->SetCollisionTags({ ETag::ePlayer,ETag::eField });
 	mpBlueMedalCol->SetCollisionLayers({ ELayer::ePlayer,ELayer::eField,ELayer::eFieldWall });
-	//mpBlueMedalCol->Position(0.0f, 1.0f, 0.0f);
+	mpBlueMedalCol->Position(0.0f, 1.0f, 0.0f);
 
 	Position(pos);
 	Scale(scale);

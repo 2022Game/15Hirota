@@ -18,7 +18,7 @@ CGoalObject::CGoalObject(const CVector& pos, const CVector& scale, const CVector
 		CVector(0.0f, 5.0f, 0.0f),
 		CVector(0.0f, 30.0, 0.0f)
 	);
-	mpColliderLine->SetCollisionLayers({ ELayer::eDamageCol });
+	mpColliderLine->SetCollisionLayers({ ELayer::ePlayer });
 	mpColliderLine->SetCollisionTags({ ETag::ePlayer });
 
 	// てっぺんのコライダーを作成
@@ -27,7 +27,7 @@ CGoalObject::CGoalObject(const CVector& pos, const CVector& scale, const CVector
 		this, ELayer::eGoalCol,
 		2.0f//0.5f
 	);
-	mpColliderSphere->SetCollisionLayers({ ELayer::eDamageCol });
+	mpColliderSphere->SetCollisionLayers({ ELayer::ePlayer });
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
 	// ゴールコライダーを少し上へずらす
 	mpColliderSphere->Position(0.0f, 20.0f, 0.0f);

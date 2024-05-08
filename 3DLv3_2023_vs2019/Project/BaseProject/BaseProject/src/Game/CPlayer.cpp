@@ -199,11 +199,12 @@ CPlayer::CPlayer()
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::ePlayer,
-		0.5f
+		0.8f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
-		ELayer::eSavePoint, ELayer::eAttackCol });
+		ELayer::eSavePoint, ELayer::eAttackCol,ELayer::eGoalCol });
+	mpColliderSphere->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal });
 	//mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpColliderSphere->SetAttachMtx(spineMtx);
@@ -216,10 +217,10 @@ CPlayer::CPlayer()
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol,ELayer::eGoalCol, 
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, 
 		ELayer::eKickCol, ELayer::eBulletCol,ELayer::eNeedleCol,
 		ELayer::eFlame,ELayer::eFall});
-	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon,ETag::eGoalObject, 
+	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon, 
 		ETag::eEnemy, ETag::eBullet,ETag::eRideableObject, ETag::eFlame,
 		ETag::eFall});
 	// ダメージを受けるコライダーを少し上へずらす
@@ -378,7 +379,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 		// 攻撃力アップポーション
-		else if (other->Layer() == ELayer::eAttackCol)
+		if (other->Layer() == ELayer::eAttackCol)
 		{
 			if (other->Tag() == ETag::eAttackObject)
 			{
@@ -386,7 +387,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 		// 回復アイテム
-		else if (other->Layer() == ELayer::eRecoverCol)
+		if (other->Layer() == ELayer::eRecoverCol)
 		{
 			if (other->Tag() == ETag::eItemRecover)
 			{
@@ -394,7 +395,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 		// 無敵アイテム
-		else if (other->Layer() == ELayer::eInvincbleCol)
+		if (other->Layer() == ELayer::eInvincbleCol)
 		{
 			if (other->Tag() == ETag::eItemInvincible)
 			{
@@ -402,39 +403,34 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 		// メダルアイテム
-		else if (other->Layer() == ELayer::eMedalCol)
+		if (other->Layer() == ELayer::eMedalCol)
 		{
 			if (other->Tag() == ETag::eMedal)
 			{
 
 			}
 		}
-		else if (other->Layer() == ELayer::eEnemy)
+		if (other->Layer() == ELayer::eEnemy)
 		{
 			Position(Position() + hit.adjust);
 		}
-
 		// 登れるオブジェクト
 		if (other->Layer() == ELayer::eClimb)
 		{
 			// Climb状態の場合は位置を調整する
 			Position(Position() + hit.adjust);
 		}
-
 		// セーブポイント
 		if (other->Layer() == ELayer::eSavePoint)
 		{
 			mSavePoint = true;
 		}
-	}
 
-	// ダメージを受けるコライダー
-	if (self == mpDamageCol)
-	{
+		// ゴールポスト
 		if (other->Layer() == ELayer::eGoalCol)
 		{
 			/*CDebugPrint::Print("Player hit GoalObject!\n");*/
-			mpDamageCol->SetEnable(false);
+			mpColliderSphere->SetEnable(false);
 			if (CGameManager::StageNo() == 0 ||
 				CGameManager::StageNo() == 1 ||
 				CGameManager::StageNo() == 2 ||
@@ -443,8 +439,13 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				ChangeState(EState::eClear);
 			}
 		}
+	}
+
+	// ダメージを受けるコライダー
+	if (self == mpDamageCol)
+	{
 		// 敵のキックコライダー
-		else if (other->Layer() == ELayer::eKickCol)
+		if (other->Layer() == ELayer::eKickCol)
 		{
 			ChangeState(EState::eHit);
 		}
@@ -1333,7 +1334,7 @@ void CPlayer::UpdateClear()
 	mMoveSpeed = CVector::zero;
 	mElapsedTime = 0.0f;
 
-	mpDamageCol->SetEnable(false);
+	mpColliderSphere->SetEnable(false);
 	mpSword->AttackEnd();
 	ChangeState(EState::eClearEnd);
 }
@@ -1364,6 +1365,7 @@ void CPlayer::UpdateClearEnd()
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
 					ChangeState(EState::eReady);
 					Position(mStartPos);
+					mpColliderSphere->SetEnable(true);
 				}
 
 				// 「ワンショット・フロア」
@@ -1376,6 +1378,7 @@ void CPlayer::UpdateClearEnd()
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
 					ChangeState(EState::eReady);
 					Position(mStartPos);
+					mpColliderSphere->SetEnable(true);
 				}
 			}
 		}
