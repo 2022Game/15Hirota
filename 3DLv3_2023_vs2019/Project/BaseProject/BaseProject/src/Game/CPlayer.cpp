@@ -1426,7 +1426,7 @@ void CPlayer::UpdateDeathEnd()
 		mDamageObject = false;
 		mCharaStatus = mCharaMaxStatus;
 		mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
-		CGameManager::Instance()->StageOver();
+		CGameManager::StageOver();
 		Position(-245.0f, 60.0f, 0.0f);
 		ChangeState(EState::eIdle);
 	}

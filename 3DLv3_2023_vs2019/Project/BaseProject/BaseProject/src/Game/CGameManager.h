@@ -38,17 +38,16 @@ public:
 	static void SetStageNo(int stageNo) {
 		Instance()->mStageNo = stageNo;
 	}
-
-	// privateから移動
-	// リザルトで使うため
-	static CGameManager* Instance();
-	// 現在のゲームの状態を切り替え
-	void ChangeState(EGameState state);
 	
 	// 更新処理
 	void Update();
 
 private:
+
+	static CGameManager* Instance();
+	// 現在のゲームの状態を切り替え
+	void ChangeState(EGameState state);
+
 	// コンストラクタ
 	CGameManager();
 	// デストラクタ
