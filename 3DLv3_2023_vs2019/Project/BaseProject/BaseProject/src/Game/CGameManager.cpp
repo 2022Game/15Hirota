@@ -49,6 +49,12 @@ void CGameManager::GameStart()
 	Instance()->ChangeState(EGameState::eGame);
 }
 
+// ゲーム再開
+void CGameManager::GameRestart()
+{
+	Instance()->ChangeState(EGameState::eRestart);
+}
+
 // ステージクリア
 void CGameManager::StageClear()
 {
@@ -103,7 +109,13 @@ void CGameManager::UpdateReady()
 // ゲーム中の更新処理
 void CGameManager::UpdateGame()
 {
+	
+}
 
+// ゲーム再開の更新処理
+void CGameManager::UpdateRestart()
+{
+	ChangeState(EGameState::eGame);
 }
 
 // ステージクリア時の更新処理
@@ -159,6 +171,10 @@ void CGameManager::Update()
 		// ゲーム中
 	case EGameState::eGame:
 		UpdateGame();
+		break;
+		// ゲーム再開
+	case EGameState::eRestart:
+		UpdateRestart();
 		break;
 		// ステージクリア
 	case EGameState::eStageClear:

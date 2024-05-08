@@ -1,6 +1,7 @@
 #include "CNumberFloorOnce.h"
 #include "Maths.h"
 #include "CPlayer.h"
+#include "CStageManager.h"
 
 // 消えるのにかかる時間
 #define FADE_TIME 4.0f
@@ -50,6 +51,8 @@ CNumberFloorOnce::CNumberFloorOnce(const CVector& pos, const CVector& scale, con
 // デストラクタ
 CNumberFloorOnce::~CNumberFloorOnce()
 {
+	// 作成したタスクを取り除く
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpColliderMesh);
 }
 

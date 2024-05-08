@@ -1,6 +1,7 @@
 #include "CSavePoint.h"
 #include "CPlayer.h"
 #include "CModel.h"
+#include "CStageManager.h"
 
 // コストラクタ
 CSavePoint::CSavePoint(const CVector& pos, const CVector& scale, const CVector& rot)
@@ -26,6 +27,8 @@ CSavePoint::CSavePoint(const CVector& pos, const CVector& scale, const CVector& 
 // デストラクタ
 CSavePoint::~CSavePoint()
 {
+	// 作成したタスクを取り除く
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpSaveColLine);
 }
 

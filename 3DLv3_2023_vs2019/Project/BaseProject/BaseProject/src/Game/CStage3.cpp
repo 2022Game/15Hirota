@@ -67,7 +67,7 @@ void CStage3::Load()
 	// 中間値点
 	CRisingObject* rising1 = new CRisingObject
 	(
-		CVector(0.0f, 12.0f, 350.0f),
+		CVector(0.0f, 12.0f, 325.0f),
 		CVector(1.0f, 1.0f, 1.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
@@ -111,16 +111,16 @@ void CStage3::Load()
 		if (i == 4) yPos = 2.5f;
 
 		// Z軸の位置を設定
-		float zPos = i * 70.0f;
-		if (i == 5)   zPos = 5 * 70.0f;
-		if (i == 6)   zPos = 5 * 70.0f;
-		if (i == 7)   zPos = 6 * 70.0f;
-		if (i == 8)   zPos = 6 * 70.0f;
-		if (i == 9)   zPos = 7 * 70.0f;
-		if (i == 10)  zPos = 7 * 70.0f;
-		if (i == 11)  zPos = 8 * 70.0f;
-		if (i == 12)  zPos = 8 * 70.0f;
-		if (i == 13)  zPos = 9 * 70.0f;
+		float zPos = i * 65.0f;
+		if (i == 5)   zPos = 5 * 65.0f;
+		if (i == 6)   zPos = 5 * 65.0f;
+		if (i == 7)   zPos = 6 * 65.0f;
+		if (i == 8)   zPos = 6 * 65.0f;
+		if (i == 9)   zPos = 7 * 65.0f;
+		if (i == 10)  zPos = 7 * 65.0f;
+		if (i == 11)  zPos = 8 * 65.0f;
+		if (i == 12)  zPos = 8 * 65.0f;
+		if (i == 13)  zPos = 9 * 65.0f;
 
 		// X軸のスケール値を設定
 		float xScale = 4.0f;
@@ -245,7 +245,7 @@ void CStage3::Load()
 	// ブルーメダルを作成
 	CBlueMedal* medal1 = new CBlueMedal
 	(
-		CVector(70.0f, 22.0f, 350.0f),
+		CVector(70.0f, 22.0f, 325.0f),
 		CVector(3.0f, 3.0f, 3.0f)
 	);
 	AddTask(medal1);
@@ -254,7 +254,7 @@ void CStage3::Load()
 
 	CBlueMedal* medal2 = new CBlueMedal
 	(
-		CVector(-70.0f, 22.0f, 420.0f),
+		CVector(-70.0f, 22.0f, 455.0f),
 		CVector(3.0f, 3.0f, 3.0f)
 	);
 	AddTask(medal2);
@@ -263,7 +263,7 @@ void CStage3::Load()
 
 	CBlueMedal* medal3 = new CBlueMedal
 	(
-		CVector(70.0f, 22.0f, 490.0f),
+		CVector(70.0f, 22.0f, 455.0f),
 		CVector(3.0f, 3.0f, 3.0f)
 	);
 	AddTask(medal3);
@@ -272,7 +272,7 @@ void CStage3::Load()
 
 	CBlueMedal* medal4 = new CBlueMedal
 	(
-		CVector(0.0f, 22.0f, 140.0f),
+		CVector(0.0f, 22.0f, 130.0f),
 		CVector(3.0f, 3.0f, 3.0f)
 	);
 	AddTask(medal4);

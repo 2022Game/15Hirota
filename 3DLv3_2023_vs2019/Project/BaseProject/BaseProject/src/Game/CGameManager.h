@@ -9,6 +9,7 @@ enum class EGameState
 {
 	eRaady,			// 準備中
 	eGame,			// ゲーム実行中
+	eRestart,		// ゲーム再開
 	eStageClear,	// ステージクリア
 	eStageOver,		// ステージ失敗
 	eResult,		// リザルト
@@ -22,6 +23,8 @@ class CGameManager : public CTask
 public:
 	// ゲーム開始
 	static void GameStart();
+	// ゲーム再開
+	static void GameRestart();
 	// ステージクリア
 	static void StageClear();
 	// ステージ失敗
@@ -57,6 +60,8 @@ private:
 	void UpdateReady();
 	// ゲーム中の更新処理
 	void UpdateGame();
+	// ゲーム再開更新処理
+	void UpdateRestart();
 	// ステージクリア時の更新処理
 	void UpdateStageClear();
 	// ステージ失敗

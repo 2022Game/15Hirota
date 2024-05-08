@@ -4,6 +4,7 @@
 #include "CInput.h"
 #include "Maths.h"
 #include "CModel.h"
+#include "CStageManager.h"
 
 #define WAIT_TIME 5.0f
 #define FOV_ANGLE 100.0f
@@ -38,6 +39,8 @@ CTreasureChest::CTreasureChest(const CVector& pos, const CVector& scale, const C
 
 CTreasureChest::~CTreasureChest()
 {
+	// 作成したタスクを取り除く
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpChestCol);
 }
 
@@ -82,6 +85,8 @@ CTreasureChestTwo::CTreasureChestTwo(const CVector& pos, const CVector& scale, c
 
 CTreasureChestTwo::~CTreasureChestTwo()
 {
+	// 作成したタスクを取り除く
+	CStageManager::RemoveTask(this);
 }
 
 void CTreasureChestTwo::ChangeState(EState state)

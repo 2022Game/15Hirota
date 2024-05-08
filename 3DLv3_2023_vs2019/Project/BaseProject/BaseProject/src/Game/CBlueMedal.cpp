@@ -6,6 +6,7 @@
 #include "Maths.h"
 #include "CSound.h"
 #include "CBlueMedalEvent.h"
+#include "CStageManager.h"
 
 // 重力
 #define GRAVITY 0.0625
@@ -42,6 +43,9 @@ CBlueMedal::CBlueMedal(const CVector& pos, const CVector& scale)
 
 CBlueMedal::~CBlueMedal()
 {
+	// 作成したタスクを取り除く
+	CStageManager::RemoveTask(this);
+
 	SAFE_DELETE(mpBlueMedalCol);
 
 

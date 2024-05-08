@@ -40,6 +40,8 @@ CFixedFlamethrower::CFixedFlamethrower(const CVector& pos, const CVector& scale,
 
 CFixedFlamethrower::~CFixedFlamethrower()
 {
+	// ì¬‚µ‚½ƒ^ƒXƒN‚ğæ‚èœ‚­
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpColliderMesh);
 }
 

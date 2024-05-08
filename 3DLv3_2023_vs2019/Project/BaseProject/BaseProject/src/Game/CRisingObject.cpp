@@ -2,7 +2,7 @@
 #include "Maths.h"
 #include "CPlayer.h"
 #include "CInput.h"
-
+#include "CStageManager.h"
 
 // 消えるのにかかる時間
 #define FADE_TIME 3.0f
@@ -53,6 +53,8 @@ CRisingObject::CRisingObject(const CVector& pos, const CVector& scale,
 // デストラクタ
 CRisingObject::~CRisingObject()
 {
+	// 作成したタスクを取り除く
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpColliderMesh);
 }
 

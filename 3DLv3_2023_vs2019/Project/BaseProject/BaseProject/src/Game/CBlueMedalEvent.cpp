@@ -1,6 +1,7 @@
 #include "CBlueMedalEvent.h"
 #include "CBlueMedal.h"
 #include "CObstacle.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CBlueMedalEvent::CBlueMedalEvent()
@@ -13,6 +14,8 @@ CBlueMedalEvent::CBlueMedalEvent()
 // デストラクタ
 CBlueMedalEvent::~CBlueMedalEvent()
 {
+	// 作成したタスクを取り除く
+	CStageManager::RemoveTask(this);
 	// ブルーメダルがまだ存在していたら、
 	// 各ブルーメダルから自信のイベントへのリンクを解除
 	for (CBlueMedal* medal : mBlueMedals)
