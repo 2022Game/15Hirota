@@ -128,6 +128,9 @@
     <Filter Include="ソース ファイル\Game\Field\Event\CStage3">
       <UniqueIdentifier>{c2282c42-2a77-47b8-ba71-dd800d09e091}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\TitleUI">
+      <UniqueIdentifier>{cbd501c6-ad8e-49bb-b26a-fc8b88ef6f03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -633,6 +636,18 @@
     </ClCompile>
     <ClCompile Include="src\Game\CBlueMedalEvent.cpp">
       <Filter>ソース ファイル\Game\Field\Event\CStage3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CButton.cpp">
+      <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CExpandButton.cpp">
+      <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseSystem\CUIManager.cpp">
+      <Filter>ソース ファイル\BaseSystem\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTitleUI.cpp">
+      <Filter>ソース ファイル\Game\UI\TitleUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1163,6 +1178,18 @@
     </ClInclude>
     <ClInclude Include="src\Game\CBlueMedalEvent.h">
       <Filter>ソース ファイル\Game\Field\Event\CStage3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CButton.h">
+      <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CExpandButton.h">
+      <Filter>ソース ファイル\BaseSystem\System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseSystem\CUIManager.h">
+      <Filter>ソース ファイル\BaseSystem\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTitleUI.h">
+      <Filter>ソース ファイル\Game\UI\TitleUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -164,6 +164,8 @@ void CGameScene::Update()
 	/*CResult* result = CResult::Instance();
 	int score = result->GetTotalScore();
 	CDebugPrint::Print("total: %d\n", score);*/
+	// ゲーム画面はカーソル非表示
+	CInput::ShowCursor(false);
 	mpScreenItem->Open();
 	if (CInput::PushKey('H'))
 	{

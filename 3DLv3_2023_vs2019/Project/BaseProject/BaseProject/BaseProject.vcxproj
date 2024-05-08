@@ -17,6 +17,7 @@
     <ClCompile Include="src\BaseSystem\CBillBoardImage.cpp" />
     <ClCompile Include="src\BaseSystem\CBounds.cpp" />
     <ClCompile Include="src\BaseSystem\CBulletEffect.cpp" />
+    <ClCompile Include="src\BaseSystem\CButton.cpp" />
     <ClCompile Include="src\BaseSystem\CCamera.cpp" />
     <ClCompile Include="src\BaseSystem\CCollider.cpp" />
     <ClCompile Include="src\BaseSystem\CColliderCapsule.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="src\BaseSystem\CDebugProfiler.cpp" />
     <ClCompile Include="src\BaseSystem\CDebugTimer.cpp" />
     <ClCompile Include="src\BaseSystem\CEffect.cpp" />
+    <ClCompile Include="src\BaseSystem\CExpandButton.cpp" />
     <ClCompile Include="src\BaseSystem\CFade.cpp" />
     <ClCompile Include="src\BaseSystem\CFont.cpp" />
     <ClCompile Include="src\BaseSystem\CCharaBase.cpp" />
@@ -62,6 +64,7 @@
     <ClCompile Include="src\BaseSystem\CTransform.cpp" />
     <ClCompile Include="src\BaseSystem\CTriangle.cpp" />
     <ClCompile Include="src\BaseSystem\CUIBase.cpp" />
+    <ClCompile Include="src\BaseSystem\CUIManager.cpp" />
     <ClCompile Include="src\BaseSystem\CVector.cpp" />
     <ClCompile Include="src\BaseSystem\CObjectBase.cpp" />
     <ClCompile Include="src\BaseSystem\Easing.cpp" />
@@ -130,6 +133,7 @@
     <ClCompile Include="src\Game\CStageSelectionStage.cpp" />
     <ClCompile Include="src\Game\CStageTime.cpp" />
     <ClCompile Include="src\Game\CTitleMenu.cpp" />
+    <ClCompile Include="src\Game\CTitleUI.cpp" />
     <ClCompile Include="src\Game\CTreasureChest.cpp" />
     <ClCompile Include="src\Game\CTree1.cpp" />
     <ClCompile Include="src\Game\CVanguard.cpp" />
@@ -187,6 +191,7 @@
     <ClInclude Include="src\BaseSystem\CBillBoardImage.h" />
     <ClInclude Include="src\BaseSystem\CBounds.h" />
     <ClInclude Include="src\BaseSystem\CBulletEffect.h" />
+    <ClInclude Include="src\BaseSystem\CButton.h" />
     <ClInclude Include="src\BaseSystem\CCamera.h" />
     <ClInclude Include="src\BaseSystem\CCollider.h" />
     <ClInclude Include="src\BaseSystem\CColliderCapsule.h" />
@@ -202,6 +207,7 @@
     <ClInclude Include="src\BaseSystem\CDebugProfiler.h" />
     <ClInclude Include="src\BaseSystem\CDebugTimer.h" />
     <ClInclude Include="src\BaseSystem\CEffect.h" />
+    <ClInclude Include="src\BaseSystem\CExpandButton.h" />
     <ClInclude Include="src\BaseSystem\CFade.h" />
     <ClInclude Include="src\BaseSystem\CFont.h" />
     <ClInclude Include="src\BaseSystem\CCharaBase.h" />
@@ -234,6 +240,7 @@
     <ClInclude Include="src\BaseSystem\CTransform.h" />
     <ClInclude Include="src\BaseSystem\CTriangle.h" />
     <ClInclude Include="src\BaseSystem\CUIBase.h" />
+    <ClInclude Include="src\BaseSystem\CUIManager.h" />
     <ClInclude Include="src\BaseSystem\CVector.h" />
     <ClInclude Include="src\BaseSystem\CVertex.h" />
     <ClInclude Include="src\BaseSystem\CObjectBase.h" />
@@ -308,6 +315,7 @@
     <ClInclude Include="src\Game\CStageSelectionStage.h" />
     <ClInclude Include="src\Game\CStageTime.h" />
     <ClInclude Include="src\Game\CTitleMenu.h" />
+    <ClInclude Include="src\Game\CTitleUI.h" />
     <ClInclude Include="src\Game\CTreasureChest.h" />
     <ClInclude Include="src\Game\CTree1.h" />
     <ClInclude Include="src\Game\CVanguard.h" />

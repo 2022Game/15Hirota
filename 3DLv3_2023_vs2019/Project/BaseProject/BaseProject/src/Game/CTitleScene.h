@@ -5,6 +5,7 @@
 #include "CImage.h"
 class CSound;
 class CTitleMenu;
+class CTitleUI;
 
 //タイトルシーン
 class CTitleScene :public CSceneBase
@@ -20,6 +21,7 @@ public:
 	void Update();
 
 private:
-	CImage* mTitle;
-	CTitleMenu* mpTitleMenu;
+	/*CImage* mTitle;
+	CTitleMenu* mpTitleMenu;*/
+	CTitleUI* mpTitleUI;
 };

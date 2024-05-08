@@ -488,6 +488,13 @@ float CVector2::Angle(const CVector2& v0, const CVector2& v1)
 	return acosf(Dot(v0, v1) / length);
 }
 
+// 2ì_ä‘Çê¸å`ï‚ä‘Ç∑ÇÈ
+CVector2 CVector2::Lerp(const CVector2& a, const CVector2& b, float t)
+{
+	t = Math::Clamp01(t);
+	return a + (b - a) * t;
+}
+
 //------------------------------
 // CVector4
 //------------------------------
