@@ -178,7 +178,7 @@ void CResultAnnouncement::Decide(int select)
 	{
 	case 0:
 		CResultAnnouncement::Close();
-		CGameManager::Instance()->ChangeState(EGameState::eGame);
+		CGameManager::GameStart();
 		break;
 	case 1:
 		System::ExitGame();
