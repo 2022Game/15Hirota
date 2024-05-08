@@ -57,14 +57,14 @@
 // レベル関連
 #define LEVEL 1
 // スタミナ関連
-#define STAMINA 109
+#define STAMINA 150
 
 
 // その他
 // 色を描画する時間
 #define COLORSET 0.5f
 // ダメージコライダーの計測時間
-#define DAMAGECOL 1.0f
+#define DAMAGECOL 0.8f
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -382,7 +382,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			if (other->Tag() == ETag::eAttackObject)
 			{
-				AddItem(ItemType::ATTACK_UP);
+				//AddItem(ItemType::ATTACK_UP);
 			}
 		}
 		// 回復アイテム
@@ -390,7 +390,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			if (other->Tag() == ETag::eItemRecover)
 			{
-				AddItem(ItemType::HEALING);
+				//AddItem(ItemType::HEALING);
 			}
 		}
 		// 無敵アイテム
@@ -761,6 +761,7 @@ bool CPlayer::IsJumping()
 	return mIsJumping;
 }
 
+// 攻撃中かどうか
 bool CPlayer::IsAttack()
 {
 	return mIsAttack;
@@ -1371,7 +1372,7 @@ void CPlayer::UpdateClearEnd()
 					mSavePoint = false;
 					// ステージをクリア
 					CGameManager::StageClear();
-					CGameManager::SetStageNo(0);
+					//CGameManager::SetStageNo(0);
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
 					ChangeState(EState::eReady);
 					Position(mStartPos);
@@ -1422,8 +1423,7 @@ void CPlayer::UpdateDeathEnd()
 		mDamageObject = false;
 		mCharaStatus = mCharaMaxStatus;
 		mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
-		CStageManager::LoadStage(0);
-		CGameManager::SetStageNo(0);
+		CGameManager::Instance()->StageOver();
 		Position(-245.0f, 60.0f, 0.0f);
 		ChangeState(EState::eIdle);
 	}

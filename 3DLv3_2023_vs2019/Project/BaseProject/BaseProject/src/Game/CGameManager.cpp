@@ -55,6 +55,12 @@ void CGameManager::StageClear()
 	Instance()->ChangeState(EGameState::eStageClear);
 }
 
+// ステージ失敗
+void CGameManager::StageOver()
+{
+	Instance()->ChangeState(EGameState::eStageOver);
+}
+
 // ゲームオーバー
 void CGameManager::GameOver()
 {
@@ -109,7 +115,16 @@ void CGameManager::UpdateStageClear()
 	CStageManager::LoadStage(mStageNo);
 
 	// ステージの読み込みが終われば、リザルトを表示
-	ChangeState(EGameState::eResult);
+	Instance()->ChangeState(EGameState::eResult);
+}
+
+// ステージ失敗
+void CGameManager::UpdateStageOver()
+{
+	mStageNo = 0;
+	CStageManager::LoadStage(mStageNo);
+
+	ChangeState(EGameState::eGame);
 }
 
 // ゲームクリア時の更新処理
@@ -148,6 +163,10 @@ void CGameManager::Update()
 		// ステージクリア
 	case EGameState::eStageClear:
 		UpdateStageClear();
+		break;
+		// ステージ失敗
+	case EGameState::eStageOver:
+		UpdateStageOver();
 		break;
 		// ゲームクリア
 	case EGameState::eGameClear:

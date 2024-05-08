@@ -5,9 +5,13 @@ enum class ETaskPriority
 {
 	eNone = -1,
 
+	// イベント関連
+	eEvent,
+
 	// 3D関連
 	eDefault,		// デフォルト
 	eBackground,	// 背景
+	eObstacle,		// 障害物
 	ePlayer,		// プレイヤー
 	eEnemy,			// エネミー
 

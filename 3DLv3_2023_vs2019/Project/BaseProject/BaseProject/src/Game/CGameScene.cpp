@@ -249,9 +249,6 @@ void CGameScene::Update()
 
 	////////////////////////////////////////////////////////////////////////////////////
 
-	//// ステージ番号の監視
+	// ステージ番号の監視
 	//CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
-	//CDebugPrint::Print("mIsStage3:%s\n", mIsStage3 ? "true" : "false");
-	//// ソルジャーの数の監視
-	//CDebugPrint::Print("count:%d\n", CEnemyManager::GetEnemyCount());
 }

@@ -8,6 +8,7 @@
 #include "CModel.h"
 class CSoud;
 class CPlayer;
+class CBlueMedalEvent;
 
 // ブルーメダルアイテム
 class CBlueMedal : public CMedalObjectBase
@@ -21,6 +22,9 @@ public:
 	static void SetScore(int score);
 	static int GetScore();
 
+	// 管理されているイベントを設定
+	void SetEvent(CBlueMedalEvent* ev);
+
 	// 更新処理
 	void Update();
 	// 描画処理
@@ -29,6 +33,7 @@ public:
 private:
 	static int sScore;
 
+	CBlueMedalEvent* mpEvent;
 	CModel* mpBlueMedel;
 	CColliderSphere* mpBlueMedalCol;
 

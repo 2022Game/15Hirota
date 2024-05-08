@@ -2,6 +2,7 @@
 #include "CPlayer.h"
 #include "CFlamethrower.h"
 #include "Maths.h"
+#include "CStageManager.h"
 
 #define WAIT_TIME 4.0f
 
@@ -26,6 +27,7 @@ CFixedFlamethrower::CFixedFlamethrower(const CVector& pos, const CVector& scale,
 		CVector(0.0f, 17.0f, -1.0f),
 		CQuaternion(0.0f, -90.0f, 0.0f).Matrix()
 	);
+	CStageManager::AddTask(mpFlamethrower);
 
 	ChangeState(EState::Idle);
 

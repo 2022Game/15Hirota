@@ -8,6 +8,9 @@
 #include "CSavePoint.h"
 #include "CFixedFlamethrower.h"
 #include "CGoalObject.h"
+#include "CBlueMedalEvent.h"
+#include "CBlueMedal.h"
+#include "CObstacleWall.h"
 
 // コンストラクタ
 CStage3::CStage3()
@@ -42,13 +45,14 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("FlamethrowerCol",		"Field\\Gimmick\\Flamethrower(WallCol).obj");	// 火炎放射器(コライダー)
 	CResourceManager::Load<CModel>("GoalPost",				"Field\\Object\\GoalPost.obj");					// ゴールポストモデル
 	CResourceManager::Load<CModel>("GoalCube",				"Field\\Object\\GoalCube.obj");					// ゴールブロックモデル
+	CResourceManager::Load<CModel>("BlueMedal",				"Field\\Object\\Bluemedal.obj");				// ブルーメダルモデル
 
 	// 背景色設定
 	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	CNumberField* field = new CNumberField();
 	field->Scale(1.0f, 1.0f, 1.0f);
-	field->Position(0.0f, -190.0f, 0.0f);
+	field->Position(0.0f, -200.0f, 0.0f);
 	AddTask(field);
 
 	// 初期値点
@@ -81,7 +85,7 @@ void CStage3::Load()
 	// ゴールポスト0.0f, 10.0f, 720.0f
 	CGoalObject* goal = new CGoalObject
 	(
-		CVector(0.0f, 4.5f, -50.0f),
+		CVector(0.0f, 0.5f, -55.0f),
 		CVector(2.0f, 2.0f, 2.0f),
 		CVector(0.0f, 90.0f, 0.0f)
 	);
@@ -229,6 +233,64 @@ void CStage3::Load()
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	//mainCamera->AddCollider(mpField_Worlds_1->GetWallCol());
+
+
+
+	// ブルーメダル獲得イベントを生成
+	CBlueMedalEvent* bmEvent = new CBlueMedalEvent();
+	AddTask(bmEvent);
+
+	///////////////////////////////////////////////////////////////////////////
+	
+	// ブルーメダルを作成
+	CBlueMedal* medal1 = new CBlueMedal
+	(
+		CVector(70.0f, 22.0f, 350.0f),
+		CVector(3.0f, 3.0f, 3.0f)
+	);
+	AddTask(medal1);
+	medal1->SetEvent(bmEvent);
+	bmEvent->AddBlueMedal(medal1);
+
+	CBlueMedal* medal2 = new CBlueMedal
+	(
+		CVector(-70.0f, 22.0f, 420.0f),
+		CVector(3.0f, 3.0f, 3.0f)
+	);
+	AddTask(medal2);
+	medal2->SetEvent(bmEvent);
+	bmEvent->AddBlueMedal(medal2);
+
+	CBlueMedal* medal3 = new CBlueMedal
+	(
+		CVector(70.0f, 22.0f, 490.0f),
+		CVector(3.0f, 3.0f, 3.0f)
+	);
+	AddTask(medal3);
+	medal3->SetEvent(bmEvent);
+	bmEvent->AddBlueMedal(medal3);
+
+	CBlueMedal* medal4 = new CBlueMedal
+	(
+		CVector(0.0f, 22.0f, 140.0f),
+		CVector(3.0f, 3.0f, 3.0f)
+	);
+	AddTask(medal4);
+	medal4->SetEvent(bmEvent);
+	bmEvent->AddBlueMedal(medal4);
+
+	///////////////////////////////////////////////////////////////////////////
+
+	//障害物の壁を作成
+	CObstacleWall* wall = new CObstacleWall
+	(
+		CVector(0.0f, 25.0f, 680.0f),
+		CQuaternion(0.0f, 0.0f, 0.0f),
+		CVector(2.0f, 20.0f, 0.2f)
+	);
+	AddTask(wall);
+	wall->SetEvent(bmEvent);
+	bmEvent->SetObstacle(wall);
 }
 
 // ステージ破棄

@@ -336,7 +336,7 @@ void CInvincible::UpdateGet()
 	}
 }
 
-
+// ‚¢‚ç‚È‚¢‚©‚à
 void CInvincible::OnTouch(CPlayer* player)
 {
 	if (mIsHeld)

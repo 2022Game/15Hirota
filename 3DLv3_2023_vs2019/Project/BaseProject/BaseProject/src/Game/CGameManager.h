@@ -10,6 +10,7 @@ enum class EGameState
 	eRaady,			// 準備中
 	eGame,			// ゲーム実行中
 	eStageClear,	// ステージクリア
+	eStageOver,		// ステージ失敗
 	eResult,		// リザルト
 	eGameClear,		// ゲームクリア
 	eGameOver,		// ゲームオーバー
@@ -23,6 +24,8 @@ public:
 	static void GameStart();
 	// ステージクリア
 	static void StageClear();
+	// ステージ失敗
+	static void StageOver();
 	// ゲームオーバー
 	static void GameOver();
 	// リザルト
@@ -57,6 +60,8 @@ private:
 	void UpdateGame();
 	// ステージクリア時の更新処理
 	void UpdateStageClear();
+	// ステージ失敗
+	void UpdateStageOver();
 	// ゲームクリア時の更新処理
 	void UpdateGameClear();
 	// ゲームオーバー時の更新処理
@@ -72,6 +77,5 @@ private:
 	float mElapsedTime;	// 経過時間計測用
 
 	CResultAnnouncement* mpResult;
-	CResult* mpResults;
 };
 #endif

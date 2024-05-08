@@ -28,8 +28,8 @@
 #define CHANGE_SPEED 3.0f
 
 CStaminaGauge::CStaminaGauge()
-	: mMaxSutaminaValue(100)
-	, mSutaminaValue(100)
+	: mMaxSutaminaValue(150)
+	, mSutaminaValue(150)
 {
 	mpStaminaImage = new CImage("PStamina");
 	mpStaminaImage->SetSize(SUTAMINA_SIZE_X, SUTAMINA_SIZE_Y);

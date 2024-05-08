@@ -27,7 +27,6 @@ class CSound;
 プレイヤークラス
 キャラクタクラスを継承
 */
-
 class CPlayer : public CXCharacter
 {
 public:
@@ -85,8 +84,9 @@ public:
 	// 無敵状態にする(コライダーをオフにする)
 	void TakeInvincible() override;
 
-	// 攻撃力アップ処理
+	// attack == 攻撃力
 	void TakeAttackPotion(int attack) override;
+
 
 	// レベル処理
 	// レベルアップ
@@ -104,12 +104,12 @@ public:
 	int GetHp();
 	int GetMaxHp();
 
-	// ジャンプをしたかどうか取得
+	// ジャンプをしたかどうか
 	bool IsJumping();
-	// 攻撃したかどうか取得
+	// 攻撃したかどうか
 	bool IsAttack();
-
 	// 敵を見つけたかどうか
+	// 使わないかも
 	bool IsFoundVanguard();
 
 	// 他のクラスで使っている為publicに置いておく
@@ -142,8 +142,6 @@ private:
 
 	// プレイヤーのインスタンス
 	static CPlayer* spInstance;
-	
-
 
 	//// モデル・ポインター・素材関連 /////////////////////////////////
 	
@@ -296,7 +294,6 @@ private:
 	
 	
 	//// アニメーション関連 ///////////////////////////////
-	
 
 	// アニメーションの種類
 	enum class EAnimType

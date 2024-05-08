@@ -11,6 +11,7 @@ enum class ETag
 	eSlash,				// 斬撃
 
 	eField,				// フィールドを構成するオブジェクト
+	eObstacle,			// 障害物
 	eRideableObject,	// 乗ることができるオブジェクト
 	eItemRecover,		// 回復アイテムのオブジェクト
 	eItemInvincible,	// 無敵アイテム

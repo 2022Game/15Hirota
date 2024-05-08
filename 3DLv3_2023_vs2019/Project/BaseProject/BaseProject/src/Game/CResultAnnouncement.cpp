@@ -200,10 +200,9 @@ void CResultAnnouncement::Update()
 			CImage* item = itemPair.second;
 
 			// 表示＆非表示に掛ける時間（秒）
-			static const float fadeTime = 5.0f;
+			static const float fadeTime = 4.0f;
 			// 最大アルファ値
 			static const float fadeAlpha = 1.0f;
-
 
 			//フェード背景の表示時間が経過していない
 			if (mElapsedTime < fadeTime)
@@ -240,11 +239,6 @@ void CResultAnnouncement::Update()
 	{
 		item->Update();
 	}
-
-	// アニメーションの時間
-	float animationDuration = 3.0f;
-	// アニメーションの経過時間
-	float animationTime = 0.0f;
 }
 
 // 描画処理

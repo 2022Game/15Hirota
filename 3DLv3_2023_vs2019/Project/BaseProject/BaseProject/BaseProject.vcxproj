@@ -71,6 +71,7 @@
     <ClCompile Include="src\Game\CAttackObjectBase.cpp" />
     <ClCompile Include="src\Game\CAttackPotion.cpp" />
     <ClCompile Include="src\Game\CBlueMedal.cpp" />
+    <ClCompile Include="src\Game\CBlueMedalEvent.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
     <ClCompile Include="src\Game\CClearScene.cpp" />
     <ClCompile Include="src\Game\CCutInCamera.cpp" />
@@ -103,6 +104,8 @@
     <ClCompile Include="src\Game\CNumberField.cpp" />
     <ClCompile Include="src\Game\CNumberFloor1.cpp" />
     <ClCompile Include="src\Game\CNumberFloorOnce.cpp" />
+    <ClCompile Include="src\Game\CObstacle.cpp" />
+    <ClCompile Include="src\Game\CObstacleWall.cpp" />
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
     <ClCompile Include="src\Game\CResult.cpp" />
@@ -247,6 +250,7 @@
     <ClInclude Include="src\Game\CAttackObjectBase.h" />
     <ClInclude Include="src\Game\CAttackPotion.h" />
     <ClInclude Include="src\Game\CBlueMedal.h" />
+    <ClInclude Include="src\Game\CBlueMedalEvent.h" />
     <ClInclude Include="src\Game\CBullet.h" />
     <ClInclude Include="src\Game\CClearScene.h" />
     <ClInclude Include="src\Game\CClimbWall.h" />
@@ -278,6 +282,8 @@
     <ClInclude Include="src\Game\CNumberField.h" />
     <ClInclude Include="src\Game\CNumberFloor1.h" />
     <ClInclude Include="src\Game\CNumberFloorOnce.h" />
+    <ClInclude Include="src\Game\CObstacle.h" />
+    <ClInclude Include="src\Game\CObstacleWall.h" />
     <ClInclude Include="src\Game\CRecoveryObject.h" />
     <ClInclude Include="src\Game\CRengaBlock.h" />
     <ClInclude Include="src\Game\CResult.h" />

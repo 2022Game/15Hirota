@@ -5,6 +5,7 @@
 #include "CPlayer.h"
 #include "Maths.h"
 #include "CSound.h"
+#include "CBlueMedalEvent.h"
 
 // 重力
 #define GRAVITY 0.0625
@@ -15,6 +16,7 @@ CBlueMedal::CBlueMedal(const CVector& pos, const CVector& scale)
 	: CMedalObjectBase(ETaskPriority::eMedal)
 	, mIsGround(false)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
+	, mpEvent(nullptr)
 {
 	sScore;
 
@@ -41,6 +43,12 @@ CBlueMedal::CBlueMedal(const CVector& pos, const CVector& scale)
 CBlueMedal::~CBlueMedal()
 {
 	SAFE_DELETE(mpBlueMedalCol);
+
+
+	if (mpEvent != nullptr)
+	{
+		mpEvent->KilledBlueMedal(this);
+	}
 }
 
 void CBlueMedal::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
@@ -87,6 +95,12 @@ void CBlueMedal::SetScore(int score)
 int CBlueMedal::GetScore()
 {
 	return sScore;
+}
+
+// 管理されているイベントを設定
+void CBlueMedal::SetEvent(CBlueMedalEvent* ev)
+{
+	mpEvent = ev;
 }
 
 void CBlueMedal::Update()
