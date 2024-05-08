@@ -34,5 +34,7 @@ private:
 	CVector mCenterPos;	// カットインの中心地店
 	float mStartAngleY;	// 開始のカメラのY軸角度
 	float mStartAngleZ;
+
+	CObjectBase* mObject;
 };
 #endif

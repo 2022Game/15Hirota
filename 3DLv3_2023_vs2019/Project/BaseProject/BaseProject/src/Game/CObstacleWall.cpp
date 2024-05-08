@@ -1,5 +1,6 @@
 #include "CObstacleWall.h"
 #include "CModel.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CObstacleWall::CObstacleWall(const CVector& pos, const CQuaternion& rot, const CVector& scale)
@@ -26,6 +27,8 @@ CObstacleWall::CObstacleWall(const CVector& pos, const CQuaternion& rot, const C
 // デストラクタ
 CObstacleWall::~CObstacleWall()
 {
+	// 作成したタスクを取り除く
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpColliderMesh);
 }
 

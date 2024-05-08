@@ -58,6 +58,8 @@ void CCutInClear::Setup(CObjectBase* obj)
 	mStartAngleY = obj->EulerAngles().Y();
 
 	mStartAngleZ = obj->EulerAngles().Z();
+
+	mObject = obj;
 }
 
 // ステップ0 カメラの回転
@@ -68,25 +70,24 @@ void CCutInClear::CutInStep0()
 	{
 		float per = mElapsedTime / CUTIN_TIME;
 
+		// プレイヤーの位置と角度を取得
+		CVector playerPos = mObject->Position();
+		float playerAngleY = mObject->EulerAngles().Y();
+
+		// カメラの位置と注視点をプレイヤーの位置と角度に合わせる
 		CVector offsetPos = CVector::zero;
 		offsetPos.Y(15.0f);
 
 		float dist = Math::Lerp(50.0f, 30.0f, per);
 
-		mAt = mCenterPos + offsetPos;
+		mAt = playerPos + offsetPos;
 		mEye = mAt + CVector(0.0f, 0.0f, 1.0f) * dist; // 回転なしで直線的に移動する
 
 		mElapsedTime += Time::DeltaTime();
 	}
 	else
 	{
-		CVector offsetPos = CVector::zero;
-		offsetPos.Y(15.0f);
-		float dist = 30.0f;
-
-		mAt = mCenterPos + offsetPos;
-		mEye = mAt + CVector(0.0f, 0.0f, 1.0f) * dist; // 回転なしで直線的に移動する
-
+		// 何もしない。カメラの位置を変更しない
 		mCutInStep++;
 		mElapsedTime = 0.0f;
 	}

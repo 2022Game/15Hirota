@@ -204,7 +204,8 @@ CPlayer::CPlayer()
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
 		ELayer::eSavePoint, ELayer::eAttackCol,ELayer::eGoalCol });
-	mpColliderSphere->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal });
+	mpColliderSphere->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
+		ETag::eItemInvincible,ETag::eItemRecover});
 	//mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpColliderSphere->SetAttachMtx(spineMtx);
@@ -379,7 +380,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 		// 攻撃力アップポーション
-		if (other->Layer() == ELayer::eAttackCol)
+		else if (other->Layer() == ELayer::eAttackCol)
 		{
 			if (other->Tag() == ETag::eAttackObject)
 			{
@@ -387,7 +388,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 		// 回復アイテム
-		if (other->Layer() == ELayer::eRecoverCol)
+		else if (other->Layer() == ELayer::eRecoverCol)
 		{
 			if (other->Tag() == ETag::eItemRecover)
 			{
@@ -395,7 +396,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 		// 無敵アイテム
-		if (other->Layer() == ELayer::eInvincbleCol)
+		else if (other->Layer() == ELayer::eInvincbleCol)
 		{
 			if (other->Tag() == ETag::eItemInvincible)
 			{
@@ -403,31 +404,30 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 		// メダルアイテム
-		if (other->Layer() == ELayer::eMedalCol)
+		else if (other->Layer() == ELayer::eMedalCol)
 		{
 			if (other->Tag() == ETag::eMedal)
 			{
 
 			}
 		}
-		if (other->Layer() == ELayer::eEnemy)
+		else if (other->Layer() == ELayer::eEnemy)
 		{
 			Position(Position() + hit.adjust);
 		}
 		// 登れるオブジェクト
-		if (other->Layer() == ELayer::eClimb)
+		else if (other->Layer() == ELayer::eClimb)
 		{
 			// Climb状態の場合は位置を調整する
 			Position(Position() + hit.adjust);
 		}
 		// セーブポイント
-		if (other->Layer() == ELayer::eSavePoint)
+		else if (other->Layer() == ELayer::eSavePoint)
 		{
 			mSavePoint = true;
 		}
-
 		// ゴールポスト
-		if (other->Layer() == ELayer::eGoalCol)
+		else if (other->Layer() == ELayer::eGoalCol)
 		{
 			/*CDebugPrint::Print("Player hit GoalObject!\n");*/
 			mpColliderSphere->SetEnable(false);
@@ -1374,7 +1374,6 @@ void CPlayer::UpdateClearEnd()
 					mSavePoint = false;
 					// ステージをクリア
 					CGameManager::StageClear();
-					//CGameManager::SetStageNo(0);
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
 					ChangeState(EState::eReady);
 					Position(mStartPos);
