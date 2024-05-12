@@ -83,7 +83,7 @@ CResultAnnouncement::CResultAnnouncement()
 		abc->SetSize(300.0f, 350.0f);
 		abc->SetCenter(abc->GetSize() * 0.5f);
 		float posX = (float)WINDOW_WIDTH * 0.65f;
-		float posY = (float)WINDOW_HEIGHT* 0.4f;
+		float posY = (float)WINDOW_HEIGHT * 0.4f;
 		abc->SetPos(posX, posY);
 		abc->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
 		mABCItems.push_back(std::make_pair(Result, abc));
@@ -228,7 +228,7 @@ void CResultAnnouncement::Update()
 		for (const auto& itemPair : mABCItems)
 		{
 			CImage* item = itemPair.second;
-			
+
 			item->SetAlpha(0.0f);
 			mElapsedTime = 0.0f;
 		}

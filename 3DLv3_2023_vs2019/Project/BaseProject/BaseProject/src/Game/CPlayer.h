@@ -113,11 +113,11 @@ public:
 	bool IsFoundVanguard();
 
 	// 他のクラスで使っている為publicに置いておく
-	// ジャンプ開始
+	// ジャンプ開始1
 	void UpdateJumpStart();
-	// ジャンプ中
+	// ジャンプ中1
 	void UpdateJump();
-	// ジャンプ終了
+	// ジャンプ終了1
 	void UpdateJumpEnd();
 	// 跳ねる
 	void UpdateJumpingStart();
@@ -163,6 +163,7 @@ private:
 	// スタミナゲージ
 	CStaminaGauge* mpStaminaGauge;
 
+
 	// 剣の振りかざし攻撃時のSE
 	CSound* mpSlashSE;
 	// 敵の攻撃が当たった時のSE
@@ -182,7 +183,9 @@ private:
 
 	//// カメラ関連 ///////////////////////////////////////
 
+	// 死亡時のカメラ
 	CCutInDeath* mpCutInDeath;
+	// ステージクリア時のカメラ
 	CCutInClear* mpCutInClear;
 
 	///////////////////////////////////////////////////////
@@ -361,6 +364,10 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	CVector CalcMoveVec() const;
+	/// <summary>
+	/// キーの入力情報から壁移動ベクトルを求める
+	/// </summary>
+	/// <returns></returns>
 	CVector ClimbMoveVec() const;
 
 	///////////////////////////////////////////////////////

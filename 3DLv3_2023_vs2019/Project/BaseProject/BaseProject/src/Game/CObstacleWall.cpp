@@ -55,7 +55,7 @@ void CObstacleWall::UpdateDeath()
 	{
 	case 0:
 		mStartPos = Position();
-		mTargetPos = mStartPos - CVector(0.0f, 30.0f, 0.0f);
+		mTargetPos = mStartPos - CVector(0.0f, 40.0f, 0.0f);
 		mElapsedTimel = 0.0f;
 		mStateStep++;
 		break;

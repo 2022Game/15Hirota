@@ -14,7 +14,7 @@ public:
 	CResultAnnouncement();
 	// デストラクタ
 	~CResultAnnouncement();
-	
+
 	// 開く
 	void Open();
 	// 閉じる

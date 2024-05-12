@@ -4,6 +4,7 @@
 #include "CRecoveryObject.h"
 #include "CInvincible.h"
 #include "CSound.h"
+#include "CStageManager.h"
 
 // ブロックが上に上昇する際の最大値
 #define MAXHEIGHT 15.0f
@@ -62,6 +63,7 @@ CHatenaBlock::CHatenaBlock(const CVector& pos, const CVector& scale,
 // デストラクタ
 CHatenaBlock::~CHatenaBlock()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpColliderSphere);
 }
 
@@ -148,6 +150,7 @@ void CHatenaBlock::UpdateHit()
 				mpHeart->Scale(3.0f, 3.0f, 3.0f);
 				CVector newPosition = Position() + CVector(0.0f, 45.0f, 0.0f);
 				mpHeart->Position(newPosition);
+				CStageManager::AddTask(mpHeart);
 			}
 			//// 1 かつ 何も出現していない かつ falseだった場合
 			//else if ((randomValue >= 6 && randomValue <= 10 && obj && !item))

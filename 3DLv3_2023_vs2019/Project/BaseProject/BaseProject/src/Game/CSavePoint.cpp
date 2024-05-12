@@ -5,6 +5,7 @@
 
 // コストラクタ
 CSavePoint::CSavePoint(const CVector& pos, const CVector& scale, const CVector& rot)
+	: CObjectBase(ETag::eSavePoint, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 {
 	// セーブポイントモデル取得
 	mpSavePointModel = CResourceManager::Get<CModel>("SavePoint");

@@ -4,6 +4,8 @@
 #include "CScore.h"
 #include "CStageTime.h"
 #include "CImage.h"
+#include "CStageManager.h"
+#include "CStageManager.h"
 
 // ステージタイマーのインスタンス
 CResult* CResult::spInstance = nullptr;
@@ -25,10 +27,10 @@ CResult::CResult()
 {
 	// インスタンスの設定
 	spInstance = this;
-	mpResultText = new CText(nullptr, 40, CVector2(0, 300),
+	mpResultText = new CText(nullptr, 40, CVector2(0, 0),
 		CVector2(1250, 600), CColor(1.0f, 0.5f, 0.5f, 1.0f),
 		ETaskPriority::eUI, 0);
-	mpResultText->SetTextAlign(ETextAlignH::eCenter,ETextAlignV::eMiddle);
+	mpResultText->SetTextAlign(ETextAlignH::eCenter, ETextAlignV::eMiddle);
 }
 
 CResult::~CResult()

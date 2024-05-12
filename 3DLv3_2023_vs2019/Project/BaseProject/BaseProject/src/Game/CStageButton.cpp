@@ -38,6 +38,7 @@ CStageButton::CStageButton(const CVector& pos, const CVector& scale, const CVect
 // デストラクタ
 CStageButton::~CStageButton()
 {
+	CStageManager::RemoveTask(mpStageMenu);
 	SAFE_DELETE(mpColliderMesh);
 }
 

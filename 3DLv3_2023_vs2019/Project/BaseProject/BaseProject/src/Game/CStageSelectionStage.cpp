@@ -28,13 +28,13 @@ void CStageSelectionStage::Load()
 	CResourceManager::Load<CModel>("StageSelectionFloorCol", "Field\\StageSentakuFloor.obj");	// ステージセレクトステージ(床)
 	CResourceManager::Load<CModel>("StageSelectionWallCol", "Field\\StageSentakuWall.obj");		// ステージセレクトステージ(壁)
 	CResourceManager::Load<CModel>("StageButton", "Field\\Object\\StageBotan.obj");				// ステージボタン
-	CResourceManager::Load<CModel>("FlamethrowerModel", "Field\\Gimmick\\Flamethrower(foundation).obj");					// 火炎放射器(土台)
-	CResourceManager::Load<CModel>("FlamethrowerTank", "Field\\Gimmick\\Flamethrower(tank).obj");							// 火炎放射器(タンク)
-	CResourceManager::Load<CModel>("FlamethrowerCol", "Field\\Gimmick\\Flamethrower(WallCol).obj");						// 火炎放射器(コライ
-	CResourceManager::Load<CModel>("TreasureChest", "Field\\Gimmick\\TreasureChest.obj");								// 宝箱
-	CResourceManager::Load<CModel>("TreasureChestTwo", "Field\\Gimmick\\TreasureChestTwo.obj");							// 宝箱(蓋)
-	CResourceManager::Load<CModel>("TreasureChestCol", "Field\\Gimmick\\TreasureChest(FloorCol).obj");						// 宝箱(蓋コライダー)
-	CResourceManager::Load<CModel>("TreasureChestWallCol", "Field\\Gimmick\\TreasureChest(WallCol).obj");						// 宝箱(壁コライダー)
+	//CResourceManager::Load<CModel>("FlamethrowerModel", "Field\\Gimmick\\Flamethrower(foundation).obj");					// 火炎放射器(土台)
+	//CResourceManager::Load<CModel>("FlamethrowerTank", "Field\\Gimmick\\Flamethrower(tank).obj");							// 火炎放射器(タンク)
+	//CResourceManager::Load<CModel>("FlamethrowerCol", "Field\\Gimmick\\Flamethrower(WallCol).obj");						// 火炎放射器(コライ
+	//CResourceManager::Load<CModel>("TreasureChest", "Field\\Gimmick\\TreasureChest.obj");								// 宝箱
+	//CResourceManager::Load<CModel>("TreasureChestTwo", "Field\\Gimmick\\TreasureChestTwo.obj");							// 宝箱(蓋)
+	//CResourceManager::Load<CModel>("TreasureChestCol", "Field\\Gimmick\\TreasureChest(FloorCol).obj");						// 宝箱(蓋コライダー)
+	//CResourceManager::Load<CModel>("TreasureChestWallCol", "Field\\Gimmick\\TreasureChest(WallCol).obj");						// 宝箱(壁コライダー)
 	//CResourceManager::Load<CModel>("Needle", "Field\\Gimmick\\NeedleObject(needle).obj");		// 針オブジェクトの針
 	//CResourceManager::Load<CModel>("Needlebase", "Field\\Gimmick\\NeedleObject(base).obj");		// 針オブジェクトの土台
 	//CResourceManager::Load<CModel>("NeedleCol", "Field\\Gimmick\\NeedleObjectCol.obj");			// 針オブジェクトのコライダー

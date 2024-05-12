@@ -64,7 +64,7 @@
 // 色を描画する時間
 #define COLORSET 0.5f
 // ダメージコライダーの計測時間
-#define DAMAGECOL 0.8f
+#define DAMAGECOL 0.9f
 
 // プレイヤーのインスタンス
 CPlayer* CPlayer::spInstance = nullptr;
@@ -205,7 +205,7 @@ CPlayer::CPlayer()
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
 		ELayer::eSavePoint, ELayer::eAttackCol,ELayer::eGoalCol });
 	mpColliderSphere->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
-		ETag::eItemInvincible,ETag::eItemRecover});
+		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint, ETag::eObstacle});
 	//mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpColliderSphere->SetAttachMtx(spineMtx);
@@ -247,6 +247,7 @@ CPlayer::CPlayer()
 	//mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 	mpSword->SetOwner(this);
+	CStageManager::AddTask(mpSword);
 
 
 	mpFlamethrower = new CFlamethrower
@@ -255,6 +256,7 @@ CPlayer::CPlayer()
 		CVector(0.0f, 14.0f, -1.0f),
 		CQuaternion(0.0f, 90.0f, 0.0f).Matrix()
 	);
+	CStageManager::AddTask(mpFlamethrower);
 
 	mpCutInDeath = new CCutInDeath();
 	mpCutInClear = new CCutInClear();
@@ -266,6 +268,9 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
+	CStageManager::RemoveTask(mpSword);
+	CStageManager::RemoveTask(mpFlamethrower);
+
 	spInstance = nullptr;
 	// コライダー関連の破棄
 	SAFE_DELETE(mpColliderLine);
@@ -424,7 +429,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// セーブポイント
 		else if (other->Layer() == ELayer::eSavePoint)
 		{
-			mSavePoint = true;
+			if (other->Tag() == ETag::eSavePoint)
+			{
+				mSavePoint = true;
+			}
 		}
 		// ゴールポスト
 		else if (other->Layer() == ELayer::eGoalCol)
@@ -477,7 +485,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				if (mSavePoint)
 				{
 					ChangeState(EState::eFallDamege);
-					Position(0.0f, 17.0f, 350.0f);
+					Position(0.0f, 15.0f, 325.0f);
 				}
 			}
 			//CDebugPrint::Print("mSavePoint: %s\n", mSavePoint ? "true" : "false");
@@ -918,6 +926,8 @@ void CPlayer::UpdateIdle()
 			ChangeState(EState::eAttackStrong);
 		}
 		// SPACEキーでジャンプ開始へ移行
+		// 長く押すと大ジャンプ
+		// 短く押すと小ジャンプ
 		else if (CInput::PushKey(VK_SPACE))
 		{
 			if (mCharaStatus.stamina - 20 >= 0)
@@ -2069,6 +2079,12 @@ void CPlayer::UpdateJump()
 		}
 	}
 
+	if (!CInput::Key(VK_SPACE))
+	{
+		ChangeAnimation(EAnimType::eJumpEnd);
+		mMoveSpeedY -= GRAVITY;
+	}
+
 	if (mMoveSpeedY <= 0.0f)
 	{
 		mIsJumping = false;
@@ -2187,6 +2203,7 @@ bool CPlayer::IsFoundVanguard()
 // 更新
 void CPlayer::Update()
 {
+	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;

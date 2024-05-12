@@ -131,6 +131,9 @@
     <Filter Include="ソース ファイル\Game\UI\TitleUI">
       <UniqueIdentifier>{cbd501c6-ad8e-49bb-b26a-fc8b88ef6f03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\CharaObject\ItemObject\Base">
+      <UniqueIdentifier>{4aafe6c2-ae65-421e-aae2-8518ddc0d799}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -424,9 +427,6 @@
     <ClCompile Include="src\Game\CUIGauge.cpp">
       <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CItemObjectBase.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CRecoveryObject.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClCompile>
@@ -437,9 +437,6 @@
       <Filter>ソース ファイル\BaseSystem\Sound</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CInvincible.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CInvincibleObjectBase.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CFade.cpp">
@@ -517,9 +514,6 @@
     <ClCompile Include="src\Game\CBlueMedal.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\ScoreItem</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CMedalObjectBase.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CRotationg.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
@@ -555,9 +549,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CTreasureChest.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CAttackObjectBase.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CAttackPotion.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
@@ -648,6 +639,21 @@
     </ClCompile>
     <ClCompile Include="src\Game\CTitleUI.cpp">
       <Filter>ソース ファイル\Game\UI\TitleUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CAttackObjectBase.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CInvincibleObjectBase.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CItemObjectBase.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CMedalObjectBase.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CResultScene.cpp">
+      <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -966,9 +972,6 @@
     <ClInclude Include="src\Game\CUIGauge.h">
       <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CItemObjectBase.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CRecoveryObject.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClInclude>
@@ -979,9 +982,6 @@
       <Filter>ソース ファイル\BaseSystem\Sound</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CInvincible.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CInvincibleObjectBase.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CFade.h">
@@ -1059,9 +1059,6 @@
     <ClInclude Include="src\Game\CBlueMedal.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\ScoreItem</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CMedalObjectBase.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CRotationg.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
@@ -1097,9 +1094,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CTreasureChest.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CAttackObjectBase.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CAttackPotion.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
@@ -1190,6 +1184,21 @@
     </ClInclude>
     <ClInclude Include="src\Game\CTitleUI.h">
       <Filter>ソース ファイル\Game\UI\TitleUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CAttackObjectBase.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CInvincibleObjectBase.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CItemObjectBase.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMedalObjectBase.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CResultScene.h">
+      <Filter>ソース ファイル\Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

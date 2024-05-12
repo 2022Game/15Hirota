@@ -18,6 +18,7 @@ enum class ETag
 	eAttackObject,		// 攻撃力アップモデル
 	eMedal,				// メダルアイテム
 	eGoalObject,		// クリア条件のオブジェクト
+	eSavePoint,			// セーブポイント
 	eJumpingObject,		// ジャンプするオブジェクト
 	eFall,				// 落下判定用オブジェクト
 
