@@ -80,6 +80,8 @@ private:
 	int mStateStep;		// 状態内でのステップ
 	float mElapsedTime;	// 経過時間計測用
 
+	bool mResultSetUp;
+
 	CResultAnnouncement* mpResult;
 };
 #endif

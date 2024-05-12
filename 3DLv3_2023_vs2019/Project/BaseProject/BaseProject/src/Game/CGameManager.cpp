@@ -6,6 +6,7 @@
 #include "CResult.h"
 #include "CInput.h"
 #include "CResultAnnouncement.h"
+#include "CPlayer.h"
 
 CGameManager* CGameManager::spInstance = nullptr;
 
@@ -15,6 +16,7 @@ CGameManager::CGameManager()
 	, mState(EGameState::eRaady)
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
+	, mResultSetUp(false)
 	, mpResult(nullptr)
 {
 	mpResult = new CResultAnnouncement();
@@ -109,7 +111,40 @@ void CGameManager::UpdateReady()
 // ゲーム中の更新処理
 void CGameManager::UpdateGame()
 {
-	
+	CPlayer* player = CPlayer::Instance();
+
+	if (player->IsStage1Clear() && !mResultSetUp)
+	{
+		mElapsedTime += Time::DeltaTime();
+		if (mElapsedTime > 1.0f)
+		{
+			mElapsedTime = 0.0f;
+			mResultSetUp = true;
+			Instance()->ChangeState(EGameState::eResult);
+		}
+	}
+
+	if (player->IsStage2Clear() && !mResultSetUp)
+	{
+		mElapsedTime += Time::DeltaTime();
+		if (mElapsedTime > 1.0f)
+		{
+			mElapsedTime = 0.0f;
+			mResultSetUp = true;
+			Instance()->ChangeState(EGameState::eResult);
+		}
+	}
+
+	if (player->IsStage3Clear() && !mResultSetUp)
+	{
+		mElapsedTime += Time::DeltaTime();
+		if (mElapsedTime > 1.0f)
+		{
+			mElapsedTime = 0.0f;
+			mResultSetUp = true;
+			Instance()->ChangeState(EGameState::eResult);
+		}
+	}
 }
 
 // ゲーム再開の更新処理
@@ -121,13 +156,14 @@ void CGameManager::UpdateRestart()
 // ステージクリア時の更新処理
 void CGameManager::UpdateStageClear()
 {
+	mResultSetUp = false;
 	// ステージをクリアしたら、次のステージを読み込み
 	mStageNo = 0;
 	//CSceneManager::Instance()->LoadScene(EScene::eClear);
 	CStageManager::LoadStage(mStageNo);
 
 	// ステージの読み込みが終われば、リザルトを表示
-	ChangeState(EGameState::eResult);
+	ChangeState(EGameState::eGame);
 }
 
 // ステージ失敗

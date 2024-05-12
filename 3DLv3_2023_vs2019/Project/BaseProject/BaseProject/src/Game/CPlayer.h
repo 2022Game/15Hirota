@@ -108,6 +108,15 @@ public:
 	bool IsJumping();
 	// 攻撃したかどうか
 	bool IsAttack();
+
+	// ステージ1をクリアしたかどうか
+	bool IsStage1Clear();
+	// ステージ2をクリアしたかどうか
+	bool IsStage2Clear();
+	// ステージ3をクリアしたかどうか
+	bool IsStage3Clear();
+
+
 	// 敵を見つけたかどうか
 	// 使わないかも
 	bool IsFoundVanguard();
@@ -431,6 +440,12 @@ private:
 	bool mIsSpawnedSlashEffect;
 	// 落下ダメージを受けたか
 	bool mFallDamage;
+	// ステージ1をクリアしたか
+	bool mStage1Clear;
+	// ステージ2をクリアしたか
+	bool mStage2Clear;
+	// ステージ3をクリアしたか
+	bool mStage3Clear;
 
 	///////////////////////////////////////////////////////
 };

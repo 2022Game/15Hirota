@@ -103,7 +103,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 
 // コンストラクタ
 CPlayer::CPlayer()
-	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer,0, 
+	: CXCharacter(ETag::ePlayer, ETaskPriority::ePlayer, 0,
 		ETaskPauseType::ePlayer)
 	, mState(EState::eReady)
 	, mInventory(std::map<ItemType, int>())
@@ -132,6 +132,9 @@ CPlayer::CPlayer()
 	, mClimbWall(false)
 	, mInvincible(false)
 	, mFallDamage(false)
+	, mStage1Clear(false)
+	, mStage2Clear(false)
+	, mStage3Clear(false)
 	, mDamageEnemy(false)
 	, mClimbWallTop(false)
 	, mDamageObject(false)
@@ -776,6 +779,24 @@ bool CPlayer::IsAttack()
 	return mIsAttack;
 }
 
+// ステージ1をクリアしたか
+bool CPlayer::IsStage1Clear()
+{
+	return mStage1Clear;
+}
+
+// ステージ2をクリアしたか
+bool CPlayer::IsStage2Clear()
+{
+	return mStage2Clear;
+}
+
+// ステージ3をクリアしたか
+bool CPlayer::IsStage3Clear()
+{
+	return mStage3Clear;
+}
+
 // アニメーション切り替え
 void CPlayer::ChangeAnimation(EAnimType type)
 {
@@ -1382,6 +1403,7 @@ void CPlayer::UpdateClearEnd()
 				if (CGameManager::StageNo() == 3)
 				{
 					mSavePoint = false;
+					mStage3Clear = true;
 					// ステージをクリア
 					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更

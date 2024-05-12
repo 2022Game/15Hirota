@@ -13,7 +13,7 @@
 
 // コンストラクタ
 CResultAnnouncement::CResultAnnouncement()
-	: CTask(ETaskPriority::eUI, 0, ETaskPauseType::eMenu)
+	: CTask(ETaskPriority::eUI, 0, ETaskPauseType::eDefault)
 	, mSelectIndex(0)
 	, mElapsedTime(0.0f)
 	, mAlpha(0.0f)
@@ -37,7 +37,7 @@ CResultAnnouncement::CResultAnnouncement()
 		CImage* item = new CImage
 		(
 			menuItems[i],
-			ETaskPriority::eUI, 0, ETaskPauseType::eMenu,
+			ETaskPriority::eUI, 0, ETaskPauseType::eGame,
 			false, false
 		);
 		item->SetSize(400.0f, 300.0f);
