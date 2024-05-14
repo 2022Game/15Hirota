@@ -19,6 +19,11 @@
 #include "CSound.h"
 #include "CImage.h"
 #include "CStageManager.h"
+#include "CCutInResult.h"
+#include "CCutInClear.h"
+#include "CCutInDeath.h"
+#include "CCutInResult.h"
+#include "CResultAnnouncement.h"
 
 // プレイヤー関連
 // 高さ
@@ -138,6 +143,9 @@ CPlayer::CPlayer()
 	, mDamageEnemy(false)
 	, mClimbWallTop(false)
 	, mDamageObject(false)
+	, mIsStage1Clear(false)
+	, mIsStage2Clear(false)
+	, mIsStage3Clear(false)
 	, mStaminaDepleted(false)
 	, mIsPlayedSlashSE(false)
 	, mStaminaLowerLimit(false)
@@ -263,6 +271,7 @@ CPlayer::CPlayer()
 
 	mpCutInDeath = new CCutInDeath();
 	mpCutInClear = new CCutInClear();
+	mpCutInResult = new CCutInResult();
 
 
 	// 最初に1レベルに設定
@@ -286,6 +295,7 @@ CPlayer::~CPlayer()
 
 	mpCutInDeath->Kill();
 	mpCutInClear->Kill();
+	mpCutInResult->Kill();
 }
 
 // 衝突処理
@@ -782,19 +792,19 @@ bool CPlayer::IsAttack()
 // ステージ1をクリアしたか
 bool CPlayer::IsStage1Clear()
 {
-	return mStage1Clear;
+	return mIsStage1Clear;
 }
 
 // ステージ2をクリアしたか
 bool CPlayer::IsStage2Clear()
 {
-	return mStage2Clear;
+	return mIsStage2Clear;
 }
 
 // ステージ3をクリアしたか
 bool CPlayer::IsStage3Clear()
 {
-	return mStage3Clear;
+	return mIsStage3Clear;
 }
 
 // アニメーション切り替え
@@ -960,6 +970,19 @@ void CPlayer::UpdateIdle()
 			else
 			{
 			}
+		}
+
+		if (mStage1Clear && !mIsStage1Clear)
+		{
+			ChangeState(EState::eResult);
+		}
+		if (mStage2Clear && !mIsStage2Clear)
+		{
+			ChangeState(EState::eResult);
+		}
+		if (mStage3Clear && !mIsStage3Clear)
+		{
+			ChangeState(EState::eResult);
 		}
 	}
 	// プレイヤーが接地していない
@@ -1362,6 +1385,8 @@ void CPlayer::UpdateRotateEnd()
 // クリア
 void CPlayer::UpdateClear()
 {	
+	mpHpGauge->SetShow(false);
+	mpStaminaGauge->SetShow(false);
 	mMoveSpeed = CVector::zero;
 	mElapsedTime = 0.0f;
 
@@ -1404,6 +1429,7 @@ void CPlayer::UpdateClearEnd()
 				{
 					mSavePoint = false;
 					mStage3Clear = true;
+					mIsStage3Clear = false;
 					// ステージをクリア
 					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
@@ -1420,6 +1446,60 @@ void CPlayer::UpdateClearEnd()
 	{
 		mpCutInClear->Setup(this);
 		mpCutInClear->Start();
+	}
+}
+
+// リザルト状態
+void CPlayer::UpdateResult()
+{
+	mMoveSpeed = CVector::zero;
+	mElapsedTime = 0.0f;
+	ChangeAnimation(EAnimType::eGuts);
+	ChangeState(EState::eResultEnd);
+}
+
+// リザルト終了状態
+void CPlayer::UpdateResultEnd()
+{
+	if (mpCutInResult->IsPlaying())
+	{
+		if (IsAnimationFinished())
+		{
+			if (mStage1Clear)
+			{
+				mIsStage2Clear = true;
+				ChangeState(EState::eIdle);
+			}
+
+			if (mStage2Clear)
+			{
+				mIsStage2Clear = true;
+				//mpCutInResult->End();
+				ChangeState(EState::eIdle);
+			}
+
+			if (mStage3Clear)
+			{
+				mIsStage3Clear = true;
+				CResultAnnouncement* result = CResultAnnouncement::Instance();
+				bool resultEnd = result->IsResultOpened();
+				if (resultEnd)
+				{
+					mpCutInResult->End();
+					mpHpGauge->SetShow(true);
+					mpStaminaGauge->SetShow(true);
+					ChangeState(EState::eIdle);
+				}
+			}
+		}
+		// キャラクターの更新
+		//CXCharacter::Update();
+		//return;
+	}
+	else
+	{
+		mpCutInResult->Setup(this);
+		mpCutInResult->Start();
 	}
 }
 
@@ -2343,6 +2423,14 @@ void CPlayer::Update()
 		// クリア終了
 	case EState::eClearEnd:
 		UpdateClearEnd();
+		break;
+		// リザルト状態
+	case EState::eResult:
+		UpdateResult();
+		break;
+		// リザルト状態
+	case EState::eResultEnd:
+		UpdateResultEnd();
 		break;
 		// 死亡
 	case EState::eDeath:

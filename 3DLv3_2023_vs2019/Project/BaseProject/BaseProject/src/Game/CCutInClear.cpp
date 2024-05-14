@@ -103,7 +103,7 @@ void CCutInClear::CutInStep1()
 	else
 	{
 		mCutInStep = 0;
-		End();
+		//End();
 	}
 }
 

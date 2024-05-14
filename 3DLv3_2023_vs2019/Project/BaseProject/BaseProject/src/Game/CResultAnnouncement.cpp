@@ -8,8 +8,21 @@
 #include "CGameManager.h"
 #include "CImage.h"
 #include "CResult.h"
+#include "CCutInResult.h"
 
 #define MENU_ALPHA 0.65f
+
+// ステージタイマーのインスタンス
+CResultAnnouncement* CResultAnnouncement::spInstance = nullptr;
+
+CResultAnnouncement* CResultAnnouncement::Instance()
+{
+	if (spInstance == nullptr)
+	{
+		spInstance = new CResultAnnouncement();
+	}
+	return spInstance;
+}
 
 // コンストラクタ
 CResultAnnouncement::CResultAnnouncement()
@@ -18,7 +31,10 @@ CResultAnnouncement::CResultAnnouncement()
 	, mElapsedTime(0.0f)
 	, mAlpha(0.0f)
 	, mIsOpened(false)
+	, mResultOpened(false)
 {
+	// インスタンスの設定
+	spInstance = this;
 	/*mpResultsMenu = new CImage
 	(
 		"UI/menu_back.png",
@@ -89,6 +105,8 @@ CResultAnnouncement::CResultAnnouncement()
 		mABCItems.push_back(std::make_pair(Result, abc));
 	}
 
+	mResultOpened = false;
+
 	SetEnable(false);
 	SetShow(false);
 }
@@ -96,6 +114,7 @@ CResultAnnouncement::CResultAnnouncement()
 // デストラクタ
 CResultAnnouncement::~CResultAnnouncement()
 {
+	spInstance = nullptr;
 	// 削除されるときにメニューが開いたままであれば、
 	// メニューを閉じる
 	if (mIsOpened)
@@ -116,6 +135,7 @@ void CResultAnnouncement::Open()
 	CBGMManager::Instance()->Play(EBGMType::eMenu, false);
 	CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
 	// メニューを開いたフラグを立てる
+	mResultOpened = false;
 	mIsOpened = true;
 }
 
@@ -130,6 +150,7 @@ void CResultAnnouncement::Close()
 	CBGMManager::Instance()->Play(EBGMType::eGame, false);
 	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
 	// メニューを開いたフラグをおろす
+	mResultOpened = true;
 	mIsOpened = false;
 }
 
@@ -171,6 +192,11 @@ bool CResultAnnouncement::IsOpened() const
 	return mIsOpened;
 }
 
+bool CResultAnnouncement::IsResultOpened() const
+{
+	return mResultOpened;
+}
+
 // どのメニューにするか
 void CResultAnnouncement::Decide(int select)
 {
@@ -191,6 +217,7 @@ void CResultAnnouncement::Decide(int select)
 // 更新処理
 void CResultAnnouncement::Update()
 {
+	mResultOpened = false;
 	HandleMouseInput(); // マウス入力を処理
 	if (IsOpened())
 	{

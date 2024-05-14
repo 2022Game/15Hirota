@@ -64,6 +64,27 @@ CUIGauge::~CUIGauge()
 
 }
 
+// フレームを削除
+void CUIGauge::Kill()
+{
+	CTask::Kill();
+	mpBarImage->Kill();
+	mpFrameImage->Kill();
+	mpDecreaseBarImage->Kill();
+}
+
+// 表示するかどうかを設定
+void CUIGauge::SetShow(bool isShow)
+{
+	CTask::SetShow(isShow);
+
+	// ゲージの表示設定と同時に、
+	// ゲージで使用するUIの表示設定も変更する
+	mpBarImage->SetShow(isShow);
+	mpFrameImage->SetShow(isShow);
+	mpDecreaseBarImage->SetShow(isShow);
+}
+
 // 更新処理
 void CUIGauge::Update()
 {

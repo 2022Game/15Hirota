@@ -14,6 +14,12 @@ public:
 	CStaminaGauge();
 	~CStaminaGauge();
 
+	// フレームを削除
+	void Kill() override;
+
+	// 表示するかどうか設定
+	void SetShow(bool isShow) override;
+
 	// 最大値を設定(スタミナ)
 	void SetSutaminaMaxValue(int value_st);
 	// 現在地を設定(スタミナ)

@@ -20,6 +20,9 @@ class CFlamethrower;
 class CStage3;
 class CImage;
 class CSound;
+class CCutInDeath;
+class CCutInClear;
+class CCutInResult;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -196,6 +199,8 @@ private:
 	CCutInDeath* mpCutInDeath;
 	// ステージクリア時のカメラ
 	CCutInClear* mpCutInClear;
+	// リザルト時のカメラ
+	CCutInResult* mpCutInResult;
 
 	///////////////////////////////////////////////////////
 	
@@ -230,6 +235,10 @@ private:
 	void UpdateClear();
 	// クリア終了
 	void UpdateClearEnd();
+	// リザルト状態
+	void UpdateResult();
+	// リザルト終了状態
+	void UpdateResultEnd();
 	// 死亡
 	void UpdateDeath();
 	// 死亡処理終了
@@ -281,6 +290,8 @@ private:
 		eDashEnd,			// ダッシュ終了
 		eClear,				// クリア状態
 		eClearEnd,			// クリア終了
+		eResult,			// リザルト状態	
+		eResultEnd,			// リザルト終了状態
 		eDeath,				// 死亡
 		eDeathEnd,			// 死亡終了
 		eReStart,			// 再起
@@ -442,10 +453,16 @@ private:
 	bool mFallDamage;
 	// ステージ1をクリアしたか
 	bool mStage1Clear;
+	// マネージャークラスに伝える用
+	bool mIsStage1Clear;
 	// ステージ2をクリアしたか
 	bool mStage2Clear;
+	// マネージャークラスに伝える用
+	bool mIsStage2Clear;
 	// ステージ3をクリアしたか
 	bool mStage3Clear;
+	// マネージャークラスに伝える用
+	bool mIsStage3Clear;
 
 	///////////////////////////////////////////////////////
 };

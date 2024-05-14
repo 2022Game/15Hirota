@@ -5,6 +5,7 @@
 #include "CStageManager.h"
 #include "CGameManager.h"
 #include "CImage.h"
+#include "CPlayer.h"
 
 #define MENU_ALPHA 0.75f
 

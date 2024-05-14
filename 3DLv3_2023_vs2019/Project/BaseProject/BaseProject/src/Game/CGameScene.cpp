@@ -28,6 +28,7 @@
 #include "CBlueMedal.h"
 #include "CScreenItem.h"
 #include "CResult.h"
+#include "CResultAnnouncement.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
@@ -161,6 +162,9 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
+	/*CResultAnnouncement* resut = CResultAnnouncement::Instance();
+	bool resultend = resut->IsResultOpened();
+	CDebugPrint::Print("result:%s\n", resultend ? "true" : "false");*/
 	/*CResult* result = CResult::Instance();
 	int score = result->GetTotalScore();
 	CDebugPrint::Print("total: %d\n", score);*/

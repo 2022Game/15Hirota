@@ -40,6 +40,23 @@ CStaminaGauge::~CStaminaGauge()
 {
 }
 
+// フレームを削除
+void CStaminaGauge::Kill()
+{
+	CTask::Kill();
+	mpStaminaImage->Kill();
+}
+
+// 表示するかどうかを設定
+void CStaminaGauge::SetShow(bool isShow)
+{
+	CTask::SetShow(isShow);
+
+	// ゲージの表示設定と同時に、
+	// ゲージで使用するUIの表示設定も変更する
+	mpStaminaImage->SetShow(isShow);
+}
+
 void CStaminaGauge::Update()
 {
 	// スタミナゲージのポジション

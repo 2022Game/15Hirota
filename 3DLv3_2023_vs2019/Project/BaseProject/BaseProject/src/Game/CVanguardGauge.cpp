@@ -65,7 +65,7 @@ void CVanguardGauge::SetShow(bool isShow)
 	CTask::SetShow(isShow);
 
 	// ゲージの表示設定と同時に、
-	// ゲージで使用するUIのひょじ設定も変更する
+	// ゲージで使用するUIの表示設定も変更する
 	mpBarImage->SetShow(isShow);
 }
 

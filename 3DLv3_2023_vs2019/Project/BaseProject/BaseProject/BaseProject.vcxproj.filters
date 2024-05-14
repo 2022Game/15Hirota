@@ -655,6 +655,9 @@
     <ClCompile Include="src\Game\CResultScene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CCutInResult.cpp">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1199,6 +1202,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CResultScene.h">
       <Filter>ソース ファイル\Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutInResult.h">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

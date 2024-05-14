@@ -15,6 +15,9 @@ public:
 	// デストラクタ
 	~CResultAnnouncement();
 
+	//インスタンスのポインタの取得
+	static CResultAnnouncement* Instance();
+
 	// 開く
 	void Open();
 	// 閉じる
@@ -24,6 +27,7 @@ public:
 	void HandleMouseInput();
 
 	bool IsOpened() const;
+	bool IsResultOpened() const;
 
 	// どのメニューにするか
 	void Decide(int select);
@@ -32,6 +36,7 @@ public:
 	void Render() override;
 
 private:
+	static CResultAnnouncement* spInstance;
 	// リザルトの画像
 	CImage* mpResultsMenu;
 	std::vector<CImage*> mResultsMenuItems;
@@ -45,6 +50,7 @@ private:
 	std::vector<std::pair<Result, CImage*>> mABCItems;
 	int mSelectIndex;
 	bool mIsOpened;
+	bool mResultOpened;
 	float mElapsedTime;
 	float mAlpha;
 };
