@@ -2,15 +2,6 @@
 #include "Maths.h"
 #include "CResultAnnouncement.h"
 
-#define CUTIN_TIME 2.0f
-#define START_ANGLE 90.0f
-#define END_ANGLE 90.0f
-#define START_Y 16.0f
-#define END_Y 16.1f
-#define START_DIST 35.0f
-#define END_DIST 35.0f
-#define WAIT_TIME 1.0f
-
 // ステージタイマーのインスタンス
 CCutInResult* CCutInResult::spInstance = nullptr;
 
@@ -72,6 +63,15 @@ void CCutInResult::Setup(CObjectBase* obj)
 
 	mObject = obj;
 }
+
+#define CUTIN_TIME 6.2f
+#define START_ANGLE 0.0f
+#define END_ANGLE 90.0f
+#define START_Y 25.0f
+#define END_Y 16.0f
+#define START_DIST 35.0f
+#define END_DIST 35.0f
+#define WAIT_TIME 1.0f
 
 // ステップ0 カメラの回転
 void CCutInResult::CutInStep0()

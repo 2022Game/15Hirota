@@ -35,7 +35,6 @@ CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
 	, mpGameMenu(nullptr)
 	//, mpInventoryMenu(nullptr)
-	, mpScreenItem(nullptr)
 {
 }
 
@@ -151,10 +150,6 @@ void CGameScene::Load()
 	// インベントリを作成
 	//mpInventoryMenu = new CInventoryMenu();
 	//mpInventoryMenu->SetPlayer(player);
-
-	mpScreenItem = new CScreenItem();
-	mpScreenItem->SetPlayer(player);
-
 	
 	CGameManager::GameStart();
 }
@@ -170,7 +165,6 @@ void CGameScene::Update()
 	CDebugPrint::Print("total: %d\n", score);*/
 	// ゲーム画面はカーソル非表示
 	CInput::ShowCursor(false);
-	mpScreenItem->Open();
 	if (CInput::PushKey('H'))
 	{
 		CSceneManager::Instance()->LoadScene(EScene::eTitle);

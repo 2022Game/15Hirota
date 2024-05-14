@@ -1,14 +1,7 @@
 #include "CCutInClear.h"
 #include "Maths.h"
 
-#define CUTIN_TIME 4.0f
-#define START_ANGLE 0.0f
-#define END_ANGLE 90.0f
-#define START_Y 0.0f
-#define END_Y 15.0f
-#define START_DIST 5.0f
-#define END_DIST 30.0f
-#define WAIT_TIME 1.0f
+
 
 // コンストラクタ
 CCutInClear::CCutInClear()
@@ -62,6 +55,15 @@ void CCutInClear::Setup(CObjectBase* obj)
 	mObject = obj;
 }
 
+#define CUTIN_TIME 4.0f
+#define START_ANGLE -360.0f
+#define END_ANGLE 90.0f
+#define START_Y 15.0f
+#define END_Y 35.5f
+#define START_DIST 45.0f
+#define END_DIST 70.0f
+#define WAIT_TIME 1.0f
+
 // ステップ0 カメラの回転
 void CCutInClear::CutInStep0()
 {
@@ -70,23 +72,32 @@ void CCutInClear::CutInStep0()
 	{
 		float per = mElapsedTime / CUTIN_TIME;
 
-		// プレイヤーの位置と角度を取得
-		CVector playerPos = mObject->Position();
-		float playerAngleY = mObject->EulerAngles().Y();
-
-		// カメラの位置と注視点をプレイヤーの位置と角度に合わせる
 		CVector offsetPos = CVector::zero;
-		offsetPos.Y(15.0f);
+		float offsetY = Math::Lerp(START_Y, END_Y, per);
+		offsetPos.Y(offsetY);
 
-		float dist = Math::Lerp(50.0f, 30.0f, per);
+		float startAng = mStartAngleY + START_ANGLE;
+		float endAng = mStartAngleY + END_ANGLE;
+		float angle = Math::Lerp(startAng, endAng, per);
+		float radAng = Math::DegreeToRadian(angle);
 
-		mAt = playerPos + offsetPos;
-		mEye = mAt + CVector(0.0f, 0.0f, 1.0f) * dist; // 回転なしで直線的に移動する
+		float dist = Math::Lerp(START_DIST, END_DIST, per);
+
+		mAt = mCenterPos + offsetPos;
+		mEye = mAt + CVector(cosf(radAng), 0.0f, sinf(radAng)) * dist;
 
 		mElapsedTime += Time::DeltaTime();
 	}
 	else
 	{
+		CVector offsetPos = CVector::zero;
+		offsetPos.Y(END_Y);
+		float radAng = Math::DegreeToRadian(mStartAngleY + END_ANGLE);
+		float dist = END_DIST;
+
+		mAt = mCenterPos + offsetPos;
+		mEye = mAt + CVector(cosf(radAng), 0.0f, sinf(radAng)) * dist;
+
 		// 何もしない。カメラの位置を変更しない
 		mCutInStep++;
 		mElapsedTime = 0.0f;

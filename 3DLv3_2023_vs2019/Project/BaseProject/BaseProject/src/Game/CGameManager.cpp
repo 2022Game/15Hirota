@@ -116,7 +116,7 @@ void CGameManager::UpdateGame()
 	if (player->IsStage1Clear() && !mResultSetUp)
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 0.3f)
+		if (mElapsedTime > 2.0f)
 		{
 			mElapsedTime = 0.0f;
 			mResultSetUp = true;
@@ -127,7 +127,7 @@ void CGameManager::UpdateGame()
 	if (player->IsStage2Clear() && !mResultSetUp)
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 0.3f)
+		if (mElapsedTime > 2.0f)
 		{
 			mElapsedTime = 0.0f;
 			mResultSetUp = true;
@@ -138,13 +138,14 @@ void CGameManager::UpdateGame()
 	if (player->IsStage3Clear() && !mResultSetUp)
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 0.3f)
+		if (mElapsedTime > 2.0f)
 		{
 			mElapsedTime = 0.0f;
 			mResultSetUp = true;
 			Instance()->ChangeState(EGameState::eResult);
 		}
 	}
+	//CDebugPrint::Print("mEleapsedTime:%f\n", mElapsedTime);
 	mpResult->Update();
 }
 

@@ -23,6 +23,7 @@ class CSound;
 class CCutInDeath;
 class CCutInClear;
 class CCutInResult;
+class CScreenItem;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -174,7 +175,8 @@ private:
 	CUIGauge* mpHpGauge;
 	// スタミナゲージ
 	CStaminaGauge* mpStaminaGauge;
-
+	// スクリーンアイテム画像
+	CScreenItem* mpScreenItem;
 
 	// 剣の振りかざし攻撃時のSE
 	CSound* mpSlashSE;
@@ -211,6 +213,8 @@ private:
 	void UpdateReady();
 	// 待機状態
 	void UpdateIdle();
+	// 停止状態
+	void UpdateStop();
 	// 移動状態
 	void UpdateMove();
 	// ダッシュ終了
@@ -273,6 +277,7 @@ private:
 	{
 		eReady,				// 準備中
 		eIdle,				// 待機
+		eStop,				// 停止
 		eAttack,			// 攻撃
 		eAttackStrong,		// 強攻撃
 		eAttackDash,		// ダッシュアタック

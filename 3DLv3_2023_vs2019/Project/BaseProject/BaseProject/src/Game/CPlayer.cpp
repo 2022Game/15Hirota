@@ -24,6 +24,7 @@
 #include "CCutInDeath.h"
 #include "CCutInResult.h"
 #include "CResultAnnouncement.h"
+#include "CScreenItem.h"
 
 // プレイヤー関連
 // 高さ
@@ -152,6 +153,7 @@ CPlayer::CPlayer()
 	, mIsPlayedHitDamageSE(false)
 	, mIsSpawnedSlashEffect(false)
 	, mpRideObject(nullptr)
+	, mpScreenItem(nullptr)
 {
 	ClearItems();
 	//, mInventory(std::vector<ItemType>())
@@ -177,6 +179,7 @@ CPlayer::CPlayer()
 	// HPゲージを作成
 	mpHpGauge = new CUIGauge();
 	mpHpGauge->SetShow(true);
+	
 	// スタミナゲージを作成
 	mpStaminaGauge = new CStaminaGauge();
 	mpStaminaGauge->SetShow(true);
@@ -273,6 +276,10 @@ CPlayer::CPlayer()
 	mpCutInClear = new CCutInClear();
 	mpCutInResult = new CCutInResult();
 
+	mpScreenItem = new CScreenItem();
+	CStageManager::AddTask(mpScreenItem);
+	//mpScreenItem->SetPlayer(player);
+
 
 	// 最初に1レベルに設定
 	ChangeLevel(1);
@@ -282,6 +289,7 @@ CPlayer::~CPlayer()
 {
 	CStageManager::RemoveTask(mpSword);
 	CStageManager::RemoveTask(mpFlamethrower);
+	CStageManager::RemoveTask(mpScreenItem);
 
 	spInstance = nullptr;
 	// コライダー関連の破棄
@@ -450,14 +458,20 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// ゴールポスト
 		else if (other->Layer() == ELayer::eGoalCol)
 		{
-			/*CDebugPrint::Print("Player hit GoalObject!\n");*/
 			mpColliderSphere->SetEnable(false);
 			if (CGameManager::StageNo() == 0 ||
 				CGameManager::StageNo() == 1 ||
 				CGameManager::StageNo() == 2 ||
 				CGameManager::StageNo() == 3)
 			{
-				ChangeState(EState::eClear);
+				if (mIsGrounded && !mIsJumping)
+				{
+					ChangeState(EState::eClear);
+				}
+				else
+				{
+					ChangeState(EState::eStop);
+				}
 			}
 		}
 	}
@@ -1002,6 +1016,16 @@ void CPlayer::UpdateIdle()
 	}
 }
 
+// 停止状態
+void CPlayer::UpdateStop()
+{
+	mMoveSpeed = CVector::zero;
+	if (IsAnimationFinished() && mIsGrounded)
+	{
+		ChangeState(EState::eClear);
+	}
+}
+
 // 移動状態
 void CPlayer::UpdateMove()
 {
@@ -1387,6 +1411,7 @@ void CPlayer::UpdateClear()
 {	
 	mpHpGauge->SetShow(false);
 	mpStaminaGauge->SetShow(false);
+	mpScreenItem->SetShow(false);
 	mMoveSpeed = CVector::zero;
 	mElapsedTime = 0.0f;
 
@@ -1453,9 +1478,13 @@ void CPlayer::UpdateClearEnd()
 void CPlayer::UpdateResult()
 {
 	mMoveSpeed = CVector::zero;
-	mElapsedTime = 0.0f;
-	ChangeAnimation(EAnimType::eGuts);
-	ChangeState(EState::eResultEnd);
+	mElapsedTime += Time::DeltaTime();
+	if (mElapsedTime > 1.0f)
+	{
+		mElapsedTime = 0.0f;
+		ChangeAnimation(EAnimType::eGuts);
+		ChangeState(EState::eResultEnd);
+	}
 }
 
 // リザルト終了状態
@@ -1488,6 +1517,7 @@ void CPlayer::UpdateResultEnd()
 					mpCutInResult->End();
 					mpHpGauge->SetShow(true);
 					mpStaminaGauge->SetShow(true);
+					mpScreenItem->SetShow(true);
 					ChangeState(EState::eIdle);
 				}
 			}
@@ -2344,6 +2374,10 @@ void CPlayer::Update()
 	case EState::eIdle:
 		UpdateIdle();
 		break;
+		// 停止状態
+	case EState::eStop:
+		UpdateStop();
+		break;
 		// ダッシュ終了
 	case EState::eDashEnd:
 		UpdateDashEnd();
@@ -2590,6 +2624,8 @@ void CPlayer::Update()
 	mpDamageCol->Update();
 	mpColliderSphere->Update();
 	mpSword->UpdateAttachMtx();
+
+	mpScreenItem->Open();
 
 	mIsGrounded = false;
 	mClimbWall = false;
