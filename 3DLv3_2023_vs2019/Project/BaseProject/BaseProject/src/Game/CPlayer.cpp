@@ -2315,64 +2315,6 @@ void CPlayer::UpdateJumpingEnd()
 	}
 }
 
-// クリアジャンプ開始
-void CPlayer::UpdateClearJumpStart()
-{
-	ChangeAnimation(EAnimType::eJumpStart);
-	ChangeState(EState::eJumping);
-
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
-	mMoveSpeedY = JUMP_BOUNCE;
-	mIsGrounded = false;
-}
-
-// クリアジャンプ
-void CPlayer::UpdateClearJump()
-{
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
-
-	if (mMoveSpeedY <= 0.0f)
-	{
-		ChangeAnimation(EAnimType::eJumpEnd);
-		ChangeState(EState::eJumpingEnd);
-	}
-}
-
-// クリアジャンプ終了
-void CPlayer::UpdateClearJumpEnd()
-{
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
-
-	if (IsAnimationFinished())
-	{
-		ChangeState(EState::eResult);
-	}
-}
-
 bool CPlayer::IsFoundVanguard()
 {
 	CVector vanguardPos = CVanguard::Instance()->Position();
@@ -2577,18 +2519,6 @@ void CPlayer::Update()
 		// 跳ねる終了
 	case EState::eJumpingEnd:
 		UpdateJumpingEnd();
-		break;
-		// クリアジャンプ開始
-	case EState::eJumpClearStart:
-		UpdateClearJumpStart();
-		break;
-		// クリアジャンプ
-	case EState::eJumpClear:
-		UpdateClearJump();
-		break;
-		// クリアジャンプ終了
-	case EState::eJumpClearEnd:
-		UpdateClearJumpEnd();
 		break;
 	}
 

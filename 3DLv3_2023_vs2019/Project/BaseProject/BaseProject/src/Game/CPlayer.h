@@ -141,13 +141,6 @@ public:
 	// 跳ねるの終了
 	void UpdateJumpingEnd();
 
-	// ステージクリア時のジャンプ開始
-	void UpdateClearJumpStart();
-	// ステージクリア時のジャンプ
-	void UpdateClearJump();
-	// ステージクリア時のジャンプ終了
-	void UpdateClearJumpEnd();
-
 	// 更新
 	void Update();
 	// 描画
@@ -287,6 +280,7 @@ private:
 		eReady,				// 準備中
 		eIdle,				// 待機
 		eStop,				// 停止
+		eClearJump,			// リザルト前のアニメーション
 		eAttack,			// 攻撃
 		eAttackStrong,		// 強攻撃
 		eAttackDash,		// ダッシュアタック
@@ -299,9 +293,6 @@ private:
 		eJumpingStart,		// 跳ねる開始
 		eJumping,			// 跳ねる
 		eJumpingEnd,		// 跳ねる終了
-		eJumpClearStart,	// クリアジャンプ開始
-		eJumpClear,			// クリアジャンプ
-		eJumpClearEnd,		// クリアジャンプ終了
 		eRotate,			// 回避開始
 		eRotateEnd,			// 回避終了待ち
 		eDashEnd,			// ダッシュ終了
