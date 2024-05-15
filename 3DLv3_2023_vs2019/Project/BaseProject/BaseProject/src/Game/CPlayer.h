@@ -119,6 +119,8 @@ public:
 	bool IsStage2Clear();
 	// ステージ3をクリアしたかどうか
 	bool IsStage3Clear();
+	// ステージをクリアしたかどうか
+	bool IsStageClear();
 
 
 	// 敵を見つけたかどうか
@@ -138,6 +140,13 @@ public:
 	void UpdateJumping();
 	// 跳ねるの終了
 	void UpdateJumpingEnd();
+
+	// ステージクリア時のジャンプ開始
+	void UpdateClearJumpStart();
+	// ステージクリア時のジャンプ
+	void UpdateClearJump();
+	// ステージクリア時のジャンプ終了
+	void UpdateClearJumpEnd();
 
 	// 更新
 	void Update();
@@ -290,6 +299,9 @@ private:
 		eJumpingStart,		// 跳ねる開始
 		eJumping,			// 跳ねる
 		eJumpingEnd,		// 跳ねる終了
+		eJumpClearStart,	// クリアジャンプ開始
+		eJumpClear,			// クリアジャンプ
+		eJumpClearEnd,		// クリアジャンプ終了
 		eRotate,			// 回避開始
 		eRotateEnd,			// 回避終了待ち
 		eDashEnd,			// ダッシュ終了
@@ -468,6 +480,8 @@ private:
 	bool mStage3Clear;
 	// マネージャークラスに伝える用
 	bool mIsStage3Clear;
+	// (全てのステージ)クリアしたかマネージャークラスに伝えるよう
+	bool mIsStageClear;
 
 	///////////////////////////////////////////////////////
 };

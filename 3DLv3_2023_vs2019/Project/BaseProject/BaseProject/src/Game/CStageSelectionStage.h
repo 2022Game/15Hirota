@@ -11,6 +11,8 @@ public:
 	// デストラクタ
 	~CStageSelectionStage();
 
+	CVector GetPlayerStartPosition();
+
 	// ステージ読み込み
 	void Load() override;
 	// ステージ破棄

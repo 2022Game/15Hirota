@@ -21,6 +21,33 @@ CStageSelectionStage::~CStageSelectionStage()
 
 }
 
+CVector CStageSelectionStage::GetPlayerStartPosition()
+{
+	CVector playerPos;
+
+	// プレイヤーを取得
+	CPlayer* player = CPlayer::Instance();
+	if (player != nullptr)
+	{
+		// ステージ3をクリアしているかどうかをチェック(仮)
+		bool playerStage3 = player->IsStageClear();
+
+		// プレイヤーの初期位置を設定
+		if (playerStage3)
+		{
+			// ステージ3をクリアしている場合の初期位置
+			playerPos = CVector(-160, 50.0f, 0.0f);
+		}
+		else
+		{
+			// ステージ3をクリアしていない場合の初期位置
+			playerPos = CVector(-235.0f, 20.0f, 0.0f);
+		}
+	}
+
+	return playerPos;
+}
+
 // ステージ読み込み
 void CStageSelectionStage::Load()
 {
@@ -28,19 +55,6 @@ void CStageSelectionStage::Load()
 	CResourceManager::Load<CModel>("StageSelectionFloorCol", "Field\\StageSentakuFloor.obj");	// ステージセレクトステージ(床)
 	CResourceManager::Load<CModel>("StageSelectionWallCol", "Field\\StageSentakuWall.obj");		// ステージセレクトステージ(壁)
 	CResourceManager::Load<CModel>("StageButton", "Field\\Object\\StageBotan.obj");				// ステージボタン
-	//CResourceManager::Load<CModel>("FlamethrowerModel", "Field\\Gimmick\\Flamethrower(foundation).obj");					// 火炎放射器(土台)
-	//CResourceManager::Load<CModel>("FlamethrowerTank", "Field\\Gimmick\\Flamethrower(tank).obj");							// 火炎放射器(タンク)
-	//CResourceManager::Load<CModel>("FlamethrowerCol", "Field\\Gimmick\\Flamethrower(WallCol).obj");						// 火炎放射器(コライ
-	//CResourceManager::Load<CModel>("TreasureChest", "Field\\Gimmick\\TreasureChest.obj");								// 宝箱
-	//CResourceManager::Load<CModel>("TreasureChestTwo", "Field\\Gimmick\\TreasureChestTwo.obj");							// 宝箱(蓋)
-	//CResourceManager::Load<CModel>("TreasureChestCol", "Field\\Gimmick\\TreasureChest(FloorCol).obj");						// 宝箱(蓋コライダー)
-	//CResourceManager::Load<CModel>("TreasureChestWallCol", "Field\\Gimmick\\TreasureChest(WallCol).obj");						// 宝箱(壁コライダー)
-	//CResourceManager::Load<CModel>("Needle", "Field\\Gimmick\\NeedleObject(needle).obj");		// 針オブジェクトの針
-	//CResourceManager::Load<CModel>("Needlebase", "Field\\Gimmick\\NeedleObject(base).obj");		// 針オブジェクトの土台
-	//CResourceManager::Load<CModel>("NeedleCol", "Field\\Gimmick\\NeedleObjectCol.obj");			// 針オブジェクトのコライダー
-	//CResourceManager::Load<CModel>("NeedleBaseCol", "Field\\Gimmick\\NeedleObjectBaseCol.obj");	// 針オブジェクトのベースコライダー
-	
-	//CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -85,7 +99,9 @@ void CStageSelectionStage::Load()
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
-	CVector playerPos = CVector(-245.0f, 20.0f, 0.0f);
+	bool playerStage3 = player->IsStage3Clear();
+	// プレイヤーの初期位置を取得
+	CVector playerPos = GetPlayerStartPosition();
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

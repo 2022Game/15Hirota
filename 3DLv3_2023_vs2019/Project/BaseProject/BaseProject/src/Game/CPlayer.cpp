@@ -144,6 +144,7 @@ CPlayer::CPlayer()
 	, mDamageEnemy(false)
 	, mClimbWallTop(false)
 	, mDamageObject(false)
+	, mIsStageClear(false)
 	, mIsStage1Clear(false)
 	, mIsStage2Clear(false)
 	, mIsStage3Clear(false)
@@ -821,6 +822,12 @@ bool CPlayer::IsStage3Clear()
 	return mIsStage3Clear;
 }
 
+// ステージをクリアしたか
+bool CPlayer::IsStageClear()
+{
+	return mIsStageClear;
+}
+
 // アニメーション切り替え
 void CPlayer::ChangeAnimation(EAnimType type)
 {
@@ -1409,6 +1416,7 @@ void CPlayer::UpdateRotateEnd()
 // クリア
 void CPlayer::UpdateClear()
 {	
+	mIsStageClear = true;
 	mpHpGauge->SetShow(false);
 	mpStaminaGauge->SetShow(false);
 	mpScreenItem->SetShow(false);
@@ -1518,6 +1526,8 @@ void CPlayer::UpdateResultEnd()
 					mpHpGauge->SetShow(true);
 					mpStaminaGauge->SetShow(true);
 					mpScreenItem->SetShow(true);
+					mIsStageClear = false;
+
 					ChangeState(EState::eIdle);
 				}
 			}
@@ -2286,7 +2296,7 @@ void CPlayer::UpdateJumping()
 	}
 }
 
-// 跳ねる処理開始
+// 跳ねる処理終了
 void CPlayer::UpdateJumpingEnd()
 {
 	if (mElapsedTimeCol <= DAMAGECOL)
@@ -2302,6 +2312,64 @@ void CPlayer::UpdateJumpingEnd()
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eIdle);
+	}
+}
+
+// クリアジャンプ開始
+void CPlayer::UpdateClearJumpStart()
+{
+	ChangeAnimation(EAnimType::eJumpStart);
+	ChangeState(EState::eJumping);
+
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+	mMoveSpeedY = JUMP_BOUNCE;
+	mIsGrounded = false;
+}
+
+// クリアジャンプ
+void CPlayer::UpdateClearJump()
+{
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	if (mMoveSpeedY <= 0.0f)
+	{
+		ChangeAnimation(EAnimType::eJumpEnd);
+		ChangeState(EState::eJumpingEnd);
+	}
+}
+
+// クリアジャンプ終了
+void CPlayer::UpdateClearJumpEnd()
+{
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eResult);
 	}
 }
 
@@ -2509,6 +2577,18 @@ void CPlayer::Update()
 		// 跳ねる終了
 	case EState::eJumpingEnd:
 		UpdateJumpingEnd();
+		break;
+		// クリアジャンプ開始
+	case EState::eJumpClearStart:
+		UpdateClearJumpStart();
+		break;
+		// クリアジャンプ
+	case EState::eJumpClear:
+		UpdateClearJump();
+		break;
+		// クリアジャンプ終了
+	case EState::eJumpClearEnd:
+		UpdateClearJumpEnd();
 		break;
 	}
 

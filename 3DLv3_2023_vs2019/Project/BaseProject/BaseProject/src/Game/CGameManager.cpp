@@ -81,6 +81,21 @@ void CGameManager::Result()
 	Instance()->ChangeState(EGameState::eResult);
 }
 
+void CGameManager::Stage1()
+{
+	Instance()->ChangeState(EGameState::eStage1);
+}
+
+void CGameManager::Stage2()
+{
+	Instance()->ChangeState(EGameState::eStage2);
+}
+
+void CGameManager::Stage3()
+{
+	Instance()->ChangeState(EGameState::eStage3);
+}
+
 // 現在のゲームの状態を取得
 EGameState CGameManager::GameState()
 {
@@ -168,6 +183,30 @@ void CGameManager::UpdateStageClear()
 	ChangeState(EGameState::eGame);
 }
 
+void CGameManager::UpdateStage1()
+{
+	mStageNo = 1;
+	CStageManager::LoadStage(mStageNo);
+
+	ChangeState(EGameState::eGame);
+}
+
+void CGameManager::UpdateStage2()
+{
+	mStageNo = 2;
+	CStageManager::LoadStage(mStageNo);
+
+	ChangeState(EGameState::eGame);
+}
+
+void CGameManager::UpdateStage3()
+{
+	mStageNo = 3;
+	CStageManager::LoadStage(mStageNo);
+
+	ChangeState(EGameState::eGame);
+}
+
 // ステージ失敗
 void CGameManager::UpdateStageOver()
 {
@@ -233,6 +272,15 @@ void CGameManager::Update()
 		// リザルト
 	case EGameState::eResult:
 		UpdateResult();
+		break;
+	case EGameState::eStage1:
+		UpdateStage1();
+		break;
+	case EGameState::eStage2:
+		UpdateStage2();
+		break;
+	case EGameState::eStage3:
+		UpdateStage3();
 		break;
 	}
 }
