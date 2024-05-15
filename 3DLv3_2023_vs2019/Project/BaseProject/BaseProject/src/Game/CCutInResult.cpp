@@ -65,12 +65,12 @@ void CCutInResult::Setup(CObjectBase* obj)
 }
 
 #define CUTIN_TIME 6.2f
-#define START_ANGLE 0.0f
-#define END_ANGLE 90.0f
-#define START_Y 25.0f
-#define END_Y 16.0f
-#define START_DIST 35.0f
-#define END_DIST 35.0f
+#define START_ANGLE 100.0f
+#define END_ANGLE 100.0f
+#define START_Y 0.0f
+#define END_Y -10.0f
+#define START_DIST 70.0f
+#define END_DIST 70.0f
 #define WAIT_TIME 1.0f
 
 // ステップ0 カメラの回転

@@ -25,6 +25,7 @@
 #include "CCutInResult.h"
 #include "CResultAnnouncement.h"
 #include "CScreenItem.h"
+#include "Easing.h"
 
 // プレイヤー関連
 // 高さ
@@ -930,6 +931,10 @@ void CPlayer::UpdateReady()
 			// 現在の状態を待機に切り替え
 			mCharaStatus.hp = mCharaMaxStatus.hp;
 			ChangeState(EState::eIdle);
+			if (mStage3Clear)
+			{
+				ChangeState(EState::eResultJumpStart);
+			}
 		}
 		break;
 	}
@@ -1482,6 +1487,53 @@ void CPlayer::UpdateClearEnd()
 	}
 }
 
+void CPlayer::UpdateResultJumpStart()
+{
+	if (mpCutInResult->IsPlaying())
+	{
+
+	}
+	else
+	{
+		mpCutInResult->Setup(this);
+		mpCutInResult->Start();
+	}
+	ChangeAnimation(EAnimType::eJumpStart);
+	ChangeState(EState::eResultJump);
+
+	mMoveSpeedY = JUMP_SPEED;
+	mIsGrounded = false;
+}
+
+void CPlayer::UpdateResultJump()
+{
+	CPlayer* player = CPlayer::Instance();
+	CVector playerPos = player->Position();
+	CVector current = VectorZ();
+	CVector targetPos = playerPos + current * 1.0f;
+
+	float per = mElapsedTime / 1.0f;
+	CVector pos = CVector::Lerp(playerPos, targetPos, per);
+	Position(pos);
+	mElapsedTime += Time::DeltaTime();
+	if (mElapsedTime > 1.0f)
+	{
+		if (mMoveSpeedY <= 0.0f)
+		{
+			ChangeAnimation(EAnimType::eJumpEnd);
+			ChangeState(EState::eResultJumpEnd);
+		}
+	}
+}
+
+void CPlayer::UpdateResultJumpEnd()
+{
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eIdle);
+	}
+}
+
 // リザルト状態
 void CPlayer::UpdateResult()
 {
@@ -1498,48 +1550,37 @@ void CPlayer::UpdateResult()
 // リザルト終了状態
 void CPlayer::UpdateResultEnd()
 {
-	if (mpCutInResult->IsPlaying())
+	if (IsAnimationFinished())
 	{
-		if (IsAnimationFinished())
+		if (mStage1Clear)
 		{
-			if (mStage1Clear)
+			mIsStage2Clear = true;
+			ChangeState(EState::eIdle);
+		}
+
+		if (mStage2Clear)
+		{
+			mIsStage2Clear = true;
+			//mpCutInResult->End();
+			ChangeState(EState::eIdle);
+		}
+
+		if (mStage3Clear)
+		{
+			mIsStage3Clear = true;
+			CResultAnnouncement* result = CResultAnnouncement::Instance();
+			bool resultEnd = result->IsResultOpened();
+			if (resultEnd)
 			{
-				mIsStage2Clear = true;
+				mpCutInResult->End();
+				mpHpGauge->SetShow(true);
+				mpStaminaGauge->SetShow(true);
+				mpScreenItem->SetShow(true);
+				mIsStageClear = false;
+
 				ChangeState(EState::eIdle);
-			}
-
-			if (mStage2Clear)
-			{
-				mIsStage2Clear = true;
-				//mpCutInResult->End();
-				ChangeState(EState::eIdle);
-			}
-
-			if (mStage3Clear)
-			{
-				mIsStage3Clear = true;
-				CResultAnnouncement* result = CResultAnnouncement::Instance();
-				bool resultEnd = result->IsResultOpened();
-				if (resultEnd)
-				{
-					mpCutInResult->End();
-					mpHpGauge->SetShow(true);
-					mpStaminaGauge->SetShow(true);
-					mpScreenItem->SetShow(true);
-					mIsStageClear = false;
-
-					ChangeState(EState::eIdle);
-				}
 			}
 		}
-		// キャラクターの更新
-		//CXCharacter::Update();
-		//return;
-	}
-	else
-	{
-		mpCutInResult->Setup(this);
-		mpCutInResult->Start();
 	}
 }
 
@@ -2520,6 +2561,15 @@ void CPlayer::Update()
 	case EState::eJumpingEnd:
 		UpdateJumpingEnd();
 		break;
+	case EState::eResultJumpStart:
+		UpdateResultJumpStart();
+		break;
+	case EState::eResultJump:
+		UpdateResultJump();
+		break;
+	case EState::eResultJumpEnd:
+		UpdateResultJumpEnd();
+		break;
 	}
 
 	// 待機中とジャンプ中は、移動処理を行う
@@ -2548,7 +2598,6 @@ void CPlayer::Update()
 	//	}
 	//}
 
-
 	// 準備中でなければ、移動処理などを行う
 	if (mState != EState::eReady)
 	{
@@ -2560,7 +2609,7 @@ void CPlayer::Update()
 
 		// 移動
 		Position(Position() + moveSpeed * 60.0f * Time::DeltaTime());
-
+		
 		// プレイヤーの向きを調整
 		CVector current = VectorZ();
 		CVector target = moveSpeed;

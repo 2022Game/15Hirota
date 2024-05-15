@@ -20,6 +20,9 @@ public:
 	void SetTimeAndScore(CStageTime* pTime, CScore* pScore);
 	int GetTotalScore() const;
 
+	void StartScoreAnimation();
+	void UpdateScoreAnimation();
+
 	void Update() override;
 	void Render() override;
 
@@ -27,6 +30,9 @@ private:
 	static CResult* spInstance;
 	int mRemainingTime;
 	int mScore;
+	int mCurrentDisplayedScore;
+	int mTargetScore;
+	int mScoreAnimationSpeed;
 	CText* mpResultText;
 	CStageTime* mpTime;
 	CScore* mpScore;

@@ -273,6 +273,10 @@ private:
 	void UpdateFalling();
 	// 立ち上がる
 	void UpdateStandUp();
+	
+	void UpdateResultJumpStart();
+	void UpdateResultJump();
+	void UpdateResultJumpEnd();
 
 	// プレイヤーの状態
 	enum class EState
@@ -314,6 +318,9 @@ private:
 		eWireClimbedTop,	// 金網の頂上まで登った
 		eFalling,			// 落下状態
 		eStandUp,			// 立ち上がる
+		eResultJumpStart,	// リザルト前のジャンプ開始
+		eResultJump,		// リザルト前のジャンプ
+		eResultJumpEnd,		// リザルト前のジャンプ終了
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);

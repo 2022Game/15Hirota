@@ -36,7 +36,7 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 		if (playerStage3)
 		{
 			// ステージ3をクリアしている場合の初期位置
-			playerPos = CVector(-160, 50.0f, 0.0f);
+			playerPos = CVector(-180, 30.0f, 0.0f);
 		}
 		else
 		{
@@ -97,6 +97,7 @@ void CStageSelectionStage::Load()
 	//}
 	//AddTask(needlebase);
 
+
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	bool playerStage3 = player->IsStage3Clear();
@@ -111,7 +112,11 @@ void CStageSelectionStage::Load()
 	// カメラの位置と向きを設定
 	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);
 	CCamera* mainCamera = CCamera::MainCamera();
-	mainCamera->LookAt(camPos, playerPos, CVector::up);
+	mainCamera->LookAt(
+		camPos,
+		playerPos,
+		CVector::up
+	);
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	//mainCamera->AddCollider(field->GetWallCol());

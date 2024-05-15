@@ -22,6 +22,9 @@ CResult* CResult::Instance()
 CResult::CResult()
 	: mRemainingTime(0)
 	, mScore(0)
+	, mCurrentDisplayedScore(0)
+	, mTargetScore(0)
+	, mScoreAnimationSpeed(50)
 	, mpTime(nullptr)
 	, mpScore(nullptr)
 {
@@ -44,6 +47,7 @@ void CResult::SetResult(int remainingTime, int score)
 {
 	mRemainingTime = remainingTime;
 	mScore = score;
+	mTargetScore = GetTotalScore();
 }
 
 // 別クラスで時間とスコアを取り扱う為の処理
@@ -68,6 +72,7 @@ void CResult::Update()
 	if (CGameManager::GameState() == EGameState::eResult)
 	{
 		mpResultText->SetShow(true);
+		UpdateScoreAnimation();
 	}
 	else
 	{
@@ -75,11 +80,34 @@ void CResult::Update()
 	}
 }
 
+void CResult::StartScoreAnimation()
+{
+	mCurrentDisplayedScore = 0;
+	mTargetScore = GetTotalScore();
+}
+
+void CResult::UpdateScoreAnimation()
+{
+	if (mCurrentDisplayedScore < mTargetScore)
+	{
+		mCurrentDisplayedScore += mScoreAnimationSpeed;
+		if (mCurrentDisplayedScore > mTargetScore)
+		{
+			mCurrentDisplayedScore = mTargetScore;
+		}
+	}
+}
+
 void CResult::Render()
 {
-	// 時間 × 10 ＋ スコア
-	int totalScore = mRemainingTime * 10 + mScore; // 残り時間に100をかけて、スコアに加える
+	// アニメーションされたスコアを表示
 	char buffer[64];
-	sprintf_s(buffer, "RESULT:%04d", totalScore);
+	sprintf_s(buffer, "RESULT:%04d", mCurrentDisplayedScore);
 	mpResultText->SetText(buffer);
+
+	//// 時間 × 10 ＋ スコア
+	//int totalScore = mRemainingTime * 10 + mScore; // 残り時間に100をかけて、スコアに加える
+	//char buffer[64];
+	//sprintf_s(buffer, "RESULT:%04d", totalScore);
+	//mpResultText->SetText(buffer);
 }

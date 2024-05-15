@@ -219,7 +219,7 @@ void CStage3::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(0.0f, 15.5f, -70.0f);	//197.0f,1235.0f,279.0f
+	CVector playerPos = CVector(0.0f, 25.5f, -70.0f);	//197.0f,1235.0f,279.0f
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

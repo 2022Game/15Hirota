@@ -161,6 +161,7 @@ void CGameManager::UpdateGame()
 		}
 	}
 	//CDebugPrint::Print("mEleapsedTime:%f\n", mElapsedTime);
+	CResult::Instance()->Update();
 	mpResult->Update();
 }
 
@@ -225,13 +226,17 @@ void CGameManager::UpdateGameClear()
 // ゲームオーバー時の更新処理
 void CGameManager::UpdateGameOver()
 {
+	//CResult::Instance()->SetTimeAndScore(CStageTime::Instance(), CScore::Instance());
+	//CResult::Instance()->SetResult(CStageTime::Instance()->GetTime(), CScore::Instance()->GetScore());
+	//CResult::Instance()->StartScoreAnimation();
 
+	CResult* pResult = CResult::Instance();
+	pResult->StartScoreAnimation();
 }
 
 // リザルト時の更新処理
 void CGameManager::UpdateResult()
 {
-	CResult::Instance()->SetTimeAndScore(CStageTime::Instance(), CScore::Instance());
 	mpResult->Open();
 }
 
