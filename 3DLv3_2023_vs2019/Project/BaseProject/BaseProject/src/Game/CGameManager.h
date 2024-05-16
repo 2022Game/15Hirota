@@ -16,9 +16,9 @@ enum class EGameState
 	eGameClear,		// ゲームクリア
 	eGameOver,		// ゲームオーバー
 
-	eStage1,
-	eStage2,
-	eStage3,
+	eStage1,		// ステージ1
+	eStage2,		// ステージ2
+	eStage3,		// ステージ3
 };
 
 //ゲームクラスを管理するクラス
@@ -37,9 +37,11 @@ public:
 	static void GameOver();
 	// リザルト
 	static void Result();
-
+	// ステージ1
 	static void Stage1();
+	// ステージ2
 	static void Stage2();
+	// ステージ2
 	static void Stage3();
 
 	// 現在のゲームの状態を取得
@@ -81,9 +83,11 @@ private:
 	void UpdateGameOver();
 	// リザルト時の更新処理
 	void UpdateResult();
-
+	// ステージ1の更新処理
 	void UpdateStage1();
+	// ステージ2の更新処理
 	void UpdateStage2();
+	// ステージ3の更新処理
 	void UpdateStage3();
 
 

@@ -131,7 +131,7 @@ void CGameManager::UpdateGame()
 	if (player->IsStage1Clear() && !mResultSetUp)
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 2.0f)
+		if (mElapsedTime > 1.5f)
 		{
 			mElapsedTime = 0.0f;
 			mResultSetUp = true;
@@ -142,7 +142,7 @@ void CGameManager::UpdateGame()
 	if (player->IsStage2Clear() && !mResultSetUp)
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 2.0f)
+		if (mElapsedTime > 1.5f)
 		{
 			mElapsedTime = 0.0f;
 			mResultSetUp = true;
@@ -153,7 +153,7 @@ void CGameManager::UpdateGame()
 	if (player->IsStage3Clear() && !mResultSetUp)
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 2.0f)
+		if (mElapsedTime > 1.5f)
 		{
 			mElapsedTime = 0.0f;
 			mResultSetUp = true;
@@ -229,14 +229,13 @@ void CGameManager::UpdateGameOver()
 	//CResult::Instance()->SetTimeAndScore(CStageTime::Instance(), CScore::Instance());
 	//CResult::Instance()->SetResult(CStageTime::Instance()->GetTime(), CScore::Instance()->GetScore());
 	//CResult::Instance()->StartScoreAnimation();
-
-	CResult* pResult = CResult::Instance();
-	pResult->StartScoreAnimation();
 }
 
 // リザルト時の更新処理
 void CGameManager::UpdateResult()
 {
+	/*CResult* pResult = CResult::Instance();
+	pResult->StartScoreAnimation();*/
 	mpResult->Open();
 }
 

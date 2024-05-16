@@ -24,7 +24,7 @@ CResult::CResult()
 	, mScore(0)
 	, mCurrentDisplayedScore(0)
 	, mTargetScore(0)
-	, mScoreAnimationSpeed(50)
+	, mScoreAnimationSpeed(20)
 	, mpTime(nullptr)
 	, mpScore(nullptr)
 {
@@ -47,6 +47,7 @@ void CResult::SetResult(int remainingTime, int score)
 {
 	mRemainingTime = remainingTime;
 	mScore = score;
+	// 目標スコアに現在の合計スコアを代入
 	mTargetScore = GetTotalScore();
 }
 
@@ -57,6 +58,7 @@ void CResult::SetTimeAndScore(CStageTime* pTime, CScore* pScore)
 	mpScore = pScore;
 }
 
+// 時間とスコアの合計を取得
 int CResult::GetTotalScore() const
 {
 	return mRemainingTime * 10 + mScore;
@@ -71,6 +73,12 @@ void CResult::Update()
 
 	if (CGameManager::GameState() == EGameState::eResult)
 	{
+		// リザルト画面の開始時にスコアアニメーションを開始
+		if (!mpResultText->IsShow())
+		{
+			SetResult(mpTime->Instance()->GetTime(), mpScore->Instance()->GetScore());
+			StartScoreAnimation();
+		}
 		mpResultText->SetShow(true);
 		UpdateScoreAnimation();
 	}
@@ -80,19 +88,24 @@ void CResult::Update()
 	}
 }
 
+// 初期スコアの設定
 void CResult::StartScoreAnimation()
 {
 	mCurrentDisplayedScore = 0;
-	mTargetScore = GetTotalScore();
 }
 
+// スコアを増加させるアニメーションの設定
 void CResult::UpdateScoreAnimation()
 {
+	// 現在のスコアが目標スコアより少なかったら
 	if (mCurrentDisplayedScore < mTargetScore)
 	{
+		// アニメーション速度を可算
 		mCurrentDisplayedScore += mScoreAnimationSpeed;
+		// 現在のスコアが目標スコアより大きくなったら
 		if (mCurrentDisplayedScore > mTargetScore)
 		{
+			// 現在のスコアと目標スコアを同じにする
 			mCurrentDisplayedScore = mTargetScore;
 		}
 	}
