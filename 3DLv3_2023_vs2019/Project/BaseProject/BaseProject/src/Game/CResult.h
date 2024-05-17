@@ -2,15 +2,19 @@
 #define CRESULT_H
 
 #include "CTask.h"
+
 class CText;
 class CStageTime;
 class CScore;
 class CImage;
+class CFont;
 
 class CResult : public CTask
 {
 public:
+	// コンストラクタ
 	CResult();
+	// デストラクタ
 	~CResult();
 
 	//インスタンスのポインタの取得
@@ -18,8 +22,6 @@ public:
 
 	// 時間とスコアを設定
 	void SetResult(int remainingTime, int score);
-	// 時間とスコアを取得
-	void SetTimeAndScore(CStageTime* pTime, CScore* pScore);
 	// 時間とスコアの合計を取得
 	int GetTotalScore() const;
 
@@ -28,12 +30,24 @@ public:
 	// スコアを増加させるアニメーションの設定
 	void UpdateScoreAnimation();
 
+	// 更新処理
 	void Update() override;
+	// 描画処理
 	void Render() override;
 
 private:
 	// インスタンス
 	static CResult* spInstance;
+
+	// リザルトのテキスト
+	CText* mpResultText;
+	// 制限時間
+	CStageTime* mpTime;
+	// スコア
+	CScore* mpScore;
+	// フォントテキスト
+	CFont* mpFont;
+
 	// 時間
 	int mRemainingTime;
 	// スコア
@@ -44,9 +58,5 @@ private:
 	int mTargetScore;
 	// スコアを増加させるアニメーションの速度
 	int mScoreAnimationSpeed;
-
-	CText* mpResultText;
-	CStageTime* mpTime;
-	CScore* mpScore;
 };
 #endif

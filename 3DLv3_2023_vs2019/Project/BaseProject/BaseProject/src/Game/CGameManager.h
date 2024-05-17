@@ -1,6 +1,8 @@
 #ifndef CGAMEMANAGER_H
 #define CGAMEMANAGER_H
+
 #include "CTask.h"
+
 class CResultAnnouncement;
 class CResult;
 

@@ -6,6 +6,7 @@
 #include "CImage.h"
 #include "CStageManager.h"
 #include "CStageManager.h"
+#include "CFont.h"
 
 // ステージタイマーのインスタンス
 CResult* CResult::spInstance = nullptr;
@@ -19,27 +20,38 @@ CResult* CResult::Instance()
 	return spInstance;
 }
 
+// コンストラクタ
 CResult::CResult()
 	: mRemainingTime(0)
 	, mScore(0)
 	, mCurrentDisplayedScore(0)
 	, mTargetScore(0)
-	, mScoreAnimationSpeed(20)
+	, mScoreAnimationSpeed(50)
 	, mpTime(nullptr)
 	, mpScore(nullptr)
 {
 	// インスタンスの設定
 	spInstance = this;
-	mpResultText = new CText(nullptr, 40, CVector2(0, 0),
-		CVector2(1250, 600), CColor(1.0f, 0.5f, 0.5f, 1.0f),
-		ETaskPriority::eUI, 0);
-	mpResultText->SetTextAlign(ETextAlignH::eCenter, ETextAlignV::eMiddle);
+
+	// タイトルロゴのフォントデータを生成
+	mpFont = new CFont("res\\Font\\toroman.ttf");
+	mpFont->SetFontSize(40);
+	mpFont->SetAlignment(FTGL::TextAlignment::ALIGN_CENTER);
+	mpFont->SetLineLength(WINDOW_WIDTH);
+
+	// リザルトのテキストの設定
+	mpResultText = new CText(mpFont, 40, CVector2(150.0f, 0.0f),
+		CVector2(1250, 600), CColor(1.0f, 1.0f, 0.0f, 1.0f),
+		ETaskPriority::eUI, 0, ETaskPauseType::eDefault, false, true);
+	mpResultText->SetTextAlign(ETextAlignH::eLeft, ETextAlignV::eMiddle);
 }
 
+// デストラクタ
 CResult::~CResult()
 {
 	spInstance = nullptr;
-	mpResultText->Kill();
+	SAFE_DELETE(mpResultText);
+	SAFE_DELETE(mpFont);
 }
 
 // 時間とスコアの合計を設定
@@ -51,41 +63,11 @@ void CResult::SetResult(int remainingTime, int score)
 	mTargetScore = GetTotalScore();
 }
 
-// 別クラスで時間とスコアを取り扱う為の処理
-void CResult::SetTimeAndScore(CStageTime* pTime, CScore* pScore)
-{
-	mpTime = pTime;
-	mpScore = pScore;
-}
-
 // 時間とスコアの合計を取得
 int CResult::GetTotalScore() const
 {
+	// 時間 × 10 + スコア
 	return mRemainingTime * 10 + mScore;
-}
-
-void CResult::Update()
-{
-	int currentStage = CGameManager::StageNo();
-
-	// スコアと時間を合算して描画
-	SetResult(mpTime->Instance()->GetTime(), mpScore->Instance()->GetScore());
-
-	if (CGameManager::GameState() == EGameState::eResult)
-	{
-		// リザルト画面の開始時にスコアアニメーションを開始
-		if (!mpResultText->IsShow())
-		{
-			SetResult(mpTime->Instance()->GetTime(), mpScore->Instance()->GetScore());
-			StartScoreAnimation();
-		}
-		mpResultText->SetShow(true);
-		UpdateScoreAnimation();
-	}
-	else
-	{
-		mpResultText->SetShow(false);
-	}
 }
 
 // 初期スコアの設定
@@ -111,11 +93,39 @@ void CResult::UpdateScoreAnimation()
 	}
 }
 
+// 更新処理
+void CResult::Update()
+{
+	// 現在のステージ番号
+	int currentStage = CGameManager::StageNo();
+
+	// スコアと時間を合算して描画
+	SetResult(mpTime->Instance()->GetTime(), mpScore->Instance()->GetScore());
+
+	// ゲームステータスがリザルトだったら
+	if (CGameManager::GameState() == EGameState::eResult)
+	{
+		// リザルト画面の開始時にスコアアニメーションを開始
+		if (!mpResultText->IsShow())
+		{
+			SetResult(mpTime->Instance()->GetTime(), mpScore->Instance()->GetScore());
+			StartScoreAnimation();
+		}
+		mpResultText->SetShow(true);
+		UpdateScoreAnimation();
+	}
+	else
+	{
+		mpResultText->SetShow(false);
+	}
+}
+
+// 描画処理
 void CResult::Render()
 {
 	// アニメーションされたスコアを表示
 	char buffer[64];
-	sprintf_s(buffer, "RESULT:%04d", mCurrentDisplayedScore);
+	sprintf_s(buffer, "RESULT ×  %04d", mCurrentDisplayedScore);
 	mpResultText->SetText(buffer);
 
 	//// 時間 × 10 ＋ スコア

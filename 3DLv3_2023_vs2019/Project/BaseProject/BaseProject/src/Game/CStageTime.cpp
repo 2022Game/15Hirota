@@ -9,10 +9,14 @@ CStageTime* CStageTime::spInstance = nullptr;
 
 CStageTime* CStageTime::Instance()
 {
+    if (spInstance == nullptr)
+    {
+        spInstance = new CStageTime();
+    }
     return spInstance;
 }
 
-// CStageTimeクラスの実装
+// コンストラクタ
 CStageTime::CStageTime() 
     : mTime(0)
     , mpTimer(nullptr)
@@ -27,6 +31,7 @@ CStageTime::CStageTime()
         ETaskPriority::eUI, 0);
     mpTimerText->SetTextAlign(ETextAlignH::eRight, ETextAlignV::eTop);
 
+    // 時計の画像を設定
     mpTimer = new CImage("Timer");
     mpTimer->SetSize(100.0f, 70.0f);
     mpTimer->SetUV(0, 0, 1, 1);
@@ -35,17 +40,20 @@ CStageTime::CStageTime()
     mpTimer->SetShow(false);
 }
 
+// デストラクタ
 CStageTime::~CStageTime()
 {
     spInstance = nullptr;
-    mpTimerText->Kill();
-    mpTimer->Kill();
+    SAFE_DELETE(mpTimerText);
+    SAFE_DELETE(mpTimer);
 }
 
+// 時間を取得
 void CStageTime::Time(int time) {
     mTime = time;
 }
 
+// 更新処理
 void CStageTime::Update()
 {
     int currentStage = CGameManager::StageNo();
@@ -116,6 +124,7 @@ void CStageTime::Update()
     }
 }
 
+// 描画処理
 void CStageTime::Render()
 {
     char buffer[16];

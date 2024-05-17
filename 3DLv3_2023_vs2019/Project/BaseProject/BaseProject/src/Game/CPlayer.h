@@ -273,10 +273,18 @@ private:
 	void UpdateFalling();
 	// 立ち上がる
 	void UpdateStandUp();
-	
+	// リザルト前のジャンプ開始
 	void UpdateResultJumpStart();
+	// リザルト前のジャンプ
 	void UpdateResultJump();
+	// リザルト前のジャンプ終了
 	void UpdateResultJumpEnd();
+	// ダッシュジャンプスタート
+	void UpdateDashJumpStart();
+	// ダッシュジャンプ
+	void UpdateDashJump();
+	// ダッシュジャンプ終了
+	void UpdateDashJumpEnd();
 
 	// プレイヤーの状態
 	enum class EState
@@ -321,6 +329,9 @@ private:
 		eResultJumpStart,	// リザルト前のジャンプ開始
 		eResultJump,		// リザルト前のジャンプ
 		eResultJumpEnd,		// リザルト前のジャンプ終了
+		eDashJumpStart,		// ダッシュジャンプ開始
+		eDashJump,			// ダッシュジャンプ
+		eDashJumpEnd,		// ダッシュジャンプ終了
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
@@ -347,6 +358,9 @@ private:
 		eJumpStart,		// ジャンプ開始
 		eJump,			// ジャンプ中
 		eJumpEnd,		// ジャンプ終了
+		eDashJumpStart,	// ダッシュジャンプ開始
+		eDashJump,		// ダッシュジャンプ
+		eDashJumpEnd,	// ダッシュジャンプ終了
 		eDash,			// ダッシュ
 		eDashStop,		// ダッシュ終了
 		eRotate,		// 回避
@@ -429,6 +443,8 @@ private:
 	float mWeaponTime;
 	// 重力やジャンプによるY軸の移動速度
 	float mMoveSpeedY;
+	// プレイヤーの大きさ変更計測時間
+	float mScaleTime;
 
 	// 接地しているかどうか
 	bool mIsGrounded;
@@ -480,6 +496,8 @@ private:
 	bool mIsStage3Clear;
 	// (全てのステージ)クリアしたかマネージャークラスに伝えるよう
 	bool mIsStageClear;
+	// ダッシュジャンプに移行できるかどうか
+	bool mIsDashJump;
 
 	///////////////////////////////////////////////////////
 };

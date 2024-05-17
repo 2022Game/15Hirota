@@ -34,6 +34,8 @@
 CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
 	, mpGameMenu(nullptr)
+	, mpTime(nullptr)
+	, mpScore(nullptr)
 	//, mpInventoryMenu(nullptr)
 {
 }
@@ -139,10 +141,13 @@ void CGameScene::Load()
 
 	// ゲームメニューを作成
 	mpGameMenu = new CGameMenu();
+	AddTask(mpGameMenu);
 	// 時間
 	mpTime = new CStageTime();
+	AddTask(mpTime);
 	// スコア
 	mpScore = new CScore();
+	AddTask(mpScore);
 	// リザルト
 	/*mpResult = new CResult();
 	mpResult->SetTimeAndScore(mpTime, mpScore);*/

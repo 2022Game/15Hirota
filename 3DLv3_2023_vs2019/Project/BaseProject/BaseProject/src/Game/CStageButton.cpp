@@ -5,6 +5,7 @@
 #include "CStageMenu.h"
 #include "CStageManager.h"
 #include "CModel.h"
+#include "CTaskManager.h"
 
 // コンストラクタ
 CStageButton::CStageButton(const CVector& pos, const CVector& scale, const CVector& rot,
@@ -58,11 +59,15 @@ void CStageButton::Collision(CCollider* self, CCollider* other, const CHitInfo& 
 		// 求めた角度が指定した角度の範囲内であれば、
 		if (dot >= cosAngle)
 		{
+			bool paused = CTaskManager::Instance()->IsPaused();
 			if (!mpStageMenu->IsOpened())
 			{
-				if (CInput::PushKey(VK_RETURN))
+				if (!paused)
 				{
-					mpStageMenu->Open();
+					if (CInput::PushKey(VK_RETURN))
+					{
+						mpStageMenu->Open();
+					}
 				}
 			}
 		}

@@ -7,6 +7,8 @@
 #include "CInput.h"
 #include "CResultAnnouncement.h"
 #include "CPlayer.h"
+#include "CVanguard.h"
+#include "CBlueMedal.h"
 
 CGameManager* CGameManager::spInstance = nullptr;
 
@@ -20,11 +22,13 @@ CGameManager::CGameManager()
 	, mpResult(nullptr)
 {
 	mpResult = new CResultAnnouncement();
+	CStageManager::AddTask(mpResult);
 }
 
 // デストラクタ
 CGameManager::~CGameManager()
 {
+	CStageManager::RemoveTask(mpResult);
 	mpResult->Kill();
 }
 
@@ -81,16 +85,19 @@ void CGameManager::Result()
 	Instance()->ChangeState(EGameState::eResult);
 }
 
+// ステージ1
 void CGameManager::Stage1()
 {
 	Instance()->ChangeState(EGameState::eStage1);
 }
 
+// ステージ2
 void CGameManager::Stage2()
 {
 	Instance()->ChangeState(EGameState::eStage2);
 }
 
+// ステージ3
 void CGameManager::Stage3()
 {
 	Instance()->ChangeState(EGameState::eStage3);
@@ -184,25 +191,34 @@ void CGameManager::UpdateStageClear()
 	ChangeState(EGameState::eGame);
 }
 
+// ステージ1の更新処理
 void CGameManager::UpdateStage1()
 {
 	mStageNo = 1;
+	CVanguard::SetScore(0);
+	CBlueMedal::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 
 	ChangeState(EGameState::eGame);
 }
 
+// ステージ2の更新処理
 void CGameManager::UpdateStage2()
 {
 	mStageNo = 2;
+	CVanguard::SetScore(0);
+	CBlueMedal::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 
 	ChangeState(EGameState::eGame);
 }
 
+// ステージ3の更新処理
 void CGameManager::UpdateStage3()
 {
 	mStageNo = 3;
+	CVanguard::SetScore(0);
+	CBlueMedal::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 
 	ChangeState(EGameState::eGame);
@@ -212,6 +228,8 @@ void CGameManager::UpdateStage3()
 void CGameManager::UpdateStageOver()
 {
 	mStageNo = 0;
+	CVanguard::SetScore(0);
+	CBlueMedal::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 
 	ChangeState(EGameState::eGame);
@@ -226,16 +244,12 @@ void CGameManager::UpdateGameClear()
 // ゲームオーバー時の更新処理
 void CGameManager::UpdateGameOver()
 {
-	//CResult::Instance()->SetTimeAndScore(CStageTime::Instance(), CScore::Instance());
-	//CResult::Instance()->SetResult(CStageTime::Instance()->GetTime(), CScore::Instance()->GetScore());
-	//CResult::Instance()->StartScoreAnimation();
+
 }
 
 // リザルト時の更新処理
 void CGameManager::UpdateResult()
 {
-	/*CResult* pResult = CResult::Instance();
-	pResult->StartScoreAnimation();*/
 	mpResult->Open();
 }
 
@@ -277,12 +291,15 @@ void CGameManager::Update()
 	case EGameState::eResult:
 		UpdateResult();
 		break;
+		// ステージ1
 	case EGameState::eStage1:
 		UpdateStage1();
 		break;
+		// ステージ2
 	case EGameState::eStage2:
 		UpdateStage2();
 		break;
+		// ステージ3
 	case EGameState::eStage3:
 		UpdateStage3();
 		break;

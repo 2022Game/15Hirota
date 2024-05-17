@@ -32,6 +32,8 @@
 #define PLAYER_HEIGHT 16.0f
 // スピード
 #define MOVE_SPEED 0.9f
+// ダッシュジャンプスピード
+#define DASH_JUMP_SPEED 2.0f
 // 移動スピード
 #define RUN_SPEED 1.3f
 // ダッシュスピード
@@ -40,6 +42,8 @@
 #define JUMP_SPEED 1.5f
 // 大ジャンプ
 #define JUMP_BOUNCE 2.0f
+// クリアジャンプ
+#define JUMP_CLEAR 1.6f;
 // 重力
 #define GRAVITY 0.0625f
 // ジャンプ終了時
@@ -93,6 +97,9 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\jump_start1.x",				false,	25.0f	},		// ジャンプ開始
 	{ "Character\\Monster1\\anim\\jump1.x",							true,	1.0f	},	// ジャンプ中
 	{ "Character\\Monster1\\anim\\jump_end1.x",					false,	26.0f	},		// ジャンプ終了
+	{ "Character\\Monster1\\anim\\Warrok_DashJumpStart_54.x",	false,	54.0f	},		// ダッシュジャンプ開始
+	{ "Character\\Monster1\\anim\\Warrok_DashJump_1.x",				true,	1.0f	},	// ダッシュジャンプ
+	{ "Character\\Monster1\\anim\\Warrok_DashJumpEnd_13.x",		false,	13.0f	},		// ダッシュジャンプ終了
 	{ "Character\\Monster1\\anim\\Dash1_53.x",						true,	53.0f	},	// ダッシュ
 	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	40.0f	},		// ダッシュ終了
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	50.0f	},		// 回避
@@ -115,6 +122,7 @@ CPlayer::CPlayer()
 	, mState(EState::eReady)
 	, mInventory(std::map<ItemType, int>())
 	, mStateStep(0)
+	, mScaleTime(0.0f)
 	, mWeaponTime(0.0f)
 	, mMoveSpeedY(0.0f)
 	, mElapsedTime(0.0f)
@@ -137,6 +145,7 @@ CPlayer::CPlayer()
 	, mSavePoint(false)
 	, mIsJumping(false)
 	, mClimbWall(false)
+	, mIsDashJump(false)
 	, mInvincible(false)
 	, mFallDamage(false)
 	, mStage1Clear(false)
@@ -985,7 +994,7 @@ void CPlayer::UpdateIdle()
 		// SPACEキーでジャンプ開始へ移行
 		// 長く押すと大ジャンプ
 		// 短く押すと小ジャンプ
-		else if (CInput::PushKey(VK_SPACE))
+		else if (CInput::PushKey(VK_SPACE) && !mIsDashJump)
 		{
 			if (mCharaStatus.stamina - 20 >= 0)
 			{
@@ -1078,6 +1087,7 @@ void CPlayer::UpdateMove()
 					// ダッシュ
 					else
 					{
+						mIsDashJump = true;
 						speed = RUN_SPEED;
 						mDash = true;
 						mCharaStatus.stamina -= 1;
@@ -1093,7 +1103,8 @@ void CPlayer::UpdateMove()
 						{
 							// ダッシュアタック移行時に、
 							// スタミナが0以下になるかどうかを確認
-							if (mCharaStatus.stamina - 20 >= 0) {
+							if (mCharaStatus.stamina - 20 >= 0) 
+							{
 								mMoveSpeed = CVector::zero;
 								ChangeState(EState::eAttackDash);
 								// スタミナが0以下にならない場合はダッシュアタックを実行
@@ -1103,6 +1114,24 @@ void CPlayer::UpdateMove()
 							{
 							}
 						}
+
+						// ダッシュジャンプ移行
+						if ((CInput::PushKey(VK_SPACE) && mIsDashJump) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+						{
+							// ダッシュジャンプ移行時に
+							// スタミナが0以下になるかどうかを確認
+							if (mCharaStatus.stamina - 40 >= 0)
+							{
+								mMoveSpeed = CVector::zero;
+								ChangeState(EState::eDashJumpStart);
+								// スタミナが0以下にならない場合はダッシュジャンプを実行
+								mCharaStatus.stamina -= 40;
+							}
+							else
+							{
+
+							}
+						}
 					}
 				}
 				// スタミナが0以下かつ、スタミナの下限値フラグがtrueだったら
@@ -1110,6 +1139,7 @@ void CPlayer::UpdateMove()
 				{
 					// 歩く
 					mStartDashTime = 0.0f;
+					mIsDashJump = false;
 					mDash = false;
 					ChangeAnimation(EAnimType::eWalk);
 					if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
@@ -1125,6 +1155,7 @@ void CPlayer::UpdateMove()
 			else
 			{
 				mStartDashTime = 0.0f;
+				mIsDashJump = false;
 				mDash = false;
 				ChangeAnimation(EAnimType::eWalk);
 				if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
@@ -1156,6 +1187,11 @@ void CPlayer::UpdateMove()
 				}
 			}
 		}
+		if (mState == EState::eDashJump)
+		{
+			speed = DASH_JUMP_SPEED;
+			//mMoveSpeed += move * speed * mCharaStatus.moveSpeed;
+		}
 		mMoveSpeed += move * speed * mCharaStatus.moveSpeed;
 	}
 	// 移動キーを入力していない
@@ -1166,6 +1202,7 @@ void CPlayer::UpdateMove()
 			// 待機アニメーションに切り替え
 			ChangeAnimation(EAnimType::eIdle);
 			mStartDashTime = 0.0f;
+			mIsDashJump = false;
 			mDash = false;
 			if (mCharaStatus.stamina < mCharaMaxStatus.stamina && !mDash)
 			{
@@ -1489,6 +1526,7 @@ void CPlayer::UpdateClearEnd()
 
 void CPlayer::UpdateResultJumpStart()
 {
+	Scale(CVector(0.0f, 0.0f, 0.0f));
 	if (mpCutInResult->IsPlaying())
 	{
 
@@ -1501,25 +1539,36 @@ void CPlayer::UpdateResultJumpStart()
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eResultJump);
 
-	mMoveSpeedY = JUMP_SPEED;
+	mMoveSpeedY = JUMP_CLEAR;
 	mIsGrounded = false;
 }
 
 void CPlayer::UpdateResultJump()
 {
+	// 目標地点まで移動させる処理
 	CPlayer* player = CPlayer::Instance();
 	CVector playerPos = player->Position();
 	CVector current = VectorZ();
-	CVector targetPos = playerPos + current * 1.0f;
-
+	CVector targetPos = playerPos + current * 0.65f;
 	float per = mElapsedTime / 1.0f;
 	CVector pos = CVector::Lerp(playerPos, targetPos, per);
 	Position(pos);
+
+	// 目標の大きさにする処理
+	float perscale = mScaleTime / 1.0f;
+	CVector scale = CVector(0.0f, 0.0f, 0.0f);
+	CVector targetscale = CVector(1.0f, 1.0f, 1.0f);
+	CVector ScaleCur = CVector::Lerp(scale, targetscale, perscale);
+	Scale(ScaleCur);
+
 	mElapsedTime += Time::DeltaTime();
+	mScaleTime += Time::DeltaTime();
+
 	if (mElapsedTime > 1.0f)
 	{
 		if (mMoveSpeedY <= 0.0f)
 		{
+			Scale(CVector(1.0f, 1.0f, 1.0f));
 			ChangeAnimation(EAnimType::eJumpEnd);
 			ChangeState(EState::eResultJumpEnd);
 		}
@@ -1542,6 +1591,7 @@ void CPlayer::UpdateResult()
 	if (mElapsedTime > 1.0f)
 	{
 		mElapsedTime = 0.0f;
+		mScaleTime = 0.0f;
 		ChangeAnimation(EAnimType::eGuts);
 		ChangeState(EState::eResultEnd);
 	}
@@ -2298,6 +2348,70 @@ void CPlayer::UpdateJumpEnd()
 	mpClimbCol->SetEnable(true);
 }
 
+// ダッシュジャンプ開始
+void CPlayer::UpdateDashJumpStart()
+{
+	mIsJumping = true;
+	ChangeAnimation(EAnimType::eDashJumpStart);
+	ChangeState(EState::eDashJump);
+
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	mMoveSpeedY += 1.7f;
+	mIsGrounded = false;
+}
+
+// ダッシュジャンプ中
+void CPlayer::UpdateDashJump()
+{
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	if (mIsGrounded)
+	{
+		mIsJumping = false;
+		ChangeAnimation(EAnimType::eDashJumpEnd);
+		ChangeState(EState::eDashJumpEnd);
+	}
+}
+
+// ダッシュジャンプ終了
+void CPlayer::UpdateDashJumpEnd()
+{
+	mMoveSpeed = CVector::zero;
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	if (IsAnimationFinished() && mIsGrounded)
+	{
+		ChangeState(EState::eIdle);
+	}
+
+	mpClimbCol->SetEnable(true);
+}
+
 // 跳ねる処理開始
 void CPlayer::UpdateJumpingStart()
 {
@@ -2570,6 +2684,15 @@ void CPlayer::Update()
 	case EState::eResultJumpEnd:
 		UpdateResultJumpEnd();
 		break;
+	case EState::eDashJumpStart:
+		UpdateDashJumpStart();
+		break;
+	case EState::eDashJump:
+		UpdateDashJump();
+		break;
+	case EState::eDashJumpEnd:
+		UpdateDashJumpEnd();
+		break;
 	}
 
 	// 待機中とジャンプ中は、移動処理を行う
@@ -2580,6 +2703,9 @@ void CPlayer::Update()
 		|| mState == EState::eJumpingStart
 		|| mState == EState::eJumping
 		|| mState == EState::eJumpingEnd
+		|| mState == EState::eDashJumpStart
+		|| mState == EState::eDashJump
+		|| mState == EState::eDashJumpEnd
 		|| mState == EState::eFalling)
 	{
 		UpdateMove();
