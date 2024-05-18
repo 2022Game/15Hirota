@@ -1073,8 +1073,28 @@ void CPlayer::UpdateMove()
 					if (mStartDashTime <= 0.5f)
 					{
 						speed = DASH_SPEED;
+						mIsDashJump = true;
 						mDash = true;
 						mCharaStatus.stamina -= 1;
+
+						// ダッシュジャンプ移行
+						if ((CInput::PushKey(VK_SPACE) && mIsDashJump) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+						{
+							// ダッシュジャンプ移行時に
+							// スタミナが0以下になるかどうかを確認
+							if (mCharaStatus.stamina - 40 >= 0)
+							{
+								mMoveSpeed = CVector::zero;
+								ChangeState(EState::eDashJumpStart);
+								// スタミナが0以下にならない場合はダッシュジャンプを実行
+								mCharaStatus.stamina -= 40;
+							}
+							else
+							{
+
+							}
+						}
+
 						if (mCharaStatus.stamina <= 0)
 						{
 							ChangeState(EState::eDashEnd);
@@ -1087,9 +1107,9 @@ void CPlayer::UpdateMove()
 					// ダッシュ
 					else
 					{
-						mIsDashJump = true;
 						speed = RUN_SPEED;
 						mDash = true;
+						mIsDashJump = false;
 						mCharaStatus.stamina -= 1;
 						if (mCharaStatus.stamina <= 0)
 						{
@@ -1112,24 +1132,6 @@ void CPlayer::UpdateMove()
 							}
 							else
 							{
-							}
-						}
-
-						// ダッシュジャンプ移行
-						if ((CInput::PushKey(VK_SPACE) && mIsDashJump) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
-						{
-							// ダッシュジャンプ移行時に
-							// スタミナが0以下になるかどうかを確認
-							if (mCharaStatus.stamina - 40 >= 0)
-							{
-								mMoveSpeed = CVector::zero;
-								ChangeState(EState::eDashJumpStart);
-								// スタミナが0以下にならない場合はダッシュジャンプを実行
-								mCharaStatus.stamina -= 40;
-							}
-							else
-							{
-
 							}
 						}
 					}
