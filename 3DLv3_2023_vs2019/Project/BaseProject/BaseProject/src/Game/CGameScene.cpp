@@ -36,15 +36,19 @@ CGameScene::CGameScene()
 	, mpGameMenu(nullptr)
 	, mpTime(nullptr)
 	, mpScore(nullptr)
+	, mpResultUI(nullptr)
 	//, mpInventoryMenu(nullptr)
 {
+
 }
 
 //デストラクタ
 CGameScene::~CGameScene()
 {
-	mpTime->Kill();
-	mpScore->Kill();
+	CStageManager::RemoveTask(mpTime);
+	CStageManager::RemoveTask(mpScore);
+	CStageManager::RemoveTask(mpResultUI);
+	CStageManager::RemoveTask(mpGameMenu);
 }
 
 //シーン読み込み
@@ -148,6 +152,10 @@ void CGameScene::Load()
 	// スコア
 	mpScore = new CScore();
 	AddTask(mpScore);
+
+	mpResultUI = new CResultAnnouncement();
+	CStageManager::AddTask(mpResultUI);
+
 	// リザルト
 	/*mpResult = new CResult();
 	mpResult->SetTimeAndScore(mpTime, mpScore);*/
@@ -162,9 +170,12 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-	/*CResultAnnouncement* resut = CResultAnnouncement::Instance();
+	CResultAnnouncement* resut = CResultAnnouncement::Instance();
 	bool resultend = resut->IsResultOpened();
-	CDebugPrint::Print("result:%s\n", resultend ? "true" : "false");*/
+	bool opened = resut->IsOpened();
+	CDebugPrint::Print("result:%s\n", resultend ? "true" : "false");
+	CDebugPrint::Print("opned:%s\n", opened ? "true" : "false");
+
 	/*CResult* result = CResult::Instance();
 	int score = result->GetTotalScore();
 	CDebugPrint::Print("total: %d\n", score);*/
@@ -183,6 +194,43 @@ void CGameScene::Update()
 			mpGameMenu->Open();
 		}
 	}
+
+
+	// リザルト表示
+	if (CGameManager::GameState() == EGameState::eResult)
+	{
+		// カーソルをオンにする
+		CInput::ShowCursor(true);
+		// リザルトメニューを開いていなかったら
+		if (!mpResultUI->IsOpened())
+		{
+			// 開く
+			mpResultUI->Open();
+			mpResultUI->Update();
+		}
+		// リザルトメニューを開いていたら
+		else
+		{
+			// リザルト画面終了フラグがオンだったら
+			if (mpResultUI->IsEnd())
+			{
+				// ゲーム開始ならば、ゲームシーンを読み込む
+				if (mpResultUI->IsStartGame())
+				{
+					// メニューを閉じる
+					mpResultUI->Close();
+					CGameManager::GameRestart();
+				}
+				// ゲーム終了ならば、アプリを閉じる
+				else if (mpResultUI->IsExitGame())
+				{
+					System::ExitGame();
+				}
+			}
+		}
+	}
+	// 更新
+	mpResultUI->Update();
 
 	//// インベントリを開いていなければ、[I]キーでメニューを開く
 	//if (!mpInventoryMenu->IsOpened())

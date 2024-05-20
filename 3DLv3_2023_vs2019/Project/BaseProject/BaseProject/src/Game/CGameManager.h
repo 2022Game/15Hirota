@@ -3,8 +3,8 @@
 
 #include "CTask.h"
 
-class CResultAnnouncement;
 class CResult;
+class CResultAnnouncement;
 
 //	ゲームの状態
 enum class EGameState
@@ -45,6 +45,8 @@ public:
 	static void Stage2();
 	// ステージ2
 	static void Stage3();
+
+	// フェードイン状態での更新処理
 
 	// 現在のゲームの状態を取得
 	static EGameState GameState();
@@ -101,6 +103,6 @@ private:
 
 	bool mResultSetUp;
 
-	CResultAnnouncement* mpResult;
+	CResultAnnouncement* mpResultUI;
 };
 #endif

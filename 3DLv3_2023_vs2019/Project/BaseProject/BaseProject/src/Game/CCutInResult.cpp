@@ -111,7 +111,7 @@ void CCutInResult::CutInStep1()
 {
 	mElapsedTime = 0.0f;
 	mCutInStep = 0;
-	//End();
+	End();
 }
 
 // XV

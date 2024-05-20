@@ -9,8 +9,16 @@
 #include "CImage.h"
 #include "CResult.h"
 #include "CCutInResult.h"
+#include "CText.h"
+#include "CExpandButton.h"
+#include "CFade.h"
+#include "Easing.h"
 
 #define MENU_ALPHA 0.65f
+// タイトルメニューのアニメーション時間
+#define OPEN_ANIM_TIME 0.25f
+// タイトルメニューのアニメーション後の待ち時間
+#define OPENED_WAIT_TIME 0.5f
 
 // ステージタイマーのインスタンス
 CResultAnnouncement* CResultAnnouncement::spInstance = nullptr;
@@ -27,43 +35,49 @@ CResultAnnouncement* CResultAnnouncement::Instance()
 // コンストラクタ
 CResultAnnouncement::CResultAnnouncement()
 	: CTask(ETaskPriority::eUI, 0, ETaskPauseType::eDefault)
+	, mState(EState::eNone)
+	, mStateStep(0)
 	, mSelectIndex(0)
-	, mElapsedTime(0.0f)
 	, mAlpha(0.0f)
+	, mElapsedTime(0.0f)
 	, mIsOpened(false)
 	, mResultOpened(false)
+	, mIsEnd(false)
 {
 	// インスタンスの設定
 	spInstance = this;
-	/*mpResultsMenu = new CImage
+
+	// [START]ボタンを生成
+	CExpandButton* btn1 = new CExpandButton
 	(
-		"UI/menu_back.png",
-		ETaskPriority::eUI, 0, ETaskPauseType::eMenu,
+		CVector2(WINDOW_WIDTH * 0.3f, 600.0f),
+		CVector2(250.0f, 250.0f),
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
 		false, false
 	);
-	mpResultsMenu->SetCenter(mpResultsMenu->GetSize() * 0.5f);
-	mpResultsMenu->SetPos(CVector2(WINDOW_WIDTH, WINDOW_HEIGHT) * 0.5f);
-	mpResultsMenu->SetColor(1.0f, 1.0f, 1.0f, MENU_ALPHA);*/
+	// ボタンの画像を読み込み
+	btn1->LoadButtonImage("UI/ResultUI/Continue.png", "UI/ResultUI/Continue.png");
+	// ボタンクリック時に呼び出されるコールバック関数を設定
+	btn1->SetOnClickFunc(std::bind(&CResultAnnouncement::OnClickContinue, this));
+	// ボタンは最初は無効化して、スケール値を0にしておく
+	btn1->SetEnable(false);
+	btn1->SetScale(0.0f);
+	// ボタンリストに追加
+	mButtons.push_back(btn1);
 
-	const char* menuItems[] = { "UI/ResultUI/Continue.png", "UI/ResultUI/End.png" };
-	int stageMenuCount = 2;
-	float spaceX = (float)WINDOW_WIDTH / (stageMenuCount + 1);
-	for (int i = 0; i < stageMenuCount; i++)
-	{
-		CImage* item = new CImage
-		(
-			menuItems[i],
-			ETaskPriority::eUI, 0, ETaskPauseType::eGame,
-			false, false
-		);
-		item->SetSize(400.0f, 300.0f);
-		item->SetCenter(item->GetSize() * 0.5f);
-		float posX = spaceX * (i + 1) - item->GetSize().X() / 2.0f + 200.0f;
-		float posY = (float)WINDOW_HEIGHT / 2.0f + 100.0f;
-		item->SetPos(posX, posY);
-		item->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-		mResultsMenuItems.push_back(item);
-	}
+	// [QUIT]ボタンを生成
+	CExpandButton* btn2 = new CExpandButton
+	(
+		CVector2(WINDOW_WIDTH * 0.7f, 600.0f),
+		CVector2(250.0f, 250.0f),
+		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
+		false, false
+	);
+	btn2->LoadButtonImage("UI/ResultUI/End.png", "UI/ResultUI/End.png");
+	btn2->SetOnClickFunc(std::bind(&CResultAnnouncement::OnClickEnd, this));
+	btn2->SetEnable(false);
+	btn2->SetScale(0.0f);
+	mButtons.push_back(btn2);
 
 	// リザルト画像
 	int resultCount = 3;
@@ -98,29 +112,85 @@ CResultAnnouncement::CResultAnnouncement()
 		);
 		abc->SetSize(300.0f, 350.0f);
 		abc->SetCenter(abc->GetSize() * 0.5f);
-		float posX = (float)WINDOW_WIDTH * 0.65f;
+		float posX = (float)WINDOW_WIDTH * 0.75f;
 		float posY = (float)WINDOW_HEIGHT * 0.4f;
 		abc->SetPos(posX, posY);
 		abc->SetColor(1.0f, 1.0f, 1.0f, 0.0f);
 		mABCItems.push_back(std::make_pair(Result, abc));
 	}
 
-	mResultOpened = false;
-
 	SetEnable(false);
-	SetShow(false);
 }
 
 // デストラクタ
 CResultAnnouncement::~CResultAnnouncement()
 {
 	spInstance = nullptr;
+
+	//SAFE_DELETE(mpStartText);
+
+	int size = mButtons.size();
+	for (int i = 0; i < size; i++)
+	{
+		CButton* btn = mButtons[i];
+		mButtons[i] = nullptr;
+		SAFE_DELETE(btn);
+	}
+	mButtons.clear();
+
 	// 削除されるときにメニューが開いたままであれば、
 	// メニューを閉じる
 	if (mIsOpened)
 	{
 		Close();
 	}
+}
+
+// タイトル画面終了か
+bool CResultAnnouncement::IsEnd() const
+{
+	return mIsEnd;
+}
+
+// ゲームを開始するか
+bool CResultAnnouncement::IsStartGame() const
+{
+	// 選択項目が1つ目ならば、ゲーム開始
+	return mSelectIndex == 0;
+}
+
+// ゲームを終了するか
+bool CResultAnnouncement::IsExitGame() const
+{
+	// 選択項目が3つ目ならば、ゲーム終了
+	return mSelectIndex == 1;
+}
+
+// 状態切り替え
+void CResultAnnouncement::ChangeState(EState state)
+{
+	if (state == mState) return;
+	mState = state;
+	mStateStep = 0;
+	mElapsedTime = 0.0f;
+}
+
+// [CONTINUE]クリック時のコールバック関数
+void CResultAnnouncement::OnClickContinue()
+{
+	if (mIsEnd) return;
+
+	mSelectIndex = 0;
+	mIsEnd = true;
+}
+
+// [END]クリック時のコールバック関数
+void CResultAnnouncement::OnClickEnd()
+{
+	if (mIsEnd) return;
+
+	mSelectIndex = 1;
+	mIsEnd = true;
 }
 
 // 開く
@@ -135,8 +205,9 @@ void CResultAnnouncement::Open()
 	CBGMManager::Instance()->Play(EBGMType::eMenu, false);
 	CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
 	// メニューを開いたフラグを立てる
-	mResultOpened = false;
 	mIsOpened = true;
+
+	ChangeState(EState::eIdle);
 }
 
 // 閉じる
@@ -151,83 +222,134 @@ void CResultAnnouncement::Close()
 	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
 	// メニューを開いたフラグをおろす
 	mResultOpened = true;
+	mIsEnd = false;
 	mIsOpened = false;
 }
 
-// マウス処理
-void CResultAnnouncement::HandleMouseInput()
+// 何もしない状態
+void CResultAnnouncement::UpdateNone()
 {
-	// マウスがクリックされたかどうかをチェック
-	if (CInput::PullKey(VK_LBUTTON))
+
+}
+
+// 待機状態
+void CResultAnnouncement::UpdateIdle()
+{
+	ChangeState(EState::eOpen);
+}
+
+// メニューを開く
+void CResultAnnouncement::UpdateOpen()
+{
+	switch (mStateStep)
 	{
-		// マウスの座標を取得
-		CVector2 mousePos = CInput::GetMousePos();
-
-		// マウスがクリックされた位置をチェックし、該当するメニュー項目を特定
-		for (int i = 0; i < mResultsMenuItems.size(); i++)
+		// ステップ0：メニューの入場アニメーション
+	case 0:
+		if (mElapsedTime < OPEN_ANIM_TIME)
 		{
-			CImage* item = mResultsMenuItems[i];
-			// メニュー項目の左上の座標と右下の座標を取得
-			CVector2 itemPos = item->GetPos();
-			CVector2 itemSize = item->GetSize();
-			float left = itemPos.X() - itemSize.X() / 2.6f;		// 左端の座標
-			float right = itemPos.X() + itemSize.X() / 2.6f;	// 右端の座標
-			float top = itemPos.Y() - itemSize.Y() / 9.0f;		// 上端の座標
-			float bottom = itemPos.Y() + itemSize.Y() / 9.0f;	// 下端の座標
-
-			// マウスがメニュー項目の上にあるかどうか
-			if (mousePos.X() >= left && mousePos.X() <= right &&
-				mousePos.Y() >= top && mousePos.Y() <= bottom)
+			// スケール値を一旦1.0より大きくして、1.0へ戻るイージングアニメーション
+			float scale = Easing::BackOut(mElapsedTime, OPEN_ANIM_TIME, 0.0f, 1.0f, 2.0f);
+			for (CExpandButton* btn : mButtons)
 			{
-				// メニュー項目がクリックされた場合の処理
-				Decide(i);
-				break;
+				btn->SetScale(scale);
 			}
+			mElapsedTime += Time::DeltaTime();
 		}
+		else
+		{
+			for (CExpandButton* btn : mButtons)
+			{
+				btn->SetScale(1.0f);
+			}
+			mStateStep++;
+			mElapsedTime = 0.0f;
+		}
+		break;
+		// ステップ1：メニュー入場後の待ち
+	case 1:
+		if (mElapsedTime < OPENED_WAIT_TIME)
+		{
+			mElapsedTime += Time::DeltaTime();
+		}
+		else
+		{
+			// 一定時間待ったら、ボタンをオンにしてタッチできるようにする
+			// （誤タッチを防ぐための待ち時間）
+			for (CExpandButton* btn : mButtons)
+			{
+				btn->SetEnable(true);
+			}
+			ChangeState(EState::eSelect);
+		}
+		break;
 	}
 }
 
+// メニュー選択
+void CResultAnnouncement::UpdateSelect()
+{
+}
+
+// フェードアウト
+void CResultAnnouncement::UpdateFadeOut()
+{
+}
+
+// 開いたかどうか
 bool CResultAnnouncement::IsOpened() const
 {
 	return mIsOpened;
 }
 
+// 別のクラスでリザルトの状態を確認する用
 bool CResultAnnouncement::IsResultOpened() const
 {
 	return mResultOpened;
 }
 
-// どのメニューにするか
-void CResultAnnouncement::Decide(int select)
-{
-	switch (select)
-	{
-	case 0:
-		CResultAnnouncement::Close();
-		CGameManager::GameRestart();
-		break;
-	case 1:
-		System::ExitGame();
-		break;
-	case 2:
-		break;
-	}
-}
-
 // 更新処理
 void CResultAnnouncement::Update()
 {
-	mResultOpened = false;
-	HandleMouseInput(); // マウス入力を処理
+	// game状態になったらfalseにする
+	if (CGameManager::GameState() == EGameState::eGame)
+	{
+		mResultOpened = false;
+	}
+
+	switch (mState)
+	{
+		// 何もしない状態
+	case EState::eNone:
+		UpdateNone();
+		break;
+		// 待機状態
+	case EState::eIdle:
+		UpdateIdle();
+		break;
+		// メニューを開く
+	case EState::eOpen:
+		UpdateOpen();
+		break;
+		// メニュー選択
+	case EState::eSelect:
+		UpdateSelect();
+		break;
+		// フェードアウト
+	case EState::eFadeOut:
+		UpdateFadeOut();
+		break;
+	}
+
+	// メニューを開いていたら
 	if (IsOpened())
 	{
-		CInput::ShowCursor(true);
+		// A,B,C の画像
 		for (const auto& itemPair : mABCItems)
 		{
 			CImage* item = itemPair.second;
 
 			// 表示＆非表示に掛ける時間（秒）
-			static const float fadeTime = 4.0f;
+			static const float fadeTime = 5.0f;
 			// 最大アルファ値
 			static const float fadeAlpha = 1.0f;
 
@@ -245,13 +367,11 @@ void CResultAnnouncement::Update()
 			{
 				//フェード背景を完全に表示して
 				item->SetAlpha(fadeAlpha);
-				return;
 			}
 		}
 	}
 	else
 	{
-		CInput::ShowCursor(false);
 		for (const auto& itemPair : mABCItems)
 		{
 			CImage* item = itemPair.second;
@@ -261,54 +381,65 @@ void CResultAnnouncement::Update()
 		}
 	}
 
-	//mpResultsMenu->Update();
-	for (CImage* item : mResultsMenuItems)
+	for (CButton* btn : mButtons)
 	{
-		item->Update();
+		btn->Update();
 	}
 }
 
 // 描画処理
 void CResultAnnouncement::Render()
 {
-	//mpResultsMenu->Render();
-	for (int i = 0; i < mResultsMenuItems.size(); i++)
+	// メニューを開いていたら
+	if (IsOpened())
 	{
-		CImage* item = mResultsMenuItems[i];
-		item->Render();
-	}
-
-	// 画像パスを更新
-	CResult* result = CResult::Instance();
-	int score = result->GetTotalScore();
-
-	// mABCItems内の画像を描画
-	for (int i = 0; i < mABCItems.size(); i++)
-	{
-		// スコアに応じた結果を計算
-		Result resultType;
-		if (score >= 2500)
+		// 待機状態では何もしない(変更するかも)
+		if (mState == EState::eIdle)
 		{
-			resultType = Result::A;
+			
 		}
-		else if (score < 2500 && score >= 1500)
-		{
-			resultType = Result::B;
-		}
+		// 待機状態以外は、メニューボタンを表示
 		else
 		{
-			resultType = Result::C;
-		}
+			for (CButton* btn : mButtons)
+			{
+				btn->Render();
+			}
 
-		// アイテムの種類を取得
-		Result itemResult = mABCItems[i].first;
+			// 画像パスを更新
+			CResult* result = CResult::Instance();
+			int score = result->GetTotalScore();
 
-		// 画像パスが一致するものを描画
-		if (itemResult == resultType)
-		{
-			// 描画
-			mABCItems[i].second->Render();
-			Update();
+			// mABCItems内の画像を描画
+			for (int i = 0; i < mABCItems.size(); i++)
+			{
+				// スコアに応じた結果を計算
+				// ステージ事に変更する
+				Result resultType;
+				if (score >= 2500)
+				{
+					resultType = Result::A;
+				}
+				else if (score < 2500 && score >= 1500)
+				{
+					resultType = Result::B;
+				}
+				else
+				{
+					resultType = Result::C;
+				}
+
+				// アイテムの種類を取得
+				Result itemResult = mABCItems[i].first;
+
+				// 画像パスが一致するものを描画
+				if (itemResult == resultType)
+				{
+					// 描画
+					mABCItems[i].second->Render();
+					Update();
+				}
+			}
 		}
 	}
 }

@@ -5,10 +5,10 @@
 #include "CStageTime.h"
 #include "CResult.h"
 #include "CInput.h"
-#include "CResultAnnouncement.h"
 #include "CPlayer.h"
 #include "CVanguard.h"
 #include "CBlueMedal.h"
+#include "CResultAnnouncement.h"
 
 CGameManager* CGameManager::spInstance = nullptr;
 
@@ -19,17 +19,12 @@ CGameManager::CGameManager()
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
 	, mResultSetUp(false)
-	, mpResult(nullptr)
 {
-	mpResult = new CResultAnnouncement();
-	CStageManager::AddTask(mpResult);
 }
 
 // デストラクタ
 CGameManager::~CGameManager()
 {
-	CStageManager::RemoveTask(mpResult);
-	mpResult->Kill();
 }
 
 // インスタンス取得
@@ -169,7 +164,6 @@ void CGameManager::UpdateGame()
 	}
 	//CDebugPrint::Print("mEleapsedTime:%f\n", mElapsedTime);
 	CResult::Instance()->Update();
-	mpResult->Update();
 }
 
 // ゲーム再開の更新処理
@@ -250,7 +244,7 @@ void CGameManager::UpdateGameOver()
 // リザルト時の更新処理
 void CGameManager::UpdateResult()
 {
-	mpResult->Open();
+	// ゲームシーン内でリザルト処理を行う
 }
 
 // 更新

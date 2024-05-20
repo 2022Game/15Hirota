@@ -26,7 +26,7 @@ CResult::CResult()
 	, mScore(0)
 	, mCurrentDisplayedScore(0)
 	, mTargetScore(0)
-	, mScoreAnimationSpeed(50)
+	, mScoreAnimationSpeed(30)
 	, mpTime(nullptr)
 	, mpScore(nullptr)
 {
@@ -35,12 +35,12 @@ CResult::CResult()
 
 	// タイトルロゴのフォントデータを生成
 	mpFont = new CFont("res\\Font\\toroman.ttf");
-	mpFont->SetFontSize(40);
+	mpFont->SetFontSize(60);
 	mpFont->SetAlignment(FTGL::TextAlignment::ALIGN_CENTER);
 	mpFont->SetLineLength(WINDOW_WIDTH);
 
 	// リザルトのテキストの設定
-	mpResultText = new CText(mpFont, 40, CVector2(150.0f, 0.0f),
+	mpResultText = new CText(mpFont, 60, CVector2(100.0f, 0.0f),
 		CVector2(1250, 600), CColor(1.0f, 1.0f, 0.0f, 1.0f),
 		ETaskPriority::eUI, 0, ETaskPauseType::eDefault, false, true);
 	mpResultText->SetTextAlign(ETextAlignH::eLeft, ETextAlignV::eMiddle);
