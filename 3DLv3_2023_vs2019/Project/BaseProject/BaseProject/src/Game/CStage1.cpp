@@ -1,5 +1,6 @@
 #include "CStage1.h"
 #include "CField_Worlds_1.h"
+#include "CField_Worlds_1_FallCol.h"
 #include "CPlayer.h"
 #include "CCamera.h"
 #include "CGameCamera.h"
@@ -107,6 +108,10 @@ void CStage1::Load()
 	mpField_Worlds_1 = new CField_Worlds_1();
 	mpField_Worlds_1->Scale(8.0f, 8.0f, 8.0f);
 	AddTask(mpField_Worlds_1);
+	// 落下コライダー
+	mpFallCol = new CField_Worlds_1_FallCol();
+	mpFallCol->Scale(8.0f, 8.0f, 8.0f);
+	AddTask(mpFallCol);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
@@ -144,46 +149,46 @@ void CStage1::Load()
 	);
 	AddTask(rotationg);
 
-	// 火炎放射器モデル
-	// 正面方向
-	CFixedFlamethrower* flamethrower1 = new CFixedFlamethrower
-	(
-		CVector(810.0f, 125.0f, -384.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(flamethrower1);
+	//// 火炎放射器モデル
+	//// 正面方向
+	//CFixedFlamethrower* flamethrower1 = new CFixedFlamethrower
+	//(
+	//	CVector(810.0f, 125.0f, -384.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, 0.0f, 0.0f)
+	//);
+	//AddTask(flamethrower1);
 
-	// 火炎放射器モデル
-	// 右方向
-	CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
-	(
-		CVector(1115.0f, 213.0f, -447.0f),
-		CVector(1.0f, 1.0f, 1.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	flamethrower2->Rotate(-90.0f, 0.0f, -90.0f);
-	AddTask(flamethrower2);
+	//// 火炎放射器モデル
+	//// 右方向
+	//CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
+	//(
+	//	CVector(1115.0f, 213.0f, -447.0f),
+	//	CVector(1.0f, 1.0f, 1.0f),
+	//	CVector(0.0f, 0.0f, 0.0f)
+	//);
+	//flamethrower2->Rotate(-90.0f, 0.0f, -90.0f);
+	//AddTask(flamethrower2);
 
-	// ジャンプオブジェクト
-	CJumpingObject* jumping1 = new CJumpingObject
-	(
-		CVector(1183.0f, 250.0f, -350.0f),
-		CVector(0.5f, 0.5f, 0.5f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(jumping1);
+	//// ジャンプオブジェクト
+	//CJumpingObject* jumping1 = new CJumpingObject
+	//(
+	//	CVector(1183.0f, 250.0f, -350.0f),
+	//	CVector(0.5f, 0.5f, 0.5f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(jumping1);
 
-	// ジャンプオブジェクト
-	CJumpingObject* jumping2 = new CJumpingObject
-	(
-		CVector(1244.0f, 285.0f, -211.0f),
-		CVector(0.5f, 0.5f, 0.5f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(jumping2);
+	//// ジャンプオブジェクト
+	//CJumpingObject* jumping2 = new CJumpingObject
+	//(
+	//	CVector(1244.0f, 285.0f, -211.0f),
+	//	CVector(0.5f, 0.5f, 0.5f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(jumping2);
 
 	// 回数オブジェクト(一回)
 	CNumberFloorOnce* numberfloor1 = new CNumberFloorOnce
@@ -196,32 +201,32 @@ void CStage1::Load()
 	AddTask(numberfloor1);
 
 
-	// 回転する床ギミック(時間)
-	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
-		CVector(216.0f, 112.0f, -18.0f),
-		CVector(2.5f, 2.5f, 2.5f),
-		CVector(0.0f, 90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rotatetimegimmick);
+	//// 回転する床ギミック(時間)
+	//CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
+	//	CVector(216.0f, 112.0f, -18.0f),
+	//	CVector(2.5f, 2.5f, 2.5f),
+	//	CVector(0.0f, 90.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(rotatetimegimmick);
 
-	// 回転する床ギミック(ジャンプ)
-	CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
-		CVector(1500.0f, 360.0f, -209.0f),
-		CVector(3.3f, 3.3f, 3.3f),
-		CVector(0.0f, 90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rotategimmick);
+	//// 回転する床ギミック(ジャンプ)
+	//CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
+	//	CVector(1500.0f, 360.0f, -209.0f),
+	//	CVector(3.3f, 3.3f, 3.3f),
+	//	CVector(0.0f, 90.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(rotategimmick);
 
-	// 回転する床ギミック(ジャンプ)
-	CRotateFloorGimmick* rotategimmick2 = new CRotateFloorGimmick(
-		CVector(1560.0f, 370.0f, -209.0f),
-		CVector(3.3f, 3.3f, 3.3f),
-		CVector(0.0f, 90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rotategimmick2);
+	//// 回転する床ギミック(ジャンプ)
+	//CRotateFloorGimmick* rotategimmick2 = new CRotateFloorGimmick(
+	//	CVector(1560.0f, 370.0f, -209.0f),
+	//	CVector(3.3f, 3.3f, 3.3f),
+	//	CVector(0.0f, 90.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(rotategimmick2);
 
 	// セーブポイント
 	CSavePoint* savepoint = new CSavePoint
@@ -352,7 +357,7 @@ void CStage1::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(-9.0f, 320.0f, -1173.0f);	//197.0f,1235.0f,279.0f
+	CVector playerPos = CVector(197.0f, 125.0f, 269.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

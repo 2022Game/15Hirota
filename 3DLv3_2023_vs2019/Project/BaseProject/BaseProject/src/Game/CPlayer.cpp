@@ -26,6 +26,7 @@
 #include "CResultAnnouncement.h"
 #include "CScreenItem.h"
 #include "Easing.h"
+#include "CStageMenu.h"
 
 // プレイヤー関連
 // 高さ
@@ -130,6 +131,7 @@ CPlayer::CPlayer()
 	, mElapsedTimeEnd(0.0f)
 	, mElapsedTimeCol(0.0f)
 	, mClimbStaminaTime(0.0f)
+	, mElapsedStageTime(0.0f)
 	, mInvincibleStartTime(10.0f)
 	, mStartPos(CVector::zero)
 	, mMoveSpeed(CVector::zero)
@@ -515,7 +517,19 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			// 落下ダメージ処理
 			int currentStage = CGameManager::StageNo();
-			if (currentStage == 3)
+
+			if (currentStage == 1)
+			{
+				ChangeState(EState::eFallDamege);
+				Position(197.0f, 139.0f, 269.0f);
+				// 1面のセーブポイント
+				if (mSavePoint)
+				{
+					ChangeState(EState::eFallDamege);
+					Position(-9.0f, 320.0f, -1173.0f);
+				}
+			}
+			else if (currentStage == 3)
 			{
 				ChangeState(EState::eFallDamege);
 				Position(0.0f, 17.0f, -70.0f);
@@ -927,6 +941,8 @@ void CPlayer::UpdateReady()
 		// プレイヤーの移動速度を0にする
 		mMoveSpeed = CVector::zero;
 		mMoveSpeedY = 0.0f;
+		mCharaStatus.stamina = mCharaMaxStatus.stamina;
+		mCharaStatus.hp = mCharaMaxStatus.hp;
 		// 次のステップへ
 		mStateStep++;
 		break;
@@ -935,6 +951,7 @@ void CPlayer::UpdateReady()
 		// ゲームが開始したら
 		if (CGameManager::GameState() == EGameState::eGame)
 		{
+			mElapsedStageTime = 0.0f;
 			// プレイヤーの衝突判定をオンにする
 			SetEnableCol(true);
 			// 現在の状態を待機に切り替え
@@ -2502,13 +2519,27 @@ bool CPlayer::IsFoundVanguard()
 // 更新
 void CPlayer::Update()
 {
+	CDebugPrint::Print("elapsed:%f\n",mElapsedStageTime);
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
 	mHpHit = false;
 
-	if (mMoveSpeedY <= -3.0f)
+	if (CGameManager::GameState() == EGameState::eStage1)
+	{
+		ChangeState(EState::eReady);
+	}
+	else if (CGameManager::GameState() == EGameState::eStage2)
+	{
+		ChangeState(EState::eReady);
+	}
+	else if (CGameManager::GameState() == EGameState::eStage3)
+	{
+		ChangeState(EState::eReady);
+	}
+
+	if (mMoveSpeedY <= -4.0f)
 	{
 		ChangeState(EState::eFalling);
 	}

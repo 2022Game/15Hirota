@@ -52,9 +52,7 @@ CField_Worlds_1::CField_Worlds_1()
 	CModel* wallCol = CResourceManager::Get<CModel>("WallCol");
 	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);
 
-	// 落下判定用のコライダー
-	CModel* fallCol = CResourceManager::Get<CModel>("FallCol");
-	mpFallCol = new CColliderMesh(this, ELayer::eFall, fallCol, true);
+	
 }
 
 CField_Worlds_1::~CField_Worlds_1()
@@ -62,7 +60,6 @@ CField_Worlds_1::~CField_Worlds_1()
 	// コライダーを削除
 	SAFE_DELETE(mpFloorCol);
 	SAFE_DELETE(mpWallCol);
-	SAFE_DELETE(mpFallCol);
 	//SAFE_DELETE(mpTreeCol);
 	//SAFE_DELETE(mpRockShrudCol);
 

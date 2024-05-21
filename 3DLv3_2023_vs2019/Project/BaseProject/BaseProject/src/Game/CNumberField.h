@@ -8,8 +8,9 @@
 // 「連続ジャンプステージ」
 class CNumberField : public CObjectBase
 {
-public: CNumberField();
-	  ~CNumberField();
+public: 
+	CNumberField();
+	~CNumberField();
 
 	  // 壁のコライダー取得
 	 // CColliderMesh* GetWallCol() const;

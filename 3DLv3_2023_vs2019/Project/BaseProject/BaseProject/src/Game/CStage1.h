@@ -3,6 +3,7 @@
 #include "CStageBase.h"
 
 class CField_Worlds_1;
+class CField_Worlds_1_FallCol;
 class CStageTime;
 
 // ステージ1「平原マップ」
@@ -21,5 +22,6 @@ public:
 
 private:
 	CField_Worlds_1* mpField_Worlds_1;	// フィールド
+	CField_Worlds_1_FallCol* mpFallCol;
 };
 #endif

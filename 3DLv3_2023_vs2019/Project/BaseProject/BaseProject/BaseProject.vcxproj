@@ -88,6 +88,7 @@
     <ClCompile Include="src\Game\CFallingObjects.cpp" />
     <ClCompile Include="src\Game\CField1.cpp" />
     <ClCompile Include="src\Game\CField_Worlds_1.cpp" />
+    <ClCompile Include="src\Game\CField_Worlds_1_FallCol.cpp" />
     <ClCompile Include="src\Game\CFixedFlamethrower.cpp" />
     <ClCompile Include="src\Game\CFlame.cpp" />
     <ClCompile Include="src\Game\CFlamethrower.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="src\Game\CFallingObjects.h" />
     <ClInclude Include="src\Game\CField1.h" />
     <ClInclude Include="src\Game\CField_Worlds_1.h" />
+    <ClInclude Include="src\Game\CField_Worlds_1_FallCol.h" />
     <ClInclude Include="src\Game\CFixedFlamethrower.h" />
     <ClInclude Include="src\Game\CFlame.h" />
     <ClInclude Include="src\Game\CFlamethrower.h" />

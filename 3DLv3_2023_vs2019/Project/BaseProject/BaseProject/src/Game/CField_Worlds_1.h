@@ -34,7 +34,6 @@ private:
 
 	CColliderMesh* mpFloorCol;
 	CColliderMesh* mpWallCol;
-	CColliderMesh* mpFallCol;
 	CColliderMesh* mpTreeCol;
 	CColliderMesh* mpBranchCol;
 	CColliderMesh* mpRockShrudCol;

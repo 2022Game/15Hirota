@@ -6,6 +6,8 @@
 
 class CImage;
 class CExpandButton;
+class CText;
+class CFont;
 
 // リザルト画面表示
 // リザルト画面選択メニュー
@@ -72,14 +74,16 @@ private:
 	// [END]クリック時のコールバック関数
 	void OnClickEnd();
 
-	EState mState;		// 現在の状態
-	int mStateStep;		// 状態内でのステップ管理用
-	int mSelectIndex;	// 現在選択している項目
-	float mElapsedTime;	// 経過時間計測用
-	float mAlpha;		// α値
-	bool mIsEnd;		// タイトル画面終了フラグ
-	bool mIsOpened;		// メニュー開閉フラグ
-	bool mResultOpened;	// 別のクラスに伝えるようフラグ
+	EState mState;			// 現在の状態
+	int mStateStep;			// 状態内でのステップ管理用
+	int mSelectIndex;		// 現在選択している項目
+	float mElapsedTime;		// 経過時間計測用
+	float mElapsedABCTime;	// A,B,C画像の経過時間計測用
+	float mElapsedRankTime;	// ランク！画像の経過時間計測用
+	float mAlpha;			// α値
+	bool mIsEnd;			// タイトル画面終了フラグ
+	bool mIsOpened;			// メニュー開閉フラグ
+	bool mResultOpened;		// 別のクラスに伝えるようフラグ
 
 	CText* mpStartText;						// 「CLICK TO START」のテキスト
 	std::vector<CExpandButton*> mButtons;	// ボタンの画像配列
@@ -87,10 +91,14 @@ private:
 	// リザルトの画像
 	enum Result
 	{
-		A,
-		B,
-		C,
+		A,	// 最高
+		B,	// 中間
+		C,	// 最低
 	};
 	std::vector<std::pair<Result, CImage*>> mABCItems;
+
+	// ランク！画像
+	CText* mpRankText;
+	CFont* mpRankFont;
 };
 #endif

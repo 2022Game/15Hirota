@@ -13,6 +13,8 @@
 #include "CExpandButton.h"
 #include "CFade.h"
 #include "Easing.h"
+#include "CFont.h"
+#include "CPlayer.h"
 
 #define MENU_ALPHA 0.65f
 // タイトルメニューのアニメーション時間
@@ -40,12 +42,37 @@ CResultAnnouncement::CResultAnnouncement()
 	, mSelectIndex(0)
 	, mAlpha(0.0f)
 	, mElapsedTime(0.0f)
+	, mElapsedABCTime(0.0f)
+	, mElapsedRankTime(0.0f)
+	, mIsEnd(false)
 	, mIsOpened(false)
 	, mResultOpened(false)
-	, mIsEnd(false)
 {
 	// インスタンスの設定
 	spInstance = this;
+
+	// ランク！のフォントデータを生成
+	mpRankFont = new CFont("res\\Font\\toroman.ttf");
+	mpRankFont->SetFontSize(70);
+	mpRankFont->SetAlignment(FTGL::TextAlignment::ALIGN_CENTER);
+	mpRankFont->SetLineLength(WINDOW_WIDTH);
+
+	// ランク！のテキストを生成
+	mpRankText = new CText
+	(
+		mpRankFont, 70,
+		CVector2(WINDOW_WIDTH * 0.4f, 300.0f),
+		CVector2(WINDOW_WIDTH, WINDOW_HEIGHT),
+		CColor(0.0f, 0.0f, 0.0f, 0.0f),
+		ETaskPriority::eUI,
+		0,
+		ETaskPauseType::eDefault,
+		false,
+		false
+	);
+	mpRankText->SetText("ランク！");
+	mpRankText->SetEnableOutline(true);
+	mpRankText->SetOutlineColor(CColor(0.9f, 0.9f, 0.9f));
 
 	// [START]ボタンを生成
 	CExpandButton* btn1 = new CExpandButton
@@ -128,6 +155,8 @@ CResultAnnouncement::~CResultAnnouncement()
 	spInstance = nullptr;
 
 	//SAFE_DELETE(mpStartText);
+	SAFE_DELETE(mpRankFont);
+	SAFE_DELETE(mpRankText);
 
 	int size = mButtons.size();
 	for (int i = 0; i < size; i++)
@@ -343,24 +372,37 @@ void CResultAnnouncement::Update()
 	// メニューを開いていたら
 	if (IsOpened())
 	{
+		static const float fadeTimeRank = 0.1f;
+		static const float fadeRankAlpha = 1.0f;
+		if (mElapsedRankTime < fadeTimeRank)
+		{
+			float alphaRank = mElapsedRankTime / fadeTimeRank;
+			mpRankText->SetAlpha(fadeRankAlpha * alphaRank);
+			mElapsedRankTime += 0.0016f;
+		}
+		else
+		{
+			mpRankText->SetAlpha(fadeRankAlpha);
+		}
+
 		// A,B,C の画像
 		for (const auto& itemPair : mABCItems)
 		{
 			CImage* item = itemPair.second;
 
 			// 表示＆非表示に掛ける時間（秒）
-			static const float fadeTime = 5.0f;
+			static const float fadeTime = 1.5f;
 			// 最大アルファ値
 			static const float fadeAlpha = 1.0f;
 
 			//フェード背景の表示時間が経過していない
-			if (mElapsedTime < fadeTime)
+			if (mElapsedABCTime < fadeTime)
 			{
 				//経過時間に合わせてアルファ値を設定
-				float alpha = mElapsedTime / fadeTime;
+				float alpha = mElapsedABCTime / fadeTime;
 				item->SetAlpha(fadeAlpha * alpha);
 				//1フレームの経過時間を加算（仮）
-				mElapsedTime += 0.0016f;
+				mElapsedABCTime += 0.016f;
 			}
 			//フェード背景の表示時間が経過した
 			else
@@ -368,6 +410,7 @@ void CResultAnnouncement::Update()
 				//フェード背景を完全に表示して
 				item->SetAlpha(fadeAlpha);
 			}
+			mpRankText->Update();
 		}
 	}
 	else
@@ -377,8 +420,11 @@ void CResultAnnouncement::Update()
 			CImage* item = itemPair.second;
 
 			item->SetAlpha(0.0f);
-			mElapsedTime = 0.0f;
+			mElapsedABCTime = 0.0f;
 		}
+
+		mpRankText->SetAlpha(0.0f);
+		mElapsedRankTime = 0.0f;
 	}
 
 	for (CButton* btn : mButtons)
@@ -406,9 +452,21 @@ void CResultAnnouncement::Render()
 				btn->Render();
 			}
 
+			// ランク！描画
+			mpRankText->Render();
+
 			// 画像パスを更新
 			CResult* result = CResult::Instance();
 			int score = result->GetTotalScore();
+
+			// プレイヤーのインスタンス
+			CPlayer* player = CPlayer::Instance();
+			// ステージ1をクリアしたか
+			bool stage1 = player->IsStage1Clear();
+			// ステージ2をクリアしたか
+			bool stage2 = player->IsStage2Clear();
+			// ステージ３をクリアしたか
+			bool stage3 = player->IsStage3Clear();
 
 			// mABCItems内の画像を描画
 			for (int i = 0; i < mABCItems.size(); i++)
@@ -416,17 +474,34 @@ void CResultAnnouncement::Render()
 				// スコアに応じた結果を計算
 				// ステージ事に変更する
 				Result resultType;
-				if (score >= 2500)
+				// ステージ1の結果
+				if (stage1)
 				{
-					resultType = Result::A;
+					
 				}
-				else if (score < 2500 && score >= 1500)
+				// ステージ２の結果
+				else if (stage2)
 				{
-					resultType = Result::B;
+
 				}
-				else
+				// ステージ３の結果
+				else if (stage3)
 				{
-					resultType = Result::C;
+					// Aランク
+					if (score >= 2500)
+					{
+						resultType = Result::A;
+					}
+					// Bランク
+					else if (score < 2500 && score >= 1500)
+					{
+						resultType = Result::B;
+					}
+					// Cランク
+					else
+					{
+						resultType = Result::C;
+					}
 				}
 
 				// アイテムの種類を取得

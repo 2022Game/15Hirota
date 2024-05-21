@@ -658,6 +658,9 @@
     <ClCompile Include="src\Game\CCutInResult.cpp">
       <Filter>ソース ファイル\Game\Cutin</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CField_Worlds_1_FallCol.cpp">
+      <Filter>ソース ファイル\Game\Field</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1205,6 +1208,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CCutInResult.h">
       <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CField_Worlds_1_FallCol.h">
+      <Filter>ソース ファイル\Game\Field</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

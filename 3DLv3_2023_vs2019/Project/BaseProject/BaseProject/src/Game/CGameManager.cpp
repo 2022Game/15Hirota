@@ -18,6 +18,7 @@ CGameManager::CGameManager()
 	, mState(EGameState::eRaady)
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
+	, mElapsedStageTime(0.0f)
 	, mResultSetUp(false)
 {
 }
@@ -193,7 +194,11 @@ void CGameManager::UpdateStage1()
 	CBlueMedal::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 
-	ChangeState(EGameState::eGame);
+	mElapsedStageTime += Time::DeltaTime();
+	if (mElapsedStageTime > 4.0f)
+	{
+		ChangeState(EGameState::eGame);
+	}
 }
 
 // ステージ2の更新処理
@@ -204,7 +209,11 @@ void CGameManager::UpdateStage2()
 	CBlueMedal::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 
-	ChangeState(EGameState::eGame);
+	mElapsedStageTime += Time::DeltaTime();
+	if (mElapsedStageTime > 4.0f)
+	{
+		ChangeState(EGameState::eGame);
+	}
 }
 
 // ステージ3の更新処理
@@ -215,7 +224,11 @@ void CGameManager::UpdateStage3()
 	CBlueMedal::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 
-	ChangeState(EGameState::eGame);
+	mElapsedStageTime += Time::DeltaTime();
+	if (mElapsedStageTime > 4.0f)
+	{
+		ChangeState(EGameState::eGame);
+	}
 }
 
 // ステージ失敗

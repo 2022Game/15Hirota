@@ -26,7 +26,7 @@ CResult::CResult()
 	, mScore(0)
 	, mCurrentDisplayedScore(0)
 	, mTargetScore(0)
-	, mScoreAnimationSpeed(30)
+	, mScoreAnimationSpeed(20)
 	, mpTime(nullptr)
 	, mpScore(nullptr)
 {

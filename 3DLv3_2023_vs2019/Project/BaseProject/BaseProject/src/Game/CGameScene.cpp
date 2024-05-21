@@ -170,11 +170,11 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-	CResultAnnouncement* resut = CResultAnnouncement::Instance();
+	/*CResultAnnouncement* resut = CResultAnnouncement::Instance();
 	bool resultend = resut->IsResultOpened();
 	bool opened = resut->IsOpened();
 	CDebugPrint::Print("result:%s\n", resultend ? "true" : "false");
-	CDebugPrint::Print("opned:%s\n", opened ? "true" : "false");
+	CDebugPrint::Print("opned:%s\n", opened ? "true" : "false");*/
 
 	/*CResult* result = CResult::Instance();
 	int score = result->GetTotalScore();
@@ -194,43 +194,6 @@ void CGameScene::Update()
 			mpGameMenu->Open();
 		}
 	}
-
-
-	// リザルト表示
-	if (CGameManager::GameState() == EGameState::eResult)
-	{
-		// カーソルをオンにする
-		CInput::ShowCursor(true);
-		// リザルトメニューを開いていなかったら
-		if (!mpResultUI->IsOpened())
-		{
-			// 開く
-			mpResultUI->Open();
-			mpResultUI->Update();
-		}
-		// リザルトメニューを開いていたら
-		else
-		{
-			// リザルト画面終了フラグがオンだったら
-			if (mpResultUI->IsEnd())
-			{
-				// ゲーム開始ならば、ゲームシーンを読み込む
-				if (mpResultUI->IsStartGame())
-				{
-					// メニューを閉じる
-					mpResultUI->Close();
-					CGameManager::GameRestart();
-				}
-				// ゲーム終了ならば、アプリを閉じる
-				else if (mpResultUI->IsExitGame())
-				{
-					System::ExitGame();
-				}
-			}
-		}
-	}
-	// 更新
-	mpResultUI->Update();
 
 	//// インベントリを開いていなければ、[I]キーでメニューを開く
 	//if (!mpInventoryMenu->IsOpened())
@@ -299,6 +262,44 @@ void CGameScene::Update()
 	//		jumping = true;
 	//	}
 	//}
+
+	// ゲームのステータスがeResultだったら
+	// リザルト表示
+	// (他にやり方があるかも)
+	if (CGameManager::GameState() == EGameState::eResult)
+	{
+		// カーソルをオンにする
+		CInput::ShowCursor(true);
+		// リザルトメニューを開いていなかったら
+		if (!mpResultUI->IsOpened())
+		{
+			// 開く
+			mpResultUI->Open();
+			mpResultUI->Update();
+		}
+		// リザルトメニューを開いていたら
+		else
+		{
+			// リザルト画面終了フラグがオンだったら
+			if (mpResultUI->IsEnd())
+			{
+				// ゲーム開始ならば、ゲームシーンを読み込む
+				if (mpResultUI->IsStartGame())
+				{
+					// メニューを閉じる
+					mpResultUI->Close();
+					CGameManager::GameRestart();
+				}
+				// ゲーム終了ならば、アプリを閉じる
+				else if (mpResultUI->IsExitGame())
+				{
+					System::ExitGame();
+				}
+			}
+		}
+	}
+	// 更新
+	mpResultUI->Update();
 
 	////////////////////////////////////////////////////////////////////////////////////
 

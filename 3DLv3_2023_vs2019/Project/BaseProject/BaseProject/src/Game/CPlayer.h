@@ -445,6 +445,8 @@ private:
 	float mMoveSpeedY;
 	// プレイヤーの大きさ変更計測時間
 	float mScaleTime;
+	// 準備が終わった後の経過時間計測用
+	float mElapsedStageTime;
 
 	// 接地しているかどうか
 	bool mIsGrounded;
