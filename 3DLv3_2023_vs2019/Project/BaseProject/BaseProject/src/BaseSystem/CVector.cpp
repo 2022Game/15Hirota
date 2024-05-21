@@ -259,6 +259,12 @@ CVector CVector::Lerp(const CVector& a, const CVector& b, float t)
 	return a + (b - a) * t;
 }
 
+// 2点間を線形補間する（補間割合クランプなし版）
+CVector CVector::LerpUnclamped(const CVector& a, const CVector& b, float t)
+{
+	return a + (b - a) * t;
+}
+
 // 2つのベクトル間を球面線形補間する
 CVector CVector::Slerp(const CVector& a, const CVector& b, float t)
 {
@@ -492,6 +498,12 @@ float CVector2::Angle(const CVector2& v0, const CVector2& v1)
 CVector2 CVector2::Lerp(const CVector2& a, const CVector2& b, float t)
 {
 	t = Math::Clamp01(t);
+	return a + (b - a) * t;
+}
+
+// 2点間を線形補間する（補間割合クランプなし版）
+CVector2 CVector2::LerpUnclamped(const CVector2& a, const CVector2& b, float t)
+{
 	return a + (b - a) * t;
 }
 
