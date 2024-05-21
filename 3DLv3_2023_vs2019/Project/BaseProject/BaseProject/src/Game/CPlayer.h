@@ -122,6 +122,9 @@ public:
 	// ステージをクリアしたかどうか
 	bool IsStageClear();
 
+	// ステージフラグをfalseにする関数
+	void StageFlagfalse();
+
 
 	// 敵を見つけたかどうか
 	// 使わないかも

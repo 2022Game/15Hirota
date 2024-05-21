@@ -8,6 +8,7 @@ enum class ELayer
 	eTest,
 
 	eField,
+	eStageMenuObject,		// ステージメニューのオブジェクト
 	eFieldWall,
 	eFieldEnemyWall,
 	eClimb,					// 登れるコライダー

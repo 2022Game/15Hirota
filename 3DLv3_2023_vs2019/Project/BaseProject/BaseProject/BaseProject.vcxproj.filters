@@ -92,9 +92,6 @@
     <Filter Include="ソース ファイル\BaseSystem\Sound">
       <UniqueIdentifier>{99ead9f6-35af-4e55-a66f-ec4ac8d90924}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Field\Object\Tree">
-      <UniqueIdentifier>{56c8349e-1aa1-4aba-83c4-df0dacdb2535}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game\Stage\StageButton">
       <UniqueIdentifier>{bb7528d6-387a-4e81-9128-6d76c0dc78ed}</UniqueIdentifier>
     </Filter>
@@ -133,6 +130,21 @@
     </Filter>
     <Filter Include="ソース ファイル\Game\Character\CharaObject\ItemObject\Base">
       <UniqueIdentifier>{4aafe6c2-ae65-421e-aae2-8518ddc0d799}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Camera">
+      <UniqueIdentifier>{0bb16836-ad1a-45fd-a159-0877e33227b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Obstacle\Tree">
+      <UniqueIdentifier>{56c8349e-1aa1-4aba-83c4-df0dacdb2535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Base">
+      <UniqueIdentifier>{4b7506e8-1553-42c7-a75b-a512e205b582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\StageField">
+      <UniqueIdentifier>{e908e2d7-ce6c-4401-88e1-c5d02e7eecb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\StageMenuObject">
+      <UniqueIdentifier>{3875cf59-8261-4da2-b78f-dacb23697950}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -250,9 +262,6 @@
     <ClCompile Include="src\BaseSystem\CDebugPrint.cpp">
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CField.cpp">
-      <Filter>ソース ファイル\Game\Field</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CXCharacter.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
@@ -264,9 +273,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CImage.cpp">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CRideabeObject.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CharaStatus.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
@@ -367,20 +373,11 @@
     <ClCompile Include="src\BaseSystem\CResource.cpp">
       <Filter>ソース ファイル\BaseSystem\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CGoalObject.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CSoldierFrame.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CSoldierGauge.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CStone1.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CGoalBase.cpp">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CStageBase.cpp">
       <Filter>ソース ファイル\Game\Stage</Filter>
@@ -405,9 +402,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CSignboardUI.cpp">
       <Filter>ソース ファイル\Game\UI\ObjectUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CGameCamera.cpp">
-      <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CTrailEffect.cpp">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
@@ -463,14 +457,8 @@
     <ClCompile Include="src\Game\CStageSelectionStage.cpp">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CStageSelection.cpp">
-      <Filter>ソース ファイル\Game\Field</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CField1.cpp">
-      <Filter>ソース ファイル\Game\Field</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CTree1.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Tree</Filter>
+      <Filter>ソース ファイル\Game\Field\Object\Obstacle\Tree</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CStageTime.cpp">
       <Filter>ソース ファイル\Game\UI\StageUI</Filter>
@@ -501,9 +489,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CClimbWall.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CField_Worlds_1.cpp">
-      <Filter>ソース ファイル\Game\Field</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CWireMeshClimbWall.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
@@ -589,9 +574,6 @@
     <ClCompile Include="src\Game\CNumberFloorOnce.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CNumberField.cpp">
-      <Filter>ソース ファイル\Game\Field</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CStage3.cpp">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClCompile>
@@ -658,8 +640,44 @@
     <ClCompile Include="src\Game\CCutInResult.cpp">
       <Filter>ソース ファイル\Game\Cutin</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CGameCamera.cpp">
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageSelectCamera.cpp">
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStone1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGoalBase.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGoalObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CRideabeObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CField.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CField_Worlds_1.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClCompile>
     <ClCompile Include="src\Game\CField_Worlds_1_FallCol.cpp">
-      <Filter>ソース ファイル\Game\Field</Filter>
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CField1.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNumberField.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageSelection.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStage1MenuObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -798,9 +816,6 @@
     <ClInclude Include="src\BaseSystem\CDebugPrint.h">
       <Filter>ソース ファイル\BaseSystem\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CField.h">
-      <Filter>ソース ファイル\Game\Field</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CXCharacter.h">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
@@ -812,9 +827,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CImage.h">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CRideableObject.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CUnityChan.h">
       <Filter>ソース ファイル\Game\Character</Filter>
@@ -915,20 +927,11 @@
     <ClInclude Include="src\BaseSystem\CResource.h">
       <Filter>ソース ファイル\BaseSystem\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CGoalObject.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CSoldierFrame.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CSoldierGauge.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CStone1.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CGoalBase.h">
-      <Filter>ソース ファイル\Game\Field\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CStageBase.h">
       <Filter>ソース ファイル\Game\Stage</Filter>
@@ -953,9 +956,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSignboardUI.h">
       <Filter>ソース ファイル\Game\UI\ObjectUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CGameCamera.h">
-      <Filter>ソース ファイル\Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CTrailEffect.h">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
@@ -1014,14 +1014,8 @@
     <ClInclude Include="src\Game\CStageSelectionStage.h">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CStageSelection.h">
-      <Filter>ソース ファイル\Game\Field</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CField1.h">
-      <Filter>ソース ファイル\Game\Field</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CTree1.h">
-      <Filter>ソース ファイル\Game\Field\Object\Tree</Filter>
+      <Filter>ソース ファイル\Game\Field\Object\Obstacle\Tree</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CStageTime.h">
       <Filter>ソース ファイル\Game\UI\StageUI</Filter>
@@ -1052,9 +1046,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CClimbWall.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CField_Worlds_1.h">
-      <Filter>ソース ファイル\Game\Field</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CWireMeshClimbWall.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
@@ -1140,9 +1131,6 @@
     <ClInclude Include="src\Game\CNumberFloorOnce.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CNumberField.h">
-      <Filter>ソース ファイル\Game\Field</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CStage3.h">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClInclude>
@@ -1209,8 +1197,44 @@
     <ClInclude Include="src\Game\CCutInResult.h">
       <Filter>ソース ファイル\Game\Cutin</Filter>
     </ClInclude>
+    <ClInclude Include="src\Game\CGameCamera.h">
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageSelectCamera.h">
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStone1.h">
+      <Filter>ソース ファイル\Game\Field\Object\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGoalBase.h">
+      <Filter>ソース ファイル\Game\Field\Object\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGoalObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CRideableObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CField.h">
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CField_Worlds_1.h">
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClInclude>
     <ClInclude Include="src\Game\CField_Worlds_1_FallCol.h">
-      <Filter>ソース ファイル\Game\Field</Filter>
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CField1.h">
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNumberField.h">
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageSelection.h">
+      <Filter>ソース ファイル\Game\Field\StageField</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStage1MenuObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

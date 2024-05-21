@@ -135,6 +135,7 @@ public:
 	/// <param name="t">補間割合（0.0f～1.0f）</param>
 	/// <returns>線形補間の結果</returns>
 	static CVector Lerp(const CVector& a, const CVector& b, float t);
+	/// <summary>
 	/// 2点間を線形補間する（補間割合クランプなし版）
 	/// </summary>
 	/// <param name="a">開始位置</param>

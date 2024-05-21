@@ -8,6 +8,8 @@
 #include "CVanguard.h"
 #include "CFixedFlamethrower.h"
 #include "CTreasureChest.h"
+#include "CStageSelectCamera.h"
+#include "CStage1MenuObject.h"
 
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
@@ -55,6 +57,7 @@ void CStageSelectionStage::Load()
 	CResourceManager::Load<CModel>("StageSelectionFloorCol", "Field\\StageSentakuFloor.obj");	// ステージセレクトステージ(床)
 	CResourceManager::Load<CModel>("StageSelectionWallCol", "Field\\StageSentakuWall.obj");		// ステージセレクトステージ(壁)
 	CResourceManager::Load<CModel>("StageButton", "Field\\Object\\StageBotan.obj");				// ステージボタン
+	CResourceManager::Load<CModel>("SkyIslandMenu",		"Field\\Object\\Skyisland.obj");	// 空島モデル
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -70,6 +73,15 @@ void CStageSelectionStage::Load()
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer);
 	AddTask(button);
+
+	// ステージメニューオブジェクト
+	CStageMenuObject* menuobj = new CStageMenuObject(
+		CVector(-95.0f, 12.0f, 0.0f),
+		CVector(1.5f, 1.5f, 1.5f),
+		CVector(0.0f, 40.0f, 0.0f),
+		ETag::ePlayer, ELayer::eDamageCol);
+	AddTask(menuobj);
+
 
 
 	//// 針モデル
@@ -109,15 +121,25 @@ void CStageSelectionStage::Load()
 		player->Rotation(0.0f, -90.0f, 0.0f);
 	}
 
-	// カメラの位置と向きを設定
-	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);
-	CCamera* mainCamera = CCamera::MainCamera();
-	mainCamera->LookAt(
+	// ステージ選択画面は、ステージ選択画面用のカメラを使用するため、
+	// ゲームのカメラを削除する
+	CCamera* camera = CCamera::MainCamera();
+	if (camera != nullptr)
+	{
+		camera->Kill();
+	}
+
+	// カメラの位置をプレイヤーから一定量離れた位置に設定
+	CVector camPos = playerPos + CVector(0.0f, 70.0f, 100.0f);
+	// ステージ選択カメラを生成
+	camera = new CStageSelectCamera
+	(
 		camPos,
-		playerPos,
-		CVector::up
+		playerPos,	// カメラの注視点はプレイヤーの座標
+		true
 	);
-	mainCamera->SetFollowTargetTf(player);
+	// カメラをプレイヤーに追従させる
+	camera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	//mainCamera->AddCollider(field->GetWallCol());
 }
@@ -127,4 +149,18 @@ void CStageSelectionStage::Unload()
 {
 	// ベースステージ破棄処理
 	CStageBase::Unload();
+
+	// ステージ選択画面のカメラを削除
+	CCamera* camera = CCamera::MainCamera();
+	if (camera != nullptr)
+	{
+		camera->Kill();
+	}
+	// ステージ中のカメラを生成
+	new CGameCamera
+	(
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+
 }
