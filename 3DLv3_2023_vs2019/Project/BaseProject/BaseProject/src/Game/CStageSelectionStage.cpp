@@ -46,7 +46,7 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 		else
 		{
 			// ステージ3をクリアしていない場合の初期位置
-			playerPos = CVector(-235.0f, 20.0f, 0.0f);
+			playerPos = CVector(-160.0f, 20.0f, 0.0f);
 		}
 	}
 
