@@ -167,6 +167,7 @@ CPlayer::CPlayer()
 	, mIsStage1Clear(false)
 	, mIsStage2Clear(false)
 	, mIsStage3Clear(false)
+	, mIsStartStage1(false)
 	, mStaminaDepleted(false)
 	, mIsPlayedSlashSE(false)
 	, mStaminaLowerLimit(false)
@@ -647,72 +648,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	}
 }
 
-// アイテムを取得
-void CPlayer::AddItem(ItemType item)
-{
-	mInventory[item]++;
-}
-
-// 取得したアイテムを判定
-bool CPlayer::HasItem(ItemType item)
-{	
-	if (mInventory.empty()) {
-		return ItemType::NONE == item;
-	}
-	return mInventory.find(item) != mInventory.end() && mInventory[item] > 0;
-}
-
-// 取得したアイテムを判定
-void CPlayer::ClearItems()
-{
-	mInventory.clear();
-	//AddItem(ItemType::NONE);
-}
-
-// アイテムの取得の条件付けを今後行うための処理
-void CPlayer::PickUpItem(ItemType item)
-{
-	AddItem(item);
-}
-
-// 無敵アイテムの使用
-void CPlayer::UseInvincibleItem()
-{
-	if (HasItem(ItemType::INVINCIBLE)) {
-		TakeInvincible();
-		RemoveItem(ItemType::INVINCIBLE);
-	}
-}
-
-// 回復薬の使用
-void CPlayer::UseHealingItem()
-{
-	if (HasItem(ItemType::HEALING)) {
-		TakeRecovery(1);
-		RemoveItem(ItemType::HEALING);
-	}
-}
-
-// 攻撃力アップアイテムの使用
-void CPlayer::UseAttackPotion()
-{
-	if (HasItem(ItemType::ATTACK_UP)) {
-		TakeAttackPotion(1);
-		RemoveItem(ItemType::ATTACK_UP);
-	}
-}
-
-// インベントリから特定のアイテムを削除
-void CPlayer::RemoveItem(ItemType item)
-{
-	if (mInventory[item] > 0) {
-		mInventory[item]--;
-		if (mInventory[item] == 0) {
-			mInventory.erase(item);	 // アイテムが0になったらインベントリから削除する
-		}
-	}
-}
-
 // 被ダメージ処理
 void CPlayer::TakeDamage(int damage)
 {
@@ -864,6 +799,12 @@ bool CPlayer::IsStage3Clear()
 bool CPlayer::IsStageClear()
 {
 	return mIsStageClear;
+}
+
+// ステージ1に入れるかどうかのフラグ
+bool CPlayer::IsStartStage1()
+{
+	return mIsStartStage1;
 }
 
 // ステージフラグをfalseにする関数
@@ -1582,6 +1523,7 @@ void CPlayer::UpdateClearEnd()
 					mSavePoint = false;
 					mStage3Clear = true;
 					mIsStage3Clear = false;
+					mIsStartStage1 = true;
 					// ステージをクリア
 					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
@@ -3009,6 +2951,72 @@ void CPlayer::Update()
 	//CDebugPrint::Print("mMoveSpeedY%f\n", mMoveSpeedY);
 	//CDebugPrint::Print("State:%d\n", mState);
 	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
+}
+
+// アイテムを取得
+void CPlayer::AddItem(ItemType item)
+{
+	mInventory[item]++;
+}
+
+// 取得したアイテムを判定
+bool CPlayer::HasItem(ItemType item)
+{
+	if (mInventory.empty()) {
+		return ItemType::NONE == item;
+	}
+	return mInventory.find(item) != mInventory.end() && mInventory[item] > 0;
+}
+
+// 取得したアイテムを判定
+void CPlayer::ClearItems()
+{
+	mInventory.clear();
+	//AddItem(ItemType::NONE);
+}
+
+// アイテムの取得の条件付けを今後行うための処理
+void CPlayer::PickUpItem(ItemType item)
+{
+	AddItem(item);
+}
+
+// 無敵アイテムの使用
+void CPlayer::UseInvincibleItem()
+{
+	if (HasItem(ItemType::INVINCIBLE)) {
+		TakeInvincible();
+		RemoveItem(ItemType::INVINCIBLE);
+	}
+}
+
+// 回復薬の使用
+void CPlayer::UseHealingItem()
+{
+	if (HasItem(ItemType::HEALING)) {
+		TakeRecovery(1);
+		RemoveItem(ItemType::HEALING);
+	}
+}
+
+// 攻撃力アップアイテムの使用
+void CPlayer::UseAttackPotion()
+{
+	if (HasItem(ItemType::ATTACK_UP)) {
+		TakeAttackPotion(1);
+		RemoveItem(ItemType::ATTACK_UP);
+	}
+}
+
+// インベントリから特定のアイテムを削除
+void CPlayer::RemoveItem(ItemType item)
+{
+	if (mInventory[item] > 0) {
+		mInventory[item]--;
+		if (mInventory[item] == 0) {
+			mInventory.erase(item);	 // アイテムが0になったらインベントリから削除する
+		}
+	}
 }
 
 // 描画

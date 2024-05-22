@@ -125,6 +125,10 @@ public:
 	// ステージフラグをfalseにする関数
 	void StageFlagfalse();
 
+	// ステージに入れるようにするフラグ
+	// ステージ1に入れるかどうかのフラグ
+	bool IsStartStage1();
+
 
 	// 敵を見つけたかどうか
 	// 使わないかも
@@ -520,6 +524,9 @@ private:
 	bool mStartStage2;
 	// ステージ3に入るかどうか
 	bool mStartStage3;
+
+	// ステージ1に入れるか
+	bool mIsStartStage1;
 
 	///////////////////////////////////////////////////////
 };
