@@ -7,9 +7,9 @@
 #include "CTaskManager.h"
 #include "CStageManager.h"
 
-#define SHRINK_SCALE 0.75f
-#define SHRINK_TIME 0.25f
-#define RETURN_TIME 0.4f
+#define SHRINK_SCALE 0.65f
+#define SHRINK_TIME 0.15f
+#define RETURN_TIME 0.3f
 
 // コンストラクタ
 CStageMenuObject::CStageMenuObject(const CVector& pos, const CVector& scale, const CVector& rot,
@@ -31,7 +31,7 @@ CStageMenuObject::CStageMenuObject(const CVector& pos, const CVector& scale, con
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::eStageMenuObject,
-		6.0f
+		15.0f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eDamageCol });
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
@@ -140,6 +140,10 @@ void CStageMenuObject::UpdateReaction()
 // 更新処理
 void CStageMenuObject::Update()
 {
+	// 回転
+	float rot = 1.0f;
+	Rotate(0.0f, rot, 0.0f);
+
 	switch (mState)
 	{
 	case EState::eIdle:

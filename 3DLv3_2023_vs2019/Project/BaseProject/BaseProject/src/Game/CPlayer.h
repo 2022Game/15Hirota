@@ -276,6 +276,12 @@ private:
 	void UpdateFalling();
 	// 立ち上がる
 	void UpdateStandUp();
+	// ステージ開始時のジャンプ開始
+	void UpdateStartStageJumpStart();
+	// ステージ開始時のジャンプ
+	void UpdateStartStageJump();
+	// ステージ開始時のジャンプ終了
+	void UpdateStartStageJumpEnd();
 	// リザルト前のジャンプ開始
 	void UpdateResultJumpStart();
 	// リザルト前のジャンプ
@@ -292,49 +298,52 @@ private:
 	// プレイヤーの状態
 	enum class EState
 	{
-		eReady,				// 準備中
-		eIdle,				// 待機
-		eStop,				// 停止
-		eClearJump,			// リザルト前のアニメーション
-		eAttack,			// 攻撃
-		eAttackStrong,		// 強攻撃
-		eAttackDash,		// ダッシュアタック
-		eAttackWait,		// 攻撃終了待ち
-		eAttackStrongWait,	// 強攻撃終了待ち
-		eAttackDashWait,	// ダッシュアタック終了待ち
-		eJumpStart,			// ジャンプ開始
-		eJump,				// ジャンプ中
-		eJumpEnd,			// ジャンプ終了
-		eJumpingStart,		// 跳ねる開始
-		eJumping,			// 跳ねる
-		eJumpingEnd,		// 跳ねる終了
-		eRotate,			// 回避開始
-		eRotateEnd,			// 回避終了待ち
-		eDashEnd,			// ダッシュ終了
-		eClear,				// クリア状態
-		eClearEnd,			// クリア終了
-		eResult,			// リザルト状態	
-		eResultEnd,			// リザルト終了状態
-		eDeath,				// 死亡
-		eDeathEnd,			// 死亡終了
-		eReStart,			// 再起
-		eHit,				// ダメージヒット
-		eHitBullet,			// 敵の弾ヒット
-		eHitSword,			// 敵の剣ヒット
-		eHitObj,			// ダメージを受ける(オブジェクト)
-		eFallDamege,		// 落下ダメージ
-		eClimb,				// 登る状態
-		eClimbedTop,		// 頂上まで登った
-		eWireClimb,			// 金網に登る状態
-		eWireClimbedTop,	// 金網の頂上まで登った
-		eFalling,			// 落下状態
-		eStandUp,			// 立ち上がる
-		eResultJumpStart,	// リザルト前のジャンプ開始
-		eResultJump,		// リザルト前のジャンプ
-		eResultJumpEnd,		// リザルト前のジャンプ終了
-		eDashJumpStart,		// ダッシュジャンプ開始
-		eDashJump,			// ダッシュジャンプ
-		eDashJumpEnd,		// ダッシュジャンプ終了
+		eReady,				 // 準備中
+		eIdle,				 // 待機
+		eStop,				 // 停止
+		eClearJump,			 // リザルト前のアニメーション
+		eAttack,			 // 攻撃
+		eAttackStrong,		 // 強攻撃
+		eAttackDash,		 // ダッシュアタック
+		eAttackWait,		 // 攻撃終了待ち
+		eAttackStrongWait,	 // 強攻撃終了待ち
+		eAttackDashWait,	 // ダッシュアタック終了待ち
+		eJumpStart,			 // ジャンプ開始
+		eJump,				 // ジャンプ中
+		eJumpEnd,			 // ジャンプ終了
+		eJumpingStart,		 // 跳ねる開始
+		eJumping,			 // 跳ねる
+		eJumpingEnd,		 // 跳ねる終了
+		eRotate,			 // 回避開始
+		eRotateEnd,			 // 回避終了待ち
+		eDashEnd,			 // ダッシュ終了
+		eClear,				 // クリア状態
+		eClearEnd,			 // クリア終了
+		eResult,			 // リザルト状態	
+		eResultEnd,			 // リザルト終了状態
+		eDeath,				 // 死亡
+		eDeathEnd,			 // 死亡終了
+		eReStart,			 // 再起
+		eHit,				 // ダメージヒット
+		eHitBullet,			 // 敵の弾ヒット
+		eHitSword,			 // 敵の剣ヒット
+		eHitObj,			 // ダメージを受ける(オブジェクト)
+		eFallDamege,		 // 落下ダメージ
+		eClimb,				 // 登る状態
+		eClimbedTop,		 // 頂上まで登った
+		eWireClimb,			 // 金網に登る状態
+		eWireClimbedTop,	 // 金網の頂上まで登った
+		eFalling,			 // 落下状態
+		eStandUp,			 // 立ち上がる
+		eStartStageJumpStart,// ステージ開始時のジャンプ開始
+		eStartStageJump,	 // ステージ開始時のジャンプ
+		eStartStageJumpEnd,	 // ステージ開始時のジャンプ終了
+		eResultJumpStart,	 // リザルト前のジャンプ開始
+		eResultJump,		 // リザルト前のジャンプ
+		eResultJumpEnd,		 // リザルト前のジャンプ終了
+		eDashJumpStart,		 // ダッシュジャンプ開始
+		eDashJump,			 // ダッシュジャンプ
+		eDashJumpEnd,		 // ダッシュジャンプ終了
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);

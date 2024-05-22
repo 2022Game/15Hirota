@@ -193,7 +193,7 @@ void CInvincible::MoveLeft()
 void CInvincible::UpdateIdle()
 {
 	// 新しいポジションからX軸に50.0f移動したかどうか
-	CDebugPrint::Print("mTotalMovement:%f\n", mTotalMovement.X());
+	//CDebugPrint::Print("mTotalMovement:%f\n", mTotalMovement.X());
 	// 重力
 	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 

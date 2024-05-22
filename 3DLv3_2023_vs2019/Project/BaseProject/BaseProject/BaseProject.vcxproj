@@ -126,6 +126,7 @@
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CSlash.cpp" />
     <ClCompile Include="src\Game\CStage1.cpp" />
+    <ClCompile Include="src\Game\CStage1Button.cpp" />
     <ClCompile Include="src\Game\CStage1MenuObject.cpp" />
     <ClCompile Include="src\Game\CStage2.cpp" />
     <ClCompile Include="src\Game\CStage3.cpp" />
@@ -313,6 +314,7 @@
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CSlash.h" />
     <ClInclude Include="src\Game\CStage1.h" />
+    <ClInclude Include="src\Game\CStage1Button.h" />
     <ClInclude Include="src\Game\CStage1MenuObject.h" />
     <ClInclude Include="src\Game\CStage2.h" />
     <ClInclude Include="src\Game\CStage3.h" />

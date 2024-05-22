@@ -27,6 +27,7 @@
 #include "CScreenItem.h"
 #include "Easing.h"
 #include "CStageMenu.h"
+#include "CStage1Button.h"
 
 // プレイヤー関連
 // 高さ
@@ -45,6 +46,8 @@
 #define JUMP_BOUNCE 2.0f
 // クリアジャンプ
 #define JUMP_CLEAR 1.6f;
+// スタートジャンプ
+#define JUMP_START_STAGE 2.0f
 // 重力
 #define GRAVITY 0.0625f
 // ジャンプ終了時
@@ -515,13 +518,15 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// 落下判定用のコライダーに触れたら
 		else if (other->Layer() == ELayer::eFall)
 		{
-			// 落下ダメージ処理
+			// ステージ番号
 			int currentStage = CGameManager::StageNo();
 
+			// ステージ番号が1だったら
 			if (currentStage == 1)
 			{
+				// 初期値点に戻す
+				Position(190.0f, 139.0f, 269.0f);
 				ChangeState(EState::eFallDamege);
-				Position(197.0f, 139.0f, 269.0f);
 				// 1面のセーブポイント
 				if (mSavePoint)
 				{
@@ -529,10 +534,12 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					Position(-9.0f, 320.0f, -1173.0f);
 				}
 			}
+			// ステージ番号が3だったら
 			else if (currentStage == 3)
 			{
-				ChangeState(EState::eFallDamege);
+				// 初期値点に戻す
 				Position(0.0f, 17.0f, -70.0f);
+				ChangeState(EState::eFallDamege);
 				// 3面のセーブポイント
 				if (mSavePoint)
 				{
@@ -540,7 +547,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					Position(0.0f, 15.0f, 325.0f);
 				}
 			}
-			//CDebugPrint::Print("mSavePoint: %s\n", mSavePoint ? "true" : "false");
 		}
 		// 炎に当たったら
 		else if (other->Layer() == ELayer::eFlame)
@@ -948,6 +954,7 @@ void CPlayer::UpdateReady()
 	{
 		// ステップ0 初期化処理
 	case 0:
+		ChangeAnimation(EAnimType::eIdle);
 		// 全ての衝突判定をオフにする
 		SetEnableCol(false);
 		// プレイヤーの移動速度を0にする
@@ -981,6 +988,8 @@ void CPlayer::UpdateReady()
 // 待機
 void CPlayer::UpdateIdle()
 {
+	SetAlpha(1.0f);
+	mpSword->SetAlpha(1.0f);
 	mMoveSpeed = CVector::zero;
 	// 剣に攻撃終了を伝える
 	mpSword->AttackEnd();
@@ -1035,6 +1044,18 @@ void CPlayer::UpdateIdle()
 			{
 			}
 		}
+
+		// ステージ1ボタンのインスタンス
+		CStage1Button* button = CStage1Button::Instance();
+		// ステージ1ボタンのフラグを取得
+		bool stage1button = button->IsStage1Button();
+		// ステージ1ボタンがtrueかつステージ番号が0だったら
+		if (stage1button && CGameManager::StageNo() == 0)
+		{
+			// ステージ移行ジャンプに移動する
+			ChangeState(EState::eStartStageJumpStart);
+		}
+
 
 		if (mStage1Clear && !mIsStage1Clear)
 		{
@@ -1363,6 +1384,7 @@ void CPlayer::UpdateAttackWait()
 			if (mCharaStatus.stamina - 20 >= 0)
 			{
 				ChangeState(EState::eJumpStart);
+				mIsSpawnedSlashEffect = false;
 				// スタミナが0以下にならない場合はジャンプを実行
 				mCharaStatus.stamina -= 20;
 			}
@@ -1555,6 +1577,7 @@ void CPlayer::UpdateClearEnd()
 	}
 }
 
+// リザルト時のジャンプ開始
 void CPlayer::UpdateResultJumpStart()
 {
 	Scale(CVector(0.0f, 0.0f, 0.0f));
@@ -1574,6 +1597,7 @@ void CPlayer::UpdateResultJumpStart()
 	mIsGrounded = false;
 }
 
+// リザルト時のジャンプ
 void CPlayer::UpdateResultJump()
 {
 	// 目標地点まで移動させる処理
@@ -1606,11 +1630,76 @@ void CPlayer::UpdateResultJump()
 	}
 }
 
+// リザルト時のジャンプ終了
 void CPlayer::UpdateResultJumpEnd()
 {
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eIdle);
+	}
+}
+
+// ステージ開始時のジャンプ開始
+void CPlayer::UpdateStartStageJumpStart()
+{
+	mMoveSpeed = CVector::zero;
+	mMoveSpeedY = 0.0f;
+
+	mpColliderSphere->SetEnable(false);
+	ChangeAnimation(EAnimType::eJumpStart);
+	ChangeState(EState::eStartStageJump);
+
+	mMoveSpeedY = JUMP_START_STAGE;
+	mIsGrounded = false;
+}
+
+// ステージ開始時のジャンプ
+void CPlayer::UpdateStartStageJump()
+{
+	// 目標地点まで移動させる処理
+	CPlayer* player = CPlayer::Instance();
+	CVector playerPos = player->Position();
+	CVector zDirection(0.0f, 0.0f, -1.0f); // Z軸方向のベクトル
+	CVector targetPos = playerPos + zDirection * 2.0f;
+	float per = mElapsedTime / 1.0f;
+	CVector pos = CVector::Lerp(playerPos, targetPos, per);
+	Position(pos);
+
+	// プレイヤーの向きを調整
+	CVector current = VectorZ();
+	CVector target = zDirection; // 移動方向に合わせてZ軸方向を向かせる
+
+	//// Slerpでスムーズに向きを変える
+	//CVector forward = CVector::Slerp(current, target, 0.125f);
+	//Rotation(CQuaternion::LookRotation(forward));
+	// プレイヤーの向きを調整
+	Rotation(CQuaternion::LookRotation(target)); // 一瞬で新しい方向に向ける
+
+	mElapsedTime += Time::DeltaTime();
+	
+	if (mElapsedTime > 1.0f)
+	{
+		if (mMoveSpeedY <= 0.0f)
+		{
+			ChangeAnimation(EAnimType::eJumpEnd);
+			ChangeState(EState::eStartStageJumpEnd);
+		}
+	}
+}
+
+// ステージ開始時のジャンプ終了
+void CPlayer::UpdateStartStageJumpEnd()
+{
+	mMoveSpeedY = 0.0f;
+	mMoveSpeed = CVector::zero;
+	SetAlpha(0.0f);
+	mpSword->SetAlpha(0.0f);
+	if (IsAnimationFinished())
+	{
+		mElapsedTime = 0.0f;
+		CGameManager::Stage1();
+		mpColliderSphere->SetEnable(true);
+		ChangeState(EState::eReady);
 	}
 }
 
@@ -1920,7 +2009,8 @@ void CPlayer::UpdateHitObj()
 void CPlayer::UpdateFallDamage()
 {
 	mMoveSpeed = CVector::zero;
-	ChangeAnimation(EAnimType::eFallingFlat);
+	//ChangeAnimation(EAnimType::eFallingFlat);
+	ChangeAnimation(EAnimType::eStandUp);
 
 	if (!mFallDamage)
 	{
@@ -2287,14 +2377,11 @@ void CPlayer::UpdateFalling()
 	{
 		if (mCharaStatus.hp > 0)
 		{
-			TakeDamage(1);
-			ChangeAnimation(EAnimType::eStandUp);
-			ChangeState(EState::eStandUp);
+			ChangeState(EState::eFallDamege);
 		}
 		else if (mCharaStatus.hp <= 0)
 		{
-			ChangeAnimation(EAnimType::eDeath);
-			ChangeState(EState::eDeath);
+			ChangeState(EState::eFallDamege);
 		}
 	}
 }
@@ -2532,7 +2619,7 @@ bool CPlayer::IsFoundVanguard()
 // 更新
 void CPlayer::Update()
 {
-	CDebugPrint::Print("elapsed:%f\n",mElapsedStageTime);
+	//CDebugPrint::Print("elapsed:%f\n",mElapsedStageTime);
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
@@ -2729,6 +2816,15 @@ void CPlayer::Update()
 		break;
 	case EState::eResultJumpEnd:
 		UpdateResultJumpEnd();
+		break;
+	case EState::eStartStageJumpStart:
+		UpdateStartStageJumpStart();
+		break;
+	case EState::eStartStageJump:
+		UpdateStartStageJump();
+		break;
+	case EState::eStartStageJumpEnd:
+		UpdateStartStageJumpEnd();
 		break;
 	case EState::eDashJumpStart:
 		UpdateDashJumpStart();

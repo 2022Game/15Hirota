@@ -140,14 +140,14 @@ void CStage1::Load()
 	wiremeshmoveWall->Scale(8.0f, 8.0f, 8.0f);
 	AddTask(wiremeshmoveWall);
 
-	// ずっと回転するモデル
-	CRotationg* rotationg = new CRotationg
-	(
-		CVector(804.0f, 212.0f, -182.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		1.0f
-	);
-	AddTask(rotationg);
+	//// ずっと回転するモデル
+	//CRotationg* rotationg = new CRotationg
+	//(
+	//	CVector(804.0f, 212.0f, -182.0f),
+	//	CVector(5.0f, 5.0f, 5.0f),
+	//	1.0f
+	//);
+	//AddTask(rotationg);
 
 	//// 火炎放射器モデル
 	//// 正面方向
@@ -201,14 +201,14 @@ void CStage1::Load()
 	AddTask(numberfloor1);
 
 
-	//// 回転する床ギミック(時間)
-	//CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
-	//	CVector(216.0f, 112.0f, -18.0f),
-	//	CVector(2.5f, 2.5f, 2.5f),
-	//	CVector(0.0f, 90.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(rotatetimegimmick);
+	// 回転する床ギミック(時間)
+	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
+		CVector(190.0f, 123.0f, -110.0f),
+		CVector(4.5f, 4.5f, 6.5f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(rotatetimegimmick);
 
 	//// 回転する床ギミック(ジャンプ)
 	//CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
@@ -273,23 +273,42 @@ void CStage1::Load()
 	// 438,358,-1221
 
 	// 宝箱
-	CTreasureChest* treasure = new CTreasureChest
+	CTreasureChest* treasure1 = new CTreasureChest
 	(
 		CVector(438.0f, 350.0f, -1221.0f),
 		CVector(4.0f, 4.0f, 4.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	AddTask(treasure);
+	AddTask(treasure1);
 	// 宝箱蓋
-	CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
+	CTreasureChestTwo* treasureTwo1 = new CTreasureChestTwo
 	(
 		CVector(438.0f, 354.8f, -1221.0f),
 		CVector(4.0f, 4.0f, 4.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	AddTask(treasureTwo);
+	AddTask(treasureTwo1);
+
+	// 宝箱
+	CTreasureChest* treasure2 = new CTreasureChest
+	(
+		CVector(-207.0f, 194.0f, -454.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		CVector(0.0f, -90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasure2);
+	// 宝箱蓋
+	CTreasureChestTwo* treasureTwo2 = new CTreasureChestTwo
+	(
+		CVector(-207, 197.8f, -454.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		CVector(0.0f, -90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasureTwo2);
 
 
 	// レンガブロック
@@ -324,25 +343,6 @@ void CStage1::Load()
 	);
 	AddTask(hatena3);
 
-	// 宝箱
-	CTreasureChest* treasure1 = new CTreasureChest
-	(
-		CVector(9.0f, 320.0f, -1173.0f),
-		CVector(4.0f, 4.0f, 4.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(treasure1);
-	// 宝箱蓋
-	CTreasureChestTwo* treasureTwo1 = new CTreasureChestTwo
-	(
-		CVector(9.0f, 322.8f, -1173.0f),
-		CVector(4.0f, 4.0f, 4.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(treasureTwo1);
-
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	// キャラクター
@@ -357,7 +357,7 @@ void CStage1::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(197.0f, 125.0f, 269.0f);
+	CVector playerPos = CVector(190.0f, 125.0f, 269.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

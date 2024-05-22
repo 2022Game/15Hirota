@@ -10,6 +10,7 @@
 #include "CTreasureChest.h"
 #include "CStageSelectCamera.h"
 #include "CStage1MenuObject.h"
+#include "CStage1Button.h"
 
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
@@ -74,9 +75,17 @@ void CStageSelectionStage::Load()
 		ETag::ePlayer, ELayer::ePlayer);
 	AddTask(button);
 
+	// ステージ1選択モデル
+	CStage1Button* stage1button = new CStage1Button(
+		CVector(-60.0f, 11.0f, 0.0f),
+		CVector(10.0f, 10.0f, 10.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer);
+	AddTask(stage1button);
+
 	// ステージメニューオブジェクト
 	CStageMenuObject* menuobj = new CStageMenuObject(
-		CVector(-95.0f, 12.0f, 0.0f),
+		CVector(-60.0f, 12.0f, -55.0f),
 		CVector(1.5f, 1.5f, 1.5f),
 		CVector(0.0f, 40.0f, 0.0f),
 		ETag::ePlayer, ELayer::eDamageCol);

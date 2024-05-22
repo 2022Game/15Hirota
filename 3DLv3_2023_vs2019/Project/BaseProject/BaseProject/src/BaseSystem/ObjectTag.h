@@ -12,6 +12,7 @@ enum class ETag
 
 	eField,				// フィールドを構成するオブジェクト
 	eStageMenuObject,	// ステージメニューのオブジェクト
+	eButton,			// ステージ選択ボタン
 	eObstacle,			// 障害物
 	eRideableObject,	// 乗ることができるオブジェクト
 	eItemRecover,		// 回復アイテムのオブジェクト
