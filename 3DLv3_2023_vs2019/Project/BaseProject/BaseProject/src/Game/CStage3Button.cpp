@@ -1,4 +1,4 @@
-#include "CStage1Button.h"
+#include "CStage3Button.h"
 #include "CCollisionManager.h"
 #include "Maths.h"
 #include "Easing.h"
@@ -8,30 +8,30 @@
 #include "CStageManager.h"
 
 // ステージ1選択ボタンのインスタンス
-CStage1Button* CStage1Button::spInstance = nullptr;
+CStage3Button* CStage3Button::spInstance = nullptr;
 
-CStage1Button* CStage1Button::Instance()
+CStage3Button* CStage3Button::Instance()
 {
 	return spInstance;
 }
 
 // コンストラクタ
-CStage1Button::CStage1Button(const CVector& pos, const CVector& scale, const CVector& rot,
+CStage3Button::CStage3Button(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
 	: CObjectBase(ETag::eButton, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 	, mReactionLayer(reactionLayer)
 	, mReactionTag(reactionTag)
-	, mIsStage1Button(false)
+	, mIsStage3Button(false)
 	, mElapsedTime(0.0f)
 {
 	// インスタンスの設定
 	spInstance = this;
 
 	// ステージ選択モデルを取得
-	mpStage1ButtonModel = CResourceManager::Get<CModel>("StageButton");
+	mpStage3ButtonModel = CResourceManager::Get<CModel>("StageButton");
 
 	// ステージ選択モデルコライダーを作成
-	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpStage1ButtonModel, true);
+	mpColliderMesh = new CColliderMesh(this, ELayer::eField, mpStage3ButtonModel, true);
 	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer });
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
 	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
@@ -43,13 +43,13 @@ CStage1Button::CStage1Button(const CVector& pos, const CVector& scale, const CVe
 }
 
 // デストラクタ
-CStage1Button::~CStage1Button()
+CStage3Button::~CStage3Button()
 {
 	SAFE_DELETE(mpColliderMesh);
 }
 
 // 衝突処理
-void CStage1Button::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+void CStage3Button::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;
@@ -66,37 +66,37 @@ void CStage1Button::Collision(CCollider* self, CCollider* other, const CHitInfo&
 		{
 			if (CInput::PushKey(VK_RETURN))
 			{
-				mIsStage1Button = true;
+				mIsStage3Button = true;
 			}
 		}
 	}
 }
 
 // ステージを選択したことを伝える
-bool CStage1Button::IsStage1Button()
+bool CStage3Button::IsStage3Button()
 {
-	return mIsStage1Button;
+	return mIsStage3Button;
 }
 
 // 更新処理
-void CStage1Button::Update()
+void CStage3Button::Update()
 {
-	CDebugPrint::Print("mStage1:%s\n", mIsStage1Button ? "true" : "false");
+	CDebugPrint::Print("mStage1:%s\n", mIsStage3Button ? "true" : "false");
 
-	if (mIsStage1Button)
+	if (mIsStage3Button)
 	{
 		mElapsedTime += Time::DeltaTime();
 		if (mElapsedTime > 1.0f)
 		{
 			mElapsedTime = 0.0f;
-			mIsStage1Button = false;
+			mIsStage3Button = false;
 		}
 	}
 }
 
 // 描画処理
-void CStage1Button::Render()
+void CStage3Button::Render()
 {
-	mpStage1ButtonModel->SetColor(mColor);
-	mpStage1ButtonModel->Render(Matrix());
+	mpStage3ButtonModel->SetColor(mColor);
+	mpStage3ButtonModel->Render(Matrix());
 }

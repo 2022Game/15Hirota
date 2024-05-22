@@ -28,6 +28,7 @@
 #include "Easing.h"
 #include "CStageMenu.h"
 #include "CStage1Button.h"
+#include "CStage3Button.h"
 
 // プレイヤー関連
 // 高さ
@@ -147,6 +148,9 @@ CPlayer::CPlayer()
 	, mClimb(false)
 	, mHpHit(false)
 	, mIsAttack(false)
+	, mStartStage1(false)
+	, mStartStage2(false)
+	, mStartStage3(false)
 	, mSavePoint(false)
 	, mIsJumping(false)
 	, mClimbWall(false)
@@ -868,6 +872,10 @@ void CPlayer::StageFlagfalse()
 	mStage1Clear = false;
 	mStage2Clear = false;
 	mStage3Clear = false;
+
+	mStartStage1 = false;
+	mStartStage2 = false;
+	mStartStage3 = false;
 }
 
 // アニメーション切り替え
@@ -1046,17 +1054,33 @@ void CPlayer::UpdateIdle()
 		}
 
 		// ステージ1ボタンのインスタンス
-		CStage1Button* button = CStage1Button::Instance();
+		CStage1Button* button1 = CStage1Button::Instance();
+		// ステージ3ボタンのインスタンス
+		CStage3Button* button3 = CStage3Button::Instance();
+
 		// ステージ1ボタンのフラグを取得
-		bool stage1button = button->IsStage1Button();
-		// ステージ1ボタンがtrueかつステージ番号が0だったら
-		if (stage1button && CGameManager::StageNo() == 0)
+		bool stage1button1 = button1->IsStage1Button();
+		// ステージ3ボタンのフラグを取得
+		bool stage3button3 = button3->IsStage3Button();
+
+		if (CGameManager::StageNo() == 0)
 		{
-			// ステージ移行ジャンプに移動する
-			ChangeState(EState::eStartStageJumpStart);
+			if (stage1button1 || stage3button3)
+			{
+				if (stage1button1)
+				{
+					mStartStage1 = true;
+				}
+				if (stage3button3)
+				{
+					mStartStage3 = true;
+				}
+				// ステージ移行ジャンプに移動する
+				ChangeState(EState::eStartStageJumpStart);
+			}
 		}
 
-
+		
 		if (mStage1Clear && !mIsStage1Clear)
 		{
 			ChangeState(EState::eResult);
@@ -1690,6 +1714,15 @@ void CPlayer::UpdateStartStageJump()
 // ステージ開始時のジャンプ終了
 void CPlayer::UpdateStartStageJumpEnd()
 {
+	// ステージ1ボタンのインスタンス
+	CStage1Button* button1 = CStage1Button::Instance();
+	// ステージ3ボタンのインスタンス
+	CStage3Button* button3 = CStage3Button::Instance();
+	// ステージ1ボタンのフラグを取得
+	bool stage1button1 = button1->IsStage1Button();
+	// ステージ3ボタンのフラグを取得
+	bool stage3button3 = button3->IsStage3Button();
+
 	mMoveSpeedY = 0.0f;
 	mMoveSpeed = CVector::zero;
 	SetAlpha(0.0f);
@@ -1697,9 +1730,16 @@ void CPlayer::UpdateStartStageJumpEnd()
 	if (IsAnimationFinished())
 	{
 		mElapsedTime = 0.0f;
-		CGameManager::Stage1();
 		mpColliderSphere->SetEnable(true);
 		ChangeState(EState::eReady);
+		if (mStartStage1)
+		{
+			CGameManager::Stage1();
+		}
+		else if (mStartStage3)
+		{
+			CGameManager::Stage3();
+		}
 	}
 }
 

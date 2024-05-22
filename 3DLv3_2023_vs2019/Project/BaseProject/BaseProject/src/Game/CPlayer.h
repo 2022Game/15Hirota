@@ -513,5 +513,13 @@ private:
 	// ダッシュジャンプに移行できるかどうか
 	bool mIsDashJump;
 
+
+	// ステージ1に入るかどうか
+	bool mStartStage1;
+	// ステージ2に入るかどうか
+	bool mStartStage2;
+	// ステージ3に入るかどうか
+	bool mStartStage3;
+
 	///////////////////////////////////////////////////////
 };

@@ -11,6 +11,8 @@
 #include "CStageSelectCamera.h"
 #include "CStage1MenuObject.h"
 #include "CStage1Button.h"
+#include "CStage3MenuObject.h"
+#include "CStage3Button.h"
 
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
@@ -59,6 +61,7 @@ void CStageSelectionStage::Load()
 	CResourceManager::Load<CModel>("StageSelectionWallCol", "Field\\StageSentakuWall.obj");		// ステージセレクトステージ(壁)
 	CResourceManager::Load<CModel>("StageButton", "Field\\Object\\StageBotan.obj");				// ステージボタン
 	CResourceManager::Load<CModel>("SkyIslandMenu",		"Field\\Object\\Skyisland.obj");	// 空島モデル
+	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");					// 三番目の床ブロック
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -67,13 +70,6 @@ void CStageSelectionStage::Load()
 	CStageSelection* field = new CStageSelection();
 	AddTask(field);
 
-	// ステージ選択モデル
-	CStageButton* button = new CStageButton(
-		CVector(-160.0f, 11.0f, 0.0f),
-		CVector(10.0f, 10.0f, 10.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer);
-	AddTask(button);
 
 	// ステージ1選択モデル
 	CStage1Button* stage1button = new CStage1Button(
@@ -83,13 +79,29 @@ void CStageSelectionStage::Load()
 		ETag::ePlayer, ELayer::ePlayer);
 	AddTask(stage1button);
 
-	// ステージメニューオブジェクト
-	CStageMenuObject* menuobj = new CStageMenuObject(
+	// ステージ3選択モデル
+	CStage3Button* stage3button = new CStage3Button(
+		CVector(-160.0f, 11.0f, 0.0f),
+		CVector(10.0f, 10.0f, 10.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer);
+	AddTask(stage3button);
+
+	// ステージメニューオブジェクト(ステージ1)
+	CStageMenuObject* menuobj1 = new CStageMenuObject(
 		CVector(-60.0f, 12.0f, -55.0f),
 		CVector(1.5f, 1.5f, 1.5f),
 		CVector(0.0f, 40.0f, 0.0f),
 		ETag::ePlayer, ELayer::eDamageCol);
-	AddTask(menuobj);
+	AddTask(menuobj1);
+
+	// ステージメニューオブジェクト(ステージ3)
+	CStage3MenuObject* menuobj3 = new CStage3MenuObject(
+		CVector(-160.0f, 12.0f, -55.0f),
+		CVector(1.5f, 1.5f, 1.5f),
+		CVector(0.0f, 40.0f, 0.0f),
+		ETag::ePlayer, ELayer::eDamageCol);
+	AddTask(menuobj3);
 
 
 
