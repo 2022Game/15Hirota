@@ -34,7 +34,7 @@ private:
 	// インスタンス
 	static CStage3Button* spInstance;
 
-	// ステージ1選択ボタン
+	// ステージ3選択ボタン
 	CModel* mpStage3ButtonModel;
 	// ステージ1選択ボタン
 	CColliderMesh* mpColliderMesh;

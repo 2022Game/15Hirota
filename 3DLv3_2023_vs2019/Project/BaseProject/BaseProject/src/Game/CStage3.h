@@ -2,12 +2,14 @@
 #define CSTAGE3_H
 #include "CStageBase.h"
 
+class CField_Worlds_1;
+class CField_Worlds_1_FallCol;
 class CStageTime;
 
-// ステージ3「ワンショット・フロア」
+// ステージ3「平原マップ」
 class CStage3 : public CStageBase
 {
-public: 
+public:
 	// コンストラクタ
 	CStage3();
 	// デストラクタ
@@ -19,6 +21,7 @@ public:
 	void Unload() override;
 
 private:
-
+	CField_Worlds_1* mpField_Worlds_1;	// フィールド
+	CField_Worlds_1_FallCol* mpFallCol;
 };
 #endif

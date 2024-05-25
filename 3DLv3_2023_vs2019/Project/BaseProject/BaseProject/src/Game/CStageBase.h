@@ -26,6 +26,9 @@ public:
 	// 作成したタスクをリストから取り除く
 	void RemoveTask(CTask* task);
 
+	// 更新
+	virtual void Update();
+
 protected:
 	int mStageNo;	// ステージ番号
 

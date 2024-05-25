@@ -66,3 +66,10 @@ void CStageManager::RemoveTask(CTask* task)
 	if (spCurrentStage == nullptr) return;
 	spCurrentStage->RemoveTask(task);
 }
+
+// 現在のステージを更新
+void CStageManager::Update()
+{
+	if (spCurrentStage == nullptr) return;
+	spCurrentStage->Update();
+}

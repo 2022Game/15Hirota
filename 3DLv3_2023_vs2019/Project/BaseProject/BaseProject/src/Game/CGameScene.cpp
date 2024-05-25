@@ -303,6 +303,9 @@ void CGameScene::Update()
 
 	////////////////////////////////////////////////////////////////////////////////////
 
+	// ステージの更新
+	CStageManager::Update();
+
 	// ステージ番号の監視
 	//CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
 }

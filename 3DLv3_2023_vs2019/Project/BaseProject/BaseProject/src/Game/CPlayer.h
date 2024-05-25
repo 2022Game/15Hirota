@@ -127,7 +127,7 @@ public:
 
 	// ステージに入れるようにするフラグ
 	// ステージ1に入れるかどうかのフラグ
-	bool IsStartStage1();
+	bool IsStartStage3();
 
 
 	// 敵を見つけたかどうか
@@ -147,6 +147,13 @@ public:
 	void UpdateJumping();
 	// 跳ねるの終了
 	void UpdateJumpingEnd();
+
+	// 指定された位置まで移動開始
+	void MoveTo(const CVector& pos);
+	// 指定された位置までの移動が出来るかどうか
+	bool CanMoveTo() const;
+	// 指定された番号のステージを開始
+	void StartStage(int stageNo);
 
 	// 更新
 	void Update();
@@ -298,6 +305,8 @@ private:
 	void UpdateDashJump();
 	// ダッシュジャンプ終了
 	void UpdateDashJumpEnd();
+	// 指定した位置まで移動する
+	void UpdateMoveTo();
 
 	// プレイヤーの状態
 	enum class EState
@@ -348,6 +357,7 @@ private:
 		eDashJumpStart,		 // ダッシュジャンプ開始
 		eDashJump,			 // ダッシュジャンプ
 		eDashJumpEnd,		 // ダッシュジャンプ終了
+		eMoveTo,			 // 指定した位置まで移動する
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
@@ -418,6 +428,8 @@ private:
 	CVector mClimbedStartPos;	// 頂上まで登り切った時の座標
 	CVector mClimbedMovedUpPos;	// 頂上まで登り切った後の上方向移動後の座標
 	CVector mClimbedMovedPos;	// 頂上まで登り切った後の移動後の座標
+	CVector mMoveStartPos;		// 指定された位置まで移動するときの移動開始位置
+	CVector mMoveTargetPos;		// 指定された位置まで移動するときの移動終了位置
 
 	///////////////////////////////////////////////////////
 
@@ -434,6 +446,11 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	CVector ClimbMoveVec() const;
+	/// <summary>
+	/// プレイヤーがアクションを起こせるかどうか
+	/// </summary>
+	/// <returns></returns>
+	bool IsEnableAction() const;
 
 	///////////////////////////////////////////////////////
 
@@ -525,8 +542,8 @@ private:
 	// ステージ3に入るかどうか
 	bool mStartStage3;
 
-	// ステージ1に入れるか
-	bool mIsStartStage1;
+	// ステージ3に入れるか
+	bool mIsStartStage3;
 
 	///////////////////////////////////////////////////////
 };

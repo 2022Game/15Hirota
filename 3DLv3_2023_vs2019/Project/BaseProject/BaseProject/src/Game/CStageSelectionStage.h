@@ -17,6 +17,22 @@ public:
 	void Load() override;
 	// ステージ破棄
 	void Unload() override;
+
+	// 更新
+	void Update() override;
 private:
+	// ステージのデータ
+	struct StageData
+	{
+		int stageNo;	// ステージ番号
+		CVector btnPos;	// ステージのボタンの番号
+		int prevStageNo;// 前のステージの番号
+		int nextStageNo;// 次のステージの番号
+	};
+	// ステージのデータのテーブル
+	static const StageData STAGE_DATA[];
+
+	// 現在のステージ番号
+	int mSelectStageNo;
 };
 #endif

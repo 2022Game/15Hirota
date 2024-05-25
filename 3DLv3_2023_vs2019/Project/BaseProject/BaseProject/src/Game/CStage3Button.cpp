@@ -6,6 +6,7 @@
 #include "CModel.h"
 #include "CTaskManager.h"
 #include "CStageManager.h"
+#include "CPlayer.h"
 
 // ステージ1選択ボタンのインスタンス
 CStage3Button* CStage3Button::spInstance = nullptr;
@@ -37,6 +38,8 @@ CStage3Button::CStage3Button(const CVector& pos, const CVector& scale, const CVe
 	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
 	mpColliderMesh->SetCollisionTag(mReactionTag, true);
 
+	SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
+
 	Position(pos);
 	Scale(scale);
 	Rotate(rot);
@@ -54,6 +57,9 @@ void CStage3Button::Collision(CCollider* self, CCollider* other, const CHitInfo&
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;
 
+	CPlayer* player = CPlayer::Instance();
+	bool stage1Start = player->IsStartStage3();
+
 	// 衝突しているのが、反応するオブジェクトであれば
 	if (owner->Tag() == mReactionTag && other->Layer() == mReactionLayer)
 	{
@@ -66,7 +72,10 @@ void CStage3Button::Collision(CCollider* self, CCollider* other, const CHitInfo&
 		{
 			if (CInput::PushKey(VK_RETURN))
 			{
-				mIsStage3Button = true;
+				if (stage1Start)
+				{
+					mIsStage3Button = true;
+				}
 			}
 		}
 	}
@@ -91,6 +100,17 @@ void CStage3Button::Update()
 			mElapsedTime = 0.0f;
 			mIsStage3Button = false;
 		}
+	}
+
+	CPlayer* player = CPlayer::Instance();
+	bool stage1Start = player->IsStartStage3();
+	if (!stage1Start)
+	{
+		SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+	}
+	else
+	{
+		SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 }
 

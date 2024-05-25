@@ -15,6 +15,8 @@ public:
 	static void AddTask(CTask* task);
 	// 作成したタスクをリストから取り除く
 	static void RemoveTask(CTask* task);
+	// 現在のステージを更新
+	static void Update();
 
 private:
 	// コンストラクタ

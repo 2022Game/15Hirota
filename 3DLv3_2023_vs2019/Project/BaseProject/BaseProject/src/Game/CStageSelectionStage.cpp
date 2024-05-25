@@ -13,9 +13,20 @@
 #include "CStage1Button.h"
 #include "CStage3MenuObject.h"
 #include "CStage3Button.h"
+#include "CInput.h"
+
+// ステージのデータのテーブル
+const CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[]
+{
+	{0,CVector(-230.0f, 17.0f, 0.0f),	-1,1},
+	{1,CVector(-160.0f, 11.0f, 0.0f),	0, 3},
+	{2,CVector(0.0f,0.0f,0.0f),		   -1,-1},
+	{3,CVector(-60.0f, 11.0f, 0.0f),	 1,-1},
+};
 
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
+	: mSelectStageNo(0)
 {
 	mStageNo = 0;
 }
@@ -42,11 +53,13 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 		{
 			// ステージ3をクリアしている場合の初期位置
 			playerPos = CVector(-180, 30.0f, 0.0f);
+			mSelectStageNo = 3;
 		}
 		else
 		{
 			// ステージ3をクリアしていない場合の初期位置
 			playerPos = CVector(-160.0f, 20.0f, 0.0f);
+			mSelectStageNo = 0;
 		}
 	}
 
@@ -73,7 +86,7 @@ void CStageSelectionStage::Load()
 
 	// ステージ1選択モデル
 	CStage1Button* stage1button = new CStage1Button(
-		CVector(-60.0f, 11.0f, 0.0f),
+		STAGE_DATA[1].btnPos,
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer);
@@ -81,7 +94,7 @@ void CStageSelectionStage::Load()
 
 	// ステージ3選択モデル
 	CStage3Button* stage3button = new CStage3Button(
-		CVector(-160.0f, 11.0f, 0.0f),
+		STAGE_DATA[3].btnPos,
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer);
@@ -184,4 +197,54 @@ void CStageSelectionStage::Unload()
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 
+}
+
+// 更新
+void CStageSelectionStage::Update()
+{
+	// プレイヤーが存在しなければ、処理しない
+	CPlayer* player = CPlayer::Instance();
+	if (player == nullptr) return;
+
+	// 現在選択中のステージデータを取得
+	StageData data = STAGE_DATA[mSelectStageNo];
+
+	// プレイヤーが移動中であれば
+	if (player->CanMoveTo())
+	{
+		//[A]もしくは[←]を押したら、前のステージへ移動
+		if (CInput::PushKey('A') || CInput::PushKey(VK_LEFT))
+		{
+			// 前のステージが存在するか
+			if (data.prevStageNo >= 0)
+			{
+				// 前のステージへ移動
+				mSelectStageNo = data.prevStageNo;
+				// 前のステージのボタンの位置にプレイヤーを移動
+				player->MoveTo(STAGE_DATA[mSelectStageNo].btnPos);
+			}
+		}
+		// [D]もしくは[→]を押したら、次男のステージへ移動
+		else if (CInput::PushKey('D') || CInput::PushKey(VK_RIGHT))
+		{
+			// 次のステージが存在するか
+			if (data.nextStageNo >= 0)
+			{
+				// 次のステージへ移動
+				mSelectStageNo = data.nextStageNo;
+				// 次のステージのボタンの位置にプレイヤーを移動開始
+				player->MoveTo(STAGE_DATA[mSelectStageNo].btnPos);
+			}
+		}
+		// [Enter]を押したら、ステージを決定
+		else if (CInput::PushKey(VK_RETURN))
+		{
+			// ステージ選択ステージ以外が選択されていたら
+			if (mSelectStageNo > 0)
+			{
+				// プレイヤーにステージ開始を伝える
+				player->StartStage(mSelectStageNo);
+			}
+		}
+	}
 }

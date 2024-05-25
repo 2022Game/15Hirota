@@ -40,3 +40,9 @@ int CStageBase::GetStageNo() const
 {
 	return mStageNo;
 }
+
+// XV
+void CStageBase::Update()
+{
+
+}

@@ -48,11 +48,14 @@
 // クリアジャンプ
 #define JUMP_CLEAR 1.6f;
 // スタートジャンプ
-#define JUMP_START_STAGE 2.0f
+#define JUMP_START_STAGE 1.5f
 // 重力
 #define GRAVITY 0.0625f
 // ジャンプ終了時
 #define JUMP_END_Y 1.0f
+
+// 指定位置までの移動時間
+#define MOVE_TO_TIME 1.0f
 
 // 壁を登る速度
 #define CLIMB_SPEED 0.5f
@@ -144,6 +147,8 @@ CPlayer::CPlayer()
 	, mClimbedStartPos(CVector::zero)
 	, mClimbedMovedPos(CVector::zero)
 	, mClimbedMovedUpPos(CVector::zero)
+	, mMoveStartPos(CVector::zero)
+	, mMoveTargetPos(CVector::zero)
 	, mDash(false)
 	, mClimb(false)
 	, mHpHit(false)
@@ -167,7 +172,7 @@ CPlayer::CPlayer()
 	, mIsStage1Clear(false)
 	, mIsStage2Clear(false)
 	, mIsStage3Clear(false)
-	, mIsStartStage1(false)
+	, mIsStartStage3(false)
 	, mStaminaDepleted(false)
 	, mIsPlayedSlashSE(false)
 	, mStaminaLowerLimit(false)
@@ -802,9 +807,9 @@ bool CPlayer::IsStageClear()
 }
 
 // ステージ1に入れるかどうかのフラグ
-bool CPlayer::IsStartStage1()
+bool CPlayer::IsStartStage3()
 {
-	return mIsStartStage1;
+	return mIsStartStage3;
 }
 
 // ステージフラグをfalseにする関数
@@ -895,6 +900,12 @@ CVector CPlayer::ClimbMoveVec() const
 	return move;
 }
 
+// プレイヤーがアクションを起こせるかどうか
+bool CPlayer::IsEnableAction() const
+{
+	return CGameManager::StageNo() > 0;
+}
+
 // 準備中の状態
 void CPlayer::UpdateReady()
 {
@@ -937,6 +948,27 @@ void CPlayer::UpdateReady()
 // 待機
 void CPlayer::UpdateIdle()
 {
+	// アクションを起こせるかどうか
+	if (!IsEnableAction())
+	{
+		// ステージ選択画面であれば、リザルトへ切り替え
+		if (mStage1Clear && !mIsStage1Clear)
+		{
+			ChangeState(EState::eResult);
+		}
+		if (mStage2Clear && !mIsStage2Clear)
+		{
+			ChangeState(EState::eResult);
+		}
+		if (mStage3Clear && !mIsStage3Clear)
+		{
+			ChangeState(EState::eResult);
+		}
+
+		// アクションを起こせない場合は、以降の処理を実行しない
+		return;
+	}
+
 	SetAlpha(1.0f);
 	mpSword->SetAlpha(1.0f);
 	mMoveSpeed = CVector::zero;
@@ -993,47 +1025,6 @@ void CPlayer::UpdateIdle()
 			{
 			}
 		}
-
-		// ステージ1ボタンのインスタンス
-		CStage1Button* button1 = CStage1Button::Instance();
-		// ステージ3ボタンのインスタンス
-		CStage3Button* button3 = CStage3Button::Instance();
-
-		// ステージ1ボタンのフラグを取得
-		bool stage1button1 = button1->IsStage1Button();
-		// ステージ3ボタンのフラグを取得
-		bool stage3button3 = button3->IsStage3Button();
-
-		if (CGameManager::StageNo() == 0)
-		{
-			if (stage1button1 || stage3button3)
-			{
-				if (stage1button1)
-				{
-					mStartStage1 = true;
-				}
-				if (stage3button3)
-				{
-					mStartStage3 = true;
-				}
-				// ステージ移行ジャンプに移動する
-				ChangeState(EState::eStartStageJumpStart);
-			}
-		}
-
-		
-		if (mStage1Clear && !mIsStage1Clear)
-		{
-			ChangeState(EState::eResult);
-		}
-		if (mStage2Clear && !mIsStage2Clear)
-		{
-			ChangeState(EState::eResult);
-		}
-		if (mStage3Clear && !mIsStage3Clear)
-		{
-			ChangeState(EState::eResult);
-		}
 	}
 	// プレイヤーが接地していない
 	else
@@ -1065,6 +1056,9 @@ void CPlayer::UpdateStop()
 // 移動状態
 void CPlayer::UpdateMove()
 {
+	// アクションを起こせない場合は、移動できない
+	if (!IsEnableAction()) return;
+
 	mDamageEnemy = false;
 	mMoveSpeed = CVector::zero;
 
@@ -1518,12 +1512,12 @@ void CPlayer::UpdateClearEnd()
 				}
 
 				// 「ワンショット・フロア」
-				if (CGameManager::StageNo() == 3)
+				if (CGameManager::StageNo() == 1)
 				{
 					mSavePoint = false;
-					mStage3Clear = true;
-					mIsStage3Clear = false;
-					mIsStartStage1 = true;
+					mStage1Clear = true;
+					mIsStage1Clear = false;
+					mIsStartStage3 = true;
 					// ステージをクリア
 					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
@@ -1665,9 +1659,7 @@ void CPlayer::UpdateStartStageJumpEnd()
 	// ステージ3ボタンのフラグを取得
 	bool stage3button3 = button3->IsStage3Button();
 
-	mMoveSpeedY = 0.0f;
 	mMoveSpeed = CVector::zero;
-	SetAlpha(0.0f);
 	mpSword->SetAlpha(0.0f);
 	if (IsAnimationFinished())
 	{
@@ -1676,10 +1668,14 @@ void CPlayer::UpdateStartStageJumpEnd()
 		ChangeState(EState::eReady);
 		if (mStartStage1)
 		{
+			mMoveSpeedY = 0.0f;
+			SetAlpha(0.0f);
 			CGameManager::Stage1();
 		}
 		else if (mStartStage3)
 		{
+			mMoveSpeedY = 0.0f;
+			SetAlpha(0.0f);
 			CGameManager::Stage3();
 		}
 	}
@@ -2571,6 +2567,110 @@ void CPlayer::UpdateJumpingEnd()
 	}
 }
 
+// 指定された位置まで移動する
+void CPlayer::UpdateMoveTo()
+{
+	mMoveSpeed = CVector::zero;
+
+	switch (mStateStep)
+	{
+		// ステップ0 プレイヤーを移動方向へ向ける
+	case 0:
+	{
+		// 移動開始前は待機モーション
+		ChangeAnimation(EAnimType::eIdle);
+		// 移動開始位置から移動終了位置の方向ベクトルを求める
+		CVector v = mMoveTargetPos - mMoveStartPos;
+		v.Y(0.0f);
+		// 求めた方向ベクトルの向きへプレイヤーを向ける
+		Rotation(CQuaternion::LookRotation(v.Normalized()));
+		mStateStep++;
+		break;
+	}
+		// ステップ1 プレイヤーを移動
+	case 1:
+		// プレイヤーをダッシュモーションへ変更
+		ChangeAnimation(EAnimType::eDash);
+		// 移動時間を経過していない
+		if (mElapsedTime < MOVE_TO_TIME)
+		{
+			// 経過時間の割合を求め、その割合に沿った現在位置を求めて設定
+			float percent = mElapsedTime / MOVE_TO_TIME;
+			CVector pos = CVector::Lerp(mMoveStartPos, mMoveTargetPos, percent);
+			pos.Y(Position().Y());
+			Position(pos);
+
+			// 経過時間を進行
+			mElapsedTime += Time::DeltaTime();
+		}
+		// 移動時間を経過した
+		else
+		{
+			// 移動終了位置に移動
+			CVector pos = mMoveTargetPos;
+			pos.Y(Position().Y());
+			Position(pos);
+			mStateStep++;
+		}
+		break;
+		 // ステップ2 移動終了
+	case 2:
+		// 移動終了したら、待機モーションへ切り替え
+		ChangeAnimation(EAnimType::eIdle);
+		break;
+	}
+}
+
+// 指定された位置まで移動開始
+void CPlayer::MoveTo(const CVector& pos)
+{
+	// 指定された位置まで移動できない状態であれば、処理しない
+	if (!CanMoveTo()) return;
+
+	mElapsedTime = 0.0f;
+	// 移動前の座標と移動後の座標を設定
+	mMoveStartPos = Position();
+	mMoveTargetPos = pos;
+
+	// 指定された位置までの移動状態へ遷移
+	ChangeState(EState::eMoveTo);
+}
+
+// 指定された位置までの移動が出来るかどうか
+bool CPlayer::CanMoveTo() const
+{
+	// ステージ選択画面以外のステージであれば、移動できない
+	if (CGameManager::StageNo() != 0) return false;
+	// 待機状態もしくは、指定位置まで移動している状態で無ければ、移動できない
+	if (mState != EState::eIdle && mState != EState::eMoveTo) return false;
+	// 移動終了ステップまで進行していなければ、移動できない
+	if (mState == EState::eMoveTo && mStateStep < 2) return false;
+
+	// 全ての条件を満たしたら移動可能
+	return true;
+}
+
+// 指定された番号のステージを開始
+void CPlayer::StartStage(int stageNo)
+{
+	// ステージ1に入れる状態で、ステージ1を開始したら
+	if (stageNo == 1)
+	{
+		// ステージ1のフラグをオン
+		mStartStage1 = true;
+	}
+	// ステージ3を開始したら、ステージ3のフラグをオン
+	else if (stageNo == 3 && mIsStartStage3)
+	{
+		mStartStage3 = true;
+	}
+	// それ以外は、ステージ移動状態へ進行しない
+	else return;
+
+	// ステージ移行ジャンプに移動する
+	ChangeState(EState::eStartStageJumpStart);
+}
+
 bool CPlayer::IsFoundVanguard()
 {
 	CVector vanguardPos = CVanguard::Instance()->Position();
@@ -2817,6 +2917,9 @@ void CPlayer::Update()
 	case EState::eDashJumpEnd:
 		UpdateDashJumpEnd();
 		break;
+	case EState::eMoveTo:
+		UpdateMoveTo();
+		break;
 	}
 
 	// 待機中とジャンプ中は、移動処理を行う
@@ -2859,29 +2962,33 @@ void CPlayer::Update()
 
 		// 移動
 		Position(Position() + moveSpeed * 60.0f * Time::DeltaTime());
-		
-		// プレイヤーの向きを調整
-		CVector current = VectorZ();
-		CVector target = moveSpeed;
-		if (mState == EState::eClimb)
+
+		// アクションを起こせる状態であれば
+		if (IsEnableAction())
 		{
-			// 壁の法線の反対方向を向く
-			target = -mClimbNormal;
+			// プレイヤーの向きを調整
+			CVector current = VectorZ();
+			CVector target = moveSpeed;
+			if (mState == EState::eClimb)
+			{
+				// 壁の法線の反対方向を向く
+				target = -mClimbNormal;
+			}
+			else if (mState == EState::eWireClimb)
+			{
+				// 壁の法線の反対方向を向く
+				target = -mClimbNormal;
+			}
+			// それ以外の時は、プレイヤーの移動方向へ向ける
+			else
+			{
+				target = moveSpeed;
+				target.Y(0.0f);
+				target.Normalize();
+			}
+			CVector forward = CVector::Slerp(current, target, 0.125f);
+			Rotation(CQuaternion::LookRotation(forward));
 		}
-		else if (mState == EState::eWireClimb)
-		{
-			// 壁の法線の反対方向を向く
-			target = -mClimbNormal;
-		}
-		// それ以外の時は、プレイヤーの移動方向へ向ける
-		else
-		{
-			target = moveSpeed;
-			target.Y(0.0f);
-			target.Normalize();
-		}
-		CVector forward = CVector::Slerp(current, target, 0.125f);
-		Rotation(CQuaternion::LookRotation(forward));
 	}
 
 	// 無敵状態だった場合の処理
