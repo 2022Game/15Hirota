@@ -12,7 +12,7 @@ public:
 	~CStageSelection();
 
 	// 壁のコライダー取得
-	CColliderMesh* GetWallCol() const;
+	//CColliderMesh* GetWallCol() const;
 
 	// 更新処理
 	void Update();
@@ -24,6 +24,6 @@ private:
 
 	CModel* mpModel;
 	CColliderMesh* mpColliderMesh;
-	CColliderMesh* mpWallCol;
+	//CColliderMesh* mpWallCol;
 };
 #endif

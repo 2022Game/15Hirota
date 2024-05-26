@@ -6,13 +6,13 @@ CStageSelection::CStageSelection()
 	: CObjectBase(ETag::eField,ETaskPriority::eBackground)
 {
 	// モデルデータ取得
-	mpModel = CResourceManager::Get<CModel>("StageSelection");
+	mpModel = CResourceManager::Get<CModel>("StageSelect");
 
 
-	CModel* wallCol = CResourceManager::Get<CModel>("StageSelectionWallCol");
-	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);
+	/*CModel* wallCol = CResourceManager::Get<CModel>("StageSelectionWallCol");
+	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);*/
 
-	CModel* floorCol = CResourceManager::Get<CModel>("StageSelectionFloorCol");
+	CModel* floorCol = CResourceManager::Get<CModel>("StageSelectFloor");
 	mpColliderMesh = new CColliderMesh(this, ELayer::eField, floorCol, true);
 
 	CreateFieldObjects();
@@ -23,25 +23,25 @@ CStageSelection::~CStageSelection()
 	// コライダーを破棄
 	SAFE_DELETE(mpColliderMesh);
 
-	if (mpWallCol != nullptr)
-	{
-		// メインカメラから壁のコライダーへの参照を取り除く
-		CCamera* mainCamera = CCamera::MainCamera();
-		if (mainCamera != nullptr)
-		{
-			mainCamera->RemoveCollider(mpWallCol);
+	//if (mpWallCol != nullptr)
+	//{
+	//	// メインカメラから壁のコライダーへの参照を取り除く
+	//	CCamera* mainCamera = CCamera::MainCamera();
+	//	if (mainCamera != nullptr)
+	//	{
+	//		mainCamera->RemoveCollider(mpWallCol);
 
-		}
-		delete mpWallCol;
-		mpWallCol = nullptr;
-	}
+	//	}
+	//	delete mpWallCol;
+	//	mpWallCol = nullptr;
+	//}
 }
 
-// 壁のコライダー取得
-CColliderMesh* CStageSelection::GetWallCol() const
-{
-	return mpWallCol;
-}
+//// 壁のコライダー取得
+//CColliderMesh* CStageSelection::GetWallCol() const
+//{
+//	return mpWallCol;
+//}
 
 void CStageSelection::CreateFieldObjects()
 {

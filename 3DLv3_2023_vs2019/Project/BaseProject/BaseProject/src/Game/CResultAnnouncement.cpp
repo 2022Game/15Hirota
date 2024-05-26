@@ -477,16 +477,6 @@ void CResultAnnouncement::Render()
 				// ステージ1の結果
 				if (stage1)
 				{
-					
-				}
-				// ステージ２の結果
-				else if (stage2)
-				{
-
-				}
-				// ステージ３の結果
-				else if (stage3)
-				{
 					// Aランク
 					if (score >= 2500)
 					{
@@ -502,6 +492,16 @@ void CResultAnnouncement::Render()
 					{
 						resultType = Result::C;
 					}
+				}
+				// ステージ２の結果
+				else if (stage2)
+				{
+
+				}
+				// ステージ３の結果
+				else if (stage3)
+				{
+					
 				}
 
 				// アイテムの種類を取得

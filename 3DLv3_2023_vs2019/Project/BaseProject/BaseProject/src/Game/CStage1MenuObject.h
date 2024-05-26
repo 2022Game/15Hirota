@@ -5,15 +5,15 @@
 #include "CColliderSphere.h"
 #include "CModel.h"
 
-// ステージメニューオブジェクト
-class CStageMenuObject : public CObjectBase
+// ステージメニュー1オブジェクト
+class CStage1MenuObject : public CObjectBase
 {
 public:
 	// コンストラクタ
-	CStageMenuObject(const CVector& pos, const CVector& scale, const CVector& rot,
+	CStage1MenuObject(const CVector& pos, const CVector& scale, const CVector& rot,
 		ETag reactionTag, ELayer reactionLayer);
 	// デストラクタ
-	~CStageMenuObject();
+	~CStage1MenuObject();
 
 	/// <summary>
 	/// 衝突処理
@@ -44,9 +44,9 @@ private:
 	void UpdateIdle();
 	void UpdateReaction();
 
-	// 空島モデル
+	// 回数制限床モデル
 	CModel* mpSkyModel;
-	// 空島のコライダー
+	// 回数制限床コライダー
 	CColliderSphere* mpColliderSphere;
 
 	// 触れた時に反応するオブジェクトのタグ

@@ -44,9 +44,9 @@ private:
 	void UpdateIdle();
 	void UpdateReaction();
 
-	// 回数制限床モデル
+	// 空島モデル
 	CModel* mpSkyModel;
-	// 回数制限床コライダー
+	// 空島のコライダー
 	CColliderSphere* mpColliderSphere;
 
 	// 触れた時に反応するオブジェクトのタグ

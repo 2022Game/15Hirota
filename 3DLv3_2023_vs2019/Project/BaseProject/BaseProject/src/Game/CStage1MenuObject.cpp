@@ -12,9 +12,9 @@
 #define RETURN_TIME 0.3f
 
 // コンストラクタ
-CStageMenuObject::CStageMenuObject(const CVector& pos, const CVector& scale, const CVector& rot,
+CStage1MenuObject::CStage1MenuObject(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
-	: CObjectBase(ETag::eStageMenuObject,ETaskPriority::eBackground,0,ETaskPauseType::eGame)
+	: CObjectBase(ETag::eStageMenuObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 	, mReactionLayer(reactionLayer)
 	, mReactionTag(reactionTag)
 	, mStartScale(CVector::one)
@@ -24,14 +24,14 @@ CStageMenuObject::CStageMenuObject(const CVector& pos, const CVector& scale, con
 	, mElapsedTime(0.0f)
 	, mIsCollisionPlayer(false)
 {
-	// 空島モデルを取得
-	mpSkyModel = CResourceManager::Get<CModel>("SkyIslandMenu");
+	// 回数制限床モデルを取得
+	mpSkyModel = CResourceManager::Get<CModel>("Number3");
 
-	// 空島モデルのコライダー作成
+	// 回数制限床モデルのコライダー作成
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::eStageMenuObject,
-		15.0f
+		10.0f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eDamageCol });
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
@@ -44,13 +44,13 @@ CStageMenuObject::CStageMenuObject(const CVector& pos, const CVector& scale, con
 }
 
 // デストラクタ
-CStageMenuObject::~CStageMenuObject()
+CStage1MenuObject::~CStage1MenuObject()
 {
 	SAFE_DELETE(mpColliderSphere);
 }
 
 // 衝突処理
-void CStageMenuObject::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+void CStage1MenuObject::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;
@@ -61,7 +61,7 @@ void CStageMenuObject::Collision(CCollider* self, CCollider* other, const CHitIn
 	}
 }
 
-void CStageMenuObject::ChangeState(EState state)
+void CStage1MenuObject::ChangeState(EState state)
 {
 	if (mState == state) return;
 	mState = state;
@@ -69,7 +69,7 @@ void CStageMenuObject::ChangeState(EState state)
 	mElapsedTime = 0.0f;
 }
 
-void CStageMenuObject::UpdateIdle()
+void CStage1MenuObject::UpdateIdle()
 {
 	if (mIsCollisionPlayer)
 	{
@@ -77,7 +77,7 @@ void CStageMenuObject::UpdateIdle()
 	}
 }
 
-void CStageMenuObject::UpdateReaction()
+void CStage1MenuObject::UpdateReaction()
 {
 	switch (mStateStep)
 	{
@@ -138,7 +138,7 @@ void CStageMenuObject::UpdateReaction()
 }
 
 // 更新処理
-void CStageMenuObject::Update()
+void CStage1MenuObject::Update()
 {
 	// 回転
 	float rot = 1.0f;
@@ -158,7 +158,7 @@ void CStageMenuObject::Update()
 }
 
 // 描画処理
-void CStageMenuObject::Render()
+void CStage1MenuObject::Render()
 {
 	mpSkyModel->SetColor(mColor);
 	mpSkyModel->Render(Matrix());

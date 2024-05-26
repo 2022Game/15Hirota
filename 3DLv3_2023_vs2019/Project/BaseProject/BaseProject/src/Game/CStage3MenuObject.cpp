@@ -24,14 +24,14 @@ CStage3MenuObject::CStage3MenuObject(const CVector& pos, const CVector& scale, c
 	, mElapsedTime(0.0f)
 	, mIsCollisionPlayer(false)
 {
-	// 回数制限床モデルを取得
-	mpSkyModel = CResourceManager::Get<CModel>("Number3");
+	// 空島モデルを取得
+	mpSkyModel = CResourceManager::Get<CModel>("SkyIslandMenu");
 
-	// 回数制限床モデルのコライダー作成
+	// 空島モデルのコライダー作成
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::eStageMenuObject,
-		10.0f
+		15.0f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eDamageCol });
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });

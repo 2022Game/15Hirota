@@ -58,7 +58,7 @@ void CStage3Button::Collision(CCollider* self, CCollider* other, const CHitInfo&
 	if (owner == nullptr) return;
 
 	CPlayer* player = CPlayer::Instance();
-	bool stage1Start = player->IsStartStage3();
+	bool stage3Start = player->IsStartStage3();
 
 	// 衝突しているのが、反応するオブジェクトであれば
 	if (owner->Tag() == mReactionTag && other->Layer() == mReactionLayer)
@@ -72,7 +72,7 @@ void CStage3Button::Collision(CCollider* self, CCollider* other, const CHitInfo&
 		{
 			if (CInput::PushKey(VK_RETURN))
 			{
-				if (stage1Start)
+				if (stage3Start)
 				{
 					mIsStage3Button = true;
 				}
@@ -90,12 +90,12 @@ bool CStage3Button::IsStage3Button()
 // 更新処理
 void CStage3Button::Update()
 {
-	CDebugPrint::Print("mStage1:%s\n", mIsStage3Button ? "true" : "false");
+	//CDebugPrint::Print("mStage1:%s\n", mIsStage3Button ? "true" : "false");
 
 	if (mIsStage3Button)
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 1.0f)
+		if (mElapsedTime > 0.8f)
 		{
 			mElapsedTime = 0.0f;
 			mIsStage3Button = false;
@@ -103,8 +103,8 @@ void CStage3Button::Update()
 	}
 
 	CPlayer* player = CPlayer::Instance();
-	bool stage1Start = player->IsStartStage3();
-	if (!stage1Start)
+	bool stage3Start = player->IsStartStage3();
+	if (!stage3Start)
 	{
 		SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
 	}

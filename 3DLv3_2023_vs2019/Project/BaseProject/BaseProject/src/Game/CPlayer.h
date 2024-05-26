@@ -480,6 +480,8 @@ private:
 	float mScaleTime;
 	// 準備が終わった後の経過時間計測用
 	float mElapsedStageTime;
+	// リザルトジャンプの経過時間計測用
+	float mElapsedResultTime;
 
 	// 接地しているかどうか
 	bool mIsGrounded;

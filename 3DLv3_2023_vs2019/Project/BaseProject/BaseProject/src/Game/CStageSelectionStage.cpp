@@ -10,18 +10,19 @@
 #include "CTreasureChest.h"
 #include "CStageSelectCamera.h"
 #include "CStage1MenuObject.h"
-#include "CStage1Button.h"
 #include "CStage3MenuObject.h"
+#include "CStage1Button.h"
 #include "CStage3Button.h"
+#include "CGameManager.h"
 #include "CInput.h"
 
 // ステージのデータのテーブル
 const CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[]
 {
-	{0,CVector(-230.0f, 17.0f, 0.0f),	-1,1},
-	{1,CVector(-160.0f, 11.0f, 0.0f),	0, 3},
-	{2,CVector(0.0f,0.0f,0.0f),		   -1,-1},
-	{3,CVector(-60.0f, 11.0f, 0.0f),	 1,-1},
+	{0,CVector(65.0f, 3.5f,   36.0f),	-1, 1},
+	{1,CVector(65.0f, 3.5f,  -72.0f),	 0, 3},
+	{2,CVector( 0.0f, 0.0f,    0.0f),	-1,-1},
+	{3,CVector(65.0f, 3.5f, -180.0f),	 1,-1},
 };
 
 // コンストラクタ
@@ -45,20 +46,20 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 	CPlayer* player = CPlayer::Instance();
 	if (player != nullptr)
 	{
-		// ステージ3をクリアしているかどうかをチェック(仮)
-		bool playerStage3 = player->IsStageClear();
+		// ステージをクリアしているかどうかをチェック
+		bool playerStage = player->IsStageClear();
 
 		// プレイヤーの初期位置を設定
-		if (playerStage3)
+		if (playerStage)
 		{
-			// ステージ3をクリアしている場合の初期位置
-			playerPos = CVector(-180, 30.0f, 0.0f);
-			mSelectStageNo = 3;
+			// ステージをクリアしている場合の初期位置
+			playerPos = CVector(65.0f, 30.5f, 60.0f);
+			mSelectStageNo = 0;
 		}
 		else
 		{
-			// ステージ3をクリアしていない場合の初期位置
-			playerPos = CVector(-160.0f, 20.0f, 0.0f);
+			// ステージをクリアしていない場合の初期位置
+			playerPos = CVector(65.0f, 3.5f, 36.0f);
 			mSelectStageNo = 0;
 		}
 	}
@@ -69,9 +70,12 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 // ステージ読み込み
 void CStageSelectionStage::Load()
 {
-	CResourceManager::Load<CModel>("StageSelection", "Field\\StageSentaku.obj");				// ステージセレクトステージ
-	CResourceManager::Load<CModel>("StageSelectionFloorCol", "Field\\StageSentakuFloor.obj");	// ステージセレクトステージ(床)
-	CResourceManager::Load<CModel>("StageSelectionWallCol", "Field\\StageSentakuWall.obj");		// ステージセレクトステージ(壁)
+	CResourceManager::Load<CModel>("StageSelect", "Field\\StageSelect\\StageSelect.obj");
+	CResourceManager::Load<CModel>("StageSelectFloor", "Field\\StageSelect\\StageSelectFloorCol.obj");
+
+	//CResourceManager::Load<CModel>("StageSelection", "Field\\StageSentaku.obj");				// ステージセレクトステージ
+	//CResourceManager::Load<CModel>("StageSelectionFloorCol", "Field\\StageSentakuFloor.obj");	// ステージセレクトステージ(床)
+	//CResourceManager::Load<CModel>("StageSelectionWallCol", "Field\\StageSentakuWall.obj");		// ステージセレクトステージ(壁)
 	CResourceManager::Load<CModel>("StageButton", "Field\\Object\\StageBotan.obj");				// ステージボタン
 	CResourceManager::Load<CModel>("SkyIslandMenu",		"Field\\Object\\Skyisland.obj");	// 空島モデル
 	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");					// 三番目の床ブロック
@@ -81,6 +85,7 @@ void CStageSelectionStage::Load()
 
 	// フィールド
 	CStageSelection* field = new CStageSelection();
+	field->Scale(10.0f, 10.0f, 10.0f);
 	AddTask(field);
 
 
@@ -101,17 +106,17 @@ void CStageSelectionStage::Load()
 	AddTask(stage3button);
 
 	// ステージメニューオブジェクト(ステージ1)
-	CStageMenuObject* menuobj1 = new CStageMenuObject(
-		CVector(-60.0f, 12.0f, -55.0f),
-		CVector(1.5f, 1.5f, 1.5f),
+	CStage1MenuObject* menuobj1 = new CStage1MenuObject(
+		CVector(6.0f, 10.0f, -72.0f),
+		CVector(2.5f, 2.5f, 2.5f),
 		CVector(0.0f, 40.0f, 0.0f),
 		ETag::ePlayer, ELayer::eDamageCol);
 	AddTask(menuobj1);
 
 	// ステージメニューオブジェクト(ステージ3)
 	CStage3MenuObject* menuobj3 = new CStage3MenuObject(
-		CVector(-160.0f, 12.0f, -55.0f),
-		CVector(1.5f, 1.5f, 1.5f),
+		CVector(6.0f, 30.0f, -180.0f),
+		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 40.0f, 0.0f),
 		ETag::ePlayer, ELayer::eDamageCol);
 	AddTask(menuobj3);
@@ -152,7 +157,7 @@ void CStageSelectionStage::Load()
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
-		player->Rotation(0.0f, -90.0f, 0.0f);
+		player->Rotation(0.0f, 180.0f, 0.0f);
 	}
 
 	// ステージ選択画面は、ステージ選択画面用のカメラを使用するため、
@@ -164,7 +169,7 @@ void CStageSelectionStage::Load()
 	}
 
 	// カメラの位置をプレイヤーから一定量離れた位置に設定
-	CVector camPos = playerPos + CVector(0.0f, 70.0f, 100.0f);
+	CVector camPos = playerPos + CVector(100.0f, 70.0f, 0.0f);
 	// ステージ選択カメラを生成
 	camera = new CStageSelectCamera
 	(
@@ -224,7 +229,7 @@ void CStageSelectionStage::Update()
 				player->MoveTo(STAGE_DATA[mSelectStageNo].btnPos);
 			}
 		}
-		// [D]もしくは[→]を押したら、次男のステージへ移動
+		// [D]もしくは[→]を押したら、次のステージへ移動
 		else if (CInput::PushKey('D') || CInput::PushKey(VK_RIGHT))
 		{
 			// 次のステージが存在するか

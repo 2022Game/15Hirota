@@ -81,12 +81,12 @@ bool CStage1Button::IsStage1Button()
 // XVˆ—
 void CStage1Button::Update()
 {
-	CDebugPrint::Print("mStage1:%s\n", mIsStage1Button ? "true" : "false");
+	//CDebugPrint::Print("mStage1:%s\n", mIsStage1Button ? "true" : "false");
 
 	if (mIsStage1Button)
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 1.0f)
+		if (mElapsedTime > 0.8f)
 		{
 			mElapsedTime = 0.0f;
 			mIsStage1Button = false;
