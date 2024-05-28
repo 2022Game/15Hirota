@@ -2,6 +2,7 @@
 #include "CPlayer.h"
 #include "CInput.h"
 #include "CCamera.h"
+#include "CFade.h"
 #include "CUiGauge.h"
 #include "CStaminaGauge.h"
 #include "Maths.h"
@@ -246,7 +247,7 @@ CPlayer::CPlayer()
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
-		ELayer::eSavePoint, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol });
+		ELayer::eSavePoint, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall });
 	mpColliderSphere->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
 		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint, ETag::eObstacle,ETag::eJumpingObject});
 	//mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
@@ -507,6 +508,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			Position(Position() + hit.adjust);
 		}
+		else if (other->Layer() == ELayer::eFlameWall)
+		{
+			Position(Position() + hit.adjust);
+		}
 	}
 
 	// ダメージを受けるコライダー
@@ -570,6 +575,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			ChangeState(EState::eHit);
 		}
+		// ステージ選択ステージのオブジェクトに当たったら
 		else if (other->Layer() == ELayer::eStageMenuObject)
 		{
 			
@@ -1774,6 +1780,7 @@ void CPlayer::UpdateStartStageJumpEnd()
 			mMoveSpeedY = 0.0f;
 			Scale(CVector(1.0f, 1.0f, 1.0f));
 			SetAlpha(0.0f);
+			CFade::FadeIn();
 			CGameManager::Stage1();
 		}
 		else if (mStartStage3)
@@ -1782,6 +1789,7 @@ void CPlayer::UpdateStartStageJumpEnd()
 			mMoveSpeedY = 0.0f;
 			Scale(CVector(1.0f, 1.0f, 1.0f));
 			SetAlpha(0.0f);
+			CFade::FadeIn();
 			CGameManager::Stage3();
 		}
 	}
@@ -1841,6 +1849,7 @@ void CPlayer::UpdateReStart()
 // 敵の攻撃を受けた時
 void CPlayer::UpdateHit()
 {
+	mClimb = false;
 	mMoveSpeed = CVector::zero;
 	if (!mDamageEnemy)
 	{
@@ -1894,6 +1903,7 @@ void CPlayer::UpdateHit()
 // 敵の弾の攻撃を受けた時
 void CPlayer::UpdateHitBullet()
 {
+	mClimb = false;
 	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eHit);
 
@@ -1943,6 +1953,7 @@ void CPlayer::UpdateHitBullet()
 // 敵の剣の攻撃を受けた時
 void CPlayer::UpdateHitSword()
 {
+	mClimb = false;
 	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eHit);
 
@@ -1994,6 +2005,7 @@ void CPlayer::UpdateHitSword()
 // ダメージを受ける(オブジェクト)
 void CPlayer::UpdateHitObj()
 {
+	mClimb = false;
 	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eHit);
 
@@ -2463,11 +2475,11 @@ void CPlayer::UpdateJump()
 		}
 	}
 
-	if (!CInput::Key(VK_SPACE))
+	/*if (!CInput::Key(VK_SPACE))
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
 		mMoveSpeedY -= GRAVITY;
-	}
+	}*/
 
 	if (mMoveSpeedY <= 0.0f)
 	{
@@ -2824,7 +2836,11 @@ void CPlayer::Update()
 
 
 	// デバッグ用にオンにしている　後で駆らず消すこと	////////////////////////////////////
+
+	// ステージ3をクリアした状態
+	// falseだとステージに入れない
 	mIsStartStage3 = true;
+
 	////////////////////////////////////////////////////////////////////////////////////////
 
 

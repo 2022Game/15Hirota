@@ -1,6 +1,7 @@
 #include "CGameManager.h"
 #include "CStageManager.h"
 #include "CSceneManager.h"
+#include "CFade.h"
 #include "CScore.h"
 #include "CStageTime.h"
 #include "CResult.h"
@@ -223,9 +224,8 @@ void CGameManager::UpdateStage3()
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
-
 	mElapsedStageTime += Time::DeltaTime();
-	if (mElapsedStageTime > 4.0f)
+	if (mElapsedStageTime > 13.0f)
 	{
 		ChangeState(EGameState::eGame);
 	}

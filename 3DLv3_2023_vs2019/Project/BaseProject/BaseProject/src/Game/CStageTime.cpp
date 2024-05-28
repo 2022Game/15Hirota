@@ -94,6 +94,7 @@ void CStageTime::Update()
 
         // ƒQ[ƒ€ŠÔ‚ÌXV
         static float startTime = 1.0f;
+        if(CGameManager::GameState() == EGameState::eGame)
         startTime -= Time::DeltaTime();
         if (startTime <= 0.0f)
         {

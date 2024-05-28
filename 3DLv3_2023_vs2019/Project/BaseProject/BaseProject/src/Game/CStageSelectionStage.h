@@ -11,6 +11,7 @@ public:
 	// デストラクタ
 	~CStageSelectionStage();
 
+	// プレイヤーのポジションを設定
 	CVector GetPlayerStartPosition();
 
 	// ステージ読み込み
@@ -24,14 +25,13 @@ private:
 	// ステージのデータ
 	struct StageData
 	{
-		int stageNo;	// ステージ番号
-		CVector btnPos;	// ステージのボタンの番号
-		int prevStageNo;// 前のステージの番号
-		int nextStageNo;// 次のステージの番号
+		int stageNo;		// ステージ番号
+		CVector btnPos;		// ステージのボタンの番号
+		int prevStageNo;	// 前のステージの番号
+		int nextStageNo;	// 次のステージの番号
 	};
 	// ステージのデータのテーブル
 	static const StageData STAGE_DATA[];
-
 	// 現在のステージ番号
 	int mSelectStageNo;
 };

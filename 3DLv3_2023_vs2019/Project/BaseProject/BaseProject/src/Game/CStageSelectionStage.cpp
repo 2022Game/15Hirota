@@ -1,20 +1,20 @@
 #include "CStageSelectionStage.h"
+#include "CStageSelectCamera.h"
+#include "CGameManager.h"
 #include "CGameCamera.h"
 #include "CCamera.h"
-#include "CStageSelection.h"
 #include "CPlayer.h"
-#include "CStageButton.h"
-#include "CNeedle.h"
-#include "CVanguard.h"
+#include "CInput.h"
 #include "CFixedFlamethrower.h"
-#include "CTreasureChest.h"
-#include "CStageSelectCamera.h"
 #include "CStage1MenuObject.h"
 #include "CStage3MenuObject.h"
+#include "CStageSelection.h"
+#include "CTreasureChest.h"
+#include "CStageButton.h"
 #include "CStage1Button.h"
 #include "CStage3Button.h"
-#include "CGameManager.h"
-#include "CInput.h"
+#include "CVanguard.h"
+#include "CNeedle.h"
 
 // ステージのデータのテーブル
 const CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[]
@@ -38,12 +38,15 @@ CStageSelectionStage::~CStageSelectionStage()
 
 }
 
+// プレイヤーんポジション設定
 CVector CStageSelectionStage::GetPlayerStartPosition()
 {
+	// プレイヤーのポジションを返す
 	CVector playerPos;
 
 	// プレイヤーを取得
 	CPlayer* player = CPlayer::Instance();
+	// プレイヤーがnulじゃなかったら
 	if (player != nullptr)
 	{
 		// ステージをクリアしているかどうかをチェック
@@ -70,24 +73,26 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 // ステージ読み込み
 void CStageSelectionStage::Load()
 {
-	CResourceManager::Load<CModel>("StageSelect", "Field\\StageSelect\\StageSelect.obj");
-	CResourceManager::Load<CModel>("StageSelectFloor", "Field\\StageSelect\\StageSelectFloorCol.obj");
+	CResourceManager::Load<CModel>("StageSelect",		"Field\\StageSelect\\StageSelect.obj");				// ステージのオブジェクト
+	CResourceManager::Load<CModel>("StageSelectFloor",	"Field\\StageSelect\\StageSelectFloorCol.obj");		// ステージの床コライダー
 
-	//CResourceManager::Load<CModel>("StageSelection", "Field\\StageSentaku.obj");				// ステージセレクトステージ
-	//CResourceManager::Load<CModel>("StageSelectionFloorCol", "Field\\StageSentakuFloor.obj");	// ステージセレクトステージ(床)
-	//CResourceManager::Load<CModel>("StageSelectionWallCol", "Field\\StageSentakuWall.obj");		// ステージセレクトステージ(壁)
-	CResourceManager::Load<CModel>("StageButton", "Field\\Object\\StageBotan.obj");				// ステージボタン
-	CResourceManager::Load<CModel>("SkyIslandMenu",		"Field\\Object\\Skyisland.obj");	// 空島モデル
-	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");					// 三番目の床ブロック
+	CResourceManager::Load<CModel>("StageButton",		"Field\\Object\\StageBotan.obj");					// ステージボタンモデル
+	CResourceManager::Load<CModel>("SkyIslandMenu",		"Field\\Object\\Skyisland.obj");					// 空島モデル
+	CResourceManager::Load<CModel>("Number3",			"Field\\Object\\number3.obj");						// 三番目の床モデル
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
 
+	//// フィールド関連 /////////////////////////////////////////////////////////////////
+	
 	// フィールド
 	CStageSelection* field = new CStageSelection();
 	field->Scale(10.0f, 10.0f, 10.0f);
 	AddTask(field);
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	//// ステージオブジェクト関連 ///////////////////////////////////////////////////////
 
 	// ステージ1選択モデル
 	CStage1Button* stage1button = new CStage1Button(
@@ -115,43 +120,18 @@ void CStageSelectionStage::Load()
 
 	// ステージメニューオブジェクト(ステージ3)
 	CStage3MenuObject* menuobj3 = new CStage3MenuObject(
-		CVector(6.0f, 30.0f, -180.0f),
+		CVector(6.0f, 30.0f, -185.0f),
 		CVector(1.2f, 1.2f, 1.2f),
 		CVector(0.0f, 40.0f, 0.0f),
 		ETag::ePlayer, ELayer::eDamageCol);
 	AddTask(menuobj3);
 
-
-
-	//// 針モデル
-	//CNeedle* needle = new CNeedle(
-	//	CVector(100.0f, 11.0f, 0.0f),
-	//	CVector(10.0f, 10.0f, 10.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer);
-	//CVector needlePos = CVector(100.0f, 11.0f, 0.0f);
-	//if (needle != nullptr)
-	//{
-	//	needle->SetStartPosition(needlePos);
-	//}
-	//AddTask(needle);
-	//// 針モデルベース
-	//CNeedleBase* needlebase = new CNeedleBase(
-	//	CVector(100.0f, 11.0f, 0.0f),
-	//	CVector(10.0f, 10.0f, 10.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer);
-	//CVector needlebasePos = CVector(100.0f, 11.0f, 0.0f);
-	//if (needlebase != nullptr)
-	//{
-	//	needlebase->SetStartPosition(needlebasePos);
-	//}
-	//AddTask(needlebase);
-
+	/////////////////////////////////////////////////////////////////////////////////////
+	
+	//// プレイヤー関連 /////////////////////////////////////////////////////////////////
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
-	bool playerStage3 = player->IsStage3Clear();
 	// プレイヤーの初期位置を取得
 	CVector playerPos = GetPlayerStartPosition();
 	if (player != nullptr)
@@ -159,7 +139,6 @@ void CStageSelectionStage::Load()
 		player->SetStartPosition(playerPos);
 		player->Rotation(0.0f, 180.0f, 0.0f);
 	}
-
 	// ステージ選択画面は、ステージ選択画面用のカメラを使用するため、
 	// ゲームのカメラを削除する
 	CCamera* camera = CCamera::MainCamera();
@@ -167,7 +146,6 @@ void CStageSelectionStage::Load()
 	{
 		camera->Kill();
 	}
-
 	// カメラの位置をプレイヤーから一定量離れた位置に設定
 	CVector camPos = playerPos + CVector(100.0f, 70.0f, 0.0f);
 	// ステージ選択カメラを生成
@@ -181,6 +159,8 @@ void CStageSelectionStage::Load()
 	camera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	//mainCamera->AddCollider(field->GetWallCol());
+	
+	/////////////////////////////////////////////////////////////////////////////////////
 }
 
 // ステージ破棄
