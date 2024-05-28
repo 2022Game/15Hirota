@@ -25,8 +25,8 @@ CFixedFlamethrower::CFixedFlamethrower(const CVector& pos, const CVector& scale,
 	mpFlamethrower = new CFlamethrower
 	(
 		this, nullptr,
-		CVector(0.0f, 10.0f, -1.0f),
-		CQuaternion(0.0f, -90.0f, 0.0f).Matrix()
+		CVector(0.0f, 16.0f, -1.0f),
+		CQuaternion(0.0f, 0.0f, 0.0f).Matrix()
 	);
 	CStageManager::AddTask(mpFlamethrower);
 
