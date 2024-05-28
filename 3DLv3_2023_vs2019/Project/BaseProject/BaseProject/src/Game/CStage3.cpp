@@ -170,25 +170,25 @@ void CStage3::Load()
 	//flamethrower2->Rotate(-90.0f, 0.0f, -90.0f);
 	//AddTask(flamethrower2);
 
-	//// ジャンプオブジェクト
-	//CJumpingObject* jumping1 = new CJumpingObject
-	//(
-	//	CVector(1183.0f, 250.0f, -350.0f),
-	//	CVector(0.5f, 0.5f, 0.5f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(jumping1);
+	// ジャンプオブジェクト
+	CJumpingObject* jumping1 = new CJumpingObject
+	(
+		CVector(-148.0f, 247.0f, -1059.0f),
+		CVector(1.0f, 1.5f, 0.5f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(jumping1);
 
-	//// ジャンプオブジェクト
-	//CJumpingObject* jumping2 = new CJumpingObject
-	//(
-	//	CVector(1244.0f, 285.0f, -211.0f),
-	//	CVector(0.5f, 0.5f, 0.5f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(jumping2);
+	// ジャンプオブジェクト
+	CJumpingObject* jumping3 = new CJumpingObject
+	(
+		CVector(-8.0f, 295.0f, -1110.0f),
+		CVector(0.5f, 2.5f, 0.5f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(jumping3);
 
 	// 回数オブジェクト(一回)
 	CNumberFloorOnce* numberfloor1 = new CNumberFloorOnce
@@ -357,7 +357,7 @@ void CStage3::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(190.0f, 125.0f, 269.0f);
+	CVector playerPos = CVector(-8.0f, 300.0f, -1050.0f);//190.0f, 125.0f, 269.0f
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

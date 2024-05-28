@@ -72,21 +72,21 @@ void CStageTime::Update()
         // ステージ1, 2, 3の場合の処理
         if (currentStage == 1 && !mIsStage1)
         {
-            mTime = 500;
+            mTime = 300;
             mIsStage1 = true;
             mIsStage2 = false;
             mIsStage3 = false;
         }
         else if (currentStage == 2 && !mIsStage2)
         {
-            mTime = 300;
+            mTime = 400;
             mIsStage1 = false;
             mIsStage2 = true;
             mIsStage3 = false;
         }
         else if (currentStage == 3 && !mIsStage3)
         {
-            mTime = 300;
+            mTime = 500;
             mIsStage1 = false;
             mIsStage2 = false;
             mIsStage3 = true;

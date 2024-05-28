@@ -2,22 +2,28 @@
 #include "CPlayer.h"
 #include "CInput.h"
 #include "Maths.h"
+#include "Easing.h"
 
 // 消えた後の時間
 #define DELETE 5.0f
 #define WAIT 5.0f
 
+#define SHRINK_SCALE 0.8f
+#define SHRINK_TIME 0.15f
+#define RETURN_TIME 0.8f
+
 // コンストラクタ
 CJumpingObject::CJumpingObject(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
-	: CRideableObject(ETaskPriority::eBackground)
-	, mState(EState::Idle)
+	: CObjectBase(ETag::eJumpingObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
+	, mState(EState::eIdle)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
 	, mStateStep(0)
 	, mFadeTime(0.0f)
 	, mWaitTime(0.0f)
-	, mIsCollision(false)
+	, mElapsedTime(0.0f)
+	, mIsCollisionPlayer(false)
 {
 	// 跳ねさせる床のモデル取得
 	mpModel = CResourceManager::Get<CModel>("FieldCube");
@@ -27,6 +33,8 @@ CJumpingObject::CJumpingObject(const CVector& pos, const CVector& scale, const C
 
 	// 生成時に設定された触れた時に反応するオブジェクトタグと
 	// コライダーのレイヤーを個別に設定
+	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer });
+	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
 	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
 	mpColliderMesh->SetCollisionTag(mReactionTag, true);
 
@@ -54,88 +62,121 @@ void CJumpingObject::Collision(CCollider* self, CCollider* other, const CHitInfo
 	// 衝突しているのが、反応するオブジェクトであれば
 	if (owner->Tag() == mReactionTag && other->Layer() == mReactionLayer)
 	{
-		//// 反転した押し戻しベクトルと上方向のベクトルの内積(角度)を求める
-		//float dot = CVector::Dot(-hit.adjust.Normalized(), CVector::up);
-		//// 上に乗ったと判断するためのcos関数に渡した角度を求める
-		//float cosAngle = cosf(Math::DegreeToRadian(10.0f));
-		//// 求めた角度が指定した角度の範囲内であれば、
-		//if (dot >= cosAngle)
-		if (mState == EState::Idle && KeyPush)
+		// 反転した押し戻しベクトルと上方向のベクトルの内積(角度)を求める
+		float dot = CVector::Dot(-hit.adjust.Normalized(), CVector::up);
+		// 上に乗ったと判断するためのcos関数に渡した角度を求める
+		float cosAngle = cosf(Math::DegreeToRadian(10.0f));
+		// 求めた角度が指定した角度の範囲内であれば、
+		if (dot >= cosAngle)
 		{
-			CPlayer* player = dynamic_cast<CPlayer*>(owner);
-			if (player)
+			if (mState == EState::eIdle && KeyPush)
 			{
-				player->UpdateJumpingStart();
-			}
-			ChangeState(EState::Bounce);
-		}
-		else if (mState == EState::Idle)
-		{
-			CPlayer* player = dynamic_cast<CPlayer*>(owner);
-			if (player)
-			{
+				CPlayer* player = dynamic_cast<CPlayer*>(owner);
 				if (player)
 				{
-					player->UpdateJumpingStart();
+					player->UpdateHighJumpingStart();
 				}
+				ChangeState(EState::eBounce);
 			}
-			ChangeState(EState::Bounce);
+			else if (mState == EState::eIdle)
+			{
+				CPlayer* player = dynamic_cast<CPlayer*>(owner);
+				if (player)
+				{
+					if (player)
+					{
+						player->UpdateJumpingStart();
+					}
+				}
+				ChangeState(EState::eBounce);
+			}
+			mIsCollisionPlayer = true;
 		}
-		mIsCollision = true;
 	}
 }
 
 // 状態を切り替える
 void CJumpingObject::ChangeState(EState state)
 {
+	if (mState == state) return;
 	mState = state;
 	mStateStep = 0;
+	mElapsedTime = 0.0f;
 }
 
 // 待機状態の処理
 void CJumpingObject::UpdateIdle()
 {
-
+	if (mIsCollisionPlayer)
+	{
+		ChangeState(EState::eBounce);
+	}
 }
 
 // 跳ねている状態の更新処理			必要ないかも
 void CJumpingObject::UpdateBounce()
 {
-	// 反応するオブジェクトが触れていたら
-	if (mIsCollision)
-	{
-		// ステップ0からやり直し
-		mStateStep = 0;
-	}
-	// ステップごとに処理を切り替え
 	switch (mStateStep)
 	{
-		// ステップ0 フェード後の待ち時間
 	case 0:
-		// 待ち時間が経過していなければ、経過時間分減らす
-		if (mWaitTime > 0.0f)
+		mStartScale = Scale();
+		mShrinkScale = mStartScale;
+		mShrinkScale.X(mShrinkScale.X() * SHRINK_SCALE);
+		mShrinkScale.Y(mShrinkScale.Y() * SHRINK_SCALE);
+		mShrinkScale.Z(mShrinkScale.Z() * SHRINK_SCALE);
+		Scale(mShrinkScale);
+		mStateStep++;
+		break;
+
+	case 1:
+		if (mElapsedTime < SHRINK_TIME)
 		{
-			mWaitTime -= Time::DeltaTime();
+			mElapsedTime += Time::DeltaTime();
 		}
-		// 待ち時間が経過したら、次のステップへ
 		else
 		{
 			mStateStep++;
+			mElapsedTime = 0.0f;
 		}
 		break;
-		// ステップ1 消えた床をもとに戻す
-	case 1:
-		if (mFadeTime > 0.0f)
+	case 2:
+		if (mElapsedTime < RETURN_TIME)
 		{
-			mFadeTime -= Time::DeltaTime();
+			float percent = Easing::BounceOut
+			(
+				mElapsedTime,	// 現在の時間
+				RETURN_TIME,	// 目的の時間
+				0.0f,			// 最小値
+				1.0f			// 最大値
+			);
+			/*float percent = Easing::BackOut
+			(
+				mElapsedTime,
+				RETURN_TIME,
+				0.3f, 1.0f, 5.0f
+			);*/
+
+			// 線形補間
+			CVector scale = CVector::LerpUnclamped(
+				mShrinkScale,
+				mStartScale,
+				percent
+			);
+			Scale(scale);
+
+			mElapsedTime += Time::DeltaTime();
 		}
 		else
 		{
-			// 待機状態へ戻す
-			ChangeState(EState::Idle);
-			mFadeTime = 0.0f;
-			mWaitTime = 0.0f;
-
+			Scale(mStartScale);
+			mElapsedTime = 0.0f;
+			mStateStep++;
+		}
+		break;
+	case 3:
+		if (!mIsCollisionPlayer)
+		{
+			ChangeState(EState::eIdle);
 		}
 		break;
 	}
@@ -148,17 +189,17 @@ void CJumpingObject::Update()
 	switch (mState)
 	{
 		// 待機状態
-	case EState::Idle:
+	case EState::eIdle:
 		UpdateIdle();
 		break;
 		// 現れている状態
-	case EState::Bounce:
+	case EState::eBounce:
 		UpdateBounce();
 		break;
 
 	}
 	// 衝突フラグを初期化
-	mIsCollision = false;
+	mIsCollisionPlayer = false;
 }
 
 // 描画処理

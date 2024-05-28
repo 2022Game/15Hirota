@@ -5,14 +5,16 @@
 #include "CColliderLine.h"
 #include "CColliderSphere.h"
 #include "CColliderMesh.h"
-#include "CRideableObject.h"
+#include "CObjectBase.h"
 
-// 跳ねさせる床クラス
-class CJumpingObject : public CRideableObject
+// プレイヤーを跳ねさせる床
+class CJumpingObject : public CObjectBase
 {
 public:
+	// コンストラクタ
 	CJumpingObject(const CVector& pos, const CVector& scale, const CVector& rot,
 		ETag reactionTag, ELayer reactionLayer);
+	// デストラクタ
 	~CJumpingObject();
 
 	/// <summary>
@@ -29,10 +31,10 @@ public:
 	void Render();
 
 private:
-
 	// モデル・素材関連
+	// 跳ねる床モデル
 	CModel* mpModel;
-	// 跳ねるモデルのコライダー
+	// 跳ねる床モデルのコライダー
 	CColliderMesh* mpColliderMesh;
 
 
@@ -40,8 +42,8 @@ private:
 	// 跳ねさせる床の状態
 	enum class EState
 	{
-		Idle,		// 待機状態
-		Bounce,		// 跳ねさせる状態
+		eIdle,			// 待機状態
+		eBounce,		// 跳ねさせる状態
 	};
 	// 状態を切り替える
 	void ChangeState(EState state);
@@ -49,7 +51,14 @@ private:
 	void UpdateIdle();
 	// 跳ねさせる状態の更新処理
 	void UpdateBounce();
-	EState mState;	// 現在の状態
+	// 現在の状態
+	EState mState;
+
+	// ベクトル関連
+	// 初期の大きさ
+	CVector mStartScale;
+	// 縮む大きさ
+	CVector mShrinkScale;
 
 
 	// 変数関連
@@ -59,8 +68,11 @@ private:
 	float mFadeTime;
 	// 待ち時間
 	float mWaitTime;
+	// 経過時間計測用
+	float mElapsedTime;
 	// 衝突しているか
-	bool mIsCollision;
+	bool mIsCollisionPlayer;
+
 	// 触れた時に反応するオブジェクトのタグ
 	ETag mReactionTag;
 	// 触れた時に反応するレイヤー

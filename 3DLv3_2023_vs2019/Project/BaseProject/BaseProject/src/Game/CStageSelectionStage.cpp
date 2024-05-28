@@ -22,7 +22,7 @@ const CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[]
 	{0,CVector(65.0f, 3.5f,   36.0f),	-1, 1},
 	{1,CVector(65.0f, 3.5f,  -72.0f),	 0, 3},
 	{2,CVector( 0.0f, 0.0f,    0.0f),	-1,-1},
-	{3,CVector(65.0f, 3.5f, -180.0f),	 1,-1},
+	{3,CVector(65.0f, 3.5f, -185.0f),	 1,-1},
 };
 
 // コンストラクタ
@@ -116,7 +116,7 @@ void CStageSelectionStage::Load()
 	// ステージメニューオブジェクト(ステージ3)
 	CStage3MenuObject* menuobj3 = new CStage3MenuObject(
 		CVector(6.0f, 30.0f, -180.0f),
-		CVector(1.0f, 1.0f, 1.0f),
+		CVector(1.2f, 1.2f, 1.2f),
 		CVector(0.0f, 40.0f, 0.0f),
 		ETag::ePlayer, ELayer::eDamageCol);
 	AddTask(menuobj3);

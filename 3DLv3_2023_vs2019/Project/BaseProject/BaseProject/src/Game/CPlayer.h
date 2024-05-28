@@ -141,12 +141,18 @@ public:
 	void UpdateJump();
 	// ジャンプ終了1
 	void UpdateJumpEnd();
-	// 跳ねる
+	// 跳ねる開始
 	void UpdateJumpingStart();
-	// 跳ねてる途中
+	// 跳ねる
 	void UpdateJumping();
-	// 跳ねるの終了
+	// 跳ねる終了
 	void UpdateJumpingEnd();
+	// 飛び跳ねる開始
+	void UpdateHighJumpingStart();
+	// 飛び跳ねる
+	void UpdateHighJumping();
+	// 飛び跳ねる終了
+	void UpdateHighJumpingEnd();
 
 	// 指定された位置まで移動開始
 	void MoveTo(const CVector& pos);
@@ -327,6 +333,9 @@ private:
 		eJumpingStart,		 // 跳ねる開始
 		eJumping,			 // 跳ねる
 		eJumpingEnd,		 // 跳ねる終了
+		eHighJumpingStart,	 // 飛び跳ねる開始
+		eHighJumping,		 // 飛び跳ねる
+		eHighJumpingEnd,	 // 飛び跳ねる終了
 		eRotate,			 // 回避開始
 		eRotateEnd,			 // 回避終了待ち
 		eDashEnd,			 // ダッシュ終了

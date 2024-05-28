@@ -45,10 +45,12 @@
 #define JUMP_SPEED 1.5f
 // 大ジャンプ
 #define JUMP_BOUNCE 2.0f
+// 超大ジャンプ
+#define JUMP_HIGH_BOUNCE 2.5f
 // クリアジャンプ
 #define JUMP_CLEAR 2.0f;
 // スタートジャンプ
-#define JUMP_START_STAGE 1.7f
+#define JUMP_START_STAGE 2.0f
 // 重力
 #define GRAVITY 0.0625f
 // ジャンプ終了時
@@ -244,9 +246,9 @@ CPlayer::CPlayer()
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
-		ELayer::eSavePoint, ELayer::eAttackCol,ELayer::eGoalCol });
+		ELayer::eSavePoint, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol });
 	mpColliderSphere->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
-		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint, ETag::eObstacle});
+		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint, ETag::eObstacle,ETag::eJumpingObject});
 	//mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpColliderSphere->SetAttachMtx(spineMtx);
@@ -396,7 +398,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				//mMoveSpeedY = 0.0f;
 				Position(Position() + hit.adjust);
-				mpRideObject = other->Owner();
 			}
 			else
 			{
@@ -500,6 +501,11 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					ChangeState(EState::eStop);
 				}
 			}
+		}
+		// 跳ねるブロック
+		else if (other->Layer() == ELayer::eJumpingCol)
+		{
+			Position(Position() + hit.adjust);
 		}
 	}
 
@@ -1707,7 +1713,7 @@ void CPlayer::UpdateStartStageJump()
 	CPlayer* player = CPlayer::Instance();
 	CVector playerPos = player->Position();
 	CVector zDirection(-1.0f, 0.0f, 0.0f); // Z軸方向のベクトル
-	CVector targetPos = playerPos + zDirection * 2.2f;
+	CVector targetPos = playerPos + zDirection * 1.1f;
 	float per = mElapsedTime / 1.0f;
 	CVector pos = CVector::Lerp(playerPos, targetPos, per);
 	Position(pos);
@@ -1732,7 +1738,7 @@ void CPlayer::UpdateStartStageJump()
 	mElapsedTime += Time::DeltaTime();
 	mScaleTime += Time::DeltaTime();
 	
-	if (mElapsedTime > 1.0f && mScaleTime > 1.0f)
+	if (mElapsedTime > 0.8f && mScaleTime > 1.0f)
 	{
 		if (mMoveSpeedY <= 0.0f)
 		{
@@ -1755,7 +1761,7 @@ void CPlayer::UpdateStartStageJumpEnd()
 	bool stage3button3 = button3->IsStage3Button();
 
 	mMoveSpeed = CVector::zero;
-	mMoveSpeedY = -0.5f;
+	mMoveSpeedY = -0.01f;
 	mpSword->SetAlpha(0.0f);
 	if (IsAnimationFinished())
 	{
@@ -2615,6 +2621,64 @@ void CPlayer::UpdateJumpingEnd()
 	}
 }
 
+// 跳び跳ねる開始
+void CPlayer::UpdateHighJumpingStart()
+{
+	ChangeAnimation(EAnimType::eJumpStart);
+	ChangeState(EState::eHighJumping);
+
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+	mMoveSpeedY = JUMP_HIGH_BOUNCE;
+	mIsGrounded = false;
+}
+
+// 跳び跳ねる
+void CPlayer::UpdateHighJumping()
+{
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	if (mMoveSpeedY <= 0.0f)
+	{
+		ChangeAnimation(EAnimType::eJumpEnd);
+		ChangeState(EState::eHighJumpingEnd);
+	}
+}
+
+// 跳び跳ねる終了
+void CPlayer::UpdateHighJumpingEnd()
+{
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eIdle);
+	}
+}
+
 // 指定された位置まで移動する
 void CPlayer::UpdateMoveTo()
 {
@@ -2750,13 +2814,19 @@ bool CPlayer::IsFoundVanguard()
 void CPlayer::Update()
 {
 	//CDebugPrint::Print("elapsed:%f\n",mElapsedStageTime);
-	CDebugPrint::Print("mIsStage1Clear:%s\n", mIsStage1Clear ? "true" : "false");
-	CDebugPrint::Print("mStage1Clear:%s\n", mStage1Clear ? "true" : "false");
+	//CDebugPrint::Print("mIsStage1Clear:%s\n", mIsStage1Clear ? "true" : "false");
+	//CDebugPrint::Print("mStage1Clear:%s\n", mStage1Clear ? "true" : "false");
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
 	mHpHit = false;
+
+
+	// デバッグ用にオンにしている　後で駆らず消すこと	////////////////////////////////////
+	mIsStartStage3 = true;
+	////////////////////////////////////////////////////////////////////////////////////////
+
 
 	if (CGameManager::GameState() == EGameState::eStage1)
 	{
@@ -2940,6 +3010,18 @@ void CPlayer::Update()
 	case EState::eJumpingEnd:
 		UpdateJumpingEnd();
 		break;
+		// 飛び跳ねる開始
+	case EState::eHighJumpingStart:
+		UpdateHighJumpingStart();
+		break;
+		// 飛び跳ねる
+	case EState::eHighJumping:
+		UpdateHighJumping();
+		break;
+		// 飛び跳ねる終了
+	case EState::eHighJumpingEnd:
+		UpdateHighJumpingEnd();
+		break;
 	case EState::eResultJumpStart:
 		UpdateResultJumpStart();
 		break;
@@ -2981,6 +3063,9 @@ void CPlayer::Update()
 		|| mState == EState::eJumping
 		|| mState == EState::eJumpingEnd
 		|| mState == EState::eDashJumpStart
+		|| mState == EState::eHighJumpingStart
+		|| mState == EState::eHighJumping
+		|| mState == EState::eHighJumpingEnd
 		|| mState == EState::eDashJump
 		|| mState == EState::eDashJumpEnd
 		|| mState == EState::eFalling)
