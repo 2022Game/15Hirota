@@ -8,6 +8,7 @@
 
 CFixedFlamethrower::CFixedFlamethrower(const CVector& pos, const CVector& scale, const CVector& rot)
 	: CObjectBase(ETag::eField, ETaskPriority::eBackground)
+	, mState(EState::Idle)
 	, mStateStep(0)
 	, fire(true)
 	, mWaitTime(0.0f)
@@ -29,7 +30,7 @@ CFixedFlamethrower::CFixedFlamethrower(const CVector& pos, const CVector& scale,
 	);
 	CStageManager::AddTask(mpFlamethrower);
 
-	ChangeState(EState::Idle);
+	//ChangeState(EState::Idle);
 
 	Position(pos);
 	Scale(scale);
