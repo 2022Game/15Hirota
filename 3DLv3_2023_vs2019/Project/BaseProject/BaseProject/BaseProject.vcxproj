@@ -122,6 +122,7 @@
     <ClCompile Include="src\Game\CSavePoint.cpp" />
     <ClCompile Include="src\Game\CScore.cpp" />
     <ClCompile Include="src\Game\CScreenItem.cpp" />
+    <ClCompile Include="src\Game\CSeesaw.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CSlash.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="src\Game\CSavePoint.h" />
     <ClInclude Include="src\Game\CScore.h" />
     <ClInclude Include="src\Game\CScreenItem.h" />
+    <ClInclude Include="src\Game\CSeesaw.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CSlash.h" />

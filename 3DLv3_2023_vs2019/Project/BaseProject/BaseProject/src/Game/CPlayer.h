@@ -5,6 +5,7 @@
 #include "CColliderLine.h"
 #include "CRideableObject.h"
 #include "CColliderSphere.h"
+#include "CColliderCapsule.h"
 #include "CCutInDeath.h"
 #include "CCutInClear.h"
 #include <map>
@@ -184,7 +185,7 @@ private:
 	CColliderLine* mpColliderLine;
 	// 一時的な当たり判定を取るコライダー
 	// カプセルコライダーが完成したら変更
-	CColliderSphere* mpColliderSphere;
+	CColliderCapsule* mpColliderSphere;
 	//ダメージを受けるコライダ
 	CColliderSphere* mpDamageCol;
 	// 登れるコライダーとの当たり判定を取るコライダー

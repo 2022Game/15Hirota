@@ -1,6 +1,7 @@
 //プレイヤークラスのインクルード
 #include "CPlayer.h"
 #include "CInput.h"
+#include "CColliderCapsule.h"
 #include "CCamera.h"
 #include "CFade.h"
 #include "CUiGauge.h"
@@ -240,10 +241,14 @@ CPlayer::CPlayer()
 
 
 	// 一時的な当たり判定を取るコライダー
-	mpColliderSphere = new CColliderSphere
+	mpColliderSphere = new CColliderCapsule
 	(
 		this, ELayer::ePlayer,
-		0.8f
+		CVector(0.0f, -0.3f, 0.0f),
+		CVector(0.0f, 0.7f, 0.0f),
+		5.0f,
+		true,
+		1.0f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,

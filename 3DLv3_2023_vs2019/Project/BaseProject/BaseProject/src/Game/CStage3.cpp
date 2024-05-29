@@ -22,6 +22,7 @@
 #include "CBlueMedal.h"
 #include "CRotationg.h"
 #include "CSavePoint.h"
+#include "CSeesaw.h"
 
 // コンストラクタ
 CStage3::CStage3()
@@ -86,6 +87,12 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("TreasureChestTwo",	  "Field\\Gimmick\\TreasureChestTwo.obj");							// 宝箱(蓋)
 	CResourceManager::Load<CModel>("TreasureChestCol",	  "Field\\Gimmick\\TreasureChest(FloorCol).obj");						// 宝箱(蓋コライダー)
 	CResourceManager::Load<CModel>("TreasureChestWallCol","Field\\Gimmick\\TreasureChest(WallCol).obj");						// 宝箱(壁コライダー)
+
+	CResourceManager::Load<CModel>("SeesawModel", "Field\\Gimmick\\SeesawModel.obj");	// シーソーモデル
+	CResourceManager::Load<CModel>("centerCol", "Field\\Gimmick\\SeesawModel(CenterCol).obj");	// シーソーモデル
+	CResourceManager::Load<CModel>("rightCol", "Field\\Gimmick\\SeesawModel(RightCol).obj");	// シーソーモデル
+	CResourceManager::Load<CModel>("leftCol", "Field\\Gimmick\\SeesawModel(LeftCol).obj");	// シーソーモデル
+
 
 
 	CResourceManager::Load<CModel>("HatenaBlock",		"Field\\Object\\hatena.obj");						// ハテナブロック(アイテム保有)
@@ -207,6 +214,16 @@ void CStage3::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rotatetimegimmick);
+
+	// シーソーモデル
+	CSeesaw* seesaw1 = new CSeesaw
+	(
+		CVector(190.0f, 135.0f, 90.0f),
+		CVector(8.5f, 5.5f, 10.5f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(seesaw1);
 
 	//// 回転する床ギミック(ジャンプ)
 	//CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
@@ -402,7 +419,7 @@ void CStage3::Load()
 	// 初期値点 : 190.0f, 125.0f, 269.0f
 	// 中間地点 : -8.0f, 300.0f, -1050.0f
 	// 火炎放射器の前 : -207.0f, 126.0f, -912.0f
-	CVector playerPos = CVector(-207.0f, 126.0f, -912.0f);
+	CVector playerPos = CVector(190.0f, 125.0f, 269.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
