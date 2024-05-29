@@ -55,26 +55,15 @@ private:
 	enum class EState
 	{
 		eIdle,	// 待機状態
-		eRight,	// 右に傾く状態
-		eLeft,	// 左に傾く状態
-		eReturn,// 元に戻す状態
 	};
 	// 状態を切り替える
 	void ChangeState(EState state);
 	// 待機状態の更新処理
 	void UpdateIdle();
-	// 右に傾く更新処理
-	void UpdateRight();
-	// 左に傾く更新処理
-	void UpdateLeft();
-	// 元に戻す更新処理
-	void UpdateReturn();
 	// 現在の状態
 	EState mState;
 
 	// ベクトル関連
-	// 移動速度
-	CVector mMoveSpeed;
 	// 位置を設定する
 	CVector mStartPos;
 	// 初期回転値
@@ -90,7 +79,7 @@ private:
 	// 回転終了時の角度
 	float mRotateEndAngle;
 	// 経過時間計測用
-	float mElpasedTime;
+	float mElapsedTime;
 
 	// センターコライダーに衝突しているか
 	bool mIsCenterCol;

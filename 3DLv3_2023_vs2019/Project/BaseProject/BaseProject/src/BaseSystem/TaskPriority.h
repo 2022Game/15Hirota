@@ -12,6 +12,7 @@ enum class ETaskPriority
 	eDefault,		// デフォルト
 	eBackground,	// 背景
 	eObstacle,		// 障害物
+	eSeesaw,		// シーソーオブジェクト
 	ePlayer,		// プレイヤー
 	eEnemy,			// エネミー
 
@@ -24,7 +25,6 @@ enum class ETaskPriority
 	eHatenaOBJ,		// ハテナブロックオブジェクト
 	eNeedle,		// 針オブジェクト
 	eRotate,		// 回転するオブジェクト
-	eSeesaw,		// シーソーオブジェクト
 	eEffect,
 	eBillboard,		// ビルボードイメージ
 	eEnemyGauge,	// エネミーのゲージ
