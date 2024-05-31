@@ -694,6 +694,9 @@
     <ClCompile Include="src\Game\CSeesaw.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CJumpingKinoko.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1261,6 +1264,9 @@
       <Filter>ソース ファイル\Game\Field\Object\Obstacle\Stone</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CSeesaw.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingKinoko.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>

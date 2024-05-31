@@ -79,8 +79,6 @@ private:
 
 
 	// ベクトル関連
-	// 針の移動速度
-	CVector mMoveSpeed;
 	// 針モデルの初期位置
 	CVector mStartPos;
 
@@ -88,10 +86,16 @@ private:
 	// 変数関連
 	// 状態内のステップ
 	int mStateStep;
+	// 経過時間計測用
+	float mElapsedTime;
+	// 初期位置
+	float mStartPosition;
+	// 最後の位置
+	float mEndPosition;
+
+
 	// 待ち時間
 	float mWait;
-	// 戻る時間
-	float mReturnTime;
 	// 攻撃後の待ち時間
 	float mAttackWait;
 	// 攻撃後の再起時間
@@ -121,7 +125,6 @@ public:
 private:
 	// 針のベースモデル
 	CModel* mpNeedleBase;
-
 	// 針モデルの初期位置
 	CVector mStartPos;
 

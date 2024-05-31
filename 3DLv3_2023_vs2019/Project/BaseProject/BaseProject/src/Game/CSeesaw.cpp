@@ -6,7 +6,7 @@
 // 回転にかかる時間
 #define ROTATE_TIME 1.5f
 // １秒間に回転する角度
-#define ROTATE_SPEED 20.0f
+#define ROTATE_SPEED 30.0f
 
 // コンストラクタ
 CSeesaw::CSeesaw(const CVector& pos, const CVector& scale, const CVector& rot,
@@ -124,7 +124,7 @@ void CSeesaw::UpdateIdle()
 	// 元の角度(0度に戻す)
 	else
 	{
-		if (mElapsedTime < 1.0f)
+		if (mElapsedTime < 0.1f)
 		{
 			mElapsedTime += Time::DeltaTime();
 		}
@@ -166,9 +166,9 @@ void CSeesaw::Update()
 	CDebugPrint::Print("mIsRightCol:%s\n", mIsRightCol ? "true" : "false");
 	CDebugPrint::Print("mIsLeftCol:%s\n", mIsLeftCol ? "true" : "false");*/
 
-	CDebugPrint::Print("mRotationAngle:%f\n", mRotationAngle);
+	/*CDebugPrint::Print("mRotationAngle:%f\n", mRotationAngle);
 	CDebugPrint::Print("mRotateStartAngle:%f\n", mRotateStartAngle);
-	CDebugPrint::Print("mRotateEndAngle:%f\n", mRotateEndAngle);
+	CDebugPrint::Print("mRotateEndAngle:%f\n", mRotateEndAngle);*/
 
 	// 現在の状態に合わせて処理を切り替え
 	switch (mState)

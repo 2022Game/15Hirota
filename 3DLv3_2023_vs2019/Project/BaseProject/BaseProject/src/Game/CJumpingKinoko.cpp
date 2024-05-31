@@ -1,4 +1,4 @@
-#include "CJumpingObject.h"
+#include "CJumpingKinoko.h"
 #include "CPlayer.h"
 #include "CInput.h"
 #include "Maths.h"
@@ -9,22 +9,22 @@
 #define RETURN_TIME 0.8f
 
 // コンストラクタ
-CJumpingObject::CJumpingObject(const CVector& pos, const CVector& scale, const CVector& rot,
+CJumpingKinoko::CJumpingKinoko(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
 	: CObjectBase(ETag::eJumpingObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 	, mState(EState::eIdle)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
 	, mStateStep(0)
-	, mFadeTime(0.0f)
-	, mWaitTime(0.0f)
 	, mElapsedTime(0.0f)
 	, mIsCollisionPlayer(false)
 {
-	// 跳ねさせる床のモデル取得
-	mpModel = CResourceManager::Get<CModel>("FieldCube");
-	// 跳ねさせる床のコライダー作成
-	mpColliderMesh = new CColliderMesh(this, ELayer::eJumpingCol, mpModel, true);
+	// 跳ねるキノコのモデル取得
+	mpKinoko = CResourceManager::Get<CModel>("JumpingKinoko");
+
+	// 跳ねるキノコのコライダー作成
+	CModel* kinokoCol = CResourceManager::Get<CModel>("JumpingKinokoCol");
+	mpColliderMesh = new CColliderMesh(this, ELayer::eJumpingCol, kinokoCol, true);
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
 
 	// 生成時に設定された触れた時に反応するオブジェクトタグと
@@ -38,17 +38,17 @@ CJumpingObject::CJumpingObject(const CVector& pos, const CVector& scale, const C
 	Scale(scale);
 	Rotate(rot);
 
-	SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+	SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 // デストラクタ
-CJumpingObject::~CJumpingObject()
+CJumpingKinoko::~CJumpingKinoko()
 {
 	SAFE_DELETE(mpColliderMesh);
 }
 
 // 衝突処理
-void CJumpingObject::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+void CJumpingKinoko::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	bool KeyPush = CInput::PushKey(VK_SPACE);
 
@@ -92,7 +92,7 @@ void CJumpingObject::Collision(CCollider* self, CCollider* other, const CHitInfo
 }
 
 // 状態を切り替える
-void CJumpingObject::ChangeState(EState state)
+void CJumpingKinoko::ChangeState(EState state)
 {
 	if (mState == state) return;
 	mState = state;
@@ -101,7 +101,7 @@ void CJumpingObject::ChangeState(EState state)
 }
 
 // 待機状態の処理
-void CJumpingObject::UpdateIdle()
+void CJumpingKinoko::UpdateIdle()
 {
 	if (mIsCollisionPlayer)
 	{
@@ -109,8 +109,8 @@ void CJumpingObject::UpdateIdle()
 	}
 }
 
-// 跳ねている状態の更新処理			必要ないかも
-void CJumpingObject::UpdateBounce()
+// 跳ねている状態の更新処理
+void CJumpingKinoko::UpdateBounce()
 {
 	switch (mStateStep)
 	{
@@ -145,13 +145,7 @@ void CJumpingObject::UpdateBounce()
 				0.0f,			// 最小値
 				1.0f			// 最大値
 			);
-			/*float percent = Easing::BackOut
-			(
-				mElapsedTime,
-				RETURN_TIME,
-				0.3f, 1.0f, 5.0f
-			);*/
-
+			
 			// 線形補間
 			CVector scale = CVector::LerpUnclamped(
 				mShrinkScale,
@@ -179,7 +173,7 @@ void CJumpingObject::UpdateBounce()
 }
 
 // 更新処理
-void CJumpingObject::Update()
+void CJumpingKinoko::Update()
 {
 	// 現在の状態に合わせて処理を切り替え
 	switch (mState)
@@ -188,7 +182,7 @@ void CJumpingObject::Update()
 	case EState::eIdle:
 		UpdateIdle();
 		break;
-		// 現れている状態
+		// 跳ねる状態
 	case EState::eBounce:
 		UpdateBounce();
 		break;
@@ -199,8 +193,8 @@ void CJumpingObject::Update()
 }
 
 // 描画処理
-void CJumpingObject::Render()
+void CJumpingKinoko::Render()
 {
-	mpModel->SetColor(mColor);
-	mpModel->Render(Matrix());
+	mpKinoko->SetColor(mColor);
+	mpKinoko->Render(Matrix());
 }

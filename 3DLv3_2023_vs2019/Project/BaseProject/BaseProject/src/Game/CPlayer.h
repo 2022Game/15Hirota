@@ -185,7 +185,7 @@ private:
 	CColliderLine* mpColliderLine;
 	// 一時的な当たり判定を取るコライダー
 	// カプセルコライダーが完成したら変更
-	CColliderCapsule* mpColliderSphere;
+	CColliderCapsule* mpColliderCapsule;
 	//ダメージを受けるコライダ
 	CColliderSphere* mpDamageCol;
 	// 登れるコライダーとの当たり判定を取るコライダー

@@ -101,6 +101,7 @@
     <ClCompile Include="src\Game\CInventoryMenu.cpp" />
     <ClCompile Include="src\Game\CInvincible.cpp" />
     <ClCompile Include="src\Game\CInvincibleObjectBase.cpp" />
+    <ClCompile Include="src\Game\CJumpingKinoko.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
     <ClCompile Include="src\Game\CClimbWall.cpp" />
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="src\Game\CInventoryMenu.h" />
     <ClInclude Include="src\Game\CInvincible.h" />
     <ClInclude Include="src\Game\CInvincibleObjectBase.h" />
+    <ClInclude Include="src\Game\CJumpingKinoko.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
     <ClInclude Include="src\Game\CMajicSwordEnemy.h" />
     <ClInclude Include="src\Game\CMedalObjectBase.h" />

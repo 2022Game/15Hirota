@@ -27,10 +27,11 @@ CNeedle::CNeedle(const CVector& pos, const CVector& scale, const CVector& rot,
 	, mReactionLayer(reactionLayer)
 	, mStateStep(0)
 	, mWait(0.0f)
-	, mReturnTime(0.0f)
 	, mAttackWait(0.0f)
+	, mElapsedTime(0.0f)
 	, mWaitAttackTime(0.0f)
-	, mMoveSpeed(0.0f, 0.0f, 0.0f)
+	, mStartPosition(0.0f)
+	, mEndPosition(0.0f)
 	, mIsCollision(false)
 	, mIsAttack(false)
 {
@@ -67,9 +68,6 @@ CNeedle::CNeedle(const CVector& pos, const CVector& scale, const CVector& rot,
 	// コライダーのレイヤーを個別に設定
 	mpColliderBaseMesh->SetCollisionTag(mReactionTag, true);
 	mpColliderBaseMesh->SetCollisionLayer(mReactionLayer, true);
-
-
-	ChangeState(EState::Idle);
 
 	Position(pos);
 	Scale(scale);
@@ -141,6 +139,7 @@ void CNeedle::AttackEnd()
 void CNeedle::ChangeState(EState state)
 {
 	mState = state;
+	mElapsedTime = 0.0f;
 	mStateStep = 0;
 }
 
@@ -150,9 +149,16 @@ void CNeedle::UpdateIdle()
 	mpColliderBaseMesh->SetEnable(true);
 	if (mWait <= WAIT_TIME)
 	{
+		// 初期位置を設定
+		mStartPosition = 0.0f;
+		// 最後の位置を設定
+		mEndPosition = 1.1f;
+		mElapsedTime = 0.0f;
+		// 攻撃状態へ移行
 		ChangeState(EState::Attack);
 	}
 }
+#define NEEDLE_TIME 0.05f
 
 // 攻撃状態
 void CNeedle::UpdateAttack()
@@ -162,21 +168,28 @@ void CNeedle::UpdateAttack()
 	{
 		// ステップ0 攻撃後の待ち時間
 	case 0:
-		// 針を上昇させる
-		if (Position().Y() < mStartPos.Y() + MAXHEIGHT)
+		if (mElapsedTime < NEEDLE_TIME)
 		{
 			mpColliderMesh->SetEnable(true);
-			// 上昇させる
-			CVector mSpeed = mMoveSpeed;
-			mSpeed = CVector(0.0f, NEEDLE_INCREASE_VALUE * Time::DeltaTime(), 0.0f);
-			Position(Position() + mSpeed);
+
+			float per = mElapsedTime / NEEDLE_TIME;
+			float positionY = Math::Lerp
+			(
+				mStartPosition,
+				mEndPosition,
+				per
+			);
+			mElapsedTime += Time::DeltaTime();
+
+			Position(mStartPos + CVector(0.0f, positionY, 0.0f));
 		}
-		// 最大値になったら、待機させる
 		else
 		{
+			Position(mStartPos + CVector(0.0f, mEndPosition, 0.0f));
 			mAttackWait += Time::DeltaTime();
 			if (mAttackWait >= ATTACKWAIT_TIME)
 			{
+				mElapsedTime = 0.0f;
 				mStateStep++;
 			}
 		}
@@ -184,19 +197,27 @@ void CNeedle::UpdateAttack()
 		// ステップ1 針を戻す
 	case 1:
 		// 下降させる
-		CVector mDawnSpeed = mMoveSpeed;
-		mDawnSpeed = CVector(0.0f, NEEDLE_DESCENDING_VALUE * Time::DeltaTime(), 0.0f);
-		Position(Position() - mDawnSpeed);
-
-		// 針オブジェクトの位置が0.5fになったら
-		// 元の位置に戻す
-		if (CVector::Distance(Position(), mStartPos) < 0.5f)
+		if (mElapsedTime < NEEDLE_TIME)
 		{
-			Position(mStartPos);
+			float per = mElapsedTime / NEEDLE_TIME;
+			float positionY = Math::Lerp
+			(
+				mEndPosition,
+				mStartPosition,
+				per
+			);
+			mElapsedTime += Time::DeltaTime();
+
+			Position(mStartPos + CVector(0.0f, positionY, 0.0f));
+		}
+		else
+		{
 			// 当たった後の状態に遷移
 			ChangeState(EState::AttackEnd);
 			mStateStep = 0;
 			mAttackWait = 0.0f;
+			mElapsedTime = 0.0f;
+			Position(mStartPos + CVector(0.0f, mStartPosition, 0.0f));
 			mpColliderMesh->SetEnable(false);
 		}
 		break;
@@ -218,6 +239,7 @@ void CNeedle::UpdateAttackEnd()
 // 更新
 void CNeedle::Update()
 {
+	//CDebugPrint::Print("PositoinY:%f\n", Position().Y());
 	if (mIsAttack)
 	{
 		mpColliderMesh->SetEnable(false);
@@ -268,7 +290,7 @@ CNeedleBase::CNeedleBase(const CVector& pos, const CVector& scale, const CVector
 	, mReactionLayer(reactionLayer)
 {
 	// 針ベースモデル
-	mpNeedleBase = CResourceManager::Get<CModel>("Needlebase");
+	mpNeedleBase = CResourceManager::Get<CModel>("NeedleBase");
 
 	Position(pos);
 	Scale(scale);

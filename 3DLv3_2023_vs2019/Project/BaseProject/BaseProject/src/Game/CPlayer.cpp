@@ -241,23 +241,26 @@ CPlayer::CPlayer()
 
 
 	// 一時的な当たり判定を取るコライダー
-	mpColliderSphere = new CColliderCapsule
+	mpColliderCapsule = new CColliderCapsule
 	(
 		this, ELayer::ePlayer,
-		CVector(0.0f, -0.3f, 0.0f),
-		CVector(0.0f, 0.7f, 0.0f),
+		CVector(0.0f, 6.0f, 2.0f),
+		CVector(0.0f, PLAYER_HEIGHT, 2.0f),
 		5.0f,
 		true,
 		1.0f
 	);
-	mpColliderSphere->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
+	mpColliderCapsule->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
 		ELayer::eSavePoint, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall });
-	mpColliderSphere->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
+	mpColliderCapsule->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
 		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint, ETag::eObstacle,ETag::eJumpingObject});
-	//mpColliderSphere->Position(0.0f, 5.0f, 1.0f);
-	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
-	mpColliderSphere->SetAttachMtx(spineMtx);
+	//mpColliderCapsule->Position(0.0f, 5.0f, 1.0f);
+	
+
+	// プレイヤーのリグに付けるかどうか考え中
+	//const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
+	//mpColliderCapsule->SetAttachMtx(spineMtx);
 
 	// ダメージを受けるコライダーを作成
 	mpDamageCol = new CColliderSphere
@@ -329,7 +332,7 @@ CPlayer::~CPlayer()
 	spInstance = nullptr;
 	// コライダー関連の破棄
 	SAFE_DELETE(mpColliderLine);
-	SAFE_DELETE(mpColliderSphere);
+	SAFE_DELETE(mpColliderCapsule);
 	SAFE_DELETE(mpDamageCol);
 	SAFE_DELETE(mpClimbCol);
 
@@ -428,7 +431,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 
 	// 一時的な当たり判定を取るコライダー
 	// カプセルコライダーが完成したら変更
-	if (self == mpColliderSphere)
+	if (self == mpColliderCapsule)
 	{
 		if (other->Layer() == ELayer::eFieldWall)
 		{
@@ -492,7 +495,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// ゴールポスト
 		else if (other->Layer() == ELayer::eGoalCol)
 		{
-			mpColliderSphere->SetEnable(false);
+			mpColliderCapsule->SetEnable(false);
 			if (CGameManager::StageNo() == 0 ||
 				CGameManager::StageNo() == 1 ||
 				CGameManager::StageNo() == 2 ||
@@ -1502,7 +1505,7 @@ void CPlayer::UpdateClear()
 	mMoveSpeed = CVector::zero;
 	mElapsedTime = 0.0f;
 
-	mpColliderSphere->SetEnable(false);
+	mpColliderCapsule->SetEnable(false);
 	mpSword->AttackEnd();
 	ChangeState(EState::eClearEnd);
 }
@@ -1533,7 +1536,7 @@ void CPlayer::UpdateClearEnd()
 				//	// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
 				//	ChangeState(EState::eReady);
 				//	Position(mStartPos);
-				//	mpColliderSphere->SetEnable(true);
+				//	mpColliderCapsule->SetEnable(true);
 				//}
 
 				// 「ワンショット・フロア」
@@ -1549,7 +1552,7 @@ void CPlayer::UpdateClearEnd()
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
 					ChangeState(EState::eReady);
 					Position(mStartPos);
-					mpColliderSphere->SetEnable(true);
+					mpColliderCapsule->SetEnable(true);
 				}
 				// 「平原」
 				else if (CGameManager::StageNo() == 3)
@@ -1562,7 +1565,7 @@ void CPlayer::UpdateClearEnd()
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
 					ChangeState(EState::eReady);
 					Position(mStartPos);
-					mpColliderSphere->SetEnable(true);
+					mpColliderCapsule->SetEnable(true);
 				}
 			}
 		}
@@ -1709,7 +1712,7 @@ void CPlayer::UpdateStartStageJumpStart()
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = 0.0f;
 
-	mpColliderSphere->SetEnable(false);
+	mpColliderCapsule->SetEnable(false);
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eStartStageJump);
 
@@ -1777,7 +1780,7 @@ void CPlayer::UpdateStartStageJumpEnd()
 	if (IsAnimationFinished())
 	{
 		mElapsedTime = 0.0f;
-		mpColliderSphere->SetEnable(true);
+		mpColliderCapsule->SetEnable(true);
 		ChangeState(EState::eReady);
 		if (mStartStage1)
 		{
@@ -3194,7 +3197,7 @@ void CPlayer::Update()
 	// キャラクターの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
-	mpColliderSphere->Update();
+	mpColliderCapsule->Update();
 	mpSword->UpdateAttachMtx();
 
 	mpScreenItem->Open();

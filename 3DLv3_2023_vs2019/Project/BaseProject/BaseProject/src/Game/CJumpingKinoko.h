@@ -1,24 +1,32 @@
-#ifndef CJUMPINGOBJECT_H
-#define CJUMPINGOBJECT_H
+#ifndef CJUMPINGKINOKO_H
+#define CJUMPINGKINOKO_H
 
 #include "CModel.h"
 #include "CColliderMesh.h"
 #include "CObjectBase.h"
 
-// プレイヤーを跳ねさせる床
-class CJumpingObject : public CObjectBase
+// プレイヤーを跳ねさせるキノコ
+class CJumpingKinoko : public CObjectBase
 {
 public:
-	// コンストラクタ
-	CJumpingObject(const CVector& pos, const CVector& scale, const CVector& rot,
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="pos">位置</param>
+	/// <param name="scale">大きさ</param>
+	/// <param name="rot">回転</param>
+	/// <param name="reactionTag">リアクションタグ</param>
+	/// <param name="reactionLayer">リアクションレイヤー</param>
+	CJumpingKinoko(const CVector& pos, const CVector& scale, const CVector& rot,
 		ETag reactionTag, ELayer reactionLayer);
+
 	// デストラクタ
-	~CJumpingObject();
+	~CJumpingKinoko();
 
 	/// <summary>
 	/// 衝突処理
 	/// </summary>
-	/// <param name="self">衝突した自身のコライダー</param>
+	/// <param name="self">衝突したときの自身のコライダー</param>
 	/// <param name="other">衝突した相手のコライダー</param>
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
@@ -30,24 +38,23 @@ public:
 
 private:
 	// モデル・素材関連
-	// 跳ねる床モデル
-	CModel* mpModel;
-	// 跳ねる床モデルのコライダー
+	// 跳ねるキノコモデル
+	CModel* mpKinoko;
+	// 跳ねるキノコモデルのコライダー
 	CColliderMesh* mpColliderMesh;
 
-
 	// 状態関連
-	// 跳ねさせる床の状態
+	// 跳ねるキノコの状態
 	enum class EState
 	{
-		eIdle,			// 待機状態
-		eBounce,		// 跳ねさせる状態
+		eIdle,	// 待機状態
+		eBounce,// 跳ねさせる状態
 	};
-	// 状態を切り替える
+	// 待機状態を切り替える
 	void ChangeState(EState state);
 	// 待機状態の更新処理
 	void UpdateIdle();
-	// 跳ねさせる状態の更新処理
+	// 跳ねさせる状態の湖心処理
 	void UpdateBounce();
 	// 現在の状態
 	EState mState;
@@ -58,14 +65,9 @@ private:
 	// 縮む大きさ
 	CVector mShrinkScale;
 
-
 	// 変数関連
 	// 状態内のステップ
 	int mStateStep;
-	// フェード時間
-	float mFadeTime;
-	// 待ち時間
-	float mWaitTime;
 	// 経過時間計測用
 	float mElapsedTime;
 	// 衝突しているか
