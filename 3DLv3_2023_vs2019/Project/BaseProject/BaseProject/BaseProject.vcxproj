@@ -73,6 +73,7 @@
     <ClCompile Include="src\Game\CApplication.cpp" />
     <ClCompile Include="src\Game\CAttackObjectBase.cpp" />
     <ClCompile Include="src\Game\CAttackPotion.cpp" />
+    <ClCompile Include="src\Game\CBiribiri.cpp" />
     <ClCompile Include="src\Game\CBlueMedal.cpp" />
     <ClCompile Include="src\Game\CBlueMedalEvent.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
@@ -106,7 +107,8 @@
     <ClCompile Include="src\Game\CClimbWall.cpp" />
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
     <ClCompile Include="src\Game\CMedalObjectBase.cpp" />
-    <ClCompile Include="src\Game\CNeedle.cpp" />
+    <ClCompile Include="src\Game\CNeedleLeftRight.cpp" />
+    <ClCompile Include="src\Game\CNeedleUpDown.cpp" />
     <ClCompile Include="src\Game\CNumberField.cpp" />
     <ClCompile Include="src\Game\CNumberFloor1.cpp" />
     <ClCompile Include="src\Game\CNumberFloorOnce.cpp" />
@@ -116,8 +118,10 @@
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
     <ClCompile Include="src\Game\CResult.cpp" />
     <ClCompile Include="src\Game\CResultScene.cpp" />
+    <ClCompile Include="src\Game\CRingBeamer.cpp" />
     <ClCompile Include="src\Game\CRisingObject.cpp" />
     <ClCompile Include="src\Game\CRotateFloorGimmick.cpp" />
+    <ClCompile Include="src\Game\CRotateFloorGimmickOpposition.cpp" />
     <ClCompile Include="src\Game\CRotateFloorTimeGimmick.cpp" />
     <ClCompile Include="src\Game\CRotationg.cpp" />
     <ClCompile Include="src\Game\CSavePoint.cpp" />
@@ -266,6 +270,7 @@
     <ClInclude Include="src\Game\CApplication.h" />
     <ClInclude Include="src\Game\CAttackObjectBase.h" />
     <ClInclude Include="src\Game\CAttackPotion.h" />
+    <ClInclude Include="src\Game\CBiribiri.h" />
     <ClInclude Include="src\Game\CBlueMedal.h" />
     <ClInclude Include="src\Game\CBlueMedalEvent.h" />
     <ClInclude Include="src\Game\CBullet.h" />
@@ -298,7 +303,8 @@
     <ClInclude Include="src\Game\CJumpingObject.h" />
     <ClInclude Include="src\Game\CMajicSwordEnemy.h" />
     <ClInclude Include="src\Game\CMedalObjectBase.h" />
-    <ClInclude Include="src\Game\CNeedle.h" />
+    <ClInclude Include="src\Game\CNeedleLeftRight.h" />
+    <ClInclude Include="src\Game\CNeedleUpDown.h" />
     <ClInclude Include="src\Game\CNumberField.h" />
     <ClInclude Include="src\Game\CNumberFloor1.h" />
     <ClInclude Include="src\Game\CNumberFloorOnce.h" />
@@ -308,8 +314,10 @@
     <ClInclude Include="src\Game\CRengaBlock.h" />
     <ClInclude Include="src\Game\CResult.h" />
     <ClInclude Include="src\Game\CResultScene.h" />
+    <ClInclude Include="src\Game\CRingBeamer.h" />
     <ClInclude Include="src\Game\CRisingObject.h" />
     <ClInclude Include="src\Game\CRotateFloorGimmick.h" />
+    <ClInclude Include="src\Game\CRotateFloorGimmickOpposition.h" />
     <ClInclude Include="src\Game\CRotateFloorTimeGimmick.h" />
     <ClInclude Include="src\Game\CRotationg.h" />
     <ClInclude Include="src\Game\CSavePoint.h" />

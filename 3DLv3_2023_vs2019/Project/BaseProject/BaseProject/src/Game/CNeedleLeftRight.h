@@ -1,12 +1,13 @@
-#ifndef CNEEDLE_H
-#define CNEEDLE_H
-
-#include "CRideableObject.h"
+#ifndef CNEEDLELEFTRIGHT_H
+#define CNEEDLELEFTRIGHT_H
+#include "CObjectBase.h"
 #include "CModel.h"
 #include "CColliderMesh.h"
 
+
+// 左右の針ギミック
 // ニードルモデルの針の部分
-class CNeedle : public CRideableObject
+class CNeedleLeftRight : public CObjectBase
 {
 public:
 	/// <summary>
@@ -17,11 +18,11 @@ public:
 	/// <param name="rot">回転</param>
 	/// <param name="reactionTag">反応するオブジェクトタグ</param>
 	/// <param name="reactionLayer">反応するオブジェクトレイヤー</param>
-	CNeedle(const CVector& pos, const CVector& scale, const CVector& rot,
+	CNeedleLeftRight(const CVector& pos, const CVector& scale, const CVector& rot,
 		ETag reactionTag, ELayer reactionLayer);
 
 	// デストラクタ
-	~CNeedle();
+	~CNeedleLeftRight();
 
 	/// <summary>
 	/// 衝突処理
@@ -54,8 +55,6 @@ private:
 
 	// 針モデルのコライダー
 	CColliderMesh* mpColliderMesh;
-	// 針モデルのベースコライダー
-	CColliderMesh* mpColliderBaseMesh;
 
 	// 状態関連
 	// 針モデルの状態
@@ -110,21 +109,23 @@ private:
 	ELayer mReactionLayer;
 };
 
-class CNeedleBase : public CRideableObject
+class CNeedleLeftRightBase : public CObjectBase
 {
 public:
-	CNeedleBase(const CVector& pos, const CVector& scale, const CVector& rot,
+	CNeedleLeftRightBase(const CVector& pos, const CVector& scale, const CVector& rot,
 		ETag reactionTag, ELayer reactionLayer);
-	~CNeedleBase();
+	~CNeedleLeftRightBase();
 
 	// ステージ開始時の位置を設定
 	void SetStartPosition(const CVector& pos);
-	
+
 	void Update();
 	void Render();
 private:
 	// 針のベースモデル
 	CModel* mpNeedleBase;
+	// 針モデルのベースコライダー
+	CColliderMesh* mpColliderBaseMesh;
 	// 針モデルの初期位置
 	CVector mStartPos;
 
@@ -133,5 +134,4 @@ private:
 	// 触れた時に反応するオブジェクトのレイヤー
 	ELayer mReactionLayer;
 };
-
 #endif

@@ -1,4 +1,4 @@
-#include "CNeedle.h"
+#include "CNeedleUpDown.h"
 #include "CCharaBase.h"
 #include "Maths.h"
 
@@ -19,9 +19,9 @@
 #define WAIT_ATTACK_TIME 5.0f
 
 // コンストラクタ
-CNeedle::CNeedle(const CVector& pos, const CVector& scale, const CVector& rot,
+CNeedleUpDown::CNeedleUpDown(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
-	: CRideableObject(ETaskPriority::eNeedle)
+	: CObjectBase(ETag::eNeedleObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 	, mState(EState::Idle)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
@@ -78,14 +78,14 @@ CNeedle::CNeedle(const CVector& pos, const CVector& scale, const CVector& rot,
 }
 
 // デストラクタ
-CNeedle::~CNeedle()
+CNeedleUpDown::~CNeedleUpDown()
 {
 	SAFE_DELETE(mpColliderMesh);
 	SAFE_DELETE(mpColliderBaseMesh)
 }
 
 // 衝突処理
-void CNeedle::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+void CNeedleUpDown::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	// 衝突した自分のコライダーが針コライダーであれば
 	if (self == mpColliderMesh)
@@ -113,30 +113,30 @@ void CNeedle::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 }
 
 // ステージ開始時の位置を設定
-void CNeedle::SetStartPosition(const CVector& pos)
+void CNeedleUpDown::SetStartPosition(const CVector& pos)
 {
 	mStartPos = pos;
 	Position(mStartPos);
 }
 
 // 攻撃開始
-void CNeedle::AttackStart()
+void CNeedleUpDown::AttackStart()
 {
-	CRideableObject::AttackStart();
+	CObjectBase::AttackStart();
 	// 攻撃が始まったら、攻撃判定用のコライダーをオフにする
 	mpColliderMesh->SetEnable(true);
 }
 
 // 攻撃終了
-void CNeedle::AttackEnd()
+void CNeedleUpDown::AttackEnd()
 {
-	CRideableObject::AttackEnd();
+	CObjectBase::AttackEnd();
 	// 攻撃が終われば、攻撃判定用のコライダーをオフにする
 	mpColliderMesh->SetEnable(false);
 }
 
 // 状態を切り替える
-void CNeedle::ChangeState(EState state)
+void CNeedleUpDown::ChangeState(EState state)
 {
 	mState = state;
 	mElapsedTime = 0.0f;
@@ -144,7 +144,7 @@ void CNeedle::ChangeState(EState state)
 }
 
 // 待機状態の処理
-void CNeedle::UpdateIdle()
+void CNeedleUpDown::UpdateIdle()
 {
 	mpColliderBaseMesh->SetEnable(true);
 	if (mWait <= WAIT_TIME)
@@ -161,7 +161,7 @@ void CNeedle::UpdateIdle()
 #define NEEDLE_TIME 0.05f
 
 // 攻撃状態
-void CNeedle::UpdateAttack()
+void CNeedleUpDown::UpdateAttack()
 {
 	// ステップごとに処理を切り替え
 	switch (mStateStep)
@@ -225,7 +225,7 @@ void CNeedle::UpdateAttack()
 }
 
 // 攻撃終了状態
-void CNeedle::UpdateAttackEnd()
+void CNeedleUpDown::UpdateAttackEnd()
 {
 	mpColliderBaseMesh->SetEnable(true);
 	mWait += Time::DeltaTime();
@@ -237,7 +237,7 @@ void CNeedle::UpdateAttackEnd()
 }
 
 // 更新
-void CNeedle::Update()
+void CNeedleUpDown::Update()
 {
 	//CDebugPrint::Print("PositoinY:%f\n", Position().Y());
 	if (mIsAttack)
@@ -275,7 +275,7 @@ void CNeedle::Update()
 }
 
 // 描画
-void CNeedle::Render()
+void CNeedleUpDown::Render()
 {
 	mpNeedle->SetColor(mColor);
 	mpNeedle->Render(Matrix());
@@ -283,9 +283,9 @@ void CNeedle::Render()
 
 
 // 針モデルの土台
-CNeedleBase::CNeedleBase(const CVector& pos, const CVector& scale, const CVector& rot,
+CNeedleUpDownBase::CNeedleUpDownBase(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
-	: CRideableObject(ETaskPriority::eNeedle)
+	: CObjectBase(ETag::eNeedleObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 	, mReactionTag(reactionTag)
 	, mReactionLayer(reactionLayer)
 {
@@ -301,22 +301,22 @@ CNeedleBase::CNeedleBase(const CVector& pos, const CVector& scale, const CVector
 }
 
 // デストラクタ
-CNeedleBase::~CNeedleBase()
+CNeedleUpDownBase::~CNeedleUpDownBase()
 {
 	
 }
 
-void CNeedleBase::SetStartPosition(const CVector& pos)
+void CNeedleUpDownBase::SetStartPosition(const CVector& pos)
 {
 	mStartPos = pos;
 	Position(mStartPos);
 }
 
-void CNeedleBase::Update()
+void CNeedleUpDownBase::Update()
 {
 }
 
-void CNeedleBase::Render()
+void CNeedleUpDownBase::Render()
 {
 	mpNeedleBase->SetColor(mColor);
 	mpNeedleBase->Render(Matrix());

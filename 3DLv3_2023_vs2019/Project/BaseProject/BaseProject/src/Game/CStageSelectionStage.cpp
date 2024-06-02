@@ -14,7 +14,6 @@
 #include "CStage1Button.h"
 #include "CStage3Button.h"
 #include "CVanguard.h"
-#include "CNeedle.h"
 
 // ステージのデータのテーブル
 const CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[]

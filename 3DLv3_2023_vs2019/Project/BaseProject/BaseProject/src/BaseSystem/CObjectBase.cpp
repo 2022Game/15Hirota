@@ -81,3 +81,28 @@ float CObjectBase::GetDepth() const
 void CObjectBase::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 }
+
+void CObjectBase::AttackStart()
+{
+	mAttackHitObjects.clear();
+}
+
+void CObjectBase::AttackEnd()
+{
+
+}
+
+void CObjectBase::AddAttackHitObj(CObjectBase* obj)
+{
+	mAttackHitObjects.push_back(obj);
+}
+
+bool CObjectBase::IsAttackHitObj(CObjectBase* obj) const
+{
+	auto find = std::find(
+		mAttackHitObjects.begin(),
+		mAttackHitObjects.end(),
+		obj
+	);
+	return find != mAttackHitObjects.end();
+}

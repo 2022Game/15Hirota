@@ -54,6 +54,10 @@ public:
 	/// <param name="hit">衝突した時の情報</param>
 	virtual void Collision(CCollider* self, CCollider* other, const CHitInfo& hit);
 
+	virtual void AttackStart();
+
+	virtual void AttackEnd();
+
 private:
 	ETag mTag;			//オブジェクト識別用のタグ
 	bool mIsEnableCol;	// 衝突判定を行うかどうか
@@ -61,4 +65,9 @@ private:
 protected:
 	float mDepth;		// カメラからの距離
 	CColor mColor;		//オブジェクトの色
+
+	void AddAttackHitObj(CObjectBase* obj);
+	bool IsAttackHitObj(CObjectBase* obj) const;
+
+	std::list<CObjectBase*> mAttackHitObjects;
 };

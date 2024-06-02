@@ -22,6 +22,7 @@ enum class ETag
 	eGoalObject,		// クリア条件のオブジェクト
 	eSavePoint,			// セーブポイント
 	eJumpingObject,		// ジャンプするオブジェクト
+	eNeedleObject,		// 針オブジェクト
 	eFall,				// 落下判定用オブジェクト
 
 	ePlayer,			// プレイヤー

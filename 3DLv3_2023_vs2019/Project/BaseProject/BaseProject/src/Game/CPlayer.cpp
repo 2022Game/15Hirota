@@ -31,6 +31,7 @@
 #include "CStageMenu.h"
 #include "CStage1Button.h"
 #include "CStage3Button.h"
+#include "CBiribiri.h"
 
 // プレイヤー関連
 // 高さ
@@ -254,7 +255,8 @@ CPlayer::CPlayer()
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
 		ELayer::eSavePoint, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall });
 	mpColliderCapsule->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
-		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint, ETag::eObstacle,ETag::eJumpingObject});
+		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint, ETag::eObstacle,ETag::eJumpingObject,
+		ETag::eNeedleObject});
 	//mpColliderCapsule->Position(0.0f, 5.0f, 1.0f);
 	
 
@@ -275,7 +277,7 @@ CPlayer::CPlayer()
 		ELayer::eFlame,ELayer::eFall, ELayer::eStageMenuObject});
 	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon, 
 		ETag::eEnemy, ETag::eBullet,ETag::eRideableObject, ETag::eFlame,
-		ETag::eFall, ETag::eStageMenuObject});
+		ETag::eFall, ETag::eStageMenuObject,ETag::eNeedleObject});
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx1 = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -440,6 +442,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			if (other->Tag() == ETag::eRideableObject)
 			{
 				mpRideObject = other->Owner();
+			}
+			else if (other->Tag() == ETag::eNeedleObject)
+			{
+				Position(Position() + hit.adjust);
 			}
 		}
 		// 攻撃力アップポーション
@@ -963,6 +969,7 @@ void CPlayer::UpdateReady()
 				// クリアジャンプに遷移
 				ChangeState(EState::eResultJumpStart);
 			}
+			// ステージ3をクリアしたら
 			else if (mStage3Clear)
 			{
 				// クリアジャンプに遷移
@@ -1391,17 +1398,29 @@ void CPlayer::UpdateAttackWait()
 		// 斬撃エフェクトを生成していないかつ、アニメーションが35%以上進行したら、
 		if (!mIsSpawnedSlashEffect && GetAnimationFrameRatio() >= 0.15f)
 		{
+			//// 斬撃エフェクトを生成して、正面方向へ飛ばす
+			//CSlash* slash = new CSlash
+			//(
+			//	this,
+			//	Position() + CVector(0.0f, 10.0f, 0.0f),
+			//	VectorZ(),
+			//	300.0f,
+			//	100.0f
+			//);
+			//// 斬撃エフェクトの色設定
+			//slash->SetColor(CColor(0.15f, 0.5f, 0.5f));
+
 			// 斬撃エフェクトを生成して、正面方向へ飛ばす
-			CSlash* slash = new CSlash
+			CBiribiri* slash = new CBiribiri
 			(
 				this,
-				Position() + CVector(0.0f, 10.0f, 0.0f),
+				Position() + CVector(0.0f, 0.0f, 0.0f),
 				VectorZ(),
-				300.0f,
-				100.0f
+				0.0f,
+				0.0f
 			);
 			// 斬撃エフェクトの色設定
-			slash->SetColor(CColor(0.15f, 0.5f, 0.5f));
+			slash->SetColor(CColor(1.0f, 1.0f, 0.0f));
 
 			mIsSpawnedSlashEffect = true;
 		}
@@ -1837,6 +1856,7 @@ void CPlayer::UpdateDeathEnd()
 		mDamageObject = false;
 		mCharaStatus = mCharaMaxStatus;
 		mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
+		mpDamageCol->SetEnable(true);
 		CGameManager::StageOver();
 		Position(-245.0f, 60.0f, 0.0f);
 		ChangeState(EState::eIdle);
@@ -2088,6 +2108,7 @@ void CPlayer::UpdateFallDamage()
 			else if (mCharaStatus.hp <= 0)
 			{
 				mElapsedTime = 0.0f;
+				mFallDamage = false;
 				mElapsedTimeCol = 0.0f;
 				mpDamageCol->SetEnable(false);
 				ChangeState(EState::eDeath);
@@ -2543,6 +2564,8 @@ void CPlayer::UpdateDashJumpStart()
 // ダッシュジャンプ中
 void CPlayer::UpdateDashJump()
 {
+	mIsJumping = false;
+
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();

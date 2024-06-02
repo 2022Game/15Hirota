@@ -225,7 +225,7 @@ void CGameManager::UpdateStage3()
 	CBlueMedal::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 	mElapsedStageTime += Time::DeltaTime();
-	if (mElapsedStageTime > 13.0f)
+	if (mElapsedStageTime > 14.0f)
 	{
 		ChangeState(EGameState::eGame);
 	}
