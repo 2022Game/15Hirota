@@ -1,34 +1,39 @@
 #include "CBiribiri.h"
+#include "Maths.h"
+
+#define SCALE_Y 3.0f
 
 // コンストラクタ
-CBiribiri::CBiribiri(CObjectBase* owner, const CVector& pos, const CVector& dir,
-	float speed, float dist)
-	: CObjectBase(ETag::eSlash, ETaskPriority::eEffect, 0, ETaskPauseType::eGame)
+CBiribiri::CBiribiri(CObjectBase* owner, const CVector& pos)
+	: CObjectBase(ETag::eBiribiri, ETaskPriority::eEffect, 0, ETaskPauseType::eGame)
 	, mpOwner(owner)
-	, mKillMoveDist(dist)
 	, mMovedDist(0.0f)
 	, mInitialRingSize(1.0f) // 初期サイズ
 	, mCurrentRingSize(1.0f) // 現在のサイズ
-	, mMaxRingSize(20.0f)    // 最大サイズを設定
+	, mMaxRingSize(100.0f)    // 最大サイズを設定
 {
 	Position(pos);
-	mMoveSpeed = dir.Normalized() * speed;
-	Rotation(CQuaternion::LookRotation(mMoveSpeed, CVector::up));
 
 	mpModel = CResourceManager::Get<CModel>("Biribiri");
 	mpModel->SetupEffectSettings();
+
+	CModel* col = CResourceManager::Get<CModel>("BiribiriCol");
+	mpMesh = new CColliderMesh(this, ELayer::eBiribiri, col, true);
+	mpMesh->SetCollisionLayers({ ELayer::eDamageCol });
+	mpMesh->SetCollisionTags({ ETag::ePlayer });
 }
 
 // デストラクタ
 CBiribiri::~CBiribiri()
 {
+	SAFE_DELETE(mpMesh);
 }
 
 // 更新
 void CBiribiri::Update()
 {
 	// リングのサイズを速く増加させるための係数
-	const float growthFactor = 8.0f;
+	const float growthFactor = 50.0f;
 
 	// 現在のリングサイズを更新
     mCurrentRingSize += Time::DeltaTime() * growthFactor;
@@ -40,10 +45,8 @@ void CBiribiri::Update()
         return;
     }
 
-    // 移動処理はここで行います
-
 	// リングのスケールを適用する
-	CVector scaleVector(mCurrentRingSize, 5.0f, mCurrentRingSize);
+	CVector scaleVector(mCurrentRingSize, mCurrentRingSize, mCurrentRingSize);
 	Scale(scaleVector);
 }
 

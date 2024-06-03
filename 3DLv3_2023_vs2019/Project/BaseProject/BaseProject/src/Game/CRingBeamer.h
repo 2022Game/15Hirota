@@ -45,6 +45,8 @@ private:
 	// 変数関連
 	// 状態内のステップ
 	int mStateStep;
+	// 攻撃のカウント
+	int mAttackCount;
 	// 経過時間計測用
 	float mElapsedTime;
 	// 初期位置
@@ -55,6 +57,8 @@ private:
 	float mAttackWait;
 	// 攻撃終了後の待ち時間
 	float mAttackEndWait;
+	// 衝撃波は一度だけ
+	bool mIsAttackWave;
 };
 
 class CRingBeamerLower : public CObjectBase
@@ -68,5 +72,7 @@ public:
 private:
 	// リングビーマモデル(下)
 	CModel* mpRingBeamerLower;
+
+	CVector mStartPos;
 };
 #endif

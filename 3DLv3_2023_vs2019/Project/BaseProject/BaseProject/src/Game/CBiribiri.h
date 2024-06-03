@@ -3,6 +3,7 @@
 
 #include "CObjectBase.h"
 #include "CModel.h"
+#include "CColliderMesh.h"
 
 // ビリビリエフェクト
 class CBiribiri : public CObjectBase
@@ -13,10 +14,7 @@ public:
 	/// </summary>
 	/// <param name="owner">エフェクトを発生させたオブジェクト</param>
 	/// <param name="pos">発生位置</param>
-	/// <param name="dir">移動方向</param>
-	/// <param name="speed">移動速度</param>
-	/// <param name="dist">移動したら消える距離</param>
-	CBiribiri(CObjectBase* owner, const CVector& pos, const CVector& dir, float speed, float dist);
+	CBiribiri(CObjectBase* owner, const CVector& pos);
 	// デストラクタ
 	~CBiribiri();
 
@@ -35,5 +33,7 @@ private:
 	float mInitialRingSize; // 初期リングサイズ
 	float mCurrentRingSize; // 現在のリングサイズ
 	float mMaxRingSize;     // 最大リングサイズ
+	
+	CColliderMesh* mpMesh;
 };
 #endif

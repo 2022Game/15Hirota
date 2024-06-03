@@ -29,6 +29,7 @@ enum class ELayer
 	eSavePoint,		// セーブポイントのコライダー
 	eFlame,			// 炎のコライダー
 	eFlameWall,		// 火炎放射器のコライダー
+	eBiribiri,		// ビリビリコライダー
 	eRecoverCol,	// 回復コライダー
 	eInvincbleCol,	// 無敵コライダー
 	eMedalCol,		// メダルコライダー

@@ -274,10 +274,10 @@ CPlayer::CPlayer()
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, 
 		ELayer::eKickCol, ELayer::eBulletCol,ELayer::eNeedleCol,
-		ELayer::eFlame,ELayer::eFall, ELayer::eStageMenuObject});
+		ELayer::eFlame,ELayer::eFall, ELayer::eStageMenuObject, ELayer::eBiribiri});
 	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon, 
 		ETag::eEnemy, ETag::eBullet,ETag::eRideableObject, ETag::eFlame,
-		ETag::eFall, ETag::eStageMenuObject,ETag::eNeedleObject});
+		ETag::eFall, ETag::eStageMenuObject,ETag::eNeedleObject, ETag::eBiribiri});
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx1 = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -535,6 +535,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		if (other->Layer() == ELayer::eKickCol)
 		{
 			ChangeState(EState::eHit);
+		}
+		else if (other->Layer() == ELayer::eBiribiri)
+		{
+			ChangeState(EState::eHitBullet);
 		}
 		// 敵の弾のコライダー
 		else if (other->Layer() == ELayer::eBulletCol)
@@ -1411,17 +1415,6 @@ void CPlayer::UpdateAttackWait()
 			//slash->SetColor(CColor(0.15f, 0.5f, 0.5f));
 
 			// 斬撃エフェクトを生成して、正面方向へ飛ばす
-			CBiribiri* slash = new CBiribiri
-			(
-				this,
-				Position() + CVector(0.0f, 0.0f, 0.0f),
-				VectorZ(),
-				0.0f,
-				0.0f
-			);
-			// 斬撃エフェクトの色設定
-			slash->SetColor(CColor(1.0f, 1.0f, 0.0f));
-
 			mIsSpawnedSlashEffect = true;
 		}
 
@@ -1858,8 +1851,8 @@ void CPlayer::UpdateDeathEnd()
 		mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
 		mpDamageCol->SetEnable(true);
 		CGameManager::StageOver();
-		Position(-245.0f, 60.0f, 0.0f);
-		ChangeState(EState::eIdle);
+		//Position(65.0f, 3.5f, 36.0f);
+		ChangeState(EState::eReady);
 	}
 }
 

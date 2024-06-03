@@ -9,6 +9,7 @@ enum class ETag
 	eBullet,			// 弾丸
 	eFlame,				// 炎
 	eSlash,				// 斬撃
+	eBiribiri,			// ビリビリ
 
 	eField,				// フィールドを構成するオブジェクト
 	eStageMenuObject,	// ステージメニューのオブジェクト
@@ -24,6 +25,7 @@ enum class ETag
 	eJumpingObject,		// ジャンプするオブジェクト
 	eNeedleObject,		// 針オブジェクト
 	eFall,				// 落下判定用オブジェクト
+	eRingBeam,			// リングビームオブジェクト
 
 	ePlayer,			// プレイヤー
 	eEnemy,				// エネミー

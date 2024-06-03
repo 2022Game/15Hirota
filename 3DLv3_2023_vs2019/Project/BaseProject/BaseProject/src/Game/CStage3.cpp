@@ -27,6 +27,7 @@
 #include "CJumpingKinoko.h"
 #include "CNeedleUpDown.h"
 #include "CNeedleLeftRight.h"
+#include "CRingBeamer.h"
 
 // コンストラクタ
 CStage3::CStage3()
@@ -163,6 +164,14 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("NeedleBaseLeftRight",   "Field\\Gimmick\\Needle\\NeedleObjLeftRight(Base).obj");
 	// 針ベースコライダー(左右)
 	CResourceManager::Load<CModel>("NeedleBaseColLeftRight","Field\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
+	// リングビーマモデル(上)
+	CResourceManager::Load<CModel>("RingBeamerUP",			"Effect\\BeamObj(Upper).obj");
+	// リングビーマモデル(下)
+	CResourceManager::Load<CModel>("RingBeamerLO",			"Effect\\BeamObj(Lower).obj");
+	// ビリビリエフェクト
+	CResourceManager::Load<CModel>("Biribiri",				"Effect\\BhimaEffect.obj");
+	// リングビーマモデル(コライダー)
+	CResourceManager::Load<CModel>("BiribiriCol",			"Effect\\BhimaEffect(Col).obj");
 
 
 	// ハテナブロック(アイテム保有)
@@ -224,6 +233,22 @@ void CStage3::Load()
 	
 	// 登れる壁→跳ねるキノコ→回数オブジェクト→ジャンプオブジェクト→回転オブジェクト→
 	// 時間で回転する床→宝箱→レンガブロック→火炎放射器→針オブジェクト
+
+
+	CRingBeamerUpper* beamerUp1 = new CRingBeamerUpper
+	(
+		CVector(-4.0f, 329.0f, -1437.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp1);
+	CRingBeamerLower* beamerLo1 = new CRingBeamerLower
+	(
+		CVector(-4.0f, 328.0f, -1437.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLo1);
 	
 	// 登れる金網を作成
 	CWireMeshClimbWall* wiremeshWall = new CWireMeshClimbWall
