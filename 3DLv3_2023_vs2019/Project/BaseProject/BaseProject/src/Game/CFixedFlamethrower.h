@@ -59,5 +59,7 @@ private:
 	int mStateStep;
 	bool fire;
 	float mWaitTime;
+
+	bool IsFoundPlayer() const;
 };
 #endif

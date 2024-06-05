@@ -152,7 +152,7 @@ void CNeedleUpDown::UpdateIdle()
 		// ‰ŠúˆÊ’u‚ğİ’è
 		mStartPosition = 0.0f;
 		// ÅŒã‚ÌˆÊ’u‚ğİ’è
-		mEndPosition = 1.1f;
+		mEndPosition = 1.4f;
 		mElapsedTime = 0.0f;
 		// UŒ‚ó‘Ô‚ÖˆÚs
 		ChangeState(EState::Attack);

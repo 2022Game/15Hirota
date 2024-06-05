@@ -26,16 +26,16 @@ CRotateFloorGimmickOpposition::CRotateFloorGimmickOpposition(const CVector& pos,
 	, mNextRotateIsRotate2(false)
 {
 	// 回転する床モデルを取得(コライダーも)
-	mpRotateFloor = CResourceManager::Get<CModel>("RotateFloor");
+	mpRotateFloor = CResourceManager::Get<CModel>("RotateFloorOpposition");
 
 	// 回転する床の表側のコライダーを作成
-	CModel* frontCol = CResourceManager::Get<CModel>("RotateFloorFrontCol");
+	CModel* frontCol = CResourceManager::Get<CModel>("RotateFloorFrontColOpposition");
 	mpFrontFloorCol = new CColliderMesh(this, ELayer::eField, frontCol, true);
 	mpFrontFloorCol->SetCollisionLayers({ ELayer::ePlayer });
 	mpFrontFloorCol->SetCollisionTags({ ETag::ePlayer });
 
 	// 回転する床の裏側を作成
-	CModel* backCol = CResourceManager::Get<CModel>("RotateFloorBackCol");
+	CModel* backCol = CResourceManager::Get<CModel>("RotateFloorBackColOpposition");
 	mpBackFloorCol = new CColliderMesh(this, ELayer::eField, backCol, true);
 	mpBackFloorCol->SetCollisionLayers({ ELayer::ePlayer });
 	mpBackFloorCol->SetCollisionTags({ ETag::ePlayer });
@@ -97,12 +97,12 @@ void CRotateFloorGimmickOpposition::UpdateIdle()
 		ChangeRotationState(); // 回転状態を切り替え
 		 // 現在の回転状態に応じて適切な状態を設定
 		if (mNextRotateIsRotate2) {
-			mRotateStartAngle = 180.0f;
-			mRotateEndAngle = 0.0f;
+			mRotateStartAngle = 0.0f;
+			mRotateEndAngle = -180.0f;
 		}
 		else {
-			mRotateStartAngle = 0.0f;
-			mRotateEndAngle = 180.0f;
+			mRotateStartAngle = -180.0f;
+			mRotateEndAngle = 0.0f;
 		}
 		mElapsedTime = 0.0f;
 		ChangeState(EState::Rotate);

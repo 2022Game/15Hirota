@@ -51,8 +51,6 @@ CField_Worlds_1::CField_Worlds_1()
 	// 壁のコライダー
 	CModel* wallCol = CResourceManager::Get<CModel>("WallCol");
 	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);
-
-	
 }
 
 CField_Worlds_1::~CField_Worlds_1()

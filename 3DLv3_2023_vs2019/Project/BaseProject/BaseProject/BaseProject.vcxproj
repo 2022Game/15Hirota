@@ -114,6 +114,7 @@
     <ClCompile Include="src\Game\CNumberFloorOnce.cpp" />
     <ClCompile Include="src\Game\CObstacle.cpp" />
     <ClCompile Include="src\Game\CObstacleWall.cpp" />
+    <ClCompile Include="src\Game\CPlayerSmoke.cpp" />
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
     <ClCompile Include="src\Game\CResult.cpp" />
@@ -124,7 +125,8 @@
     <ClCompile Include="src\Game\CRotateFloorGimmickOpposition.cpp" />
     <ClCompile Include="src\Game\CRotateFloorTimeGimmick.cpp" />
     <ClCompile Include="src\Game\CRotationg.cpp" />
-    <ClCompile Include="src\Game\CSavePoint.cpp" />
+    <ClCompile Include="src\Game\CSavePoint1.cpp" />
+    <ClCompile Include="src\Game\CSavePoint2.cpp" />
     <ClCompile Include="src\Game\CScore.cpp" />
     <ClCompile Include="src\Game\CScreenItem.cpp" />
     <ClCompile Include="src\Game\CSeesaw.cpp" />
@@ -185,6 +187,7 @@
     <ClCompile Include="src\Game\CItemObjectBase.cpp" />
     <ClCompile Include="src\Game\PlayerItem.cpp" />
     <ClCompile Include="src\Game\CResultAnnouncement.cpp" />
+    <ClCompile Include="src\Game\CSmoke.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Test\CBootMenuScene.cpp" />
     <ClCompile Include="src\Test\CColBasecpp.cpp" />
@@ -310,6 +313,7 @@
     <ClInclude Include="src\Game\CNumberFloorOnce.h" />
     <ClInclude Include="src\Game\CObstacle.h" />
     <ClInclude Include="src\Game\CObstacleWall.h" />
+    <ClInclude Include="src\Game\CPlayerSmoke.h" />
     <ClInclude Include="src\Game\CRecoveryObject.h" />
     <ClInclude Include="src\Game\CRengaBlock.h" />
     <ClInclude Include="src\Game\CResult.h" />
@@ -320,7 +324,8 @@
     <ClInclude Include="src\Game\CRotateFloorGimmickOpposition.h" />
     <ClInclude Include="src\Game\CRotateFloorTimeGimmick.h" />
     <ClInclude Include="src\Game\CRotationg.h" />
-    <ClInclude Include="src\Game\CSavePoint.h" />
+    <ClInclude Include="src\Game\CSavePoint1.h" />
+    <ClInclude Include="src\Game\CSavePoint2.h" />
     <ClInclude Include="src\Game\CScore.h" />
     <ClInclude Include="src\Game\CScreenItem.h" />
     <ClInclude Include="src\Game\CSeesaw.h" />
@@ -382,6 +387,7 @@
     <ClInclude Include="src\Game\CItemObjectBase.h" />
     <ClInclude Include="src\Game\PlayerItem.h" />
     <ClInclude Include="src\Game\CResultAnnouncement.h" />
+    <ClInclude Include="src\Game\CSmoke.h" />
     <ClInclude Include="src\Test\CBootMenuScene.h" />
     <ClInclude Include="src\Test\CColBase.h" />
     <ClInclude Include="src\Test\CColCapsule.h" />

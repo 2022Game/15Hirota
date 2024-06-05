@@ -32,6 +32,7 @@
 #include "CStage1Button.h"
 #include "CStage3Button.h"
 #include "CBiribiri.h"
+#include "CPlayerSmoke.h"
 
 // プレイヤー関連
 // 高さ
@@ -162,7 +163,8 @@ CPlayer::CPlayer()
 	, mStartStage1(false)
 	, mStartStage2(false)
 	, mStartStage3(false)
-	, mSavePoint(false)
+	, mSavePoint1(false)
+	, mSavePoint2(false)
 	, mIsJumping(false)
 	, mClimbWall(false)
 	, mIsDashJump(false)
@@ -253,9 +255,9 @@ CPlayer::CPlayer()
 	);
 	mpColliderCapsule->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
-		ELayer::eSavePoint, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall });
+		ELayer::eSavePoint1, ELayer::eSavePoint2, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall });
 	mpColliderCapsule->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
-		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint, ETag::eObstacle,ETag::eJumpingObject,
+		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint1, ETag::eSavePoint2, ETag::eObstacle,ETag::eJumpingObject,
 		ETag::eNeedleObject});
 	//mpColliderCapsule->Position(0.0f, 5.0f, 1.0f);
 	
@@ -304,13 +306,23 @@ CPlayer::CPlayer()
 	CStageManager::AddTask(mpSword);
 
 
-	mpFlamethrower = new CFlamethrower
+	/*mpFlamethrower = new CFlamethrower
 	(
 		this, nullptr,
 		CVector(0.0f, 14.0f, -1.0f),
 		CQuaternion(0.0f, 90.0f, 0.0f).Matrix()
 	);
-	CStageManager::AddTask(mpFlamethrower);
+	CStageManager::AddTask(mpFlamethrower);*/
+
+	// 煙エフェクト
+	mpSmoke = new CPlayerSmoke
+	(
+		this, nullptr,
+		CVector(0.0f, 0.0f, 0.0f),
+		CQuaternion(0.0f, 0.0f, 0.0f).Matrix()
+	);
+	CStageManager::AddTask(mpSmoke);
+
 
 	mpCutInDeath = new CCutInDeath();
 	mpCutInClear = new CCutInClear();
@@ -329,6 +341,7 @@ CPlayer::~CPlayer()
 {
 	CStageManager::RemoveTask(mpSword);
 	CStageManager::RemoveTask(mpFlamethrower);
+	CStageManager::RemoveTask(mpSmoke);
 	CStageManager::RemoveTask(mpScreenItem);
 
 	spInstance = nullptr;
@@ -490,12 +503,20 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			// Climb状態の場合は位置を調整する
 			Position(Position() + hit.adjust);
 		}
-		// セーブポイント
-		else if (other->Layer() == ELayer::eSavePoint)
+		// セーブポイント1
+		else if (other->Layer() == ELayer::eSavePoint1)
 		{
-			if (other->Tag() == ETag::eSavePoint)
+			if (other->Tag() == ETag::eSavePoint1)
 			{
-				mSavePoint = true;
+				mSavePoint1 = true;
+			}
+		}
+		// セーブポイント2
+		else if (other->Layer() == ELayer::eSavePoint2)
+		{
+			if (other->Tag() == ETag::eSavePoint2)
+			{
+				mSavePoint2 = true;
 			}
 		}
 		// ゴールポスト
@@ -553,7 +574,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		else if (other->Layer() == ELayer::eNeedleCol)
 		{
 			ChangeState(EState::eHitObj);
-			mpRideObject = other->Owner();
 		}
 		// 落下判定用のコライダーに触れたら
 		else if (other->Layer() == ELayer::eFall)
@@ -568,7 +588,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				Position(0.0f, 17.0f, -70.0f);
 				ChangeState(EState::eFallDamege);
 				// 1面のセーブポイント
-				if (mSavePoint)
+				if (mSavePoint1)
 				{
 					ChangeState(EState::eFallDamege);
 					Position(0.0f, 15.0f, 325.0f);
@@ -577,14 +597,22 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			// ステージ番号が3だったら
 			else if (currentStage == 3)
 			{
-				// 初期値点に戻す
-				Position(190.0f, 139.0f, 269.0f);
-				ChangeState(EState::eFallDamege);
-				// 3面のセーブポイント
-				if (mSavePoint)
+				// 3面のセーブポイント1と2のチェック
+				if (mSavePoint1 && mSavePoint2 || !mSavePoint1 && mSavePoint2)
 				{
+					// SavePoint2がtrueならセーブポイント2のポジションを適用
+					Position(0.0f, 400.0f, -1890.0f);
+				}
+				else if (mSavePoint1)
+				{
+					// セーブポイント1だけがtrueならセーブポイント1のポジションを適用
+					Position(0.0f, 320.0f, -1173.0f);
+				}
+				else
+				{
+					// 初期値点に戻す
+					Position(190.0f, 139.0f, 269.0f);
 					ChangeState(EState::eFallDamege);
-					Position(- 9.0f, 320.0f, -1173.0f);
 				}
 			}
 		}
@@ -1112,6 +1140,11 @@ void CPlayer::UpdateMove()
 		{
 			if (CInput::Key(VK_SHIFT) && mIsGrounded)
 			{
+				if (!mpSmoke->IsThrowing())
+				{
+					mpSmoke->Start();
+				}
+
 				// スタミナが0以上かつ、スタミナの下限値フラグがfalseだったら
 				if (mCharaStatus.stamina >= 0 && !mStaminaLowerLimit)
 				{
@@ -1204,6 +1237,10 @@ void CPlayer::UpdateMove()
 			}
 			else
 			{
+				if (mpSmoke->IsThrowing())
+				{
+					mpSmoke->Stop();
+				}
 				mStartDashTime = 0.0f;
 				mIsDashJump = false;
 				mDash = false;
@@ -1540,21 +1577,11 @@ void CPlayer::UpdateClearEnd()
 			{
 				mElapsedTime = 0.0f;
 				mpCutInClear->End();
-				//if (CGameManager::StageNo() == 0)
-				//{
-				//	mSavePoint = false;
-				//	// ステージをクリア
-				//	CGameManager::StageClear();
-				//	// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
-				//	ChangeState(EState::eReady);
-				//	Position(mStartPos);
-				//	mpColliderCapsule->SetEnable(true);
-				//}
-
-				// 「ワンショット・フロア」
+				
+				// ステージ1「ワンショット・フロア」
 				if (CGameManager::StageNo() == 1)
 				{
-					mSavePoint = false;
+					mSavePoint1 = false;
 					mStage1Clear = true;
 					mIsStage1Clear = false;
 
@@ -1566,10 +1593,11 @@ void CPlayer::UpdateClearEnd()
 					Position(mStartPos);
 					mpColliderCapsule->SetEnable(true);
 				}
-				// 「平原」
+				// ステージ3「平原」
 				else if (CGameManager::StageNo() == 3)
 				{
-					mSavePoint = false;
+					mSavePoint1 = false;
+					mSavePoint2 = false;
 					mStage3Clear = true;
 					mIsStage3Clear = false;
 					// ステージをクリア
@@ -1845,7 +1873,8 @@ void CPlayer::UpdateDeathEnd()
 	if (IsAnimationFinished())
 	{
 		mpCutInDeath->End();
-		mSavePoint = false;
+		mSavePoint1 = false;
+		mSavePoint2 = false;
 		mDamageObject = false;
 		mCharaStatus = mCharaMaxStatus;
 		mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
@@ -2046,26 +2075,29 @@ void CPlayer::UpdateHitObj()
 	if (!mDamageEnemy)
 	{
 		mDamageEnemy = true;
-		mpDamageCol->SetEnable(true);
+		mpDamageCol->SetEnable(false);
 	}
 
 	if (mElapsedTime >= COLORSET)
 	{
-		if (mCharaStatus.hp > 0)
+		if (IsAnimationFinished())
 		{
-			mIsPlayedHitDamageSE = false;
-			mDamageEnemy = true;
-			mElapsedTime = 0.0f;
-			mElapsedTimeCol = 0.0f;
-			mpDamageCol->SetEnable(false);
-			ChangeState(EState::eIdle);
-		}
-		else if (mCharaStatus.hp <= 0)
-		{
-			mElapsedTime = 0.0f;
-			mElapsedTimeCol = 0.0f;
-			mpDamageCol->SetEnable(false);
-			ChangeState(EState::eDeath);
+			if (mCharaStatus.hp > 0)
+			{
+				mIsPlayedHitDamageSE = false;
+				mDamageEnemy = true;
+				mElapsedTime = 0.0f;
+				mElapsedTimeCol = 0.0f;
+				mpDamageCol->SetEnable(false);
+				ChangeState(EState::eIdle);
+			}
+			else if (mCharaStatus.hp <= 0)
+			{
+				mElapsedTime = 0.0f;
+				mElapsedTimeCol = 0.0f;
+				mpDamageCol->SetEnable(false);
+				ChangeState(EState::eDeath);
+			}
 		}
 	}
 }
@@ -2437,6 +2469,16 @@ void CPlayer::UpdateWireClimbedTop()
 // 落下状態
 void CPlayer::UpdateFalling()
 {
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
 	mMoveSpeedY = -2.5f;
 	ChangeAnimation(EAnimType::eFalling);
 	if (mIsGrounded)
@@ -2470,6 +2512,15 @@ void CPlayer::UpdateJumpStart()
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eJump);
 
+	if (!mpSmoke->IsThrowing())
+	{
+		mpSmoke->Start();
+	}
+	else
+	{
+		mpSmoke->Stop();
+	}
+	
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
@@ -2501,7 +2552,7 @@ void CPlayer::UpdateJump()
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
 		mMoveSpeedY -= GRAVITY;
-	}*/
+	}*/	
 
 	if (mMoveSpeedY <= 0.0f)
 	{
@@ -2571,6 +2622,11 @@ void CPlayer::UpdateDashJump()
 
 	if (mIsGrounded)
 	{
+		if (mpSmoke->IsThrowing())
+		{
+			mpSmoke->Stop();
+		}
+
 		mIsJumping = false;
 		ChangeAnimation(EAnimType::eDashJumpEnd);
 		ChangeState(EState::eDashJumpEnd);
@@ -2737,6 +2793,11 @@ void CPlayer::UpdateMoveTo()
 	}
 		// ステップ1 プレイヤーを移動
 	case 1:
+		if (!mpSmoke->IsThrowing())
+		{
+			mpSmoke->Start();
+		}
+
 		// プレイヤーをダッシュモーションへ変更
 		ChangeAnimation(EAnimType::eDash);
 		// 移動時間を経過していない
@@ -2763,6 +2824,10 @@ void CPlayer::UpdateMoveTo()
 		break;
 		 // ステップ2 移動終了
 	case 2:
+		if (mpSmoke->IsThrowing())
+		{
+			mpSmoke->Stop();
+		}
 		// 移動終了したら、待機モーションへ切り替え
 		ChangeAnimation(EAnimType::eIdle);
 		break;
@@ -2852,14 +2917,15 @@ void CPlayer::Update()
 	//CDebugPrint::Print("elapsed:%f\n",mElapsedStageTime);
 	//CDebugPrint::Print("mIsStage1Clear:%s\n", mIsStage1Clear ? "true" : "false");
 	//CDebugPrint::Print("mStage1Clear:%s\n", mStage1Clear ? "true" : "false");
+	/*CDebugPrint::Print("mSavePoint1:%s\n", mSavePoint1 ? "true" : "false");
+	CDebugPrint::Print("mSavePoint2:%s\n", mSavePoint2 ? "true" : "false");*/
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
 	mHpHit = false;
 
-
-	// デバッグ用にオンにしている　後で駆らず消すこと	////////////////////////////////////
+	// デバッグ用にオンにしている　後で必ず消すこと	////////////////////////////////////
 
 	// ステージ3をクリアした状態
 	// falseだとステージに入れない

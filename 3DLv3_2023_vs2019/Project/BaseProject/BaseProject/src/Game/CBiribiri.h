@@ -29,6 +29,7 @@ private:
 	CVector mMoveSpeed;		// 移動速度
 	float mKillMoveDist;	// 移動したら消える距離
 	float mMovedDist;		// 現在移動した距離
+	float mElapsedTime;
 
 	float mInitialRingSize; // 初期リングサイズ
 	float mCurrentRingSize; // 現在のリングサイズ

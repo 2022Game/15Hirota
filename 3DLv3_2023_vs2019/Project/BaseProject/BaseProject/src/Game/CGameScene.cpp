@@ -101,23 +101,21 @@ void CGameScene::Load()
 	//CResourceManager::Load<CTexture>("HealthUI",			"UI\\Item\\Health Recovery Items.png");		// 防御力アップアイテム用のUI
 	//CResourceManager::Load<CTexture>("No ItemUI",			"UI\\Item\\NoItemUI.png");					// アイテム無し用のUI
 
-
-
-	// エフェクト関連
-	CResourceManager::Load<CTexture>("Laser",				"Effect\\laser.png");				// 弾のエフェクト
-	CResourceManager::Load<CModel>("Slash",					"Effect\\slash.obj");
-
-
 	// BGM・SE関連
-	CResourceManager::Load<CSound>("SlashSound",			"Sound\\SE\\slash.wav");				// 剣　スラッシュ
-	CResourceManager::Load<CSound>("8bitKaifuku",			"Sound\\SE\\8bitkaifuku.wav");			// 8bitの回復音
-	CResourceManager::Load<CSound>("8bitShot",				"Sound\\SE\\8bitshot.wav");				// 8bitの銃の音(ブロック用に使う)
-	CResourceManager::Load<CSound>("8bitMutekiTime",		"Sound\\SE\\8bitMuteki.wav");			// 8bitの回復音(無敵用に使う)
-	CResourceManager::Load<CSound>("CreatureGrowl1",		"Sound\\VOICE\\CreatureStereo5.wav");	// クリーチャーの唸り声1
-
+	// 剣　スラッシュ
+	CResourceManager::Load<CSound>("SlashSound", "Sound\\SE\\slash.wav");
+	// 8bitの回復音
+	CResourceManager::Load<CSound>("8bitKaifuku", "Sound\\SE\\8bitkaifuku.wav");
+	// 8bitの銃の音(ブロック用に使う)
+	CResourceManager::Load<CSound>("8bitShot", "Sound\\SE\\8bitshot.wav");
+	// 8bitの回復音(無敵用に使う)
+	CResourceManager::Load<CSound>("8bitMutekiTime", "Sound\\SE\\8bitMuteki.wav");
+	// クリーチャーの唸り声1
+	CResourceManager::Load<CSound>("CreatureGrowl1", "Sound\\VOICE\\CreatureStereo5.wav");
 
 	// ゲーム内のBGM
 	CBGMManager::Instance()->Play(EBGMType::eGame);
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

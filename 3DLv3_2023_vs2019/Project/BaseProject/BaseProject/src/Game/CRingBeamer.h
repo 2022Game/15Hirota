@@ -59,6 +59,9 @@ private:
 	float mAttackEndWait;
 	// 衝撃波は一度だけ
 	bool mIsAttackWave;
+
+	// プレイヤーを見つけたか
+	bool IsFoundPlayer() const;
 };
 
 class CRingBeamerLower : public CObjectBase

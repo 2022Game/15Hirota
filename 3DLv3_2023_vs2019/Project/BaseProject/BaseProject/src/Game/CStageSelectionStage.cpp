@@ -18,7 +18,7 @@
 // ステージのデータのテーブル
 const CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[]
 {
-	{0,CVector(65.0f, 3.5f,   36.0f),	-1, 1},
+	{0,CVector(65.0f, 4.5f,   36.0f),	-1, 1},
 	{1,CVector(65.0f, 3.5f,  -72.0f),	 0, 3},
 	{2,CVector( 0.0f, 0.0f,    0.0f),	-1,-1},
 	{3,CVector(65.0f, 3.5f, -185.0f),	 1,-1},

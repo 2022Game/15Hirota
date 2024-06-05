@@ -5,7 +5,7 @@
 #include "CNumberFloorOnce.h"
 #include "CRisingObject.h"
 #include "CTreasureChest.h"
-#include "CSavePoint.h"
+#include "CSavePoint1.h"
 #include "CFixedFlamethrower.h"
 #include "CGoalObject.h"
 #include "CBlueMedalEvent.h"
@@ -149,14 +149,14 @@ void CStage1::Load()
 	}
 
 	// セーブポイント
-	CSavePoint* savepoint = new CSavePoint
+	CSavePoint1* savepoint1 = new CSavePoint1
 	(
 		CVector(0.0f, 15.0f, 325.0f),
 		CVector(8.0f, 8.0f, 8.0f),
 		CVector(0.0f, 10.0f, 0.0f)
 	);
-	savepoint->Rotation(0.0f, 90.0f, 0.0f);
-	AddTask(savepoint);
+	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
+	AddTask(savepoint1);
 
 
 	// 宝箱

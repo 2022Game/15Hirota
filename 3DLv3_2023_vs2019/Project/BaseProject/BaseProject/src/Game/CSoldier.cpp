@@ -361,9 +361,9 @@ void CSoldier::UpdateGaugeAndFrame()
 	if (!mDiscovery)
 	{
 		// HPゲージの座標を更新 (敵の座標の少し上の座標)
-		CVector gaugePos = Position() + CVector(0.0f, 25.0f, 0.0f);
+		CVector gaugePos = Position() + CVector(0.0f, 45.0f, 0.0f);
 		mpGauge->SetWorldPos(gaugePos);
-		CVector framePos = Position() + CVector(0.0f, 25.0f, 0.0f);
+		CVector framePos = Position() + CVector(0.0f, 45.0f, 0.0f);
 		mpFrame->SetWorldPos(framePos);
 	}
 	else
@@ -379,7 +379,7 @@ void CSoldier::UpdateExclamation()
 	if (mDiscovery)
 	{
 		// ビックリマーク画像の座標を更新
-		CVector exclamationMardPos = Position() + CVector(0.0f, 25.0f, 0.0f);
+		CVector exclamationMardPos = Position() + CVector(0.0f, 45.0f, 0.0f);
 		mpExclamationMark->SetWorldPos(exclamationMardPos);
 	}
 	else
@@ -526,7 +526,7 @@ void CSoldier::UpdateAttack()
 			new CBullet
 			(
 				// 発射位置
-				Position() + CVector(0.0f, 10.0f, 0.0f) + VectorZ() * 20.0f,
+				Position() + CVector(0.0f, 20.0f, 0.0f) + VectorZ() * 20.0f,
 				VectorZ(),	// 発射方向
 				1000.0f,	// 移動距離
 				1000.0f		// 飛距離

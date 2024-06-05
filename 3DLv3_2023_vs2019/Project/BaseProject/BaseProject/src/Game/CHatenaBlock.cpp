@@ -56,6 +56,8 @@ CHatenaBlock::CHatenaBlock(const CVector& pos, const CVector& scale,
 	Position(pos);
 	Scale(scale);
 
+	mStartPos = Position();
+
 	mpHeart = nullptr;
 	mpStar = nullptr;
 }

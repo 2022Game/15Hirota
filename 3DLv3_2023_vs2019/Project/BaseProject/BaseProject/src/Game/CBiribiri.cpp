@@ -1,5 +1,6 @@
 #include "CBiribiri.h"
 #include "Maths.h"
+#include "Easing.h"
 
 #define SCALE_Y 3.0f
 
@@ -11,6 +12,7 @@ CBiribiri::CBiribiri(CObjectBase* owner, const CVector& pos)
 	, mInitialRingSize(1.0f) // 初期サイズ
 	, mCurrentRingSize(1.0f) // 現在のサイズ
 	, mMaxRingSize(100.0f)    // 最大サイズを設定
+	, mElapsedTime(0.0f)
 {
 	Position(pos);
 
@@ -33,10 +35,7 @@ CBiribiri::~CBiribiri()
 void CBiribiri::Update()
 {
 	// リングのサイズを速く増加させるための係数
-	const float growthFactor = 50.0f;
-
-	// 現在のリングサイズを更新
-    mCurrentRingSize += Time::DeltaTime() * growthFactor;
+	const float growthFactor = 70.0f;
 
     // リングのサイズが最大サイズを超えた場合は消滅させる
     if (mCurrentRingSize >= mMaxRingSize)
@@ -45,9 +44,23 @@ void CBiribiri::Update()
         return;
     }
 
+	/*if (mElapsedTime < 5.0f)
+	{
+		float per = Easing::BounceInOut
+		(
+			mElapsedTime,
+			5.0f,
+			0.0f,
+			1.0f
+		);
+	}*/
+
 	// リングのスケールを適用する
-	CVector scaleVector(mCurrentRingSize, mCurrentRingSize, mCurrentRingSize);
+	CVector scaleVector(mCurrentRingSize, 100.0f, mCurrentRingSize);
 	Scale(scaleVector);
+
+	// 現在のリングサイズを更新
+	mCurrentRingSize += Time::DeltaTime() * growthFactor;
 }
 
 // 描画

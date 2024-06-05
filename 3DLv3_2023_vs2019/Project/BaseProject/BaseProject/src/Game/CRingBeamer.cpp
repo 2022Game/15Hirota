@@ -3,16 +3,20 @@
 #include "Maths.h"
 #include "CBiribiri.h"
 #include "CStageManager.h"
+#include "CPlayer.h"
 
 // 攻撃待ち時間
-#define ATTACK_WAIT_TIME 0.4f
+#define ATTACK_WAIT_TIME 0.3f
 // 攻撃終了後の待ち時間
 #define ATTACK_END_TIME 2.0f
 // 待機状態
-#define WAIT_TIME 5.0f
+#define WAIT_TIME 3.0f
 // 戻り状態
 #define RETURN_TIME 5.0f
+// 攻撃回数
 #define ATTACK_COUNTER 3
+// 視野角の角度
+#define FOV_ANGLE 150.0f
 
 // コンストラクタ
 CRingBeamerUpper::CRingBeamerUpper(const CVector& pos, const CVector& scale, const CVector& rot)
@@ -54,21 +58,40 @@ void CRingBeamerUpper::ChangeState(EState state)
 // 待機状態の処理
 void CRingBeamerUpper::UpdateIdle()
 {
-	if (mAttackWait >= WAIT_TIME)
+	if (IsFoundPlayer())
 	{
-		mStartPosition = 0.0f;
-		mElapsedTime = 0.0f;
-		mAttackWait = 0.0f;
-		mAttackEndWait = 0.0f;
-		mEndPosition = -3.0f;
-		ChangeState(EState::eAttack);
+		if (mAttackWait >= WAIT_TIME)
+		{
+			mStartPosition = 0.0f;
+			mElapsedTime = 0.0f;
+			mAttackWait = 0.0f;
+			mAttackEndWait = 0.0f;
+			mEndPosition = -4.0f;
+			ChangeState(EState::eAttack);
+		}
+		mAttackWait += Time::DeltaTime();
 	}
-	mAttackWait += Time::DeltaTime();
+	else
+	{
+		mAttackCount = 0;
+		mAttackWait = 0.0f;
+	}
 }
 
 // 攻撃時の更新処理
 void CRingBeamerUpper::UpdateAttack()
 {
+	if (!IsFoundPlayer())
+	{
+		mIsAttackWave = false;
+		mStateStep = 0;
+		mElapsedTime = 0.0f;
+		mAttackEndWait = 0.0f;
+		Position(mStartPos);
+		ChangeState(EState::eIdle);
+		return;
+	}
+
 	switch (mStateStep)
 	{
 		// 攻撃する
@@ -95,7 +118,7 @@ void CRingBeamerUpper::UpdateAttack()
 				CBiribiri* biribiri = new CBiribiri
 				(
 					this,
-					Position()
+					Position() + CVector(0.0f, 2.0f, 0.0f)
 				);
 				// リングビームエフェクトの色設定
 				biribiri->SetColor(CColor(1.0f, 1.0f, 0.0f));
@@ -129,20 +152,23 @@ void CRingBeamerUpper::UpdateAttack()
 		else
 		{
 			// カウントが小さかったら
-			if (mAttackCount < ATTACK_COUNTER)
+			if (mAttackCount <= ATTACK_COUNTER)
 			{
 				// 繰り返す
-				mAttackCount++;
+				mAttackCount += 1;
 				mIsAttackWave = false;
 				mStateStep = 0;
 				mAttackWait = 0.0f;
 				mElapsedTime = 0.0f;
 				Position(mStartPos + CVector(0.0f, mStartPosition, 0.0f));
 			}
-			else
+			else if (mAttackCount >= ATTACK_COUNTER)
 			{
 				mAttackCount = 0;
+				mElapsedTime = 0.0f;
+				mAttackWait = 0.0f;
 				mIsAttackWave = false;
+				Position(mStartPos + CVector(0.0f, mStartPosition, 0.0f));
 				ChangeState(EState::eIdle);
 			}
 			break;
@@ -160,6 +186,7 @@ void CRingBeamerUpper::UpdateAttackEnd()
  // 更新処理
 void CRingBeamerUpper::Update()
 {
+	//CDebugPrint::Print("mAttackCount%d\n", mAttackCount);
 	// 現在の状態に合わせて処理を切り替え
 	switch (mState)
 	{
@@ -176,7 +203,7 @@ void CRingBeamerUpper::Update()
 		UpdateAttackEnd();
 		break;
 	}
-	CDebugPrint::Print("mAttackWait:%f\n", mAttackWait);
+	//CDebugPrint::Print("mAttackWait:%f\n", mAttackWait);
 }
 
 // 描画処理
@@ -185,6 +212,51 @@ void CRingBeamerUpper::Render()
 	mpRingBeamerUpper->SetColor(mColor);
 	mpRingBeamerUpper->Render(Matrix());
 }
+
+// プレイヤーを見つけたか
+bool CRingBeamerUpper::IsFoundPlayer() const
+{
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector beamer = Position();
+
+	// プレイヤーとの距離を計算する
+	float distance = (playerPos - beamer).Length();
+	const float detectionRadius = FOV_ANGLE;
+
+	// プレイヤーとの距離が検出半径以内であれば、プレイヤーを認識する
+	if (distance <= detectionRadius)
+	{
+		return true;
+	}
+
+	return false;
+
+	//CVector playerPos = CPlayer::Instance()->Position();
+	//CVector beamer = Position();
+
+	//CVector toPlayer = (playerPos - beamer).Normalized();
+	//CVector forward = Matrix().VectorZ().Normalized();
+
+	//float dot = forward.Dot(toPlayer);
+
+	//// 視野角の半分を計算する
+	//float halfFOV = FOV_ANGLE * 0.5f;
+
+	//// 視野角の半分より小さいかつプレイヤーとの距離が一定範囲以内であれば、プレイヤーを認識する
+	//if (dot >= cosf(halfFOV * M_PI / 180.0f))
+	//{
+	//	float distance = (playerPos - beamer).Length();
+	//	const float chaseRange = 100.0f;
+
+	//	if (distance <= chaseRange)
+	//	{
+	//		return true;
+	//	}
+	//}
+
+	//return false;
+}
+
 
 CRingBeamerLower::CRingBeamerLower(const CVector& pos, const CVector& scale, const CVector& rot)
 	: CObjectBase(ETag::eRingBeam, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)

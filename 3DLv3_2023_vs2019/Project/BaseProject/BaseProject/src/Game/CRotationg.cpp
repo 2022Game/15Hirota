@@ -13,8 +13,6 @@ CRotationg::CRotationg(const CVector& pos, const CVector& scale,
 	CModel* rotationgCol = CResourceManager::Get<CModel>("RotationgCol");
 	mpRotationgCol = new CColliderMesh(this, ELayer::eField, rotationgCol, true);
 
-	SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
-
 	Position(pos);
 	Scale(scale);
 }

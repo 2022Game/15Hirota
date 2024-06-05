@@ -25,6 +25,7 @@ class CCutInDeath;
 class CCutInClear;
 class CCutInResult;
 class CScreenItem;
+class CPlayerSmoke;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -208,6 +209,9 @@ private:
 
 	// 火炎放射エフェクト
 	CFlamethrower* mpFlamethrower;
+
+	// 煙エフェクト
+	CPlayerSmoke* mpSmoke;
 
 	// 登っている壁のポインター
 	CClimbWall* mpClimbWall;
@@ -524,7 +528,9 @@ private:
 	// ジャンプをしたか
 	bool mIsJumping;
 	// 中間地点
-	bool mSavePoint;
+	bool mSavePoint1;
+	// 中間地点2
+	bool mSavePoint2;
 	// スラッシュエフェクトを鳴らしたか
 	bool mIsSpawnedSlashEffect;
 	// 落下ダメージを受けたか

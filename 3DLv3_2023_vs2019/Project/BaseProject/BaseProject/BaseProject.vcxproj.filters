@@ -200,6 +200,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Beam">
       <UniqueIdentifier>{3629aab8-9ae9-4f08-a3b2-1b040a2734be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Efect\Player Smoke">
+      <UniqueIdentifier>{9f204d38-7b78-4ce2-9b0e-cb4ee32353aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -736,7 +739,7 @@
     <ClCompile Include="src\Game\CSignboard.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Signboard</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CSavePoint.cpp">
+    <ClCompile Include="src\Game\CSavePoint1.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\SavePoint</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CSeesaw.cpp">
@@ -759,6 +762,15 @@
     </ClCompile>
     <ClCompile Include="src\Game\CRingBeamer.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Beam</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSavePoint2.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\SavePoint</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSmoke.cpp">
+      <Filter>ソース ファイル\Game\Efect\Player Smoke</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CPlayerSmoke.cpp">
+      <Filter>ソース ファイル\Game\Efect\Player Smoke</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1320,7 +1332,7 @@
     <ClInclude Include="src\Game\CSignboard.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Signboard</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CSavePoint.h">
+    <ClInclude Include="src\Game\CSavePoint1.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\SavePoint</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CSeesaw.h">
@@ -1343,6 +1355,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CRingBeamer.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Beam</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSavePoint2.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\SavePoint</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSmoke.h">
+      <Filter>ソース ファイル\Game\Efect\Player Smoke</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CPlayerSmoke.h">
+      <Filter>ソース ファイル\Game\Efect\Player Smoke</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

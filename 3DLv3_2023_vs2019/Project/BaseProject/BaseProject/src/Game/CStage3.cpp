@@ -22,12 +22,14 @@
 #include "CRengaBlock.h"
 #include "CBlueMedal.h"
 #include "CRotationg.h"
-#include "CSavePoint.h"
+#include "CSavePoint1.h"
+#include "CSavePoint2.h"
 #include "CSeesaw.h"
 #include "CJumpingKinoko.h"
 #include "CNeedleUpDown.h"
 #include "CNeedleLeftRight.h"
 #include "CRingBeamer.h"
+#include "CGoalObject.h"
 
 // コンストラクタ
 CStage3::CStage3()
@@ -46,151 +48,161 @@ void CStage3::Load()
 {
 	// ステージ関連
 	// ステージモデル
-	CResourceManager::Load<CModel>("Stage",					"Field\\GameStage(Worlds_1)\\GameStage_1(Stage).obj");
+	CResourceManager::Load<CModel>("Stage",							"Field\\GameStage(Worlds_1)\\GameStage_1(Stage).obj");
 	// ステージ空モデル
-	CResourceManager::Load<CModel>("StageSky",				"Field\\GameStage(Worlds_1)\\GameStage_1(StageSky).obj");
+	CResourceManager::Load<CModel>("StageSky",						"Field\\GameStage(Worlds_1)\\GameStage_1(StageSky).obj");
 	// 床のコライダー
-	CResourceManager::Load<CModel>("FloorCol",				"Field\\GameStage(Worlds_1)\\GameStage_1(floorCol).obj");
+	CResourceManager::Load<CModel>("FloorCol",						"Field\\GameStage(Worlds_1)\\GameStage_1(floorCol).obj");
 	// 壁のコライダー
-	CResourceManager::Load<CModel>("WallCol",				"Field\\GameStage(Worlds_1)\\GameStage_1(wallCol).obj");
+	CResourceManager::Load<CModel>("WallCol",						"Field\\GameStage(Worlds_1)\\GameStage_1(wallCol).obj");
 	// 落下判定コライダー
-	CResourceManager::Load<CModel>("FallCol",				"Field\\GameStage(Worlds_1)\\GameStage_1(FallCol).obj");
+	CResourceManager::Load<CModel>("FallCol",						"Field\\GameStage(Worlds_1)\\GameStage_1(FallCol).obj");
 	// 金網モデル
-	CResourceManager::Load<CModel>("WireMesh",				"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_Stop).obj");
+	CResourceManager::Load<CModel>("WireMesh",						"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_Stop).obj");
 	// 金網コライダー
-	CResourceManager::Load<CModel>("WireMeshCol",			"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_StopCol).obj");
+	CResourceManager::Load<CModel>("WireMeshCol",					"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_StopCol).obj");
 	// 金網頂上コライダー
-	CResourceManager::Load<CModel>("WireMeshTopCol",		"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_StopTopCol).obj");
+	CResourceManager::Load<CModel>("WireMeshTopCol",				"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_StopTopCol).obj");
 	// 動く金網モデル
-	CResourceManager::Load<CModel>("WireMeshMove",			"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_Move).obj");
+	CResourceManager::Load<CModel>("WireMeshMove",					"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_Move).obj");
 	// 動く金網コライダー
-	CResourceManager::Load<CModel>("WireMeshMoveCol",		"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_MoveCol).obj");
+	CResourceManager::Load<CModel>("WireMeshMoveCol",				"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_MoveCol).obj");
 	// 動く金網頂上コライダー
-	CResourceManager::Load<CModel>("WireMeshMoveTopCol",	"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_MoveTopCol).obj");
+	CResourceManager::Load<CModel>("WireMeshMoveTopCol",			"Field\\GameStage(Worlds_1)\\GameStage_1(WireMesh_MoveTopCol).obj");
 	// 道モデル
-	CResourceManager::Load<CModel>("Load",					"Field\\GameStage(Worlds_1)\\GameStage_1(load).obj");
+	CResourceManager::Load<CModel>("Load",							"Field\\GameStage(Worlds_1)\\GameStage_1(load).obj");
 	// 雲モデル
-	CResourceManager::Load<CModel>("Cloud",					"Field\\GameStage(Worlds_1)\\GameStage_1(cloud).obj");
+	CResourceManager::Load<CModel>("Cloud",							"Field\\GameStage(Worlds_1)\\GameStage_1(cloud).obj");
 	// フェンスモデル
-	CResourceManager::Load<CModel>("Fance",					"Field\\GameStage(Worlds_1)\\GameStage_1(fance).obj");
+	CResourceManager::Load<CModel>("Fance",							"Field\\GameStage(Worlds_1)\\GameStage_1(fance).obj");
 	// 花モデル
-	CResourceManager::Load<CModel>("Flowers",				"Field\\GameStage(Worlds_1)\\GameStage_1(flowers).obj");
-	// ゴールポストモデル
-	CResourceManager::Load<CModel>("GoalPost",				"Field\\GameStage(Worlds_1)\\GameStage_1(GoalPost).obj");
-	// ゴールブロックモデル
-	CResourceManager::Load<CModel>("GoalBlock",				"Field\\GameStage(Worlds_1)\\GameStage_1(GoalBlock).obj");
+	CResourceManager::Load<CModel>("Flowers",						"Field\\GameStage(Worlds_1)\\GameStage_1(flowers).obj");
+	//// ゴールポストモデル
+	//CResourceManager::Load<CModel>("GoalPost",						"Field\\GameStage(Worlds_1)\\GameStage_1(GoalPost).obj");
+	//// ゴールブロックモデル
+	//CResourceManager::Load<CModel>("GoalBlock",						"Field\\GameStage(Worlds_1)\\GameStage_1(GoalBlock).obj");
 	// 草モデル
-	CResourceManager::Load<CModel>("Grass",					"Field\\GameStage(Worlds_1)\\GameStage_1(grass).obj");
+	CResourceManager::Load<CModel>("Grass",							"Field\\GameStage(Worlds_1)\\GameStage_1(grass).obj");
 	// キノコモデル
-	CResourceManager::Load<CModel>("Mushroom",				"Field\\GameStage(Worlds_1)\\GameStage_1(mushroom).obj");
+	CResourceManager::Load<CModel>("Mushroom",						"Field\\GameStage(Worlds_1)\\GameStage_1(mushroom).obj");
 	// 岩と低木モデル
-	CResourceManager::Load<CModel>("RockShrub",				"Field\\GameStage(Worlds_1)\\GameStage_1(rock&shrub).obj");
+	CResourceManager::Load<CModel>("RockShrub",						"Field\\GameStage(Worlds_1)\\GameStage_1(rock&shrub).obj");
 	// 空島モデル
-	CResourceManager::Load<CModel>("SkyIsland",				"Field\\GameStage(Worlds_1)\\GameStage_1(skyisland).obj");
+	CResourceManager::Load<CModel>("SkyIsland",						"Field\\GameStage(Worlds_1)\\GameStage_1(skyisland).obj");
 	// 木モデル
-	CResourceManager::Load<CModel>("Tree",					"Field\\GameStage(Worlds_1)\\GameStage_1(Tree).obj");
+	CResourceManager::Load<CModel>("Tree",							"Field\\GameStage(Worlds_1)\\GameStage_1(Tree).obj");
 	// 切り株と木の枝モデル
-	CResourceManager::Load<CModel>("Branch",				"Field\\GameStage(Worlds_1)\\GameStage_1(Branch).obj");
+	CResourceManager::Load<CModel>("Branch",						"Field\\GameStage(Worlds_1)\\GameStage_1(Branch).obj");
 	// 矢印看板モデル
-	CResourceManager::Load<CModel>("Arrowsign",				"Field\\GameStage(Worlds_1)\\GameStage_1(arrowsign).obj");
+	CResourceManager::Load<CModel>("Arrowsign",						"Field\\GameStage(Worlds_1)\\GameStage_1(arrowsign).obj");
 
 
 	// ステージギミック関連
 	// 回転する床のモデル
-	CResourceManager::Load<CModel>("Rotationg",				"Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObject).obj");
+	CResourceManager::Load<CModel>("Rotationg",						"Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObject).obj");
 	// 回転する床のコライダー
-	CResourceManager::Load<CModel>("RotationgCol",			"Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObjectCol).obj");
+	CResourceManager::Load<CModel>("RotationgCol",					"Field\\GameStage(Worlds_1)\\GameStage_1(RotationgObjectCol).obj");
 	// 看板オブジェクト(ジャンプヒント)
-	CResourceManager::Load<CModel>("Signboard",				"Field\\Object\\signboard.obj");
+	CResourceManager::Load<CModel>("Signboard",						"Field\\Object\\signboard.obj");
 	// 零番目の床
-	CResourceManager::Load<CModel>("Number0",				"Field\\Object\\number0.obj");
+	CResourceManager::Load<CModel>("Number0",						"Field\\Object\\number0.obj");
 	// 一番目の床ブロック
-	CResourceManager::Load<CModel>("Number1",				"Field\\Object\\number1.obj");
+	CResourceManager::Load<CModel>("Number1",						"Field\\Object\\number1.obj");
 	// 二番目の床ブロック
-	CResourceManager::Load<CModel>("Number2",				"Field\\Object\\number2.obj");
+	CResourceManager::Load<CModel>("Number2",						"Field\\Object\\number2.obj");
 	// 三番目の床ブロック
-	CResourceManager::Load<CModel>("Number3",				"Field\\Object\\number3.obj");
+	CResourceManager::Load<CModel>("Number3",						"Field\\Object\\number3.obj");
 	// 初期の四角のモデル
-	CResourceManager::Load<CModel>("FieldCube",				"Field\\Object\\cube.obj");
+	CResourceManager::Load<CModel>("FieldCube",						"Field\\Object\\cube.obj");
 	// ブルーメダルモデル
-	CResourceManager::Load<CModel>("BlueMedal",				"Field\\Object\\Bluemedal.obj");
+	CResourceManager::Load<CModel>("BlueMedal",						"Field\\Object\\Bluemedal.obj");
 	// 回転する床
-	CResourceManager::Load<CModel>("RotateFloor",			"Field\\Gimmick\\RotateFloor.obj");
+	CResourceManager::Load<CModel>("RotateFloor",					"Field\\Gimmick\\Rotate\\RotateFloor.obj");
 	// 回転する床の前コライダー
-	CResourceManager::Load<CModel>("RotateFloorFrontCol",	"Field\\Gimmick\\RotateFloorFrontCol.obj");
+	CResourceManager::Load<CModel>("RotateFloorFrontCol",			"Field\\Gimmick\\Rotate\\RotateFloorFrontCol.obj");
 	// 回転する床の後ろコライダー
-	CResourceManager::Load<CModel>("RotateFloorBackCol",	"Field\\Gimmick\\RotateFloorBackCol.obj");
+	CResourceManager::Load<CModel>("RotateFloorBackCol",			"Field\\Gimmick\\Rotate\\RotateFloorBackCol.obj");
+	// 回転する床(反対)
+	CResourceManager::Load<CModel>("RotateFloorOpposition",			"Field\\Gimmick\\Rotate\\RotateFloor(Opposition).obj");
+	// 回転する床の前コライダー(反対)
+	CResourceManager::Load<CModel>("RotateFloorFrontColOpposition", "Field\\Gimmick\\Rotate\\RotateFloorFrontCol(Opposition).obj");
+	// 回転する床の後ろコライダー(反対)
+	CResourceManager::Load<CModel>("RotateFloorBackColOpposition",	"Field\\Gimmick\\Rotate\\RotateFloorBackCol(Opposition).obj");
 	// 火炎放射器(土台)
-	CResourceManager::Load<CModel>("FlamethrowerModel",		"Field\\Gimmick\\Flamethrower(foundation).obj");
+	CResourceManager::Load<CModel>("FlamethrowerModel",				"Field\\Gimmick\\Flamethrower(foundation).obj");
 	// 火炎放射器(タンク)
-	CResourceManager::Load<CModel>("FlamethrowerTank",		"Field\\Gimmick\\Flamethrower(tank).obj");
+	CResourceManager::Load<CModel>("FlamethrowerTank",				"Field\\Gimmick\\Flamethrower(tank).obj");
 	// 火炎放射器(コライダー)
-	CResourceManager::Load<CModel>("FlamethrowerCol",		"Field\\Gimmick\\Flamethrower(WallCol).obj");
+	CResourceManager::Load<CModel>("FlamethrowerCol",				"Field\\Gimmick\\Flamethrower(WallCol).obj");
 	// セーブポイントモデル
-	CResourceManager::Load<CModel>("SavePoint",				"Field\\Gimmick\\SavePoint.obj");
+	CResourceManager::Load<CModel>("SavePoint",						"Field\\Gimmick\\SavePoint.obj");
+	// ゴールポストモデル
+	CResourceManager::Load<CModel>("GoalPost",						"Field\\Object\\GoalPost.obj");
+	// ゴールブロックモデル
+	CResourceManager::Load<CModel>("GoalCube",						"Field\\Object\\GoalCube.obj");
 	// 宝箱
-	CResourceManager::Load<CModel>("TreasureChest",			"Field\\Gimmick\\TreasureChest.obj");
+	CResourceManager::Load<CModel>("TreasureChest",					"Field\\Gimmick\\Chest\\TreasureChest.obj");
 	// 宝箱(蓋)
-	CResourceManager::Load<CModel>("TreasureChestTwo",		"Field\\Gimmick\\TreasureChestTwo.obj");
+	CResourceManager::Load<CModel>("TreasureChestTwo",				"Field\\Gimmick\\Chest\\TreasureChestTwo.obj");
 	// 宝箱(蓋コライダー)
-	CResourceManager::Load<CModel>("TreasureChestCol",		"Field\\Gimmick\\TreasureChest(FloorCol).obj");
+	CResourceManager::Load<CModel>("TreasureChestCol",				"Field\\Gimmick\\Chest\\TreasureChest(FloorCol).obj");
 	// 宝箱(壁コライダー)
-	CResourceManager::Load<CModel>("TreasureChestWallCol",	"Field\\Gimmick\\TreasureChest(WallCol).obj");
+	CResourceManager::Load<CModel>("TreasureChestWallCol",			"Field\\Gimmick\\Chest\\TreasureChest(WallCol).obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("SeesawModel",			"Field\\Gimmick\\SeesawModel.obj");
+	CResourceManager::Load<CModel>("SeesawModel",					"Field\\Gimmick\\SeesawModel.obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("centerCol",				"Field\\Gimmick\\SeesawModel(CenterCol).obj");
+	CResourceManager::Load<CModel>("centerCol",						"Field\\Gimmick\\SeesawModel(CenterCol).obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("rightCol",				"Field\\Gimmick\\SeesawModel(RightCol).obj");
+	CResourceManager::Load<CModel>("rightCol",						"Field\\Gimmick\\SeesawModel(RightCol).obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("leftCol",				"Field\\Gimmick\\SeesawModel(LeftCol).obj");
+	CResourceManager::Load<CModel>("leftCol",						"Field\\Gimmick\\SeesawModel(LeftCol).obj");
 	// 跳ねるキノコモデル
-	CResourceManager::Load<CModel>("JumpingKinoko",			"Field\\Gimmick\\JumpingKinoko(Base).obj");
+	CResourceManager::Load<CModel>("JumpingKinoko",					"Field\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
 	// 跳ねるキノココライダー
-	CResourceManager::Load<CModel>("JumpingKinokoCol",		"Field\\Gimmick\\JumpingKinoko(Col).obj");
+	CResourceManager::Load<CModel>("JumpingKinokoCol",				"Field\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
 	// 針モデル(上下)
-	CResourceManager::Load<CModel>("Needle",				"Field\\Gimmick\\NeedleObject(needle).obj");
+	CResourceManager::Load<CModel>("Needle",						"Field\\Gimmick\\Needle\\NeedleObject(needle).obj");
 	// 針モデルコライダー(上下)
-	CResourceManager::Load<CModel>("NeedleCol",				"Field\\Gimmick\\NeedleObjectCol.obj");
+	CResourceManager::Load<CModel>("NeedleCol",						"Field\\Gimmick\\Needle\\NeedleObjectCol.obj");
 	// 針ベースモデル(上下)
-	CResourceManager::Load<CModel>("NeedleBase",			"Field\\Gimmick\\NeedleObject(base).obj");
+	CResourceManager::Load<CModel>("NeedleBase",					"Field\\Gimmick\\Needle\\NeedleObject(base).obj");
 	// 針ベースコライダー(上下)
-	CResourceManager::Load<CModel>("NeedleBaseCol",			"Field\\Gimmick\\NeedleObjectBaseCol.obj");
+	CResourceManager::Load<CModel>("NeedleBaseCol",					"Field\\Gimmick\\Needle\\NeedleObjectBaseCol.obj");
 	// 針モデル(左右)
-	CResourceManager::Load<CModel>("NeedleLeftRight",		"Field\\Gimmick\\Needle\\NeedleObjLeftRight(Needle).obj");
+	CResourceManager::Load<CModel>("NeedleLeftRight",				"Field\\Gimmick\\Needle\\NeedleObjLeftRight(Needle).obj");
 	// 針モデルコライダー(左右)
-	CResourceManager::Load<CModel>("NeedleColLeftRight",	"Field\\Gimmick\\Needle\\NeedleObjLeftRight(NeedleCol).obj");
+	CResourceManager::Load<CModel>("NeedleColLeftRight",			"Field\\Gimmick\\Needle\\NeedleObjLeftRight(NeedleCol).obj");
 	// 針ベースモデル(左右)
-	CResourceManager::Load<CModel>("NeedleBaseLeftRight",   "Field\\Gimmick\\Needle\\NeedleObjLeftRight(Base).obj");
+	CResourceManager::Load<CModel>("NeedleBaseLeftRight",			"Field\\Gimmick\\Needle\\NeedleObjLeftRight(Base).obj");
 	// 針ベースコライダー(左右)
-	CResourceManager::Load<CModel>("NeedleBaseColLeftRight","Field\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
+	CResourceManager::Load<CModel>("NeedleBaseColLeftRight",		"Field\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
 	// リングビーマモデル(上)
-	CResourceManager::Load<CModel>("RingBeamerUP",			"Effect\\BeamObj(Upper).obj");
+	CResourceManager::Load<CModel>("RingBeamerUP",					"Effect\\BeamObj(Upper).obj");
 	// リングビーマモデル(下)
-	CResourceManager::Load<CModel>("RingBeamerLO",			"Effect\\BeamObj(Lower).obj");
+	CResourceManager::Load<CModel>("RingBeamerLO",					"Effect\\BeamObj(Lower).obj");
 	// ビリビリエフェクト
-	CResourceManager::Load<CModel>("Biribiri",				"Effect\\BhimaEffect.obj");
+	CResourceManager::Load<CModel>("Biribiri",						"Effect\\BhimaEffect.obj");
 	// リングビーマモデル(コライダー)
-	CResourceManager::Load<CModel>("BiribiriCol",			"Effect\\BhimaEffect(Col).obj");
+	CResourceManager::Load<CModel>("BiribiriCol",					"Effect\\BhimaEffect(Col).obj");
 
 
 	// ハテナブロック(アイテム保有)
-	CResourceManager::Load<CModel>("HatenaBlock",			"Field\\Object\\hatena.obj");
+	CResourceManager::Load<CModel>("HatenaBlock",					"Field\\Object\\hatena.obj");
 	// ハテナブロック(アイテム不保有)
-	CResourceManager::Load<CModel>("HatenaBlockAfter",		"Field\\Object\\UsedHatenaBlock.obj");
+	CResourceManager::Load<CModel>("HatenaBlockAfter",				"Field\\Object\\UsedHatenaBlock.obj");
 	// レンガブロック
-	CResourceManager::Load<CModel>("RengaBlock",			"Field\\Object\\RengaBlock.obj");
+	CResourceManager::Load<CModel>("RengaBlock",					"Field\\Object\\RengaBlock.obj");
 
 	// 回復オブジェクト
-	CResourceManager::Load<CModel>("Heart",					"Item\\StatusItem\\Heart.obj");
+	CResourceManager::Load<CModel>("Heart",							"Item\\StatusItem\\Heart.obj");
 	// 無敵オブジェクト
-	CResourceManager::Load<CModel>("Star",					"Item\\StatusItem\\Star.obj");
+	CResourceManager::Load<CModel>("Star",							"Item\\StatusItem\\Star.obj");
 	// 得点オブジェクト
-	CResourceManager::Load<CModel>("Medal",					"Item\\StatusItem\\Medal.obj");
+	CResourceManager::Load<CModel>("Medal",							"Item\\StatusItem\\Medal.obj");
 	// 回復薬オブジェクト
-	CResourceManager::Load<CModel>("Healing",				"Item\\StatusItem\\HealingItem.obj");
+	CResourceManager::Load<CModel>("Healing",						"Item\\StatusItem\\HealingItem.obj");
 	// 攻撃力アップモデル
-	CResourceManager::Load<CModel>("AttackPotion",			"Item\\StatusItem\\AttackPotion.obj");
+	CResourceManager::Load<CModel>("AttackPotion",					"Item\\StatusItem\\AttackPotion.obj");
 
 	// キャラクター関連
 	// ヴァンガード
@@ -203,6 +215,10 @@ void CStage3::Load()
 	// M1ガーランド(銃)
 	CResourceManager::Load<CModel>("Gun_M1G", "Item\\Gun_M1Garand\\Gun_M1Garand.obj");
 
+	// エフェクト関連
+	// 弾のエフェクト
+	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
+	CResourceManager::Load<CModel>("Slash", "Effect\\slash.obj");
 	// 背景色設定
 	System::SetClearColor(0.1960784f, 0.6f, 0.8f, 1.0f);
 
@@ -218,38 +234,41 @@ void CStage3::Load()
 	AddTask(mpFallCol);
 
 	// セーブポイント
-	CSavePoint* savepoint = new CSavePoint
+	CSavePoint1* savepoint1 = new CSavePoint1
 	(
-		CVector(-9.0f, 320.0f, -1173.0f),
+		CVector(0.0f, 320.0f, -1173.0f),
 		CVector(8.0f, 8.0f, 8.0f),
 		CVector(0.0f, 10.0f, 0.0f)
 	);
-	savepoint->Rotation(0.0f, 90.0f, 0.0f);
-	AddTask(savepoint);
+	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
+	AddTask(savepoint1);
+
+	// セーブポイント
+	CSavePoint2* savepoint2 = new CSavePoint2
+	(
+		CVector(0.0f, 400.0f, -1890.0f),
+		CVector(8.0f, 8.0f, 8.0f),
+		CVector(0.0f, 10.0f, 0.0f)
+	);
+	savepoint2->Rotation(0.0f, 90.0f, 0.0f);
+	AddTask(savepoint2);
+
+	// ゴールポスト
+	CGoalObject* goal = new CGoalObject
+	(
+		CVector(-367.0f, 395.0f, -2060.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 90.0f, 0.0f)
+	);
+	AddTask(goal);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	//// ステージオブジェクト関連 ///////////////////////////////////////////////////////
 	
-	// 登れる壁→跳ねるキノコ→回数オブジェクト→ジャンプオブジェクト→回転オブジェクト→
-	// 時間で回転する床→宝箱→レンガブロック→火炎放射器→針オブジェクト
+	// 登れる壁→跳ねるキノコ→回数オブジェクト→ずっと回転するオブジェクト→ジャンプオブジェクト→
+	// 回転床オブジェクト→シーソー→宝箱→レンガブロック→火炎放射器→針オブジェクト→リングビーム
 
-
-	CRingBeamerUpper* beamerUp1 = new CRingBeamerUpper
-	(
-		CVector(-4.0f, 329.0f, -1437.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(beamerUp1);
-	CRingBeamerLower* beamerLo1 = new CRingBeamerLower
-	(
-		CVector(-4.0f, 328.0f, -1437.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(beamerLo1);
-	
 	// 登れる金網を作成
 	CWireMeshClimbWall* wiremeshWall = new CWireMeshClimbWall
 	(
@@ -286,22 +305,42 @@ void CStage3::Load()
 	// 跳ねるキノコ
 	CJumpingKinoko* jumping2 = new CJumpingKinoko
 	(
-		CVector(-8.0f, 295.0f, -1110.0f),
+		CVector(0.0f, 295.0f, -1110.0f),
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(jumping2);
 
-	//// 回数オブジェクト(一回)
-	//CNumberFloorOnce* numberfloor1 = new CNumberFloorOnce
-	//(
-	//	CVector(-9.0f, 323.0f, -1273.0f),
-	//	CVector(4.0f, 3.0f, 4.0f),
-	//	CVector(0.0f, -90.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(numberfloor1);
+	// 回数オブジェクト(一回)
+	CNumberFloorOnce* numberfloor1 = new CNumberFloorOnce
+	(
+		CVector(0.0f, 323.0f, -1273.0f),
+		CVector(4.0f, 1.0f, 4.0f),
+		CVector(0.0f, -90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(numberfloor1);
+
+	// 回数オブジェクト(3回)
+	CNumberFloor1* numberfloor2 = new CNumberFloor1
+	(
+		CVector(0.0f, 366.0f, -1440.0f),
+		CVector(4.0f, 1.0f, 4.0f),
+		CVector(0.0f, -90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(numberfloor2);
+
+	// 回数オブジェクト(3回)
+	CNumberFloor1* numberfloor3 = new CNumberFloor1
+	(
+		CVector(0.0f, 366.0f, -1750.0f),
+		CVector(4.0f, 1.0f, 4.0f),
+		CVector(0.0f, -90.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(numberfloor3);
 
 	// ずっと回転するモデル1
 	CRotationg* rotationg = new CRotationg
@@ -312,7 +351,17 @@ void CStage3::Load()
 	);
 	AddTask(rotationg);
 
+	// ずっと回転するモデル2
+	CRotationg* rotationg2 = new CRotationg
+	(
+		CVector(0.0f, 366.0f, -1590.0f),
+		CVector(6.0f, 5.0f, 6.0f),
+		0.5f
+	);
+	rotationg2->SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
+	AddTask(rotationg2);
 
+	////////////////////////////////////////////////////////////////////////////////////////
 	// 回転する床ギミック(時間)
 	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
 		CVector(190.0f, 123.0f, -110.0f),
@@ -334,9 +383,9 @@ void CStage3::Load()
 
 	// 回転する床ギミック(ジャンプ)
 	// ゴールまでの道のりの途中　左
-	CRotateFloorGimmick* rotategimmick2 = new CRotateFloorGimmick(
-		CVector(-65.0f, 335.0f, -1316.0f),
-		CVector(5.3f, 5.3f, 5.3f),
+	CRotateFloorGimmickOpposition* rotategimmick2 = new CRotateFloorGimmickOpposition(
+		CVector(-53.0f, 335.0f, -1335.0f),
+		CVector(4.3f, 4.3f, 4.3f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
@@ -345,8 +394,8 @@ void CStage3::Load()
 	// 回転する床ギミック(ジャンプ)
 	// ゴールまでの道のりの途中　右
 	CRotateFloorGimmick* rotategimmick3 = new CRotateFloorGimmick(
-		CVector(65.0f, 335.0f, -1316.0f),
-		CVector(5.3f, 5.3f, 5.3f),
+		CVector(53.0f, 335.0f, -1335.0f),
+		CVector(4.3f, 4.3f, 4.3f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
@@ -354,23 +403,24 @@ void CStage3::Load()
 
 	// 回転する床ギミック(ジャンプ)
 	// ゴールまでの道のりの途中　真ん中
-	CRotateFloorGimmick* rotategimmick4 = new CRotateFloorGimmick(
-		CVector(-7.0f, 355.0f, -1366.0f),
-		CVector(5.3f, 5.3f, 5.3f),
+	CRotateFloorTimeGimmick* rotategimmick4 = new CRotateFloorTimeGimmick(
+		CVector(0.0f, 355.0f, -1388.0f),
+		CVector(4.3f, 4.3f, 4.3f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rotategimmick4);
 
 	// 回転する床ギミック(ジャンプ)
-	// ゴールまでの道のりの途中　左
-	CRotateFloorGimmickOpposition* rotategimmick5 = new CRotateFloorGimmickOpposition(
-		CVector(-65.0f, 365.0f, -1416.0f),
+	// ゴールまでの道のりの途中　真ん中
+	CRotateFloorGimmick* rotategimmick5 = new CRotateFloorGimmick(
+		CVector(0.0f, 386.0f, -1800.0f),
 		CVector(5.3f, 5.3f, 5.3f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rotategimmick5);
+	////////////////////////////////////////////////////////////////////////////////////////
 
 	// シーソーモデル
 	CSeesaw* seesaw1 = new CSeesaw
@@ -432,52 +482,68 @@ void CStage3::Load()
 	AddTask(treasureTwo2);
 	//////////////////////////////////////////////////////////
 
-	//// レンガブロック
-	//CRengaBlock* hatena = new CRengaBlock(
-	//	CVector(-9.0f, 322.0f, -1243.0f),
-	//	CVector(5.0f, 5.0f, 5.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(hatena);
+	// レンガブロック1
+	CRengaBlock* renga1 = new CRengaBlock
+	(
+		CVector(-219.0f, 251.0f, -1087.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(renga1);
+	// ハテナブロック1
+	CHatenaBlock* hatena1 = new CHatenaBlock
+	(
+		CVector(-211.0f, 251.0f, -1087.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(hatena1);
+	// レンガブロック1
+	CRengaBlock* renga2 = new CRengaBlock(
+		CVector(-203.0f, 251.0f, -1087.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(renga2);
 
-	//// レンガブロック
-	//CRengaBlock* hatena1 = new CRengaBlock(
-	//	CVector(-19.0f, 322.0f, -1243.0f),
-	//	CVector(5.0f, 5.0f, 5.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(hatena1);
+	// レンガブロック2
+	CRengaBlock* renga3 = new CRengaBlock
+	(
+		CVector(83.0f, 285.0f, -1060.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(renga3);
+	// ハテナブロック2
+	CHatenaBlock* hatena2 = new CHatenaBlock
+	(
+		CVector(83.0f, 285.0f, -1052.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(hatena2);
+	// レンガブロック2
+	CRengaBlock* renga4 = new CRengaBlock(
+		CVector(83.0f, 285.0f, -1044.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(renga4);
 
-	//// レンガブロック
-	//CRengaBlock* hatena2 = new CRengaBlock(
-	//	CVector(9.0f, 322.0f, -1243.0f),
-	//	CVector(5.0f, 5.0f, 5.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(hatena2);
-
-	//// レンガブロック
-	//CRengaBlock* hatena3 = new CRengaBlock(
-	//	CVector(19.0f, 322.0f, -1243.0f),
-	//	CVector(5.0f, 5.0f, 5.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(hatena3);
-
-	//// 針モデル1
-	//CNeedleUpDown* needle1 = new CNeedleUpDown(
-	//	CVector(-130.0f, 285.0f, -1080.0f),
-	//	CVector(10.0f, 10.0f, 10.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer);
-	//AddTask(needle1);
-	//// 針モデルベース1
-	//CNeedleUpDownBase* needlebase1 = new CNeedleUpDownBase(
-	//	CVector(-130.0f, 285.0f, -1080.0f),
-	//	CVector(10.0f, 10.0f, 10.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer);
-	//AddTask(needlebase1);
+	// 針モデル1
+	CNeedleUpDown* needle1 = new CNeedleUpDown(
+		CVector(-150.0f, 408.0f, -1890.0f),
+		CVector(10.0f, 10.0f, 10.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer);
+	AddTask(needle1);
+	// 針モデルベース1
+	CNeedleUpDownBase* needlebase1 = new CNeedleUpDownBase(
+		CVector(-150.0f, 408.0f, -1890.0f),
+		CVector(10.0f, 10.0f, 10.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer);
+	AddTask(needlebase1);
 
 	//// 針モデル1
 	//CNeedleLeftRight* needle1 = new CNeedleLeftRight(
@@ -493,6 +559,57 @@ void CStage3::Load()
 	//	CVector(0.0f, 0.0f, 0.0f),
 	//	ETag::ePlayer, ELayer::ePlayer);
 	//AddTask(needlebase1);
+
+	// リングビーマ1
+	CRingBeamerUpper* beamerUp1 = new CRingBeamerUpper
+	(
+		CVector(-70.0f, 379.0f, -1440.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp1);
+	// リングビーマ1
+	CRingBeamerLower* beamerLo1 = new CRingBeamerLower
+	(
+		CVector(-70.0f, 378.0f, -1440.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLo1);
+
+	// リングビーマ2
+	CRingBeamerUpper* beamerUp2 = new CRingBeamerUpper
+	(
+		CVector(100.0f, 379.0f, -1622.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp2);
+	// リングビーマ2
+	CRingBeamerLower* beamerLo2 = new CRingBeamerLower
+	(
+		CVector(100.0f, 378.0f, -1622.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLo2);
+
+	// リングビーマ3
+	CRingBeamerUpper* beamerUp3 = new CRingBeamerUpper
+	(
+		CVector(-100.0f, 379.0f, -1622.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp3);
+	// リングビーマ3
+	CRingBeamerLower* beamerLo3 = new CRingBeamerLower
+	(
+		CVector(-100.0f, 378.0f, -1622.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLo3);
 
 	// 火炎放射器モデル
 	// 左側
@@ -571,9 +688,10 @@ void CStage3::Load()
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
 	// 初期値点 : 190.0f, 126.0f, 269.0f
-	// 中間地点 : -8.0f, 310.0f, -1050.0f
+	// 中間地点 : 0.0f, 310.0f, -1050.0f
+	// ボス前	: 0.0f, 400.0f, -1890.0f
 	// 火炎放射器の前 : -207.0f, 126.0f, -912.0f
-	CVector playerPos = CVector(-8.0f, 310.0f, -1050.0f);
+	CVector playerPos = CVector(0.0f, 330.0f, -1173.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

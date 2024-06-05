@@ -501,7 +501,21 @@ void CResultAnnouncement::Render()
 				// ステージ３の結果
 				else if (stage3)
 				{
-					
+					// Aランク
+					if (score >= 2500)
+					{
+						resultType = Result::A;
+					}
+					// Bランク
+					else if (score < 2500 && score >= 1500)
+					{
+						resultType = Result::B;
+					}
+					// Cランク
+					else
+					{
+						resultType = Result::C;
+					}
 				}
 
 				// アイテムの種類を取得

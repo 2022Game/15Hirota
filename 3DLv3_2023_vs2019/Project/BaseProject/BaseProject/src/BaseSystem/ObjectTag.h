@@ -10,6 +10,7 @@ enum class ETag
 	eFlame,				// 炎
 	eSlash,				// 斬撃
 	eBiribiri,			// ビリビリ
+	eSmoke,				// 煙
 
 	eField,				// フィールドを構成するオブジェクト
 	eStageMenuObject,	// ステージメニューのオブジェクト
@@ -21,7 +22,8 @@ enum class ETag
 	eAttackObject,		// 攻撃力アップモデル
 	eMedal,				// メダルアイテム
 	eGoalObject,		// クリア条件のオブジェクト
-	eSavePoint,			// セーブポイント
+	eSavePoint1,		// セーブポイント
+	eSavePoint2,		// セーブポイント
 	eJumpingObject,		// ジャンプするオブジェクト
 	eNeedleObject,		// 針オブジェクト
 	eFall,				// 落下判定用オブジェクト

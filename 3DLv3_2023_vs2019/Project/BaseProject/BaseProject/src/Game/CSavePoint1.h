@@ -1,5 +1,5 @@
-#ifndef CSAVEPOINT_H
-#define CSAVEPOINT_H
+#ifndef CSAVEPOINT1_H
+#define CSAVEPOINT1_H
 
 #include "CColliderLine.h"
 #include "CColliderSphere.h"
@@ -7,11 +7,11 @@
 class CModel;
 
 // セーブポイントクラス
-class CSavePoint : public CObjectBase
+class CSavePoint1 : public CObjectBase
 {
 public:
-	CSavePoint(const CVector& pos, const CVector& scale, const CVector& rot);
-	~CSavePoint();
+	CSavePoint1(const CVector& pos, const CVector& scale, const CVector& rot);
+	~CSavePoint1();
 
 	// 更新処理
 	void Update();

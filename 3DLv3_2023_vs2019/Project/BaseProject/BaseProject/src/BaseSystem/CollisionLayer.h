@@ -26,8 +26,10 @@ enum class ELayer
 
 
 	eVarious,		// 色々コライダー
-	eSavePoint,		// セーブポイントのコライダー
+	eSavePoint1,	// セーブポイントのコライダー
+	eSavePoint2,	// セーブポイントのコライダー
 	eFlame,			// 炎のコライダー
+	eSmoke,			// 煙のコライダー
 	eFlameWall,		// 火炎放射器のコライダー
 	eBiribiri,		// ビリビリコライダー
 	eRecoverCol,	// 回復コライダー

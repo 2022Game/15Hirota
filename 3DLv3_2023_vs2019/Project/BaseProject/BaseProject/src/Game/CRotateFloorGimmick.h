@@ -32,9 +32,6 @@ public:
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit)override;
 
-	//プレイヤーを見つけたか
-	bool IsFoundPlayer() const;
-
 	// 状態を切り替える
 	void ChangeRotationState();
 
@@ -101,5 +98,8 @@ private:
 	ETag mReactionTag;
 	// 触れた時に反応するレイヤー
 	ELayer mReactionLayer;
+
+	//プレイヤーを見つけたか
+	bool IsFoundPlayer() const;
 };
 #endif

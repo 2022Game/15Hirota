@@ -1,11 +1,11 @@
-#include "CSavePoint.h"
+#include "CSavePoint1.h"
 #include "CPlayer.h"
 #include "CModel.h"
 #include "CStageManager.h"
 
 // コストラクタ
-CSavePoint::CSavePoint(const CVector& pos, const CVector& scale, const CVector& rot)
-	: CObjectBase(ETag::eSavePoint, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
+CSavePoint1::CSavePoint1(const CVector& pos, const CVector& scale, const CVector& rot)
+	: CObjectBase(ETag::eSavePoint1, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 {
 	// セーブポイントモデル取得
 	mpSavePointModel = CResourceManager::Get<CModel>("SavePoint");
@@ -13,7 +13,7 @@ CSavePoint::CSavePoint(const CVector& pos, const CVector& scale, const CVector& 
 	// セーブポイントのコライダー作成
 	mpSaveColLine = new CColliderLine
 	(
-		this, ELayer::eSavePoint,
+		this, ELayer::eSavePoint1,
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(0.0f, 10.0f, 0.0f)
 	);
@@ -26,7 +26,7 @@ CSavePoint::CSavePoint(const CVector& pos, const CVector& scale, const CVector& 
 }
 
 // デストラクタ
-CSavePoint::~CSavePoint()
+CSavePoint1::~CSavePoint1()
 {
 	// 作成したタスクを取り除く
 	CStageManager::RemoveTask(this);
@@ -34,13 +34,13 @@ CSavePoint::~CSavePoint()
 }
 
 // 更新処理
-void CSavePoint::Update()
+void CSavePoint1::Update()
 {
 
 }
 
 // 描画処理
-void CSavePoint::Render()
+void CSavePoint1::Render()
 {
 	mpSavePointModel->SetColor(mColor);
 	mpSavePointModel->Render(Matrix());
