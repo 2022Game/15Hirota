@@ -47,6 +47,13 @@ CSeesaw::CSeesaw(const CVector& pos, const CVector& scale, const CVector& rot,
 	mpLeftCol->SetCollisionLayers({ ELayer::ePlayer });
 	mpLeftCol->SetCollisionTags({ ETag::ePlayer });
 
+	// シーソー全体コライダーを作成
+	CModel* ceesaw = CResourceManager::Get<CModel>("SeesawModelCol");
+	mpSeesawCol = new CColliderMesh(this, ELayer::eField, center, true);
+	mpSeesawCol->SetCollisionLayers({ ELayer::ePlayer });
+	mpSeesawCol->SetCollisionTags({ ETag::ePlayer });
+
+
 	Position(pos);
 	Scale(scale);
 	Rotation(mDeafaultRot);
@@ -63,6 +70,7 @@ CSeesaw::~CSeesaw()
 	SAFE_DELETE(mpCenterCol);
 	SAFE_DELETE(mpRightCol);
 	SAFE_DELETE(mpLeftCol);
+	SAFE_DELETE(mpSeesawCol);
 }
 
 // 衝突処理

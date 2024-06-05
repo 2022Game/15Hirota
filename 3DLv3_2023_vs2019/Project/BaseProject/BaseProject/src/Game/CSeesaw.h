@@ -50,6 +50,8 @@ private:
 	// シーソーレフトコライダー
 	CColliderMesh* mpLeftCol;
 
+	CColliderMesh* mpSeesawCol;
+
 	// 状態関連
 	// シーソーの状態
 	enum class EState

@@ -151,6 +151,8 @@ void CStage3::Load()
 	// シーソーモデル
 	CResourceManager::Load<CModel>("SeesawModel",					"Field\\Gimmick\\SeesawModel.obj");
 	// シーソーモデル
+	CResourceManager::Load<CModel>("SeesawModelCol", "Field\\Gimmick\\SeesawModel(Col).obj");
+	// シーソーモデル
 	CResourceManager::Load<CModel>("centerCol",						"Field\\Gimmick\\SeesawModel(CenterCol).obj");
 	// シーソーモデル
 	CResourceManager::Load<CModel>("rightCol",						"Field\\Gimmick\\SeesawModel(RightCol).obj");
