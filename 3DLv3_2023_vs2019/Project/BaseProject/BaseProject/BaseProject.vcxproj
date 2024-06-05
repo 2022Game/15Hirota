@@ -114,7 +114,6 @@
     <ClCompile Include="src\Game\CNumberFloorOnce.cpp" />
     <ClCompile Include="src\Game\CObstacle.cpp" />
     <ClCompile Include="src\Game\CObstacleWall.cpp" />
-    <ClCompile Include="src\Game\CPlayerSmoke.cpp" />
     <ClCompile Include="src\Game\CRecoveryObject.cpp" />
     <ClCompile Include="src\Game\CRengaBlock.cpp" />
     <ClCompile Include="src\Game\CResult.cpp" />
@@ -313,7 +312,6 @@
     <ClInclude Include="src\Game\CNumberFloorOnce.h" />
     <ClInclude Include="src\Game\CObstacle.h" />
     <ClInclude Include="src\Game\CObstacleWall.h" />
-    <ClInclude Include="src\Game\CPlayerSmoke.h" />
     <ClInclude Include="src\Game\CRecoveryObject.h" />
     <ClInclude Include="src\Game\CRengaBlock.h" />
     <ClInclude Include="src\Game\CResult.h" />

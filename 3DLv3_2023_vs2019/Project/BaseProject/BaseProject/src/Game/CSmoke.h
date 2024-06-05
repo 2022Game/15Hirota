@@ -19,7 +19,7 @@ public:
 	/// <param name="pos">初期位置</param>
 	/// <param name="dir">移動方向</param>
 	/// <param name="speed">移動速度</param>
-	void Setup(const CVector& pos, const CVector& dir, float speed);
+	//void Setup(const CVector& pos, const CVector& dir, float speed);
 
 	// カラーを設定
 	void SetColor(const CColor& color) override;
@@ -35,7 +35,7 @@ public:
 	/// <param name="self">衝突した自身のコライダー</param>
 	/// <param name="other">衝突した相手のコライダー</param>
 	/// <param name="hit">衝突した時の情報</param>
-	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
+	//void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
 
 
 	// 更新

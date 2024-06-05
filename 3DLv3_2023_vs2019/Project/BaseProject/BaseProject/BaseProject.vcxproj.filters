@@ -769,9 +769,6 @@
     <ClCompile Include="src\Game\CSmoke.cpp">
       <Filter>ソース ファイル\Game\Efect\Player Smoke</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CPlayerSmoke.cpp">
-      <Filter>ソース ファイル\Game\Efect\Player Smoke</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1360,9 +1357,6 @@
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\SavePoint</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CSmoke.h">
-      <Filter>ソース ファイル\Game\Efect\Player Smoke</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CPlayerSmoke.h">
       <Filter>ソース ファイル\Game\Efect\Player Smoke</Filter>
     </ClInclude>
   </ItemGroup>

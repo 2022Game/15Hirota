@@ -8,6 +8,7 @@
 #include "CColliderCapsule.h"
 #include "CCutInDeath.h"
 #include "CCutInClear.h"
+#include <list>
 #include <map>
 
 class CUIGauge;
@@ -25,7 +26,7 @@ class CCutInDeath;
 class CCutInClear;
 class CCutInResult;
 class CScreenItem;
-class CPlayerSmoke;
+class CSmoke;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -131,11 +132,6 @@ public:
 	// ステージ1に入れるかどうかのフラグ
 	bool IsStartStage3();
 
-
-	// 敵を見つけたかどうか
-	// 使わないかも
-	bool IsFoundVanguard();
-
 	// 他のクラスで使っている為publicに置いておく
 	// ジャンプ開始1
 	void UpdateJumpStart();
@@ -210,15 +206,33 @@ private:
 	// 火炎放射エフェクト
 	CFlamethrower* mpFlamethrower;
 
-	// 煙エフェクト
-	CPlayerSmoke* mpSmoke;
-
 	// 登っている壁のポインター
 	CClimbWall* mpClimbWall;
 	// 登っている金網のポインター
 	CWireMeshClimbWall* mpWireWall;
 	// 登っている動く金網のポインター
 	CWireMeshMoveClimbWall* mpWireMoveWall;
+
+	///////////////////////////////////////////////////////
+
+	//// プレイヤーのエフェクト関連 ///////////////////////
+
+	/// <summary>
+	/// 足元に煙のエフェクトを発生
+	/// </summary>
+	void PlayStepSmoke();
+	/// <summary>
+	/// 足元の煙エフェクトの更新
+	/// </summary>
+	void UpdateStepSmoke();
+	/// <summary>
+	/// 足元の煙エフェクトを表示する状態かどうか
+	/// </summary>
+	/// <returns></returns>
+	bool IsEnableStepSmoke() const;
+
+
+	std::list<CSmoke*> mSmokeList;
 
 	///////////////////////////////////////////////////////
 
@@ -444,6 +458,7 @@ private:
 	CVector mClimbedMovedPos;	// 頂上まで登り切った後の移動後の座標
 	CVector mMoveStartPos;		// 指定された位置まで移動するときの移動開始位置
 	CVector mMoveTargetPos;		// 指定された位置まで移動するときの移動終了位置
+	CVector mLastPos;			// プレイヤーの前回の位置
 
 	///////////////////////////////////////////////////////
 
@@ -496,6 +511,8 @@ private:
 	float mElapsedStageTime;
 	// リザルトジャンプの経過時間計測用
 	float mElapsedResultTime;
+	// プレイヤーが移動した距離
+	float mMoveDistance;
 
 	// 接地しているかどうか
 	bool mIsGrounded;

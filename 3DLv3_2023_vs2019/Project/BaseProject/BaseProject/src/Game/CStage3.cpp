@@ -149,15 +149,15 @@ void CStage3::Load()
 	// 宝箱(壁コライダー)
 	CResourceManager::Load<CModel>("TreasureChestWallCol",			"Field\\Gimmick\\Chest\\TreasureChest(WallCol).obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("SeesawModel",					"Field\\Gimmick\\SeesawModel.obj");
+	CResourceManager::Load<CModel>("SeesawModel",					"Field\\Gimmick\\SeesawGimmick\\SeesawModel.obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("SeesawModelCol", "Field\\Gimmick\\SeesawModel(Col).obj");
+	CResourceManager::Load<CModel>("SeesawModelCol",				"Field\\Gimmick\\SeesawGimmick\\SeesawModel(Col).obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("centerCol",						"Field\\Gimmick\\SeesawModel(CenterCol).obj");
+	CResourceManager::Load<CModel>("centerCol",						"Field\\Gimmick\\SeesawGimmick\\SeesawModel(CenterCol).obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("rightCol",						"Field\\Gimmick\\SeesawModel(RightCol).obj");
+	CResourceManager::Load<CModel>("rightCol",						"Field\\Gimmick\\SeesawGimmick\\SeesawModel(RightCol).obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("leftCol",						"Field\\Gimmick\\SeesawModel(LeftCol).obj");
+	CResourceManager::Load<CModel>("leftCol",						"Field\\Gimmick\\SeesawGimmick\\SeesawModel(LeftCol).obj");
 	// 跳ねるキノコモデル
 	CResourceManager::Load<CModel>("JumpingKinoko",					"Field\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
 	// 跳ねるキノココライダー

@@ -9,39 +9,29 @@
 // アニメーションの1コマ表示時間
 #define ANIM_TIME 0.0625f
 // 煙のエフェクトのアニメーションデータ
-TexAnimData CSmoke::msAnimData = TexAnimData(2, 8, false, 16, ANIM_TIME);
+TexAnimData CSmoke::msAnimData = TexAnimData(8, 8, false, 64, ANIM_TIME);
 
 // コンストラクタ
 CSmoke::CSmoke(ETag tag)
-	: CBillBoardImage("Effect/Smoke.png", tag, ETaskPauseType::eGame)
+	: CBillBoardImage("Effect/Flame.png", tag, ETaskPauseType::eGame)
 	, mMoveSpeed(CVector::zero)
 	, mElapsedTime(0.0f)
 	, mIsDeath(false)
 {
 	SetAnimData(&msAnimData);
-
-	mpCollider = new CColliderSphere
-	(
-		this,
-		ELayer::eSmoke,
-		1.0f
-	);
-	mpCollider->SetCollisionTags({ ETag::eField, ETag::eRideableObject, ETag::ePlayer });
-	mpCollider->SetCollisionLayers({ ELayer::eField, ELayer::eDamageCol });
 }
 
 // デストラクタ
 CSmoke::~CSmoke()
 {
-	SAFE_DELETE(mpCollider);
 }
 
-// 各パラメータを設定
-void CSmoke::Setup(const CVector& pos, const CVector& dir, float speed)
-{
-	Position(pos);
-	mMoveSpeed = dir.Normalized() * speed;
-}
+//// 各パラメータを設定
+//void CSmoke::Setup(const CVector& pos, const CVector& dir, float speed)
+//{
+//	Position(pos);
+//	mMoveSpeed = dir.Normalized() * speed;
+//}
 
 // 削除フラグが立っているかどうか
 bool CSmoke::IsDeath() const
@@ -65,24 +55,24 @@ void CSmoke::SetBlendType(EBlend type)
 	mMaterial.SetBlendType(type);
 }
 
-// 衝突処理
-void CSmoke::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
-{
-	if (other->Layer() == ELayer::eField)
-	{
-		/*float length = mMoveSpeed.Length();
-		CVector n = hit.adjust.Normalized();
-		float d = CVector::Dot(n, mMoveSpeed);
-		mMoveSpeed = (mMoveSpeed - n * d).Normalized() * length;
-		Position(Position() + hit.adjust * hit.weight);*/
-
-		// 煙が地面に当たったとき、速度をゼロにする
-		mMoveSpeed = CVector::zero;
-
-		// 衝突
-		Position(Position() + hit.adjust * hit.weight);
-	}
-}
+//// 衝突処理
+//void CSmoke::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+//{
+//	if (other->Layer() == ELayer::eField)
+//	{
+//		/*float length = mMoveSpeed.Length();
+//		CVector n = hit.adjust.Normalized();
+//		float d = CVector::Dot(n, mMoveSpeed);
+//		mMoveSpeed = (mMoveSpeed - n * d).Normalized() * length;
+//		Position(Position() + hit.adjust * hit.weight);*/
+//
+//		// 煙が地面に当たったとき、速度をゼロにする
+//		mMoveSpeed = CVector::zero;
+//
+//		// 衝突
+//		Position(Position() + hit.adjust * hit.weight);
+//	}
+//}
 
 // 更新
 void CSmoke::Update()

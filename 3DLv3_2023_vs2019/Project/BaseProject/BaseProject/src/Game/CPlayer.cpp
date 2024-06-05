@@ -32,7 +32,7 @@
 #include "CStage1Button.h"
 #include "CStage3Button.h"
 #include "CBiribiri.h"
-#include "CPlayerSmoke.h"
+#include "CSmoke.h"
 
 // プレイヤー関連
 // 高さ
@@ -140,6 +140,7 @@ CPlayer::CPlayer()
 	, mWeaponTime(0.0f)
 	, mMoveSpeedY(0.0f)
 	, mElapsedTime(0.0f)
+	, mMoveDistance(0.0f)
 	, mStartDashTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
 	, mElapsedTimeCol(0.0f)
@@ -147,6 +148,7 @@ CPlayer::CPlayer()
 	, mElapsedStageTime(0.0f)
 	, mElapsedResultTime(0.0f)
 	, mInvincibleStartTime(10.0f)
+	, mLastPos(CVector::zero)
 	, mStartPos(CVector::zero)
 	, mMoveSpeed(CVector::zero)
 	, mGroundNormal(CVector::up)
@@ -315,13 +317,13 @@ CPlayer::CPlayer()
 	CStageManager::AddTask(mpFlamethrower);*/
 
 	// 煙エフェクト
-	mpSmoke = new CPlayerSmoke
-	(
-		this, nullptr,
-		CVector(0.0f, 0.0f, 0.0f),
-		CQuaternion(0.0f, 0.0f, 0.0f).Matrix()
-	);
-	CStageManager::AddTask(mpSmoke);
+	//mpSmoke = new CPlayerSmoke
+	//(
+	//	this, nullptr,
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	CQuaternion(0.0f, 0.0f, 0.0f).Matrix()
+	//);
+	//CStageManager::AddTask(mpSmoke);
 
 
 	mpCutInDeath = new CCutInDeath();
@@ -341,7 +343,7 @@ CPlayer::~CPlayer()
 {
 	CStageManager::RemoveTask(mpSword);
 	CStageManager::RemoveTask(mpFlamethrower);
-	CStageManager::RemoveTask(mpSmoke);
+	//CStageManager::RemoveTask(mpSmoke);
 	CStageManager::RemoveTask(mpScreenItem);
 
 	spInstance = nullptr;
@@ -1140,10 +1142,7 @@ void CPlayer::UpdateMove()
 		{
 			if (CInput::Key(VK_SHIFT) && mIsGrounded)
 			{
-				if (!mpSmoke->IsThrowing())
-				{
-					mpSmoke->Start();
-				}
+				
 
 				// スタミナが0以上かつ、スタミナの下限値フラグがfalseだったら
 				if (mCharaStatus.stamina >= 0 && !mStaminaLowerLimit)
@@ -1237,10 +1236,6 @@ void CPlayer::UpdateMove()
 			}
 			else
 			{
-				if (mpSmoke->IsThrowing())
-				{
-					mpSmoke->Stop();
-				}
 				mStartDashTime = 0.0f;
 				mIsDashJump = false;
 				mDash = false;
@@ -2512,15 +2507,9 @@ void CPlayer::UpdateJumpStart()
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eJump);
 
-	if (!mpSmoke->IsThrowing())
-	{
-		mpSmoke->Start();
-	}
-	else
-	{
-		mpSmoke->Stop();
-	}
-	
+	// 足元に煙のエフェクトを発生させる
+	PlayStepSmoke();
+
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
@@ -2622,11 +2611,6 @@ void CPlayer::UpdateDashJump()
 
 	if (mIsGrounded)
 	{
-		if (mpSmoke->IsThrowing())
-		{
-			mpSmoke->Stop();
-		}
-
 		mIsJumping = false;
 		ChangeAnimation(EAnimType::eDashJumpEnd);
 		ChangeState(EState::eDashJumpEnd);
@@ -2793,11 +2777,6 @@ void CPlayer::UpdateMoveTo()
 	}
 		// ステップ1 プレイヤーを移動
 	case 1:
-		if (!mpSmoke->IsThrowing())
-		{
-			mpSmoke->Start();
-		}
-
 		// プレイヤーをダッシュモーションへ変更
 		ChangeAnimation(EAnimType::eDash);
 		// 移動時間を経過していない
@@ -2824,10 +2803,6 @@ void CPlayer::UpdateMoveTo()
 		break;
 		 // ステップ2 移動終了
 	case 2:
-		if (mpSmoke->IsThrowing())
-		{
-			mpSmoke->Stop();
-		}
 		// 移動終了したら、待機モーションへ切り替え
 		ChangeAnimation(EAnimType::eIdle);
 		break;
@@ -2884,30 +2859,59 @@ void CPlayer::StartStage(int stageNo)
 	ChangeState(EState::eStartStageJumpStart);
 }
 
-bool CPlayer::IsFoundVanguard()
+// 足元に煙のエフェクトを発生
+void CPlayer::PlayStepSmoke()
 {
-	CVector vanguardPos = CVanguard::Instance()->Position();
-	CVector playerPos = Position();
+	CVector pos = Position() + CVector(0.0f, 3.0f, 0.0f);
+	CSmoke* smoke = new CSmoke(ETag::eSmoke);
+	smoke->Position((pos));
 
-	CVector toVanguard = (vanguardPos - playerPos).Normalized();
-	CVector forward = Matrix().VectorZ().Normalized();
+	mSmokeList.push_back(smoke);
+}
 
-	float dot = forward.Dot(toVanguard);
-
-	// 視野角の半分を計算する
-	float halfFOV = FOV_ANGLE * 0.5f;
-
-
-	// 視野角の半分より小さいかつヴァンガードとの距離が一定範囲以内であれば、プレイヤーを認識する
-	if (dot >= cosf(halfFOV * M_PI / 180.0f))
+// 足元の煙エフェクトの更新
+void CPlayer::UpdateStepSmoke()
+{
+	// 最後まで再生した煙エフェクトを
+	// リストから取り除き、削除する
+	auto itr = mSmokeList.begin();
+	auto itr_end = mSmokeList.end();
+	while (itr != itr_end)
 	{
-		float distance = (vanguardPos - playerPos).Length();
-		const float chaseRange = 100.0f;
-
-		if (distance <= chaseRange)
-			return true;
+		CSmoke* smoke = *itr;
+		if (smoke->IsDeath())
+		{
+			smoke->Kill();
+			itr = mSmokeList.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
 	}
 
+	if (IsEnableStepSmoke())
+	{
+		mMoveDistance += (Position() - mLastPos).Length();
+		if (mMoveDistance >= 20.0f)
+		{
+			PlayStepSmoke();
+			mMoveDistance -= 20.0f;
+		}
+	}
+	else
+	{
+		mMoveDistance = 0.0f;
+	}
+}
+
+// 足元の煙エフェクトを表示する状態かどうか
+bool CPlayer::IsEnableStepSmoke() const
+{
+	// ダッシュ中は煙エフェクトを出す
+	if (mDash) return true;
+	// ステージ選択画面の移動中は煙エフェクトを出す
+	if (mState == EState::eMoveTo && mStateStep < 2) return true;
 	return false;
 }
 
@@ -2947,9 +2951,14 @@ void CPlayer::Update()
 		ChangeState(EState::eReady);
 	}
 
-	if (mMoveSpeedY <= -4.0f)
+	if (mState != EState::eJumpStart &&
+		mState != EState::eJump &&
+		mState != EState::eJumpEnd)
 	{
-		ChangeState(EState::eFalling);
+		if (mMoveSpeedY <= -4.0f)
+		{
+			ChangeState(EState::eFalling);
+		}
 	}
 
 	if (!(mState == EState::eAttack || mState == EState::eAttackStrong ||
@@ -3288,6 +3297,12 @@ void CPlayer::Update()
 	mClimbWall = false;
 	mClimbWallTop = false;
 
+	// 足元の煙のエフェクト更新
+	UpdateStepSmoke();
+
+	// 前回のプレイヤーの座標を更新
+	mLastPos = Position();
+	
 	//// 縦方向の移動速度監視
 	//CDebugPrint::Print("mMoveSpeed%f\n", mMoveSpeed.Y());
 	//// 無敵時間の時間監視
