@@ -2,18 +2,19 @@
 #include "Easing.h"
 
 // 煙のスケール値の最大値
-#define SMOKE_SCALE 5.0f
+#define SMOKE_SCALE 3.0f
 // 煙のスケール値が最大値になるまでの時間
-#define SMOKE_SCALE_ANIM_TIME 3.0f
+#define SMOKE_SCALE_ANIM_TIME 2.0f
 
 // アニメーションの1コマ表示時間
 #define ANIM_TIME 0.0625f
 // 煙のエフェクトのアニメーションデータ
-TexAnimData CSmoke::msAnimData = TexAnimData(8, 8, false, 64, ANIM_TIME);
+//TexAnimData CSmoke::msAnimData = TexAnimData(8, 8, false, 64, ANIM_TIME);
+TexAnimData CSmoke::msAnimData = TexAnimData(2, 8, false, 16, ANIM_TIME);
 
 // コンストラクタ
-CSmoke::CSmoke(ETag tag)
-	: CBillBoardImage("Effect/Flame.png", tag, ETaskPauseType::eGame)
+CSmoke::CSmoke(ETag tag,ETaskPriority prio)
+	: CBillBoardImage("Effect/Smoke(2_8_GIMP).png", tag, ETaskPauseType::eGame)
 	, mMoveSpeed(CVector::zero)
 	, mElapsedTime(0.0f)
 	, mIsDeath(false)
@@ -92,7 +93,7 @@ void CSmoke::Update()
 		float per = mElapsedTime / SMOKE_SCALE_ANIM_TIME;
 		if (per < 1.0f)
 		{
-			float scale = Easing::QuadOut(per, 1.0f, 0.0f, 1.0f);
+			float scale = Easing::QuadOut(per, 0.7f, 0.0f, 0.7f);
 			Scale(CVector::one * scale * SMOKE_SCALE);
 		}
 		else

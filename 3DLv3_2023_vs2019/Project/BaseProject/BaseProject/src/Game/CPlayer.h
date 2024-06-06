@@ -178,6 +178,7 @@ private:
 
 	//// モデル・ポインター・素材関連 /////////////////////////////////
 	
+	// コライダー
 	// 縦のコライダーライン
 	CColliderLine* mpColliderLine;
 	// 一時的な当たり判定を取るコライダー
@@ -188,9 +189,11 @@ private:
 	// 登れるコライダーとの当たり判定を取るコライダー
 	CColliderLine* mpClimbCol;
 
+	// オブジェクトアイテム
 	// マジックソードモデル
 	CMajicSword* mpSword;
 	
+	// UI
 	// HPゲージ
 	CUIGauge* mpHpGauge;
 	// スタミナゲージ
@@ -198,14 +201,17 @@ private:
 	// スクリーンアイテム画像
 	CScreenItem* mpScreenItem;
 
+	// SE
 	// 剣の振りかざし攻撃時のSE
 	CSound* mpSlashSE;
 	// 敵の攻撃が当たった時のSE
 	CSound* mpHitDamageSE;
 
+	// エフェクト
 	// 火炎放射エフェクト
 	CFlamethrower* mpFlamethrower;
 
+	// 壁のポインター
 	// 登っている壁のポインター
 	CClimbWall* mpClimbWall;
 	// 登っている金網のポインター
@@ -231,7 +237,7 @@ private:
 	/// <returns></returns>
 	bool IsEnableStepSmoke() const;
 
-
+	// 煙のリスト
 	std::list<CSmoke*> mSmokeList;
 
 	///////////////////////////////////////////////////////

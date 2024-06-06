@@ -142,8 +142,7 @@ void CGameManager::UpdateGame()
 			Instance()->ChangeState(EGameState::eResult);
 		}
 	}
-
-	if (player->IsStage2Clear() && !mResultSetUp)
+	else if (player->IsStage2Clear() && !mResultSetUp)
 	{
 		mElapsedTime += Time::DeltaTime();
 		if (mElapsedTime > 1.5f)
@@ -153,8 +152,7 @@ void CGameManager::UpdateGame()
 			Instance()->ChangeState(EGameState::eResult);
 		}
 	}
-
-	if (player->IsStage3Clear() && !mResultSetUp)
+	else if (player->IsStage3Clear() && !mResultSetUp)
 	{
 		mElapsedTime += Time::DeltaTime();
 		if (mElapsedTime > 1.5f)
@@ -263,6 +261,7 @@ void CGameManager::UpdateResult()
 // 更新
 void CGameManager::Update()
 {
+	//CDebugPrint::Print("mResultSetUp:%s\n", mResultSetUp ? "true" : "false");
 	// 現在の状態に合わせた更新処理を行う
 	switch (mState)
 	{

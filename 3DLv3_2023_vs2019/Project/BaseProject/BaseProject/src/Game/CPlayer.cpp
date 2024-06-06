@@ -51,6 +51,8 @@
 #define JUMP_BOUNCE 2.0f
 // 超大ジャンプ
 #define JUMP_HIGH_BOUNCE 2.5f
+// ダッシュジャンプ
+#define JUMP_DASH 1.7f
 // クリアジャンプ
 #define JUMP_CLEAR 2.0f;
 // スタートジャンプ
@@ -997,6 +999,7 @@ void CPlayer::UpdateReady()
 			// 現在の状態を待機に切り替え
 			mCharaStatus.hp = mCharaMaxStatus.hp;
 			ChangeState(EState::eIdle);
+
 			// ステージ1をクリアしたら
 			if (mStage1Clear)
 			{
@@ -1025,11 +1028,11 @@ void CPlayer::UpdateIdle()
 		{
 			ChangeState(EState::eResult);
 		}
-		if (mStage2Clear && !mIsStage2Clear)
+		else if (mStage2Clear && !mIsStage2Clear)
 		{
 			ChangeState(EState::eResult);
 		}
-		if (mStage3Clear && !mIsStage3Clear)
+		else if (mStage3Clear && !mIsStage3Clear)
 		{
 			ChangeState(EState::eResult);
 		}
@@ -1142,8 +1145,6 @@ void CPlayer::UpdateMove()
 		{
 			if (CInput::Key(VK_SHIFT) && mIsGrounded)
 			{
-				
-
 				// スタミナが0以上かつ、スタミナの下限値フラグがfalseだったら
 				if (mCharaStatus.stamina >= 0 && !mStaminaLowerLimit)
 				{
@@ -1580,6 +1581,17 @@ void CPlayer::UpdateClearEnd()
 					mStage1Clear = true;
 					mIsStage1Clear = false;
 
+					if (mStage2Clear)
+					{
+						mIsStage2Clear = false;
+						mStage2Clear = false;
+					}
+					else if (mStage3Clear)
+					{
+						mIsStage3Clear = false;
+						mStage3Clear = false;
+					}
+
 					mIsStartStage3 = true;
 					// ステージをクリア
 					CGameManager::StageClear();
@@ -1595,6 +1607,18 @@ void CPlayer::UpdateClearEnd()
 					mSavePoint2 = false;
 					mStage3Clear = true;
 					mIsStage3Clear = false;
+
+					if (mStage1Clear)
+					{
+						mIsStage1Clear = false;
+						mStage1Clear = false;
+					}
+					else if (mStage2Clear)
+					{
+						mIsStage2Clear = false;
+						mStage2Clear = false;
+					}
+
 					// ステージをクリア
 					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
@@ -1709,19 +1733,18 @@ void CPlayer::UpdateResultEnd()
 				mpScreenItem->SetShow(true);
 				mIsStageClear = false;
 
+				mIsStage1Clear = false;
 				StageFlagfalse();
 				ChangeState(EState::eIdle);
 			}
 		}
-
-		if (mStage2Clear)
+		else if (mStage2Clear)
 		{
 			mIsStage2Clear = true;
 			//mpCutInResult->End();
 			ChangeState(EState::eIdle);
 		}
-
-		if (mStage3Clear)
+		else if (mStage3Clear)
 		{
 			mIsStage3Clear = true;
 			CResultAnnouncement* result = CResultAnnouncement::Instance();
@@ -1734,6 +1757,7 @@ void CPlayer::UpdateResultEnd()
 				mpScreenItem->SetShow(true);
 				mIsStageClear = false;
 
+				mIsStage3Clear = false;
 				StageFlagfalse();
 				ChangeState(EState::eIdle);
 			}
@@ -1746,6 +1770,9 @@ void CPlayer::UpdateStartStageJumpStart()
 {
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = 0.0f;
+
+	// 足元に煙のエフェクトを発生させる
+	PlayStepSmoke();
 
 	mpColliderCapsule->SetEnable(false);
 	ChangeAnimation(EAnimType::eJumpStart);
@@ -2580,6 +2607,9 @@ void CPlayer::UpdateDashJumpStart()
 	ChangeAnimation(EAnimType::eDashJumpStart);
 	ChangeState(EState::eDashJump);
 
+	// 足元に煙のエフェクトを発生させる
+	PlayStepSmoke();
+
 	if (mElapsedTimeCol <= DAMAGECOL)
 	{
 		mElapsedTimeCol += Time::DeltaTime();
@@ -2590,7 +2620,7 @@ void CPlayer::UpdateDashJumpStart()
 		}
 	}
 
-	mMoveSpeedY += 1.7f;
+	mMoveSpeedY += JUMP_DASH;
 	mIsGrounded = false;
 }
 
@@ -2862,8 +2892,8 @@ void CPlayer::StartStage(int stageNo)
 // 足元に煙のエフェクトを発生
 void CPlayer::PlayStepSmoke()
 {
-	CVector pos = Position() + CVector(0.0f, 3.0f, 0.0f);
-	CSmoke* smoke = new CSmoke(ETag::eSmoke);
+	CVector pos = Position() + CVector(0.0f, 2.0f, 0.0f);
+	CSmoke* smoke = new CSmoke(ETag::eSmoke, ETaskPriority::eEffect);
 	smoke->Position((pos));
 
 	mSmokeList.push_back(smoke);
@@ -2921,8 +2951,12 @@ void CPlayer::Update()
 	//CDebugPrint::Print("elapsed:%f\n",mElapsedStageTime);
 	//CDebugPrint::Print("mIsStage1Clear:%s\n", mIsStage1Clear ? "true" : "false");
 	//CDebugPrint::Print("mStage1Clear:%s\n", mStage1Clear ? "true" : "false");
+	//CDebugPrint::Print("mIsStage3Clear:%s\n", mIsStage3Clear ? "true" : "false");
+	//CDebugPrint::Print("mStage3Clear:%s\n", mStage3Clear ? "true" : "false");
+	//CDebugPrint::Print("mStage1Clear:%s\n", mStage1Clear ? "true" : "false");
 	/*CDebugPrint::Print("mSavePoint1:%s\n", mSavePoint1 ? "true" : "false");
 	CDebugPrint::Print("mSavePoint2:%s\n", mSavePoint2 ? "true" : "false");*/
+	//CDebugPrint::Print("mStageClear%s\n", mIsStageClear ? "true" : "false");
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));

@@ -15,6 +15,9 @@ enum class ETaskPriority
 	eSeesaw,		// シーソーオブジェクト
 	ePlayer,		// プレイヤー
 	eEnemy,			// エネミー
+	eWeapon,		// プレイヤー武器
+	eEnemyWeapon,	// 敵の武器
+	eEffect,		// エフェクト
 
 	eNumberFalling,	// 回数で落下するオブジェクト
 	eFall,			// 落下判定用のオブジェクト
@@ -25,13 +28,10 @@ enum class ETaskPriority
 	eHatenaOBJ,		// ハテナブロックオブジェクト
 	eNeedle,		// 針オブジェクト
 	eRotate,		// 回転するオブジェクト
-	eEffect,
 	eBillboard,		// ビルボードイメージ
 	eEnemyGauge,	// エネミーのゲージ
 	eEnemyUi,		// エネミーのUI
 	eItem,			// アイテム
-	eWeapon,		// プレイヤー武器
-	eEnemyWeapon,	// 敵の武器
 
 	eCamera,		// カメラ
 	eLeteCamera,	// カメラ後の更新

@@ -9,7 +9,7 @@ class CSmoke : public CBillBoardImage
 {
 public:
 	// コンストラクタ
-	CSmoke(ETag tag);
+	CSmoke(ETag tag, ETaskPriority priority);
 	// デストラクタ
 	~CSmoke();
 
