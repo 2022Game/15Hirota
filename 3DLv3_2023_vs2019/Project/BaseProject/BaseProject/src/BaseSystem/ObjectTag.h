@@ -36,6 +36,8 @@ enum class ETag
 	eWeapon,			// プレイヤーの武器
 	eEnemyWeapon,		// 敵の武器
 
+	eHealing,			// 回復エフェクト
+
 	eBakuhatu,
 	eGauge,
 	eEnemyFrame,

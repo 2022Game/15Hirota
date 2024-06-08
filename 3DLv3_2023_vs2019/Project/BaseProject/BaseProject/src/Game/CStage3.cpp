@@ -220,7 +220,10 @@ void CStage3::Load()
 	// エフェクト関連
 	// 弾のエフェクト
 	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
+	// スラッシュエフェクト
 	CResourceManager::Load<CModel>("Slash", "Effect\\slash.obj");
+	// キャラクターエフェクト
+	CResourceManager::Load<CModel>("CharEffect", "Effect\\CharacterEffect\\CharacterEffect(Up).obj");
 	// 背景色設定
 	System::SetClearColor(0.1960784f, 0.6f, 0.8f, 1.0f);
 

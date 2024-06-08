@@ -33,6 +33,8 @@
 #include "CStage3Button.h"
 #include "CBiribiri.h"
 #include "CSmoke.h"
+#include "CHealingUpBuffs.h"
+#include "CInvincibleBuffs.h"
 
 // プレイヤー関連
 // 高さ
@@ -318,16 +320,6 @@ CPlayer::CPlayer()
 	);
 	CStageManager::AddTask(mpFlamethrower);*/
 
-	// 煙エフェクト
-	//mpSmoke = new CPlayerSmoke
-	//(
-	//	this, nullptr,
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	CQuaternion(0.0f, 0.0f, 0.0f).Matrix()
-	//);
-	//CStageManager::AddTask(mpSmoke);
-
-
 	mpCutInDeath = new CCutInDeath();
 	mpCutInClear = new CCutInClear();
 	mpCutInResult = new CCutInResult();
@@ -477,7 +469,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		else if (other->Layer() == ELayer::eRecoverCol)
 		{
 			if (other->Tag() == ETag::eItemRecover)
-			{
+			{ 
 				//AddItem(ItemType::HEALING);
 			}
 		}
@@ -526,6 +518,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// ゴールポスト
 		else if (other->Layer() == ELayer::eGoalCol)
 		{
+			mIsStageClear = true;
 			mpColliderCapsule->SetEnable(false);
 			if (CGameManager::StageNo() == 0 ||
 				CGameManager::StageNo() == 1 ||
@@ -747,6 +740,32 @@ void CPlayer::TakeRecovery(int recovery)
 	if (mCharaStatus.hp < mCharaMaxStatus.hp && !mHpHit)
 	{
 		mHpHit = true;
+
+		float PosZ = Math::Rand(-10.0f, 10.0f);
+		float PosX = Math::Rand(-10.0f, 10.0f);
+
+		mElapsedTime += Time::DeltaTime();
+
+		// エフェクト生成の条件判定
+		if (mElapsedTime >= 0.15f)
+		{
+			mElapsedTime = 0.0f;
+			// 回復バフを生成して、上方向へ飛ばす
+			CHealingUpBuffs* healing = new CHealingUpBuffs
+			(
+				this,
+				Position() + CVector(PosX, 0.0f, PosZ),
+				CVector::up, // 上方向に設定
+				30.0f,
+				20.0f
+			);
+			// 回復バフの色設定
+			healing->SetColor(CColor(0.0f, 0.8f, 0.0f, 0.5f));
+			healing->Rotation(0.0f, 90.0f, 0.0f);
+			healing->Scale(0.5f, 0.5f, 0.5f);
+			healing->SetParent(this);
+		}
+
 		mCharaStatus.hp += recovery;
 	}
 }
@@ -1543,7 +1562,6 @@ void CPlayer::UpdateRotateEnd()
 // クリア
 void CPlayer::UpdateClear()
 {	
-	mIsStageClear = true;
 	mpHpGauge->SetShow(false);
 	mpStaminaGauge->SetShow(false);
 	mpScreenItem->SetShow(false);
@@ -3278,6 +3296,31 @@ void CPlayer::Update()
 	// 無敵状態だった場合の処理
 	if (mInvincible)
 	{
+		float PosZ = Math::Rand(-10.0f, 10.0f);
+		float PosX = Math::Rand(-10.0f, 10.0f);
+
+		mElapsedTime += Time::DeltaTime();
+
+		// エフェクト生成の条件判定
+		if (mElapsedTime >= 0.15f && !mIsStageClear)
+		{
+			mElapsedTime = 0.0f;
+			// 無敵エフェクトを生成して、上方向へ飛ばす
+			CInvincibleBuffs* invincible = new CInvincibleBuffs
+			(
+				this,
+				Position() + CVector(PosX, 0.0f, PosZ),
+				CVector::up, // 上方向に設定
+				40.0f,
+				20.0f
+			);
+			// 無敵エフェクトの色設定
+			invincible->SetColor(CColor(0.8f, 0.8f, 0.0f, 0.5f));
+			invincible->Rotation(0.0f, 90.0f, 0.0f);
+			invincible->Scale(0.3f, 0.3f, 0.3f);
+			invincible->SetParent(this);
+		}
+
 		SetColor(CColor(1.0, 1.0, 0.0, 1.0));
 		mInvincibleStartTime -= Time::DeltaTime();
 
@@ -3285,6 +3328,7 @@ void CPlayer::Update()
 		{
 			mpDamageCol->SetEnable(true);
 			mInvincibleStartTime = 10.0f;
+			mElapsedTime = 0.0f;
 			mInvincible = false;
 		}
 	}
@@ -3325,7 +3369,16 @@ void CPlayer::Update()
 	mpColliderCapsule->Update();
 	mpSword->UpdateAttachMtx();
 
-	mpScreenItem->Open();
+	if (CGameManager::StageNo() == 1 ||
+		CGameManager::StageNo() == 2 ||
+		CGameManager::StageNo() == 3)
+	{
+		mpScreenItem->Open();
+	}
+	else if (CGameManager::StageNo() == 0)
+	{
+		mpScreenItem->Close();
+	}
 
 	mIsGrounded = false;
 	mClimbWall = false;

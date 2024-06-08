@@ -27,6 +27,7 @@ class CCutInClear;
 class CCutInResult;
 class CScreenItem;
 class CSmoke;
+class CHealingUpBuffs;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -210,7 +211,9 @@ private:
 	// エフェクト
 	// 火炎放射エフェクト
 	CFlamethrower* mpFlamethrower;
-
+	// 回復バフeffect
+	CHealingUpBuffs* mpHealingUpBuffs;
+	
 	// 壁のポインター
 	// 登っている壁のポインター
 	CClimbWall* mpClimbWall;
@@ -574,7 +577,7 @@ private:
 	bool mIsStageClear;
 	// ダッシュジャンプに移行できるかどうか
 	bool mIsDashJump;
-
+	
 
 	// ステージ1に入るかどうか
 	bool mStartStage1;

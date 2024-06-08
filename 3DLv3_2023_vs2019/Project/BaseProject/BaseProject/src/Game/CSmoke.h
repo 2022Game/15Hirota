@@ -47,6 +47,5 @@ private:
 	CVector mMoveSpeed;	// 移動速度
 	float mElapsedTime;	// 経過時間
 	bool mIsDeath;		// 削除フラグ
-	CColliderSphere* mpCollider;
 };
 #endif

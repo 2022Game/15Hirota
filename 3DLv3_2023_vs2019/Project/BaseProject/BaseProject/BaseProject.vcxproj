@@ -101,6 +101,7 @@
     <ClCompile Include="src\Game\CHealingPotion.cpp" />
     <ClCompile Include="src\Game\CInventoryMenu.cpp" />
     <ClCompile Include="src\Game\CInvincible.cpp" />
+    <ClCompile Include="src\Game\CInvincibleBuffs.cpp" />
     <ClCompile Include="src\Game\CInvincibleObjectBase.cpp" />
     <ClCompile Include="src\Game\CJumpingKinoko.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="src\Game\CYukariGauge.cpp" />
     <ClCompile Include="src\Game\CDisappearFloor.cpp" />
     <ClCompile Include="src\Game\CItemObjectBase.cpp" />
+    <ClCompile Include="src\Game\CHealingUpBuffs.cpp" />
     <ClCompile Include="src\Game\PlayerItem.cpp" />
     <ClCompile Include="src\Game\CResultAnnouncement.cpp" />
     <ClCompile Include="src\Game\CSmoke.cpp" />
@@ -300,6 +302,7 @@
     <ClInclude Include="src\Game\CHealingPotion.h" />
     <ClInclude Include="src\Game\CInventoryMenu.h" />
     <ClInclude Include="src\Game\CInvincible.h" />
+    <ClInclude Include="src\Game\CInvincibleBuffs.h" />
     <ClInclude Include="src\Game\CInvincibleObjectBase.h" />
     <ClInclude Include="src\Game\CJumpingKinoko.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
@@ -383,6 +386,7 @@
     <ClInclude Include="src\Game\CGameManager.h" />
     <ClInclude Include="src\Game\CDisappearFloor.h" />
     <ClInclude Include="src\Game\CItemObjectBase.h" />
+    <ClInclude Include="src\Game\CHealingUpBuffs.h" />
     <ClInclude Include="src\Game\PlayerItem.h" />
     <ClInclude Include="src\Game\CResultAnnouncement.h" />
     <ClInclude Include="src\Game\CSmoke.h" />

@@ -7,7 +7,6 @@ CSlash::CSlash(CObjectBase* owner, const CVector& pos, const CVector& dir,
 	, mpOwner(owner)
 	, mKillMoveDist(dist)
 	, mMovedDist(0.0f)
-
 {
 	Position(pos);
 	mMoveSpeed = dir.Normalized() * speed;

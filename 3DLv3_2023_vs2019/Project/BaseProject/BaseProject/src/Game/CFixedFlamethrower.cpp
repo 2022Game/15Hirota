@@ -32,8 +32,6 @@ CFixedFlamethrower::CFixedFlamethrower(const CVector& pos, const CVector& scale,
 	);
 	CStageManager::AddTask(mpFlamethrower);
 
-	//ChangeState(EState::Idle);
-
 	Position(pos);
 	Scale(scale);
 	Rotation(rot);

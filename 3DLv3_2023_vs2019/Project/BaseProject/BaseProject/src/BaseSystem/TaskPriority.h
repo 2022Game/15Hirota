@@ -12,12 +12,12 @@ enum class ETaskPriority
 	eDefault,		// デフォルト
 	eBackground,	// 背景
 	eObstacle,		// 障害物
+	eEffect,		// エフェクト
 	eSeesaw,		// シーソーオブジェクト
 	ePlayer,		// プレイヤー
 	eEnemy,			// エネミー
 	eWeapon,		// プレイヤー武器
 	eEnemyWeapon,	// 敵の武器
-	eEffect,		// エフェクト
 
 	eNumberFalling,	// 回数で落下するオブジェクト
 	eFall,			// 落下判定用のオブジェクト
@@ -32,6 +32,7 @@ enum class ETaskPriority
 	eEnemyGauge,	// エネミーのゲージ
 	eEnemyUi,		// エネミーのUI
 	eItem,			// アイテム
+	eHealingEffect,	// 回復エフェクト
 
 	eCamera,		// カメラ
 	eLeteCamera,	// カメラ後の更新

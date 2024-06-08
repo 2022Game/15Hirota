@@ -189,6 +189,7 @@ void CScreenItem::Update()
 	else if (CInput::PushKey('2'))
 	{
 		Decide(1); // 回復アイテムを選択
+
 	}
 	else if (CInput::PushKey('1'))
 	{
