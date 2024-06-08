@@ -522,6 +522,8 @@ private:
 	float mElapsedResultTime;
 	// プレイヤーが移動した距離
 	float mMoveDistance;
+	// 無敵エフェクトの計測時間計測用
+	float mInvincibleTime;
 
 	// 接地しているかどうか
 	bool mIsGrounded;

@@ -778,6 +778,9 @@
     <ClCompile Include="src\Game\CInvincibleBuffs.cpp">
       <Filter>ソース ファイル\Game\Efect\Buffs</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CAttackUpBuffs.cpp">
+      <Filter>ソース ファイル\Game\Efect\Buffs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1372,6 +1375,9 @@
       <Filter>ソース ファイル\Game\Efect\Buffs</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CInvincibleBuffs.h">
+      <Filter>ソース ファイル\Game\Efect\Buffs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CAttackUpBuffs.h">
       <Filter>ソース ファイル\Game\Efect\Buffs</Filter>
     </ClInclude>
   </ItemGroup>

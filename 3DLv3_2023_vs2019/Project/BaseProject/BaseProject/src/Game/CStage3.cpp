@@ -224,6 +224,8 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("Slash", "Effect\\slash.obj");
 	// キャラクターエフェクト
 	CResourceManager::Load<CModel>("CharEffect", "Effect\\CharacterEffect\\CharacterEffect(Up).obj");
+	// キャラクターエフェクト(ライン)
+	CResourceManager::Load<CModel>("LineEffect", "Effect\\CharacterEffect\\CharacterEffect(Line).obj");
 	// 背景色設定
 	System::SetClearColor(0.1960784f, 0.6f, 0.8f, 1.0f);
 

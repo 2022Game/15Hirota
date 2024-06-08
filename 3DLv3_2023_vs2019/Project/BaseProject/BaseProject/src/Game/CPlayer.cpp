@@ -35,6 +35,7 @@
 #include "CSmoke.h"
 #include "CHealingUpBuffs.h"
 #include "CInvincibleBuffs.h"
+#include "CAttackUpBuffs.h"
 
 // プレイヤー関連
 // 高さ
@@ -148,6 +149,7 @@ CPlayer::CPlayer()
 	, mStartDashTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
 	, mElapsedTimeCol(0.0f)
+	, mInvincibleTime(0.0f)
 	, mClimbStaminaTime(0.0f)
 	, mElapsedStageTime(0.0f)
 	, mElapsedResultTime(0.0f)
@@ -747,7 +749,7 @@ void CPlayer::TakeRecovery(int recovery)
 		mElapsedTime += Time::DeltaTime();
 
 		// エフェクト生成の条件判定
-		if (mElapsedTime >= 0.15f)
+		if (mElapsedTime >= 0.15f && mIsStageClear)
 		{
 			mElapsedTime = 0.0f;
 			// 回復バフを生成して、上方向へ飛ばす
@@ -2167,7 +2169,6 @@ void CPlayer::UpdateFallDamage()
 				mElapsedTime = 0.0f;
 				mElapsedTimeCol = 0.0f;
 				mpDamageCol->SetEnable(false);
-				ChangeAnimation(EAnimType::eStandUp);
 				ChangeState(EState::eStandUp);
 			}
 			else if (mCharaStatus.hp <= 0)
@@ -2178,16 +2179,6 @@ void CPlayer::UpdateFallDamage()
 				mpDamageCol->SetEnable(false);
 				ChangeState(EState::eDeath);
 			}
-		}
-	}
-
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
 		}
 	}
 
@@ -3299,12 +3290,12 @@ void CPlayer::Update()
 		float PosZ = Math::Rand(-10.0f, 10.0f);
 		float PosX = Math::Rand(-10.0f, 10.0f);
 
-		mElapsedTime += Time::DeltaTime();
+		mInvincibleTime += Time::DeltaTime();
 
 		// エフェクト生成の条件判定
-		if (mElapsedTime >= 0.15f && !mIsStageClear)
+		if (mInvincibleTime >= 0.15f && !mIsStageClear)
 		{
-			mElapsedTime = 0.0f;
+			mInvincibleTime = 0.0f;
 			// 無敵エフェクトを生成して、上方向へ飛ばす
 			CInvincibleBuffs* invincible = new CInvincibleBuffs
 			(

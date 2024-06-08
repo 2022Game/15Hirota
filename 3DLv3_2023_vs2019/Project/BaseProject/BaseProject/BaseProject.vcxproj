@@ -73,6 +73,7 @@
     <ClCompile Include="src\Game\CApplication.cpp" />
     <ClCompile Include="src\Game\CAttackObjectBase.cpp" />
     <ClCompile Include="src\Game\CAttackPotion.cpp" />
+    <ClCompile Include="src\Game\CAttackUpBuffs.cpp" />
     <ClCompile Include="src\Game\CBiribiri.cpp" />
     <ClCompile Include="src\Game\CBlueMedal.cpp" />
     <ClCompile Include="src\Game\CBlueMedalEvent.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="src\Game\CApplication.h" />
     <ClInclude Include="src\Game\CAttackObjectBase.h" />
     <ClInclude Include="src\Game\CAttackPotion.h" />
+    <ClInclude Include="src\Game\CAttackUpBuffs.h" />
     <ClInclude Include="src\Game\CBiribiri.h" />
     <ClInclude Include="src\Game\CBlueMedal.h" />
     <ClInclude Include="src\Game\CBlueMedalEvent.h" />
