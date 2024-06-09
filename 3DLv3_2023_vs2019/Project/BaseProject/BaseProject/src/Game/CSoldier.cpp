@@ -260,12 +260,15 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			}
 		}
 	}
+
 	// カプセルコライダができるまでのコライダー
 	if (self == mpColliderSphere)
 	{
 		if (other->Layer() == ELayer::eFieldWall)
 		{
 			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
+
+			mTargetDir = CVector(0.0f, 0.0f, -1.0f);
 
 			if (other->Tag() == ETag::eRideableObject)
 			{

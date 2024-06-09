@@ -4,7 +4,7 @@
 #include "Maths.h"
 
 // ‰Š‚Ì”­ËŠÔŠuŠÔ
-#define THROW_INTERVAL 0.15f
+#define THROW_INTERVAL 0.55f
 // ‰Š‚Ì”­Ë•ûŒü‚ÌƒuƒŒ•
 #define FLAME_DIR_RAND 0.02f
 // ‰Š‚ÌˆÚ“®‘¬“x

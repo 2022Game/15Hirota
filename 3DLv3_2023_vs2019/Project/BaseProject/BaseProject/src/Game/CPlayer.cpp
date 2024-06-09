@@ -36,6 +36,7 @@
 #include "CHealingUpBuffs.h"
 #include "CInvincibleBuffs.h"
 #include "CAttackUpBuffs.h"
+#include "CTrailEffect.h"
 
 // プレイヤー関連
 // 高さ
@@ -311,7 +312,7 @@ CPlayer::CPlayer()
 	//mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHand"));
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 	mpSword->SetOwner(this);
-	CStageManager::AddTask(mpSword);
+	//CStageManager::AddTask(mpSword);
 
 
 	/*mpFlamethrower = new CFlamethrower
@@ -327,7 +328,7 @@ CPlayer::CPlayer()
 	mpCutInResult = new CCutInResult();
 
 	mpScreenItem = new CScreenItem();
-	CStageManager::AddTask(mpScreenItem);
+	//CStageManager::AddTask(mpScreenItem);
 	//mpScreenItem->SetPlayer(player);
 
 
@@ -337,10 +338,10 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
-	CStageManager::RemoveTask(mpSword);
-	CStageManager::RemoveTask(mpFlamethrower);
+	//CStageManager::RemoveTask(mpSword);
+	//CStageManager::RemoveTask(mpFlamethrower);
 	//CStageManager::RemoveTask(mpSmoke);
-	CStageManager::RemoveTask(mpScreenItem);
+	//CStageManager::RemoveTask(mpScreenItem);
 
 	spInstance = nullptr;
 	// コライダー関連の破棄
@@ -3231,19 +3232,6 @@ void CPlayer::Update()
 		UpdateMove();
 	}
 
-	//// 「E」キーで炎の発射をオンオフする
-	//if (CInput::PushKey('F'))
-	//{
-	//	if (!mpFlamethrower->IsThrowing())
-	//	{
-	//		mpFlamethrower->Start();
-	//	}
-	//	else
-	//	{
-	//		mpFlamethrower->Stop();
-	//	}
-	//}
-
 	// 準備中でなければ、移動処理などを行う
 	if (mState != EState::eReady)
 	{
@@ -3293,16 +3281,16 @@ void CPlayer::Update()
 		mInvincibleTime += Time::DeltaTime();
 
 		// エフェクト生成の条件判定
-		if (mInvincibleTime >= 0.15f && !mIsStageClear)
+		if (mInvincibleTime >= 0.25f && !mIsStageClear)
 		{
 			mInvincibleTime = 0.0f;
 			// 無敵エフェクトを生成して、上方向へ飛ばす
 			CInvincibleBuffs* invincible = new CInvincibleBuffs
 			(
 				this,
-				Position() + CVector(PosX, 0.0f, PosZ),
+				Position() + CVector(PosX, 1.0f, PosZ),
 				CVector::up, // 上方向に設定
-				40.0f,
+				50.0f,
 				20.0f
 			);
 			// 無敵エフェクトの色設定
@@ -3368,7 +3356,7 @@ void CPlayer::Update()
 	}
 	else if (CGameManager::StageNo() == 0)
 	{
-		mpScreenItem->Close();
+		mpScreenItem->SetShow(false);
 	}
 
 	mIsGrounded = false;

@@ -177,6 +177,7 @@ void CGameScene::Update()
 	/*CResult* result = CResult::Instance();
 	int score = result->GetTotalScore();
 	CDebugPrint::Print("total: %d\n", score);*/
+
 	// ゲーム画面はカーソル非表示
 	CInput::ShowCursor(false);
 	if (CInput::PushKey('H'))
@@ -192,74 +193,6 @@ void CGameScene::Update()
 			mpGameMenu->Open();
 		}
 	}
-
-	//// インベントリを開いていなければ、[I]キーでメニューを開く
-	//if (!mpInventoryMenu->IsOpened())
-	//{
-	//	if (CInput::PushKey('I'))
-	//	{
-	//		mpInventoryMenu->Open();
-	//	}
-	//}
-	//// インベントリを開いていたら、[I]キーでメニューを閉じる
-	//else
-	//{
-	//	if (CInput::PushKey('I'))
-	//	{
-	//		mpInventoryMenu->Close();
-	//	}
-	//}
-
-	// [CStage1] の処理 /////////////////////////////////////////////////////////////
-
-	//int enemyCount = CEnemyManager::GetVanguardCount();	// ヴァンガードの数
-	//int enemyCount1 = CEnemyManager::GetSoldierCount();	// ソルジャーの数
-
-	//static bool Rising = false;
-	//static bool jumping = false;
-
-	//if (enemyCount <= 0 && !Rising)
-	//{
-	//	int currentStage = CGameManager::StageNo();
-	//	if (currentStage == 0)
-	//	{
-	//		// 上昇するオブジェクト
-	//		CRisingObject* rising = new CRisingObject
-	//		(
-	//			CVector(20.0f, 1.0f, -550.0f),
-	//			CVector(0.5f, 0.5f, 0.5f),
-	//			ETag::ePlayer, ELayer::ePlayer
-	//		);
-	//		CVector risingPos = CVector(20.0f, 1.0f, -550.0f);
-	//		if (rising != nullptr)
-	//		{
-	//			rising->SetStartPosition(risingPos);
-	//		}
-	//		AddTask(rising);
-
-	//		// 二度目以降はオブジェクトが作成されないようにする
-	//		Rising = true;
-	//	}
-	//}
-
-	//if (enemyCount1 <= 0 && !jumping)
-	//{
-	//	int currentStage1 = CGameManager::StageNo();
-	//	if (currentStage1 == 0)
-	//	{
-	//		// ジャンプする床-100.0f, 20.0f, -450.0f
-	//		CJumpingObject* jump = new CJumpingObject
-	//		(
-	//			CVector(0.0f, -5.0f, -340.0f),
-	//			CVector(0.5f, 0.5f, 0.5f),
-	//			CVector(0.0f, 0.0f, 0.0f),
-	//			ETag::ePlayer, ELayer::ePlayer
-	//		);
-	//		AddTask(jump);
-
-	//		jumping = true;
-	//	}
-	//}
 
 	// ゲームのステータスがeResultだったら
 	// リザルト表示

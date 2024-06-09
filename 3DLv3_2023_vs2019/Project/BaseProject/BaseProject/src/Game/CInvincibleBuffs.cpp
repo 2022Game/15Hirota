@@ -1,5 +1,6 @@
 #include "CInvincibleBuffs.h"
 #include "CPlayer.h"
+#include "CGameManager.h"
 
 // コンストラクタ
 CInvincibleBuffs::CInvincibleBuffs(CObjectBase* owner, const CVector& pos, const CVector& dir,
@@ -56,9 +57,15 @@ void CInvincibleBuffs::Update()
 
 	CPlayer* player = CPlayer::Instance();
 	bool clear = player->IsStageClear();
+
+	if (CGameManager::StageNo() == 0)
+	{
+		SetAlpha(0.0f);
+	}
+
 	if (clear)
 	{
-		Kill();
+		SetAlpha(0.0f);
 	}
 }
 
