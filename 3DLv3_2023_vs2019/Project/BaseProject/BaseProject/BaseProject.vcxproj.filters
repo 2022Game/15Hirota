@@ -781,6 +781,12 @@
     <ClCompile Include="src\Game\CAttackUpBuffs.cpp">
       <Filter>ソース ファイル\Game\Efect\Buffs</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CMeat.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CMeatObjectBase.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1379,6 +1385,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CAttackUpBuffs.h">
       <Filter>ソース ファイル\Game\Efect\Buffs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMeat.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMeatObjectBase.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -108,6 +108,8 @@
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
     <ClCompile Include="src\Game\CClimbWall.cpp" />
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
+    <ClCompile Include="src\Game\CMeat.cpp" />
+    <ClCompile Include="src\Game\CMeatObjectBase.cpp" />
     <ClCompile Include="src\Game\CMedalObjectBase.cpp" />
     <ClCompile Include="src\Game\CNeedleLeftRight.cpp" />
     <ClCompile Include="src\Game\CNeedleUpDown.cpp" />
@@ -309,6 +311,8 @@
     <ClInclude Include="src\Game\CJumpingKinoko.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
     <ClInclude Include="src\Game\CMajicSwordEnemy.h" />
+    <ClInclude Include="src\Game\CMeat.h" />
+    <ClInclude Include="src\Game\CMeatObjectBase.h" />
     <ClInclude Include="src\Game\CMedalObjectBase.h" />
     <ClInclude Include="src\Game\CNeedleLeftRight.h" />
     <ClInclude Include="src\Game\CNeedleUpDown.h" />

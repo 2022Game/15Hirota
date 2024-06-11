@@ -28,6 +28,7 @@ class CCutInResult;
 class CScreenItem;
 class CSmoke;
 class CHealingUpBuffs;
+class CSeesaw;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -221,6 +222,15 @@ private:
 	CWireMeshClimbWall* mpWireWall;
 	// 登っている動く金網のポインター
 	CWireMeshMoveClimbWall* mpWireMoveWall;
+
+	///////////////////////////////////////////////////////
+
+	//// オブジェクト関連 /////////////////////////////////
+
+	// 足元のオブジェクトのポインター
+	CObjectBase* mpUnderFootObject;
+
+	void CheckUnderFootObject();
 
 	///////////////////////////////////////////////////////
 

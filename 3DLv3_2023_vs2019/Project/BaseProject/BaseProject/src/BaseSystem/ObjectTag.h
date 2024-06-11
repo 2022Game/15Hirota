@@ -12,6 +12,7 @@ enum class ETag
 	eBiribiri,			// ビリビリ
 	eSmoke,				// 煙
 
+	eSeesaw,			// シーソー
 	eField,				// フィールドを構成するオブジェクト
 	eStageMenuObject,	// ステージメニューのオブジェクト
 	eButton,			// ステージ選択ボタン
@@ -21,6 +22,7 @@ enum class ETag
 	eItemInvincible,	// 無敵アイテム
 	eAttackObject,		// 攻撃力アップモデル
 	eMedal,				// メダルアイテム
+	eMeat,				// 肉アイテム
 	eGoalObject,		// クリア条件のオブジェクト
 	eSavePoint1,		// セーブポイント
 	eSavePoint2,		// セーブポイント
@@ -46,7 +48,7 @@ enum class ETag
 	eBillboard,	// ビルボードイメージ
 
 	eCamera,			// カメラ
-	
+
 	Num
 };
 // オブジェクト識別用のタグの初期化リスト

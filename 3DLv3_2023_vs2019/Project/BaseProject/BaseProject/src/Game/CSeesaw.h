@@ -31,6 +31,14 @@ public:
 	/// <param name="other">衝突した相手のコライダー</param>
 	/// <param name="hit">衝突したときの情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
+	/// <summary>
+	/// レイとの衝突判定
+	/// </summary>
+	/// <param name="start">レイの開始位置</param>
+	/// <param name="end">レイの終了位置</param>
+	/// <param name="hit">衝突位置返却用</param>
+	/// <returns></returns>
+	bool CollisionRay(const CVector& start, const CVector& end, CHitInfo* hit) override;
 
 	// 更新
 	void Update() override;
@@ -43,13 +51,7 @@ private:
 	// モデル・素材関連
 	// シーソーモデル
 	CModel* mpSeesawModel;
-	// シーソーセンターコライダー
-	CColliderMesh* mpCenterCol;
-	// シーソーライトコライダー
-	CColliderMesh* mpRightCol;
-	// シーソーレフトコライダー
-	CColliderMesh* mpLeftCol;
-
+	// シーソーコライダー
 	CColliderMesh* mpSeesawCol;
 
 	// 状態関連
@@ -82,13 +84,10 @@ private:
 	float mRotateEndAngle;
 	// 経過時間計測用
 	float mElapsedTime;
-
-	// センターコライダーに衝突しているか
-	bool mIsCenterCol;
-	// ライトコライダーに衝突しているか
-	bool mIsRightCol;
-	// レフトコライダーに衝突しているか
-	bool mIsLeftCol;
+	// プレイヤーがシーソー上のどちらに触れているか
+	float mHitDir;
+	// プレイヤーがシーソーに触れているかどうか
+	bool mIsHitCol;
 
 	// 触れた時に反応するオブジェクトのタグ
 	ETag mReactionTag;

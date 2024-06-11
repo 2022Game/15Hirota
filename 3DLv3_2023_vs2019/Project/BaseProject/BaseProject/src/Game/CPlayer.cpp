@@ -196,6 +196,7 @@ CPlayer::CPlayer()
 	, mIsPlayedHitDamageSE(false)
 	, mIsSpawnedSlashEffect(false)
 	, mpRideObject(nullptr)
+	, mpUnderFootObject(nullptr)
 	, mpScreenItem(nullptr)
 {
 	ClearItems();
@@ -264,10 +265,11 @@ CPlayer::CPlayer()
 	);
 	mpColliderCapsule->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
-		ELayer::eSavePoint1, ELayer::eSavePoint2, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall });
+		ELayer::eSavePoint1, ELayer::eSavePoint2, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall,
+		ELayer::eMedalCol, ELayer::eMeatCol});
 	mpColliderCapsule->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
 		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint1, ETag::eSavePoint2, ETag::eObstacle,ETag::eJumpingObject,
-		ETag::eNeedleObject});
+		ETag::eNeedleObject, ETag::eMeat, ETag::eSeesaw });
 	//mpColliderCapsule->Position(0.0f, 5.0f, 1.0f);
 	
 
@@ -381,6 +383,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				mpRideObject = other->Owner();
 			}
+			else if (other->Tag() == ETag::eSeesaw)
+			{
+				mpUnderFootObject = other->Owner();
+			}
 		}
 		// プレイヤーにダメージを与えるコライダー
 		else if (other->Layer() == ELayer::eDamageObject)
@@ -492,6 +498,11 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 
 			}
 		}
+		// 肉
+		else if (other->Layer() == ELayer::eMeatCol)
+		{
+
+		}
 		else if (other->Layer() == ELayer::eEnemy)
 		{
 			Position(Position() + hit.adjust);
@@ -521,7 +532,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// ゴールポスト
 		else if (other->Layer() == ELayer::eGoalCol)
 		{
-			//mpRideObject = other->Owner();
 			mIsStageClear = true;
 			mpColliderCapsule->SetEnable(false);
 			if (CGameManager::StageNo() == 0 ||
@@ -602,7 +612,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				if (mSavePoint1 && mSavePoint2 || !mSavePoint1 && mSavePoint2)
 				{
 					// SavePoint2がtrueならセーブポイント2のポジションを適用
-					Position(0.0f, 400.0f, -1890.0f);
+					Position(0.0f, 440.0f, -1890.0f);
 				}
 				else if (mSavePoint1)
 				{
@@ -2573,12 +2583,6 @@ void CPlayer::UpdateJump()
 		}
 	}
 
-	/*if (!CInput::Key(VK_SPACE))
-	{
-		ChangeAnimation(EAnimType::eJumpEnd);
-		mMoveSpeedY -= GRAVITY;
-	}*/	
-
 	if (mMoveSpeedY <= 0.0f)
 	{
 		mIsJumping = false;
@@ -2954,11 +2958,34 @@ bool CPlayer::IsEnableStepSmoke() const
 	return false;
 }
 
+void CPlayer::CheckUnderFootObject()
+{
+	if (mpUnderFootObject == nullptr) return;
+
+	if (mState != EState::eJumpStart &&
+		mState != EState::eJump &&
+		mState != EState::eJumpEnd)
+	{
+		CVector start = Position() + CVector::up * 1.0f;
+		CVector end = start + CVector::down * 20.0f;
+		CHitInfo hit;
+		if (mpUnderFootObject->CollisionRay(start, end, &hit))
+		{
+			Position(hit.cross + CVector::down * 1.0f);
+			mMoveSpeedY = 0.0f;
+			mIsGrounded = true;
+			mGroundNormal = hit.adjust.Normalized();
+		}
+		else
+		{
+			mpUnderFootObject = nullptr;
+		}
+	}
+}
+
 // 更新
 void CPlayer::Update()
 {
-	CDebugPrint::Print("mStage1:%s\n", mStage1Clear ? "true" : "false");
-	CDebugPrint::Print("mStage3:%s\n", mStage3Clear ? "true" : "false");
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	CDebugPrint::Print("stageNo:%d\n", CGameManager::StageNo());
 	SetParent(mpRideObject);
@@ -2988,14 +3015,19 @@ void CPlayer::Update()
 		ChangeState(EState::eReady);
 	}
 
-	if (mState != EState::eJumpStart &&
+	/*if (mState != EState::eJumpStart &&
 		mState != EState::eJump &&
 		mState != EState::eJumpEnd)
 	{
-		if (mMoveSpeedY <= -4.0f)
+		if (mMoveSpeedY <= -3.5f)
 		{
 			ChangeState(EState::eFalling);
 		}
+	}*/
+
+	if (mMoveSpeedY <= -3.5f)
+	{
+		ChangeState(EState::eFalling);
 	}
 
 	if (!(mState == EState::eAttack || mState == EState::eAttackStrong ||
@@ -3361,6 +3393,9 @@ void CPlayer::Update()
 	mIsGrounded = false;
 	mClimbWall = false;
 	mClimbWallTop = false;
+
+	// 足元のオブジェクトとの衝突判定
+	CheckUnderFootObject();
 
 	// 足元の煙のエフェクト更新
 	UpdateStepSmoke();

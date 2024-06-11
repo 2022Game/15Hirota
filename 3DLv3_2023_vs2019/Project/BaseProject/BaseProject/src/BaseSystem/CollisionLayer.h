@@ -35,6 +35,7 @@ enum class ELayer
 	eRecoverCol,	// 回復コライダー
 	eInvincbleCol,	// 無敵コライダー
 	eMedalCol,		// メダルコライダー
+	eMeatCol,		// 肉コライダー
 	eAttackCol,		// 攻撃を与える時のコライダー
 	eBulletCol,		// 弾のコライダー
 	eKickCol,		// キックコライダー

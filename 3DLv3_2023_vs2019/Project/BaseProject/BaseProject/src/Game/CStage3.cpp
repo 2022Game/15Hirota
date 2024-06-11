@@ -30,6 +30,7 @@
 #include "CNeedleLeftRight.h"
 #include "CRingBeamer.h"
 #include "CGoalObject.h"
+#include "CMeat.h"
 
 // コンストラクタ
 CStage3::CStage3()
@@ -205,6 +206,8 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("Healing",						"Item\\StatusItem\\HealingItem.obj");
 	// 攻撃力アップモデル
 	CResourceManager::Load<CModel>("AttackPotion",					"Item\\StatusItem\\AttackPotion.obj");
+	// 肉モデル
+	CResourceManager::Load<CModel>("Meat",							"Item\\StageItem\\niku.obj");
 
 	// キャラクター関連
 	// ヴァンガード
@@ -679,7 +682,19 @@ void CStage3::Load()
 	/////////////////////////////////////////////////////////////////////////////////////
 
 
-	//// キャラクター関連 /////////////////////////////////////////////////////////////////////////////
+	//// 肉オブジェクト /////////////////////////////////////////////////////////////////
+
+	CMeat* meat1 = new CMeat
+	(
+		CVector(0.0f, 430.0f, -1950.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	AddTask(meat1);
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	//// キャラクター関連 ///////////////////////////////////////////////////////////////
 
 	// キャラクター
 	// ソルジャー1
@@ -708,7 +723,7 @@ void CStage3::Load()
 	// 中間地点 : 0.0f, 320.0f, -1050.0f
 	// ボス前	: 0.0f, 430.0f, -1890.0f
 	// 火炎放射器の前 : -207.0f, 126.0f, -912.0f
-	CVector playerPos = CVector(0.0f, 430.0f, -1890.0f);
+	CVector playerPos = CVector(0.0f, 480.0f, -1890.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

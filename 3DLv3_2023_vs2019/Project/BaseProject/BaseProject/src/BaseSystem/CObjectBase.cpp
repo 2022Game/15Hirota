@@ -82,6 +82,11 @@ void CObjectBase::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 {
 }
 
+bool CObjectBase::CollisionRay(const CVector& start, const CVector& end, CHitInfo* hit)
+{
+	return false;
+}
+
 void CObjectBase::AttackStart()
 {
 	mAttackHitObjects.clear();

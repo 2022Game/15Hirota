@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "Maths.h"
 #include "CSound.h"
+#include "CStageManager.h"
 
 // èdóÕ
 #define GRAVITY 0.0625f
@@ -40,6 +41,7 @@ CHealingPotion::CHealingPotion()
 
 CHealingPotion::~CHealingPotion()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpHealingCol);
 }
 

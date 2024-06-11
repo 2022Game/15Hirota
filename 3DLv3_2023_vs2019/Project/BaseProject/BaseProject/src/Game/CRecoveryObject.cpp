@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "Maths.h"
 #include "CSound.h"
+#include "CStageManager.h"
 
 // èdóÕ
 #define GRAVITY 0.0625f
@@ -50,6 +51,7 @@ CRecoveryObject::CRecoveryObject()
 
 CRecoveryObject::~CRecoveryObject()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpRecoverCol);
 }
 

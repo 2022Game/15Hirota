@@ -53,6 +53,14 @@ public:
 	/// <param name="other">衝突した相手のコライダー</param>
 	/// <param name="hit">衝突した時の情報</param>
 	virtual void Collision(CCollider* self, CCollider* other, const CHitInfo& hit);
+	/// <summary>
+	/// レイとオブジェクトの衝突判定
+	/// </summary>
+	/// <param name="start">レイの開始位置</param>
+	/// <param name="end">レイの終了位置</param>
+	/// <param name="hit">衝突位置返却用</param>
+	/// <returns></returns>
+	virtual bool CollisionRay(const CVector& start, const CVector& end, CHitInfo* hit);
 
 	virtual void AttackStart();
 
