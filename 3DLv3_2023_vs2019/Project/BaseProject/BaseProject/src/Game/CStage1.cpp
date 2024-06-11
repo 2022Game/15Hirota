@@ -36,10 +36,10 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("Number1", "Field\\Object\\number1.obj");					// 一番目の床ブロック
 	CResourceManager::Load<CModel>("Number2", "Field\\Object\\number2.obj");					// 二番目の床ブロック
 	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");					// 三番目の床ブロック
-	CResourceManager::Load<CModel>("TreasureChest", "Field\\Gimmick\\TreasureChest.obj");			// 宝箱
-	CResourceManager::Load<CModel>("TreasureChestTwo", "Field\\Gimmick\\TreasureChestTwo.obj");		// 宝箱(蓋)
-	CResourceManager::Load<CModel>("TreasureChestCol", "Field\\Gimmick\\TreasureChest(FloorCol).obj");	// 宝箱(蓋コライダー)
-	CResourceManager::Load<CModel>("TreasureChestWallCol", "Field\\Gimmick\\TreasureChest(WallCol).obj");	// 宝箱(壁コライダー)
+	//CResourceManager::Load<CModel>("TreasureChest", "Field\\Gimmick\\TreasureChest.obj");			// 宝箱
+	//CResourceManager::Load<CModel>("TreasureChestTwo", "Field\\Gimmick\\TreasureChestTwo.obj");		// 宝箱(蓋)
+	//CResourceManager::Load<CModel>("TreasureChestCol", "Field\\Gimmick\\TreasureChest(FloorCol).obj");	// 宝箱(蓋コライダー)
+	//CResourceManager::Load<CModel>("TreasureChestWallCol", "Field\\Gimmick\\TreasureChest(WallCol).obj");	// 宝箱(壁コライダー)
 	CResourceManager::Load<CModel>("FlamethrowerModel", "Field\\Gimmick\\Flamethrower(foundation).obj");// 火炎放射器(土台)
 	CResourceManager::Load<CModel>("FlamethrowerTank", "Field\\Gimmick\\Flamethrower(tank).obj");		// 火炎放射器(タンク)
 	CResourceManager::Load<CModel>("FlamethrowerCol", "Field\\Gimmick\\Flamethrower(WallCol).obj");	// 火炎放射器(コライダー)
@@ -159,24 +159,24 @@ void CStage1::Load()
 	AddTask(savepoint1);
 
 
-	// 宝箱
-	CTreasureChest* treasure = new CTreasureChest
-	(
-		CVector(0.0f, 18.0f, 779.0f),
-		CVector(4.0f, 4.0f, 4.0f),
-		CVector(0.0f, 90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(treasure);
-	// 宝箱蓋
-	CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
-	(
-		CVector(0.0f, 20.8f, 779.0f),
-		CVector(4.0f, 4.0f, 4.0f),
-		CVector(0.0f, 90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(treasureTwo);
+	//// 宝箱
+	//CTreasureChest* treasure = new CTreasureChest
+	//(
+	//	CVector(0.0f, 18.0f, 779.0f),
+	//	CVector(4.0f, 4.0f, 4.0f),
+	//	CVector(0.0f, 90.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(treasure);
+	//// 宝箱蓋
+	//CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
+	//(
+	//	CVector(0.0f, 20.8f, 779.0f),
+	//	CVector(4.0f, 4.0f, 4.0f),
+	//	CVector(0.0f, 90.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(treasureTwo);
 
 
 	// 火炎放射器モデル

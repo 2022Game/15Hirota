@@ -521,6 +521,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// ゴールポスト
 		else if (other->Layer() == ELayer::eGoalCol)
 		{
+			//mpRideObject = other->Owner();
 			mIsStageClear = true;
 			mpColliderCapsule->SetEnable(false);
 			if (CGameManager::StageNo() == 0 ||
@@ -891,7 +892,7 @@ bool CPlayer::IsStageClear()
 	return mIsStageClear;
 }
 
-// ステージ1に入れるかどうかのフラグ
+// ステージ3に入れるかどうかのフラグ
 bool CPlayer::IsStartStage3()
 {
 	return mIsStartStage3;
@@ -1023,13 +1024,7 @@ void CPlayer::UpdateReady()
 			ChangeState(EState::eIdle);
 
 			// ステージ1をクリアしたら
-			if (mStage1Clear)
-			{
-				// クリアジャンプに遷移
-				ChangeState(EState::eResultJumpStart);
-			}
-			// ステージ3をクリアしたら
-			else if (mStage3Clear)
+			if (mStage1Clear || mStage2Clear || mStage3Clear)
 			{
 				// クリアジャンプに遷移
 				ChangeState(EState::eResultJumpStart);
@@ -1599,6 +1594,7 @@ void CPlayer::UpdateClearEnd()
 				if (CGameManager::StageNo() == 1)
 				{
 					mSavePoint1 = false;
+
 					mStage1Clear = true;
 					mIsStage1Clear = false;
 
@@ -1626,6 +1622,7 @@ void CPlayer::UpdateClearEnd()
 				{
 					mSavePoint1 = false;
 					mSavePoint2 = false;
+
 					mStage3Clear = true;
 					mIsStage3Clear = false;
 
@@ -1644,6 +1641,8 @@ void CPlayer::UpdateClearEnd()
 					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
 					ChangeState(EState::eReady);
+					// 消さないように
+					// 消したら不具合
 					Position(mStartPos);
 					mpColliderCapsule->SetEnable(true);
 				}
@@ -2958,16 +2957,10 @@ bool CPlayer::IsEnableStepSmoke() const
 // 更新
 void CPlayer::Update()
 {
-	//CDebugPrint::Print("elapsed:%f\n",mElapsedStageTime);
-	//CDebugPrint::Print("mIsStage1Clear:%s\n", mIsStage1Clear ? "true" : "false");
-	//CDebugPrint::Print("mStage1Clear:%s\n", mStage1Clear ? "true" : "false");
-	//CDebugPrint::Print("mIsStage3Clear:%s\n", mIsStage3Clear ? "true" : "false");
-	//CDebugPrint::Print("mStage3Clear:%s\n", mStage3Clear ? "true" : "false");
-	//CDebugPrint::Print("mStage1Clear:%s\n", mStage1Clear ? "true" : "false");
-	/*CDebugPrint::Print("mSavePoint1:%s\n", mSavePoint1 ? "true" : "false");
-	CDebugPrint::Print("mSavePoint2:%s\n", mSavePoint2 ? "true" : "false");*/
-	//CDebugPrint::Print("mStageClear%s\n", mIsStageClear ? "true" : "false");
+	CDebugPrint::Print("mStage1:%s\n", mStage1Clear ? "true" : "false");
+	CDebugPrint::Print("mStage3:%s\n", mStage3Clear ? "true" : "false");
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
+	CDebugPrint::Print("stageNo:%d\n", CGameManager::StageNo());
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
@@ -3352,11 +3345,17 @@ void CPlayer::Update()
 		CGameManager::StageNo() == 2 ||
 		CGameManager::StageNo() == 3)
 	{
+		mpHpGauge->SetShow(true);
+		mpStaminaGauge->SetShow(true);
+		mpScreenItem->SetShow(true);
 		mpScreenItem->Open();
 	}
 	else if (CGameManager::StageNo() == 0)
 	{
+		mpHpGauge->SetShow(false);
+		mpStaminaGauge->SetShow(false);
 		mpScreenItem->SetShow(false);
+		mpScreenItem->Close();
 	}
 
 	mIsGrounded = false;

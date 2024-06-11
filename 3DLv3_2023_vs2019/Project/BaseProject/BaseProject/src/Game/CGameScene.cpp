@@ -45,10 +45,7 @@ CGameScene::CGameScene()
 //デストラクタ
 CGameScene::~CGameScene()
 {
-	CStageManager::RemoveTask(mpTime);
-	CStageManager::RemoveTask(mpScore);
-	CStageManager::RemoveTask(mpResultUI);
-	CStageManager::RemoveTask(mpGameMenu);
+
 }
 
 //シーン読み込み
@@ -143,16 +140,12 @@ void CGameScene::Load()
 
 	// ゲームメニューを作成
 	mpGameMenu = new CGameMenu();
-	AddTask(mpGameMenu);
 	// 時間
 	mpTime = new CStageTime();
-	AddTask(mpTime);
 	// スコア
 	mpScore = new CScore();
-	AddTask(mpScore);
 
 	mpResultUI = new CResultAnnouncement();
-	CStageManager::AddTask(mpResultUI);
 
 	// リザルト
 	/*mpResult = new CResult();

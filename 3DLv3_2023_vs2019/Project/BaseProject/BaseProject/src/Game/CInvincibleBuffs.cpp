@@ -65,6 +65,7 @@ void CInvincibleBuffs::Update()
 
 	if (clear)
 	{
+		Kill();
 		SetAlpha(0.0f);
 	}
 }

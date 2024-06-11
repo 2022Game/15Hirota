@@ -145,7 +145,7 @@ void CGameManager::UpdateGame()
 	else if (player->IsStage2Clear() && !mResultSetUp)
 	{
 		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 1.5f)
+		if (mElapsedTime > 1.5f) 
 		{
 			mElapsedTime = 0.0f;
 			mResultSetUp = true;
@@ -175,9 +175,9 @@ void CGameManager::UpdateRestart()
 // ステージクリア時の更新処理
 void CGameManager::UpdateStageClear()
 {
-	mResultSetUp = false;
 	// ステージをクリアしたら、次のステージを読み込み
 	mStageNo = 0;
+	mResultSetUp = false;
 	//CSceneManager::Instance()->LoadScene(EScene::eClear);
 	CStageManager::LoadStage(mStageNo);
 
