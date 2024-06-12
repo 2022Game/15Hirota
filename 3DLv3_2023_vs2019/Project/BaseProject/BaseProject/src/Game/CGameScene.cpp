@@ -29,6 +29,7 @@
 #include "CScreenItem.h"
 #include "CResult.h"
 #include "CResultAnnouncement.h"
+#include "CMeat1.h"
 
 //コンストラクタ
 CGameScene::CGameScene()

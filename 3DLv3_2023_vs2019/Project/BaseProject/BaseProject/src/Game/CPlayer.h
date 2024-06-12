@@ -29,6 +29,7 @@ class CScreenItem;
 class CSmoke;
 class CHealingUpBuffs;
 class CSeesaw;
+class CMeatUI;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -202,6 +203,8 @@ private:
 	CStaminaGauge* mpStaminaGauge;
 	// スクリーンアイテム画像
 	CScreenItem* mpScreenItem;
+	// 肉アイテム画像
+	CMeatUI* mpMeat;
 
 	// SE
 	// 剣の振りかざし攻撃時のSE

@@ -1,5 +1,5 @@
-#ifndef CMEAT_H
-#define CMEAT_H
+#ifndef CMEAT2_H
+#define CMEAT2_H
 
 #include "CObjectBase.h"
 #include "CMeatObjectBase.h"
@@ -7,18 +7,26 @@
 #include "CModel.h"
 
 // 骨付き肉クラス
-class CMeat : public CMeatObjectBase
+class CMeat2 : public CMeatObjectBase
 {
 public:
-	CMeat(const CVector& pos, const CVector& rot, const CVector& scale);
-	~CMeat();
+	CMeat2(const CVector& pos, const CVector& rot, const CVector& scale);
+	~CMeat2();
 
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit);
+
+	//インスタンスのポインタの取得
+	static CMeat2* Instance();
+
+	bool IsMeat2() const;
 
 	void Update() override;
 	void Render() override;
 
 private:
+	// インスタンス
+	static CMeat2* spInstance;
+
 	// モデル関連
 	// 肉のモデル
 	CModel* mpMeat;
@@ -62,6 +70,8 @@ private:
 	float mElapsedTime;
 	// 取得時のカメラからの距離
 	float mGetCameraDist;
+	// 二つ目の肉
+	bool mMeat2;
 	// 床に接地しているか
 	bool mIsGround;
 };

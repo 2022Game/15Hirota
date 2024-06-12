@@ -30,7 +30,9 @@
 #include "CNeedleLeftRight.h"
 #include "CRingBeamer.h"
 #include "CGoalObject.h"
-#include "CMeat.h"
+#include "CMeat1.h"
+#include "CMeat2.h"
+#include "CMeat3.h"
 
 // コンストラクタ
 CStage3::CStage3()
@@ -684,13 +686,32 @@ void CStage3::Load()
 
 	//// 肉オブジェクト /////////////////////////////////////////////////////////////////
 
-	CMeat* meat1 = new CMeat
+	CMeat1* meat1 = new CMeat1
 	(
 		CVector(0.0f, 430.0f, -1950.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);
+	meat1->SetMeatNumber(1);
 	AddTask(meat1);
+
+	CMeat2* meat2 = new CMeat2
+	(
+		CVector(0.0f, 430.0f, -2000.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	meat2->SetMeatNumber(2);
+	AddTask(meat2);
+
+	CMeat3* meat3 = new CMeat3
+	(
+		CVector(0.0f, 430.0f, -2050.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	meat3->SetMeatNumber(3);
+	AddTask(meat3);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 

@@ -37,6 +37,7 @@
 #include "CInvincibleBuffs.h"
 #include "CAttackUpBuffs.h"
 #include "CTrailEffect.h"
+#include "CMeatUI.h"
 
 // プレイヤー関連
 // 高さ
@@ -198,6 +199,7 @@ CPlayer::CPlayer()
 	, mpRideObject(nullptr)
 	, mpUnderFootObject(nullptr)
 	, mpScreenItem(nullptr)
+	, mpMeat(nullptr)
 {
 	ClearItems();
 	//, mInventory(std::vector<ItemType>())
@@ -330,6 +332,7 @@ CPlayer::CPlayer()
 	mpCutInResult = new CCutInResult();
 
 	mpScreenItem = new CScreenItem();
+	mpMeat = new CMeatUI();
 	//CStageManager::AddTask(mpScreenItem);
 	//mpScreenItem->SetPlayer(player);
 
@@ -1573,6 +1576,7 @@ void CPlayer::UpdateClear()
 	mpHpGauge->SetShow(false);
 	mpStaminaGauge->SetShow(false);
 	mpScreenItem->SetShow(false);
+	mpMeat->SetShow(false);
 	mMoveSpeed = CVector::zero;
 	mElapsedTime = 0.0f;
 
@@ -1761,6 +1765,7 @@ void CPlayer::UpdateResultEnd()
 				mpHpGauge->SetShow(true);
 				mpStaminaGauge->SetShow(true);
 				mpScreenItem->SetShow(true);
+				mpMeat->SetShow(true);
 				mIsStageClear = false;
 
 				mIsStage1Clear = false;
@@ -1785,6 +1790,7 @@ void CPlayer::UpdateResultEnd()
 				mpHpGauge->SetShow(true);
 				mpStaminaGauge->SetShow(true);
 				mpScreenItem->SetShow(true);
+				mpMeat->SetShow(true);
 				mIsStageClear = false;
 
 				mIsStage3Clear = false;
@@ -3381,6 +3387,8 @@ void CPlayer::Update()
 		mpStaminaGauge->SetShow(true);
 		mpScreenItem->SetShow(true);
 		mpScreenItem->Open();
+		mpMeat->SetShow(true);
+		mpMeat->Open();
 	}
 	else if (CGameManager::StageNo() == 0)
 	{
@@ -3388,6 +3396,8 @@ void CPlayer::Update()
 		mpStaminaGauge->SetShow(false);
 		mpScreenItem->SetShow(false);
 		mpScreenItem->Close();
+		mpMeat->SetShow(false);
+		mpMeat->Close();
 	}
 
 	mIsGrounded = false;

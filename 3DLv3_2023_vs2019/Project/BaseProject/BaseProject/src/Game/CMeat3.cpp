@@ -1,16 +1,25 @@
-#include "CMeat.h"
+#include "CMeat3.h"
 #include "CCollisionManager.h"
 #include "CCharaBase.h"
 #include "CPlayer.h"
 #include "Maths.h"
 #include "Easing.h"
 #include "CStageManager.h"
+#include "CPlayer.h"
 
 // アイテムの移動時間
 #define GET_MOVE_TIME 5.75f
 #define GET_MOVE_UP 20.0f
 
-CMeat::CMeat(const CVector& pos, const CVector& rot, const CVector& scale)
+// 肉クラスのインスタンス
+CMeat3* CMeat3::spInstance = nullptr;
+
+CMeat3* CMeat3::Instance()
+{
+	return spInstance;
+}
+
+CMeat3::CMeat3(const CVector& pos, const CVector& rot, const CVector& scale)
 	: mState(EState::eIdle)
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
@@ -22,8 +31,12 @@ CMeat::CMeat(const CVector& pos, const CVector& rot, const CVector& scale)
 	, mGetTargetPos(CVector::zero)
 	, mTotalMovement(CVector::zero)
 	, mTargetDir(CVector::zero)
+	, mMeat3(false)
 	, mIsGround(false)
 {
+	// インスタンスの設定
+	spInstance = this;
+
 	// 肉アイテムのモデル取得
 	mpMeat = CResourceManager::Get<CModel>("Meat");
 
@@ -50,20 +63,21 @@ CMeat::CMeat(const CVector& pos, const CVector& rot, const CVector& scale)
 	mStartPos = Position();
 }
 
-CMeat::~CMeat()
+CMeat3::~CMeat3()
 {
+	//spInstance = nullptr;
 	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpMeatSphere);
 }
 
-void CMeat::ChangeState(EState state)
+void CMeat3::ChangeState(EState state)
 {
 	mState = state;
 	mStateStep = 0;
 	mElapsedTime = 0.0f;
 }
 
-void CMeat::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+void CMeat3::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	if (self == mpMeatSphere)
 	{
@@ -80,7 +94,12 @@ void CMeat::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	}
 }
 
-void CMeat::UpdateIdle()
+bool CMeat3::IsMeat3() const
+{
+	return mMeat3;
+}
+
+void CMeat3::UpdateIdle()
 {
 	float rot = 1.0f;
 	Rotate(0.0f, rot, 0.0f);
@@ -88,7 +107,7 @@ void CMeat::UpdateIdle()
 	mIsGround = false;
 }
 
-void CMeat::UpdateGet()
+void CMeat3::UpdateGet()
 {
 	// 現在のカメラを取得
 	CCamera* cam = CCamera::CurrentCamera();
@@ -116,15 +135,20 @@ void CMeat::UpdateGet()
 	case 1:
 		// UIのアイテムボックスの2D座標を
 		// 3D空間の座標に変換
-		mGetTargetPos = cam->ScreenToWorldPos
-		(
-			CVector
+		int meatNumber = GetMeatNumber();
+		// 三つ目
+		if (meatNumber == 3)
+		{
+			mGetTargetPos = cam->ScreenToWorldPos
 			(
-				WINDOW_WIDTH * 0.05f,
-				WINDOW_HEIGHT * 0.1f,
-				mGetCameraDist
-			)
-		);
+				CVector
+				(
+					WINDOW_WIDTH * 0.25f,
+					WINDOW_HEIGHT * 0.1f,
+					mGetCameraDist
+				)
+			);
+		}
 
 		// アイテム取得時の3D空間での座標をスクリーン座標から求める
 		mGetStartPos.Z(mGetCameraDist);
@@ -145,7 +169,8 @@ void CMeat::UpdateGet()
 		{
 			// アイテムボックスの位置まで移動したら、削除
 			Position(mGetTargetPos);
-			Kill();
+			SetAlpha(0.0f);
+			mMeat3 = true;
 		}
 
 		// カメラの方向へ向ける
@@ -161,7 +186,7 @@ void CMeat::UpdateGet()
 	}
 }
 
-void CMeat::Update()
+void CMeat3::Update()
 {
 	switch (mState)
 	{
@@ -175,7 +200,7 @@ void CMeat::Update()
 }
 
 // 描画
-void CMeat::Render()
+void CMeat3::Render()
 {
 	// 取得時の移動処理中のみ、デプステストをオフにして。
 	// 床のオブジェクトより手前に表示

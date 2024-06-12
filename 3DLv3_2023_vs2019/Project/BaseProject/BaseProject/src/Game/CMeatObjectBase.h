@@ -12,5 +12,13 @@ class CMeatObjectBase : public CObjectBase
 public:
 	CMeatObjectBase();
 	virtual ~CMeatObjectBase();
+
+	// ナンバーを設定
+	void SetMeatNumber(int number);
+	// ナンバーを取得
+	int GetMeatNumber() const;
+
+private:
+	int mNumber;
 };
 #endif

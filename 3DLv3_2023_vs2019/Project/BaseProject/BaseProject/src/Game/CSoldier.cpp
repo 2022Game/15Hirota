@@ -72,7 +72,6 @@
 // CSoldierのインスタンス
 CSoldier* CSoldier::spInstance = nullptr;
 
-
 CSoldier* CSoldier::Instance()
 {
 	return spInstance;

@@ -100,7 +100,7 @@ CScreenItem::CScreenItem()
 	}
 
 	// ”Ô†‚Ì‰æ‘œ
-	std::vector<CImage*> mNumberItems;
+	//std::vector<CImage*> mNumberItems;
 
 	SetEnable(false);
 	SetShow(false);
