@@ -1,8 +1,8 @@
-#include "CField_Worlds_1.h"
+#include "CPlainsStageField.h"
 #include "CCollisionManager.h"
 #include "CCamera.h"
 
-CField_Worlds_1::CField_Worlds_1()
+CPlainsStageField::CPlainsStageField()
 	: CObjectBase(ETag::eField,ETaskPriority::eBackground)
 {
 	// ステージのモデルデータ取得
@@ -53,7 +53,7 @@ CField_Worlds_1::CField_Worlds_1()
 	mpWallCol = new CColliderMesh(this, ELayer::eFieldWall, wallCol, true);
 }
 
-CField_Worlds_1::~CField_Worlds_1()
+CPlainsStageField::~CPlainsStageField()
 {
 	// コライダーを削除
 	SAFE_DELETE(mpFloorCol);
@@ -75,17 +75,17 @@ CField_Worlds_1::~CField_Worlds_1()
 }
 
 // 壁のコライダー取得
-CColliderMesh* CField_Worlds_1::GetWallCol() const
+CColliderMesh* CPlainsStageField::GetWallCol() const
 {
 	return mpWallCol;
 }
 
-void CField_Worlds_1::Update()
+void CPlainsStageField::Update()
 {
 
 }
 
-void CField_Worlds_1::Render()
+void CPlainsStageField::Render()
 {
 	mpStageModel->SetColor(mColor);
 	mpStageModel->Render(Matrix());

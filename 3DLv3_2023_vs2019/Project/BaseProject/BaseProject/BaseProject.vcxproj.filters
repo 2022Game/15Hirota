@@ -209,6 +209,21 @@
     <Filter Include="ソース ファイル\Game\Character\CharaObject\ItemObject\Meat">
       <UniqueIdentifier>{3e61bafc-ce4a-48a7-9c2f-3c759cefcdf8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\StageField\Plains Stage">
+      <UniqueIdentifier>{8230eb2a-cd73-46fd-a8a6-42bc0bc7436b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\StageField\Hops and Hoops">
+      <UniqueIdentifier>{5c86c9a6-6d72-4ac3-b2e1-e5b0c3c6efd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\StageField\One Shot Floor">
+      <UniqueIdentifier>{f6680b2a-bf95-41c3-86cd-5603534d97cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\StageField\Selection">
+      <UniqueIdentifier>{9901a5ec-a369-4b04-a29a-f7c921369769}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Stage\Manager">
+      <UniqueIdentifier>{a19b7b9e-7c06-4700-8f3f-07ab33aa60b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -442,19 +457,10 @@
     <ClCompile Include="src\Game\CSoldierGauge.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CStageBase.cpp">
-      <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CStageManager.cpp">
-      <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CStage1.cpp">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CStage2.cpp">
-      <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CGameManager.cpp">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CYukariFrame.cpp">
@@ -655,21 +661,6 @@
     <ClCompile Include="src\Game\CField.cpp">
       <Filter>ソース ファイル\Game\Field\StageField</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CField_Worlds_1.cpp">
-      <Filter>ソース ファイル\Game\Field\StageField</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CField_Worlds_1_FallCol.cpp">
-      <Filter>ソース ファイル\Game\Field\StageField</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CField1.cpp">
-      <Filter>ソース ファイル\Game\Field\StageField</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CNumberField.cpp">
-      <Filter>ソース ファイル\Game\Field\StageField</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CStageSelection.cpp">
-      <Filter>ソース ファイル\Game\Field\StageField</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CStage1MenuObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClCompile>
@@ -798,6 +789,42 @@
     </ClCompile>
     <ClCompile Include="src\Game\CMeat3.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Meat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CJumpingKinokoUpDown.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CJumpingKinokoLeftRight.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CPlainsStageField.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\Plains Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CPlainsStageFallCol.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\Plains Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CHopsAndHoopsField.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\Hops and Hoops</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\COneShotFloorField.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\One Shot Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageSelection.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\Selection</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGameManager.cpp">
+      <Filter>ソース ファイル\Game\Stage\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageManager.cpp">
+      <Filter>ソース ファイル\Game\Stage\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageBase.cpp">
+      <Filter>ソース ファイル\Game\Stage\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStage2Button.cpp">
+      <Filter>ソース ファイル\Game\Stage\StageButton</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStage2MenuObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1053,19 +1080,10 @@
     <ClInclude Include="src\Game\CSoldierGauge.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CStageBase.h">
-      <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CStageManager.h">
-      <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CStage1.h">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CStage2.h">
-      <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CGameManager.h">
       <Filter>ソース ファイル\Game\Stage</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CYukariFrame.h">
@@ -1269,21 +1287,6 @@
     <ClInclude Include="src\Game\CField.h">
       <Filter>ソース ファイル\Game\Field\StageField</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CField_Worlds_1.h">
-      <Filter>ソース ファイル\Game\Field\StageField</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CField_Worlds_1_FallCol.h">
-      <Filter>ソース ファイル\Game\Field\StageField</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CField1.h">
-      <Filter>ソース ファイル\Game\Field\StageField</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CNumberField.h">
-      <Filter>ソース ファイル\Game\Field\StageField</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CStageSelection.h">
-      <Filter>ソース ファイル\Game\Field\StageField</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CStage1MenuObject.h">
       <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClInclude>
@@ -1412,6 +1415,42 @@
     </ClInclude>
     <ClInclude Include="src\Game\CMeat3.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Meat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingKinokoUpDown.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingKinokoLeftRight.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CPlainsStageField.h">
+      <Filter>ソース ファイル\Game\Field\StageField\Plains Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CPlainsStageFallCol.h">
+      <Filter>ソース ファイル\Game\Field\StageField\Plains Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CHopsAndHoopsField.h">
+      <Filter>ソース ファイル\Game\Field\StageField\Hops and Hoops</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\COneShotFloorField.h">
+      <Filter>ソース ファイル\Game\Field\StageField\One Shot Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageSelection.h">
+      <Filter>ソース ファイル\Game\Field\StageField\Selection</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGameManager.h">
+      <Filter>ソース ファイル\Game\Stage\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageManager.h">
+      <Filter>ソース ファイル\Game\Stage\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageBase.h">
+      <Filter>ソース ファイル\Game\Stage\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStage2Button.h">
+      <Filter>ソース ファイル\Game\Stage\StageButton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStage2MenuObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

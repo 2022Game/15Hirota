@@ -7,11 +7,13 @@
 #include "CInput.h"
 #include "CFixedFlamethrower.h"
 #include "CStage1MenuObject.h"
+#include "CStage2MenuObject.h"
 #include "CStage3MenuObject.h"
 #include "CStageSelection.h"
 #include "CTreasureChest.h"
 #include "CStageButton.h"
 #include "CStage1Button.h"
+#include "CStage2Button.h"
 #include "CStage3Button.h"
 #include "CVanguard.h"
 
@@ -19,9 +21,9 @@
 const CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[]
 {
 	{0,CVector(65.0f, 4.5f,   36.0f),	-1, 1},
-	{1,CVector(65.0f, 3.5f,  -72.0f),	 0, 3},
-	{2,CVector( 0.0f, 0.0f,    0.0f),	-1,-1},
-	{3,CVector(65.0f, 3.5f, -185.0f),	 1,-1},
+	{1,CVector(65.0f, 3.5f,  -72.0f),	 0, 2},
+	{2,CVector(65.0f, 3.5f,  -185.0f),	 1, 3},
+	{3,CVector(65.0f, 3.5f,  -298.0f),	 2,-1},
 };
 
 // コンストラクタ
@@ -77,7 +79,11 @@ void CStageSelectionStage::Load()
 
 	CResourceManager::Load<CModel>("StageButton",		"Field\\Object\\StageBotan.obj");					// ステージボタンモデル
 	CResourceManager::Load<CModel>("SkyIslandMenu",		"Field\\Object\\Skyisland.obj");					// 空島モデル
-	CResourceManager::Load<CModel>("Number3",			"Field\\Object\\number3.obj");						// 三番目の床モデル
+	CResourceManager::Load<CModel>("Number3",			"Field\\Object\\number3.obj");	
+	// 跳ねるキノコモデル
+	CResourceManager::Load<CModel>("JumpingKinoko", "Field\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
+	// 跳ねるキノココライダー
+	CResourceManager::Load<CModel>("JumpingKinokoCol", "Field\\Gimmick\\Jump\\JumpingKinoko(Col).obj");// 三番目の床モデル
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -93,36 +99,64 @@ void CStageSelectionStage::Load()
 
 	//// ステージオブジェクト関連 ///////////////////////////////////////////////////////
 
-	// ステージ1選択モデル
-	CStage1Button* stage1button = new CStage1Button(
+	// ステージ1選択ボタン
+	CStage1Button* stage1button = new CStage1Button
+	(
 		STAGE_DATA[1].btnPos,
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer);
+		ETag::ePlayer, ELayer::ePlayer
+	);
 	AddTask(stage1button);
 
-	// ステージ3選択モデル
-	CStage3Button* stage3button = new CStage3Button(
+	// ステージ2選択ボタン
+	CStage2Button* stage2button = new CStage2Button
+	(
+		STAGE_DATA[2].btnPos,
+		CVector(10.0f, 10.0f, 10.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(stage2button);
+
+	// ステージ3選択ボタン
+	CStage3Button* stage3button = new CStage3Button
+	(
 		STAGE_DATA[3].btnPos,
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer);
+		ETag::ePlayer, ELayer::ePlayer
+	);
 	AddTask(stage3button);
 
 	// ステージメニューオブジェクト(ステージ1)
-	CStage1MenuObject* menuobj1 = new CStage1MenuObject(
+	CStage1MenuObject* menuobj1 = new CStage1MenuObject
+	(
 		CVector(6.0f, 10.0f, -72.0f),
 		CVector(2.5f, 2.5f, 2.5f),
 		CVector(0.0f, 40.0f, 0.0f),
-		ETag::ePlayer, ELayer::eDamageCol);
+		ETag::ePlayer, ELayer::ePlayer
+	);
 	AddTask(menuobj1);
 
+	// ステージメニューオブジェクト(ステージ2)
+	CStage2MenuObject* menuobj2 = new CStage2MenuObject
+	(
+		CVector(6.0f, 15.0f, -185.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 40.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(menuobj2);
+
 	// ステージメニューオブジェクト(ステージ3)
-	CStage3MenuObject* menuobj3 = new CStage3MenuObject(
-		CVector(6.0f, 30.0f, -185.0f),
+	CStage3MenuObject* menuobj3 = new CStage3MenuObject
+	(
+		CVector(6.0f, 30.0f, -298.0f),
 		CVector(1.2f, 1.2f, 1.2f),
 		CVector(0.0f, 40.0f, 0.0f),
-		ETag::ePlayer, ELayer::eDamageCol);
+		ETag::ePlayer, ELayer::ePlayer
+	);
 	AddTask(menuobj3);
 
 	/////////////////////////////////////////////////////////////////////////////////////

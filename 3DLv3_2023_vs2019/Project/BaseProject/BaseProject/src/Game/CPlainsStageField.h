@@ -1,15 +1,15 @@
-#ifndef CFIELD_WORLDS_1_H
-#define CFIELD_WORLDS_1_H
+#ifndef CPLAINSSTAGEFIELD_H
+#define CPLAINSSTAGEFIELD_H
 
 #include "CObjectBase.h"
 #include "CColliderMesh.h"
 #include "CColliderSphere.h"
 
-class CField_Worlds_1 : public CObjectBase
+class CPlainsStageField : public CObjectBase
 {
 public:
-	CField_Worlds_1();
-	~CField_Worlds_1();
+	CPlainsStageField();
+	~CPlainsStageField();
 
 	// 壁のコライダー取得
 	CColliderMesh* GetWallCol() const;

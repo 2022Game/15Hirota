@@ -6,8 +6,8 @@
 #include "CStageTime.h"
 #include "CGameCamera.h"
 #include "CEnemyManager.h"
-#include "CField_Worlds_1.h"
-#include "CField_Worlds_1_FallCol.h"
+#include "CPlainsStageField.h"
+#include "CPlainsStageFallCol.h"
 #include "CWireMeshClimbWall.h"
 #include "CWireMeshMoveClimbWall.h"
 #include "CRotateFloorGimmickOpposition.h"
@@ -237,13 +237,13 @@ void CStage3::Load()
 	//// フィールド関連 /////////////////////////////////////////////////////////////////
 
 	// フィールド
-	mpField_Worlds_1 = new CField_Worlds_1();
-	mpField_Worlds_1->Scale(8.0f, 8.0f, 8.0f);
-	AddTask(mpField_Worlds_1);
+	mpPlainsStageField = new CPlainsStageField();
+	mpPlainsStageField->Scale(8.0f, 8.0f, 8.0f);
+	AddTask(mpPlainsStageField);
 	// 落下コライダー
-	mpFallCol = new CField_Worlds_1_FallCol();
-	mpFallCol->Scale(8.0f, 8.0f, 8.0f);
-	AddTask(mpFallCol);
+	mpCPlainsStageFallCol = new CPlainsStageFallCol();
+	mpCPlainsStageFallCol->Scale(8.0f, 8.0f, 8.0f);
+	AddTask(mpCPlainsStageFallCol);
 
 	// セーブポイント
 	CSavePoint1* savepoint1 = new CSavePoint1
@@ -760,7 +760,7 @@ void CStage3::Load()
 	);
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
-	mainCamera->AddCollider(mpField_Worlds_1->GetWallCol());
+	mainCamera->AddCollider(mpPlainsStageField->GetWallCol());
 
 }
 
@@ -769,7 +769,7 @@ void CStage3::Unload()
 {
 	// カメラから衝突するコライダーを取り除く
 	CCamera* mainCamera = CCamera::MainCamera();
-	mainCamera->RemoveCollider(mpField_Worlds_1->GetWallCol());
+	mainCamera->RemoveCollider(mpPlainsStageField->GetWallCol());
 	// ベースステージ破棄処理
 	CStageBase::Unload();
 }

@@ -10,6 +10,9 @@
 #include "CVanguard.h"
 #include "CBlueMedal.h"
 #include "CResultAnnouncement.h"
+#include "CMeat1.h"
+#include "CMeat2.h"
+#include "CMeat3.h"
 
 CGameManager* CGameManager::spInstance = nullptr;
 
@@ -191,6 +194,7 @@ void CGameManager::UpdateStage1()
 	mStageNo = 1;
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
+	CMeat1::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 
 	mElapsedStageTime += Time::DeltaTime();
@@ -206,10 +210,13 @@ void CGameManager::UpdateStage2()
 	mStageNo = 2;
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
+	CMeat1::SetScore(0);
+	CMeat2::SetScore(0);
+	CMeat3::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 
 	mElapsedStageTime += Time::DeltaTime();
-	if (mElapsedStageTime > 4.0f)
+	if (mElapsedStageTime > 3.0f)
 	{
 		ChangeState(EGameState::eGame);
 	}
@@ -221,6 +228,9 @@ void CGameManager::UpdateStage3()
 	mStageNo = 3;
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
+	CMeat1::SetScore(0);
+	CMeat2::SetScore(0);
+	CMeat3::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 	mElapsedStageTime += Time::DeltaTime();
 	if (mElapsedStageTime > 13.5f)
@@ -235,6 +245,9 @@ void CGameManager::UpdateStageOver()
 	mStageNo = 0;
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
+	CMeat1::SetScore(0);
+	CMeat2::SetScore(0);
+	CMeat3::SetScore(0);
 	CStageManager::LoadStage(mStageNo);
 
 	ChangeState(EGameState::eGame);

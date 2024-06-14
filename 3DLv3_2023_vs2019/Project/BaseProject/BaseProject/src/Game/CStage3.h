@@ -2,8 +2,8 @@
 #define CSTAGE3_H
 #include "CStageBase.h"
 
-class CField_Worlds_1;
-class CField_Worlds_1_FallCol;
+class CPlainsStageField;
+class CPlainsStageFallCol;
 class CStageTime;
 
 // ステージ3「平原マップ」
@@ -21,7 +21,7 @@ public:
 	void Unload() override;
 
 private:
-	CField_Worlds_1* mpField_Worlds_1;	// フィールド
-	CField_Worlds_1_FallCol* mpFallCol;
+	CPlainsStageField* mpPlainsStageField;	// フィールド
+	CPlainsStageFallCol* mpCPlainsStageFallCol;
 };
 #endif

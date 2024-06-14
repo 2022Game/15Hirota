@@ -10,22 +10,40 @@
 class CMeat1 : public CMeatObjectBase
 {
 public:
+	// コンストラクタ
 	CMeat1(const CVector& pos, const CVector& rot, const CVector& scale);
+	// デストラクタ
 	~CMeat1();
 
+	/// <summary>
+	/// 衝突処理
+	/// </summary>
+	/// <param name="self">自身</param>
+	/// <param name="other">相手</param>
+	/// <param name="hit">衝突情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit);
 
 	//インスタンスのポインタの取得
 	static CMeat1* Instance();
 
+	// 肉を取得したか
 	bool IsMeat1();
 
+	// スコアを設定
+	static void SetScore(int score);
+	// スコアを取得
+	static int GetScore();
+
+	// 更新処理
 	void Update() override;
+	// 描画処理
 	void Render() override;
 
 private:
 	// インスタンス
 	static CMeat1* spInstance;
+	// スコア
+	static int sScore;
 
 	// モデル関連
 	// 肉のモデル
@@ -53,15 +71,8 @@ private:
 	CVector mGetStartPos;
 	// 取得時のアイテムの移動先の座標
 	CVector mGetTargetPos;
-	// 移動方向
-	CVector mMoveVector;
-	// 見る方向
-	CVector mTargetDir;
-	CVector mMoveSpeed;
+	// 初期位置
 	CVector mStartPos;
-	CVector mTotalMovement;
-
-	CVector2 mPosition;
 
 	// 変数
 	// 状態内のステップ

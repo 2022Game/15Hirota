@@ -1,19 +1,12 @@
 #include "CStage2.h"
-#include "CDamageObject.h"
-#include "CGoalObject.h"
-#include "CStone1.h"
-#include "CTree1.h"
-#include "CField1.h"
-#include "CSoldier.h"
-#include "CPlayer.h"
-#include "CCamera.h"
-#include "CAppearFloor.h"
 #include "CGameCamera.h"
-#include "CRotateFloorGimmick.h"
-#include "CRotateFloorTimeGimmick.h"
-#include "CHatenaBlock.h"
-#include "CRengaBlock.h"
-#include "CClimbWall.h"
+#include "CCamera.h"
+#include "CPlayer.h"
+#include "CGoalObject.h"
+#include "CHopsAndHoopsField.h"
+#include "CMeat1.h"
+#include "CMeat2.h"
+#include "CMeat3.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -30,44 +23,79 @@ CStage2::~CStage2()
 // ステージ読み込み
 void CStage2::Load()
 {
-	CResourceManager::Load<CModel>("Field1",			"Field\\Stage2.obj");								// 仮2面
-	CResourceManager::Load<CModel>("FloorCol1",			"Field\\Stage2Floor.obj");							// 仮2面床
-	CResourceManager::Load<CModel>("WallCol1",			"Field\\Stage2Wall.obj");							// 仮2面壁
-	CResourceManager::Load<CModel>("Field1",			"Field\\Stage2.obj");								// 仮2面敵の壁
-	CResourceManager::Load<CModel>("Stage2Tree",		"Field\\Stage2(tree).obj");							// 仮2面の木
-	CResourceManager::Load<CModel>("Stage2Climb",		"Field\\PlayerGimmick\\Stage2(Climb).obj");			// 仮2面の登れる壁
-	CResourceManager::Load<CModel>("Stage2ClimbedTop",	"Field\\PlayerGimmick\\Stage2(ClimbedTop).obj");	// 仮2面の登れる壁の頂上コライダー
-	CResourceManager::Load<CModel>("RotateFloor",		"Field\\Gimmick\\RotateFloor.obj");					// 回転する床
-	CResourceManager::Load<CModel>("RotateFloorFrame",	"Field\\Gimmick\\RotateFloorFrame.obj");			// 回転する床枠
-	CResourceManager::Load<CModel>("Tree1",				"Field\\Object\\Tree1.obj");						// 木1
+	// ステージモデル
+	CResourceManager::Load<CModel>("HopsAndHoops(Base)", "Field\\HopsAndHoops\\Stage2(Base).obj");
+	// ステージ床コライダー
+	CResourceManager::Load<CModel>("HopsAndHoops(Col)",	 "Field\\HopsAndHoops\\Stage2(FloorCol).obj");
+	// セーブポイントモデル
+	CResourceManager::Load<CModel>("SavePoint",			 "Field\\Gimmick\\SavePoint.obj");
+	// ゴールポストモデル							    
+	CResourceManager::Load<CModel>("GoalPost",			 "Field\\Object\\GoalPost.obj");
+	// ゴールブロックモデル							   
+	CResourceManager::Load<CModel>("GoalCube",			 "Field\\Object\\GoalCube.obj");
+	// 跳ねるキノコモデル							    
+	CResourceManager::Load<CModel>("JumpingKinoko",		 "Field\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
+	// 跳ねるキノココライダー							  
+	CResourceManager::Load<CModel>("JumpingKinokoCol",	 "Field\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
+	// リングビーマモデル(上)							   
+	CResourceManager::Load<CModel>("RingBeamerUP",		 "Effect\\BeamObj(Upper).obj");
+	// リングビーマモデル(下)							   
+	CResourceManager::Load<CModel>("RingBeamerLO",		 "Effect\\BeamObj(Lower).obj");
+	// ビリビリエフェクト							    
+	CResourceManager::Load<CModel>("Biribiri",			 "Effect\\BhimaEffect.obj");
+	// リングビーマモデル(コライダー)					   
+	CResourceManager::Load<CModel>("BiribiriCol",		 "Effect\\BhimaEffect(Col).obj");
+
+	// 肉モデル
+	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
 
+	CHopsAndHoopsField* field = new CHopsAndHoopsField();
+	field->Scale(4.0f, 4.0f, 4.0f);
+	field->Position(0.0f, 0.0f, 0.0f);
+	AddTask(field);
 
-	// フィールド
-	mpField1 = new CField1();
-	mpField1->Scale(10.0f, 10.0f, 10.0f);
-	AddTask(mpField1);
 
-	// 登れる壁を作成
-	CClimbWall* climbWall = new CClimbWall
+	//// 肉オブジェクト /////////////////////////////////////////////////////////////////
+
+	CMeat1* meat1 = new CMeat1
 	(
-		"Stage2Climb", "Stage2ClimbedTop",
-		CVector(0.0f,20.0f,0.0f),	// 上方向の移動
-		CVector(0.0f, 10.0f, 20.0f)	// 正面方向の移動
+		CVector(0.0f, 430.0f, -1950.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
 	);
-	climbWall->Scale(10.0f, 10.0f, 10.0f);
-	AddTask(climbWall);
+	meat1->SetMeatNumber(1);
+	AddTask(meat1);
 
+	CMeat2* meat2 = new CMeat2
+	(
+		CVector(0.0f, 430.0f, -2000.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	meat2->SetMeatNumber(2);
+	AddTask(meat2);
+
+	CMeat3* meat3 = new CMeat3
+	(
+		CVector(0.0f, 430.0f, -2050.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	meat3->SetMeatNumber(3);
+	AddTask(meat3);
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
-	CVector playerPos = CVector(-757.0f, 60.0f, -858.0f);//-757,858-1109.0f, 60.0f, 1133.0f
+	CVector playerPos = CVector(0.0f, 20.0f, 0.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
-		player->Rotation(0.0f, 225.0f, 0.0f);//0.0f, 225.0f, 0.0f
+		player->Rotation(0.0f, 180.0f, 0.0f);//0.0f, 225.0f, 0.0f
 	}
 
 	// カメラの位置と向きを設定 -1109.0f, 90.0f, 1200.0f
@@ -77,80 +105,15 @@ void CStage2::Load()
 	mainCamera->LookAt(camPos, playerPos, CVector::up);
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
-	mainCamera->AddCollider(mpField1->GetWallCol());
+	//mainCamera->AddCollider(mpField1->GetWallCol());
 
-	// ハテナブロック
-	CHatenaBlock* hatena = new CHatenaBlock
-	(
-		CVector(-900.0f, 8.0f, -888.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector hatenaPos = CVector(-900.0f, 8.0f, -888.0f);
-	if (hatena != nullptr)
-	{
-		hatena->SetStartPosition(hatenaPos);
-	}
-	AddTask(hatena);
-
-	// レンガブロック
-	CRengaBlock* renga = new CRengaBlock
-	(
-		CVector(-850.0f, 8.0f, -888.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	CVector rengaPos = CVector(-850.0f, 8.0f, -888.0f);
-	if (renga != nullptr)
-	{
-		renga->SetStartPosition(rengaPos);
-	}
-	AddTask(renga);
-
-
-	// 回転する床ギミック(プレイヤーに反応)
-	CRotateFloorGimmick* rotategimmick = new CRotateFloorGimmick(
-		CVector(-770.0f, 7.0f, -888.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		CVector(0.0f,90.0f,0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rotategimmick);
-
-	// 回転する床ギミック(常に)
-	CRotateFloorTimeGimmick* rotatetimegimmick = new CRotateFloorTimeGimmick(
-		CVector(-740.0f, 7.0f, -888.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		CVector(0.0f,90.0f,0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rotatetimegimmick);
-
-	//// 木1 //////////////////////////////////////////////
-
-	// 木1
-	CTree1Obj* tree1 = new CTree1Obj(
-		CVector(-1100.0f, 0.0f, 1100.0f),
-		CVector(10.0f, 10.0f, 10.0f),
-		CVector(0.0f, 0.0f, 0.0f));
-	AddTask(tree1);
-
-	// 木2
-	CTree1Obj* tree2 = new CTree1Obj(
-		CVector(-1000.0f, 0.0f, 1000.0f),
-		CVector(5.0f, 5.0f, 5.0f),
-		CVector(0.0f, 0.0f, 0.0f));
-	AddTask(tree2);
-
-
-	///////////////////////////////////////////////////////
 }
 
 // ステージ破棄
 void CStage2::Unload()
 {
 	CCamera* mainCamera = CCamera::MainCamera();
-	mainCamera->RemoveCollider(mpField1->GetWallCol());
+	//mainCamera->RemoveCollider(mpField1->GetWallCol());
 	// ベースステージ破棄処理
 	CStageBase::Unload();
 }

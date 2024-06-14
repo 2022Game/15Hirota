@@ -132,7 +132,9 @@ public:
 	void StageFlagfalse();
 
 	// ステージに入れるようにするフラグ
-	// ステージ1に入れるかどうかのフラグ
+	// ステージ2に入れるかどうかのフラグ
+	bool IsStartStage2();
+	// ステージ3に入れるかどうかのフラグ
 	bool IsStartStage3();
 
 	// 他のクラスで使っている為publicに置いておく
@@ -601,6 +603,8 @@ private:
 	// ステージ3に入るかどうか
 	bool mStartStage3;
 
+	// ステージ2に入れるか
+	bool mIsStartStage2;
 	// ステージ3に入れるか
 	bool mIsStartStage3;
 

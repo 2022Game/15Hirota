@@ -88,9 +88,9 @@
     <ClCompile Include="src\Game\CEnemyManager.cpp" />
     <ClCompile Include="src\Game\CExclamationMark.cpp" />
     <ClCompile Include="src\Game\CFallingObjects.cpp" />
-    <ClCompile Include="src\Game\CField1.cpp" />
-    <ClCompile Include="src\Game\CField_Worlds_1.cpp" />
-    <ClCompile Include="src\Game\CField_Worlds_1_FallCol.cpp" />
+    <ClCompile Include="src\Game\CPlainsStageField.cpp" />
+    <ClCompile Include="src\Game\CPlainsStageFallCol.cpp" />
+    <ClCompile Include="src\Game\CHopsAndHoopsField.cpp" />
     <ClCompile Include="src\Game\CFixedFlamethrower.cpp" />
     <ClCompile Include="src\Game\CFlame.cpp" />
     <ClCompile Include="src\Game\CFlamethrower.cpp" />
@@ -105,6 +105,8 @@
     <ClCompile Include="src\Game\CInvincibleBuffs.cpp" />
     <ClCompile Include="src\Game\CInvincibleObjectBase.cpp" />
     <ClCompile Include="src\Game\CJumpingKinoko.cpp" />
+    <ClCompile Include="src\Game\CJumpingKinokoLeftRight.cpp" />
+    <ClCompile Include="src\Game\CJumpingKinokoUpDown.cpp" />
     <ClCompile Include="src\Game\CJumpingObject.cpp" />
     <ClCompile Include="src\Game\CClimbWall.cpp" />
     <ClCompile Include="src\Game\CMajicSwordEnemy.cpp" />
@@ -116,7 +118,7 @@
     <ClCompile Include="src\Game\CMedalObjectBase.cpp" />
     <ClCompile Include="src\Game\CNeedleLeftRight.cpp" />
     <ClCompile Include="src\Game\CNeedleUpDown.cpp" />
-    <ClCompile Include="src\Game\CNumberField.cpp" />
+    <ClCompile Include="src\Game\COneShotFloorField.cpp" />
     <ClCompile Include="src\Game\CNumberFloor1.cpp" />
     <ClCompile Include="src\Game\CNumberFloorOnce.cpp" />
     <ClCompile Include="src\Game\CObstacle.cpp" />
@@ -143,6 +145,8 @@
     <ClCompile Include="src\Game\CStage1Button.cpp" />
     <ClCompile Include="src\Game\CStage1MenuObject.cpp" />
     <ClCompile Include="src\Game\CStage2.cpp" />
+    <ClCompile Include="src\Game\CStage2Button.cpp" />
+    <ClCompile Include="src\Game\CStage2MenuObject.cpp" />
     <ClCompile Include="src\Game\CStage3.cpp" />
     <ClCompile Include="src\Game\CStage3Button.cpp" />
     <ClCompile Include="src\Game\CStage3MenuObject.cpp" />
@@ -296,9 +300,9 @@
     <ClInclude Include="src\Game\CEnemyManager.h" />
     <ClInclude Include="src\Game\CExclamationMark.h" />
     <ClInclude Include="src\Game\CFallingObjects.h" />
-    <ClInclude Include="src\Game\CField1.h" />
-    <ClInclude Include="src\Game\CField_Worlds_1.h" />
-    <ClInclude Include="src\Game\CField_Worlds_1_FallCol.h" />
+    <ClInclude Include="src\Game\CPlainsStageField.h" />
+    <ClInclude Include="src\Game\CPlainsStageFallCol.h" />
+    <ClInclude Include="src\Game\CHopsAndHoopsField.h" />
     <ClInclude Include="src\Game\CFixedFlamethrower.h" />
     <ClInclude Include="src\Game\CFlame.h" />
     <ClInclude Include="src\Game\CFlamethrower.h" />
@@ -312,6 +316,8 @@
     <ClInclude Include="src\Game\CInvincibleBuffs.h" />
     <ClInclude Include="src\Game\CInvincibleObjectBase.h" />
     <ClInclude Include="src\Game\CJumpingKinoko.h" />
+    <ClInclude Include="src\Game\CJumpingKinokoLeftRight.h" />
+    <ClInclude Include="src\Game\CJumpingKinokoUpDown.h" />
     <ClInclude Include="src\Game\CJumpingObject.h" />
     <ClInclude Include="src\Game\CMajicSwordEnemy.h" />
     <ClInclude Include="src\Game\CMeat1.h" />
@@ -322,7 +328,7 @@
     <ClInclude Include="src\Game\CMedalObjectBase.h" />
     <ClInclude Include="src\Game\CNeedleLeftRight.h" />
     <ClInclude Include="src\Game\CNeedleUpDown.h" />
-    <ClInclude Include="src\Game\CNumberField.h" />
+    <ClInclude Include="src\Game\COneShotFloorField.h" />
     <ClInclude Include="src\Game\CNumberFloor1.h" />
     <ClInclude Include="src\Game\CNumberFloorOnce.h" />
     <ClInclude Include="src\Game\CObstacle.h" />
@@ -349,6 +355,8 @@
     <ClInclude Include="src\Game\CStage1Button.h" />
     <ClInclude Include="src\Game\CStage1MenuObject.h" />
     <ClInclude Include="src\Game\CStage2.h" />
+    <ClInclude Include="src\Game\CStage2Button.h" />
+    <ClInclude Include="src\Game\CStage2MenuObject.h" />
     <ClInclude Include="src\Game\CStage3.h" />
     <ClInclude Include="src\Game\CStage3Button.h" />
     <ClInclude Include="src\Game\CStage3MenuObject.h" />

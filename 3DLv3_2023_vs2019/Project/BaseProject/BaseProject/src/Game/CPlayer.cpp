@@ -190,6 +190,7 @@ CPlayer::CPlayer()
 	, mIsStage1Clear(false)
 	, mIsStage2Clear(false)
 	, mIsStage3Clear(false)
+	, mIsStartStage2(false)
 	, mIsStartStage3(false)
 	, mStaminaDepleted(false)
 	, mIsPlayedSlashSE(false)
@@ -537,8 +538,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			mIsStageClear = true;
 			mpColliderCapsule->SetEnable(false);
-			if (CGameManager::StageNo() == 0 ||
-				CGameManager::StageNo() == 1 ||
+			if (CGameManager::StageNo() == 1 ||
 				CGameManager::StageNo() == 2 ||
 				CGameManager::StageNo() == 3)
 			{
@@ -607,6 +607,11 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					ChangeState(EState::eFallDamege);
 					Position(0.0f, 15.0f, 325.0f);
 				}
+			}
+			// ステージ番号が2だったら
+			else if (currentStage == 2)
+			{
+
 			}
 			// ステージ番号が3だったら
 			else if (currentStage == 3)
@@ -905,6 +910,12 @@ bool CPlayer::IsStageClear()
 	return mIsStageClear;
 }
 
+// ステージ2に入れるかどうかのフラグ
+bool CPlayer::IsStartStage2()
+{
+	return mIsStartStage2;
+}
+
 // ステージ3に入れるかどうかのフラグ
 bool CPlayer::IsStartStage3()
 {
@@ -1036,7 +1047,7 @@ void CPlayer::UpdateReady()
 			mCharaStatus.hp = mCharaMaxStatus.hp;
 			ChangeState(EState::eIdle);
 
-			// ステージ1をクリアしたら
+			// ステージをクリアしたら
 			if (mStage1Clear || mStage2Clear || mStage3Clear)
 			{
 				// クリアジャンプに遷移
@@ -1612,6 +1623,8 @@ void CPlayer::UpdateClearEnd()
 					mStage1Clear = true;
 					mIsStage1Clear = false;
 
+					mIsStartStage2 = true;
+
 					if (mStage2Clear)
 					{
 						mIsStage2Clear = false;
@@ -1623,7 +1636,31 @@ void CPlayer::UpdateClearEnd()
 						mStage3Clear = false;
 					}
 
+					// ステージをクリア
+					CGameManager::StageClear();
+					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
+					ChangeState(EState::eReady);
+					Position(mStartPos);
+					mpColliderCapsule->SetEnable(true);
+				}
+				else if (CGameManager::StageNo() == 2)
+				{
+					mStage2Clear = true;
+					mIsStage2Clear = false;
+
 					mIsStartStage3 = true;
+
+					if (mStage1Clear)
+					{
+						mIsStage1Clear = false;
+						mStage1Clear = false;
+					}
+					else if (mStage3Clear)
+					{
+						mIsStage3Clear = false;
+						mStage3Clear = false;
+					}
+
 					// ステージをクリア
 					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
@@ -1776,8 +1813,21 @@ void CPlayer::UpdateResultEnd()
 		else if (mStage2Clear)
 		{
 			mIsStage2Clear = true;
-			//mpCutInResult->End();
-			ChangeState(EState::eIdle);
+			CResultAnnouncement* result = CResultAnnouncement::Instance();
+			bool resultEnd = result->IsResultOpened();
+			if (resultEnd)
+			{
+				mpCutInResult->End();
+				mpHpGauge->SetShow(true);
+				mpStaminaGauge->SetShow(true);
+				mpScreenItem->SetShow(true);
+				mpMeat->SetShow(true);
+				mIsStageClear = false;
+
+				mIsStage2Clear = false;
+				StageFlagfalse();
+				ChangeState(EState::eIdle);
+			}
 		}
 		else if (mStage3Clear)
 		{
@@ -1863,14 +1913,14 @@ void CPlayer::UpdateStartStageJump()
 // ステージ開始時のジャンプ終了
 void CPlayer::UpdateStartStageJumpEnd()
 {
-	// ステージ1ボタンのインスタンス
-	CStage1Button* button1 = CStage1Button::Instance();
-	// ステージ3ボタンのインスタンス
-	CStage3Button* button3 = CStage3Button::Instance();
-	// ステージ1ボタンのフラグを取得
-	bool stage1button1 = button1->IsStage1Button();
-	// ステージ3ボタンのフラグを取得
-	bool stage3button3 = button3->IsStage3Button();
+	//// ステージ1ボタンのインスタンス
+	//CStage1Button* button1 = CStage1Button::Instance();
+	//// ステージ3ボタンのインスタンス
+	//CStage3Button* button3 = CStage3Button::Instance();
+	//// ステージ1ボタンのフラグを取得
+	//bool stage1button1 = button1->IsStage1Button();
+	//// ステージ3ボタンのフラグを取得
+	//bool stage3button3 = button3->IsStage3Button();
 
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = -0.01f;
@@ -1888,6 +1938,15 @@ void CPlayer::UpdateStartStageJumpEnd()
 			SetAlpha(0.0f);
 			CFade::FadeIn();
 			CGameManager::Stage1();
+		}
+		else if (mStartStage2)
+		{
+			mScaleTime = 0.0f;
+			mMoveSpeedY = 0.0f;
+			Scale(CVector(1.0f, 1.0f, 1.0f));
+			SetAlpha(0.0f);
+			CFade::FadeIn();
+			CGameManager::Stage2();
 		}
 		else if (mStartStage3)
 		{
@@ -2896,6 +2955,10 @@ void CPlayer::StartStage(int stageNo)
 		// ステージ1のフラグをオン
 		mStartStage1 = true;
 	}
+	else if (stageNo == 2 && mIsStartStage2)
+	{
+		mStartStage2 = true;
+	}
 	// ステージ3を開始したら、ステージ3のフラグをオン
 	else if (stageNo == 3 && mIsStartStage3)
 	{
@@ -2993,7 +3056,6 @@ void CPlayer::CheckUnderFootObject()
 void CPlayer::Update()
 {
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
-	CDebugPrint::Print("stageNo:%d\n", CGameManager::StageNo());
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
@@ -3003,6 +3065,7 @@ void CPlayer::Update()
 
 	// ステージ3をクリアした状態
 	// falseだとステージに入れない
+	mIsStartStage2 = true;
 	mIsStartStage3 = true;
 
 	////////////////////////////////////////////////////////////////////////////////////////

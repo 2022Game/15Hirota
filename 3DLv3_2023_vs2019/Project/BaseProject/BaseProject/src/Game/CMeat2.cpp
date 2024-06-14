@@ -5,6 +5,7 @@
 #include "Maths.h"
 #include "Easing.h"
 #include "CStageManager.h"
+#include "CGameManager.h"
 #include "CPlayer.h"
 
 // アイテムの移動時間
@@ -14,28 +15,29 @@
 // 肉クラスのインスタンス
 CMeat2* CMeat2::spInstance = nullptr;
 
+int CMeat2::sScore = 0;
+
 CMeat2* CMeat2::Instance()
 {
 	return spInstance;
 }
 
+// コンストラクタ
 CMeat2::CMeat2(const CVector& pos, const CVector& rot, const CVector& scale)
 	: mState(EState::eIdle)
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
 	, mGetCameraDist(0.0f)
 	, mStartPos(CVector::zero)
-	, mMoveSpeed(CVector::zero)
-	, mMoveVector(CVector::zero)
 	, mGetStartPos(CVector::zero)
 	, mGetTargetPos(CVector::zero)
-	, mTotalMovement(CVector::zero)
-	, mTargetDir(CVector::zero)
 	, mMeat2(false)
 	, mIsGround(false)
 {
 	// インスタンスの設定
 	spInstance = this;
+	// スコア
+	sScore;
 
 	// 肉アイテムのモデル取得
 	mpMeat = CResourceManager::Get<CModel>("Meat");
@@ -63,6 +65,7 @@ CMeat2::CMeat2(const CVector& pos, const CVector& rot, const CVector& scale)
 	mStartPos = Position();
 }
 
+// デストラクタ
 CMeat2::~CMeat2()
 {
 	//spInstance = nullptr;
@@ -70,6 +73,7 @@ CMeat2::~CMeat2()
 	SAFE_DELETE(mpMeatSphere);
 }
 
+// 状態変更処理
 void CMeat2::ChangeState(EState state)
 {
 	mState = state;
@@ -77,13 +81,17 @@ void CMeat2::ChangeState(EState state)
 	mElapsedTime = 0.0f;
 }
 
+// 衝突処理
 void CMeat2::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
+	// コライダーに当たった
 	if (self == mpMeatSphere)
 	{
+		// プレイヤー情報
 		CPlayer* player = dynamic_cast<CPlayer*>(other->Owner());
 		if (player)
 		{
+			// 取得状態に変更
 			ChangeState(EState::eGet);
 		}
 	}
@@ -94,11 +102,25 @@ void CMeat2::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	}
 }
 
+// 肉が消えたかどうか確認
 bool CMeat2::IsMeat2() const
 {
 	return mMeat2;
 }
 
+// スコアを設定
+void CMeat2::SetScore(int score)
+{
+	sScore = score;
+}
+
+// スコアを取得
+int CMeat2::GetScore()
+{
+	return sScore;
+}
+
+// 待機状態
 void CMeat2::UpdateIdle()
 {
 	float rot = 1.0f;
@@ -107,6 +129,7 @@ void CMeat2::UpdateIdle()
 	mIsGround = false;
 }
 
+// 取得状態
 void CMeat2::UpdateGet()
 {
 	// 現在のカメラを取得
@@ -167,10 +190,14 @@ void CMeat2::UpdateGet()
 		// 移動時間を経過した
 		else
 		{
+			if (!mMeat2)
+			{
+				sScore += 1000;
+			}
+			mMeat2 = true;
 			// アイテムボックスの位置まで移動したら、削除
 			Position(mGetTargetPos);
-			SetAlpha(0.0f);
-			mMeat2 = true;
+			Kill();
 		}
 
 		// カメラの方向へ向ける
@@ -186,6 +213,7 @@ void CMeat2::UpdateGet()
 	}
 }
 
+// 更新処理
 void CMeat2::Update()
 {
 	switch (mState)
@@ -199,7 +227,7 @@ void CMeat2::Update()
 	}
 }
 
-// 描画
+// 描画処理
 void CMeat2::Render()
 {
 	// 取得時の移動処理中のみ、デプステストをオフにして。

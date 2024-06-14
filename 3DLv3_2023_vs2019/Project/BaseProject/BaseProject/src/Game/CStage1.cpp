@@ -1,5 +1,5 @@
 #include "CStage1.h"
-#include "CNumberField.h"
+#include "COneShotFloorField.h"
 #include "CPlayer.h"
 #include "CNumberFloor1.h"
 #include "CNumberFloorOnce.h"
@@ -53,7 +53,7 @@ void CStage1::Load()
 	// ”wŒiFÝ’è
 	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-	CNumberField* field = new CNumberField();
+	COneShotFloorField* field = new COneShotFloorField();
 	field->Scale(1.0f, 1.0f, 1.0f);
 	field->Position(0.0f, -200.0f, 0.0f);
 	AddTask(field);

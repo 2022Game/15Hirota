@@ -1,16 +1,16 @@
-#ifndef CNUMBERFIELD_H
-#define CNUMBERFIELD_H
+#ifndef CONESHOTFLOORFIELD_H
+#define CONESHOTFLOORFIELD_H
 
 #include "CObjectBase.h"
 #include "CColliderMesh.h"
 #include "CColliderSphere.h"
 
 // 「連続ジャンプステージ」
-class CNumberField : public CObjectBase
+class COneShotFloorField : public CObjectBase
 {
 public: 
-	CNumberField();
-	~CNumberField();
+	COneShotFloorField();
+	~COneShotFloorField();
 
 	  // 壁のコライダー取得
 	 // CColliderMesh* GetWallCol() const;

@@ -124,13 +124,25 @@ void CMeatUI::Render()
 		{
 			item1->Render();
 		}
+		else
+		{
+			item1->SetEnable(false);
+		}
 		if (Meat2)
 		{
 			item2->Render();
 		}
+		else
+		{
+			item2->SetEnable(false);
+		}
 		if (Meat3)
 		{
 			item3->Render();
+		}
+		else
+		{
+			item3->SetEnable(false);
 		}
 	}
 

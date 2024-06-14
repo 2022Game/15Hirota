@@ -10,22 +10,35 @@
 class CMeat2 : public CMeatObjectBase
 {
 public:
+	// コンストラクタ
 	CMeat2(const CVector& pos, const CVector& rot, const CVector& scale);
+	// デストラクタ
 	~CMeat2();
 
+	// 衝突処理
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit);
 
 	//インスタンスのポインタの取得
 	static CMeat2* Instance();
 
+	// 肉を取得したか
 	bool IsMeat2() const;
 
+	// スコアを設定
+	static void SetScore(int score);
+	// スコアを取得
+	static int GetScore();
+
+	// 更新処理
 	void Update() override;
+	// 描画処理
 	void Render() override;
 
 private:
 	// インスタンス
 	static CMeat2* spInstance;
+	// スコア
+	static int sScore;
 
 	// モデル関連
 	// 肉のモデル
@@ -53,13 +66,8 @@ private:
 	CVector mGetStartPos;
 	// 取得時のアイテムの移動先の座標
 	CVector mGetTargetPos;
-	// 移動方向
-	CVector mMoveVector;
-	// 見る方向
-	CVector mTargetDir;
-	CVector mMoveSpeed;
+	// 初期位置
 	CVector mStartPos;
-	CVector mTotalMovement;
 
 	CVector2 mPosition;
 

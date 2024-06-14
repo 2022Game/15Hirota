@@ -1,15 +1,15 @@
-#ifndef CFIELD_WORLDS_1_FALLCOL
-#define CFIELD_WORLDS_1_FALLCOL
+#ifndef CPLAINSSTAGEFALLCOL_H
+#define CPLAINSSTAGEFALLCOL_H
 
 #include "CObjectBase.h"
 #include "CColliderMesh.h"
 
 // 「連続ジャンプステージ」の落下コライダー
-class CField_Worlds_1_FallCol : public CObjectBase
+class CPlainsStageFallCol : public CObjectBase
 {
 public:
-	CField_Worlds_1_FallCol();
-	~CField_Worlds_1_FallCol();
+	CPlainsStageFallCol();
+	~CPlainsStageFallCol();
 
 	void Update() override;
 	void Render() override;

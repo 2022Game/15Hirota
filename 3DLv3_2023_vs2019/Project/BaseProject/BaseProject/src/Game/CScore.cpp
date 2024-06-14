@@ -4,6 +4,9 @@
 #include "CTaskManager.h"
 #include "CVanguard.h"
 #include "CBlueMedal.h"
+#include "CMeat1.h"
+#include "CMeat2.h"
+#include "CMeat3.h"
 
 // スコアのインスタンス
 CScore* CScore::spInstance = nullptr;
@@ -100,7 +103,11 @@ void CScore::Update()
         {
             // 現在のスコアの計算
             // ヴァンガードスコア + ブルーメダルスコア
-            mScore = CVanguard::GetScore() + CBlueMedal::GetScore();
+            mScore = CVanguard::GetScore() 
+                + CBlueMedal::GetScore()
+                + CMeat1::GetScore()
+                + CMeat2::GetScore()
+                + CMeat3::GetScore();
         }
     }
 

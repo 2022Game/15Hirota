@@ -1,8 +1,8 @@
-#include "CField_Worlds_1_FallCol.h"
+#include "CPlainsStageFallCol.h"
 #include "CCollisionManager.h"
 #include "CCamera.h"
 
-CField_Worlds_1_FallCol::CField_Worlds_1_FallCol()
+CPlainsStageFallCol::CPlainsStageFallCol()
 	: CObjectBase(ETag::eFall,ETaskPriority::eFall)
 {
 	// 落下判定用のコライダー
@@ -12,17 +12,17 @@ CField_Worlds_1_FallCol::CField_Worlds_1_FallCol()
 	mpFallCol->SetCollisionLayers({ ELayer::eDamageCol });
 }
 
-CField_Worlds_1_FallCol::~CField_Worlds_1_FallCol()
+CPlainsStageFallCol::~CPlainsStageFallCol()
 {
 	SAFE_DELETE(mpFallCol);
 }
 
-void CField_Worlds_1_FallCol::Update()
+void CPlainsStageFallCol::Update()
 {
 
 }
 
-void CField_Worlds_1_FallCol::Render()
+void CPlainsStageFallCol::Render()
 {
 
 }

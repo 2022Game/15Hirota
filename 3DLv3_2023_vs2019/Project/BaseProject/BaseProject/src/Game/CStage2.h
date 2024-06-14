@@ -2,9 +2,7 @@
 #define CSTAGE2_H
 #include "CStageBase.h"
 
-class CField1;
-
-// ステージ1 「大きな平原」
+// ステージ2 「ホップ＆フープス」
 class CStage2 : public CStageBase
 {
 public:
@@ -19,6 +17,6 @@ public:
 	void Unload() override;
 
 private:
-	CField1* mpField1;
+
 };
 #endif
