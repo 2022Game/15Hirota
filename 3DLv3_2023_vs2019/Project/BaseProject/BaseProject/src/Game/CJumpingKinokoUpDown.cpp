@@ -3,13 +3,14 @@
 #include "CInput.h"
 #include "Maths.h"
 #include "Easing.h"
+#include "CGameManager.h"
 
 #define SHRINK_SCALE 0.8f
 #define SHRINK_TIME 0.15f
 #define RETURN_TIME 0.8f
 
 // コンストラクタ
-CJumpingKinokoUpDown::CJumpingKinokoUpDown(const CVector& pos, const CVector& rot, const CVector& scale,
+CJumpingKinokoUpDown::CJumpingKinokoUpDown(const CVector& pos, const CVector& scale, const CVector& rot,
 	const CVector& move, float moveTime, ETag reactionTag, ELayer reactionLayer)
 	: CObjectBase(ETag::eJumpingObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 	, mState(EState::eIdle)
@@ -20,6 +21,7 @@ CJumpingKinokoUpDown::CJumpingKinokoUpDown(const CVector& pos, const CVector& ro
 	, mDefaultPos(pos)
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
+	, mMoveElapsedTime(0.0f)
 	, mIsCollisionPlayer(false)
 {
 	// 跳ねるキノコのモデル取得
@@ -71,23 +73,23 @@ void CJumpingKinokoUpDown::Collision(CCollider* self, CCollider* other, const CH
 			if (mState == EState::eIdle && KeyPush)
 			{
 				CPlayer* player = dynamic_cast<CPlayer*>(owner);
-				if (player)
+				bool jumping = player->IsDeath();
+				bool game = CGameManager::GameState();
+				if (!jumping)
 				{
 					player->UpdateHighJumpingStart();
+					ChangeState(EState::eBounce);
 				}
-				ChangeState(EState::eBounce);
 			}
 			else if (mState == EState::eIdle)
 			{
 				CPlayer* player = dynamic_cast<CPlayer*>(owner);
-				if (player)
+				bool jumping = player->IsDeath();
+				if (!jumping)
 				{
-					if (player)
-					{
-						player->UpdateJumpingStart();
-					}
+					player->UpdateJumpingStart();
+					ChangeState(EState::eBounce);
 				}
-				ChangeState(EState::eBounce);
 			}
 			mIsCollisionPlayer = true;
 		}
@@ -178,13 +180,13 @@ void CJumpingKinokoUpDown::UpdateBounce()
 // 更新処理
 void CJumpingKinokoUpDown::Update()
 {
-	float per = mElapsedTime / mMoveTime;
+	float per = mMoveElapsedTime / mMoveTime;
 	Position(mDefaultPos + mMoveVec * sinf(M_PI * 2.0f * per));
 
-	mElapsedTime += 1.0f / 60.0f;
-	if (mElapsedTime >= mMoveTime)
+	mMoveElapsedTime += 1.0f / 60.0f;
+	if (mMoveElapsedTime >= mMoveTime)
 	{
-		mElapsedTime -= mMoveTime;
+		mMoveElapsedTime -= mMoveTime;
 	}
 
 	// 現在の状態に合わせて処理を切り替え

@@ -2,6 +2,8 @@
 #define CSTAGE2_H
 #include "CStageBase.h"
 
+class CHopsAndHoopsFallCol;
+
 // ステージ2 「ホップ＆フープス」
 class CStage2 : public CStageBase
 {
@@ -17,6 +19,6 @@ public:
 	void Unload() override;
 
 private:
-
+	CHopsAndHoopsFallCol* mpHopsAndHoopsFallCol;
 };
 #endif

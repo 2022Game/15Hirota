@@ -216,7 +216,7 @@ void CGameManager::UpdateStage2()
 	CStageManager::LoadStage(mStageNo);
 
 	mElapsedStageTime += Time::DeltaTime();
-	if (mElapsedStageTime > 3.0f)
+	if (mElapsedStageTime > 2.0f)
 	{
 		ChangeState(EGameState::eGame);
 	}

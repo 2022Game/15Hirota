@@ -132,11 +132,11 @@ void CStage3::Load()
 	// 回転する床の後ろコライダー(反対)
 	CResourceManager::Load<CModel>("RotateFloorBackColOpposition",	"Field\\Gimmick\\Rotate\\RotateFloorBackCol(Opposition).obj");
 	// 火炎放射器(土台)
-	CResourceManager::Load<CModel>("FlamethrowerModel",				"Field\\Gimmick\\Flamethrower(foundation).obj");
+	CResourceManager::Load<CModel>("FlamethrowerModel",				"Field\\Gimmick\\Fire\\Flamethrower(foundation).obj");
 	// 火炎放射器(タンク)
-	CResourceManager::Load<CModel>("FlamethrowerTank",				"Field\\Gimmick\\Flamethrower(tank).obj");
+	CResourceManager::Load<CModel>("FlamethrowerTank",				"Field\\Gimmick\\Fire\\Flamethrower(tank).obj");
 	// 火炎放射器(コライダー)
-	CResourceManager::Load<CModel>("FlamethrowerCol",				"Field\\Gimmick\\Flamethrower(WallCol).obj");
+	CResourceManager::Load<CModel>("FlamethrowerCol",				"Field\\Gimmick\\Fire\\Flamethrower(WallCol).obj");
 	// セーブポイントモデル
 	CResourceManager::Load<CModel>("SavePoint",						"Field\\Gimmick\\SavePoint.obj");
 	// ゴールポストモデル

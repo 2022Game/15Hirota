@@ -40,9 +40,9 @@ void CStage1::Load()
 	//CResourceManager::Load<CModel>("TreasureChestTwo", "Field\\Gimmick\\TreasureChestTwo.obj");		// 宝箱(蓋)
 	//CResourceManager::Load<CModel>("TreasureChestCol", "Field\\Gimmick\\TreasureChest(FloorCol).obj");	// 宝箱(蓋コライダー)
 	//CResourceManager::Load<CModel>("TreasureChestWallCol", "Field\\Gimmick\\TreasureChest(WallCol).obj");	// 宝箱(壁コライダー)
-	CResourceManager::Load<CModel>("FlamethrowerModel", "Field\\Gimmick\\Flamethrower(foundation).obj");// 火炎放射器(土台)
-	CResourceManager::Load<CModel>("FlamethrowerTank", "Field\\Gimmick\\Flamethrower(tank).obj");		// 火炎放射器(タンク)
-	CResourceManager::Load<CModel>("FlamethrowerCol", "Field\\Gimmick\\Flamethrower(WallCol).obj");	// 火炎放射器(コライダー)
+	CResourceManager::Load<CModel>("FlamethrowerModel", "Field\\Gimmick\\Fire\\Flamethrower(foundation).obj");// 火炎放射器(土台)
+	CResourceManager::Load<CModel>("FlamethrowerTank", "Field\\Gimmick\\Fire\\Flamethrower(tank).obj");		// 火炎放射器(タンク)
+	CResourceManager::Load<CModel>("FlamethrowerCol", "Field\\Gimmick\\Fire\\Flamethrower(WallCol).obj");	// 火炎放射器(コライダー)
 	CResourceManager::Load<CModel>("SavePoint", "Field\\Gimmick\\SavePoint.obj");				// セーブポイントモデル
 	CResourceManager::Load<CModel>("GoalPost", "Field\\Object\\GoalPost.obj");					// ゴールポストモデル
 	CResourceManager::Load<CModel>("GoalCube", "Field\\Object\\GoalCube.obj");					// ゴールブロックモデル

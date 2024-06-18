@@ -826,6 +826,9 @@
     <ClCompile Include="src\Game\CStage2MenuObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CHopsAndHoopsFallCol.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\Hops and Hoops</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1451,6 +1454,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CStage2MenuObject.h">
       <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CHopsAndHoopsFallCol.h">
+      <Filter>ソース ファイル\Game\Field\StageField\Hops and Hoops</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -17,7 +17,7 @@ public:
 	/// <param name="scale">大きさ</param>
 	/// <param name="move">移動距離</param>
 	/// <param name="moveTime">移動時間</param>
-	CJumpingKinokoUpDown(const CVector& pos, const CVector& rot, const CVector& scale,
+	CJumpingKinokoUpDown(const CVector& pos, const CVector& scale, const CVector& rot,
 		const CVector& move, float moveTime, ETag reactionTag, ELayer reactionLayer);
 	// デストラクタ
 	~CJumpingKinokoUpDown();
@@ -29,7 +29,7 @@ public:
 	/// <param name="other">相手</param>
 	/// <param name="hit">衝突情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
-
+	
 	// 更新処理
 	void Update() override;
 	// 描画処理
@@ -73,6 +73,8 @@ private:
 	int mStateStep;
 	// 経過時間計測用
 	float mElapsedTime;
+	// 移動時間計測用
+	float mMoveElapsedTime;
 	// 移動時間
 	float mMoveTime;
 	// 衝突しているか

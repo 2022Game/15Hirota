@@ -169,6 +169,7 @@ CPlayer::CPlayer()
 	, mDash(false)
 	, mClimb(false)
 	, mHpHit(false)
+	, mIsDeath(false)
 	, mIsAttack(false)
 	, mStartStage1(false)
 	, mStartStage2(false)
@@ -260,19 +261,19 @@ CPlayer::CPlayer()
 	mpColliderCapsule = new CColliderCapsule
 	(
 		this, ELayer::ePlayer,
-		CVector(0.0f, 6.0f, 2.0f),
+		CVector(0.0f, 8.0f, 2.0f),
 		CVector(0.0f, PLAYER_HEIGHT, 2.0f),
 		5.0f,
 		true,
 		1.0f
 	);
-	mpColliderCapsule->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol, 
+	mpColliderCapsule->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol,
 		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
 		ELayer::eSavePoint1, ELayer::eSavePoint2, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall,
-		ELayer::eMedalCol, ELayer::eMeatCol});
+		ELayer::eMedalCol, ELayer::eMeatCol,ELayer::eFall });
 	mpColliderCapsule->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
 		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint1, ETag::eSavePoint2, ETag::eObstacle,ETag::eJumpingObject,
-		ETag::eNeedleObject, ETag::eMeat, ETag::eSeesaw });
+		ETag::eNeedleObject, ETag::eMeat, ETag::eSeesaw, ETag::eFall, });
 	//mpColliderCapsule->Position(0.0f, 5.0f, 1.0f);
 	
 
@@ -290,10 +291,10 @@ CPlayer::CPlayer()
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, 
 		ELayer::eKickCol, ELayer::eBulletCol,ELayer::eNeedleCol,
-		ELayer::eFlame,ELayer::eFall, ELayer::eStageMenuObject, ELayer::eBiribiri});
+		ELayer::eFlame, ELayer::eStageMenuObject, ELayer::eBiribiri});
 	mpDamageCol->SetCollisionTags({ ETag::eEnemyWeapon, 
 		ETag::eEnemy, ETag::eBullet,ETag::eRideableObject, ETag::eFlame,
-		ETag::eFall, ETag::eStageMenuObject,ETag::eNeedleObject, ETag::eBiribiri});
+		ETag::eStageMenuObject,ETag::eNeedleObject, ETag::eBiribiri});
 	// ダメージを受けるコライダーを少し上へずらす
 	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
 	const CMatrix* spineMtx1 = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -418,6 +419,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					else
 					{
 						mDamageObject = true;
+						mIsDeath = true;
 						ChangeState(EState::eDeath);
 					}
 				}
@@ -427,15 +429,19 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// プレイヤーが触れたらジャンプするコライダー
 		else if (other->Layer() == ELayer::eJumpingCol)
 		{
-			if (mState == EState::eJumpEnd)
+			if (mState == EState::eFalling)
 			{
-				//mMoveSpeedY = 0.0f;
-				Position(Position() + hit.adjust);
+				ChangeState(EState::eJumpingStart);
 			}
-			else
-			{
-				Position(Position() + hit.adjust);
-			}
+			//// 反転した押し戻しベクトルと上方向のベクトルの内積(角度)を求める
+			//float dot = CVector::Dot(-hit.adjust.Normalized(), CVector::up);
+			//// 上に乗ったと判断するためのcos関数に渡した角度を求める
+			//float cosAngle = cosf(Math::DegreeToRadian(10.0f));
+			//// 求めた角度が指定した角度の範囲内であれば、
+			//if (dot >= cosAngle)
+			//{
+			//	Position(Position() + hit.adjust);
+			//}
 		}
 		// ブロックのコライダー
 		else if (other->Layer() == ELayer::eBlockCol)
@@ -468,6 +474,60 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			else if (other->Tag() == ETag::eNeedleObject)
 			{
 				Position(Position() + hit.adjust);
+			}
+		}
+		// 落下判定用のコライダーに触れたら
+		else if (other->Layer() == ELayer::eFall)
+		{
+			// ステージ番号
+			int currentStage = CGameManager::StageNo();
+
+			// ステージ番号が1だったら
+			if (currentStage == 1)
+			{
+				// 初期値点に戻す
+				Position(0.0f, 17.0f, -70.0f);
+				ChangeState(EState::eFallDamege);
+				// 1面のセーブポイント
+				if (mSavePoint1)
+				{
+					ChangeState(EState::eFallDamege);
+					Position(0.0f, 15.0f, 325.0f);
+				}
+			}
+			// ステージ番号が2だったら
+			else if (currentStage == 2)
+			{
+				// 初期値点に戻す
+				Position(0.0f, 20.0f, 50.0f);
+				ChangeState(EState::eFallDamege);
+				// 2面のセーブポイント
+				if (mSavePoint1)
+				{
+					ChangeState(EState::eFallDamege);
+					Position(0.0f, 20.0f, 480.0f);
+				}
+			}
+			// ステージ番号が3だったら
+			else if (currentStage == 3)
+			{
+				// 3面のセーブポイント1と2のチェック
+				if (mSavePoint1 && mSavePoint2 || !mSavePoint1 && mSavePoint2)
+				{
+					// SavePoint2がtrueならセーブポイント2のポジションを適用
+					Position(0.0f, 440.0f, -1890.0f);
+				}
+				else if (mSavePoint1)
+				{
+					// セーブポイント1だけがtrueならセーブポイント1のポジションを適用
+					Position(0.0f, 320.0f, -1173.0f);
+				}
+				else
+				{
+					// 初期値点に戻す
+					Position(190.0f, 139.0f, 269.0f);
+					ChangeState(EState::eFallDamege);
+				}
 			}
 		}
 		// 攻撃力アップポーション
@@ -589,52 +649,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			ChangeState(EState::eHitObj);
 		}
-		// 落下判定用のコライダーに触れたら
-		else if (other->Layer() == ELayer::eFall)
-		{
-			// ステージ番号
-			int currentStage = CGameManager::StageNo();
-
-			// ステージ番号が1だったら
-			if (currentStage == 1)
-			{
-				// 初期値点に戻す
-				Position(0.0f, 17.0f, -70.0f);
-				ChangeState(EState::eFallDamege);
-				// 1面のセーブポイント
-				if (mSavePoint1)
-				{
-					ChangeState(EState::eFallDamege);
-					Position(0.0f, 15.0f, 325.0f);
-				}
-			}
-			// ステージ番号が2だったら
-			else if (currentStage == 2)
-			{
-
-			}
-			// ステージ番号が3だったら
-			else if (currentStage == 3)
-			{
-				// 3面のセーブポイント1と2のチェック
-				if (mSavePoint1 && mSavePoint2 || !mSavePoint1 && mSavePoint2)
-				{
-					// SavePoint2がtrueならセーブポイント2のポジションを適用
-					Position(0.0f, 440.0f, -1890.0f);
-				}
-				else if (mSavePoint1)
-				{
-					// セーブポイント1だけがtrueならセーブポイント1のポジションを適用
-					Position(0.0f, 320.0f, -1173.0f);
-				}
-				else
-				{
-					// 初期値点に戻す
-					Position(190.0f, 139.0f, 269.0f);
-					ChangeState(EState::eFallDamege);
-				}
-			}
-		}
 		// 炎に当たったら
 		else if (other->Layer() == ELayer::eFlame)
 		{
@@ -751,6 +765,7 @@ void CPlayer::TakeDamage(int damage)
 	// HPが0になったら
 	if (mCharaStatus.hp <= 0)
 	{
+		mIsDeath = true;
 		ChangeState(EState::eDeath);
 	}
 }
@@ -884,6 +899,12 @@ bool CPlayer::IsJumping()
 bool CPlayer::IsAttack()
 {
 	return mIsAttack;
+}
+
+// 死亡したかどうか
+bool CPlayer::IsDeath()
+{
+	return mIsDeath;
 }
 
 // ステージ1をクリアしたか
@@ -1990,6 +2011,7 @@ void CPlayer::UpdateDeathEnd()
 	if (IsAnimationFinished())
 	{
 		mpCutInDeath->End();
+		mIsDeath = false;
 		mSavePoint1 = false;
 		mSavePoint2 = false;
 		mDamageObject = false;
@@ -2062,6 +2084,7 @@ void CPlayer::UpdateHit()
 		{
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
+			mIsDeath = true;
 			ChangeState(EState::eDeath);
 		}
 	}
@@ -2110,6 +2133,7 @@ void CPlayer::UpdateHitBullet()
 			mElapsedTime = 0.0f;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
+			mIsDeath = true;
 			ChangeState(EState::eDeath);
 		}
 	}
@@ -2161,6 +2185,7 @@ void CPlayer::UpdateHitSword()
 				mElapsedTime = 0.0f;
 				mElapsedTimeCol = 0.0f;
 				mpDamageCol->SetEnable(false);
+				mIsDeath = true;
 				ChangeState(EState::eDeath);
 			}
 		}
@@ -2213,6 +2238,7 @@ void CPlayer::UpdateHitObj()
 				mElapsedTime = 0.0f;
 				mElapsedTimeCol = 0.0f;
 				mpDamageCol->SetEnable(false);
+				mIsDeath = true;
 				ChangeState(EState::eDeath);
 			}
 		}
@@ -2252,6 +2278,7 @@ void CPlayer::UpdateFallDamage()
 				mFallDamage = false;
 				mElapsedTimeCol = 0.0f;
 				mpDamageCol->SetEnable(false);
+				mIsDeath = true;
 				ChangeState(EState::eDeath);
 			}
 		}
@@ -2779,6 +2806,14 @@ void CPlayer::UpdateJumping()
 		}
 	}
 
+	if (mCharaStatus.hp <= 0)
+	{
+		mElapsedTime = 0.0f;
+		mElapsedTimeCol = 0.0f;
+		mIsDeath = true;
+		ChangeState(EState::eDeath);
+	}
+
 	if (mMoveSpeedY <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
@@ -2799,9 +2834,29 @@ void CPlayer::UpdateJumpingEnd()
 		}
 	}
 
+	if (mCharaStatus.hp <= 0)
+	{
+		mElapsedTime = 0.0f;
+		mElapsedTimeCol = 0.0f;
+		mIsDeath = true;
+		ChangeState(EState::eDeath);
+	}
+
 	if (IsAnimationFinished())
 	{
-		ChangeState(EState::eIdle);
+		if (mCharaStatus.hp > 0)
+		{
+			mElapsedTime = 0.0f;
+			mElapsedTimeCol = 0.0f;
+			ChangeState(EState::eIdle);
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mElapsedTime = 0.0f;
+			mElapsedTimeCol = 0.0f;
+			mIsDeath = true;
+			ChangeState(EState::eDeath);
+		}
 	}
 }
 
@@ -2837,6 +2892,14 @@ void CPlayer::UpdateHighJumping()
 		}
 	}
 
+	if (mCharaStatus.hp <= 0)
+	{
+		mElapsedTime = 0.0f;
+		mElapsedTimeCol = 0.0f;
+		mIsDeath = true;
+		ChangeState(EState::eDeath);
+	}
+
 	if (mMoveSpeedY <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
@@ -2857,9 +2920,29 @@ void CPlayer::UpdateHighJumpingEnd()
 		}
 	}
 
+	if (mCharaStatus.hp <= 0)
+	{
+		mElapsedTime = 0.0f;
+		mElapsedTimeCol = 0.0f;
+		mIsDeath = true;
+		ChangeState(EState::eDeath);
+	}
+
 	if (IsAnimationFinished())
 	{
-		ChangeState(EState::eIdle);
+		if (mCharaStatus.hp > 0)
+		{
+			mElapsedTime = 0.0f;
+			mElapsedTimeCol = 0.0f;
+			ChangeState(EState::eIdle);
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mElapsedTime = 0.0f;
+			mElapsedTimeCol = 0.0f;
+			mIsDeath = true;
+			ChangeState(EState::eDeath);
+		}
 	}
 }
 
@@ -3055,6 +3138,7 @@ void CPlayer::CheckUnderFootObject()
 // 更新
 void CPlayer::Update()
 {
+	CDebugPrint::Print("mIsDeath:%s\n", mIsDeath ? "true" : "false");
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
@@ -3094,7 +3178,7 @@ void CPlayer::Update()
 		}
 	}*/
 
-	if (mMoveSpeedY <= -3.5f)
+	if (mMoveSpeedY <= -4.0f)
 	{
 		ChangeState(EState::eFalling);
 	}

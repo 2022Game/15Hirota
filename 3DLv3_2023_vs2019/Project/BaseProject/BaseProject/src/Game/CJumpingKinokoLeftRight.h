@@ -17,7 +17,7 @@ public:
 	/// <param name="scale">大きさ</param>
 	/// <param name="move">移動距離</param>
 	/// <param name="moveTime">移動時間</param>
-	CJumpingKinokoLeftRight(const CVector& pos, const CVector& rot, const CVector& scale,
+	CJumpingKinokoLeftRight(const CVector& pos, const CVector& scale, const CVector& rot,
 		const CVector& move, float moveTime, ETag reactionTag, ELayer reactionLayer);
 	// デストラクタ
 	~CJumpingKinokoLeftRight();
@@ -73,6 +73,8 @@ private:
 	int mStateStep;
 	// 経過時間計測用
 	float mElapsedTime;
+	// 移動時間計測用
+	float mMoveElapsedTime;
 	// 移動時間
 	float mMoveTime;
 	// 衝突しているか

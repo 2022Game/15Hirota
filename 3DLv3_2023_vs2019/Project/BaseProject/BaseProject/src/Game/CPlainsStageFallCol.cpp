@@ -9,7 +9,7 @@ CPlainsStageFallCol::CPlainsStageFallCol()
 	CModel* fallCol = CResourceManager::Get<CModel>("FallCol");
 	mpFallCol = new CColliderMesh(this, ELayer::eFall, fallCol, true);
 	mpFallCol->SetCollisionTags({ ETag::ePlayer });
-	mpFallCol->SetCollisionLayers({ ELayer::eDamageCol });
+	mpFallCol->SetCollisionLayers({ ELayer::ePlayer });
 }
 
 CPlainsStageFallCol::~CPlainsStageFallCol()

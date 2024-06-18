@@ -118,6 +118,8 @@ public:
 	bool IsJumping();
 	// 攻撃したかどうか
 	bool IsAttack();
+	// 死亡したかどうか
+	bool IsDeath();
 
 	// ステージ1をクリアしたかどうか
 	bool IsStage1Clear();
@@ -594,6 +596,8 @@ private:
 	bool mIsStageClear;
 	// ダッシュジャンプに移行できるかどうか
 	bool mIsDashJump;
+	// 死亡したか
+	bool mIsDeath;
 	
 
 	// ステージ1に入るかどうか

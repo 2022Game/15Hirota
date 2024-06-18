@@ -9,7 +9,7 @@
 #define RETURN_TIME 0.8f
 
 // コンストラクタ
-CJumpingKinokoLeftRight::CJumpingKinokoLeftRight(const CVector& pos, const CVector& rot, const CVector& scale,
+CJumpingKinokoLeftRight::CJumpingKinokoLeftRight(const CVector& pos, const CVector& scale, const CVector& rot,
 	const CVector& move, float moveTime, ETag reactionTag, ELayer reactionLayer)
 	: CObjectBase(ETag::eJumpingObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 	, mState(EState::eIdle)
@@ -20,6 +20,7 @@ CJumpingKinokoLeftRight::CJumpingKinokoLeftRight(const CVector& pos, const CVect
 	, mDefaultPos(pos)
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
+	, mMoveElapsedTime(0.0f)
 	, mIsCollisionPlayer(false)
 {
 	// 跳ねるキノコのモデル取得
@@ -178,13 +179,13 @@ void CJumpingKinokoLeftRight::UpdateBounce()
 // 更新処理
 void CJumpingKinokoLeftRight::Update()
 {
-	float per = mElapsedTime / mMoveTime;
+	float per = mMoveElapsedTime / mMoveTime;
 	Position(mDefaultPos + mMoveVec * sinf(M_PI * 2.0f * per));
 
-	mElapsedTime += 1.0f / 60.0f;
-	if (mElapsedTime >= mMoveTime)
+	mMoveElapsedTime += 1.0f / 60.0f;
+	if (mMoveElapsedTime >= mMoveTime)
 	{
-		mElapsedTime -= mMoveTime;
+		mMoveElapsedTime -= mMoveTime;
 	}
 
 	// 現在の状態に合わせて処理を切り替え
