@@ -36,8 +36,8 @@ CJumpingKinokoUpDown::CJumpingKinokoUpDown(const CVector& pos, const CVector& sc
 	// コライダーのレイヤーを個別に設定
 	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer });
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
-	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
-	mpColliderMesh->SetCollisionTag(mReactionTag, true);
+	/*mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
+	mpColliderMesh->SetCollisionTag(mReactionTag, true);*/
 
 	Position(mDefaultPos);
 	Scale(scale);
@@ -67,15 +67,12 @@ void CJumpingKinokoUpDown::Collision(CCollider* self, CCollider* other, const CH
 		float dot = CVector::Dot(-hit.adjust.Normalized(), CVector::up);
 		// 上に乗ったと判断するためのcos関数に渡した角度を求める
 		float cosAngle = cosf(Math::DegreeToRadian(10.0f));
-		// 求めた角度が指定した角度の範囲内であれば、
 		if (dot >= cosAngle)
 		{
 			if (mState == EState::eIdle && KeyPush)
 			{
 				CPlayer* player = dynamic_cast<CPlayer*>(owner);
-				bool jumping = player->IsDeath();
-				bool game = CGameManager::GameState();
-				if (!jumping)
+				if (player)
 				{
 					player->UpdateHighJumpingStart();
 					ChangeState(EState::eBounce);
@@ -84,15 +81,14 @@ void CJumpingKinokoUpDown::Collision(CCollider* self, CCollider* other, const CH
 			else if (mState == EState::eIdle)
 			{
 				CPlayer* player = dynamic_cast<CPlayer*>(owner);
-				bool jumping = player->IsDeath();
-				if (!jumping)
+				if (player)
 				{
 					player->UpdateJumpingStart();
 					ChangeState(EState::eBounce);
 				}
 			}
-			mIsCollisionPlayer = true;
 		}
+		mIsCollisionPlayer = true;
 	}
 }
 

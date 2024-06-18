@@ -3,6 +3,7 @@
 #include "CStageBase.h"
 
 class CHopsAndHoopsFallCol;
+class CStageSky;
 
 // ステージ2 「ホップ＆フープス」
 class CStage2 : public CStageBase
@@ -20,5 +21,6 @@ public:
 
 private:
 	CHopsAndHoopsFallCol* mpHopsAndHoopsFallCol;
+	CStageSky* mpSky;
 };
 #endif

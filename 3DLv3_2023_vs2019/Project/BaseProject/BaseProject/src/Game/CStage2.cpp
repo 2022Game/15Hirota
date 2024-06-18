@@ -4,6 +4,7 @@
 #include "CPlayer.h"
 #include "CGoalObject.h"
 #include "CHopsAndHoopsField.h"
+#include "CStageSky.h"
 #include "CMeat1.h"
 #include "CMeat2.h"
 #include "CMeat3.h"
@@ -29,6 +30,8 @@ CStage2::~CStage2()
 // ステージ読み込み
 void CStage2::Load()
 {
+	// ステージの空
+	CResourceManager::Load<CModel>("StageSky",				"Field\\StageSky\\Sky(Sphere).obj");
 	// ステージモデル
 	CResourceManager::Load<CModel>("HopsAndHoops(Base)",	"Field\\HopsAndHoops\\Stage2(Base).obj");
 	// ステージ床コライダー
@@ -65,6 +68,10 @@ void CStage2::Load()
 	field->Scale(4.0f, 4.0f, 4.0f);
 	field->Rotate(0.0f, 180.0f, 0.0f);
 	AddTask(field);
+	// 空
+	mpSky = new CStageSky();
+	mpSky->Scale(150.0f, 150.0f, 150.0f);
+	AddTask(mpSky);
 	// 落下コライダー
 	mpHopsAndHoopsFallCol = new CHopsAndHoopsFallCol();
 	mpHopsAndHoopsFallCol->Scale(4.0f, 4.0f, 4.0f);
@@ -95,7 +102,7 @@ void CStage2::Load()
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
-		if (i == 3) xPos = -80.0f;
+		if (i == 3) xPos = -100.0f;
 
 		// Y軸の位置を設定
 		float yPos = 0.0f;
@@ -140,7 +147,7 @@ void CStage2::Load()
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight2 = new CJumpingKinokoLeftRight
 	(
-		CVector(-135.0f, 0.0f, 480.0f),
+		CVector(-155.0f, 0.0f, 480.0f),
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		CVector(0.0f, 0.0f, 50.0f),

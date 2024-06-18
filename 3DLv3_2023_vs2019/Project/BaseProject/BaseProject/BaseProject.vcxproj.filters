@@ -224,6 +224,9 @@
     <Filter Include="ソース ファイル\Game\Stage\Manager">
       <UniqueIdentifier>{a19b7b9e-7c06-4700-8f3f-07ab33aa60b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\StageField\Sky">
+      <UniqueIdentifier>{bf915bce-875e-45d7-9e24-66b57661232e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -828,6 +831,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CHopsAndHoopsFallCol.cpp">
       <Filter>ソース ファイル\Game\Field\StageField\Hops and Hoops</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStageSky.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\Sky</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1457,6 +1463,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CHopsAndHoopsFallCol.h">
       <Filter>ソース ファイル\Game\Field\StageField\Hops and Hoops</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStageSky.h">
+      <Filter>ソース ファイル\Game\Field\StageField\Sky</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

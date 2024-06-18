@@ -6,6 +6,8 @@ enum class ETag
 {
 	eNone = -1,
 
+	eSky,				// ‹ó
+
 	eBullet,			// ’eŠÛ
 	eFlame,				// ‰Š
 	eSlash,				// ŽaŒ‚

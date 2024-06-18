@@ -1989,6 +1989,7 @@ void CPlayer::UpdateDeath()
 		mpDamageCol->SetEnable(false);
 		mpSword->AttackEnd();
 		mMoveSpeed = CVector::zero;
+		mMoveSpeedY = 0.0f;
 		if (mpCutInDeath->IsPlaying())
 		{
 			// キャラクターの更新
@@ -2008,6 +2009,8 @@ void CPlayer::UpdateDeath()
 // 死亡処理終了
 void CPlayer::UpdateDeathEnd()
 {
+	mMoveSpeed = CVector::zero;
+	mMoveSpeedY = 0.0f;
 	if (IsAnimationFinished())
 	{
 		mpCutInDeath->End();
@@ -2255,7 +2258,7 @@ void CPlayer::UpdateFallDamage()
 	if (!mFallDamage)
 	{
 		mFallDamage = true;
-		TakeDamage(1);
+		TakeDamage(5);
 		mpDamageCol->SetEnable(false);
 	}
 

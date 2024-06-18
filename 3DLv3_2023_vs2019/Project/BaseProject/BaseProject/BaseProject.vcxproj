@@ -158,6 +158,7 @@
     <ClCompile Include="src\Game\CStageSelectCamera.cpp" />
     <ClCompile Include="src\Game\CStageSelection.cpp" />
     <ClCompile Include="src\Game\CStageSelectionStage.cpp" />
+    <ClCompile Include="src\Game\CStageSky.cpp" />
     <ClCompile Include="src\Game\CStageTime.cpp" />
     <ClCompile Include="src\Game\CTitleMenu.cpp" />
     <ClCompile Include="src\Game\CTitleUI.cpp" />
@@ -369,6 +370,7 @@
     <ClInclude Include="src\Game\CStageSelectCamera.h" />
     <ClInclude Include="src\Game\CStageSelection.h" />
     <ClInclude Include="src\Game\CStageSelectionStage.h" />
+    <ClInclude Include="src\Game\CStageSky.h" />
     <ClInclude Include="src\Game\CStageTime.h" />
     <ClInclude Include="src\Game\CTitleMenu.h" />
     <ClInclude Include="src\Game\CTitleUI.h" />
