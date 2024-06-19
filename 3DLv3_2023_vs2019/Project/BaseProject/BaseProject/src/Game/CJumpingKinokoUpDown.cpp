@@ -14,6 +14,7 @@ CJumpingKinokoUpDown::CJumpingKinokoUpDown(const CVector& pos, const CVector& sc
 	const CVector& move, float moveTime, ETag reactionTag, ELayer reactionLayer)
 	: CObjectBase(ETag::eJumpingObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 	, mState(EState::eIdle)
+	, mStartScale(scale)
 	, mReactionLayer(reactionLayer)
 	, mReactionTag(reactionTag)
 	, mMoveVec(move)
@@ -22,6 +23,7 @@ CJumpingKinokoUpDown::CJumpingKinokoUpDown(const CVector& pos, const CVector& sc
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
 	, mMoveElapsedTime(0.0f)
+	, mJumpedElapsedTime(0.0f)
 	, mIsCollisionPlayer(false)
 {
 	// 跳ねるキノコのモデル取得
@@ -40,7 +42,7 @@ CJumpingKinokoUpDown::CJumpingKinokoUpDown(const CVector& pos, const CVector& sc
 	mpColliderMesh->SetCollisionTag(mReactionTag, true);*/
 
 	Position(mDefaultPos);
-	Scale(scale);
+	Scale(mStartScale);
 	Rotate(rot);
 
 	SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
@@ -55,8 +57,6 @@ CJumpingKinokoUpDown::~CJumpingKinokoUpDown()
 // 衝突処理
 void CJumpingKinokoUpDown::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
-	bool KeyPush = CInput::PushKey(VK_SPACE);
-
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;
 
@@ -69,22 +69,22 @@ void CJumpingKinokoUpDown::Collision(CCollider* self, CCollider* other, const CH
 		float cosAngle = cosf(Math::DegreeToRadian(10.0f));
 		if (dot >= cosAngle)
 		{
-			if (mState == EState::eIdle && KeyPush)
+			if (mJumpedElapsedTime <= 0.1f)
 			{
 				CPlayer* player = dynamic_cast<CPlayer*>(owner);
 				if (player)
 				{
 					player->UpdateHighJumpingStart();
-					ChangeState(EState::eBounce);
+					BounceStart();
 				}
 			}
-			else if (mState == EState::eIdle)
+			else
 			{
 				CPlayer* player = dynamic_cast<CPlayer*>(owner);
 				if (player)
 				{
 					player->UpdateJumpingStart();
-					ChangeState(EState::eBounce);
+					BounceStart();
 				}
 			}
 		}
@@ -101,12 +101,24 @@ void CJumpingKinokoUpDown::ChangeState(EState state)
 	mElapsedTime = 0.0f;
 }
 
+// 跳ねさせる状態の開始処理
+void CJumpingKinokoUpDown::BounceStart()
+{
+	// 跳ねさせる状態へ切り替え
+	ChangeState(EState::eBounce);
+	mStateStep = 0;
+	mElapsedTime = 0.0f;
+
+	// スケール値を開始時のスケール値に戻す
+	Scale(mStartScale);
+}
+
 // 待機状態の処理
 void CJumpingKinokoUpDown::UpdateIdle()
 {
 	if (mIsCollisionPlayer)
 	{
-		ChangeState(EState::eBounce);
+		BounceStart();
 	}
 }
 
@@ -176,6 +188,15 @@ void CJumpingKinokoUpDown::UpdateBounce()
 // 更新処理
 void CJumpingKinokoUpDown::Update()
 {
+	if (CInput::PushKey(VK_SPACE))
+	{
+		mJumpedElapsedTime = 0.0f;
+	}
+	else
+	{
+		mJumpedElapsedTime += Time::DeltaTime();
+	}
+
 	float per = mMoveElapsedTime / mMoveTime;
 	Position(mDefaultPos + mMoveVec * sinf(M_PI * 2.0f * per));
 

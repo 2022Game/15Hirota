@@ -14,6 +14,7 @@
 #include "CHopsAndHoopsFallCol.h"
 #include "CSavePoint1.h"
 #include "CRingBeamer.h"
+#include "CElectricLaser.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -60,6 +61,8 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("Biribiri",				"Effect\\BhimaEffect.obj");
 	// リングビーマモデル(コライダー)						  
 	CResourceManager::Load<CModel>("BiribiriCol",			"Effect\\BhimaEffect(Col).obj");
+	// リングビーマモデル(コライダー)						  
+	CResourceManager::Load<CTexture>("LightningBolt",		"Effect\\lightning_bolt.png");
 
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
@@ -295,6 +298,15 @@ void CStage2::Load()
 	// スフィアかメッシュぐらい
 	//mainCamera->AddCollider(mpField1->GetWallCol());
 
+	CElectricLaser* laser = new CElectricLaser
+	(
+		CVector(0.0f, 20.0f, 0.0f),
+		CVector(0.0f, 0.0f, 50.0f),
+		3.0f,
+		CVector(-75.0f,5.0f,0.0f),
+		CVector(75.0f, 5.0f, 0.0f)
+	);
+	AddTask(laser);
 }
 
 // ステージ破棄

@@ -37,6 +37,7 @@ enum class ELayer
 	eMedalCol,		// メダルコライダー
 	eMeatCol,		// 肉コライダー
 	eAttackCol,		// 攻撃を与える時のコライダー
+	eElectricCol,	// 電撃コライダー
 	eBulletCol,		// 弾のコライダー
 	eKickCol,		// キックコライダー
 	eDamageCol,		// ダメージを受ける時のコライダー

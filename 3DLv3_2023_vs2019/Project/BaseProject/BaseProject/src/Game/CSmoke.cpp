@@ -20,6 +20,8 @@ CSmoke::CSmoke(ETag tag,ETaskPriority prio)
 	, mIsDeath(false)
 {
 	SetAnimData(&msAnimData);
+	SetColor(CColor(1.0f, 1.0f, 1.0f, 0.5f));
+	SetPriority(ETaskPriority::eSmokeEffecit);
 }
 
 // デストラクタ
