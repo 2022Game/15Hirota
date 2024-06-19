@@ -17,6 +17,11 @@ CObjectBase::~CObjectBase()
 {
 }
 
+// オブジェクト削除を伝える関数
+void CObjectBase::DeleteObject(CObjectBase* obj)
+{
+}
+
 // オブジェクトタグを取得
 ETag CObjectBase::Tag() const
 {
@@ -82,26 +87,31 @@ void CObjectBase::Collision(CCollider* self, CCollider* other, const CHitInfo& h
 {
 }
 
+// レイとオブジェクトの衝突判定
 bool CObjectBase::CollisionRay(const CVector& start, const CVector& end, CHitInfo* hit)
 {
 	return false;
 }
 
+// 攻撃開始
 void CObjectBase::AttackStart()
 {
 	mAttackHitObjects.clear();
 }
 
+// 攻撃終了
 void CObjectBase::AttackEnd()
 {
 
 }
 
+// 攻撃がヒットしたオブジェクトを追加
 void CObjectBase::AddAttackHitObj(CObjectBase* obj)
 {
 	mAttackHitObjects.push_back(obj);
 }
 
+// すでに攻撃がヒットしているオブジェクトかどうか
 bool CObjectBase::IsAttackHitObj(CObjectBase* obj) const
 {
 	auto find = std::find(

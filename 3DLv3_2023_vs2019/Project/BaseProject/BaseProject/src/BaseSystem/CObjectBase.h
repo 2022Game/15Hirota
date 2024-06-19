@@ -24,6 +24,10 @@ public:
 	// デストラクタ
 	virtual ~CObjectBase();
 
+	// オブジェクト削除を伝える関数
+	virtual void DeleteObject(CObjectBase* obj);
+
+
 	// オブジェクトタグを取得
 	ETag Tag() const;
 
@@ -62,20 +66,33 @@ public:
 	/// <returns></returns>
 	virtual bool CollisionRay(const CVector& start, const CVector& end, CHitInfo* hit);
 
+	/// <summary>
+	/// 攻撃開始
+	/// </summary>
 	virtual void AttackStart();
-
+	/// <summary>
+	/// 攻撃終了
+	/// </summary>
 	virtual void AttackEnd();
 
 private:
-	ETag mTag;			//オブジェクト識別用のタグ
+	ETag mTag;			// オブジェクト識別用のタグ
 	bool mIsEnableCol;	// 衝突判定を行うかどうか
 
 protected:
+	/// <summary>
+	/// 攻撃がヒットしたオブジェクトを追加
+	/// </summary>
+	/// <param name="obj"></param>
+	void AddAttackHitObj(CObjectBase* obj);
+	/// <summary>
+	/// 既に攻撃がヒットしているオブジェクトかどうか
+	/// </summary>
+	/// <param name="obj"></param>
+	/// <returns></returns>
+	bool IsAttackHitObj(CObjectBase* obj) const;
 	float mDepth;		// カメラからの距離
 	CColor mColor;		//オブジェクトの色
-
-	void AddAttackHitObj(CObjectBase* obj);
-	bool IsAttackHitObj(CObjectBase* obj) const;
 
 	std::list<CObjectBase*> mAttackHitObjects;
 };
