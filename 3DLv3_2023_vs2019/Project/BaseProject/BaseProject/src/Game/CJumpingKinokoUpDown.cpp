@@ -25,7 +25,7 @@ CJumpingKinokoUpDown::CJumpingKinokoUpDown(const CVector& pos, const CVector& sc
 	, mIsCollisionPlayer(false)
 {
 	// 跳ねるキノコのモデル取得
-	mpKinoko = CResourceManager::Get<CModel>("JumpingKinoko");
+	mpKinoko = CResourceManager::Get<CModel>("JumpingKinoko2Color");
 
 	// 跳ねるキノコのコライダー作成
 	CModel* kinokoCol = CResourceManager::Get<CModel>("JumpingKinokoCol");

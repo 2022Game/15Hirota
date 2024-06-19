@@ -46,6 +46,10 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("GoalCube",				"Field\\Object\\GoalCube.obj");
 	// 跳ねるキノコモデル							    
 	CResourceManager::Load<CModel>("JumpingKinoko",			"Field\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
+	// 跳ねるキノコモデル2						    
+	CResourceManager::Load<CModel>("JumpingKinoko2Color",	"Field\\Gimmick\\Jump\\JumpingKinoko(Base_2Color).obj");
+	// 跳ねるキノコモデル3						    
+	CResourceManager::Load<CModel>("JumpingKinoko3Color",	"Field\\Gimmick\\Jump\\JumpingKinoko(Base_3Color).obj");
 	// 跳ねるキノココライダー								 
 	CResourceManager::Load<CModel>("JumpingKinokoCol",		"Field\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
 	// リングビーマモデル(上)								  
@@ -74,7 +78,7 @@ void CStage2::Load()
 	AddTask(mpSky);
 	// 落下コライダー
 	mpHopsAndHoopsFallCol = new CHopsAndHoopsFallCol();
-	mpHopsAndHoopsFallCol->Scale(4.0f, 4.0f, 4.0f);
+	mpHopsAndHoopsFallCol->Scale(10.0f, 3.0f, 10.0f);
 	AddTask(mpHopsAndHoopsFallCol);
 
 	// セーブポイント
@@ -96,13 +100,17 @@ void CStage2::Load()
 	);
 	AddTask(goal);
 
-	// 動かないキノコ
+	// 動かないキノコ　
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 4; ++i) {
+	for (int i = 0; i < 8; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
 		if (i == 3) xPos = -100.0f;
+		if (i == 4) xPos = -210.0f;
+		if (i == 5) xPos = -210.0f;
+		if (i == 6) xPos = -265.0f;
+		if (i == 7) xPos = -0.0f;
 
 		// Y軸の位置を設定
 		float yPos = 0.0f;
@@ -114,6 +122,10 @@ void CStage2::Load()
 		if (i == 1) zPos = 199.0f;
 		if (i == 2) zPos = 254.0f;
 		if (i == 3) zPos = 480.0f;
+		if (i == 4) zPos = 450.0f;
+		if (i == 5) zPos = 510.0f;
+		if (i == 6) zPos = 480.0f;
+		if (i == 7) zPos = 570.0f;
 
 		// X軸のスケール値を設定
 		float xScale = 1.0f;	
@@ -133,6 +145,7 @@ void CStage2::Load()
 		AddTask(jumpkinoko); // タスクに追加
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight1 = new CJumpingKinokoLeftRight
 	(
@@ -155,7 +168,20 @@ void CStage2::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(jumpkinokoLeftRight2);
+	// 動くキノコ(左右)
+	CJumpingKinokoLeftRight* jumpkinokoLeftRight3 = new CJumpingKinokoLeftRight
+	(
+		CVector(-360.0f, 0.0f, 480.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 90.0f, 0.0f),
+		CVector(50.0f, 0.0f, 0.0f),
+		13.0f,
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(jumpkinokoLeftRight3);
+	/////////////////////////////////////////////////////////////////////////////////////
 
+	/////////////////////////////////////////////////////////////////////////////////////
 	// 動くキノコ(上下)
 	CJumpingKinokoUpDown* jumpkinokoUpDown1 = new CJumpingKinokoUpDown
 	(
@@ -167,11 +193,12 @@ void CStage2::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(jumpkinokoUpDown1);
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	// リングビーマ1
 	CRingBeamerUpper* beamerUp1 = new CRingBeamerUpper
 	(
-		CVector(-55.0f, 8.0f, 199.0f),
+		CVector(-55.0f, 8.0f, 254.0f),
 		CVector(5.0f, 5.0f, 5.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
@@ -179,7 +206,7 @@ void CStage2::Load()
 	// リングビーマ1
 	CRingBeamerLower* beamerLow1 = new CRingBeamerLower
 	(
-		CVector(-55.0f, 7.5f, 199.0f),
+		CVector(-55.0f, 7.5f, 254.0f),
 		CVector(5.0f, 5.0f, 5.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
@@ -188,7 +215,7 @@ void CStage2::Load()
 	// リングビーマ2
 	CRingBeamerUpper* beamerUp2 = new CRingBeamerUpper
 	(
-		CVector(70.0f, 8.0f, 299.0f),
+		CVector(-210.0f, 8.0f, 390.0f),
 		CVector(5.0f, 5.0f, 5.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
@@ -196,17 +223,34 @@ void CStage2::Load()
 	// リングビーマ2
 	CRingBeamerLower* beamerLow2 = new CRingBeamerLower
 	(
-		CVector(70.0f, 7.5f, 299.0f),
+		CVector(-210.0f, 7.5f, 390.0f),
 		CVector(5.0f, 5.0f, 5.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(beamerLow2);
 
+	// リングビーマ3
+	CRingBeamerUpper* beamerUp3 = new CRingBeamerUpper
+	(
+		CVector(-210.0f, 8.0f, 570.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp3);
+	// リングビーマ3
+	CRingBeamerLower* beamerLow3 = new CRingBeamerLower
+	(
+		CVector(-210.0f, 7.5f, 570.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLow3);
+
 	//// 肉オブジェクト /////////////////////////////////////////////////////////////////
 
 	CMeat1* meat1 = new CMeat1
 	(
-		CVector(0.0f, 430.0f, -1950.0f),
+		CVector(-483.0f, 10.0f, 483.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);

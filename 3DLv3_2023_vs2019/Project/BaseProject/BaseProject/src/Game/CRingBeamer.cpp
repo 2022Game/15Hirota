@@ -10,7 +10,7 @@
 // UŒ‚I—¹Œã‚Ì‘Ò‚¿ŠÔ
 #define ATTACK_END_TIME 2.0f
 // ‘Ò‹@ó‘Ô
-#define WAIT_TIME 3.0f
+#define WAIT_TIME 2.0f
 // –ß‚èó‘Ô
 #define RETURN_TIME 5.0f
 // UŒ‚‰ñ”
