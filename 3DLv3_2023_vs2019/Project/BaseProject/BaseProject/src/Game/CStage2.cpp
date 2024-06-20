@@ -249,6 +249,28 @@ void CStage2::Load()
 	);
 	AddTask(beamerLow3);
 
+	// 横状の電流1
+	CElectricLaser* laser1 = new CElectricLaser
+	(
+		CVector(0.0f, 20.0f, 0.0f),
+		CVector(0.0f, 0.0f, 50.0f),
+		3.0f,
+		CVector(-75.0f, 5.0f, 0.0f),
+		CVector(75.0f, 5.0f, 0.0f)
+	);
+	AddTask(laser1);
+
+	//// 横状の電流2
+	//CElectricLaser* laser2 = new CElectricLaser
+	//(
+	//	CVector(-350.0f, 5.0f, 480.0f),
+	//	CVector(5.0f, 0.0f, 0.0f),
+	//	5.0f,
+	//	CVector(0.0f, 5.0f, -75.0f),
+	//	CVector(0.0f, 5.0f, 75.0f)
+	//);
+	//AddTask(laser2);
+
 	//// 肉オブジェクト /////////////////////////////////////////////////////////////////
 
 	CMeat1* meat1 = new CMeat1
@@ -297,16 +319,6 @@ void CStage2::Load()
 	mainCamera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	//mainCamera->AddCollider(mpField1->GetWallCol());
-
-	CElectricLaser* laser = new CElectricLaser
-	(
-		CVector(0.0f, 20.0f, 0.0f),
-		CVector(0.0f, 0.0f, 50.0f),
-		3.0f,
-		CVector(-75.0f,5.0f,0.0f),
-		CVector(75.0f, 5.0f, 0.0f)
-	);
-	AddTask(laser);
 }
 
 // ステージ破棄
