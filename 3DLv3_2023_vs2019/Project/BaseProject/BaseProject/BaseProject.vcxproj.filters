@@ -230,6 +230,12 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Lightning">
       <UniqueIdentifier>{4fd87ac9-132b-4421-9fac-2815b4a7a7ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage2">
+      <UniqueIdentifier>{f4ae6d36-5d55-42fb-bcd3-454deb16102f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage3">
+      <UniqueIdentifier>{83d70674-9d63-44ba-9655-a1d7656f6cd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -703,17 +709,8 @@
     <ClCompile Include="src\Game\CRisingObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Rise and Fall</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CClimbWall.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CFallingObjects.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Rise and Fall</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CWireMeshClimbWall.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CWireMeshMoveClimbWall.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CNumberFloor1.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
@@ -840,6 +837,21 @@
     </ClCompile>
     <ClCompile Include="src\Game\CElectricLaser.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Lightning</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCircleEffect.cpp">
+      <Filter>ソース ファイル\Game\Efect\Buffs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CClimbWall.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CWireMeshClimbWall.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CWireMeshMoveClimbWall.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CMetalLadder.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1338,17 +1350,8 @@
     <ClInclude Include="src\Game\CRisingObject.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Rise and Fall</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CClimbWall.h">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CFallingObjects.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Rise and Fall</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CWireMeshClimbWall.h">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CWireMeshMoveClimbWall.h">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CNumberFloor1.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
@@ -1475,6 +1478,21 @@
     </ClInclude>
     <ClInclude Include="src\Game\CElectricLaser.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Lightning</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCircleEffect.h">
+      <Filter>ソース ファイル\Game\Efect\Buffs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CClimbWall.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CWireMeshClimbWall.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CWireMeshMoveClimbWall.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMetalLadder.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -30,6 +30,7 @@ class CSmoke;
 class CHealingUpBuffs;
 class CSeesaw;
 class CMeatUI;
+class CMetalLadder;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -139,6 +140,9 @@ public:
 	// ステージ3に入れるかどうかのフラグ
 	bool IsStartStage3();
 
+	// 攻撃力アップ相手うを使用したかどうか
+	bool IsAttackItem();
+
 	// 他のクラスで使っている為publicに置いておく
 	// ジャンプ開始1
 	void UpdateJumpStart();
@@ -229,6 +233,8 @@ private:
 	CWireMeshClimbWall* mpWireWall;
 	// 登っている動く金網のポインター
 	CWireMeshMoveClimbWall* mpWireMoveWall;
+	// 登っている金属の梯子のポインター
+	CMetalLadder* mpMetalLadder;
 
 	///////////////////////////////////////////////////////
 
@@ -541,6 +547,8 @@ private:
 	float mMoveDistance;
 	// 無敵エフェクトの計測時間計測用
 	float mInvincibleTime;
+	// 攻撃エフェクトの計測時間計測用
+	float mAttackTime;
 
 	// 接地しているかどうか
 	bool mIsGrounded;
@@ -598,6 +606,11 @@ private:
 	bool mIsDashJump;
 	// 死亡したか
 	bool mIsDeath;
+
+	// 攻撃力アップアイテムを仕様したか
+	bool mIsAttackItem;
+	// 体力回復アイテムを使用したか
+	// 無敵アイテムを使用したか
 	
 
 	// ステージ1に入るかどうか

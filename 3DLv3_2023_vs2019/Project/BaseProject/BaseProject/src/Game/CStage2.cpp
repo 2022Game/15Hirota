@@ -15,6 +15,9 @@
 #include "CSavePoint1.h"
 #include "CRingBeamer.h"
 #include "CElectricLaser.h"
+#include "CHatenaBlock.h"
+#include "CTreasureChest.h"
+#include "CMetalLadder.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -63,9 +66,41 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("BiribiriCol",			"Effect\\BhimaEffect(Col).obj");
 	// リングビーマモデル(コライダー)						  
 	CResourceManager::Load<CTexture>("LightningBolt",		"Effect\\lightning_bolt.png");
+	// ハテナブロック(アイテム保有)
+	CResourceManager::Load<CModel>("HatenaBlock",			"Field\\Object\\hatena.obj");
+	// ハテナブロック(アイテム不保有)
+	CResourceManager::Load<CModel>("HatenaBlockAfter",		"Field\\Object\\UsedHatenaBlock.obj");
+	// レンガブロック
+	CResourceManager::Load<CModel>("RengaBlock",			"Field\\Object\\RengaBlock.obj");
+	// 宝箱
+	CResourceManager::Load<CModel>("TreasureChest",			"Field\\Gimmick\\Chest\\TreasureChest.obj");
+	// 宝箱(蓋)
+	CResourceManager::Load<CModel>("TreasureChestTwo",		"Field\\Gimmick\\Chest\\TreasureChestTwo.obj");
+	// 宝箱(蓋コライダー)
+	CResourceManager::Load<CModel>("TreasureChestCol",		"Field\\Gimmick\\Chest\\TreasureChest(FloorCol).obj");
+	// 宝箱(壁コライダー)
+	CResourceManager::Load<CModel>("TreasureChestWallCol",	"Field\\Gimmick\\Chest\\TreasureChest(WallCol).obj");
+
+	// 金属の梯子オブジェクト
+	CResourceManager::Load<CModel>("Metalladder",			"Field\\HopsAndHoops\\Metalladder(Base).obj");
+	// 金属の梯子オブジェクト(Col)
+	CResourceManager::Load<CModel>("MetalladderCol",		"Field\\HopsAndHoops\\Metalladder(Col).obj");
+	// 金属の梯子オブジェクト(TopCol)
+	CResourceManager::Load<CModel>("MetalladderTopCol",		"Field\\HopsAndHoops\\Metalladder(TopCol).obj");
 
 	// 肉モデル
-	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
+	CResourceManager::Load<CModel>("Meat",			"Item\\StageItem\\niku.obj");
+	// 回復薬オブジェクト
+	CResourceManager::Load<CModel>("Healing",		"Item\\StatusItem\\HealingItem.obj");
+	// 回復オブジェクト
+	CResourceManager::Load<CModel>("Heart",			"Item\\StatusItem\\Heart.obj");
+	// 無敵オブジェクト
+	CResourceManager::Load<CModel>("Star",			"Item\\StatusItem\\Star.obj");
+	// 攻撃力アップモデル
+	CResourceManager::Load<CModel>("AttackPotion",	"Item\\StatusItem\\AttackPotion.obj");
+
+	// エフェクト
+	CResourceManager::Load<CModel>("CircleEffect",			"Effect\\CharacterEffect\\CharaEffectCircle.obj");
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -270,6 +305,36 @@ void CStage2::Load()
 	//	CVector(0.0f, 5.0f, 75.0f)
 	//);
 	//AddTask(laser2);
+
+	// 宝箱1
+	CTreasureChest* treasure1 = new CTreasureChest
+	(
+		CVector(0.0f, 0.0f, 60.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasure1);
+	// 宝箱蓋1
+	CTreasureChestTwo* treasureTwo1 = new CTreasureChestTwo
+	(
+		CVector(0.0f, 4.8f, 60.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasureTwo1);
+
+	// 登れる金網を作成
+	CMetalLadder* metalladder = new CMetalLadder
+	(
+		"Metalladder", "MetalladderTopCol",
+		CVector(0.0f, 5.0f, 0.0f),	// 上方向の移動
+		CVector(0.0f, 0.0f, 15.0f)	// 正面方向の移動
+	);
+	metalladder->Scale(4.0f, 4.0f, 4.0f);
+	metalladder->Rotate(0.0f, 180.0f, 0.0f);
+	AddTask(metalladder);
 
 	//// 肉オブジェクト /////////////////////////////////////////////////////////////////
 

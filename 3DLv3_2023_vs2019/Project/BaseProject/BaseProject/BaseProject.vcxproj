@@ -78,6 +78,7 @@
     <ClCompile Include="src\Game\CBlueMedal.cpp" />
     <ClCompile Include="src\Game\CBlueMedalEvent.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
+    <ClCompile Include="src\Game\CCircleEffect.cpp" />
     <ClCompile Include="src\Game\CClearScene.cpp" />
     <ClCompile Include="src\Game\CCutInCamera.cpp" />
     <ClCompile Include="src\Game\CCutInClear.cpp" />
@@ -90,6 +91,7 @@
     <ClCompile Include="src\Game\CExclamationMark.cpp" />
     <ClCompile Include="src\Game\CFallingObjects.cpp" />
     <ClCompile Include="src\Game\CHopsAndHoopsFallCol.cpp" />
+    <ClCompile Include="src\Game\CMetalLadder.cpp" />
     <ClCompile Include="src\Game\CPlainsStageField.cpp" />
     <ClCompile Include="src\Game\CPlainsStageFallCol.cpp" />
     <ClCompile Include="src\Game\CHopsAndHoopsField.cpp" />
@@ -292,6 +294,7 @@
     <ClInclude Include="src\Game\CBlueMedal.h" />
     <ClInclude Include="src\Game\CBlueMedalEvent.h" />
     <ClInclude Include="src\Game\CBullet.h" />
+    <ClInclude Include="src\Game\CCircleEffect.h" />
     <ClInclude Include="src\Game\CClearScene.h" />
     <ClInclude Include="src\Game\CClimbWall.h" />
     <ClInclude Include="src\Game\CCutInCamera.h" />
@@ -305,6 +308,7 @@
     <ClInclude Include="src\Game\CExclamationMark.h" />
     <ClInclude Include="src\Game\CFallingObjects.h" />
     <ClInclude Include="src\Game\CHopsAndHoopsFallCol.h" />
+    <ClInclude Include="src\Game\CMetalLadder.h" />
     <ClInclude Include="src\Game\CPlainsStageField.h" />
     <ClInclude Include="src\Game\CPlainsStageFallCol.h" />
     <ClInclude Include="src\Game\CHopsAndHoopsField.h" />

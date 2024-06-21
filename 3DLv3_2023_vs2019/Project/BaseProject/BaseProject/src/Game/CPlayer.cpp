@@ -15,6 +15,7 @@
 #include "CClimbWall.h"
 #include "CWireMeshClimbWall.h"
 #include "CWireMeshMoveClimbWall.h"
+#include "CMetalLadder.h"
 #include "CVanguard.h"
 #include "CFlamethrower.h"
 #include "CSlash.h"
@@ -38,6 +39,7 @@
 #include "CAttackUpBuffs.h"
 #include "CTrailEffect.h"
 #include "CMeatUI.h"
+#include "CCircleEffect.h"
 
 // プレイヤー関連
 // 高さ
@@ -185,6 +187,7 @@ CPlayer::CPlayer()
 	, mStage2Clear(false)
 	, mStage3Clear(false)
 	, mDamageEnemy(false)
+	, mIsAttackItem(false)
 	, mClimbWallTop(false)
 	, mDamageObject(false)
 	, mIsStageClear(false)
@@ -678,6 +681,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					ChangeState(EState::eClimb);
 					// 今から登る壁を記憶しておく
 					mpClimbWall = dynamic_cast<CClimbWall*>(other->Owner());
+					mpMetalLadder = dynamic_cast<CMetalLadder*>(other->Owner());
 				}
 			}
 
@@ -805,6 +809,34 @@ void CPlayer::TakeRecovery(int recovery)
 			healing->SetParent(this);
 		}
 
+		// バフを生成
+		float dist = 0.1f;
+		CCircleEffect* circle = new CCircleEffect
+		(
+			0.0f, dist
+		);
+
+		if (mElapsedTime <= 5.0f)
+		{
+			// 点滅の速度を調整するための定数
+			const float blinkSpeed = 1.0f;
+
+			// sin関数を使って点滅する色を計算
+			// 0.0～1.0の間を往復する
+			float green = 0.5f + 0.5f * sin(mElapsedTime * blinkSpeed);
+			// バフの色設定
+			circle->SetColor(CColor(0.0f, green, 0.0f, 1.0f));
+			circle->Scale(5.0f, 5.0f, 5.0f);
+			circle->SetOwner(this);
+
+			CDebugPrint::Print("green:%f\n", green);
+			CDebugPrint::Print("ElapsedTime:%f\n", mElapsedTime);
+		}
+		else
+		{
+			mElapsedTime = 0.0f;
+		}
+
 		mCharaStatus.hp += recovery;
 	}
 }
@@ -823,7 +855,18 @@ void CPlayer::TakeInvincible()
 // 攻撃力を上昇させる
 void CPlayer::TakeAttackPotion(int attack)
 {
+	mIsAttackItem = true;
+	mAttackTime = 10.0;
 	mCharaStatus.power += attack;
+
+	// バフを生成
+	float dist = 0.1f;
+	CCircleEffect* circle = new CCircleEffect
+	(
+		0.0f, dist
+	);
+	circle->Scale(5.0f, 5.0f, 5.0f);
+	circle->SetOwner(this);
 }
 
 // レベルアップ
@@ -933,16 +976,22 @@ bool CPlayer::IsStageClear()
 	return mIsStageClear;
 }
 
-// ステージ2に入れるかどうかのフラグ
+// ステージ2に入れるかどうか
 bool CPlayer::IsStartStage2()
 {
 	return mIsStartStage2;
 }
 
-// ステージ3に入れるかどうかのフラグ
+// ステージ3に入れるかどうか
 bool CPlayer::IsStartStage3()
 {
 	return mIsStartStage3;
+}
+
+// 攻撃力アップアイテムを使用したか
+bool CPlayer::IsAttackItem()
+{
+	return mIsAttackItem;
 }
 
 // ステージフラグをfalseにする関数
@@ -2396,6 +2445,7 @@ void CPlayer::UpdateClimbedTop()
 		mClimbedStartPos = Position();
 		CVector  moveUp, moveForward;
 		mpClimbWall->GetClimbedMoveVec(&moveUp, &moveForward);
+		mpMetalLadder->GetClimbedMoveVec(&moveUp, &moveForward);
 		mClimbedMovedUpPos = mClimbedStartPos + Rotation() * moveUp;
 		mClimbedMovedPos = mClimbedMovedUpPos + Rotation() * moveForward;
 
@@ -3143,12 +3193,20 @@ void CPlayer::CheckUnderFootObject()
 // 更新
 void CPlayer::Update()
 {
-	CDebugPrint::Print("mIsDeath:%s\n", mIsDeath ? "true" : "false");
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
 	mHpHit = false;
+
+	if (mIsAttackItem)
+	{
+		mAttackTime -= Time::DeltaTime();
+		if (mAttackTime <= 0.0f)
+		{
+			mIsAttackItem = false;
+		}
+	}
 
 	// デバッグ用にオンにしている　後で必ず消すこと	////////////////////////////////////
 
