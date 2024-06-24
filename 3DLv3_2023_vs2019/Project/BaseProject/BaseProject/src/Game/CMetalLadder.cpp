@@ -12,12 +12,12 @@ CMetalLadder::CMetalLadder(std::string wireName, std::string topName,
 
 	// 登れる金網のコライダー取得
 	CModel* wireCol = CResourceManager::Get<CModel>("MetalladderCol");
-	mpWallCol = new CColliderMesh(this, ELayer::eClimb, wireCol, true);
+	mpWallCol = new CColliderMesh(this, ELayer::eMetalLadder, wireCol, true);
 	mpWallCol->SetCollisionTags({ ETag::ePlayer });
 
 	// 登れる金網の頂上コライダー取得
 	CModel* top = CResourceManager::Get<CModel>(topName);
-	mpWallTopCol = new CColliderMesh(this, ELayer::eClimbedTop, top, true);
+	mpWallTopCol = new CColliderMesh(this, ELayer::eMetalLadderTop, top, true);
 	mpWallTopCol->SetCollisionTags({ ETag::ePlayer });
 	mpWallTopCol->SetCollisionLayers({ ELayer::ePlayer });
 

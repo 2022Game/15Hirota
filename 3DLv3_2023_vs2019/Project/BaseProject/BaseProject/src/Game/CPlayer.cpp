@@ -39,7 +39,8 @@
 #include "CAttackUpBuffs.h"
 #include "CTrailEffect.h"
 #include "CMeatUI.h"
-#include "CCircleEffect.h"
+#include "CInsideCircleEffect.h"
+#include "COutsideCircleEffect.h"
 
 // プレイヤー関連
 // 高さ
@@ -145,6 +146,7 @@ CPlayer::CPlayer()
 	, mState(EState::eReady)
 	, mInventory(std::map<ItemType, int>())
 	, mStateStep(0)
+	, mClimbTime(0.0f)
 	, mScaleTime(0.0f)
 	, mWeaponTime(0.0f)
 	, mMoveSpeedY(0.0f)
@@ -270,10 +272,11 @@ CPlayer::CPlayer()
 		true,
 		1.0f
 	);
-	mpColliderCapsule->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eRecoverCol,
-		ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb, ELayer::eMedalCol,
-		ELayer::eSavePoint1, ELayer::eSavePoint2, ELayer::eAttackCol,ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall,
-		ELayer::eMedalCol, ELayer::eMeatCol,ELayer::eFall });
+	mpColliderCapsule->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField,
+		ELayer::eRecoverCol,ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb,
+		ELayer::eMedalCol,ELayer::eSavePoint1, ELayer::eSavePoint2, ELayer::eAttackCol,
+		ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall,ELayer::eMedalCol,
+		ELayer::eMeatCol,ELayer::eFall, ELayer::eMetalLadder });
 	mpColliderCapsule->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
 		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint1, ETag::eSavePoint2, ETag::eObstacle,ETag::eJumpingObject,
 		ETag::eNeedleObject, ETag::eMeat, ETag::eSeesaw, ETag::eFall, });
@@ -314,8 +317,8 @@ CPlayer::CPlayer()
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpClimbCol->SetCollisionLayers({ ELayer::eClimb,ELayer::eClimbedTop,
-		ELayer::eWireClimb,ELayer::eWireClimbedTop,
-		ELayer::eWireMoveClimb, ELayer::eWireMoveClimbedTop});
+		ELayer::eWireClimb,ELayer::eWireClimbedTop,ELayer::eWireMoveClimb,
+		ELayer::eWireMoveClimbedTop,ELayer::eMetalLadder, ELayer::eMetalLadderTop});
 
 
 	// マジックソード作成
@@ -582,6 +585,10 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			// Climb状態の場合は位置を調整する
 			Position(Position() + hit.adjust);
 		}
+		else if (other->Layer() == ELayer::eMetalLadder)
+		{
+		Position(Position() + hit.adjust);
+ }
 		// セーブポイント1
 		else if (other->Layer() == ELayer::eSavePoint1)
 		{
@@ -698,6 +705,38 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			mClimbWallTop = true;
 		}
 
+		// 金属梯子のコライダー
+		if (other->Layer() == ELayer::eMetalLadder)
+		{
+			mClimbWall = true;
+			if (mState == EState::eIdle && mIsGrounded)
+			{
+				if (CInput::PushKey('E'))
+				{
+					CVector mSpd = mMoveSpeed;
+					mSpd = CVector(0.0f, 0.5f, 0.0f);
+					Position(Position() + mSpd);
+
+					// Climb状態に移行する
+					ChangeState(EState::eMetalLadder);
+					// 今から登る壁を記憶しておく
+					mpMetalLadder = dynamic_cast<CMetalLadder*>(other->Owner());
+				}
+			}
+
+			// 現在壁を登っている最中であれば、
+			if (mState == EState::eMetalLadder)
+			{
+				// 登っている壁の法線を取得
+				mClimbNormal = hit.adjust.Normalized();
+			}
+		}
+		// 登れる壁の頂上コライダー
+		else if (other->Layer() == ELayer::eMetalLadderTop)
+		{
+			mClimbWallTop = true;
+		}
+
 		// 登れる金網のコライダー
 		if (other->Layer() == ELayer::eWireClimb)
 		{
@@ -809,9 +848,14 @@ void CPlayer::TakeRecovery(int recovery)
 			healing->SetParent(this);
 		}
 
-		// バフを生成
+		// バフ1を生成
 		float dist = 0.1f;
-		CCircleEffect* circle = new CCircleEffect
+		CInsideCircleEffect* circle1 = new CInsideCircleEffect
+		(
+			0.0f, dist
+		);
+		// バフ2を生成
+		COutsideCircleEffect* circle2 = new COutsideCircleEffect
 		(
 			0.0f, dist
 		);
@@ -825,9 +869,13 @@ void CPlayer::TakeRecovery(int recovery)
 			// 0.0～1.0の間を往復する
 			float green = 0.5f + 0.5f * sin(mElapsedTime * blinkSpeed);
 			// バフの色設定
-			circle->SetColor(CColor(0.0f, green, 0.0f, 1.0f));
-			circle->Scale(5.0f, 5.0f, 5.0f);
-			circle->SetOwner(this);
+			circle1->SetColor(CColor(0.0f, green, 0.0f, 1.0f));
+			circle1->Scale(5.0f, 5.0f, 5.0f);
+			circle1->SetOwner(this);
+
+			circle2->SetColor(CColor(0.0f, green, 0.0f, 1.0f));
+			circle2->Scale(5.0f, 5.0f, 5.0f);
+			circle2->SetOwner(this);
 
 			CDebugPrint::Print("green:%f\n", green);
 			CDebugPrint::Print("ElapsedTime:%f\n", mElapsedTime);
@@ -859,14 +907,42 @@ void CPlayer::TakeAttackPotion(int attack)
 	mAttackTime = 10.0;
 	mCharaStatus.power += attack;
 
-	// バフを生成
+	// バフ1を生成
 	float dist = 0.1f;
-	CCircleEffect* circle = new CCircleEffect
+	CInsideCircleEffect* circle1 = new CInsideCircleEffect
 	(
 		0.0f, dist
 	);
-	circle->Scale(5.0f, 5.0f, 5.0f);
-	circle->SetOwner(this);
+	// バフ2を生成
+	COutsideCircleEffect* circle2 = new COutsideCircleEffect
+	(
+		0.0f, dist
+	);
+
+	if (mElapsedTime <= 5.0f)
+	{
+		// 点滅の速度を調整するための定数
+		const float blinkSpeed = 1.0f;
+
+		// sin関数を使って点滅する色を計算
+		// 0.0～1.0の間を往復する
+		float red = 0.5f + 0.5f * sin(mElapsedTime * blinkSpeed);
+		// バフの色設定
+		circle1->SetColor(CColor(red, 0.0f, 0.0f, 1.0f));
+		circle1->Scale(5.0f, 5.0f, 5.0f);
+		circle1->SetOwner(this);
+
+		circle2->SetColor(CColor(red, 0.0f, 0.0f, 1.0f));
+		circle2->Scale(5.0f, 5.0f, 5.0f);
+		circle2->SetOwner(this);
+
+		CDebugPrint::Print("green:%f\n", red);
+		CDebugPrint::Print("ElapsedTime:%f\n", mElapsedTime);
+	}
+	else
+	{
+		mElapsedTime = 0.0f;
+	}
 }
 
 // レベルアップ
@@ -1062,6 +1138,35 @@ CVector CPlayer::ClimbMoveVec() const
 	else if (CInput::Key('S'))	input.Y(1.0f);
 	if (CInput::Key('A'))		input.X(-1.0f);
 	else if (CInput::Key('D'))	input.X(1.0f);
+
+	// 入力されている場合のみ、左右方向の移動ベクトルを設定
+	if (input.LengthSqr() > 0.0f)
+	{
+		// ワールドの上方向ベクトルと登っている壁の法線の外積から、
+		// 横方向の移動ベクトルを求める
+		CVector moveSide = CVector::Cross(CVector::up, mClimbNormal);
+		// 求めた横方向の移動ベクトルと登っている壁の法線の外積から、
+		// 上下移動ベクトルを求める
+		CVector moveUp = CVector::Cross(moveSide, mClimbNormal);
+
+		// プレイヤーの移動ベクトル =
+		// 横移動ベクトル×横入力　＋　上下移動ベクトル×上下入力
+		move = moveSide * input.X() + moveUp * input.Y();
+		move.Normalize();
+	}
+
+	return move;
+}
+
+// キーの入力情報から壁移動ベクトル(上下)を求める
+CVector CPlayer::ClimbMoveUpVec() const
+{
+	CVector move = CVector::zero;
+
+	// キーの入力ベクトルを取得
+	CVector input = CVector::zero;
+	if (CInput::Key('W'))		input.Y(-1.0f);
+	else if (CInput::Key('S'))	input.Y(1.0f);
 
 	// 入力されている場合のみ、左右方向の移動ベクトルを設定
 	if (input.LengthSqr() > 0.0f)
@@ -2499,6 +2604,152 @@ void CPlayer::UpdateClimbedTop()
 	}
 }
 
+// 金属梯子に登る状態
+void CPlayer::UpdateMetalLadder()
+{
+	mClimb = true;
+	mIsAttack = false;
+	mWeaponTime = 0.0f;
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
+	mMoveSpeed = CVector::zero;
+	mMoveSpeedY = 0.0f;
+	// プレイヤーの移動ベクトルを求める
+	CVector move = ClimbMoveUpVec();
+
+	ChangeAnimation(EAnimType::eClimb);
+
+	// 求めた移動ベクトルの長さで入力されているか判定
+	if (move.LengthSqr() > 0.0f)
+	{
+		// 上下キーが入力されている場合
+		if (move.Y() != 0.0f)
+		{
+			// 壁を登っている時は、アニメーションを通常再生し、
+			// 壁を降りているときはアニメーションを逆再生する
+			SetAnimationSpeed(move.Y() > 0.0f ? 1.0f : -1.0f);
+		}
+	}
+	// 移動キーが入力されていない場合
+	else
+	{
+		// アニメーションを停止する
+		SetAnimationSpeed(0.0f);
+	}
+	mMoveSpeed = move * CLIMB_SPEED;
+
+	if (CInput::PushKey('E'))
+	{
+		mClimb = false;
+		mClimbTime = 0.0f;
+		ChangeState(EState::eJumpStart);
+	}
+
+	if (mClimbTime >= 0.5f)
+	{
+		if (mIsGrounded)
+		{
+			mClimb = false;
+			mClimbTime = 0.0f;
+			ChangeState(EState::eIdle);
+		}
+	}
+	else
+	{
+		mClimbTime += Time::DeltaTime();
+	}
+
+	// 登れる壁の範囲外に出た場合
+	if (!mClimbWall)
+	{
+		// 登れる壁の頂上に触れていた場合
+		if (mClimbWallTop)
+		{
+			// 頂上へ上る状態へ移行
+			ChangeState(EState::eMetalLadderTop);
+		}
+		// 登れる壁の頂上に触れていなかった場合
+		else
+		{
+			// 登っている状態を解除して、待機状態へ移行
+			mClimb = false;
+			ChangeState(EState::eIdle);
+		}
+	}
+	//CDebugPrint::Print("mClimbWall: %s\n", mClimbWall ? "true" : "false");
+	//CDebugPrint::Print("mClimbWallTop: %s\n", mClimbWallTop ? "true" : "false");
+}
+
+// 金属梯子の頂上に登った状態
+void CPlayer::UpdateMetalLaddertop()
+{
+	mClimb = true;
+	mMoveSpeed = CVector::zero;
+	mMoveSpeedY = 0.0f;
+	mClimbTime = 0.0f;
+
+	// ステップ管理
+	switch (mStateStep)
+	{
+		// ステップ0: 初期化処理
+	case 0:
+	{
+		// 頂上へ上り切った時の移動前の座標と移動後の座標を設定
+		mClimbedStartPos = Position();
+		CVector  moveUp, moveForward;
+		mpMetalLadder->GetClimbedMoveVec(&moveUp, &moveForward);
+		mClimbedMovedUpPos = mClimbedStartPos + Rotation() * moveUp;
+		mClimbedMovedPos = mClimbedMovedUpPos + Rotation() * moveForward;
+
+		mElapsedTime = 0.0f;
+		// 頂上へ上り切った時のアニメーションを再生
+		ChangeAnimation(EAnimType::eClimbedTop);
+
+		// 次のステップへ
+		mStateStep++;
+		break;
+	}
+	// ステップ1: 登り切った時のアニメーションの経過待ち
+	case 1:
+	{
+		float ratio = GetAnimationFrameRatio();
+		// 登り切った時のアニメーションの半分までは
+		// プレイヤーを上方向に移動する
+		if (ratio < 0.5f)
+		{
+			float per = ratio / 0.5f;
+			CVector pos = CVector::Lerp(mClimbedStartPos, mClimbedMovedUpPos, per);
+			Position(pos);
+		}
+		// 登り切った時のアニメーションの半分を超えたら、次のステップへ
+		else
+		{
+			Position(mClimbedMovedUpPos);
+			mStateStep++;
+		}
+		break;
+	}
+	// ステップ2: 頂上へ上り切った後の移動処理
+	case 2:
+		// 経過時間に合わせて移動
+		if (mElapsedTime < CLIMBED_TOP_TIME)
+		{
+			float per = mElapsedTime / CLIMBED_TOP_TIME;
+			CVector pos = CVector::Lerp(mClimbedMovedUpPos, mClimbedMovedPos, per);
+			Position(pos);
+			mElapsedTime += Time::DeltaTime();
+		}
+		// 移動が終わった
+		else
+		{
+			Position(mClimbedMovedPos);
+			// 壁を登っている状態を解除
+			mClimb = false;
+			ChangeState(EState::eIdle);
+		}
+		break;
+	}
+}
+
 // 金網に登る状態
 void CPlayer::UpdateWireClimb()
 {
@@ -3194,6 +3445,7 @@ void CPlayer::CheckUnderFootObject()
 void CPlayer::Update()
 {
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
+	CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
@@ -3341,6 +3593,14 @@ void CPlayer::Update()
 		// 頂上まで登った
 	case EState::eClimbedTop:
 		UpdateClimbedTop();
+		break;
+		// 金属梯子に登る状態
+	case EState::eMetalLadder:
+		UpdateMetalLadder();
+		break;
+		// 金属梯子の頂上に登った状態
+	case EState::eMetalLadderTop:
+		UpdateMetalLaddertop();
 		break;
 		// 金網に登る状態
 	case EState::eWireClimb:
@@ -3499,6 +3759,10 @@ void CPlayer::Update()
 			else if (mState == EState::eWireClimb)
 			{
 				// 壁の法線の反対方向を向く
+				target = -mClimbNormal;
+			}
+			else if (mState == EState::eMetalLadder)
+			{
 				target = -mClimbNormal;
 			}
 			// それ以外の時は、プレイヤーの移動方向へ向ける

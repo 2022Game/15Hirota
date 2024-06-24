@@ -125,7 +125,7 @@ void CStageSelectionStage::Load()
 		STAGE_DATA[3].btnPos,
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
+		ETag::ePlayer, ELayer::eDamageCol
 	);
 	AddTask(stage3button);
 
@@ -135,7 +135,7 @@ void CStageSelectionStage::Load()
 		CVector(6.0f, 10.0f, -72.0f),
 		CVector(2.5f, 2.5f, 2.5f),
 		CVector(0.0f, 40.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
+		ETag::ePlayer, ELayer::eDamageCol
 	);
 	AddTask(menuobj1);
 
@@ -145,7 +145,7 @@ void CStageSelectionStage::Load()
 		CVector(6.0f, 15.0f, -185.0f),
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 40.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
+		ETag::ePlayer, ELayer::eDamageCol
 	);
 	AddTask(menuobj2);
 

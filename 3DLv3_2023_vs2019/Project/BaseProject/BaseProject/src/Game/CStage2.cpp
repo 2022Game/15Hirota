@@ -18,6 +18,7 @@
 #include "CHatenaBlock.h"
 #include "CTreasureChest.h"
 #include "CMetalLadder.h"
+#include "CRengaBlock.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -100,7 +101,12 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("AttackPotion",	"Item\\StatusItem\\AttackPotion.obj");
 
 	// エフェクト
-	CResourceManager::Load<CModel>("CircleEffect",			"Effect\\CharacterEffect\\CharaEffectCircle.obj");
+	CResourceManager::Load<CModel>("CircleEffect1",			"Effect\\CharacterEffect\\CharaEffectCircle.obj");
+	CResourceManager::Load<CModel>("CircleEffect2",			"Effect\\CharacterEffect\\CharaEffectCircle(Widthver).obj");
+	// キャラクターエフェクト
+	CResourceManager::Load<CModel>("CharEffect",			"Effect\\CharacterEffect\\CharacterEffect(Up).obj");
+	// キャラクターエフェクト(ライン)
+	CResourceManager::Load<CModel>("LineEffect",			"Effect\\CharacterEffect\\CharacterEffect(Line).obj");
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -291,9 +297,33 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 50.0f),
 		3.0f,
 		CVector(-75.0f, 5.0f, 0.0f),
+		CVector(75.0f, 5.0f, 0.0f),
+		CVector(-75.0f, 5.0f, 0.0f),
 		CVector(75.0f, 5.0f, 0.0f)
 	);
 	AddTask(laser1);
+
+	// 横状の電流2
+	CElectricLaser* laser2 = new CElectricLaser
+	(
+		CVector(0.0f, 20.0f, 0.0f),
+		CVector(0.0f, 0.0f, 50.0f),
+		3.0f,
+		CVector(0.0f, 5.0f, -75.0f),
+		CVector(0.0f, 5.0f, 75.0f),		
+		CVector(0.0f, 5.0f, -75.0f),
+		CVector(0.0f, 5.0f, 75.0f)
+	);
+	AddTask(laser2);
+
+	// レンガブロック1
+	CRengaBlock* renga1 = new CRengaBlock
+	(
+		CVector(0.0f, 1.0f, 10.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(renga1);
 
 	//// 横状の電流2
 	//CElectricLaser* laser2 = new CElectricLaser
@@ -318,7 +348,7 @@ void CStage2::Load()
 	// 宝箱蓋1
 	CTreasureChestTwo* treasureTwo1 = new CTreasureChestTwo
 	(
-		CVector(0.0f, 4.8f, 60.0f),
+		CVector(0.0f, 3.8f, 60.0f),
 		CVector(4.0f, 4.0f, 4.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
@@ -329,7 +359,7 @@ void CStage2::Load()
 	CMetalLadder* metalladder = new CMetalLadder
 	(
 		"Metalladder", "MetalladderTopCol",
-		CVector(0.0f, 5.0f, 0.0f),	// 上方向の移動
+		CVector(0.0f, 15.0f, 0.0f),	// 上方向の移動
 		CVector(0.0f, 0.0f, 15.0f)	// 正面方向の移動
 	);
 	metalladder->Scale(4.0f, 4.0f, 4.0f);

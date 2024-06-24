@@ -87,8 +87,17 @@ void CJumpingKinokoUpDown::Collision(CCollider* self, CCollider* other, const CH
 					BounceStart();
 				}
 			}
+			mIsCollisionPlayer = true;
 		}
-		mIsCollisionPlayer = true;
+
+		// ”½“]‚µ‚½‰Ÿ‚µ–ß‚µƒxƒNƒgƒ‹‚Æã•ûŒü‚ÌƒxƒNƒgƒ‹‚Ì“àÏ(Šp“x)‚ð‹‚ß‚é
+		float dotdown = CVector::Dot(-hit.adjust.Normalized(), CVector::down);
+		// ã‚Éæ‚Á‚½‚Æ”»’f‚·‚é‚½‚ß‚ÌcosŠÖ”‚É“n‚µ‚½Šp“x‚ð‹‚ß‚é
+		float cosAngleDown = cosf(Math::DegreeToRadian(10.0f));
+		if (dotdown >= cosAngleDown)
+		{
+			ChangeState(EState::eIdle);
+		}
 	}
 }
 

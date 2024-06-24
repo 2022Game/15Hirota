@@ -31,12 +31,12 @@ CStage2MenuObject::CStage2MenuObject(const CVector& pos, const CVector& scale, c
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::eStageMenuObject,
-		15.0f
+		20.0f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eDamageCol });
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
-	mpColliderSphere->SetCollisionLayer(mReactionLayer, true);
-	mpColliderSphere->SetCollisionTag(mReactionTag, true);
+	/*mpColliderSphere->SetCollisionLayer(mReactionLayer, true);
+	mpColliderSphere->SetCollisionTag(mReactionTag, true);*/
 
 	Position(pos);
 	Scale(scale);

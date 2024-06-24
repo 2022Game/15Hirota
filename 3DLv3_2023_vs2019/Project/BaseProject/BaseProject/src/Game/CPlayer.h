@@ -336,6 +336,10 @@ private:
 	void UpdateClimb();
 	// 頂上まで登った
 	void UpdateClimbedTop();
+	// 金属梯子に登る状態
+	void UpdateMetalLadder();
+	// 金属梯子の頂上に登った状態
+	void UpdateMetalLaddertop();
 	// 金網に登る状態
 	void UpdateWireClimb();
 	// 金網の頂上に登った状態
@@ -404,6 +408,8 @@ private:
 		eFallDamege,		 // 落下ダメージ
 		eClimb,				 // 登る状態
 		eClimbedTop,		 // 頂上まで登った
+		eMetalLadder,		 // 金属梯子に登る状態
+		eMetalLadderTop,	 // 金属梯子の頂上まで登った
 		eWireClimb,			 // 金網に登る状態
 		eWireClimbedTop,	 // 金網の頂上まで登った
 		eFalling,			 // 落下状態
@@ -508,6 +514,11 @@ private:
 	/// <returns></returns>
 	CVector ClimbMoveVec() const;
 	/// <summary>
+	/// キーの入力情報から壁移動ベクトル(上下)を求める
+	/// </summary>
+	/// <returns></returns>
+	CVector ClimbMoveUpVec() const;
+	/// <summary>
 	/// プレイヤーがアクションを起こせるかどうか
 	/// </summary>
 	/// <returns></returns>
@@ -549,6 +560,8 @@ private:
 	float mInvincibleTime;
 	// 攻撃エフェクトの計測時間計測用
 	float mAttackTime;
+	// 登っている状態で着地しているかどうかの計測用
+	float mClimbTime;
 
 	// 接地しているかどうか
 	bool mIsGrounded;

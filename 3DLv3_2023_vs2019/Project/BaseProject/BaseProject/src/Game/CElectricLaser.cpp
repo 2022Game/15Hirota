@@ -6,7 +6,7 @@
 #define LINE_WIDTH 5.0f
 
 CElectricLaser::CElectricLaser(const CVector& pos, const CVector& move, float moveTime,
-	const CVector& laserStartPos, const CVector& laserEndPos)
+	const CVector& laserStartPos, const CVector& laserEndPos, const CVector& colliderPos1, const CVector& colliderPos2)
 	: CObjectBase(ETag::eBiribiri, ETaskPriority::eEffect,
 		0, ETaskPauseType::eGame)
 	, mEffectAnimData(1, 11, true, 11, 0.03f)
@@ -34,8 +34,8 @@ CElectricLaser::CElectricLaser(const CVector& pos, const CVector& move, float mo
 	mpLine = new CColliderLine
 	(
 		this, ELayer::eBiribiri,
-		CVector(-75.0f, 5.0f, 0.0f),
-		CVector(75.0f, 5.0f, 0.0f)
+		colliderPos1,
+		colliderPos2
 	);
 	mpLine->SetCollisionLayers({ ELayer::eDamageCol });
 	mpLine->SetCollisionTags({ ETag::ePlayer });

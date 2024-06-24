@@ -1,12 +1,12 @@
-#ifndef CCIRCLEEFFECT_H
-#define CCIRCLEEFFECT_H
+#ifndef COUTSIDECIRCLEEFFECT_H
+#define COUTSIDECIRCLEEFFECT_H
 
 #include "CObjectBase.h"
 #include "CModel.h"
 #include "CWeapon.h"
 
 // サークル状のエフェクト
-class CCircleEffect : public CWeapon
+class COutsideCircleEffect : public CWeapon
 {
 public:
 	/// <summary>
@@ -14,8 +14,8 @@ public:
 	/// </summary>
 	/// <param name="angle"></param>
 	/// <param name="dist"></param>
-	CCircleEffect(float angle, float dist);
-	~CCircleEffect();
+	COutsideCircleEffect(float angle, float dist);
+	~COutsideCircleEffect();
 
 	// 更新処理
 	void Update() override;
@@ -23,7 +23,8 @@ public:
 	void Render() override;
 private:
 	// エフェクトのモデル
-	CModel* mpModel;
+	CModel* mpCircleModel;
+
 	// 経過時間観測用
 	float mElapsedTime;
 	float mAngle;
