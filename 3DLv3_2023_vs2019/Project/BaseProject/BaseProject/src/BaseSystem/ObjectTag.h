@@ -15,6 +15,7 @@ enum class ETag
 	eSmoke,				// 煙
 
 	eSeesaw,			// シーソー
+	ePropeller,			// プロペラ
 	eField,				// フィールドを構成するオブジェクト
 	eStageMenuObject,	// ステージメニューのオブジェクト
 	eButton,			// ステージ選択ボタン

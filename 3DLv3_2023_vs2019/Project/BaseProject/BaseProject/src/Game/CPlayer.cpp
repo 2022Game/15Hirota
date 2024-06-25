@@ -279,7 +279,7 @@ CPlayer::CPlayer()
 		ELayer::eMeatCol,ELayer::eFall, ELayer::eMetalLadder });
 	mpColliderCapsule->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
 		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint1, ETag::eSavePoint2, ETag::eObstacle,ETag::eJumpingObject,
-		ETag::eNeedleObject, ETag::eMeat, ETag::eSeesaw, ETag::eFall, });
+		ETag::eNeedleObject, ETag::eMeat, ETag::eSeesaw, ETag::eFall,ETag::ePropeller });
 	//mpColliderCapsule->Position(0.0f, 5.0f, 1.0f);
 	
 
@@ -510,7 +510,12 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				Position(0.0f, 20.0f, 50.0f);
 				ChangeState(EState::eFallDamege);
 				// 2面のセーブポイント
-				if (mSavePoint1)
+				if (mSavePoint1 && mSavePoint2 || !mSavePoint1 && mSavePoint2)
+				{
+					ChangeState(EState::eFallDamege);
+					Position(0.0f, 56.0f, 994.0f);
+				}
+				else if (mSavePoint1)
 				{
 					ChangeState(EState::eFallDamege);
 					Position(0.0f, 20.0f, 480.0f);
@@ -1822,6 +1827,9 @@ void CPlayer::UpdateClearEnd()
 				}
 				else if (CGameManager::StageNo() == 2)
 				{
+					mSavePoint1 = false;
+					mSavePoint2 = false;
+
 					mStage2Clear = true;
 					mIsStage2Clear = false;
 
@@ -2414,7 +2422,7 @@ void CPlayer::UpdateFallDamage()
 	if (!mFallDamage)
 	{
 		mFallDamage = true;
-		TakeDamage(5);
+		TakeDamage(1);
 		mpDamageCol->SetEnable(false);
 	}
 

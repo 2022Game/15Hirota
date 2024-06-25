@@ -13,12 +13,14 @@
 #include "CJumpingKinokoUpDown.h"
 #include "CHopsAndHoopsFallCol.h"
 #include "CSavePoint1.h"
+#include "CSavePoint2.h"
 #include "CRingBeamer.h"
 #include "CElectricLaser.h"
 #include "CHatenaBlock.h"
 #include "CTreasureChest.h"
 #include "CMetalLadder.h"
 #include "CRengaBlock.h"
+#include "CPropeller.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -81,6 +83,10 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("TreasureChestCol",		"Field\\Gimmick\\Chest\\TreasureChest(FloorCol).obj");
 	// 宝箱(壁コライダー)
 	CResourceManager::Load<CModel>("TreasureChestWallCol",	"Field\\Gimmick\\Chest\\TreasureChest(WallCol).obj");
+	// プロペラ
+	CResourceManager::Load<CModel>("Propeller",				"Field\\Gimmick\\propeller.obj");
+	// プロペラ(Col)
+	CResourceManager::Load<CModel>("PropellerWallCol",		"Field\\Gimmick\\propeller(Col).obj");
 
 	// 金属の梯子オブジェクト
 	CResourceManager::Load<CModel>("Metalladder",			"Field\\HopsAndHoops\\Metalladder(Base).obj");
@@ -125,7 +131,7 @@ void CStage2::Load()
 	mpHopsAndHoopsFallCol->Scale(10.0f, 3.0f, 10.0f);
 	AddTask(mpHopsAndHoopsFallCol);
 
-	// セーブポイント
+	// セーブポイント1
 	CSavePoint1* savepoint1 = new CSavePoint1
 	(
 		CVector(0.0f, 0.0f, 480.0f),
@@ -134,11 +140,20 @@ void CStage2::Load()
 	);
 	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
 	AddTask(savepoint1);
+	// セーブポイント2
+	CSavePoint2* savepoint2 = new CSavePoint2
+	(
+		CVector(0.0f, 53.0f, 994.0f),
+		CVector(7.0f, 7.0f, 7.0f),
+		CVector(0.0f, 10.0f, 0.0f)
+	);
+	savepoint2->Rotation(0.0f, 90.0f, 0.0f);
+	AddTask(savepoint2);
 
 	// ゴールポスト
 	CGoalObject* goal = new CGoalObject
 	(
-		CVector(0.0f, 0.0f, 1000.0f),
+		CVector(0.0f, 0.0f, 1520.0f),
 		CVector(2.0f, 2.0f, 2.0f),
 		CVector(0.0f, 90.0f, 0.0f)
 	);
@@ -146,7 +161,7 @@ void CStage2::Load()
 
 	// 動かないキノコ　
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 8; ++i) {
+	for (int i = 0; i < 11; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
@@ -154,11 +169,15 @@ void CStage2::Load()
 		if (i == 4) xPos = -210.0f;
 		if (i == 5) xPos = -210.0f;
 		if (i == 6) xPos = -265.0f;
-		if (i == 7) xPos = -0.0f;
+		if (i == 7) xPos = 0.0f;
+		if (i == 8) xPos = 0.0f;
+		if (i == 9) xPos = 0.0f;
+		if (i == 10) xPos = 0.0f;
 
 		// Y軸の位置を設定
 		float yPos = 0.0f;
-		/*if (i == 0) yPos = 2.5f;*/
+		if (i == 9) yPos = 55.0f;
+		if (i == 10) yPos = 55.0f;
 
 		// Z軸の位置を設定
 		float zPos = i * 55.0f;
@@ -170,12 +189,17 @@ void CStage2::Load()
 		if (i == 5) zPos = 510.0f;
 		if (i == 6) zPos = 480.0f;
 		if (i == 7) zPos = 570.0f;
+		if (i == 8) zPos = 680.0f;
+		if (i == 9) zPos = 1050.0f;
+		if (i == 10) zPos = 1105.0f;
 
 		// X軸のスケール値を設定
-		float xScale = 1.0f;	
+		float xScale = 1.0f;
+		if (i == 8) xScale = 2.0f;
 
 		// Z軸のスケール値を設定
 		float zScale = 1.0f;
+		if (i == 8) zScale = 2.0f;
 	
 		// オブジェクトを作成してタスクに追加
 		CJumpingKinoko* jumpkinoko = new CJumpingKinoko
@@ -223,6 +247,28 @@ void CStage2::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(jumpkinokoLeftRight3);
+	// 動くキノコ(左右)
+	CJumpingKinokoLeftRight* jumpkinokoLeftRight4 = new CJumpingKinokoLeftRight
+	(
+		CVector(-60.0f, 0.0f, 625.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 90.0f, 0.0f),
+		CVector(30.0f, 0.0f, 0.0f),
+		5.0f,
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(jumpkinokoLeftRight4);
+	// 動くキノコ(左右)
+	CJumpingKinokoLeftRight* jumpkinokoLeftRight5 = new CJumpingKinokoLeftRight
+	(
+		CVector(60.0f, 0.0f, 625.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 90.0f, 0.0f),
+		CVector(-30.0f, 0.0f, 0.0f),
+		5.0f,
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(jumpkinokoLeftRight5);
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -293,28 +339,102 @@ void CStage2::Load()
 	// 横状の電流1
 	CElectricLaser* laser1 = new CElectricLaser
 	(
-		CVector(0.0f, 20.0f, 0.0f),
-		CVector(0.0f, 0.0f, 50.0f),
-		3.0f,
+		CVector(0.0f, 20.0f, 810.0f),
+		CVector(0.0f, 40.0f, 0.0f),
+		2.0f,
 		CVector(-75.0f, 5.0f, 0.0f),
 		CVector(75.0f, 5.0f, 0.0f),
 		CVector(-75.0f, 5.0f, 0.0f),
 		CVector(75.0f, 5.0f, 0.0f)
 	);
 	AddTask(laser1);
-
 	// 横状の電流2
 	CElectricLaser* laser2 = new CElectricLaser
 	(
-		CVector(0.0f, 20.0f, 0.0f),
-		CVector(0.0f, 0.0f, 50.0f),
-		3.0f,
-		CVector(0.0f, 5.0f, -75.0f),
-		CVector(0.0f, 5.0f, 75.0f),		
-		CVector(0.0f, 5.0f, -75.0f),
-		CVector(0.0f, 5.0f, 75.0f)
+		CVector(0.0f, 50.0f, 810.0f),
+		CVector(0.0f, -40.0f, 0.0f),
+		2.0f,
+		CVector(-75.0f, 5.0f, 0.0f),
+		CVector(75.0f, 5.0f, 0.0f),
+		CVector(-75.0f, 5.0f, 0.0f),
+		CVector(75.0f, 5.0f, 0.0f)
 	);
 	AddTask(laser2);
+
+	// 横状の電流3
+	CElectricLaser* laser3 = new CElectricLaser
+	(
+		CVector(0.0f, 50.0f, 935.0f),
+		CVector(0.0f, 50.0f, 0.0f),
+		2.0f,
+		CVector(-75.0f, 0.0f, 0.0f),
+		CVector(75.0f, 0.0f, 0.0f),
+		CVector(-75.0f, 0.0f, 0.0f),
+		CVector(75.0f, 0.0f, 0.0f)
+	);
+	AddTask(laser3);
+	// 横状の電流4
+	CElectricLaser* laser4 = new CElectricLaser
+	(
+		CVector(0.0f, 0.0f, 935.0f),
+		CVector(0.0f, -50.0f, 0.0f),
+		2.0f,
+		CVector(-75.0f, 0.0f, 0.0f),
+		CVector(75.0f, 0.0f, 0.0f),
+		CVector(-75.0f, 0.0f, 0.0f),
+		CVector(75.0f, 0.0f, 0.0f)
+	);
+	AddTask(laser4);
+
+	//// 横状の電流5
+	//CElectricLaser* laser5 = new CElectricLaser
+	//(
+	//	CVector(0.0f, 20.0f, 935.0f),
+	//	CVector(0.0f, 40.0f, 0.0f),
+	//	2.0f,
+	//	CVector(-75.0f, 5.0f, 0.0f),
+	//	CVector(75.0f, 5.0f, 0.0f),
+	//	CVector(-75.0f, 5.0f, 0.0f),
+	//	CVector(75.0f, 5.0f, 0.0f)
+	//);
+	//AddTask(laser5);
+	//// 横状の電流6
+	//CElectricLaser* laser6 = new CElectricLaser
+	//(
+	//	CVector(0.0f, 50.0f, 935.0f),
+	//	CVector(0.0f, -40.0f, 0.0f),
+	//	2.0f,
+	//	CVector(-75.0f, 5.0f, 0.0f),
+	//	CVector(75.0f, 5.0f, 0.0f),
+	//	CVector(-75.0f, 5.0f, 0.0f),
+	//	CVector(75.0f, 5.0f, 0.0f)
+	//);
+	//AddTask(laser6);
+
+	//// 横状の電流7
+	//CElectricLaser* laser7 = new CElectricLaser
+	//(
+	//	CVector(0.0f, 0.0f, 935.0f),
+	//	CVector(40.0f, 0.0f, 0.0f),
+	//	2.0f,
+	//	CVector(0.0f, -75.0f, 0.0f),
+	//	CVector(0.0f, 75.0f, 0.0f),
+	//	CVector(0.0f, -75.0f, 0.0f),
+	//	CVector(0.0f, 75.0f, 0.0f)
+	//);
+	//AddTask(laser7);
+	//// 横状の電流8
+	//CElectricLaser* laser8 = new CElectricLaser
+	//(
+	//	CVector(0.0f, 0.0f, 935.0f),
+	//	CVector(-40.0f, 0.0f, 0.0f),
+	//	2.0f,
+	//	CVector(0.0f, -75.0f, 0.0f),
+	//	CVector(0.0f, 75.0f, 0.0f),
+	//	CVector(0.0f, -75.0f, 0.0f),
+	//	CVector(0.0f, 75.0f, 0.0f)
+	//);
+	//AddTask(laser8);
 
 	// レンガブロック1
 	CRengaBlock* renga1 = new CRengaBlock
@@ -325,16 +445,14 @@ void CStage2::Load()
 	);
 	AddTask(renga1);
 
-	//// 横状の電流2
-	//CElectricLaser* laser2 = new CElectricLaser
-	//(
-	//	CVector(-350.0f, 5.0f, 480.0f),
-	//	CVector(5.0f, 0.0f, 0.0f),
-	//	5.0f,
-	//	CVector(0.0f, 5.0f, -75.0f),
-	//	CVector(0.0f, 5.0f, 75.0f)
-	//);
-	//AddTask(laser2);
+	// プロペラ
+	CPropeller* propeller = new CPropeller
+	(
+		CVector(0.0f, 30.0f, 950.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		1.5f
+	);
+	AddTask(propeller);
 
 	// 宝箱1
 	CTreasureChest* treasure1 = new CTreasureChest
@@ -399,7 +517,9 @@ void CStage2::Load()
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
-	CVector playerPos = CVector(0.0f, 20.0f, 50.0f);
+	// 初期値点 : 0.0f, 20.0f, 50.0f
+	// 中間ポイント : 0.0f, 0.0f, 480.0f
+	CVector playerPos = CVector(0.0f, 20.0f, 480.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
