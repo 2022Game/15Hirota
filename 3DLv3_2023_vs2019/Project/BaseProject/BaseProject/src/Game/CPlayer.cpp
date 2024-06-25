@@ -3903,7 +3903,12 @@ void CPlayer::Update()
 // アイテムを取得
 void CPlayer::AddItem(ItemType item)
 {
-	mInventory[item]++;
+	// アイテムを一つも持っていなかったら、
+	// 追加
+	if (mInventory[item] == 0)
+	{
+		mInventory[item]++;
+	}
 }
 
 // 取得したアイテムを判定
@@ -3963,6 +3968,10 @@ void CPlayer::RemoveItem(ItemType item)
 		if (mInventory[item] == 0) {
 			mInventory.erase(item);	 // アイテムが0になったらインベントリから削除する
 		}
+	}
+	else if (CGameManager::StageNo() == 0)
+	{
+		mInventory.erase(item);
 	}
 }
 

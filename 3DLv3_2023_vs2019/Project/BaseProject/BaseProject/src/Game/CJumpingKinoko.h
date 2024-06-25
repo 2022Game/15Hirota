@@ -56,6 +56,8 @@ private:
 	void UpdateIdle();
 	// 跳ねさせる状態の湖心処理
 	void UpdateBounce();
+	// 跳ねさせる状態の開始処理
+	void BounceStart();
 	// 現在の状態
 	EState mState;
 
@@ -70,6 +72,8 @@ private:
 	int mStateStep;
 	// 経過時間計測用
 	float mElapsedTime;
+	// SPACEを押したときの経過時間
+	float mJumpedElapsedTime;
 	// 衝突しているか
 	bool mIsCollisionPlayer;
 

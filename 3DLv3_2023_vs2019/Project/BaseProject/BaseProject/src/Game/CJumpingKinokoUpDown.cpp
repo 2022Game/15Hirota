@@ -67,6 +67,7 @@ void CJumpingKinokoUpDown::Collision(CCollider* self, CCollider* other, const CH
 		float dot = CVector::Dot(-hit.adjust.Normalized(), CVector::up);
 		// ã‚Éæ‚Á‚½‚Æ”»’f‚·‚é‚½‚ß‚ÌcosŠÖ”‚É“n‚µ‚½Šp“x‚ð‹‚ß‚é
 		float cosAngle = cosf(Math::DegreeToRadian(10.0f));
+		// ‹‚ß‚½Šp“x‚ªŽw’è‚µ‚½Šp“x‚Ì”ÍˆÍ“à‚Å‚ ‚ê‚ÎA
 		if (dot >= cosAngle)
 		{
 			if (mJumpedElapsedTime <= 0.1f)
