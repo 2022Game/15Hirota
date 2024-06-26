@@ -386,33 +386,47 @@ void CStage2::Load()
 	);
 	AddTask(laser4);
 
-	//// 横状の電流5
-	//CElectricLaser* laser5 = new CElectricLaser
-	//(
-	//	CVector(0.0f, 20.0f, 935.0f),
-	//	CVector(0.0f, 40.0f, 0.0f),
-	//	2.0f,
-	//	CVector(-75.0f, 5.0f, 0.0f),
-	//	CVector(75.0f, 5.0f, 0.0f),
-	//	CVector(-75.0f, 5.0f, 0.0f),
-	//	CVector(75.0f, 5.0f, 0.0f)
-	//);
-	//AddTask(laser5);
-	//// 横状の電流6
-	//CElectricLaser* laser6 = new CElectricLaser
-	//(
-	//	CVector(0.0f, 50.0f, 935.0f),
-	//	CVector(0.0f, -40.0f, 0.0f),
-	//	2.0f,
-	//	CVector(-75.0f, 5.0f, 0.0f),
-	//	CVector(75.0f, 5.0f, 0.0f),
-	//	CVector(-75.0f, 5.0f, 0.0f),
-	//	CVector(75.0f, 5.0f, 0.0f)
-	//);
-	//AddTask(laser6);
+	// 横状の電流5
+	CElectricLaser* laser5 = new CElectricLaser
+	(
+		CVector(-340.0f, 15.0f, 480.0f),
+		CVector(0.0f, 10.0f, 0.0f),
+		3.0f,
+		CVector(0.0f, 0.0f, 65.0f),
+		CVector(0.0f, 0.0f, -65.0f),
+		CVector(0.0f, 0.0f, 65.0f),
+		CVector(0.0f, 0.0f, -65.0f)
+	);
+	AddTask(laser5);
 
-	//// 横状の電流7
-	//CElectricLaser* laser7 = new CElectricLaser
+	// 横状の電流6
+	CElectricLaser* laser6 = new CElectricLaser
+	(
+		CVector(-450.0f, 10.0f, 480.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		0.1f,
+		CVector(0.0f, 0.0f, 65.0f),
+		CVector(0.0f, 0.0f, -65.0f),
+		CVector(0.0f, 0.0f, 65.0f),
+		CVector(0.0f, 0.0f, -65.0f)
+	);
+	AddTask(laser6);
+
+	// 横状の電流7
+	CElectricLaser* laser7 = new CElectricLaser
+	(
+		CVector(-450.0f, 30.0f, 480.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		0.1f,
+		CVector(0.0f, 0.0f, 65.0f),
+		CVector(0.0f, 0.0f, -65.0f),
+		CVector(0.0f, 0.0f, 65.0f),
+		CVector(0.0f, 0.0f, -65.0f)
+	);
+	AddTask(laser7);
+
+	//// 横状の電流
+	//CElectricLaser* laser = new CElectricLaser
 	//(
 	//	CVector(0.0f, 0.0f, 935.0f),
 	//	CVector(40.0f, 0.0f, 0.0f),
@@ -422,9 +436,9 @@ void CStage2::Load()
 	//	CVector(0.0f, -75.0f, 0.0f),
 	//	CVector(0.0f, 75.0f, 0.0f)
 	//);
-	//AddTask(laser7);
-	//// 横状の電流8
-	//CElectricLaser* laser8 = new CElectricLaser
+	//AddTask(laser);
+	//// 横状の電流
+	//CElectricLaser* laser = new CElectricLaser
 	//(
 	//	CVector(0.0f, 0.0f, 935.0f),
 	//	CVector(-40.0f, 0.0f, 0.0f),
@@ -434,7 +448,7 @@ void CStage2::Load()
 	//	CVector(0.0f, -75.0f, 0.0f),
 	//	CVector(0.0f, 75.0f, 0.0f)
 	//);
-	//AddTask(laser8);
+	//AddTask(laser);
 
 	// レンガブロック1
 	CRengaBlock* renga1 = new CRengaBlock
@@ -472,6 +486,25 @@ void CStage2::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(treasureTwo1);
+
+	// 宝箱2
+	CTreasureChest* treasure2 = new CTreasureChest
+	(
+		CVector(-50.0f, 56.5f, 994.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 180.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasure2);
+	// 宝箱蓋2
+	CTreasureChestTwo* treasureTwo2 = new CTreasureChestTwo
+	(
+		CVector(-50.0f, 59.5f, 994.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 180.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(treasureTwo2);
 
 	// 登れる金網を作成
 	CMetalLadder* metalladder = new CMetalLadder
@@ -519,7 +552,8 @@ void CStage2::Load()
 	CPlayer* player = CPlayer::Instance();
 	// 初期値点 : 0.0f, 20.0f, 50.0f
 	// 中間ポイント : 0.0f, 0.0f, 480.0f
-	CVector playerPos = CVector(0.0f, 20.0f, 480.0f);
+	// 肉1の場所 : -483.0f, 10.0f, 483.0f
+	CVector playerPos = CVector(0.0f, 0.0f, 480.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
