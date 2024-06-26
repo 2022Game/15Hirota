@@ -209,7 +209,13 @@ void CLineEffect::Render()
 		float endWidth = Math::Lerp(end->startWidth, end->endWidth, 1.0f - end->alpha);
 
 		CVector v = endPos - startPos;
-		CVector side = CVector::Cross(v.Normalized(), CVector::up);
+		CVector crossUp = CVector::up;
+		CVector side = CVector::Cross(v.Normalized(), crossUp);
+		if (abs(side.LengthSqr()) <= EPSILON)
+		{
+			crossUp = CVector::forward;
+			side = CVector::Cross(v.Normalized(), crossUp);
+		}
 		CVector up = CVector::Cross(v.Normalized(), side);
 
 		bool prev = i > 0;
@@ -217,13 +223,13 @@ void CLineEffect::Render()
 		CLinePoint* prevE = prev ? mPoints[i] : nullptr;
 		if (prev && prevS == nullptr) prev = false;
 		CVector prevV = prev ? prevE->pos - prevS->pos : CVector::zero;
-		CVector prevSide = prev ? CVector::Cross(prevV.Normalized(), CVector::up) : CVector::zero;
+		CVector prevSide = prev ? CVector::Cross(prevV.Normalized(), crossUp) : CVector::zero;
 		CVector prevUp = prev ? CVector::Cross(prevV.Normalized(), prevSide) : CVector::zero;
 		bool next = i + 1 < size - 1;
 		CLinePoint* nextS = next ? mPoints[i + 1] : nullptr;
 		CLinePoint* nextE = next ? mPoints[i + 2] : nullptr;
 		CVector nextV = next ? nextE->pos - nextS->pos : CVector::zero;
-		CVector nextSide = next ? CVector::Cross(nextV.Normalized(), CVector::up) : CVector::zero;
+		CVector nextSide = next ? CVector::Cross(nextV.Normalized(), crossUp) : CVector::zero;
 		CVector nextUp = next ? CVector::Cross(nextV.Normalized(), nextSide) : CVector::zero;
 
 		// ècî¬Çï`âÊ

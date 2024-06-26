@@ -425,30 +425,30 @@ void CStage2::Load()
 	);
 	AddTask(laser7);
 
-	//// 横状の電流
-	//CElectricLaser* laser = new CElectricLaser
-	//(
-	//	CVector(0.0f, 0.0f, 935.0f),
-	//	CVector(40.0f, 0.0f, 0.0f),
-	//	2.0f,
-	//	CVector(0.0f, -75.0f, 0.0f),
-	//	CVector(0.0f, 75.0f, 0.0f),
-	//	CVector(0.0f, -75.0f, 0.0f),
-	//	CVector(0.0f, 75.0f, 0.0f)
-	//);
-	//AddTask(laser);
-	//// 横状の電流
-	//CElectricLaser* laser = new CElectricLaser
-	//(
-	//	CVector(0.0f, 0.0f, 935.0f),
-	//	CVector(-40.0f, 0.0f, 0.0f),
-	//	2.0f,
-	//	CVector(0.0f, -75.0f, 0.0f),
-	//	CVector(0.0f, 75.0f, 0.0f),
-	//	CVector(0.0f, -75.0f, 0.0f),
-	//	CVector(0.0f, 75.0f, 0.0f)
-	//);
-	//AddTask(laser);
+	// 横状の電流
+	CElectricLaser* laser8 = new CElectricLaser
+	(
+		CVector(0.0f, 0.0f, 935.0f),
+		CVector(40.0f, 0.0f, 0.0f),
+		2.0f,
+		CVector(0.0f, -75.0f, 0.0f),
+		CVector(0.0f, 75.0f, 0.0f),
+		CVector(0.0f, -75.0f, 0.0f),
+		CVector(0.0f, 75.0f, 0.0f)
+	);
+	AddTask(laser8);
+	// 横状の電流
+	CElectricLaser* laser9 = new CElectricLaser
+	(
+		CVector(0.0f, 0.0f, 935.0f),
+		CVector(-40.0f, 0.0f, 0.0f),
+		2.0f,
+		CVector(0.0f, -75.0f, 0.0f),
+		CVector(0.0f, 75.0f, 0.0f),
+		CVector(0.0f, -75.0f, 0.0f),
+		CVector(0.0f, 75.0f, 0.0f)
+	);
+	AddTask(laser9);
 
 	// レンガブロック1
 	CRengaBlock* renga1 = new CRengaBlock

@@ -2182,6 +2182,7 @@ void CPlayer::UpdateDeathEnd()
 		mSavePoint1 = false;
 		mSavePoint2 = false;
 		mDamageObject = false;
+		mDamageEnemy = false;
 		mCharaStatus = mCharaMaxStatus;
 		mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
 		mpDamageCol->SetEnable(true);
