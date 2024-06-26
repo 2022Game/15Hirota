@@ -211,7 +211,7 @@ void CJumpingKinokoLeftRight::Update()
 	float per = mMoveElapsedTime / mMoveTime;
 	Position(mDefaultPos + mMoveVec * sinf(M_PI * 2.0f * per));
 
-	mMoveElapsedTime += 1.0f / 60.0f;
+	mMoveElapsedTime += Time::DeltaTime();
 	if (mMoveElapsedTime >= mMoveTime)
 	{
 		mMoveElapsedTime -= mMoveTime;

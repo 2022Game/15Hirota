@@ -33,8 +33,8 @@ CJumpingKinoko::CJumpingKinoko(const CVector& pos, const CVector& scale, const C
 	// コライダーのレイヤーを個別に設定
 	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer });
 	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
-	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
-	mpColliderMesh->SetCollisionTag(mReactionTag, true);
+	/*mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
+	mpColliderMesh->SetCollisionTag(mReactionTag, true);*/
 
 	Position(pos);
 	Scale(mStartScale);
