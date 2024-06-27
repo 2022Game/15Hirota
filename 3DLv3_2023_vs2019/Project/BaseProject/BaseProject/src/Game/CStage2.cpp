@@ -206,8 +206,7 @@ void CStage2::Load()
 		(
 			CVector(xPos, yPos, zPos),
 			CVector(xScale, 1.0f, zScale),
-			CVector(0.0f, 90.0f, 0.0f),
-			ETag::ePlayer, ELayer::ePlayer
+			CVector(0.0f, 90.0f, 0.0f)
 		);
 
 		AddTask(jumpkinoko); // タスクに追加
@@ -221,8 +220,7 @@ void CStage2::Load()
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		CVector(40.0f, 0.0f, 0.0f),
-		10.0f,
-		ETag::ePlayer, ELayer::ePlayer
+		10.0f
 	);
 	AddTask(jumpkinokoLeftRight1);
 	// 動くキノコ(左右)
@@ -232,8 +230,7 @@ void CStage2::Load()
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		CVector(0.0f, 0.0f, 50.0f),
-		10.0f,
-		ETag::ePlayer, ELayer::ePlayer
+		10.0f
 	);
 	AddTask(jumpkinokoLeftRight2);
 	// 動くキノコ(左右)
@@ -243,8 +240,7 @@ void CStage2::Load()
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		CVector(50.0f, 0.0f, 0.0f),
-		13.0f,
-		ETag::ePlayer, ELayer::ePlayer
+		13.0f
 	);
 	AddTask(jumpkinokoLeftRight3);
 	// 動くキノコ(左右)
@@ -254,8 +250,7 @@ void CStage2::Load()
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		CVector(30.0f, 0.0f, 0.0f),
-		5.0f,
-		ETag::ePlayer, ELayer::ePlayer
+		5.0f
 	);
 	AddTask(jumpkinokoLeftRight4);
 	// 動くキノコ(左右)
@@ -265,8 +260,7 @@ void CStage2::Load()
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		CVector(-30.0f, 0.0f, 0.0f),
-		5.0f,
-		ETag::ePlayer, ELayer::ePlayer
+		5.0f
 	);
 	AddTask(jumpkinokoLeftRight5);
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -279,8 +273,7 @@ void CStage2::Load()
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		CVector(0.0f, 40.0f, 0.0f),
-		10.0f,
-		ETag::ePlayer, ELayer::ePlayer
+		10.0f
 	);
 	AddTask(jumpkinokoUpDown1);
 	/////////////////////////////////////////////////////////////////////////////////////

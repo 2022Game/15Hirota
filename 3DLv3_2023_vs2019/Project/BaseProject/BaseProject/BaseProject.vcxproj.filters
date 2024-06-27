@@ -245,6 +245,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko">
       <UniqueIdentifier>{e29cfbb4-10ed-452e-ac22-0b938acc45aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase">
+      <UniqueIdentifier>{40a2b6d4-98bd-4291-abaf-d2d9ab66b788}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -727,9 +730,6 @@
     <ClCompile Include="src\Game\CNumberFloorOnce.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CJumpingObject.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CDamageObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj</Filter>
     </ClCompile>
@@ -859,14 +859,20 @@
     <ClCompile Include="src\Game\CPropeller.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Propeller</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CJumpingKinoko.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CJumpingKinokoLeftRight.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CJumpingKinokoUpDown.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CJumpingKinoko.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CJumpingObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CJumpingKinokoMove.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1374,9 +1380,6 @@
     <ClInclude Include="src\Game\CNumberFloorOnce.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CJumpingObject.h">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CDamageObject.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj</Filter>
     </ClInclude>
@@ -1506,14 +1509,20 @@
     <ClInclude Include="src\Game\CPropeller.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Propeller</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CJumpingKinoko.h">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CJumpingKinokoLeftRight.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CJumpingKinokoUpDown.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingKinoko.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingKinokoMove.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

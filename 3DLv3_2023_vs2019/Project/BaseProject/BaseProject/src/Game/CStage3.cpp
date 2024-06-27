@@ -309,8 +309,7 @@ void CStage3::Load()
 	(
 		CVector(-148.0f, 247.0f, -1059.0f),
 		CVector(1.0f, 1.0f, 1.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
+		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(jumping1);
 
@@ -319,8 +318,7 @@ void CStage3::Load()
 	(
 		CVector(0.0f, 295.0f, -1110.0f),
 		CVector(1.0f, 1.0f, 1.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
+		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(jumping2);
 

@@ -9,85 +9,69 @@
 #define RETURN_TIME 0.8f
 
 // コンストラクタ
-CJumpingObject::CJumpingObject(const CVector& pos, const CVector& scale, const CVector& rot,
-	ETag reactionTag, ELayer reactionLayer)
+CJumpingObject::CJumpingObject(const CVector& pos, const CVector& scale, const CVector& rot)
 	: CObjectBase(ETag::eJumpingObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
+	, mpModel(nullptr)
+	, mpCollider(nullptr)
 	, mState(EState::eIdle)
-	, mReactionTag(reactionTag)
-	, mReactionLayer(reactionLayer)
+	, mStartScale(scale)
 	, mStateStep(0)
-	, mFadeTime(0.0f)
-	, mWaitTime(0.0f)
 	, mElapsedTime(0.0f)
+	, mJumpedElapsedTime(0.0f)
 	, mIsCollisionPlayer(false)
 {
-	// 跳ねさせる床のモデル取得
-	mpModel = CResourceManager::Get<CModel>("FieldCube");
-	// 跳ねさせる床のコライダー作成
-	mpColliderMesh = new CColliderMesh(this, ELayer::eJumpingCol, mpModel, true);
-	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
-
-	// 生成時に設定された触れた時に反応するオブジェクトタグと
-	// コライダーのレイヤーを個別に設定
-	mpColliderMesh->SetCollisionLayers({ ELayer::ePlayer });
-	mpColliderMesh->SetCollisionTags({ ETag::ePlayer });
-	mpColliderMesh->SetCollisionLayer(mReactionLayer, true);
-	mpColliderMesh->SetCollisionTag(mReactionTag, true);
-
 	Position(pos);
-	Scale(scale);
+	Scale(mStartScale);
 	Rotate(rot);
-
-	SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
 // デストラクタ
 CJumpingObject::~CJumpingObject()
 {
-	SAFE_DELETE(mpColliderMesh);
+	SAFE_DELETE(mpCollider);
 }
 
 // 衝突処理
 void CJumpingObject::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
-	bool KeyPush = CInput::PushKey(VK_SPACE);
-
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;
 
-	// 衝突しているのが、反応するオブジェクトであれば
-	if (owner->Tag() == mReactionTag && other->Layer() == mReactionLayer)
+	// 反転した押し戻しベクトルと上方向のベクトルの内積(角度)を求める
+	float dot = CVector::Dot(-hit.adjust.Normalized(), CVector::up);
+	// 上に乗ったと判断するためのcos関数に渡した角度を求める
+	float cosAngle = cosf(Math::DegreeToRadian(10.0f));
+	// 求めた角度が指定した角度の範囲内であれば、
+	if (dot >= cosAngle)
 	{
-		// 反転した押し戻しベクトルと上方向のベクトルの内積(角度)を求める
-		float dot = CVector::Dot(-hit.adjust.Normalized(), CVector::up);
-		// 上に乗ったと判断するためのcos関数に渡した角度を求める
-		float cosAngle = cosf(Math::DegreeToRadian(10.0f));
-		// 求めた角度が指定した角度の範囲内であれば、
-		if (dot >= cosAngle)
+		if (mJumpedElapsedTime <= 0.1f)
 		{
-			if (mState == EState::eIdle && KeyPush)
+			CPlayer* player = dynamic_cast<CPlayer*>(owner);
+			if (player)
 			{
-				CPlayer* player = dynamic_cast<CPlayer*>(owner);
-				if (player)
-				{
-					player->UpdateHighJumpingStart();
-				}
-				ChangeState(EState::eBounce);
+				player->UpdateHighJumpingStart();
+				BounceStart();
 			}
-			else if (mState == EState::eIdle)
-			{
-				CPlayer* player = dynamic_cast<CPlayer*>(owner);
-				if (player)
-				{
-					if (player)
-					{
-						player->UpdateJumpingStart();
-					}
-				}
-				ChangeState(EState::eBounce);
-			}
-			mIsCollisionPlayer = true;
 		}
+		else
+		{
+			CPlayer* player = dynamic_cast<CPlayer*>(owner);
+			if (player)
+			{
+				player->UpdateJumpingStart();
+				BounceStart();
+			}
+		}
+		mIsCollisionPlayer = true;
+	}
+
+	// 反転した押し戻しベクトルと上方向のベクトルの内積(角度)を求める
+	float dotdown = CVector::Dot(-hit.adjust.Normalized(), CVector::down);
+	// 下に乗ったと判断するためのcos関数に渡した角度を求める
+	float cosAngleDown = cosf(Math::DegreeToRadian(10.0f));
+	if (dotdown >= cosAngleDown)
+	{
+		ChangeState(EState::eIdle);
 	}
 }
 
@@ -100,16 +84,28 @@ void CJumpingObject::ChangeState(EState state)
 	mElapsedTime = 0.0f;
 }
 
+// 跳ねさせる状態の開始処理
+void CJumpingObject::BounceStart()
+{
+	// 跳ねさせる状態へ切り替え
+	ChangeState(EState::eBounce);
+	mStateStep = 0;
+	mElapsedTime = 0.0f;
+
+	// スケール値を開始時のスケール値に戻す
+	Scale(mStartScale);
+}
+
 // 待機状態の処理
 void CJumpingObject::UpdateIdle()
 {
 	if (mIsCollisionPlayer)
 	{
-		ChangeState(EState::eBounce);
+		BounceStart();
 	}
 }
 
-// 跳ねている状態の更新処理			必要ないかも
+// 跳ねている状態の更新処理
 void CJumpingObject::UpdateBounce()
 {
 	switch (mStateStep)
@@ -145,12 +141,6 @@ void CJumpingObject::UpdateBounce()
 				0.0f,			// 最小値
 				1.0f			// 最大値
 			);
-			/*float percent = Easing::BackOut
-			(
-				mElapsedTime,
-				RETURN_TIME,
-				0.3f, 1.0f, 5.0f
-			);*/
 
 			// 線形補間
 			CVector scale = CVector::LerpUnclamped(
@@ -181,6 +171,15 @@ void CJumpingObject::UpdateBounce()
 // 更新処理
 void CJumpingObject::Update()
 {
+	if (CInput::PushKey(VK_SPACE))
+	{
+		mJumpedElapsedTime = 0.0f;
+	}
+	else
+	{
+		mJumpedElapsedTime += Time::DeltaTime();
+	}
+
 	// 現在の状態に合わせて処理を切り替え
 	switch (mState)
 	{
@@ -201,6 +200,9 @@ void CJumpingObject::Update()
 // 描画処理
 void CJumpingObject::Render()
 {
-	mpModel->SetColor(mColor);
-	mpModel->Render(Matrix());
+	if (mpModel != nullptr)
+	{
+		mpModel->SetColor(mColor);
+		mpModel->Render(Matrix());
+	}
 }
