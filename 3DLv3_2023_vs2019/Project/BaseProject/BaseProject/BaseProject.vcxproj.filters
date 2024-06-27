@@ -874,6 +874,15 @@
     <ClCompile Include="src\Game\CJumpingKinokoMove.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CJumpingKinokoRotate.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CJumpingKinokoTurnRight.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CJumpingKinokoTurnLeft.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1523,6 +1532,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CJumpingKinokoMove.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingKinokoRotate.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingKinokoTurnRight.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingKinokoTurnLeft.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,6 +11,8 @@
 #include "CJumpingKinoko.h"
 #include "CJumpingKinokoLeftRight.h"
 #include "CJumpingKinokoUpDown.h"
+#include "CJumpingKinokoTurnRight.h"
+#include "CJumpingKinokoTurnLeft.h"
 #include "CHopsAndHoopsFallCol.h"
 #include "CSavePoint1.h"
 #include "CSavePoint2.h"
@@ -277,6 +279,29 @@ void CStage2::Load()
 	);
 	AddTask(jumpkinokoUpDown1);
 	/////////////////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////////////////
+	// ìÆÇ≠ÉLÉmÉR(â~âÒì])
+	CJumpingKinokoTurnRight* rotatekinoko1 = new CJumpingKinokoTurnRight
+	(
+		CVector(0.0f, 3.0f, 450.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		30.0f, 30.0f,
+		true
+	);
+	AddTask(rotatekinoko1);
+	// ìÆÇ≠ÉLÉmÉR(â~âÒì])
+	CJumpingKinokoTurnLeft* rotatekinoko2 = new CJumpingKinokoTurnLeft
+	(
+		CVector(0.0f, 3.0f, 450.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		30.0f, 30.0f,
+		false
+	);
+	AddTask(rotatekinoko2);
+	//////////////////////////////////////////////////////////////////////////////////////
 
 	// ÉäÉìÉOÉrÅ[É}1
 	CRingBeamerUpper* beamerUp1 = new CRingBeamerUpper

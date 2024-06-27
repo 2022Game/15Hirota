@@ -5,6 +5,7 @@
 CJumpingKinoko::CJumpingKinoko(const CVector& pos, const CVector& scale, const CVector& rot,
 	std::string modelPath)
 	: CJumpingObject(pos, scale, rot)
+	, mRotateAngle(false)
 {
 	// ’µ‚Ë‚éƒLƒmƒR‚Ìƒ‚ƒfƒ‹Žæ“¾
 	mpModel = CResourceManager::Get<CModel>(modelPath);

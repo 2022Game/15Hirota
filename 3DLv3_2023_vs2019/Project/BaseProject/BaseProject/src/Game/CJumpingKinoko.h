@@ -18,5 +18,7 @@ public:
 
 	// デストラクタ
 	virtual ~CJumpingKinoko();
+protected:
+	bool mRotateAngle;
 };
 #endif
