@@ -281,26 +281,16 @@ void CStage2::Load()
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////////////////
-	// “®‚­ƒLƒmƒR(‰~‰ñ“])
+	// “®‚­ƒLƒmƒR(‰E‰~‰ñ“])
 	CJumpingKinokoTurnRight* rotatekinoko1 = new CJumpingKinokoTurnRight
 	(
-		CVector(0.0f, 3.0f, 450.0f),
-		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 55.0f, 1180.0f),
+		CVector(1.5f, 1.0f, 1.5f),
 		CVector(0.0f, 0.0f, 0.0f),
-		30.0f, 30.0f,
+		30.0f, 30.0f, 50.0f,
 		true
 	);
 	AddTask(rotatekinoko1);
-	// “®‚­ƒLƒmƒR(‰~‰ñ“])
-	CJumpingKinokoTurnLeft* rotatekinoko2 = new CJumpingKinokoTurnLeft
-	(
-		CVector(0.0f, 3.0f, 450.0f),
-		CVector(1.0f, 1.0f, 1.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		30.0f, 30.0f,
-		false
-	);
-	AddTask(rotatekinoko2);
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	// ƒŠƒ“ƒOƒr[ƒ}1
@@ -570,8 +560,9 @@ void CStage2::Load()
 	CPlayer* player = CPlayer::Instance();
 	// ‰Šú’l“_ : 0.0f, 20.0f, 50.0f
 	// ’†ŠÔƒ|ƒCƒ“ƒg : 0.0f, 0.0f, 480.0f
+	// ’†ŠÔƒ|ƒCƒ“ƒg2 : 0.0f, 53.0f, 994.0f
 	// “÷1‚ÌêŠ : -483.0f, 10.0f, 483.0f
-	CVector playerPos = CVector(0.0f, 0.0f, 480.0f);
+	CVector playerPos = CVector(0.0f, 53.0f, 994.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

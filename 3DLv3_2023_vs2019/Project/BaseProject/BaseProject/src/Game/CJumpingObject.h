@@ -9,7 +9,12 @@
 class CJumpingObject : public CObjectBase
 {
 public:
-	// コンストラクタ
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="pos">位置</param>
+	/// <param name="scale">大きさ</param>
+	/// <param name="rot">回転</param>
 	CJumpingObject(const CVector& pos, const CVector& scale, const CVector& rot);
 	// デストラクタ
 	virtual ~CJumpingObject();

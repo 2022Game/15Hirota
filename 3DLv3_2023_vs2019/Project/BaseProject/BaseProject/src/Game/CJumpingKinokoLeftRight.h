@@ -12,7 +12,7 @@ public:
 	/// </summary>
 	/// <param name="pos">ˆÊ’u</param>
 	/// <param name="scale">‘å‚«‚³</param>
-	/// /// <param name="rot">‰ñ“]</param>
+	/// <param name="rot">‰ñ“]</param>
 	/// <param name="move">ˆÚ“®‹——£</param>
 	/// <param name="moveTime">ˆÚ“®ŽžŠÔ</param>
 	CJumpingKinokoLeftRight(const CVector& pos, const CVector& scale, const CVector& rot,

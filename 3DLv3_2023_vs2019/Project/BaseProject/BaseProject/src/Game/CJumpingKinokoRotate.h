@@ -15,8 +15,11 @@ public:
 	/// <param name="rot">回転</param>
 	/// <param name="angle">角度</param>
 	/// <param name="dist">距離</param>
+	/// <param name="speed">回転の速さ</param>
+	/// <param name="rotateangle">回転方向の設定</param>
+	/// <param name="modelPath">モデルパス</param>
 	CJumpingKinokoRotate(const CVector& pos, const CVector& scale, const CVector& rot,
-		float angle, float dist, bool rotateangle,
+		float angle, float dist, float speed, bool rotateangle,
 		std::string modelPath);
 	// デストラクタ
 	virtual ~CJumpingKinokoRotate();
@@ -33,5 +36,7 @@ private:
 	float mAngle;
 	// 距離
 	float mDistance;
+	// 回転スピード
+	float mSpeed;
 };
 #endif

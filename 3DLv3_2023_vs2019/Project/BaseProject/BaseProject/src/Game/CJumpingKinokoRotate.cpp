@@ -3,15 +3,16 @@
 
 // コンストラクタ
 CJumpingKinokoRotate::CJumpingKinokoRotate(const CVector& pos, const CVector& scale, const CVector& rot,
-	float angle, float distance, bool rotateangele,
+	float angle, float dist, float speed, bool rotateangle,
 	std::string modelPath)
 	: CJumpingKinoko(pos, scale, rot, modelPath)
 	, mAngle(angle)
-	, mDistance(distance)
+	, mDistance(dist)
 	, mDefaultPos(pos)
+	, mSpeed(speed)
 	, mElapsedTime(0.0f)
 {
-	mRotateAngle = rotateangele;
+	mRotateAngle = rotateangle;
 }
 
 // デストラクタ
@@ -39,12 +40,12 @@ void CJumpingKinokoRotate::Update()
 	Rotation(CQuaternion::LookRotation(dir));*/
 	if (mRotateAngle)
 	{
-		mAngle += 65.0f * Time::DeltaTime();
+		mAngle += mSpeed * Time::DeltaTime();
 		if (mAngle >= 360.0f) mAngle -= 360.0f;
 	}
 	else
 	{
-		mAngle -= 65.0f * Time::DeltaTime();
+		mAngle -= mSpeed * Time::DeltaTime();
 		if (mAngle >= 360.0f) mAngle += 360.0f;
 	}
 }

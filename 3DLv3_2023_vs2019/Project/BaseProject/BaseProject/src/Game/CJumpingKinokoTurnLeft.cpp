@@ -2,8 +2,8 @@
 
 // コンストラクタ
 CJumpingKinokoTurnLeft::CJumpingKinokoTurnLeft(const CVector& pos, const CVector& scale, const CVector& rot,
-	float angle, float dist, bool rotateangle)
-	: CJumpingKinokoRotate(pos, scale, rot, angle, dist, rotateangle
+	float angle, float dist, float speed, bool rotateangle)
+	: CJumpingKinokoRotate(pos, scale, rot, angle, dist, speed, rotateangle
 		, "JumpingKinoko2Color")
 {
 }

@@ -17,7 +17,7 @@ public:
 	/// <param name="dist">距離</param>
 	/// <param name="rotateangle">回転方向を決める</param>
 	CJumpingKinokoTurnRight(const CVector& pos, const CVector& scale, const CVector& rot,
-		float angle, float dist, bool rotateangle);
+		float angle, float dist, float speed, bool rotateangle);
 	// デストラクタ
 	~CJumpingKinokoTurnRight();
 };
