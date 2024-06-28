@@ -23,6 +23,8 @@
 #include "CMetalLadder.h"
 #include "CRengaBlock.h"
 #include "CPropeller.h"
+#include "CMeat1Event.h"
+#include "CJumpingKinokoHigh.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -61,6 +63,10 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("JumpingKinoko3Color",	"Field\\Gimmick\\Jump\\JumpingKinoko(Base_3Color).obj");
 	// 跳ねるキノココライダー								 
 	CResourceManager::Load<CModel>("JumpingKinokoCol",		"Field\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
+	// 超ジャンプキノコモデル
+	CResourceManager::Load<CModel>("HighKinoko",			"Field\\Gimmick\\Jump\\HighJumpKinoko.obj");
+	// 超ジャンプキノココライダー
+	CResourceManager::Load<CModel>("JumpingKinokoCol",		"Field\\Gimmick\\Jump\\HighJumpKinokoCol.obj");
 	// リングビーマモデル(上)								  
 	CResourceManager::Load<CModel>("RingBeamerUP",			"Effect\\BeamObj(Upper).obj");
 	// リングビーマモデル(下)								  
@@ -163,7 +169,7 @@ void CStage2::Load()
 
 	// 動かないキノコ　
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 11; ++i) {
+	for (int i = 0; i < 13; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
@@ -175,11 +181,15 @@ void CStage2::Load()
 		if (i == 8) xPos = 0.0f;
 		if (i == 9) xPos = 0.0f;
 		if (i == 10) xPos = 0.0f;
+		if (i == 11) xPos = 160.0f;
+		if (i == 12) xPos = 160.0f;
 
 		// Y軸の位置を設定
 		float yPos = 0.0f;
 		if (i == 9) yPos = 55.0f;
 		if (i == 10) yPos = 55.0f;
+		if (i == 11) yPos = 0.0f;
+		if (i == 12) yPos = 0.0f;
 
 		// Z軸の位置を設定
 		float zPos = i * 55.0f;
@@ -194,6 +204,8 @@ void CStage2::Load()
 		if (i == 8) zPos = 680.0f;
 		if (i == 9) zPos = 1050.0f;
 		if (i == 10) zPos = 1105.0f;
+		if (i == 11) zPos = 1235.0f;
+		if (i == 12) zPos = 1290.0f;
 
 		// X軸のスケール値を設定
 		float xScale = 1.0f;
@@ -278,6 +290,16 @@ void CStage2::Load()
 		10.0f
 	);
 	AddTask(jumpkinokoUpDown1);
+	// 動くキノコ(上下)
+	CJumpingKinokoUpDown* jumpkinokoUpDown2 = new CJumpingKinokoUpDown
+	(
+		CVector(120.0f, 30.0f, 1180.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 90.0f, 0.0f),
+		CVector(40.0f, -30.0f, 0.0f),
+		10.0f
+	);
+	AddTask(jumpkinokoUpDown2);
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -285,9 +307,9 @@ void CStage2::Load()
 	CJumpingKinokoTurnRight* rotatekinoko1 = new CJumpingKinokoTurnRight
 	(
 		CVector(0.0f, 55.0f, 1180.0f),
-		CVector(1.5f, 1.0f, 1.5f),
+		CVector(1.3f, 1.0f, 1.3f),
 		CVector(0.0f, 0.0f, 0.0f),
-		30.0f, 30.0f, 50.0f,
+		30.0f, 30.0f, 80.0f,
 		true
 	);
 	AddTask(rotatekinoko1);
@@ -472,7 +494,7 @@ void CStage2::Load()
 	(
 		CVector(0.0f, 30.0f, 950.0f),
 		CVector(1.0f, 1.0f, 1.0f),
-		1.5f
+		0.5f
 	);
 	AddTask(propeller);
 
@@ -526,6 +548,10 @@ void CStage2::Load()
 	AddTask(metalladder);
 
 	//// 肉オブジェクト /////////////////////////////////////////////////////////////////
+	
+	// 肉1獲得イベントを生成
+	CMeat1Event* mtEvent = new CMeat1Event();
+	AddTask(mtEvent);
 
 	CMeat1* meat1 = new CMeat1
 	(
@@ -533,8 +559,22 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);
-	meat1->SetMeatNumber(1);
 	AddTask(meat1);
+	meat1->SetMeatNumber(1);
+	meat1->SetEvent(mtEvent);
+	mtEvent->AddMeat1(meat1);
+
+	// 肉1を取得すると
+	// ハイジャンプキノコを作成
+	CJumpingKinokoHigh* highkinoko = new CJumpingKinokoHigh
+	(
+		CVector(-483.0f, 5.0f, 500.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(highkinoko);
+	highkinoko->SetEvent(mtEvent);
+	mtEvent->SetHighKinoko(highkinoko);
 
 	CMeat2* meat2 = new CMeat2
 	(

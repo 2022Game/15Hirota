@@ -7,6 +7,7 @@
 #include "CStageManager.h"
 #include "CGameManager.h"
 #include "CPlayer.h"
+#include "CMeat1Event.h"
 
 // アイテムの移動時間
 #define GET_MOVE_TIME 5.75f
@@ -33,6 +34,7 @@ CMeat1::CMeat1(const CVector& pos, const CVector& rot, const CVector& scale)
 	, mGetTargetPos(CVector::zero)
 	, mMeat1(false)
 	, mIsGround(false)
+	, mpEvent(nullptr)
 {
 	// インスタンスの設定
 	spInstance = this;
@@ -71,6 +73,11 @@ CMeat1::~CMeat1()
 {
 	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpMeatSphere);
+
+	if (mpEvent != nullptr)
+	{
+		mpEvent->KilledMeat1(this);
+	}
 
 	//spInstance = nullptr;
 }
@@ -213,6 +220,12 @@ void CMeat1::UpdateGet()
 		);
 		break;
 	}
+}
+
+// 管理されているイベントを設定
+void CMeat1::SetEvent(CMeat1Event* ev)
+{
+	mpEvent = ev;
 }
 
 // 更新処理

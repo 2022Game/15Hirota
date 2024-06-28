@@ -12,6 +12,7 @@ enum class ETaskPriority
 	eDefault,		// デフォルト
 	eBackground,	// 背景
 	eObstacle,		// 障害物
+	eKinoko,		// キノコ
 	eSeesaw,		// シーソーオブジェクト
 	ePlayer,		// プレイヤー
 	eEnemy,			// エネミー

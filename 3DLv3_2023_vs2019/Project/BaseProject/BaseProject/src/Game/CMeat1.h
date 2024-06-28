@@ -5,6 +5,7 @@
 #include "CMeatObjectBase.h"
 #include "CColliderSphere.h"
 #include "CModel.h"
+class CMeat1Event;
 
 // 骨付き肉クラス
 class CMeat1 : public CMeatObjectBase
@@ -34,6 +35,9 @@ public:
 	// スコアを取得
 	static int GetScore();
 
+	// 管理されているイベントを設定
+	void SetEvent(CMeat1Event* ev);
+
 	// 更新処理
 	void Update() override;
 	// 描画処理
@@ -44,6 +48,9 @@ private:
 	static CMeat1* spInstance;
 	// スコア
 	static int sScore;
+
+	// イベントのポインター
+	CMeat1Event* mpEvent;
 
 	// モデル関連
 	// 肉のモデル

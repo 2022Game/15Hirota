@@ -3724,17 +3724,17 @@ void CPlayer::Update()
 	}
 
 	// 待機中とジャンプ中は、移動処理を行う
-	if ((mState == EState::eIdle && mIsGrounded)
+	if ((mState == EState::eIdle/* && mIsGrounded*/)
 		|| mState == EState::eJumpStart
 		|| mState == EState::eJump
 		|| mState == EState::eJumpEnd
 		|| mState == EState::eJumpingStart
 		|| mState == EState::eJumping
 		|| mState == EState::eJumpingEnd
-		|| mState == EState::eDashJumpStart
 		|| mState == EState::eHighJumpingStart
 		|| mState == EState::eHighJumping
 		|| mState == EState::eHighJumpingEnd
+		|| mState == EState::eDashJumpStart
 		|| mState == EState::eDashJump
 		|| mState == EState::eDashJumpEnd
 		|| mState == EState::eFalling)

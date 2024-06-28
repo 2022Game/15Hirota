@@ -15,6 +15,7 @@ public:
 	/// <param name="rot">‰ñ“]</param>
 	/// <param name="angle">Šp“x</param>
 	/// <param name="dist">‹——£</param>
+	/// <param name="speed">‘¬“x</param>
 	/// <param name="rotateangle">‰ñ“]•ûŒü‚ðŒˆ‚ß‚é</param>
 	CJumpingKinokoTurnRight(const CVector& pos, const CVector& scale, const CVector& rot,
 		float angle, float dist, float speed, bool rotateangle);

@@ -248,6 +248,12 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase">
       <UniqueIdentifier>{40a2b6d4-98bd-4291-abaf-d2d9ab66b788}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Event\CStage2">
+      <UniqueIdentifier>{2b4cff37-9416-432b-9ad6-64a02f6f1909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Obstacle\Base">
+      <UniqueIdentifier>{fa8195ab-53b7-4e1c-825d-209e44d4b0f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -628,9 +634,6 @@
     <ClCompile Include="src\Game\CResultAnnouncement.cpp">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CObstacle.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Obstacle</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CObstacleWall.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Obstacle</Filter>
     </ClCompile>
@@ -882,6 +885,18 @@
     </ClCompile>
     <ClCompile Include="src\Game\CJumpingKinokoTurnLeft.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CMeat1Event.cpp">
+      <Filter>ソース ファイル\Game\Field\Event\CStage2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CJumpingKinokoHigh.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CObstacle.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Obstacle\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CHighKinoko.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Obstacle\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1287,9 +1302,6 @@
     <ClInclude Include="src\Game\CResultAnnouncement.h">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CObstacle.h">
-      <Filter>ソース ファイル\Game\Field\Object\Obstacle</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CObstacleWall.h">
       <Filter>ソース ファイル\Game\Field\Object\Obstacle</Filter>
     </ClInclude>
@@ -1541,6 +1553,18 @@
     </ClInclude>
     <ClInclude Include="src\Game\CJumpingKinokoTurnLeft.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMeat1Event.h">
+      <Filter>ソース ファイル\Game\Field\Event\CStage2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingKinokoHigh.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CObstacle.h">
+      <Filter>ソース ファイル\Game\Field\Object\Obstacle\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CHighKinoko.h">
+      <Filter>ソース ファイル\Game\Field\Object\Obstacle\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

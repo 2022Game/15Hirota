@@ -78,6 +78,7 @@
     <ClCompile Include="src\Game\CBlueMedal.cpp" />
     <ClCompile Include="src\Game\CBlueMedalEvent.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
+    <ClCompile Include="src\Game\CHighKinoko.cpp" />
     <ClCompile Include="src\Game\CInsideCircleEffect.cpp" />
     <ClCompile Include="src\Game\CClearScene.cpp" />
     <ClCompile Include="src\Game\CCutInCamera.cpp" />
@@ -91,10 +92,12 @@
     <ClCompile Include="src\Game\CExclamationMark.cpp" />
     <ClCompile Include="src\Game\CFallingObjects.cpp" />
     <ClCompile Include="src\Game\CHopsAndHoopsFallCol.cpp" />
+    <ClCompile Include="src\Game\CJumpingKinokoHigh.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMove.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoRotate.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoTurnLeft.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoTurnRight.cpp" />
+    <ClCompile Include="src\Game\CMeat1Event.cpp" />
     <ClCompile Include="src\Game\CMetalLadder.cpp" />
     <ClCompile Include="src\Game\COutsideCircleEffect.cpp" />
     <ClCompile Include="src\Game\CPlainsStageField.cpp" />
@@ -300,6 +303,7 @@
     <ClInclude Include="src\Game\CBlueMedal.h" />
     <ClInclude Include="src\Game\CBlueMedalEvent.h" />
     <ClInclude Include="src\Game\CBullet.h" />
+    <ClInclude Include="src\Game\CHighKinoko.h" />
     <ClInclude Include="src\Game\CInsideCircleEffect.h" />
     <ClInclude Include="src\Game\CClearScene.h" />
     <ClInclude Include="src\Game\CClimbWall.h" />
@@ -314,10 +318,12 @@
     <ClInclude Include="src\Game\CExclamationMark.h" />
     <ClInclude Include="src\Game\CFallingObjects.h" />
     <ClInclude Include="src\Game\CHopsAndHoopsFallCol.h" />
+    <ClInclude Include="src\Game\CJumpingKinokoHigh.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMove.h" />
     <ClInclude Include="src\Game\CJumpingKinokoRotate.h" />
     <ClInclude Include="src\Game\CJumpingKinokoTurnLeft.h" />
     <ClInclude Include="src\Game\CJumpingKinokoTurnRight.h" />
+    <ClInclude Include="src\Game\CMeat1Event.h" />
     <ClInclude Include="src\Game\CMetalLadder.h" />
     <ClInclude Include="src\Game\COutsideCircleEffect.h" />
     <ClInclude Include="src\Game\CPlainsStageField.h" />
