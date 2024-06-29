@@ -898,6 +898,9 @@
     <ClCompile Include="src\Game\CHighKinoko.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Obstacle\Base</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CCutInDeathJump.cpp">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1565,6 +1568,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CHighKinoko.h">
       <Filter>ソース ファイル\Game\Field\Object\Obstacle\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCutInDeathJump.h">
+      <Filter>ソース ファイル\Game\Cutin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

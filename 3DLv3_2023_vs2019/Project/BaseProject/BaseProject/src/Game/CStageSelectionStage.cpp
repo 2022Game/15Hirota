@@ -52,9 +52,11 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 	{
 		// ステージをクリアしているかどうかをチェック
 		bool playerStage = player->IsStageClear();
+		// プレイヤーが死んでいたら
+		bool playerDeath = player->IsDeath();
 
 		// プレイヤーの初期位置を設定
-		if (playerStage)
+		if (playerStage || !playerDeath)
 		{
 			// ステージをクリアしている場合の初期位置
 			playerPos = CVector(65.0f, 30.5f, 60.0f);

@@ -1,21 +1,21 @@
-#include "CCutInResult.h"
+#include "CCutInDeathJump.h"
 #include "Maths.h"
 #include "CResultAnnouncement.h"
 
-// リザルトカメラのインスタンス
-CCutInResult* CCutInResult::spInstance = nullptr;
+// 死亡ジャンプカメラのインスタンス
+CCutInDeathJump* CCutInDeathJump::spInstance = nullptr;
 
-CCutInResult* CCutInResult::Instance()
+CCutInDeathJump* CCutInDeathJump::Instance()
 {
 	if (spInstance == nullptr)
 	{
-		spInstance = new CCutInResult();
+		spInstance = new CCutInDeathJump();
 	}
 	return spInstance;
 }
 
 // コンストラクタ
-CCutInResult::CCutInResult()
+CCutInDeathJump::CCutInDeathJump()
 	: mCutInStep(0)
 	, mElapsedTime(0.0f)
 	, mCenterPos(CVector::zero)
@@ -26,13 +26,13 @@ CCutInResult::CCutInResult()
 }
 
 // デストラクタ
-CCutInResult::~CCutInResult()
+CCutInDeathJump::~CCutInDeathJump()
 {
 	spInstance = nullptr;
 }
 
 // カットイン開始
-bool CCutInResult::Start()
+bool CCutInDeathJump::Start()
 {
 	// ベースのカットイン開始処理
 	if (!CCutInCamera::Start()) return false;
@@ -45,7 +45,7 @@ bool CCutInResult::Start()
 }
 
 // カットイン終了
-bool CCutInResult::End()
+bool CCutInDeathJump::End()
 {
 	// ベースのカットイン終了処理
 	if (!CCutInCamera::End()) return false;
@@ -54,7 +54,7 @@ bool CCutInResult::End()
 }
 
 // カットインに必要な情報を設定
-void CCutInResult::Setup(CObjectBase* obj)
+void CCutInDeathJump::Setup(CObjectBase* obj)
 {
 	// 設定されたオブジェクトの位置を中心地点とする
 	mCenterPos = obj->Position();
@@ -74,7 +74,7 @@ void CCutInResult::Setup(CObjectBase* obj)
 #define WAIT_TIME 1.0f
 
 // ステップ0 カメラの回転
-void CCutInResult::CutInStep0()
+void CCutInDeathJump::CutInStep0()
 {
 	// カットインの時間が経過するにつれてカメラを移動させる
 	if (mElapsedTime < CUTIN_TIME)
@@ -107,7 +107,7 @@ void CCutInResult::CutInStep0()
 }
 
 // ステップ1 カットイン終了時の待ち
-void CCutInResult::CutInStep1()
+void CCutInDeathJump::CutInStep1()
 {
 	mElapsedTime = 0.0f;
 	mCutInStep = 0;
@@ -115,7 +115,7 @@ void CCutInResult::CutInStep1()
 }
 
 // 更新
-void CCutInResult::Update()
+void CCutInDeathJump::Update()
 {
 	// カットイン再生中でなければ、処理しない
 	if (!mIsPlaying) return;

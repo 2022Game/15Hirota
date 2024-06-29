@@ -262,7 +262,15 @@ void CGameManager::UpdateGameClear()
 // ゲームオーバー時の更新処理
 void CGameManager::UpdateGameOver()
 {
+	mStageNo = 0;
+	CVanguard::SetScore(0);
+	CBlueMedal::SetScore(0);
+	CMeat1::SetScore(0);
+	CMeat2::SetScore(0);
+	CMeat3::SetScore(0);
+	CStageManager::LoadStage(mStageNo);
 
+	ChangeState(EGameState::eGame);
 }
 
 // リザルト時の更新処理

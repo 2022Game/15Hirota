@@ -125,6 +125,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\jump_end1.x",					false,	26.0f	},		// ジャンプ終了
 	{ "Character\\Monster1\\anim\\Warrok_DashJumpStart_54.x",	false,	54.0f	},		// ダッシュジャンプ開始
 	{ "Character\\Monster1\\anim\\Warrok_DashJump_1.x",				true,	1.0f	},	// ダッシュジャンプ
+	{ "Character\\Monster1\\anim\\Warrok_DashJumpLoop_22.x",		true,	22.0f	},	// ダッシュジャンプループ
 	{ "Character\\Monster1\\anim\\Warrok_DashJumpEnd_13.x",		false,	13.0f	},		// ダッシュジャンプ終了
 	{ "Character\\Monster1\\anim\\Dash1_53.x",						true,	53.0f	},	// ダッシュ
 	{ "Character\\Monster1\\anim\\Warrok_RunStop.x",			false,	40.0f	},		// ダッシュ終了
@@ -1237,6 +1238,11 @@ void CPlayer::UpdateReady()
 				// クリアジャンプに遷移
 				ChangeState(EState::eResultJumpStart);
 			}
+			// 死んでいたら
+			else if (mIsDeath)
+			{
+				ChangeState(EState::eDeathJumpStart);
+			}
 		}
 		break;
 	}
@@ -2150,7 +2156,7 @@ void CPlayer::UpdateStartStageJumpEnd()
 // 死亡
 void CPlayer::UpdateDeath()
 {
-	if (IsAnimationFinished())
+	if (mState == EState::eIdle || IsAnimationFinished())
 	{
 		mpDamageCol->SetEnable(false);
 		mpSword->AttackEnd();
@@ -2180,7 +2186,6 @@ void CPlayer::UpdateDeathEnd()
 	if (IsAnimationFinished())
 	{
 		mpCutInDeath->End();
-		mIsDeath = false;
 		mSavePoint1 = false;
 		mSavePoint2 = false;
 		mDamageObject = false;
@@ -3276,25 +3281,41 @@ void CPlayer::UpdateTargetPositionStart()
 // 目的位置までジャンプ
 void CPlayer::UpdateTargetPosition()
 {
+	if (IsAnimationFinished())
+	{
+		ChangeAnimation(EAnimType::eDashJumpLoop);
+	}
+
 	// 目標地点まで移動させる処理
 	CPlayer* player = CPlayer::Instance();
 	CVector playerPos = player->Position();
-	CVector targetPos = CVector(0.0f, 2.0f, 480.0f);
-	float duration = 15.0f;
+	CVector targetPos = CVector(0.0f, 10.0f, 480.0f);
+	float duration = 25.0f;
+	float stopDistance = 2.0f; // プレイヤーが目標に到達とみなす距離の閾値
 
-	if (mElapsedTime < duration) {
+	if (mElapsedTime < duration) 
+	{
 		float per = mElapsedTime / duration;
 		CVector pos = CVector::Lerp(playerPos, targetPos, per);
 		player->Position(pos);
 
 		// プレイヤーの向きを調整（左右の回転のみ）
 		CVector direction = targetPos - playerPos;
-		direction = CVector(direction.X(), 0.0f, direction.Z()); // 上下の回転を無視
+		direction.Y(0.0f); //CVector(direction.X(), 0.0f, direction.Z()); // 上下の回転を無視
 		direction.Normalize(); // 移動ベクトルを正規化
 
 		player->Rotation(CQuaternion::LookRotation(direction)); // 新しい向きを設定
 
-		mElapsedTime += Time::DeltaTime();
+		 // プレイヤーと目標位置との距離を計算し、ある閾値以下なら終了
+		float distanceToTarget = (targetPos - playerPos).Length();
+		if (distanceToTarget <= stopDistance) {
+			Position(targetPos); // 確実に最終位置に設定
+			// 必要に応じてmElapsedTimeをリセット
+			mElapsedTime = 0.0f;
+		}
+		else {
+			mElapsedTime += Time::DeltaTime();
+		}
 	}
 	else 
 	{
@@ -3331,6 +3352,125 @@ void CPlayer::UpdateTargetPositionEnd()
 	}
 
 	mpClimbCol->SetEnable(true);
+}
+
+// 死亡ジャンプ開始
+void CPlayer::UpdateDeathJumpStart()
+{
+	Scale(CVector(0.0f, 0.0f, 0.0f));
+	if (mpCutInResult->IsPlaying())
+	{
+
+	}
+	else
+	{
+		mpCutInResult->Setup(this);
+		mpCutInResult->Start();
+	}
+	ChangeAnimation(EAnimType::eJumpStart);
+	ChangeState(EState::eResultJump);
+
+	mMoveSpeedY = JUMP_CLEAR;
+	mIsGrounded = false;
+}
+
+// 死亡ジャンプ
+void CPlayer::UpdateDeathJump()
+{
+	// 目標地点まで移動させる処理
+	CPlayer* player = CPlayer::Instance();
+	CVector playerPos = player->Position();
+	CVector current = VectorZ();
+	CVector targetPos = playerPos + current * 0.5f;
+	float per = mElapsedResultTime / 1.5f;
+	CVector pos = CVector::Lerp(playerPos, targetPos, per);
+	Position(pos);
+
+	// 目標の大きさにする処理
+	float perscale = mScaleTime / 1.0f;
+	CVector scale = CVector(0.0f, 0.0f, 0.0f);
+	CVector targetscale = CVector(1.0f, 1.0f, 1.0f);
+	CVector ScaleCur = CVector::Lerp(scale, targetscale, perscale);
+	Scale(ScaleCur);
+
+	mElapsedResultTime += Time::DeltaTime();
+	mScaleTime += Time::DeltaTime();
+
+	if (mElapsedResultTime > 1.5f)
+	{
+		if (mMoveSpeedY <= 0.0f)
+		{
+			mElapsedResultTime = 0.0f;
+			Scale(CVector(1.0f, 1.0f, 1.0f));
+			ChangeAnimation(EAnimType::eJumpEnd);
+			ChangeState(EState::eResultJumpEnd);
+		}
+	}
+}
+
+// 死亡ジャンプ終了
+void CPlayer::UpdateDeathJumpEnd()
+{
+	if (IsAnimationFinished())
+	{
+		if (mStage1Clear)
+		{
+			mIsStage1Clear = true;
+			CResultAnnouncement* result = CResultAnnouncement::Instance();
+			bool resultEnd = result->IsResultOpened();
+			if (resultEnd)
+			{
+				mpCutInResult->End();
+				mpHpGauge->SetShow(true);
+				mpStaminaGauge->SetShow(true);
+				mpScreenItem->SetShow(true);
+				mpMeat->SetShow(true);
+				mIsStageClear = false;
+
+				mIsStage1Clear = false;
+				StageFlagfalse();
+				ChangeState(EState::eIdle);
+			}
+		}
+		else if (mStage2Clear)
+		{
+			mIsStage2Clear = true;
+			CResultAnnouncement* result = CResultAnnouncement::Instance();
+			bool resultEnd = result->IsResultOpened();
+			if (resultEnd)
+			{
+				mpCutInResult->End();
+				mpHpGauge->SetShow(true);
+				mpStaminaGauge->SetShow(true);
+				mpScreenItem->SetShow(true);
+				mpMeat->SetShow(true);
+				mIsStageClear = false;
+
+				mIsStage2Clear = false;
+				StageFlagfalse();
+				ChangeState(EState::eIdle);
+			}
+		}
+		else if (mStage3Clear)
+		{
+			mIsStage3Clear = true;
+			CResultAnnouncement* result = CResultAnnouncement::Instance();
+			bool resultEnd = result->IsResultOpened();
+			if (resultEnd)
+			{
+				mpCutInResult->End();
+				mpHpGauge->SetShow(true);
+				mpStaminaGauge->SetShow(true);
+				mpScreenItem->SetShow(true);
+				mpMeat->SetShow(true);
+				mIsStageClear = false;
+
+				mIsStage3Clear = false;
+				StageFlagfalse();
+				ChangeState(EState::eIdle);
+			}
+		}
+	}
 }
 
 // 指定された位置まで移動する
@@ -3801,6 +3941,15 @@ void CPlayer::Update()
 		break;
 	case EState::eTargetEnd:
 		UpdateTargetPositionEnd();
+		break;
+	case EState::eDeathJumpStart:
+		UpdateDeathJumpStart();
+		break;
+	case EState::eDeathJump:
+		UpdateDeathJump();
+		break;
+	case EState::eDeathJumpEnd:
+		UpdateDeathJumpEnd();
 		break;
 	}
 

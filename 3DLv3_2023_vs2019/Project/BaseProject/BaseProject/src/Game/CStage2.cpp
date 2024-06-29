@@ -169,7 +169,7 @@ void CStage2::Load()
 
 	// 動かないキノコ　
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 13; ++i) {
+	for (int i = 0; i < 14; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
@@ -183,13 +183,12 @@ void CStage2::Load()
 		if (i == 10) xPos = 0.0f;
 		if (i == 11) xPos = 160.0f;
 		if (i == 12) xPos = 160.0f;
+		if (i == 13) xPos = 210.0f;
 
 		// Y軸の位置を設定
 		float yPos = 0.0f;
 		if (i == 9) yPos = 55.0f;
 		if (i == 10) yPos = 55.0f;
-		if (i == 11) yPos = 0.0f;
-		if (i == 12) yPos = 0.0f;
 
 		// Z軸の位置を設定
 		float zPos = i * 55.0f;
@@ -206,6 +205,7 @@ void CStage2::Load()
 		if (i == 10) zPos = 1105.0f;
 		if (i == 11) zPos = 1235.0f;
 		if (i == 12) zPos = 1290.0f;
+		if (i == 13) zPos = 1290.0f;
 
 		// X軸のスケール値を設定
 		float xScale = 1.0f;

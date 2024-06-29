@@ -3,6 +3,13 @@
 #include "CImage.h"
 #include "CGameManager.h"
 #include "CTaskManager.h"
+#include "CPlayer.h"
+
+#define STAGE_1 300
+#define STAGE_2 10
+#define STAGE_3 400
+
+#define STAR_STAGE_TIME 1.0f
 
 // ステージタイマーのインスタンス
 CStageTime* CStageTime::spInstance = nullptr;
@@ -59,6 +66,8 @@ void CStageTime::Update()
     int currentStage = CGameManager::StageNo();
     bool paused = CTaskManager::Instance()->IsPaused();
 
+    CPlayer* palyer = CPlayer::Instance();
+
     // ステージが0の場合はタイマーをリセット
     if (currentStage == 0)
     {
@@ -72,28 +81,28 @@ void CStageTime::Update()
         // ステージ1, 2, 3の場合の処理
         if (currentStage == 1 && !mIsStage1)
         {
-            mTime = 300;
+            mTime = STAGE_1;
             mIsStage1 = true;
             mIsStage2 = false;
             mIsStage3 = false;
         }
         else if (currentStage == 2 && !mIsStage2)
         {
-            mTime = 400;
+            mTime = STAGE_2;
             mIsStage1 = false;
             mIsStage2 = true;
             mIsStage3 = false;
         }
         else if (currentStage == 3 && !mIsStage3)
         {
-            mTime = 500;
+            mTime = STAGE_3;
             mIsStage1 = false;
             mIsStage2 = false;
             mIsStage3 = true;
         }
 
         // ゲーム時間の更新
-        static float startTime = 1.0f;
+        static float startTime = STAR_STAGE_TIME;
         if(CGameManager::GameState() == EGameState::eGame)
         startTime -= Time::DeltaTime();
         if (startTime <= 0.0f)
@@ -101,13 +110,13 @@ void CStageTime::Update()
             if (mTime > 0)
             {
                 mTime--; // タイマーを減らす
-                startTime = 1.0f; // タイマーをリセット
+                startTime = STAR_STAGE_TIME; // タイマーをリセット
             }
 
-            // タイマーが0になったら終了
-            if (mTime <= 0)
+            // タイマーが0になったらプレイヤーを死亡させる
+            if (mTime == 0)
             {
-                CGameManager::GameOver();
+                palyer->UpdateDeath();
             }
         }
     }

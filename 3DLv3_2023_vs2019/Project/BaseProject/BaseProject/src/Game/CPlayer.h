@@ -169,6 +169,11 @@ public:
 	// 目的位置までジャンプ終了
 	void UpdateTargetPositionEnd();
 
+	// 死亡
+	void UpdateDeath();
+	// 死亡処理終了
+	void UpdateDeathEnd();
+
 	// 指定された位置まで移動開始
 	void MoveTo(const CVector& pos);
 	// 指定された位置までの移動が出来るかどうか
@@ -322,10 +327,6 @@ private:
 	void UpdateResult();
 	// リザルト終了状態
 	void UpdateResultEnd();
-	// 死亡
-	void UpdateDeath();
-	// 死亡処理終了
-	void UpdateDeathEnd();
 	// 再起
 	void UpdateReStart();
 	// 敵の攻撃Hit
@@ -374,6 +375,12 @@ private:
 	void UpdateDashJumpEnd();
 	// 指定した位置まで移動する
 	void UpdateMoveTo();
+	// 死亡ジャンプ開始
+	void UpdateDeathJumpStart();
+	// 死亡ジャンプ
+	void UpdateDeathJump();
+	// 死亡ジャンプ終了
+	void UpdateDeathJumpEnd();
 
 	// プレイヤーの状態
 	enum class EState
@@ -433,6 +440,9 @@ private:
 		eTargetStart,		 // 目的位置までジャンプ開始
 		eTarget,			 // 目的位置までジャンプ
 		eTargetEnd,			 // 目的位置までジャンプ終了
+		eDeathJumpStart,	 // 死亡ジャンプ開始
+		eDeathJump,			 // 死亡ジャンプ
+		eDeathJumpEnd,		 // 死亡ジャンプ終了
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
@@ -461,6 +471,7 @@ private:
 		eJumpEnd,		// ジャンプ終了
 		eDashJumpStart,	// ダッシュジャンプ開始
 		eDashJump,		// ダッシュジャンプ
+		eDashJumpLoop,	// ダッシュジャンプループ
 		eDashJumpEnd,	// ダッシュジャンプ終了
 		eDash,			// ダッシュ
 		eDashStop,		// ダッシュ終了
