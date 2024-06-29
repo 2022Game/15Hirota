@@ -64,23 +64,11 @@ void CJumpingKinokoHigh::Collision(CCollider* self, CCollider* other, const CHit
 	// ‹‚ß‚½Šp“x‚ªŽw’è‚µ‚½Šp“x‚Ì”ÍˆÍ“à‚Å‚ ‚ê‚ÎA
 	if (dot >= cosAngle)
 	{
-		if (mJumpedElapsedTime <= 0.1f)
+		CPlayer* player = dynamic_cast<CPlayer*>(owner);
+		if (player)
 		{
-			CPlayer* player = dynamic_cast<CPlayer*>(owner);
-			if (player)
-			{
-				player->UpdateHighJumpingStart();
-				BounceStart();
-			}
-		}
-		else
-		{
-			CPlayer* player = dynamic_cast<CPlayer*>(owner);
-			if (player)
-			{
-				player->UpdateJumpingStart();
-				BounceStart();
-			}
+			player->UpdateTargetPositionStart();
+			BounceStart();
 		}
 		mIsCollisionPlayer = true;
 	}

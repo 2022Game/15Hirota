@@ -65,6 +65,8 @@
 #define JUMP_CLEAR 2.0f;
 // スタートジャンプ
 #define JUMP_START_STAGE 2.0f
+// 目的位置までジャンプ
+#define JUMP_TARGET 10.0f
 // 重力
 #define GRAVITY 0.0625f
 // ジャンプ終了時
@@ -3261,6 +3263,76 @@ void CPlayer::UpdateHighJumpingEnd()
 	}
 }
 
+// 目的位置までジャンプ開始
+void CPlayer::UpdateTargetPositionStart()
+{
+	ChangeAnimation(EAnimType::eJumpStart);
+	ChangeState(EState::eTarget);
+
+	mMoveSpeedY = JUMP_TARGET;
+	mIsGrounded = false;
+}
+
+// 目的位置までジャンプ
+void CPlayer::UpdateTargetPosition()
+{
+	// 目標地点まで移動させる処理
+	CPlayer* player = CPlayer::Instance();
+	CVector playerPos = player->Position();
+	CVector targetPos = CVector(0.0f, 2.0f, 480.0f);
+	float duration = 15.0f;
+
+	if (mElapsedTime < duration) {
+		float per = mElapsedTime / duration;
+		CVector pos = CVector::Lerp(playerPos, targetPos, per);
+		player->Position(pos);
+
+		// プレイヤーの向きを調整（左右の回転のみ）
+		CVector direction = targetPos - playerPos;
+		direction = CVector(direction.X(), 0.0f, direction.Z()); // 上下の回転を無視
+		direction.Normalize(); // 移動ベクトルを正規化
+
+		player->Rotation(CQuaternion::LookRotation(direction)); // 新しい向きを設定
+
+		mElapsedTime += Time::DeltaTime();
+	}
+	else 
+	{
+		Position(targetPos); // 確実に最終位置に設定
+		// 必要に応じてmElapsedTimeをリセット
+		mElapsedTime = 0.0f;
+	}
+
+	if (mMoveSpeedY <= 0.0f)
+	{
+		ChangeAnimation(EAnimType::eJumpEnd);
+		ChangeState(EState::eTargetEnd);
+	}
+
+}
+
+// 目的位置までジャンプ終了
+void CPlayer::UpdateTargetPositionEnd()
+{
+	mMoveSpeed = CVector::zero;
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+
+	if (IsAnimationFinished() && mIsGrounded)
+	{
+		ChangeState(EState::eIdle);
+	}
+
+	mpClimbCol->SetEnable(true);
+}
+
 // 指定された位置まで移動する
 void CPlayer::UpdateMoveTo()
 {
@@ -3720,6 +3792,15 @@ void CPlayer::Update()
 		break;
 	case EState::eMoveTo:
 		UpdateMoveTo();
+		break;
+	case EState::eTargetStart:
+		UpdateTargetPositionStart();
+		break;
+	case EState::eTarget:
+		UpdateTargetPosition();
+		break;
+	case EState::eTargetEnd:
+		UpdateTargetPositionEnd();
 		break;
 	}
 

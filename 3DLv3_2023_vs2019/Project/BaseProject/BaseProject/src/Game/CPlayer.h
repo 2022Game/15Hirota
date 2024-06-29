@@ -162,6 +162,12 @@ public:
 	void UpdateHighJumping();
 	// 飛び跳ねる終了
 	void UpdateHighJumpingEnd();
+	// 目的位置までジャンプ開始
+	void UpdateTargetPositionStart();
+	// 目的位置までジャンプ
+	void UpdateTargetPosition();
+	// 目的位置までジャンプ終了
+	void UpdateTargetPositionEnd();
 
 	// 指定された位置まで移動開始
 	void MoveTo(const CVector& pos);
@@ -424,6 +430,9 @@ private:
 		eDashJump,			 // ダッシュジャンプ
 		eDashJumpEnd,		 // ダッシュジャンプ終了
 		eMoveTo,			 // 指定した位置まで移動する
+		eTargetStart,		 // 目的位置までジャンプ開始
+		eTarget,			 // 目的位置までジャンプ
+		eTargetEnd,			 // 目的位置までジャンプ終了
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
