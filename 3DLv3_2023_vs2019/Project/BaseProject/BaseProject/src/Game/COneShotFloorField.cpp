@@ -11,7 +11,7 @@ COneShotFloorField::COneShotFloorField()
 	// 落下判定用のコライダー作成
 	mpFallCol = new CColliderMesh(this, ELayer::eFall, mpStageModel, true);
 	mpFallCol->SetCollisionTags({ ETag::ePlayer });
-	mpFallCol->SetCollisionLayers({ ELayer::eDamageCol });
+	mpFallCol->SetCollisionLayers({ ELayer::ePlayer });
 }
 
 COneShotFloorField::~COneShotFloorField()

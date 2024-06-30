@@ -74,10 +74,12 @@ CMeat1::~CMeat1()
 	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpMeatSphere);
 
-	if (mpEvent != nullptr)
+	// 肉をkillしないので削除
+	// この処理はgetが終わってから追加
+	/*if (mpEvent != nullptr)
 	{
 		mpEvent->KilledMeat1(this);
-	}
+	}*/
 
 	//spInstance = nullptr;
 }
@@ -204,9 +206,14 @@ void CMeat1::UpdateGet()
 				sScore += 1000;
 			}
 			mMeat1 = true;
+
+			if (mpEvent != nullptr)
+			{
+				mpEvent->KilledMeat1(this);
+			}
 			// アイテムボックスの位置まで移動したら、削除
 			Position(mGetTargetPos);
-			Kill();
+			SetShow(false);
 		}
 
 		// カメラの方向へ向ける

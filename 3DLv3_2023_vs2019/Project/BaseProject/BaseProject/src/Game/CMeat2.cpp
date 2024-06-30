@@ -197,7 +197,7 @@ void CMeat2::UpdateGet()
 			mMeat2 = true;
 			// アイテムボックスの位置まで移動したら、削除
 			Position(mGetTargetPos);
-			Kill();
+			SetShow(false);
 		}
 
 		// カメラの方向へ向ける

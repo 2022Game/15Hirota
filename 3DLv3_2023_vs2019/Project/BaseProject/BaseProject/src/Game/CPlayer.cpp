@@ -26,6 +26,7 @@
 #include "CCutInClear.h"
 #include "CCutInDeath.h"
 #include "CCutInResult.h"
+#include "CCutInDeathJump.h"
 #include "CResultAnnouncement.h"
 #include "CScreenItem.h"
 #include "Easing.h"
@@ -63,6 +64,8 @@
 #define JUMP_DASH 1.7f
 // クリアジャンプ
 #define JUMP_CLEAR 2.0f;
+// 死亡ジャンプ
+#define JUMP_DEATH 2.0f
 // スタートジャンプ
 #define JUMP_START_STAGE 2.0f
 // 目的位置までジャンプ
@@ -176,6 +179,7 @@ CPlayer::CPlayer()
 	, mDash(false)
 	, mClimb(false)
 	, mHpHit(false)
+	, mDeath(false)
 	, mIsDeath(false)
 	, mIsAttack(false)
 	, mStartStage1(false)
@@ -343,6 +347,7 @@ CPlayer::CPlayer()
 	mpCutInDeath = new CCutInDeath();
 	mpCutInClear = new CCutInClear();
 	mpCutInResult = new CCutInResult();
+	mpCutInDeathJump = new CCutInDeathJump();
 
 	mpScreenItem = new CScreenItem();
 	mpMeat = new CMeatUI();
@@ -374,6 +379,7 @@ CPlayer::~CPlayer()
 	mpCutInDeath->Kill();
 	mpCutInClear->Kill();
 	mpCutInResult->Kill();
+	mpCutInDeathJump->Kill();
 }
 
 // 衝突処理
@@ -430,7 +436,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					else
 					{
 						mDamageObject = true;
-						mIsDeath = true;
+						mDeath = true;
 						ChangeState(EState::eDeath);
 					}
 				}
@@ -818,7 +824,7 @@ void CPlayer::TakeDamage(int damage)
 	// HPが0になったら
 	if (mCharaStatus.hp <= 0)
 	{
-		mIsDeath = true;
+		mDeath = true;
 		ChangeState(EState::eDeath);
 	}
 }
@@ -1036,6 +1042,12 @@ bool CPlayer::IsDeath()
 	return mIsDeath;
 }
 
+// 死亡したかどうか(mDeath)
+bool CPlayer::IsMDeath()
+{
+	return mDeath;
+}
+
 // ステージ1をクリアしたか
 bool CPlayer::IsStage1Clear()
 {
@@ -1238,8 +1250,9 @@ void CPlayer::UpdateReady()
 				// クリアジャンプに遷移
 				ChangeState(EState::eResultJumpStart);
 			}
+
 			// 死んでいたら
-			else if (mIsDeath)
+			if (!mIsDeath && mDeath)
 			{
 				ChangeState(EState::eDeathJumpStart);
 			}
@@ -1266,6 +1279,11 @@ void CPlayer::UpdateIdle()
 		else if (mStage3Clear && !mIsStage3Clear)
 		{
 			ChangeState(EState::eResult);
+		}
+
+		if (!mIsDeath && mDeath)
+		{
+			ChangeState(EState::eRestart);
 		}
 
 		// アクションを起こせない場合は、以降の処理を実行しない
@@ -2044,6 +2062,48 @@ void CPlayer::UpdateResultEnd()
 	}
 }
 
+// restart状態
+void CPlayer::UpdateRestart()
+{
+	mMoveSpeed = CVector::zero;
+	//mElapsedTime += Time::DeltaTime();
+	ChangeAnimation(EAnimType::eStandUp);
+	if (IsAnimationFinished())
+	{
+		mElapsedTime = 0.0f;
+		mScaleTime = 0.0f;
+		ChangeState(EState::eRestartEnd);
+		/*if (mElapsedTime > 1.0f)
+		{
+			mElapsedTime = 0.0f;
+			mScaleTime = 0.0f;
+			ChangeState(EState::eRestartEnd);
+		}*/
+	}
+}
+
+// restart終了状態
+void CPlayer::UpdateRestartEnd()
+{
+	CResultAnnouncement* result = CResultAnnouncement::Instance();
+	bool resultEnd = result->IsResultOpened();
+	mIsDeath = true;
+	if (resultEnd)
+	{
+		mDeath = false;
+		mIsDeath = false;
+		mpCutInDeathJump->End();
+		mpHpGauge->SetShow(true);
+		mpStaminaGauge->SetShow(true);
+		mpScreenItem->SetShow(true);
+		mpMeat->SetShow(true);
+
+		StageFlagfalse();
+		ChangeAnimation(EAnimType::eIdle);
+		ChangeState(EState::eIdle);
+	}
+}
+
 // ステージ開始時のジャンプ開始
 void CPlayer::UpdateStartStageJumpStart()
 {
@@ -2156,6 +2216,11 @@ void CPlayer::UpdateStartStageJumpEnd()
 // 死亡
 void CPlayer::UpdateDeath()
 {
+	mMoveSpeed = CVector::zero;
+	mMoveSpeedY += GRAVITY;
+
+	mDeath = true;
+
 	if (mState == EState::eIdle || IsAnimationFinished())
 	{
 		mpDamageCol->SetEnable(false);
@@ -2182,7 +2247,7 @@ void CPlayer::UpdateDeath()
 void CPlayer::UpdateDeathEnd()
 {
 	mMoveSpeed = CVector::zero;
-	mMoveSpeedY = 0.0f;
+	mMoveSpeedY += GRAVITY;
 	if (IsAnimationFinished())
 	{
 		mpCutInDeath->End();
@@ -2193,8 +2258,9 @@ void CPlayer::UpdateDeathEnd()
 		mCharaStatus = mCharaMaxStatus;
 		mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
 		mpDamageCol->SetEnable(true);
+		// 死亡
 		CGameManager::StageOver();
-		//Position(65.0f, 3.5f, 36.0f);
+		// 死亡したら、次のステージ開始まで準備中の状態に変更
 		ChangeState(EState::eReady);
 	}
 }
@@ -2259,7 +2325,7 @@ void CPlayer::UpdateHit()
 		{
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
-			mIsDeath = true;
+			mDeath = true;
 			ChangeState(EState::eDeath);
 		}
 	}
@@ -2308,7 +2374,7 @@ void CPlayer::UpdateHitBullet()
 			mElapsedTime = 0.0f;
 			mElapsedTimeCol = 0.0f;
 			mpDamageCol->SetEnable(false);
-			mIsDeath = true;
+			mDeath = true;
 			ChangeState(EState::eDeath);
 		}
 	}
@@ -2360,7 +2426,7 @@ void CPlayer::UpdateHitSword()
 				mElapsedTime = 0.0f;
 				mElapsedTimeCol = 0.0f;
 				mpDamageCol->SetEnable(false);
-				mIsDeath = true;
+				mDeath = true;
 				ChangeState(EState::eDeath);
 			}
 		}
@@ -2413,7 +2479,7 @@ void CPlayer::UpdateHitObj()
 				mElapsedTime = 0.0f;
 				mElapsedTimeCol = 0.0f;
 				mpDamageCol->SetEnable(false);
-				mIsDeath = true;
+				mDeath = true;
 				ChangeState(EState::eDeath);
 			}
 		}
@@ -2453,7 +2519,7 @@ void CPlayer::UpdateFallDamage()
 				mFallDamage = false;
 				mElapsedTimeCol = 0.0f;
 				mpDamageCol->SetEnable(false);
-				mIsDeath = true;
+				mDeath = true;
 				ChangeState(EState::eDeath);
 			}
 		}
@@ -3132,7 +3198,7 @@ void CPlayer::UpdateJumping()
 	{
 		mElapsedTime = 0.0f;
 		mElapsedTimeCol = 0.0f;
-		mIsDeath = true;
+		mDeath = true;
 		ChangeState(EState::eDeath);
 	}
 
@@ -3160,7 +3226,7 @@ void CPlayer::UpdateJumpingEnd()
 	{
 		mElapsedTime = 0.0f;
 		mElapsedTimeCol = 0.0f;
-		mIsDeath = true;
+		mDeath = true;
 		ChangeState(EState::eDeath);
 	}
 
@@ -3176,7 +3242,7 @@ void CPlayer::UpdateJumpingEnd()
 		{
 			mElapsedTime = 0.0f;
 			mElapsedTimeCol = 0.0f;
-			mIsDeath = true;
+			mDeath = true;
 			ChangeState(EState::eDeath);
 		}
 	}
@@ -3218,7 +3284,7 @@ void CPlayer::UpdateHighJumping()
 	{
 		mElapsedTime = 0.0f;
 		mElapsedTimeCol = 0.0f;
-		mIsDeath = true;
+		mDeath = true;
 		ChangeState(EState::eDeath);
 	}
 
@@ -3246,7 +3312,7 @@ void CPlayer::UpdateHighJumpingEnd()
 	{
 		mElapsedTime = 0.0f;
 		mElapsedTimeCol = 0.0f;
-		mIsDeath = true;
+		mDeath = true;
 		ChangeState(EState::eDeath);
 	}
 
@@ -3262,7 +3328,7 @@ void CPlayer::UpdateHighJumpingEnd()
 		{
 			mElapsedTime = 0.0f;
 			mElapsedTimeCol = 0.0f;
-			mIsDeath = true;
+			mDeath = true;
 			ChangeState(EState::eDeath);
 		}
 	}
@@ -3291,7 +3357,7 @@ void CPlayer::UpdateTargetPosition()
 	CVector playerPos = player->Position();
 	CVector targetPos = CVector(0.0f, 10.0f, 480.0f);
 	float duration = 25.0f;
-	float stopDistance = 2.0f; // プレイヤーが目標に到達とみなす距離の閾値
+	float stopDistance = 3.0f; // プレイヤーが目標に到達とみなす距離の閾値
 
 	if (mElapsedTime < duration) 
 	{
@@ -3313,7 +3379,8 @@ void CPlayer::UpdateTargetPosition()
 			// 必要に応じてmElapsedTimeをリセット
 			mElapsedTime = 0.0f;
 		}
-		else {
+		else 
+		{
 			mElapsedTime += Time::DeltaTime();
 		}
 	}
@@ -3323,13 +3390,11 @@ void CPlayer::UpdateTargetPosition()
 		// 必要に応じてmElapsedTimeをリセット
 		mElapsedTime = 0.0f;
 	}
-
 	if (mMoveSpeedY <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
 		ChangeState(EState::eTargetEnd);
 	}
-
 }
 
 // 目的位置までジャンプ終了
@@ -3358,19 +3423,19 @@ void CPlayer::UpdateTargetPositionEnd()
 void CPlayer::UpdateDeathJumpStart()
 {
 	Scale(CVector(0.0f, 0.0f, 0.0f));
-	if (mpCutInResult->IsPlaying())
+	if (mpCutInDeathJump->IsPlaying())
 	{
 
 	}
 	else
 	{
-		mpCutInResult->Setup(this);
-		mpCutInResult->Start();
+		mpCutInDeathJump->Setup(this);
+		mpCutInDeathJump->Start();
 	}
-	ChangeAnimation(EAnimType::eJumpStart);
-	ChangeState(EState::eResultJump);
+	ChangeAnimation(EAnimType::eFalling);
+	ChangeState(EState::eDeathJump);
 
-	mMoveSpeedY = JUMP_CLEAR;
+	mMoveSpeedY = JUMP_DEATH;
 	mIsGrounded = false;
 }
 
@@ -3398,12 +3463,12 @@ void CPlayer::UpdateDeathJump()
 
 	if (mElapsedResultTime > 1.5f)
 	{
-		if (mMoveSpeedY <= 0.0f)
+		if (mIsGrounded)
 		{
 			mElapsedResultTime = 0.0f;
 			Scale(CVector(1.0f, 1.0f, 1.0f));
-			ChangeAnimation(EAnimType::eJumpEnd);
-			ChangeState(EState::eResultJumpEnd);
+			ChangeAnimation(EAnimType::eFallingFlat);
+			ChangeState(EState::eDeathJumpEnd);
 		}
 	}
 }
@@ -3411,65 +3476,9 @@ void CPlayer::UpdateDeathJump()
 // 死亡ジャンプ終了
 void CPlayer::UpdateDeathJumpEnd()
 {
-	if (IsAnimationFinished())
+	if (mIsGrounded)
 	{
-		if (mStage1Clear)
-		{
-			mIsStage1Clear = true;
-			CResultAnnouncement* result = CResultAnnouncement::Instance();
-			bool resultEnd = result->IsResultOpened();
-			if (resultEnd)
-			{
-				mpCutInResult->End();
-				mpHpGauge->SetShow(true);
-				mpStaminaGauge->SetShow(true);
-				mpScreenItem->SetShow(true);
-				mpMeat->SetShow(true);
-				mIsStageClear = false;
-
-				mIsStage1Clear = false;
-				StageFlagfalse();
-				ChangeState(EState::eIdle);
-			}
-		}
-		else if (mStage2Clear)
-		{
-			mIsStage2Clear = true;
-			CResultAnnouncement* result = CResultAnnouncement::Instance();
-			bool resultEnd = result->IsResultOpened();
-			if (resultEnd)
-			{
-				mpCutInResult->End();
-				mpHpGauge->SetShow(true);
-				mpStaminaGauge->SetShow(true);
-				mpScreenItem->SetShow(true);
-				mpMeat->SetShow(true);
-				mIsStageClear = false;
-
-				mIsStage2Clear = false;
-				StageFlagfalse();
-				ChangeState(EState::eIdle);
-			}
-		}
-		else if (mStage3Clear)
-		{
-			mIsStage3Clear = true;
-			CResultAnnouncement* result = CResultAnnouncement::Instance();
-			bool resultEnd = result->IsResultOpened();
-			if (resultEnd)
-			{
-				mpCutInResult->End();
-				mpHpGauge->SetShow(true);
-				mpStaminaGauge->SetShow(true);
-				mpScreenItem->SetShow(true);
-				mpMeat->SetShow(true);
-				mIsStageClear = false;
-
-				mIsStage3Clear = false;
-				StageFlagfalse();
-				ChangeState(EState::eIdle);
-			}
-		}
+		ChangeState(EState::eIdle);
 	}
 }
 
@@ -3951,6 +3960,12 @@ void CPlayer::Update()
 	case EState::eDeathJumpEnd:
 		UpdateDeathJumpEnd();
 		break;
+	case EState::eRestart:
+		UpdateRestart();
+		break;
+	case EState::eRestartEnd:
+		UpdateRestartEnd();
+		break;
 	}
 
 	// 待機中とジャンプ中は、移動処理を行う
@@ -3975,7 +3990,7 @@ void CPlayer::Update()
 	// 準備中でなければ、移動処理などを行う
 	if (mState != EState::eReady)
 	{
-		if (!mClimb)
+		if (!mClimb || mState == EState::eDeathEnd || mState == EState::eDeath)
 		{
 			mMoveSpeedY -= GRAVITY;
 		}

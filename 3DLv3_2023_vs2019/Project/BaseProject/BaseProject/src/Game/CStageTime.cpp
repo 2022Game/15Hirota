@@ -6,7 +6,7 @@
 #include "CPlayer.h"
 
 #define STAGE_1 300
-#define STAGE_2 10
+#define STAGE_2 300
 #define STAGE_3 400
 
 #define STAR_STAGE_TIME 1.0f

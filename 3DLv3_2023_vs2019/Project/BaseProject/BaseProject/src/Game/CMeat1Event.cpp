@@ -2,6 +2,7 @@
 #include "CMeat1.h"
 #include "CHighKinoko.h"
 #include "CStageManager.h"
+#include "CMeat1.h"
 
 // コンストラクタ
 CMeat1Event::CMeat1Event()
@@ -41,14 +42,19 @@ void CMeat1Event::AddMeat1(CMeat1* meat)
 // 肉を獲得時に呼び出す
 void CMeat1Event::KilledMeat1(CMeat1* meat)
 {
-	// 肉のリスト内にメダルが存在しない場合は処理しない
+	// 肉のリスト内に肉が存在しない場合は処理しない
 	if (mMeats.size() == 0) return;
 
 	// 肉のリストから取り除く
-	mMeats.remove(meat);
+	// killしないのでコメントアウト
+	//mMeats.remove(meat);
+
+	CMeat1* meat1 = CMeat1::Instance();
+	bool IsMeat = meat1->IsMeat1();
 
 	// 肉を獲得したら
-	if (mMeats.size() == 0)
+	//mMeats.size() == 0
+	if (IsMeat)
 	{
 		if (mpKinoko != nullptr)
 		{

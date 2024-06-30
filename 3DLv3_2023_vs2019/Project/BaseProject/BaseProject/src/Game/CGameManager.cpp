@@ -142,7 +142,7 @@ void CGameManager::UpdateGame()
 		{
 			mElapsedTime = 0.0f;
 			mResultSetUp = true;
-			Instance()->ChangeState(EGameState::eResult);
+			ChangeState(EGameState::eResult);
 		}
 	}
 	else if (player->IsStage2Clear() && !mResultSetUp)
@@ -152,7 +152,7 @@ void CGameManager::UpdateGame()
 		{
 			mElapsedTime = 0.0f;
 			mResultSetUp = true;
-			Instance()->ChangeState(EGameState::eResult);
+			ChangeState(EGameState::eResult);
 		}
 	}
 	else if (player->IsStage3Clear() && !mResultSetUp)
@@ -162,7 +162,17 @@ void CGameManager::UpdateGame()
 		{
 			mElapsedTime = 0.0f;
 			mResultSetUp = true;
-			Instance()->ChangeState(EGameState::eResult);
+			ChangeState(EGameState::eResult);
+		}
+	}
+	else if (player->IsDeath() && !mResultSetUp)
+	{
+		mElapsedTime += Time::DeltaTime();
+		if (mElapsedTime > 1.5f)
+		{
+			mElapsedTime = 0.0f;
+			mResultSetUp = true;
+			ChangeState(EGameState::eResult);
 		}
 	}
 	//CDebugPrint::Print("mEleapsedTime:%f\n", mElapsedTime);
@@ -243,6 +253,7 @@ void CGameManager::UpdateStage3()
 void CGameManager::UpdateStageOver()
 {
 	mStageNo = 0;
+	mResultSetUp = false;
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
 	CMeat1::SetScore(0);
@@ -263,6 +274,7 @@ void CGameManager::UpdateGameClear()
 void CGameManager::UpdateGameOver()
 {
 	mStageNo = 0;
+	mResultSetUp = false;
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
 	CMeat1::SetScore(0);

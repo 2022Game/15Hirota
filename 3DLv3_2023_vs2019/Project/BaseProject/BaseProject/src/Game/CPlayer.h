@@ -25,6 +25,7 @@ class CSound;
 class CCutInDeath;
 class CCutInClear;
 class CCutInResult;
+class CCutInDeathJump;
 class CScreenItem;
 class CSmoke;
 class CHealingUpBuffs;
@@ -119,8 +120,10 @@ public:
 	bool IsJumping();
 	// 攻撃したかどうか
 	bool IsAttack();
-	// 死亡したかどうか
+	// 死亡したかどうか(mIsDeath)
 	bool IsDeath();
+	// 死亡したかどうか(mDeath)
+	bool IsMDeath();
 
 	// ステージ1をクリアしたかどうか
 	bool IsStage1Clear();
@@ -287,6 +290,8 @@ private:
 	CCutInClear* mpCutInClear;
 	// リザルト時のカメラ
 	CCutInResult* mpCutInResult;
+	// 死亡ジャンプ時のカメラ
+	CCutInDeathJump* mpCutInDeathJump;
 
 	///////////////////////////////////////////////////////
 	
@@ -381,6 +386,10 @@ private:
 	void UpdateDeathJump();
 	// 死亡ジャンプ終了
 	void UpdateDeathJumpEnd();
+	// restart状態
+	void UpdateRestart();
+	// restart
+	void UpdateRestartEnd();
 
 	// プレイヤーの状態
 	enum class EState
@@ -443,6 +452,8 @@ private:
 		eDeathJumpStart,	 // 死亡ジャンプ開始
 		eDeathJump,			 // 死亡ジャンプ
 		eDeathJumpEnd,		 // 死亡ジャンプ終了
+		eRestart,			 // restart状態
+		eRestartEnd,		 // restart終了状態
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
@@ -638,8 +649,9 @@ private:
 	// ダッシュジャンプに移行できるかどうか
 	bool mIsDashJump;
 	// 死亡したか
+	bool mDeath;
+	// 他クラスに死亡下かどうかを伝えるよう
 	bool mIsDeath;
-
 	// 攻撃力アップアイテムを仕様したか
 	bool mIsAttackItem;
 	// 体力回復アイテムを使用したか

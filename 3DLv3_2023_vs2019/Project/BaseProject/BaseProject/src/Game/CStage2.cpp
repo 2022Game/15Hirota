@@ -136,7 +136,7 @@ void CStage2::Load()
 	AddTask(mpSky);
 	// 落下コライダー
 	mpHopsAndHoopsFallCol = new CHopsAndHoopsFallCol();
-	mpHopsAndHoopsFallCol->Scale(10.0f, 3.0f, 10.0f);
+	mpHopsAndHoopsFallCol->Scale(20.0f, 3.0f, 20.0f);
 	AddTask(mpHopsAndHoopsFallCol);
 
 	// セーブポイント1
@@ -169,7 +169,7 @@ void CStage2::Load()
 
 	// 動かないキノコ　
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 14; ++i) {
+	for (int i = 0; i < 17; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
@@ -184,6 +184,9 @@ void CStage2::Load()
 		if (i == 11) xPos = 160.0f;
 		if (i == 12) xPos = 160.0f;
 		if (i == 13) xPos = 210.0f;
+		if (i == 14) xPos = 155.0f;
+		if (i == 15) xPos = 100.0f;
+		if (i == 16) xPos = 45.0f;
 
 		// Y軸の位置を設定
 		float yPos = 0.0f;
@@ -206,6 +209,9 @@ void CStage2::Load()
 		if (i == 11) zPos = 1235.0f;
 		if (i == 12) zPos = 1290.0f;
 		if (i == 13) zPos = 1290.0f;
+		if (i == 14) zPos = 1345.0f;
+		if (i == 15) zPos = 1400.0f;
+		if (i == 16) zPos = 1455.0f;
 
 		// X軸のスケール値を設定
 		float xScale = 1.0f;
@@ -578,7 +584,7 @@ void CStage2::Load()
 
 	CMeat2* meat2 = new CMeat2
 	(
-		CVector(0.0f, 430.0f, -2000.0f),
+		CVector(214.0f, 25.0f, 1290.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);
@@ -587,7 +593,7 @@ void CStage2::Load()
 
 	CMeat3* meat3 = new CMeat3
 	(
-		CVector(0.0f, 430.0f, -2050.0f),
+		CVector(483.0f, 430.0f, -1000.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);
@@ -602,7 +608,8 @@ void CStage2::Load()
 	// 中間ポイント : 0.0f, 0.0f, 480.0f
 	// 中間ポイント2 : 0.0f, 53.0f, 994.0f
 	// 肉1の場所 : -483.0f, 10.0f, 483.0f
-	CVector playerPos = CVector(0.0f, 53.0f, 994.0f);
+	// ゴールポイント : 0.0f, 0.0f, 1520.0f
+	CVector playerPos = CVector(-483.0f, 10.0f, 483.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

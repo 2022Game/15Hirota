@@ -467,6 +467,8 @@ void CResultAnnouncement::Render()
 			bool stage2 = player->IsStage2Clear();
 			// ステージ３をクリアしたか
 			bool stage3 = player->IsStage3Clear();
+			// 死亡したら
+			bool stateEnd = player->IsDeath();
 
 			// mABCItems内の画像を描画
 			for (int i = 0; i < mABCItems.size(); i++)
@@ -476,6 +478,25 @@ void CResultAnnouncement::Render()
 				Result resultType;
 				// ステージ1の結果
 				if (stage1)
+				{
+					// Aランク
+					if (score >= 4000)
+					{
+						resultType = Result::A;
+					}
+					// Bランク
+					else if (score < 3900 && score >= 1500)
+					{
+						resultType = Result::B;
+					}
+					// Cランク
+					else
+					{
+						resultType = Result::C;
+					}
+				}
+				// ステージ２の結果
+				else if (stage2)
 				{
 					// Aランク
 					if (score >= 2500)
@@ -492,11 +513,6 @@ void CResultAnnouncement::Render()
 					{
 						resultType = Result::C;
 					}
-				}
-				// ステージ２の結果
-				else if (stage2)
-				{
-
 				}
 				// ステージ３の結果
 				else if (stage3)
@@ -516,6 +532,12 @@ void CResultAnnouncement::Render()
 					{
 						resultType = Result::C;
 					}
+				}
+
+				// 死亡時の結果
+				if (stateEnd)
+				{
+					resultType = Result::C;
 				}
 
 				// アイテムの種類を取得

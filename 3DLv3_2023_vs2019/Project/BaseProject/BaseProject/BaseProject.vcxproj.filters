@@ -631,9 +631,6 @@
     <ClCompile Include="src\Game\CResult.cpp">
       <Filter>ソース ファイル\Game\UI\StageUI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CResultAnnouncement.cpp">
-      <Filter>ソース ファイル\Game\UI\Menu</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CObstacleWall.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Obstacle</Filter>
     </ClCompile>
@@ -900,6 +897,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CCutInDeathJump.cpp">
       <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CResultAnnouncement.cpp">
+      <Filter>ソース ファイル\Game\UI\StageUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1302,9 +1302,6 @@
     <ClInclude Include="src\Game\CResult.h">
       <Filter>ソース ファイル\Game\UI\StageUI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CResultAnnouncement.h">
-      <Filter>ソース ファイル\Game\UI\Menu</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CObstacleWall.h">
       <Filter>ソース ファイル\Game\Field\Object\Obstacle</Filter>
     </ClInclude>
@@ -1571,6 +1568,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CCutInDeathJump.h">
       <Filter>ソース ファイル\Game\Cutin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CResultAnnouncement.h">
+      <Filter>ソース ファイル\Game\UI\StageUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

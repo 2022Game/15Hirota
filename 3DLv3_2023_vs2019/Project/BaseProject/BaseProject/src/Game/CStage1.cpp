@@ -11,6 +11,9 @@
 #include "CBlueMedalEvent.h"
 #include "CBlueMedal.h"
 #include "CObstacleWall.h"
+#include "CMeat1.h"
+#include "CMeat2.h"
+#include "CMeat3.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -46,6 +49,8 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("SavePoint", "Field\\Gimmick\\SavePoint.obj");				// セーブポイントモデル
 	CResourceManager::Load<CModel>("GoalPost", "Field\\Object\\GoalPost.obj");					// ゴールポストモデル
 	CResourceManager::Load<CModel>("GoalCube", "Field\\Object\\GoalCube.obj");					// ゴールブロックモデル
+	// 肉モデル
+	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
 
 	// アイテム関連
 	CResourceManager::Load<CModel>("BlueMedal", "Field\\Object\\Bluemedal.obj");				// ブルーメダルモデル
@@ -88,7 +93,7 @@ void CStage1::Load()
 	// ゴールポスト0.0f, 10.0f, 720.0f
 	CGoalObject* goal = new CGoalObject
 	(
-		CVector(0.0f, 0.5f, -55.0f),
+		CVector(0.0f, 0.5f, 669.0f),
 		CVector(2.0f, 2.0f, 2.0f),
 		CVector(0.0f, 90.0f, 0.0f)
 	);
@@ -214,6 +219,33 @@ void CStage1::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(dodai2);
+
+	CMeat1* meat1 = new CMeat1
+	(
+		CVector(0.0f, 45.0f, 134.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	AddTask(meat1);
+	meat1->SetMeatNumber(1);
+
+	CMeat2* meat2 = new CMeat2
+	(
+		CVector(70.0f, 25.0f, 390.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	meat2->SetMeatNumber(2);
+	AddTask(meat2);
+
+	CMeat3* meat3 = new CMeat3
+	(
+		CVector(-70.0f, 25.0f, 390.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	meat3->SetMeatNumber(3);
+	AddTask(meat3);
 
 
 	// モンスター(プレイヤー)
