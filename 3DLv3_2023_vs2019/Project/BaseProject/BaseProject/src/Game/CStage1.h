@@ -3,6 +3,7 @@
 #include "CStageBase.h"
 
 class CStageTime;
+class CStageSky;
 
 // ステージ1「ワンショット・フロア」
 class CStage1 : public CStageBase
@@ -19,6 +20,6 @@ public:
 	void Unload() override;
 
 private:
-
+	CStageSky* mpSky;
 };
 #endif

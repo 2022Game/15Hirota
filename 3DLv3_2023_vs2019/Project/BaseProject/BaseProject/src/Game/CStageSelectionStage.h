@@ -2,6 +2,8 @@
 #define CSTAGESELECTIONSTAGE_H
 #include "CStageBase.h"
 
+class CStageSky;
+
 // ステージ選択ステージ
 class CStageSelectionStage : public CStageBase
 {
@@ -34,5 +36,6 @@ private:
 	static const StageData STAGE_DATA[];
 	// 現在のステージ番号
 	int mSelectStageNo;
+	CStageSky* mpSky;
 };
 #endif

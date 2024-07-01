@@ -5,6 +5,7 @@
 class CPlainsStageField;
 class CPlainsStageFallCol;
 class CStageTime;
+class CStageSky;
 
 // ステージ3「平原マップ」
 class CStage3 : public CStageBase
@@ -23,5 +24,7 @@ public:
 private:
 	CPlainsStageField* mpPlainsStageField;	// フィールド
 	CPlainsStageFallCol* mpCPlainsStageFallCol;
+
+	CStageSky* mpSky;
 };
 #endif

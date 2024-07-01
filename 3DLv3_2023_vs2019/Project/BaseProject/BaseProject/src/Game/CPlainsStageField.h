@@ -20,7 +20,6 @@ public:
 private:
 
 	CModel* mpStageModel;
-	CModel* mpStageSkyModel;
 	CModel* mpLoadModel;
 	CModel* mpCloudModel;
 	CModel* mpFanceModel;

@@ -143,8 +143,10 @@ public:
 	// ステージ3に入れるかどうかのフラグ
 	bool IsStartStage3();
 
-	// 攻撃力アップ相手うを使用したかどうか
+	// 攻撃力アップアイテムを使用したかどうか
 	bool IsAttackItem();
+	// 回復アップアイテムを使用したかどうか
+	bool IsHealingItem();
 
 	// 他のクラスで使っている為publicに置いておく
 	// ジャンプ開始1
@@ -591,6 +593,8 @@ private:
 	float mInvincibleTime;
 	// 攻撃エフェクトの計測時間計測用
 	float mAttackTime;
+	// 回復エフェクトの計測時間計測用
+	float mHealingTime;
 	// 登っている状態で着地しているかどうかの計測用
 	float mClimbTime;
 
@@ -655,6 +659,7 @@ private:
 	// 攻撃力アップアイテムを仕様したか
 	bool mIsAttackItem;
 	// 体力回復アイテムを使用したか
+	bool mIsHealingItem;
 	// 無敵アイテムを使用したか
 	
 

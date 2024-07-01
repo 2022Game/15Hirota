@@ -7,8 +7,6 @@ CPlainsStageField::CPlainsStageField()
 {
 	// ステージのモデルデータ取得
 	mpStageModel = CResourceManager::Get<CModel>("Stage");
-	// ステージの空のモデルデータ取得
-	mpStageSkyModel = CResourceManager::Get<CModel>("StageSky");
 	// 道のモデルデータ取得
 	mpLoadModel = CResourceManager::Get<CModel>("Load");
 	// 雲のモデルデータ取得
@@ -89,8 +87,6 @@ void CPlainsStageField::Render()
 {
 	mpStageModel->SetColor(mColor);
 	mpStageModel->Render(Matrix());
-	mpStageSkyModel->SetColor(mColor);
-	mpStageSkyModel->Render(Matrix());
 	mpLoadModel->SetColor(mColor);
 	mpLoadModel->Render(Matrix());
 	mpCloudModel->SetColor(mColor);

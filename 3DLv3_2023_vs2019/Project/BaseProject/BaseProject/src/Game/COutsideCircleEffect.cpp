@@ -39,12 +39,27 @@ void COutsideCircleEffect::Update()
 	mAngle += 55.0f * Time::DeltaTime();
 	if (mAngle >= 360.0f) mAngle -= 360.0f;
 
-	bool item = player->IsAttackItem();
-	if (!item)
+	if (mElapsedTime >= 10.0f)
 	{
-		// íœ
 		Kill();
 	}
+	else
+	{
+		mElapsedTime += Time::DeltaTime();
+	}
+
+	//bool item = player->IsAttackItem();
+	//bool healing = player->IsHealingItem();
+	//if (!item)
+	//{
+	//	// íœ
+	//	Kill();
+	//}
+	//else if (!healing)
+	//{
+	//	// íœ
+	//	Kill();
+	//}
 }
 
 // •`‰æˆ—

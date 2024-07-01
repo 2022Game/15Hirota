@@ -526,35 +526,35 @@ void CVanguard::UpdateIdle()
 			ChangeState(EState::eChase);
 		}
 	}
-	else
-	{
-		int random = Math::Rand(0, 10);
+	//else
+	//{
+	//	int random = Math::Rand(0, 10);
 
-		if (random >= 0 && random <= 5 && IsAnimationFinished())
-		{
-			ChangeAnimation(EAnimType::eIdle1);
-			if (IsAnimationFinished())
-			{
-				// Šm—¦‚Åœpœjó‘Ô‚ÉˆÚs
-				if (ShouldTransition())
-				{
-					ChangeState(EState::eWander);
-				}
-			}
-		}
-		else if (random >= 6 && random <= 10 && IsAnimationFinished())
-		{
-			ChangeAnimation(EAnimType::eIdle2);
-			if (IsAnimationFinished())
-			{
-				// Šm—¦‚Åœpœjó‘Ô‚ÉˆÚs
-				if (ShouldTransition())
-				{
-					ChangeState(EState::eWander);
-				}
-			}
-		}
-	}
+	//	if (random >= 0 && random <= 5 && IsAnimationFinished())
+	//	{
+	//		ChangeAnimation(EAnimType::eIdle1);
+	//		if (IsAnimationFinished())
+	//		{
+	//			// Šm—¦‚Åœpœjó‘Ô‚ÉˆÚs
+	//			if (ShouldTransition())
+	//			{
+	//				ChangeState(EState::eWander);
+	//			}
+	//		}
+	//	}
+	//	else if (random >= 6 && random <= 10 && IsAnimationFinished())
+	//	{
+	//		ChangeAnimation(EAnimType::eIdle2);
+	//		if (IsAnimationFinished())
+	//		{
+	//			// Šm—¦‚Åœpœjó‘Ô‚ÉˆÚs
+	//			if (ShouldTransition())
+	//			{
+	//				ChangeState(EState::eWander);
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 // ˆÚ“®ó‘Ô

@@ -1,7 +1,8 @@
 #include "CStageSky.h"
+#include "CStageManager.h"
 
 CStageSky::CStageSky()
-	: CObjectBase(ETag::eSlash, ETaskPriority::eBackground)
+	: CObjectBase(ETag::eSky, ETaskPriority::eBackground)
 {
 	// 空オブジェクト設定
 	mpStageSky = CResourceManager::Get<CModel>("StageSky");
@@ -9,7 +10,7 @@ CStageSky::CStageSky()
 
 CStageSky::~CStageSky()
 {
-
+	CStageManager::RemoveTask(this);
 }
 
 void CStageSky::Update()

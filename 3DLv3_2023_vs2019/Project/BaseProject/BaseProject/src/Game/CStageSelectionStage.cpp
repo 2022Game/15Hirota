@@ -16,6 +16,7 @@
 #include "CStage2Button.h"
 #include "CStage3Button.h"
 #include "CVanguard.h"
+#include "CStageSky.h"
 
 // ステージのデータのテーブル
 const CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[]
@@ -77,6 +78,8 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 // ステージ読み込み
 void CStageSelectionStage::Load()
 {
+	// ステージの空
+	CResourceManager::Load<CModel>("StageSky",			"Field\\StageSky\\Sky(Sphere).obj");
 	CResourceManager::Load<CModel>("StageSelect",		"Field\\StageSelect\\StageSelect.obj");				// ステージのオブジェクト
 	CResourceManager::Load<CModel>("StageSelectFloor",	"Field\\StageSelect\\StageSelectFloorCol.obj");		// ステージの床コライダー
 
@@ -97,6 +100,10 @@ void CStageSelectionStage::Load()
 	CStageSelection* field = new CStageSelection();
 	field->Scale(10.0f, 10.0f, 10.0f);
 	AddTask(field);
+	// 空
+	mpSky = new CStageSky();
+	mpSky->Scale(150.0f, 150.0f, 150.0f);
+	AddTask(mpSky);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
@@ -128,7 +135,7 @@ void CStageSelectionStage::Load()
 		STAGE_DATA[3].btnPos,
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::eDamageCol
+		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(stage3button);
 
@@ -158,7 +165,7 @@ void CStageSelectionStage::Load()
 		CVector(6.0f, 30.0f, -298.0f),
 		CVector(1.2f, 1.2f, 1.2f),
 		CVector(0.0f, 40.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
+		ETag::ePlayer, ELayer::eDamageCol
 	);
 	AddTask(menuobj3);
 

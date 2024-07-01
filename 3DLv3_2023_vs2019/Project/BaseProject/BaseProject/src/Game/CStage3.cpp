@@ -2,6 +2,7 @@
 #include "CPlayer.h"
 #include "CSoldier.h"
 #include "CVanguard.h"
+#include "CStageSky.h"
 #include "CCamera.h"
 #include "CStageTime.h"
 #include "CGameCamera.h"
@@ -50,6 +51,8 @@ CStage3::~CStage3()
 void CStage3::Load()
 {
 	// ステージ関連
+	// ステージの空
+	CResourceManager::Load<CModel>("StageSky",						"Field\\StageSky\\Sky(Sphere).obj");
 	// ステージモデル
 	CResourceManager::Load<CModel>("Stage",							"Field\\GameStage(Worlds_1)\\GameStage_1(Stage).obj");
 	// ステージ空モデル
@@ -213,7 +216,7 @@ void CStage3::Load()
 
 	// キャラクター関連
 	// ヴァンガード
-	//CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");
+	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");
 	// ソルジャー
 	CResourceManager::Load<CModelX>("Soldier", "Character\\Gas mask soldier\\GasMask_Soldier_Model.x");
 
@@ -240,6 +243,10 @@ void CStage3::Load()
 	mpPlainsStageField = new CPlainsStageField();
 	mpPlainsStageField->Scale(8.0f, 8.0f, 8.0f);
 	AddTask(mpPlainsStageField);
+	// 空
+	mpSky = new CStageSky();
+	mpSky->Scale(150.0f, 150.0f, 150.0f);
+	AddTask(mpSky);
 	// 落下コライダー
 	mpCPlainsStageFallCol = new CPlainsStageFallCol();
 	mpCPlainsStageFallCol->Scale(8.0f, 8.0f, 8.0f);
@@ -432,15 +439,15 @@ void CStage3::Load()
 	AddTask(rotategimmick5);
 	////////////////////////////////////////////////////////////////////////////////////////
 
-	// シーソーモデル
-	CSeesaw* seesaw1 = new CSeesaw
-	(
-		CVector(190.0f, 135.0f, 90.0f),
-		CVector(8.5f, 5.5f, 10.5f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(seesaw1);
+	//// シーソーモデル
+	//CSeesaw* seesaw1 = new CSeesaw
+	//(
+	//	CVector(190.0f, 135.0f, 90.0f),
+	//	CVector(8.5f, 5.5f, 10.5f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(seesaw1);
 
 
 	//// 回転する床ギミック(ジャンプ)
@@ -716,24 +723,24 @@ void CStage3::Load()
 	//// キャラクター関連 ///////////////////////////////////////////////////////////////
 
 	// キャラクター
-	// ソルジャー1
-	CSoldier* soldier1 = new CSoldier();
-	soldier1->Scale(1.5f, 1.5f, 1.5f);
-	soldier1->Position(7.7f, 228.0f, -274.0f);
-	AddTask(soldier1);
-	// ソルジャー2
-	CSoldier* soldier2 = new CSoldier();
-	soldier2->Scale(1.5f, 1.5f, 1.5f);
-	soldier2->Position(7.7f, 228.0f, -284.0f);
-	AddTask(soldier2);
+	//// ソルジャー1
+	//CSoldier* soldier1 = new CSoldier();
+	//soldier1->Scale(1.5f, 1.5f, 1.5f);
+	//soldier1->Position(7.7f, 228.0f, -274.0f);
+	//AddTask(soldier1);
+	//// ソルジャー2
+	//CSoldier* soldier2 = new CSoldier();
+	//soldier2->Scale(1.5f, 1.5f, 1.5f);
+	//soldier2->Position(7.7f, 228.0f, -284.0f);
+	//AddTask(soldier2);
 
 
-	//// ヴァンガード
-	//CVanguard* van = new CVanguard();
-	//CVanguard* vanPos = CVanguard::Instance();
-	//van->Scale(1.4f, 1.4f, 1.4f);
-	//van->Position(496.0f, 335.0f, -167.0f);
-	//AddTask(van)
+	// ヴァンガード
+	CVanguard* van = new CVanguard();
+	CVanguard* vanPos = CVanguard::Instance();
+	van->Scale(1.4f, 1.4f, 1.4f);
+	van->Position(0.0f, 500.0f, -2050.0f);
+	AddTask(van);
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();

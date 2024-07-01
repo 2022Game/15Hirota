@@ -166,6 +166,8 @@ CPlayer::CPlayer()
 	, mElapsedStageTime(0.0f)
 	, mElapsedResultTime(0.0f)
 	, mInvincibleStartTime(10.0f)
+	, mAttackTime(0.0f)
+	, mHealingTime(0.0f)
 	, mLastPos(CVector::zero)
 	, mStartPos(CVector::zero)
 	, mMoveSpeed(CVector::zero)
@@ -197,6 +199,7 @@ CPlayer::CPlayer()
 	, mStage3Clear(false)
 	, mDamageEnemy(false)
 	, mIsAttackItem(false)
+	, mIsHealingItem(false)
 	, mClimbWallTop(false)
 	, mDamageObject(false)
 	, mIsStageClear(false)
@@ -837,70 +840,38 @@ void CPlayer::TakeRecovery(int recovery)
 	{
 		mHpHit = true;
 
-		float PosZ = Math::Rand(-10.0f, 10.0f);
-		float PosX = Math::Rand(-10.0f, 10.0f);
-
-		mElapsedTime += Time::DeltaTime();
-
-		// エフェクト生成の条件判定
-		if (mElapsedTime >= 0.15f && mIsStageClear)
-		{
-			mElapsedTime = 0.0f;
-			// 回復バフを生成して、上方向へ飛ばす
-			CHealingUpBuffs* healing = new CHealingUpBuffs
-			(
-				this,
-				Position() + CVector(PosX, 0.0f, PosZ),
-				CVector::up, // 上方向に設定
-				30.0f,
-				20.0f
-			);
-			// 回復バフの色設定
-			healing->SetColor(CColor(0.0f, 0.8f, 0.0f, 0.5f));
-			healing->Rotation(0.0f, 90.0f, 0.0f);
-			healing->Scale(0.5f, 0.5f, 0.5f);
-			healing->SetParent(this);
-		}
-
-		// バフ1を生成
-		float dist = 0.1f;
-		CInsideCircleEffect* circle1 = new CInsideCircleEffect
-		(
-			0.0f, dist
-		);
-		// バフ2を生成
-		COutsideCircleEffect* circle2 = new COutsideCircleEffect
-		(
-			0.0f, dist
-		);
-
-		if (mElapsedTime <= 5.0f)
-		{
-			// 点滅の速度を調整するための定数
-			const float blinkSpeed = 1.0f;
-
-			// sin関数を使って点滅する色を計算
-			// 0.0～1.0の間を往復する
-			float green = 0.5f + 0.5f * sin(mElapsedTime * blinkSpeed);
-			// バフの色設定
-			circle1->SetColor(CColor(0.0f, green, 0.0f, 1.0f));
-			circle1->Scale(5.0f, 5.0f, 5.0f);
-			circle1->SetOwner(this);
-
-			circle2->SetColor(CColor(0.0f, green, 0.0f, 1.0f));
-			circle2->Scale(5.0f, 5.0f, 5.0f);
-			circle2->SetOwner(this);
-
-			CDebugPrint::Print("green:%f\n", green);
-			CDebugPrint::Print("ElapsedTime:%f\n", mElapsedTime);
-		}
-		else
-		{
-			mElapsedTime = 0.0f;
-		}
-
 		mCharaStatus.hp += recovery;
 	}
+
+	mIsHealingItem = true;
+	mHealingTime = 10.0;
+
+	// バフ1を生成
+	float dist = 0.1f;
+	CInsideCircleEffect* circle1 = new CInsideCircleEffect
+	(
+		0.0f, dist
+	);
+	// バフ2を生成
+	COutsideCircleEffect* circle2 = new COutsideCircleEffect
+	(
+		0.0f, dist
+	);
+
+	// 点滅の速度を調整するための定数
+	const float blinkSpeed = 1.0f;
+
+	// sin関数を使って点滅する色を計算
+	// 0.0～1.0の間を往復する
+	float green = 0.5f + 0.5f * sin(mHealingTime * blinkSpeed);
+	// バフの色設定
+	circle1->SetColor(CColor(0.0f, green, 0.0f, 1.0f));
+	circle1->Scale(5.0f, 5.0f, 5.0f);
+	circle1->SetOwner(this);
+
+	circle2->SetColor(CColor(0.0f, green, 0.0f, 1.0f));
+	circle2->Scale(5.0f, 5.0f, 5.0f);
+	circle2->SetOwner(this);
 }
 
 // 無敵状態処理(コライダーを一定時間オフにする)
@@ -933,30 +904,20 @@ void CPlayer::TakeAttackPotion(int attack)
 		0.0f, dist
 	);
 
-	if (mElapsedTime <= 5.0f)
-	{
-		// 点滅の速度を調整するための定数
-		const float blinkSpeed = 1.0f;
+	// 点滅の速度を調整するための定数
+	const float blinkSpeed = 1.0f;
 
-		// sin関数を使って点滅する色を計算
-		// 0.0～1.0の間を往復する
-		float red = 0.5f + 0.5f * sin(mElapsedTime * blinkSpeed);
-		// バフの色設定
-		circle1->SetColor(CColor(red, 0.0f, 0.0f, 1.0f));
-		circle1->Scale(5.0f, 5.0f, 5.0f);
-		circle1->SetOwner(this);
+	// sin関数を使って点滅する色を計算
+	// 0.0～1.0の間を往復する
+	float red = 0.5f + 0.5f * sin(mAttackTime * blinkSpeed);
+	// バフの色設定
+	circle1->SetColor(CColor(red, 0.0f, 0.0f, 1.0f));
+	circle1->Scale(5.0f, 5.0f, 5.0f);
+	circle1->SetOwner(this);
 
-		circle2->SetColor(CColor(red, 0.0f, 0.0f, 1.0f));
-		circle2->Scale(5.0f, 5.0f, 5.0f);
-		circle2->SetOwner(this);
-
-		CDebugPrint::Print("green:%f\n", red);
-		CDebugPrint::Print("ElapsedTime:%f\n", mElapsedTime);
-	}
-	else
-	{
-		mElapsedTime = 0.0f;
-	}
+	circle2->SetColor(CColor(red, 0.0f, 0.0f, 1.0f));
+	circle2->Scale(5.0f, 5.0f, 5.0f);
+	circle2->SetOwner(this);
 }
 
 // レベルアップ
@@ -1088,6 +1049,12 @@ bool CPlayer::IsStartStage3()
 bool CPlayer::IsAttackItem()
 {
 	return mIsAttackItem;
+}
+
+// 攻撃力アップアイテムを使用したか
+bool CPlayer::IsHealingItem()
+{
+	return mIsHealingItem;
 }
 
 // ステージフラグをfalseにする関数
@@ -3674,8 +3641,9 @@ void CPlayer::CheckUnderFootObject()
 // 更新
 void CPlayer::Update()
 {
-	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
-	CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
+	//CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
+	//CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
+	//CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
@@ -3689,13 +3657,23 @@ void CPlayer::Update()
 			mIsAttackItem = false;
 		}
 	}
+	else if (mIsHealingItem)
+	{
+		mHealingTime -= Time::DeltaTime();
+		if (mHealingTime <= 0.0f)
+		{
+			mIsHealingItem = false;
+		}
+	}
+	/*CDebugPrint::Print("healingItem:%s\n", mIsHealingItem ? "true" : "false");
+	CDebugPrint::Print("mHealingTime:%f\n", mHealingTime);*/
 
 	// デバッグ用にオンにしている　後で必ず消すこと	////////////////////////////////////
 
 	// ステージ3をクリアした状態
 	// falseだとステージに入れない
-	mIsStartStage2 = true;
-	mIsStartStage3 = true;
+	/*mIsStartStage2 = true;
+	mIsStartStage3 = true;*/
 
 	////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4151,7 +4129,6 @@ void CPlayer::Update()
 	//CDebugPrint::Print("TimeCol%f\n", mElapsedTimeCol);
 	//CDebugPrint::Print("mMoveSpeedY%f\n", mMoveSpeedY);
 	//CDebugPrint::Print("State:%d\n", mState);
-	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 }
 
 // アイテムを取得

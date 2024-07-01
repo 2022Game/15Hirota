@@ -130,10 +130,12 @@ void CStage2::Load()
 	field->Scale(4.0f, 4.0f, 4.0f);
 	field->Rotate(0.0f, 180.0f, 0.0f);
 	AddTask(field);
+
 	// 空
 	mpSky = new CStageSky();
 	mpSky->Scale(150.0f, 150.0f, 150.0f);
 	AddTask(mpSky);
+
 	// 落下コライダー
 	mpHopsAndHoopsFallCol = new CHopsAndHoopsFallCol();
 	mpHopsAndHoopsFallCol->Scale(20.0f, 3.0f, 20.0f);
@@ -609,7 +611,7 @@ void CStage2::Load()
 	// 中間ポイント2 : 0.0f, 53.0f, 994.0f
 	// 肉1の場所 : -483.0f, 10.0f, 483.0f
 	// ゴールポイント : 0.0f, 0.0f, 1520.0f
-	CVector playerPos = CVector(-483.0f, 10.0f, 483.0f);
+	CVector playerPos = CVector(0.0f, 20.0f, 50.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

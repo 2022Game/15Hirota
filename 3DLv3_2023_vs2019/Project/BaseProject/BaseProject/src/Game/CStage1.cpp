@@ -1,5 +1,6 @@
 #include "CStage1.h"
 #include "COneShotFloorField.h"
+#include "CStageSky.h"
 #include "CPlayer.h"
 #include "CNumberFloor1.h"
 #include "CNumberFloorOnce.h"
@@ -31,6 +32,8 @@ CStage1::~CStage1()
 void CStage1::Load()
 {
 	// オブジェクト関連
+	// ステージの空
+	CResourceManager::Load<CModel>("StageSky", "Field\\StageSky\\Sky(Sphere).obj");
 	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");						// 初期の四角のモデル
 	CResourceManager::Load<CModel>("NumberFallCol", "Field\\FallCol.obj");							// 落下判定コライダー
 
@@ -62,6 +65,11 @@ void CStage1::Load()
 	field->Scale(1.0f, 1.0f, 1.0f);
 	field->Position(0.0f, -200.0f, 0.0f);
 	AddTask(field);
+
+	// 空
+	mpSky = new CStageSky();
+	mpSky->Scale(150.0f, 150.0f, 150.0f);
+	AddTask(mpSky);
 
 	// 初期値点
 	CRisingObject* rising = new CRisingObject

@@ -72,7 +72,7 @@ void CRecoveryObject::Collision(CCollider* self, CCollider* other, const CHitInf
 				mpRecoberSE->Play(1.0f, false, 0.0f);
 				mRecoveryUsed = true;
 				// ‰ñ•œ‚³‚¹‚é
-				player->TakeRecovery(1);
+				//player->TakeRecovery(1);
 
 				// ‰ñ•œÏ‚İƒŠƒXƒg‚É’Ç‰Á
 				AddAttachHitObj(player);
