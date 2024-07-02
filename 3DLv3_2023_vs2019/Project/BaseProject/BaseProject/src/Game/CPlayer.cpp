@@ -3672,8 +3672,8 @@ void CPlayer::Update()
 
 	// ステージ3をクリアした状態
 	// falseだとステージに入れない
-	/*mIsStartStage2 = true;
-	mIsStartStage3 = true;*/
+	mIsStartStage2 = true;
+	mIsStartStage3 = true;
 
 	////////////////////////////////////////////////////////////////////////////////////////
 

@@ -171,7 +171,7 @@ void CStage2::Load()
 
 	// 動かないキノコ　
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 17; ++i) {
+	for (int i = 0; i < 21; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
@@ -187,8 +187,12 @@ void CStage2::Load()
 		if (i == 12) xPos = 160.0f;
 		if (i == 13) xPos = 210.0f;
 		if (i == 14) xPos = 155.0f;
-		if (i == 15) xPos = 100.0f;
-		if (i == 16) xPos = 45.0f;
+		if (i == 15) xPos = 45.0f;
+		if (i == 16) xPos = -160.0f;
+		if (i == 17) xPos = -160.0f;
+		if (i == 18) xPos = -210.0f;
+		if (i == 19) xPos = -155.0f;
+		if (i == 20) xPos = -45.0f;
 
 		// Y軸の位置を設定
 		float yPos = 0.0f;
@@ -212,8 +216,12 @@ void CStage2::Load()
 		if (i == 12) zPos = 1290.0f;
 		if (i == 13) zPos = 1290.0f;
 		if (i == 14) zPos = 1345.0f;
-		if (i == 15) zPos = 1400.0f;
-		if (i == 16) zPos = 1455.0f;
+		if (i == 15) zPos = 1455.0f;
+		if (i == 16) zPos = 1235.0f;
+		if (i == 17) zPos = 1290.0f;
+		if (i == 18) zPos = 1290.0f;
+		if (i == 19) zPos = 1345.0f;
+		if (i == 20) zPos = 1455.0f;
 
 		// X軸のスケール値を設定
 		float xScale = 1.0f;
@@ -308,6 +316,16 @@ void CStage2::Load()
 		10.0f
 	);
 	AddTask(jumpkinokoUpDown2);
+	// 動くキノコ(上下)
+	CJumpingKinokoUpDown* jumpkinokoUpDown3 = new CJumpingKinokoUpDown
+	(
+		CVector(-120.0f, 30.0f, 1180.0f),
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 90.0f, 0.0f),
+		CVector(40.0f, 30.0f, 0.0f),
+		10.0f
+	);
+	AddTask(jumpkinokoUpDown3);
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -321,6 +339,28 @@ void CStage2::Load()
 		true
 	);
 	AddTask(rotatekinoko1);
+
+	// 動くキノコ(右円回転)
+	CJumpingKinokoTurnRight* rotatekinoko2 = new CJumpingKinokoTurnRight
+	(
+		CVector(100.0f, 0.0f, 1400.0f),
+		CVector(1.1f, 1.0f, 1.1f),
+		CVector(0.0f, 0.0f, 0.0f),
+		30.0f, 30.0f, 80.0f,
+		true
+	);
+	AddTask(rotatekinoko2);
+
+	// 動くキノコ(左円回転)
+	CJumpingKinokoTurnLeft* rotatekinoko3 = new CJumpingKinokoTurnLeft
+	(
+		CVector(-100.0f, 0.0f, 1400.0f),
+		CVector(1.1f, 1.0f, 1.1f),
+		CVector(0.0f, 0.0f, 0.0f),
+		30.0f, 30.0f, 80.0f,
+		false
+	);
+	AddTask(rotatekinoko3);
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	// リングビーマ1
