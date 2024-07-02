@@ -254,6 +254,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Obstacle\Base">
       <UniqueIdentifier>{fa8195ab-53b7-4e1c-825d-209e44d4b0f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Player">
+      <UniqueIdentifier>{0d174a58-76d1-47db-99b2-47a5c26c7247}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -318,9 +321,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CApplication.cpp">
       <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CPlayer.cpp">
-      <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CEnemy.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
@@ -901,6 +901,9 @@
     <ClCompile Include="src\Game\CResultAnnouncement.cpp">
       <Filter>ソース ファイル\Game\UI\StageUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CPlayer.cpp">
+      <Filter>ソース ファイル\Game\Character\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -968,9 +971,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CApplication.h">
       <Filter>ソース ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CPlayer.h">
-      <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CEnemy.h">
       <Filter>ソース ファイル\Game\Character</Filter>
@@ -1571,6 +1571,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CResultAnnouncement.h">
       <Filter>ソース ファイル\Game\UI\StageUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CPlayer.h">
+      <Filter>ソース ファイル\Game\Character\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

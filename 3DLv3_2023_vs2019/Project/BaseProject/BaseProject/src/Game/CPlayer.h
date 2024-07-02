@@ -395,6 +395,12 @@ private:
 
 	// コライダーの時間計測
 	void CColliderTime();
+	// 点滅する時間計測用
+	void CDamageColorTime();
+	// アニメーション終わりの体力判定処理
+	void CHPJudgment();
+	// ジャンプ中に体力が0以下になった場合の処理
+	void JumpingHpJudgment();
 
 	// プレイヤーの状態
 	enum class EState
@@ -572,11 +578,13 @@ private:
 	float mElapsedTime;
 	// 計測時間終了
 	float mElapsedTimeEnd;
+	// 点滅時間計測用
+	float mBlinkElapsedTime;
 	// コライダーの計測時間
-	float mElapsedTimeCol;
-	// 無敵状態用の計測時間
+	float mColElapsedTime;
+	// 無敵状態開始時間
 	float mInvincibleStartTime;
-	// 壁のぼり中のスタミナ計測時間
+	// 壁登り中のスタミナ計測時間
 	float mClimbStaminaTime;
 	// 最初のダッシュの計測時間
 	float mStartDashTime;
@@ -586,17 +594,17 @@ private:
 	float mMoveSpeedY;
 	// プレイヤーの大きさ変更計測時間
 	float mScaleTime;
-	// 準備が終わった後の経過時間計測用
-	float mElapsedStageTime;
-	// リザルトジャンプの経過時間計測用
-	float mElapsedResultTime;
+	// 準備が終わった後の経過時間
+	float mStageElapsedTime;
+	// リザルトジャンプの経過時間
+	float mResultElapsedTime;
 	// プレイヤーが移動した距離
 	float mMoveDistance;
-	// 無敵エフェクトの計測時間計測用
+	// 無敵エフェクトの計測時間
 	float mInvincibleTime;
-	// 攻撃エフェクトの計測時間計測用
+	// 攻撃エフェクトの計測時間
 	float mAttackTime;
-	// 回復エフェクトの計測時間計測用
+	// 回復エフェクトの計測時間
 	float mHealingTime;
 	// 登っている状態で着地しているかどうかの計測用
 	float mClimbTime;
@@ -664,6 +672,9 @@ private:
 	// 体力回復アイテムを使用したか
 	bool mIsHealingItem;
 	// 無敵アイテムを使用したか
+
+	// ダメージを受けたかどうか
+	bool mDamaged;
 	
 
 	// ステージ1に入るかどうか

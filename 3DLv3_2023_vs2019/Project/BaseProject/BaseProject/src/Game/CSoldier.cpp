@@ -528,7 +528,7 @@ void CSoldier::UpdateAttack()
 			new CBullet
 			(
 				// ”­ŽËˆÊ’u
-				Position() + CVector(0.0f, 20.0f, 0.0f) + VectorZ() * 20.0f,
+				Position() + CVector(0.0f, 10.0f, 0.0f) + VectorZ() * 20.0f,
 				VectorZ(),	// ”­ŽË•ûŒü
 				1000.0f,	// ˆÚ“®‹——£
 				1000.0f		// ”ò‹——£
