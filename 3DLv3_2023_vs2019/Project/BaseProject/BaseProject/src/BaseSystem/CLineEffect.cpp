@@ -7,7 +7,11 @@ CLineEffect::CLineEffect(ETag tag)
 	: CEffect(tag)
 	, mpOwner(nullptr)
 	, mpTexture(nullptr)
+	, mpAnimData(nullptr)
+	, mAnimNo(0)
+	, mElapsedTime(0.0f)
 	, mBaseUV(0.0f, 0.0f, 1.0f, 1.0f)
+	, mUV(0.0f, 0.0f, 1.0f, 1.0f)
 {
 }
 

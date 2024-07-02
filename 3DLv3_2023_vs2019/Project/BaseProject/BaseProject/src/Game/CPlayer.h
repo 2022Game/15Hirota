@@ -393,6 +393,9 @@ private:
 	// restart
 	void UpdateRestartEnd();
 
+	// コライダーの時間計測
+	void CColliderTime();
+
 	// プレイヤーの状態
 	enum class EState
 	{

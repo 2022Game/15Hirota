@@ -807,6 +807,20 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 	}
 }
 
+// コライダーの時間計測用
+void CPlayer::CColliderTime()
+{
+	if (mElapsedTimeCol <= DAMAGECOL)
+	{
+		mElapsedTimeCol += Time::DeltaTime();
+		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
+		{
+			mElapsedTimeCol = DAMAGECOL;
+			mpDamageCol->SetEnable(true);
+		}
+	}
+}
+
 // 被ダメージ処理
 void CPlayer::TakeDamage(int damage)
 {
@@ -1263,15 +1277,7 @@ void CPlayer::UpdateIdle()
 	// 剣に攻撃終了を伝える
 	mpSword->AttackEnd();
 
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	if (mIsAttack)
 	{
@@ -1514,15 +1520,7 @@ void CPlayer::UpdateMove()
 // ダッシュ終了
 void CPlayer::UpdateDashEnd()
 {
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eDashStop);
@@ -1536,6 +1534,8 @@ void CPlayer::UpdateDashEnd()
 // 攻撃
 void CPlayer::UpdateAttack()
 {
+	CColliderTime();
+
 	mIsAttack = true;
 	mWeaponTime = 0.0f;
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHandMiddle1"));
@@ -1556,6 +1556,8 @@ void CPlayer::UpdateAttack()
 // 強攻撃
 void CPlayer::UpdateAttackStrong()
 {
+	CColliderTime();
+
 	mIsAttack = false;
 	mWeaponTime = 0.0f;
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
@@ -1569,6 +1571,8 @@ void CPlayer::UpdateAttackStrong()
 // ダッシュアタック
 void CPlayer::UpdateDashAttack()
 {
+	CColliderTime();
+
 	// ダッシュアタックアニメーションを開始
 	ChangeAnimation(EAnimType::eAttackDash);
 	mMoveSpeed = CVector::zero;
@@ -1604,6 +1608,8 @@ void CPlayer::UpdateDashAttack()
 // 攻撃終了待ち
 void CPlayer::UpdateAttackWait()
 {
+	CColliderTime();
+
 	bool KeyPush = (CInput::Key('W') || CInput::Key('A') || CInput::Key('S') || CInput::Key('D'));
 	if (mAnimationFrame >= 10.0f)
 	{
@@ -1691,6 +1697,8 @@ void CPlayer::UpdateAttackWait()
 // 強攻撃終了待ち
 void CPlayer::UpdateAttackStrongWait()
 {
+	CColliderTime();
+
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eIdle);
@@ -1701,6 +1709,8 @@ void CPlayer::UpdateAttackStrongWait()
 // ダッシュアタック終了待ち
 void CPlayer::UpdateDashAttackWait()
 {
+	CColliderTime();
+
 	// 剣に攻撃終了を伝える
 	mpSword->AttackEnd();
 	mMoveSpeed = CVector::zero;
@@ -1741,15 +1751,7 @@ void CPlayer::UpdateRotateEnd()
 	{
 		mpDamageCol->SetEnable(true);
 
-		if (mElapsedTimeCol <= DAMAGECOL)
-		{
-			mElapsedTimeCol += Time::DeltaTime();
-			if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-			{
-				mElapsedTimeCol = DAMAGECOL;
-				mpDamageCol->SetEnable(true);
-			}
-		}
+		CColliderTime();
 
 		ChangeState(EState::eIdle);
 		ChangeAnimation(EAnimType::eIdle);
@@ -2306,15 +2308,7 @@ void CPlayer::UpdateHitBullet()
 	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eHit);
 
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
@@ -2357,15 +2351,7 @@ void CPlayer::UpdateHitSword()
 	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eHit);
 
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
@@ -2410,15 +2396,7 @@ void CPlayer::UpdateHitObj()
 	mMoveSpeed = CVector::zero;
 	ChangeAnimation(EAnimType::eHit);
 
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	mElapsedTime += Time::DeltaTime();
 	SetColor(CColor(1.0, 0.0, 0.0, 1.0));
@@ -2521,6 +2499,8 @@ void CPlayer::UpdateFallDamage()
 // 登る状態
 void CPlayer::UpdateClimb()
 {
+	CColliderTime();
+
 	mClimb = true;
 	mIsAttack = false;
 	mWeaponTime = 0.0f;
@@ -2586,6 +2566,8 @@ void CPlayer::UpdateClimb()
 // 頂上まで登った
 void CPlayer::UpdateClimbedTop()
 {
+	CColliderTime();
+
 	mClimb = true;
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = 0.0f;
@@ -2657,6 +2639,8 @@ void CPlayer::UpdateClimbedTop()
 // 金属梯子に登る状態
 void CPlayer::UpdateMetalLadder()
 {
+	CColliderTime();
+
 	mClimb = true;
 	mIsAttack = false;
 	mWeaponTime = 0.0f;
@@ -2732,6 +2716,8 @@ void CPlayer::UpdateMetalLadder()
 // 金属梯子の頂上に登った状態
 void CPlayer::UpdateMetalLaddertop()
 {
+	CColliderTime();
+
 	mClimb = true;
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = 0.0f;
@@ -2803,6 +2789,8 @@ void CPlayer::UpdateMetalLaddertop()
 // 金網に登る状態
 void CPlayer::UpdateWireClimb()
 {
+	CColliderTime();
+
 	mClimb = true;
 	mIsAttack = false;
 	mWeaponTime = 0.0f;
@@ -2888,6 +2876,8 @@ void CPlayer::UpdateWireClimb()
 // 金網の頂上に登った状態
 void CPlayer::UpdateWireClimbedTop()
 {
+	CColliderTime();
+
 	mClimb = true;
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = 0.0f;
@@ -2958,15 +2948,7 @@ void CPlayer::UpdateWireClimbedTop()
 // 落下状態
 void CPlayer::UpdateFalling()
 {
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	mMoveSpeedY = -2.5f;
 	ChangeAnimation(EAnimType::eFalling);
@@ -2986,6 +2968,8 @@ void CPlayer::UpdateFalling()
 // 立ち上がる
 void CPlayer::UpdateStandUp()
 {
+	CColliderTime();
+
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = 0.0f;
 	if (IsAnimationFinished())
@@ -3004,15 +2988,7 @@ void CPlayer::UpdateJumpStart()
 	// 足元に煙のエフェクトを発生させる
 	PlayStepSmoke();
 
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	mMoveSpeedY += JUMP_SPEED;
 	mIsGrounded = false;
@@ -3021,15 +2997,7 @@ void CPlayer::UpdateJumpStart()
 // ジャンプ中
 void CPlayer::UpdateJump()
 {
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	if (mMoveSpeedY <= 0.0f)
 	{
@@ -3043,15 +3011,7 @@ void CPlayer::UpdateJump()
 void CPlayer::UpdateJumpEnd()
 {
 	mMoveSpeed = CVector::zero;
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	if (IsAnimationFinished() && mIsGrounded)
 	{
@@ -3071,15 +3031,7 @@ void CPlayer::UpdateDashJumpStart()
 	// 足元に煙のエフェクトを発生させる
 	PlayStepSmoke();
 
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	mMoveSpeedY += JUMP_DASH;
 	mIsGrounded = false;
@@ -3090,15 +3042,7 @@ void CPlayer::UpdateDashJump()
 {
 	mIsJumping = false;
 
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	if (mIsGrounded)
 	{
@@ -3112,15 +3056,7 @@ void CPlayer::UpdateDashJump()
 void CPlayer::UpdateDashJumpEnd()
 {
 	mMoveSpeed = CVector::zero;
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	if (IsAnimationFinished() && mIsGrounded)
 	{
@@ -3136,15 +3072,7 @@ void CPlayer::UpdateJumpingStart()
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eJumping);
 
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 	mMoveSpeedY = JUMP_BOUNCE;
 	mIsGrounded = false;
 }
@@ -3152,15 +3080,7 @@ void CPlayer::UpdateJumpingStart()
 // 跳ねる処理
 void CPlayer::UpdateJumping()
 {
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	if (mCharaStatus.hp <= 0)
 	{
@@ -3180,15 +3100,7 @@ void CPlayer::UpdateJumping()
 // 跳ねる処理終了
 void CPlayer::UpdateJumpingEnd()
 {
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	if (mCharaStatus.hp <= 0)
 	{
@@ -3222,15 +3134,7 @@ void CPlayer::UpdateHighJumpingStart()
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eHighJumping);
 
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 	mMoveSpeedY = JUMP_HIGH_BOUNCE;
 	mIsGrounded = false;
 }
@@ -3238,15 +3142,7 @@ void CPlayer::UpdateHighJumpingStart()
 // 跳び跳ねる
 void CPlayer::UpdateHighJumping()
 {
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	if (mCharaStatus.hp <= 0)
 	{
@@ -3266,15 +3162,7 @@ void CPlayer::UpdateHighJumping()
 // 跳び跳ねる終了
 void CPlayer::UpdateHighJumpingEnd()
 {
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	if (mCharaStatus.hp <= 0)
 	{
@@ -3305,6 +3193,8 @@ void CPlayer::UpdateHighJumpingEnd()
 // 目的位置までジャンプ開始
 void CPlayer::UpdateTargetPositionStart()
 {
+	CColliderTime();
+
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eTarget);
 
@@ -3315,6 +3205,8 @@ void CPlayer::UpdateTargetPositionStart()
 // 目的位置までジャンプ
 void CPlayer::UpdateTargetPosition()
 {
+	CColliderTime();
+
 	if (IsAnimationFinished())
 	{
 		ChangeAnimation(EAnimType::eDashJumpLoop);
@@ -3369,15 +3261,7 @@ void CPlayer::UpdateTargetPosition()
 void CPlayer::UpdateTargetPositionEnd()
 {
 	mMoveSpeed = CVector::zero;
-	if (mElapsedTimeCol <= DAMAGECOL)
-	{
-		mElapsedTimeCol += Time::DeltaTime();
-		if (mElapsedTimeCol >= DAMAGECOL && !mInvincible)
-		{
-			mElapsedTimeCol = DAMAGECOL;
-			mpDamageCol->SetEnable(true);
-		}
-	}
+	CColliderTime();
 
 	if (IsAnimationFinished() && mIsGrounded)
 	{
