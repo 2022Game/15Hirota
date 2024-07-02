@@ -723,16 +723,16 @@ void CStage3::Load()
 	//// キャラクター関連 ///////////////////////////////////////////////////////////////
 
 	// キャラクター
-	//// ソルジャー1
-	//CSoldier* soldier1 = new CSoldier();
-	//soldier1->Scale(1.5f, 1.5f, 1.5f);
-	//soldier1->Position(7.7f, 228.0f, -274.0f);
-	//AddTask(soldier1);
-	//// ソルジャー2
-	//CSoldier* soldier2 = new CSoldier();
-	//soldier2->Scale(1.5f, 1.5f, 1.5f);
-	//soldier2->Position(7.7f, 228.0f, -284.0f);
-	//AddTask(soldier2);
+	// ソルジャー1
+	CSoldier* soldier1 = new CSoldier();
+	soldier1->Scale(1.5f, 1.5f, 1.5f);
+	soldier1->Position(7.7f, 228.0f, -274.0f);
+	AddTask(soldier1);
+	// ソルジャー2
+	CSoldier* soldier2 = new CSoldier();
+	soldier2->Scale(1.5f, 1.5f, 1.5f);
+	soldier2->Position(7.7f, 228.0f, -284.0f);
+	AddTask(soldier2);
 
 
 	// ヴァンガード

@@ -182,18 +182,24 @@ void CScreenItem::Update()
 	// 1番キーを押した場合は無敵アイテム、
 	// 2番キーを押した場合は回復アイテム、
 	// 3番キーを押した場合は攻撃力アップアイテムを選択する
-	if (CInput::PushKey('3'))
-	{
-		Decide(0); // 無敵アイテムを選択
-	}
-	else if (CInput::PushKey('2'))
-	{
-		Decide(1); // 回復アイテムを選択
 
-	}
-	else if (CInput::PushKey('1'))
+	CPlayer* player = CPlayer::Instance();
+	bool jump = player->IsJumping();
+	if (!jump)
 	{
-		Decide(2); // 攻撃力アップアイテムを選択
+		if (CInput::PushKey('3'))
+		{
+			Decide(0); // 無敵アイテムを選択
+		}
+		else if (CInput::PushKey('2'))
+		{
+			Decide(1); // 回復アイテムを選択
+
+		}
+		else if (CInput::PushKey('1'))
+		{
+			Decide(2); // 攻撃力アップアイテムを選択
+		}
 	}
 }
 

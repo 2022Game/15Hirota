@@ -1811,6 +1811,7 @@ void CPlayer::UpdateClearEnd()
 						mStage3Clear = false;
 					}
 
+					
 					// ステージをクリア
 					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
@@ -3641,9 +3642,9 @@ void CPlayer::CheckUnderFootObject()
 // 更新
 void CPlayer::Update()
 {
-	//CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
-	//CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
-	//CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
+	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
+	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
+	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;

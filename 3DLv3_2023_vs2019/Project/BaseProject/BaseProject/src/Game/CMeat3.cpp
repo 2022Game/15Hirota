@@ -10,7 +10,7 @@
 
 // アイテムの移動時間
 #define GET_MOVE_TIME 5.75f
-#define GET_MOVE_UP 20.0f
+#define GET_MOVE_UP 10.0f
 
 // 肉クラスのインスタンス
 CMeat3* CMeat3::spInstance = nullptr;

@@ -226,10 +226,14 @@ void CStage2::Load()
 		// X軸のスケール値を設定
 		float xScale = 1.0f;
 		if (i == 8) xScale = 2.0f;
+		if (i == 12) xScale = 0.85f;
+		if (i == 17) xScale = 0.85f;
 
 		// Z軸のスケール値を設定
 		float zScale = 1.0f;
 		if (i == 8) zScale = 2.0f;
+		if (i == 12) zScale = 0.85f;
+		if (i == 17) zScale = 0.85f;
 	
 		// オブジェクトを作成してタスクに追加
 		CJumpingKinoko* jumpkinoko = new CJumpingKinoko
@@ -650,8 +654,8 @@ void CStage2::Load()
 	// 中間ポイント : 0.0f, 0.0f, 480.0f
 	// 中間ポイント2 : 0.0f, 53.0f, 994.0f
 	// 肉1の場所 : -483.0f, 10.0f, 483.0f
-	// ゴールポイント : 0.0f, 0.0f, 1520.0f
-	CVector playerPos = CVector(0.0f, 20.0f, 50.0f);
+	// ゴールポイント : 0.0f, 0.0f, 1540.0f
+	CVector playerPos = CVector(0.0f, 0.0f, 1540.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
