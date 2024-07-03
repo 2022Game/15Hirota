@@ -95,6 +95,7 @@
     <ClCompile Include="src\Game\CHopsAndHoopsFallCol.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoHigh.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMove.cpp" />
+    <ClCompile Include="src\Game\CJumpingKinokoMoveTo.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoRotate.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoTurnLeft.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoTurnRight.cpp" />
@@ -322,6 +323,7 @@
     <ClInclude Include="src\Game\CHopsAndHoopsFallCol.h" />
     <ClInclude Include="src\Game\CJumpingKinokoHigh.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMove.h" />
+    <ClInclude Include="src\Game\CJumpingKinokoMoveTo.h" />
     <ClInclude Include="src\Game\CJumpingKinokoRotate.h" />
     <ClInclude Include="src\Game\CJumpingKinokoTurnLeft.h" />
     <ClInclude Include="src\Game\CJumpingKinokoTurnRight.h" />

@@ -904,6 +904,9 @@
     <ClCompile Include="src\Game\CPlayer.cpp">
       <Filter>ソース ファイル\Game\Character\Player</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CJumpingKinokoMoveTo.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1574,6 +1577,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CPlayer.h">
       <Filter>ソース ファイル\Game\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CJumpingKinokoMoveTo.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\KInoko\KInokoBase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

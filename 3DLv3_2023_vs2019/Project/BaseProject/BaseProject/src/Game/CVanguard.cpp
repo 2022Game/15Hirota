@@ -332,7 +332,7 @@ void CVanguard::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 
 				int hitRand = Math::Rand(0, 100);
 				//CDebugPrint::Print("hit1:%d\n", hitRand);
-				if (hitRand >= 80)
+				if (hitRand >= 90)
 				{
 					int random = Math::Rand(0, 2);
 					if (random == 0)

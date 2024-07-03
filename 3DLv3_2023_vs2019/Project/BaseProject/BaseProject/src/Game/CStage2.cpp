@@ -25,6 +25,7 @@
 #include "CPropeller.h"
 #include "CMeat1Event.h"
 #include "CJumpingKinokoHigh.h"
+#include "CJumpingKinokoMoveTo.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -365,6 +366,21 @@ void CStage2::Load()
 		false
 	);
 	AddTask(rotatekinoko3);
+
+	// 指定した移動ポイント間を移動するジャンプキノコ
+	CJumpingKinokoMoveTo* jkmt1 = new CJumpingKinokoMoveTo
+	(
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		1.0f
+	);
+	jkmt1->SetReturnRoute(true);
+	jkmt1->AddMovePoint(CVector(181.0f, 10.0f, 1565.0f), 5.0f);
+	jkmt1->AddMovePoint(CVector(181.0f, 10.0f, 170.0f), 2.0f);
+	jkmt1->AddMovePoint(CVector(-181.0f, 10.0f, 1700.0f), 5.0f);
+	jkmt1->AddMovePoint(CVector(-181.0f, 10.0f, 1565.0f), 2.0f);
+	AddTask(jkmt1);
+
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	// リングビーマ1

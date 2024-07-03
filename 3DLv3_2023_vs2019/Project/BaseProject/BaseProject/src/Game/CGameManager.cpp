@@ -188,11 +188,15 @@ void CGameManager::UpdateRestart()
 // ステージクリア時の更新処理
 void CGameManager::UpdateStageClear()
 {
-	// ステージをクリアしたら、次のステージを読み込み
-	mStageNo = 0;
+	// ステージをクリアしたら、ステージ選択ステージに移行
+	int stageNo = 0;
+	if (mStageNo != stageNo)
+	{
+		CStageManager::LoadStage(stageNo);
+		mStageNo = stageNo;
+	}
+
 	mResultSetUp = false;
-	//CSceneManager::Instance()->LoadScene(EScene::eClear);
-	CStageManager::LoadStage(mStageNo);
 
 	// ステージの読み込みが終われば、リザルトを表示
 	ChangeState(EGameState::eGame);
@@ -201,7 +205,13 @@ void CGameManager::UpdateStageClear()
 // ステージ1の更新処理
 void CGameManager::UpdateStage1()
 {
-	mStageNo = 1;
+	int stageNo = 1;
+	if (mStageNo != stageNo)
+	{
+		CStageManager::LoadStage(stageNo);
+		mStageNo = stageNo;
+	}
+
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
 	CMeat1::SetScore(0);
@@ -217,13 +227,18 @@ void CGameManager::UpdateStage1()
 // ステージ2の更新処理
 void CGameManager::UpdateStage2()
 {
-	mStageNo = 2;
+	int stageNo = 2;
+	if (mStageNo != stageNo)
+	{
+		CStageManager::LoadStage(stageNo);
+		mStageNo = stageNo;
+	}
+
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
 	CMeat1::SetScore(0);
 	CMeat2::SetScore(0);
 	CMeat3::SetScore(0);
-	CStageManager::LoadStage(mStageNo);
 
 	mElapsedStageTime += Time::DeltaTime();
 	if (mElapsedStageTime > 2.0f)
@@ -235,13 +250,19 @@ void CGameManager::UpdateStage2()
 // ステージ3の更新処理
 void CGameManager::UpdateStage3()
 {
-	mStageNo = 3;
+	int stageNo = 3;
+	if (mStageNo != stageNo)
+	{
+		CStageManager::LoadStage(stageNo);
+		mStageNo = stageNo;
+	}
+
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
 	CMeat1::SetScore(0);
 	CMeat2::SetScore(0);
 	CMeat3::SetScore(0);
-	CStageManager::LoadStage(mStageNo);
+
 	mElapsedStageTime += Time::DeltaTime();
 	if (mElapsedStageTime > 13.5f)
 	{
@@ -252,14 +273,19 @@ void CGameManager::UpdateStage3()
 // ステージ失敗
 void CGameManager::UpdateStageOver()
 {
-	mStageNo = 0;
+	int stageNo = 0;
+	if (mStageNo != stageNo)
+	{
+		CStageManager::LoadStage(stageNo);
+		mStageNo = stageNo;
+	}
+
 	mResultSetUp = false;
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
 	CMeat1::SetScore(0);
 	CMeat2::SetScore(0);
 	CMeat3::SetScore(0);
-	CStageManager::LoadStage(mStageNo);
 
 	ChangeState(EGameState::eGame);
 }
@@ -273,14 +299,19 @@ void CGameManager::UpdateGameClear()
 // ゲームオーバー時の更新処理
 void CGameManager::UpdateGameOver()
 {
-	mStageNo = 0;
+	int stageNo = 0;
+	if (mStageNo != stageNo)
+	{
+		CStageManager::LoadStage(stageNo);
+		mStageNo = stageNo;
+	}
+
 	mResultSetUp = false;
 	CVanguard::SetScore(0);
 	CBlueMedal::SetScore(0);
 	CMeat1::SetScore(0);
 	CMeat2::SetScore(0);
 	CMeat3::SetScore(0);
-	CStageManager::LoadStage(mStageNo);
 
 	ChangeState(EGameState::eGame);
 }
