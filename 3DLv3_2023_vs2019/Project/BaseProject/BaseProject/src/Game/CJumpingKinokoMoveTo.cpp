@@ -69,7 +69,7 @@ void CJumpingKinokoMoveTo::UpdateMoveRoute()
 			// ŠJŽnˆÊ’u‚É–ß‚·
 			else
 			{
-				mMoveEndIndex -= 0;
+				mMoveEndIndex = 0;
 			}
 		}
 	}

@@ -376,7 +376,7 @@ void CStage2::Load()
 	);
 	jkmt1->SetReturnRoute(true);
 	jkmt1->AddMovePoint(CVector(181.0f, 10.0f, 1565.0f), 5.0f);
-	jkmt1->AddMovePoint(CVector(181.0f, 10.0f, 170.0f), 2.0f);
+	jkmt1->AddMovePoint(CVector(181.0f, 10.0f, 1700.0f), 2.0f);
 	jkmt1->AddMovePoint(CVector(-181.0f, 10.0f, 1700.0f), 5.0f);
 	jkmt1->AddMovePoint(CVector(-181.0f, 10.0f, 1565.0f), 2.0f);
 	AddTask(jkmt1);
