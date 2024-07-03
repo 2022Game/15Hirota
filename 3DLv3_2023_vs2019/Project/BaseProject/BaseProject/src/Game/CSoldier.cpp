@@ -14,6 +14,7 @@
 #include "CStageManager.h"
 #include "CEnemyManager.h"
 #include "CExclamationMark.h"
+#include "CGameManager.h"
 
 #define _USE_MATH_DEFINES
 
@@ -98,7 +99,7 @@ const CSoldier::AnimData CSoldier::ANIM_DATA[] =
 // コンストラクタ
 CSoldier::CSoldier()
 	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
-	, mState(EState::eIdle)
+	, mState(EState::eReady)
 	, mTimeShot(0)
 	, mTimeShotEnd(5)
 	, mStateStep(0)
@@ -449,6 +450,40 @@ void CSoldier::ChangeAnimation(EAnimType type)
 	if (!(EAnimType::None < type && type < EAnimType::Num)) return;
 	AnimData data = ANIM_DATA[(int)type];
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
+}
+
+// 準備中の状態
+void CSoldier::UpdateReady()
+{
+	// ステップごとに処理を切り替える
+	switch (mStateStep)
+	{
+		// ステップ0 初期化処理
+	case 0:
+		ChangeAnimation(EAnimType::eIdle);
+		// 全ての衝突判定をオフにする
+		SetEnableCol(false);
+		// プレイヤーの移動速度を0にする
+		mMoveSpeed = CVector::zero;
+		mCharaStatus.stamina = mCharaMaxStatus.stamina;
+		mCharaStatus.hp = mCharaMaxStatus.hp;
+		// 次のステップへ
+		mStateStep++;
+		break;
+		// ステップ1 ステージの読み込みから
+	case 1:
+		// ゲームが開始したら
+		if (CGameManager::GameState() == EGameState::eGame)
+		{
+			mElapsedTime = 0.0f;
+			// プレイヤーの衝突判定をオンにする
+			SetEnableCol(true);
+			// 現在の状態を待機に切り替え
+			mCharaStatus.hp = mCharaMaxStatus.hp;
+			ChangeState(EState::eIdle);
+		}
+		break;
+	}
 }
 
 // 待機
@@ -923,6 +958,10 @@ void CSoldier::Update()
 	// 状態に合わせて、更新処理を切り替える
 	switch (mState)
 	{
+		// 準備状態
+	case EState::eReady:
+		UpdateReady();
+		break;
 		// 待機状態
 	case EState::eIdle:
 		UpdateIdle();
@@ -989,7 +1028,21 @@ void CSoldier::Update()
 		break;
 	}
 
-	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
+	if (mState != EState::eReady)
+	{
+		mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
+
+		// 移動
+		Position(Position() + mMoveSpeed * 60.0f * Time::DeltaTime());
+
+		CVector PlayerPosition;
+
+		// CSoldierを移動方向へ向ける
+		CVector current = VectorZ();
+		CVector target = mTargetDir;
+		CVector forward = CVector::Slerp(current, target, 0.125f);
+		Rotation(CQuaternion::LookRotation(forward));
+	}
 
 	//// CSoldierのデバッグ表示
 	//static bool debug = false;
@@ -1014,17 +1067,6 @@ void CSoldier::Update()
 	//{
 	//	LevelUp();
 	//}
-
-	// 移動
-	Position(Position() + mMoveSpeed * 60.0f * Time::DeltaTime());
-
-	CVector PlayerPosition;
-
-	// CSoldierを移動方向へ向ける
-	CVector current = VectorZ();
-	CVector target = mTargetDir;
-	CVector forward = CVector::Slerp(current, target, 0.125f);
-	Rotation(CQuaternion::LookRotation(forward));
 
 	// フレームとゲージの表示処理
 	UpdateGaugeAndFrame();

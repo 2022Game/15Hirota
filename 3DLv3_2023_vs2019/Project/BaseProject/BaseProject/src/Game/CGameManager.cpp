@@ -218,7 +218,7 @@ void CGameManager::UpdateStage1()
 	CStageManager::LoadStage(mStageNo);
 
 	mElapsedStageTime += Time::DeltaTime();
-	if (mElapsedStageTime > 1.0f)
+	if (mElapsedStageTime > 2.0f)
 	{
 		ChangeState(EGameState::eGame);
 	}
@@ -241,7 +241,7 @@ void CGameManager::UpdateStage2()
 	CMeat3::SetScore(0);
 
 	mElapsedStageTime += Time::DeltaTime();
-	if (mElapsedStageTime > 2.0f)
+	if (mElapsedStageTime > 3.0f)
 	{
 		ChangeState(EGameState::eGame);
 	}
@@ -264,7 +264,7 @@ void CGameManager::UpdateStage3()
 	CMeat3::SetScore(0);
 
 	mElapsedStageTime += Time::DeltaTime();
-	if (mElapsedStageTime > 13.5f)
+	if (mElapsedStageTime > 22.5f)
 	{
 		ChangeState(EGameState::eGame);
 	}

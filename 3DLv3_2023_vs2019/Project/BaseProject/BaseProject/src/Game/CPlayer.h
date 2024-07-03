@@ -500,7 +500,7 @@ private:
 		eRotate,		// ‰ñ”ğ
 		eGuts,			// ƒKƒbƒcƒ|[ƒY
 		eHit,			// “G‚ÌUŒ‚Hit
-		eHitJ,			// “G‚Ì’eHit
+		eHitJ,			// “G‚ÌãUŒ‚Hit
 		eDeath,			// €–S
 		eClimb,			// •Ç‚ğ“o‚é
 		eClimbedTop,	// •Ç‚ğ“o‚èØ‚Á‚½

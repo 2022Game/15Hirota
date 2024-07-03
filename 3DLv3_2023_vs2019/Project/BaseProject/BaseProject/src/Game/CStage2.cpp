@@ -375,10 +375,10 @@ void CStage2::Load()
 		1.0f
 	);
 	jkmt1->SetReturnRoute(true);
-	jkmt1->AddMovePoint(CVector(181.0f, 10.0f, 1565.0f), 5.0f);
-	jkmt1->AddMovePoint(CVector(181.0f, 10.0f, 1700.0f), 2.0f);
-	jkmt1->AddMovePoint(CVector(-181.0f, 10.0f, 1700.0f), 5.0f);
-	jkmt1->AddMovePoint(CVector(-181.0f, 10.0f, 1565.0f), 2.0f);
+	jkmt1->AddMovePoint(CVector(272.0f, 0.0f, 1353), 4.0f);
+	jkmt1->AddMovePoint(CVector(272, 0.0f, 1239.0f), 4.0f);
+	jkmt1->AddMovePoint(CVector(337.0f, 0.0f, 1239.0f), 4.0f);
+	jkmt1->AddMovePoint(CVector(337, 00.0f, 1353.0f), 4.0f);
 	AddTask(jkmt1);
 
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -671,7 +671,7 @@ void CStage2::Load()
 	// 中間ポイント2 : 0.0f, 53.0f, 994.0f
 	// 肉1の場所 : -483.0f, 10.0f, 483.0f
 	// ゴールポイント : 0.0f, 0.0f, 1540.0f
-	CVector playerPos = CVector(0.0f, 0.0f, 1540.0f);
+	CVector playerPos = CVector(0.0f, 56.0f, 994.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

@@ -135,7 +135,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Rotate.x",					false,	50.0f	},		// 回避
 	{ "Character\\Monster1\\anim\\Guts pose_325.x",				false,	325.0f	},		// ガッツポーズ
 	{ "Character\\Monster1\\anim\\Hit_63.x",					false,	63.0f	},		// 敵の攻撃Hit
-	{ "Character\\Monster1\\anim\\Hit_107.x",					false,	107.0f	},		// 敵の弾Hit
+	{ "Character\\Monster1\\anim\\Hit_107.x",					false,	107.0f	},		// 敵の弱攻撃Hit
 	{ "Character\\Monster1\\anim\\Death_276.x",					false,	276.0f	},		// 死亡
 	{ "Character\\Monster1\\anim\\Climb_121.x",						true,	121.0f	},	// 壁を登る
 	{ "Character\\Monster1\\anim\\Climb_to Top_241.x",				true,	241.0f	},	// 頂上へ登った
@@ -862,9 +862,9 @@ void CPlayer::CHPJudgment()
 	{
 		if (mCharaStatus.hp > 0)
 		{
-			mFallDamage = false;
+			mDamageEnemy = false;
 			mIsPlayedHitDamageSE = false;
-			ChangeState(EState::eStandUp);
+			ChangeState(EState::eIdle);
 		}
 		else if (mCharaStatus.hp <= 0)
 		{
@@ -1347,8 +1347,6 @@ void CPlayer::UpdateIdle()
 		mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHandMiddle1"));
 	}
 
-	mDamageEnemy = false;
-
 	mMoveSpeed = CVector::zero;
 
 	if (mIsGrounded)
@@ -1416,7 +1414,6 @@ void CPlayer::UpdateMove()
 	// アクションを起こせない場合は、移動できない
 	if (!IsEnableAction()) return;
 
-	mDamageEnemy = false;
 	mMoveSpeed = CVector::zero;
 
 	// プレイヤーの移動ベクトルを求める
@@ -2207,6 +2204,7 @@ void CPlayer::UpdateStartStageJumpEnd()
 			Scale(CVector(1.0f, 1.0f, 1.0f));
 			SetAlpha(0.0f);
 			CFade::FadeIn();
+			ChangeState(EState::eReady);
 			CGameManager::Stage1();
 		}
 		else if (mStartStage2)
@@ -2216,6 +2214,7 @@ void CPlayer::UpdateStartStageJumpEnd()
 			Scale(CVector(1.0f, 1.0f, 1.0f));
 			SetAlpha(0.0f);
 			CFade::FadeIn();
+			ChangeState(EState::eReady);
 			CGameManager::Stage2();
 		}
 		else if (mStartStage3)
@@ -2225,6 +2224,7 @@ void CPlayer::UpdateStartStageJumpEnd()
 			Scale(CVector(1.0f, 1.0f, 1.0f));
 			SetAlpha(0.0f);
 			CFade::FadeIn();
+			ChangeState(EState::eReady);
 			CGameManager::Stage3();
 		}
 	}
@@ -2297,15 +2297,8 @@ void CPlayer::UpdateHit()
 {
 	mClimb = false;
 	mDamaged = true;
-	if (!(mState == EState::eJumpStart ||
-		mState == EState::eJump ||
-		mState == EState::eJumpEnd ||
-		mState == EState::eJumpingStart ||
-		mState == EState::eJumping ||
-		mState == EState::eJumpingEnd))
-	{
-		mMoveSpeed = CVector::zero;
-	}
+
+	mMoveSpeed = CVector::zero;
 
 	if (!mDamageEnemy)
 	{
@@ -2314,8 +2307,9 @@ void CPlayer::UpdateHit()
 	}
 
 	mpDamageCol->SetEnable(false);
-	CHPJudgment();
 	ChangeAnimation(EAnimType::eHitJ);
+
+	CHPJudgment();
 }
 
 // 敵の弾の攻撃を受けた時
@@ -2323,6 +2317,7 @@ void CPlayer::UpdateHitBullet()
 {
 	mClimb = false;
 	mDamaged = true;
+
 	mMoveSpeed = CVector::zero;
 
 	if (!mDamageEnemy)
@@ -2332,8 +2327,9 @@ void CPlayer::UpdateHitBullet()
 	}
 
 	mpDamageCol->SetEnable(false);
-	CHPJudgment();
 	ChangeAnimation(EAnimType::eHit);
+
+	CHPJudgment();
 }
 
 // 敵の剣の攻撃を受けた時
@@ -2349,8 +2345,9 @@ void CPlayer::UpdateHitSword()
 	}
 
 	mpDamageCol->SetEnable(false);
-	CHPJudgment();
 	ChangeAnimation(EAnimType::eHit);
+
+	CHPJudgment();
 }
 
 // ダメージを受ける(オブジェクト)
@@ -2366,8 +2363,9 @@ void CPlayer::UpdateHitObj()
 	}
 
 	mpDamageCol->SetEnable(false);
-	CHPJudgment();
 	ChangeAnimation(EAnimType::eHit);
+
+	CHPJudgment();
 }
 
 // 落下ダメージ
@@ -2383,8 +2381,24 @@ void CPlayer::UpdateFallDamage()
 	}
 
 	mpDamageCol->SetEnable(false);
-	CHPJudgment();
-	ChangeAnimation(EAnimType::eStandUp);
+
+	ChangeAnimation(EAnimType::eFallingFlat);
+	if (IsAnimationFinished())
+	{
+		if (mCharaStatus.hp > 0)
+		{
+			mFallDamage = false;
+			mIsPlayedHitDamageSE = false;
+			ChangeState(EState::eStandUp);
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mDeath = true;
+			mFallDamage = false;
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eDeath);
+		}
+	}
 }
 
 // 登る状態
@@ -2847,6 +2861,7 @@ void CPlayer::UpdateStandUp()
 {
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = 0.0f;
+	ChangeAnimation(EAnimType::eStandUp);
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eIdle);
@@ -3686,10 +3701,15 @@ void CPlayer::Update()
 	// 準備中でなければ、移動処理などを行う
 	if (mState != EState::eReady)
 	{
-		if (!mClimb || mState == EState::eDeathEnd || mState == EState::eDeath)
+		if (!mClimb)
 		{
 			mMoveSpeedY -= GRAVITY;
 		}
+		else if (mState != EState::eDeath || mState != EState::eDeathEnd)
+		{
+			mMoveSpeedY = 0.0f;
+		}
+
 		CVector moveSpeed = mMoveSpeed + CVector(0.0f, mMoveSpeedY, 0.0f * Time::DeltaTime());
 
 		// 移動

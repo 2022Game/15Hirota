@@ -9,6 +9,7 @@
 #include "CVanguardGauge.h"
 #include "CMajicSwordEnemy.h"
 #include "CScore.h"
+#include "CGameManager.h"
 
 #define _USE_MATH_DEFINES
 
@@ -504,6 +505,40 @@ void CVanguard::ChangeAnimation(EAnimType type)
 	AnimData data = ANIM_DATA[(int)type];
 	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
 }
+// 準備中の状態
+void CVanguard::UpdateReady()
+{
+	// ステップごとに処理を切り替える
+	switch (mStateStep)
+	{
+		// ステップ0 初期化処理
+	case 0:
+		ChangeAnimation(EAnimType::eIdle1);
+		// 全ての衝突判定をオフにする
+		SetEnableCol(false);
+		// プレイヤーの移動速度を0にする
+		mMoveSpeed = CVector::zero;
+		mCharaStatus.stamina = mCharaMaxStatus.stamina;
+		mCharaStatus.hp = mCharaMaxStatus.hp;
+		// 次のステップへ
+		mStateStep++;
+		break;
+		// ステップ1 ステージの読み込みから
+	case 1:
+		// ゲームが開始したら
+		if (CGameManager::GameState() == EGameState::eGame)
+		{
+			mElapsedTime = 0.0f;
+			// プレイヤーの衝突判定をオンにする
+			SetEnableCol(true);
+			// 現在の状態を待機に切り替え
+			mCharaStatus.hp = mCharaMaxStatus.hp;
+			ChangeState(EState::eIdle);
+		}
+		break;
+	}
+}
+
 
 // 待機
 void CVanguard::UpdateIdle()
@@ -1372,6 +1407,10 @@ void CVanguard::Update()
 	switch (mState)
 	{
 		// 待機状態
+	case EState::eReady:
+		UpdateReady();
+		break;
+		// 待機状態
 	case EState::eIdle:
 		UpdateIdle();
 		break;
@@ -1572,42 +1611,21 @@ void CVanguard::Update()
 		break;
 	}
 
-	mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
+	if (mState != EState::eReady)
+	{
+		mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
 
-	//// CSoldierのデバッグ表示
-	//static bool debug = false;
-	//if (CInput::PushKey('F'))
-	//{
-	//	debug = !debug;
-	//}
-	//if (debug)
-	//{
-	//	//CDebugPrint::Print(" レベル %d\n", mCharaMaxStatus.level);
-	//	CDebugPrint::Print(" HP%d / %d\n", mCharaStatus.hp, mCharaMaxStatus.hp);
-	//	CDebugPrint::Print(" 攻撃値%d\n", mCharaStatus.power);
-	//	CDebugPrint::Print(" ST%d / %d\n", mCharaStatus.stamina, mCharaMaxStatus.stamina);
-	//}
-	//// 1キーを押しながら、↑ ↓ でHP増減
-	//if (CInput::Key('3'))
-	//{
-	//	if (CInput::PushKey(VK_UP)) mCharaStatus.hp++;
-	//	else if (CInput::PushKey(VK_DOWN)) mCharaStatus.hp--;
-	//}
-	//else if (CInput::Key('2'))
-	//{
-	//	LevelUp();
-	//}
+		// 移動
+		Position(Position() + mMoveSpeed * 60.0f * Time::DeltaTime());
 
-	// 移動
-	Position(Position() + mMoveVector + mMoveSpeed * 60.0f * Time::DeltaTime());
+		CVector PlayerPosition;
 
-	CVector PlayerPosition;
-
-	// CSoldierを移動方向へ向ける
-	CVector current = VectorZ();
-	CVector target = mTargetDir;
-	CVector forward = CVector::Slerp(current, target, 0.125f);
-	Rotation(CQuaternion::LookRotation(forward));
+		// CSoldierを移動方向へ向ける
+		CVector current = VectorZ();
+		CVector target = mTargetDir;
+		CVector forward = CVector::Slerp(current, target, 0.125f);
+		Rotation(CQuaternion::LookRotation(forward));
+	}
 
 	// フレームとゲージの表示処理
 	UpdateGaugeAndFrame();

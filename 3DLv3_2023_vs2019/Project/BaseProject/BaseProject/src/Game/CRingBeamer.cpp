@@ -122,6 +122,7 @@ void CRingBeamerUpper::UpdateAttack()
 				);
 				// リングビームエフェクトの色設定
 				biribiri->SetColor(CColor(1.0f, 1.0f, 0.0f));
+				CStageManager::AddTask(biribiri);
 			}
 
 			Position(mStartPos + CVector(0.0f, mEndPosition, 0.0f));

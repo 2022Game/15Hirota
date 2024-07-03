@@ -44,7 +44,7 @@ void CJumpingObject::Collision(CCollider* self, CCollider* other, const CHitInfo
 	// ‹‚ß‚½Šp“x‚ªŽw’è‚µ‚½Šp“x‚Ì”ÍˆÍ“à‚Å‚ ‚ê‚ÎA
 	if (dot >= cosAngle)
 	{
-		if (mJumpedElapsedTime <= 0.1f)
+		if (mJumpedElapsedTime <= 0.2f)
 		{
 			CPlayer* player = dynamic_cast<CPlayer*>(owner);
 			if (player)

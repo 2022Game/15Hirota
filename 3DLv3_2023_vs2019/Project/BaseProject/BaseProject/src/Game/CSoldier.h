@@ -121,6 +121,8 @@ private:
 
 	//// 状態関連 /////////////////////////////////////////
 	
+	// 準備中の状態
+	void UpdateReady();
 	// 待機状態
 	void UpdateIdle();
 	// 攻撃
@@ -157,6 +159,7 @@ private:
 	// 状態
 	enum class EState
 	{
+		eReady,		// 準備中
 		eIdle,		// 待機
 		eAttack,	// 攻撃
 		eAttackWait,// 攻撃終了待ち

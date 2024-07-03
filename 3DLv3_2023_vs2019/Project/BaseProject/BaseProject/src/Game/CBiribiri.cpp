@@ -1,6 +1,7 @@
 #include "CBiribiri.h"
 #include "Maths.h"
 #include "Easing.h"
+#include "CStageManager.h"
 
 #define SCALE_Y 3.0f
 
@@ -28,6 +29,7 @@ CBiribiri::CBiribiri(CObjectBase* owner, const CVector& pos)
 // デストラクタ
 CBiribiri::~CBiribiri()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpMesh);
 }
 

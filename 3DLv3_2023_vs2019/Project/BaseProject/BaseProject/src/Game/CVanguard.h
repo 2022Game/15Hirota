@@ -123,6 +123,8 @@ private:
 
 	//// ó‘ÔŠÖ˜A /////////////////////////////////////////
 
+	// €”õ’†‚Ìó‘Ô
+	void UpdateReady();
 	// ‘Ò‹@ó‘Ô1
 	void UpdateIdle();
 	// ˆÚ“®ó‘Ô
@@ -227,6 +229,7 @@ private:
 	// ó‘Ô
 	enum class EState
 	{
+		eReady,				// €”õ’†
 		eIdle,				// ‘Ò‹@ó‘Ô1
 		eWalk,				// ˆÚ“®ó‘Ô
 		eWalkMutant,		// ‰ö•¨•à‚«
