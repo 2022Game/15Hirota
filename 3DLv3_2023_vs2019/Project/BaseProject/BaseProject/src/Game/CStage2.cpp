@@ -374,12 +374,26 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f),
 		1.0f
 	);
-	jkmt1->SetReturnRoute(true);
+	jkmt1->SetReturnRoute(false);
 	jkmt1->AddMovePoint(CVector(272.0f, 0.0f, 1353), 4.0f);
 	jkmt1->AddMovePoint(CVector(272, 0.0f, 1239.0f), 4.0f);
 	jkmt1->AddMovePoint(CVector(337.0f, 0.0f, 1239.0f), 4.0f);
 	jkmt1->AddMovePoint(CVector(337, 00.0f, 1353.0f), 4.0f);
 	AddTask(jkmt1);
+
+	// 指定した移動ポイント間を移動するジャンプキノコ
+	CJumpingKinokoMoveTo* jkmt2 = new CJumpingKinokoMoveTo
+	(
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		1.0f
+	);
+	jkmt2->SetReturnRoute(false);
+	jkmt2->AddMovePoint(CVector(-272.0f, 0.0f, 1353), 4.0f);
+	jkmt2->AddMovePoint(CVector(-272, 0.0f, 1239.0f), 4.0f);
+	jkmt2->AddMovePoint(CVector(-337.0f, 0.0f, 1239.0f), 4.0f);
+	jkmt2->AddMovePoint(CVector(-337, 00.0f, 1353.0f), 4.0f);
+	AddTask(jkmt2);
 
 	//////////////////////////////////////////////////////////////////////////////////////
 
@@ -433,6 +447,74 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(beamerLow3);
+
+	// リングビーマ4
+	CRingBeamerUpper* beamerUp4 = new CRingBeamerUpper
+	(
+		CVector(-312.0f, 8.0f, 1180.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp4);
+	// リングビーマ4
+	CRingBeamerLower* beamerLow4 = new CRingBeamerLower
+	(
+		CVector(-312.0f, 7.5f, 1180.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLow4);
+
+	// リングビーマ5
+	CRingBeamerUpper* beamerUp5 = new CRingBeamerUpper
+	(
+		CVector(-312.0f, 8.0f, 1400.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp5);
+	// リングビーマ5
+	CRingBeamerLower* beamerLow5 = new CRingBeamerLower
+	(
+		CVector(-312.0f, 7.5f, 1400.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLow5);
+
+	// リングビーマ6
+	CRingBeamerUpper* beamerUp6 = new CRingBeamerUpper
+	(
+		CVector(312.0f, 8.0f, 1400.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp6);
+	// リングビーマ6
+	CRingBeamerLower* beamerLow6 = new CRingBeamerLower
+	(
+		CVector(312.0f, 7.5f, 1400.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLow6);
+
+	// リングビーマ7
+	CRingBeamerUpper* beamerUp7 = new CRingBeamerUpper
+	(
+		CVector(312.0f, 8.0f, 1180.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp7);
+	// リングビーマ7
+	CRingBeamerLower* beamerLow7 = new CRingBeamerLower
+	(
+		CVector(312.0f, 7.5f, 1180.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLow7);
 
 	// 横状の電流1
 	CElectricLaser* laser1 = new CElectricLaser
@@ -646,7 +728,7 @@ void CStage2::Load()
 
 	CMeat2* meat2 = new CMeat2
 	(
-		CVector(214.0f, 25.0f, 1290.0f),
+		CVector(337.0f, 25.0f, 1290.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);
@@ -655,7 +737,7 @@ void CStage2::Load()
 
 	CMeat3* meat3 = new CMeat3
 	(
-		CVector(483.0f, 430.0f, -1000.0f),
+		CVector(-337.0f, 25.0f, 1290.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);

@@ -6,6 +6,7 @@
 #include "CModel.h"
 #include "CTaskManager.h"
 #include "CStageManager.h"
+#include "CButton1UI.h"
 
 // ステージ1選択ボタンのインスタンス
 CStage1Button* CStage1Button::spInstance = nullptr;
@@ -22,10 +23,16 @@ CStage1Button::CStage1Button(const CVector& pos, const CVector& scale, const CVe
 	, mReactionLayer(reactionLayer)
 	, mReactionTag(reactionTag)
 	, mIsStage1Button(false)
+	, mIsPlayerCollision(false)
 	, mElapsedTime(0.0f)
 {
 	// インスタンスの設定
 	spInstance = this;
+
+	// ENTERキーの画像表示
+	mpEnter = new CButton1UI();
+	mpEnter->SetCenterRatio(CVector2(0.5f, 0.0f));
+	mpEnter->SetShow(false);
 
 	// ステージ選択モデルを取得
 	mpStage1ButtonModel = CResourceManager::Get<CModel>("StageButton");
@@ -46,6 +53,7 @@ CStage1Button::CStage1Button(const CVector& pos, const CVector& scale, const CVe
 CStage1Button::~CStage1Button()
 {
 	SAFE_DELETE(mpColliderMesh);
+	mpEnter->Kill();
 }
 
 // 衝突処理
@@ -68,6 +76,7 @@ void CStage1Button::Collision(CCollider* self, CCollider* other, const CHitInfo&
 			{
 				mIsStage1Button = true;
 			}
+			mIsPlayerCollision = true;
 		}
 	}
 }
@@ -81,8 +90,6 @@ bool CStage1Button::IsStage1Button()
 // 更新処理
 void CStage1Button::Update()
 {
-	//CDebugPrint::Print("mStage1:%s\n", mIsStage1Button ? "true" : "false");
-
 	if (mIsStage1Button)
 	{
 		mElapsedTime += Time::DeltaTime();
@@ -92,6 +99,21 @@ void CStage1Button::Update()
 			mIsStage1Button = false;
 		}
 	}
+
+	if (mIsPlayerCollision)
+	{
+		mpEnter->SetShow(true);
+	}
+	else
+	{
+		mpEnter->SetShow(false);
+	}
+
+	// Uキーテキスト画像を表示
+	CVector UkeyPos = Position() + CVector(0.0f, 40.0f, 5.0f);
+	mpEnter->SetWorldPos(UkeyPos);
+
+	mIsPlayerCollision = false;
 }
 
 // 描画処理

@@ -3398,15 +3398,12 @@ void CPlayer::Update()
 		CDamageColorTime();
 	}
 
-	CDebugPrint::Print("mSavePoint1:%s\n", mSavePoint1 ? "true" : "false");
-	CDebugPrint::Print("mSavePoint2:%s\n", mSavePoint2 ? "true" : "false");
-
 	// デバッグ用にオンにしている　後で必ず消すこと	////////////////////////////////////
 
 	// ステージ3をクリアした状態
 	// falseだとステージに入れない
 	mIsStartStage2 = true;
-	mIsStartStage3 = true;
+	//mIsStartStage3 = true;
 
 	////////////////////////////////////////////////////////////////////////////////////////
 

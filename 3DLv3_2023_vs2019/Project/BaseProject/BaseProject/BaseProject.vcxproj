@@ -78,6 +78,7 @@
     <ClCompile Include="src\Game\CBlueMedal.cpp" />
     <ClCompile Include="src\Game\CBlueMedalEvent.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
+    <ClCompile Include="src\Game\CButton1UI.cpp" />
     <ClCompile Include="src\Game\CCutInDeathJump.cpp" />
     <ClCompile Include="src\Game\CHighKinoko.cpp" />
     <ClCompile Include="src\Game\CInsideCircleEffect.cpp" />
@@ -305,6 +306,7 @@
     <ClInclude Include="src\Game\CBlueMedal.h" />
     <ClInclude Include="src\Game\CBlueMedalEvent.h" />
     <ClInclude Include="src\Game\CBullet.h" />
+    <ClInclude Include="src\Game\CButton1UI.h" />
     <ClInclude Include="src\Game\CCutInDeathJump.h" />
     <ClInclude Include="src\Game\CHighKinoko.h" />
     <ClInclude Include="src\Game\CInsideCircleEffect.h" />

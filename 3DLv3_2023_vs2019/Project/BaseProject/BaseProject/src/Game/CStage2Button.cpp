@@ -6,6 +6,7 @@
 #include "CTaskManager.h"
 #include "CStageManager.h"
 #include "CPlayer.h"
+#include "CButton1UI.h"
 
 // ステージ1選択ボタンのインスタンス
 CStage2Button* CStage2Button::spInstance = nullptr;
@@ -22,10 +23,16 @@ CStage2Button::CStage2Button(const CVector& pos, const CVector& scale, const CVe
 	, mReactionLayer(reactionLayer)
 	, mReactionTag(reactionTag)
 	, mIsStage2Button(false)
+	, mIsPlayerCollision(false)
 	, mElapsedTime(0.0f)
 {
 	// インスタンスの設定
 	spInstance = this;
+
+	// ENTERキーの画像表示
+	mpEnter = new CButton1UI();
+	mpEnter->SetCenterRatio(CVector2(0.5f, 0.0f));
+	mpEnter->SetShow(false);
 
 	// ステージ選択モデルを取得
 	mpStage2ButtonModel = CResourceManager::Get<CModel>("StageButton");
@@ -74,6 +81,7 @@ void CStage2Button::Collision(CCollider* self, CCollider* other, const CHitInfo&
 					mIsStage2Button = true;
 				}
 			}
+			mIsPlayerCollision = true;
 		}
 	}
 }
@@ -109,6 +117,21 @@ void CStage2Button::Update()
 	{
 		SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
 	}
+
+	if (mIsPlayerCollision && stage2Start)
+	{
+		mpEnter->SetShow(true);
+	}
+	else
+	{
+		mpEnter->SetShow(false);
+	}
+
+	// Uキーテキスト画像を表示
+	CVector UkeyPos = Position() + CVector(0.0f, 40.0f, 5.0f);
+	mpEnter->SetWorldPos(UkeyPos);
+
+	mIsPlayerCollision = false;
 }
 
 // 描画処理

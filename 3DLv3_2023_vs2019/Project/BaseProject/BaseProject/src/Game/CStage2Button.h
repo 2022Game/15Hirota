@@ -5,6 +5,7 @@
 #include "CObjectBase.h"
 
 class CModel;
+class CButton1UI;
 
 // ステージ2選択ボタン
 class CStage2Button : public CObjectBase
@@ -39,6 +40,9 @@ private:
 	// ステージ2選択ボタンコライダー
 	CColliderMesh* mpColliderMesh;
 
+	// エンターキーのUI画像
+	CButton1UI* mpEnter;
+
 	// 触れた時に反応するオブジェクトのタグ
 	ETag mReactionTag;
 	// 触れた時に反応するレイヤー
@@ -48,5 +52,7 @@ private:
 	float mElapsedTime;
 	// ステージ2に移行するか
 	bool mIsStage2Button;
+	// プレイヤーが触れているか
+	bool mIsPlayerCollision;
 };
 #endif

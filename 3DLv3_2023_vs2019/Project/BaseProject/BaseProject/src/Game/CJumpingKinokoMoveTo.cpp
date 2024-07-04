@@ -147,6 +147,8 @@ void CJumpingKinokoMoveTo::UpdateMove()
 // çXêV
 void CJumpingKinokoMoveTo::Update()
 {
+	CJumpingKinoko::Update();
+
 	switch (mMoveState)
 	{
 	case EMoveState::eIdle:

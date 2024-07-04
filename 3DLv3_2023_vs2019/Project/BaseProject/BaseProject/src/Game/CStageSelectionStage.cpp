@@ -79,17 +79,19 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 void CStageSelectionStage::Load()
 {
 	// ステージの空
-	CResourceManager::Load<CModel>("StageSky",			"Field\\StageSky\\Sky(Sphere).obj");
-	CResourceManager::Load<CModel>("StageSelect",		"Field\\StageSelect\\StageSelect.obj");				// ステージのオブジェクト
-	CResourceManager::Load<CModel>("StageSelectFloor",	"Field\\StageSelect\\StageSelectFloorCol.obj");		// ステージの床コライダー
+	CResourceManager::Load<CModel>("StageSky", "Field\\StageSky\\Sky(Sphere).obj");
+	CResourceManager::Load<CModel>("StageSelect", "Field\\StageSelect\\StageSelect.obj");				// ステージのオブジェクト
+	CResourceManager::Load<CModel>("StageSelectFloor", "Field\\StageSelect\\StageSelectFloorCol.obj");		// ステージの床コライダー
 
-	CResourceManager::Load<CModel>("StageButton",		"Field\\Object\\StageBotan.obj");					// ステージボタンモデル
-	CResourceManager::Load<CModel>("SkyIslandMenu",		"Field\\Object\\Skyisland.obj");					// 空島モデル
-	CResourceManager::Load<CModel>("Number3",			"Field\\Object\\number3.obj");	
+	CResourceManager::Load<CModel>("StageButton", "Field\\Object\\StageBotan.obj");					// ステージボタンモデル
+	CResourceManager::Load<CModel>("SkyIslandMenu", "Field\\Object\\Skyisland.obj");					// 空島モデル
+	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");
 	// 跳ねるキノコモデル
 	CResourceManager::Load<CModel>("JumpingKinoko", "Field\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
 	// 跳ねるキノココライダー
-	CResourceManager::Load<CModel>("JumpingKinokoCol", "Field\\Gimmick\\Jump\\JumpingKinoko(Col).obj");// 三番目の床モデル
+	CResourceManager::Load<CModel>("JumpingKinokoCol", "Field\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
+	// ENTERキーの画像
+	CResourceManager::Load<CTexture>("EnterUI", "UI\\GimmickUI\\ENTER.png");
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
