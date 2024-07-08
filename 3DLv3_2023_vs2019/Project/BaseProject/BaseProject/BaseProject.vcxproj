@@ -79,6 +79,7 @@
     <ClCompile Include="src\Game\CBlueMedalEvent.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
     <ClCompile Include="src\Game\CButton1UI.cpp" />
+    <ClCompile Include="src\Game\CClimbUI.cpp" />
     <ClCompile Include="src\Game\CCutInDeathJump.cpp" />
     <ClCompile Include="src\Game\CHighKinoko.cpp" />
     <ClCompile Include="src\Game\CInsideCircleEffect.cpp" />
@@ -97,6 +98,9 @@
     <ClCompile Include="src\Game\CJumpingKinokoHigh.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMove.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMoveTo.cpp" />
+    <ClCompile Include="src\Game\CReflectionActionKinoko.cpp" />
+    <ClCompile Include="src\Game\CReflectionKinoko.cpp" />
+    <ClCompile Include="src\Game\CReflectionObject.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoRotate.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoTurnLeft.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoTurnRight.cpp" />
@@ -178,6 +182,7 @@
     <ClCompile Include="src\Game\CTitleMenu.cpp" />
     <ClCompile Include="src\Game\CTitleUI.cpp" />
     <ClCompile Include="src\Game\CTreasureChest.cpp" />
+    <ClCompile Include="src\Game\CTreasureChestUI.cpp" />
     <ClCompile Include="src\Game\CTree1.cpp" />
     <ClCompile Include="src\Game\CVanguard.cpp" />
     <ClCompile Include="src\Game\CVanguardGauge.cpp" />
@@ -307,6 +312,7 @@
     <ClInclude Include="src\Game\CBlueMedalEvent.h" />
     <ClInclude Include="src\Game\CBullet.h" />
     <ClInclude Include="src\Game\CButton1UI.h" />
+    <ClInclude Include="src\Game\CClimbUI.h" />
     <ClInclude Include="src\Game\CCutInDeathJump.h" />
     <ClInclude Include="src\Game\CHighKinoko.h" />
     <ClInclude Include="src\Game\CInsideCircleEffect.h" />
@@ -326,6 +332,9 @@
     <ClInclude Include="src\Game\CJumpingKinokoHigh.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMove.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMoveTo.h" />
+    <ClInclude Include="src\Game\CReflectionActionKinoko.h" />
+    <ClInclude Include="src\Game\CReflectionKinoko.h" />
+    <ClInclude Include="src\Game\CReflectionObject.h" />
     <ClInclude Include="src\Game\CJumpingKinokoRotate.h" />
     <ClInclude Include="src\Game\CJumpingKinokoTurnLeft.h" />
     <ClInclude Include="src\Game\CJumpingKinokoTurnRight.h" />
@@ -405,6 +414,7 @@
     <ClInclude Include="src\Game\CTitleMenu.h" />
     <ClInclude Include="src\Game\CTitleUI.h" />
     <ClInclude Include="src\Game\CTreasureChest.h" />
+    <ClInclude Include="src\Game\CTreasureChestUI.h" />
     <ClInclude Include="src\Game\CTree1.h" />
     <ClInclude Include="src\Game\CVanguard.h" />
     <ClInclude Include="src\Game\CVanguardGauge.h" />

@@ -5,6 +5,7 @@
 #include "Maths.h"
 #include "CModel.h"
 #include "CStageManager.h"
+#include "CTreasureChestUI.h"
 
 #define WAIT_TIME 5.0f
 #define FOV_ANGLE 100.0f
@@ -50,7 +51,6 @@ void CTreasureChest::Collision(CCollider* self, CCollider* other, const CHitInfo
 
 void CTreasureChest::Update()
 {
-	
 }
 
 void CTreasureChest::Render()
@@ -71,6 +71,11 @@ CTreasureChestTwo::CTreasureChestTwo(const CVector& pos, const CVector& scale, c
 	, mRotateStartAngle(0.0f)
 	, mStartPos(CVector::zero)
 {
+	// Tキーの画像表示
+	mpTUI = new CTreasureChestUI();
+	mpTUI->SetCenterRatio(CVector2(1.1f, 0.0f));
+	mpTUI->SetShow(false);
+
 	// 宝箱蓋モデル
 	mpChestTwo =  CResourceManager::Get<CModel>("TreasureChestTwo");
 
@@ -121,6 +126,12 @@ void CTreasureChestTwo::UpdateIdle()
 			mRotateEndAngle = 85.0f;
 			ChangeState(EState::Two);
 		}
+
+		mpTUI->SetShow(true);
+	}
+	else
+	{
+		mpTUI->SetShow(false);
 	}
 }
 
@@ -150,6 +161,7 @@ void CTreasureChestTwo::UpdateTwo()
 
 void CTreasureChestTwo::UpdateEnd()
 {
+	mpTUI->SetShow(false);
 }
 
 // 更新
@@ -167,6 +179,10 @@ void CTreasureChestTwo::Update()
 		UpdateEnd();
 		break;
 	}
+
+	// Uキーテキスト画像を表示
+	CVector UkeyPos = Position() + CVector(0.0f, 30.0f, 0.0f);
+	mpTUI->SetWorldPos(UkeyPos);
 }
 
 // プレイヤー追跡

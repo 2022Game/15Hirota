@@ -98,8 +98,6 @@ bool CStage3Button::IsStage3Button()
 // XVˆ—
 void CStage3Button::Update()
 {
-	//CDebugPrint::Print("mStage1:%s\n", mIsStage3Button ? "true" : "false");
-
 	if (mIsStage3Button)
 	{
 		mElapsedTime += Time::DeltaTime();

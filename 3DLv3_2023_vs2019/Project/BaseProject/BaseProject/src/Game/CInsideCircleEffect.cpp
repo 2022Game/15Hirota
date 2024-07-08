@@ -39,7 +39,13 @@ void CInsideCircleEffect::Update()
 	mAngle += 55.0f * Time::DeltaTime();
 	if (mAngle >= 360.0f) mAngle -= 360.0f;
 
+	bool healing = player->IsHealingItem();
+
 	if (mElapsedTime >= 10.0f)
+	{
+		Kill();
+	}
+	else if (!healing)
 	{
 		Kill();
 	}

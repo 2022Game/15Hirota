@@ -32,6 +32,7 @@ class CHealingUpBuffs;
 class CSeesaw;
 class CMeatUI;
 class CMetalLadder;
+class CClimbUI;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -173,6 +174,8 @@ public:
 	void UpdateTargetPosition();
 	// 目的位置までジャンプ終了
 	void UpdateTargetPositionEnd();
+	// 跳ね返させる処理
+	void UpdateReflection();
 
 	// 死亡
 	void UpdateDeath();
@@ -229,6 +232,8 @@ private:
 	CScreenItem* mpScreenItem;
 	// 肉アイテム画像
 	CMeatUI* mpMeat;
+
+	CClimbUI* mpClimbUI;
 
 	// SE
 	// 剣の振りかざし攻撃時のSE
@@ -465,6 +470,7 @@ private:
 		eDeathJumpEnd,		 // 死亡ジャンプ終了
 		eRestart,			 // restart状態
 		eRestartEnd,		 // restart終了状態
+		eReflection,		 // 跳ね返っている状態
 	};
 	// 現在の状態を切り替え
 	void ChangeState(EState state);
@@ -533,6 +539,7 @@ private:
 	CVector mStartPos;			// プレイヤーの初期位置
 	CVector mGroundNormal;		// 設置している地面の法線
 	CVector mClimbNormal;		// 登っている壁の法線
+	CVector mReflectionNormal;	// 反射する壁の法線
 	CVector mClimbedStartPos;	// 頂上まで登り切った時の座標
 	CVector mClimbedMovedUpPos;	// 頂上まで登り切った後の上方向移動後の座標
 	CVector mClimbedMovedPos;	// 頂上まで登り切った後の移動後の座標
@@ -608,6 +615,8 @@ private:
 	float mHealingTime;
 	// 登っている状態で着地しているかどうかの計測用
 	float mClimbTime;
+	// 反射移動時間
+	float mReflectTime;
 
 	// 接地しているかどうか
 	bool mIsGrounded;
@@ -675,7 +684,9 @@ private:
 
 	// ダメージを受けたかどうか
 	bool mDamaged;
-	
+	// リザルトジャンプ中に煙を出すかどうか
+	bool mResultSmoke;
+
 
 	// ステージ1に入るかどうか
 	bool mStartStage1;

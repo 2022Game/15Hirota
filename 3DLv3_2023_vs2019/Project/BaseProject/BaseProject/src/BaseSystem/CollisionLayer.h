@@ -45,6 +45,8 @@ enum class ELayer
 	eKickCol,		// キックコライダー
 	eDamageCol,		// ダメージを受ける時のコライダー
 	eJumpingCol,	// ジャンプさせるコライダー
+	eReflection,	// 反射コライダー
+	eReflectionJump,// 反射ジャンプコライダー
 	eFallingCol,	// 落下ブロックコライダー
 	eGoalCol,		// ゴールのコライダー
 	eDamageObject,	// ダメージを与えるコライダー

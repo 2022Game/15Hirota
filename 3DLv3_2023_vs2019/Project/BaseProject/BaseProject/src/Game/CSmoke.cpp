@@ -27,6 +27,7 @@ CSmoke::CSmoke(ETag tag,ETaskPriority prio)
 // デストラクタ
 CSmoke::~CSmoke()
 {
+
 }
 
 //// 各パラメータを設定

@@ -16,6 +16,7 @@ enum class ETag
 
 	eSeesaw,			// シーソー
 	ePropeller,			// プロペラ
+	eReflection,		// 反射させるオブジェクト
 	eField,				// フィールドを構成するオブジェクト
 	eStageMenuObject,	// ステージメニューのオブジェクト
 	eButton,			// ステージ選択ボタン

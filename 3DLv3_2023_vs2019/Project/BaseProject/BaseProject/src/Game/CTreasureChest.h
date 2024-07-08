@@ -1,9 +1,12 @@
 #ifndef CTREASURECHEST_H
 #define CTREASURECHEST_H
+
 #include "CObjectBase.h"
 #include "CColliderSphere.h"
 #include "CColliderMesh.h"
+
 class CModel;
+class CTreasureChestUI;
 
 // 宝箱
 class CTreasureChest : public CObjectBase
@@ -22,7 +25,6 @@ private:
 	CModel* mpChest;
 	CColliderSphere* mpChestSphere;
 	CColliderMesh* mpChestCol;
-
 
 	// ベクトル関連
 	// 宝箱モデルの初期位置
@@ -62,6 +64,8 @@ private:
 	CModel* mpChestTwo;
 	CColliderSphere* mpChestSphere;
 	CColliderMesh* mpChestTwoCol;
+
+	CTreasureChestUI* mpTUI;
 
 
 	// ベクトル関連

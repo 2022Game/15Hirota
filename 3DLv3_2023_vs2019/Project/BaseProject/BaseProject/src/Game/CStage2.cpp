@@ -26,6 +26,7 @@
 #include "CMeat1Event.h"
 #include "CJumpingKinokoHigh.h"
 #include "CJumpingKinokoMoveTo.h"
+#include "CReflectionActionKinoko.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -68,6 +69,12 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("HighKinoko",			"Field\\Gimmick\\Jump\\HighJumpKinoko.obj");
 	// 超ジャンプキノココライダー
 	CResourceManager::Load<CModel>("JumpingKinokoCol",		"Field\\Gimmick\\Jump\\HighJumpKinokoCol.obj");
+	// 反射キノコモデル
+	CResourceManager::Load<CModel>("ReflectionKinoko",		"Field\\Gimmick\\Reflection\\ReflectionKinoko(Base).obj");
+	// 反射キノコモデル
+	CResourceManager::Load<CModel>("ReflectionKinokoCol",	"Field\\Gimmick\\Reflection\\ReflectionKinoko(Col).obj");
+	// 反射キノコモデル
+	CResourceManager::Load<CModel>("ReflectionKinokoTopCol","Field\\Gimmick\\Reflection\\ReflectionKinoko(TopCol).obj");
 	// リングビーマモデル(上)								  
 	CResourceManager::Load<CModel>("RingBeamerUP",			"Effect\\BeamObj(Upper).obj");
 	// リングビーマモデル(下)								  
@@ -122,6 +129,9 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("CharEffect",			"Effect\\CharacterEffect\\CharacterEffect(Up).obj");
 	// キャラクターエフェクト(ライン)
 	CResourceManager::Load<CModel>("LineEffect",			"Effect\\CharacterEffect\\CharacterEffect(Line).obj");
+
+	// Tキーの画像
+	CResourceManager::Load<CTexture>("TUI", "UI\\GimmickUI\\T.png");
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -394,6 +404,14 @@ void CStage2::Load()
 	jkmt2->AddMovePoint(CVector(-337.0f, 0.0f, 1239.0f), 4.0f);
 	jkmt2->AddMovePoint(CVector(-337, 00.0f, 1353.0f), 4.0f);
 	AddTask(jkmt2);
+
+	CReflectionActionKinoko* rctk = new CReflectionActionKinoko
+	(
+		CVector(0.0f, 10.0f, 80.0f),
+		CVector(2.0f, 1.0f, 2.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(rctk);
 
 	//////////////////////////////////////////////////////////////////////////////////////
 
@@ -728,7 +746,7 @@ void CStage2::Load()
 
 	CMeat2* meat2 = new CMeat2
 	(
-		CVector(337.0f, 25.0f, 1290.0f),
+		CVector(337.0f, 35.0f, 1290.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);
@@ -737,7 +755,7 @@ void CStage2::Load()
 
 	CMeat3* meat3 = new CMeat3
 	(
-		CVector(-337.0f, 25.0f, 1290.0f),
+		CVector(-337.0f, 35.0f, 1290.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);
@@ -753,7 +771,7 @@ void CStage2::Load()
 	// 中間ポイント2 : 0.0f, 53.0f, 994.0f
 	// 肉1の場所 : -483.0f, 10.0f, 483.0f
 	// ゴールポイント : 0.0f, 0.0f, 1540.0f
-	CVector playerPos = CVector(0.0f, 56.0f, 994.0f);
+	CVector playerPos = CVector(0.0f, 20.0f, 50.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

@@ -40,7 +40,6 @@ void CMetalLadder::GetClimbedMoveVec(CVector* outUp, CVector* outForward) const
 // XV
 void CMetalLadder::Update()
 {
-
 }
 
 // •`‰æ

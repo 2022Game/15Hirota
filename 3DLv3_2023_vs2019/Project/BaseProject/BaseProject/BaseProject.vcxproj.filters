@@ -260,6 +260,21 @@
     <Filter Include="ソース ファイル\Game\UI\ObjectUI\Button">
       <UniqueIdentifier>{5820160b-9258-4e0b-87f8-10047015b0d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\ObjectUI\Treasure Chest">
+      <UniqueIdentifier>{679ae5ac-8bd8-40aa-9eed-85c7e21cf768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\UI\ObjectUI\Climb">
+      <UniqueIdentifier>{cbd0818b-8f5f-4f7c-964f-90c29eb960c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Reflection">
+      <UniqueIdentifier>{88698ee9-e8b1-456b-aa14-4de096be3f87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Reflection\Base">
+      <UniqueIdentifier>{90d3afe1-f0f8-413b-b974-a1f5b0bd06f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Reflection\ReflectionKinoko">
+      <UniqueIdentifier>{e5ef79fd-e8bb-466d-b7f3-d6895184a77c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -912,6 +927,21 @@
     </ClCompile>
     <ClCompile Include="src\Game\CButton1UI.cpp">
       <Filter>ソース ファイル\Game\UI\ObjectUI\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTreasureChestUI.cpp">
+      <Filter>ソース ファイル\Game\UI\ObjectUI\Treasure Chest</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CClimbUI.cpp">
+      <Filter>ソース ファイル\Game\UI\ObjectUI\Climb</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CReflectionKinoko.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CReflectionObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CReflectionActionKinoko.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\ReflectionKinoko</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1589,6 +1619,21 @@
     </ClInclude>
     <ClInclude Include="src\Game\CButton1UI.h">
       <Filter>ソース ファイル\Game\UI\ObjectUI\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTreasureChestUI.h">
+      <Filter>ソース ファイル\Game\UI\ObjectUI\Treasure Chest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CClimbUI.h">
+      <Filter>ソース ファイル\Game\UI\ObjectUI\Climb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CReflectionKinoko.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CReflectionObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CReflectionActionKinoko.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\ReflectionKinoko</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

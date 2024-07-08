@@ -42,6 +42,7 @@
 #include "CMeatUI.h"
 #include "CInsideCircleEffect.h"
 #include "COutsideCircleEffect.h"
+#include "CClimbUI.h"
 
 // プレイヤー関連
 // 高さ
@@ -159,6 +160,7 @@ CPlayer::CPlayer()
 	, mMoveSpeedY(0.0f)
 	, mElapsedTime(0.0f)
 	, mHealingTime(0.0f)
+	, mReflectTime(0.0f)
 	, mMoveDistance(0.0f)
 	, mStartDashTime(0.0f)
 	, mElapsedTimeEnd(0.0f)
@@ -174,6 +176,7 @@ CPlayer::CPlayer()
 	, mMoveSpeed(CVector::zero)
 	, mGroundNormal(CVector::up)
 	, mClimbNormal(CVector::zero)
+	, mReflectionNormal(CVector::zero)
 	, mMoveStartPos(CVector::zero)
 	, mMoveTargetPos(CVector::zero)
 	, mClimbedStartPos(CVector::zero)
@@ -193,6 +196,7 @@ CPlayer::CPlayer()
 	, mFallDamage(false)
 	, mSavePoint1(false)
 	, mSavePoint2(false)
+	, mResultSmoke(false)
 	, mStage1Clear(false)
 	, mStage2Clear(false)
 	, mStage3Clear(false)
@@ -249,6 +253,11 @@ CPlayer::CPlayer()
 	mpStaminaGauge = new CStaminaGauge();
 	mpStaminaGauge->SetShow(true);
 
+	// Tキーの画像表示
+	mpClimbUI = new CClimbUI();
+	mpClimbUI->SetCenterRatio(CVector2(0.5f, 0.5f));
+	mpClimbUI->SetShow(false);
+
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
 	for (int i = 0; i < size; i++)
@@ -280,7 +289,7 @@ CPlayer::CPlayer()
 		this, ELayer::ePlayer,
 		CVector(0.0f, 8.0f, 2.0f),
 		CVector(0.0f, PLAYER_HEIGHT, 2.0f),
-		5.0f,
+		4.0f,
 		true,
 		1.0f
 	);
@@ -288,10 +297,11 @@ CPlayer::CPlayer()
 		ELayer::eRecoverCol,ELayer::eInvincbleCol, ELayer::eEnemy, ELayer::eClimb,
 		ELayer::eMedalCol,ELayer::eSavePoint1, ELayer::eSavePoint2, ELayer::eAttackCol,
 		ELayer::eGoalCol, ELayer::eJumpingCol,ELayer::eFlameWall,ELayer::eMedalCol,
-		ELayer::eMeatCol,ELayer::eFall, ELayer::eMetalLadder });
+		ELayer::eMeatCol,ELayer::eFall, ELayer::eMetalLadder, ELayer::eReflection,
+		ELayer::eReflectionJump});
 	mpColliderCapsule->SetCollisionTags({ ETag::eGoalObject,ETag::eMedal, ETag::eField,ETag::eAttackObject,
 		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint1, ETag::eSavePoint2, ETag::eObstacle,ETag::eJumpingObject,
-		ETag::eNeedleObject, ETag::eMeat, ETag::eSeesaw, ETag::eFall,ETag::ePropeller });
+		ETag::eNeedleObject, ETag::eMeat, ETag::eSeesaw, ETag::eFall,ETag::ePropeller, ETag::eReflection});
 	//mpColliderCapsule->Position(0.0f, 5.0f, 1.0f);
 	
 
@@ -380,6 +390,7 @@ CPlayer::~CPlayer()
 
 	// マジックソードを破棄
 	mpSword->Kill();
+	mpClimbUI->Kill();
 
 	mpCutInDeath->Kill();
 	mpCutInClear->Kill();
@@ -557,6 +568,18 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				}
 			}
 		}
+		else if (other->Layer() == ELayer::eReflection)
+		{
+			ChangeState(EState::eReflection);
+			// 反射するオブジェクトの法線を取得
+			mReflectionNormal = hit.adjust.Normalized();
+			Position(Position() + hit.adjust);
+		}
+		else if (other->Layer() == ELayer::eReflectionJump)
+		{
+			ChangeState(EState::eJumpingStart);
+			Position(Position() + hit.adjust);
+		}
 		// 攻撃力アップポーション
 		else if (other->Layer() == ELayer::eAttackCol)
 		{
@@ -703,11 +726,11 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				if (CInput::PushKey('E'))
 				{
+					mpClimbUI->SetShow(false);
 					// Climb状態に移行する
 					ChangeState(EState::eClimb);
 					// 今から登る壁を記憶しておく
 					mpClimbWall = dynamic_cast<CClimbWall*>(other->Owner());
-					mpMetalLadder = dynamic_cast<CMetalLadder*>(other->Owner());
 				}
 			}
 
@@ -727,11 +750,14 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// 金属梯子のコライダー
 		if (other->Layer() == ELayer::eMetalLadder)
 		{
+			mpClimbUI->SetShow(true);
+
 			mClimbWall = true;
 			if (mState == EState::eIdle && mIsGrounded)
 			{
 				if (CInput::PushKey('E'))
 				{
+					mpClimbUI->SetShow(false);
 					CVector mSpd = mMoveSpeed;
 					mSpd = CVector(0.0f, 0.5f, 0.0f);
 					Position(Position() + mSpd);
@@ -759,12 +785,14 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// 登れる金網のコライダー
 		if (other->Layer() == ELayer::eWireClimb)
 		{
-			mClimbWall = true;
+			mpClimbUI->SetShow(true);
 
+			mClimbWall = true;
 			if (mState == EState::eIdle && mIsGrounded)
 			{
 				if (CInput::PushKey('E'))
 				{
+					mpClimbUI->SetShow(false);
 					// Climib状態に移行する
 					ChangeState(EState::eWireClimb);
 					// 今から登る壁を記憶しておく
@@ -923,7 +951,7 @@ void CPlayer::TakeRecovery(int recovery)
 	}
 
 	mIsHealingItem = true;
-	mHealingTime = 10.0;
+	mHealingTime = 3.0f;
 
 	// バフ1を生成
 	float dist = 0.1f;
@@ -1808,11 +1836,14 @@ void CPlayer::UpdateClear()
 	mpHpGauge->SetShow(false);
 	mpStaminaGauge->SetShow(false);
 	mpScreenItem->SetShow(false);
+	mpColliderCapsule->SetEnable(false);
+
 	mpMeat->SetShow(false);
 	mMoveSpeed = CVector::zero;
 	mElapsedTime = 0.0f;
 
-	mpColliderCapsule->SetEnable(false);
+	mResultSmoke = true;
+
 	mpSword->AttackEnd();
 	ChangeState(EState::eClearEnd);
 }
@@ -1993,6 +2024,7 @@ void CPlayer::UpdateResultJumpEnd()
 {
 	if (mIsGrounded)
 	{
+		mResultSmoke = false;
 		ChangeState(EState::eIdle);
 	}
 }
@@ -2864,6 +2896,9 @@ void CPlayer::UpdateStandUp()
 	ChangeAnimation(EAnimType::eStandUp);
 	if (IsAnimationFinished())
 	{
+		mDamageEnemy = false;
+		mDamaged = false;
+		mDamageObject = false;
 		ChangeState(EState::eIdle);
 	}
 }
@@ -2960,6 +2995,7 @@ void CPlayer::UpdateJumpingStart()
 {
 	mMoveSpeedY = JUMP_BOUNCE;
 	mIsGrounded = false;
+	mDamageEnemy = false;
 
 	JumpingHpJudgment();
 	ChangeAnimation(EAnimType::eJumpStart);
@@ -3107,6 +3143,45 @@ void CPlayer::UpdateTargetPositionEnd()
 
 	JumpingHpJudgment();
 	mpClimbCol->SetEnable(true);
+}
+
+#define REFLECTION 0.5f
+// 跳ね返させる処理
+void CPlayer::UpdateReflection()
+{
+	ChangeAnimation(EAnimType::eHitJ);
+	switch (mStateStep)
+	{
+	case 0:
+		if (mReflectTime < REFLECTION)
+		{
+			mMoveSpeed = mReflectionNormal * 1.5f;
+			mReflectTime += Time::DeltaTime();
+		}
+		else
+		{
+			mStateStep++;
+		}
+		break;
+	case 1:
+		mStateStep = 0;
+		mReflectTime = 0.0f;
+		if (mCharaStatus.hp > 0)
+		{
+			mDamageEnemy = false;
+			mIsPlayedHitDamageSE = false;
+			ChangeState(EState::eIdle);
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mDeath = true;
+			mFallDamage = false;
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eDeath);
+		}
+		break;
+	}
+	CDebugPrint::Print("mStateStep:%d\n", mStateStep);
 }
 
 // 死亡ジャンプ開始
@@ -3337,6 +3412,8 @@ bool CPlayer::IsEnableStepSmoke() const
 	if (mDash) return true;
 	// ステージ選択画面の移動中は煙エフェクトを出す
 	if (mState == EState::eMoveTo && mStateStep < 2) return true;
+	// リザルトジャンプ中は煙を出さない
+	if (mResultSmoke) return false;
 	return false;
 }
 
@@ -3368,6 +3445,8 @@ void CPlayer::CheckUnderFootObject()
 // 更新
 void CPlayer::Update()
 {
+	CDebugPrint::Print("mDamageEnemy:%s\n", mDamageEnemy ? "true" : "false");
+	CDebugPrint::Print("mReflectTime:%f\n", mReflectTime);
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
 	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
@@ -3674,6 +3753,9 @@ void CPlayer::Update()
 	case EState::eRestartEnd:
 		UpdateRestartEnd();
 		break;
+	case EState::eReflection:
+		UpdateReflection();
+		break;
 	}
 
 	// 待機中とジャンプ中は、移動処理を行う
@@ -3731,6 +3813,10 @@ void CPlayer::Update()
 			else if (mState == EState::eMetalLadder)
 			{
 				target = -mClimbNormal;
+			}
+			else if (mState == EState::eReflection)
+			{
+				target = -mReflectionNormal;
 			}
 			// それ以外の時は、プレイヤーの移動方向へ向ける
 			else
@@ -3813,6 +3899,18 @@ void CPlayer::Update()
 	mpHpGauge->SetValue(mCharaStatus.hp);
 	// 現在のスタミナを設定
 	mpStaminaGauge->SetSutaminaValue(mCharaStatus.stamina);
+
+	if (mClimbWall && !mClimb && !mIsJumping)
+	{
+		mpClimbUI->SetShow(true);
+	}
+	else
+	{
+		mpClimbUI->SetShow(false);
+	}
+	// Eキーテキスト画像を表示
+	CVector EkeyPos = Position() + CVector(0.0f, 20.0f, 0.0f);
+	mpClimbUI->SetWorldPos(EkeyPos);
 
 	// キャラクターの更新
 	CXCharacter::Update();
