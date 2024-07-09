@@ -661,15 +661,6 @@ void CStage2::Load()
 	);
 	AddTask(laser9);
 
-	// ƒŒƒ“ƒKƒuƒƒbƒN1
-	CRengaBlock* renga1 = new CRengaBlock
-	(
-		CVector(0.0f, 1.0f, 10.0f),
-		CVector(6.0f, 6.0f, 6.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(renga1);
-
 	// ƒvƒƒyƒ‰
 	CPropeller* propeller = new CPropeller
 	(
@@ -682,40 +673,21 @@ void CStage2::Load()
 	// •ó” 1
 	CTreasureChest* treasure1 = new CTreasureChest
 	(
-		CVector(0.0f, 0.0f, 60.0f),
+		CVector(-50.0f, 56.5f, 994.0f),
 		CVector(4.0f, 4.0f, 4.0f),
-		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, 180.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(treasure1);
 	// •ó” ŠW1
 	CTreasureChestTwo* treasureTwo1 = new CTreasureChestTwo
 	(
-		CVector(0.0f, 3.8f, 60.0f),
-		CVector(4.0f, 4.0f, 4.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(treasureTwo1);
-
-	// •ó” 2
-	CTreasureChest* treasure2 = new CTreasureChest
-	(
-		CVector(-50.0f, 56.5f, 994.0f),
-		CVector(4.0f, 4.0f, 4.0f),
-		CVector(0.0f, 180.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(treasure2);
-	// •ó” ŠW2
-	CTreasureChestTwo* treasureTwo2 = new CTreasureChestTwo
-	(
 		CVector(-50.0f, 59.5f, 994.0f),
 		CVector(4.0f, 4.0f, 4.0f),
 		CVector(0.0f, 180.0f, 0.0f),
 		ETag::ePlayer, ELayer::ePlayer
 	);
-	AddTask(treasureTwo2);
+	AddTask(treasureTwo1);
 
 	// “o‚ê‚é‹à–Ô‚ğì¬
 	CMetalLadder* metalladder = new CMetalLadder
