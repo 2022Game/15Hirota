@@ -406,6 +406,8 @@ private:
 	void CHPJudgment();
 	// ジャンプ中に体力が0以下になった場合の処理
 	void JumpingHpJudgment();
+	// ステージクリア時のアイテム削除処理
+	void ItemDeletion();
 
 	// プレイヤーの状態
 	enum class EState

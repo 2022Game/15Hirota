@@ -27,6 +27,7 @@
 #include "CJumpingKinokoHigh.h"
 #include "CJumpingKinokoMoveTo.h"
 #include "CReflectionActionKinoko.h"
+#include "CReflectionLeftRightKinoko.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -291,7 +292,7 @@ void CStage2::Load()
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight4 = new CJumpingKinokoLeftRight
 	(
-		CVector(-60.0f, 0.0f, 625.0f),
+		CVector(-80.0f, 0.0f, 625.0f),
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		CVector(30.0f, 0.0f, 0.0f),
@@ -301,7 +302,7 @@ void CStage2::Load()
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight5 = new CJumpingKinokoLeftRight
 	(
-		CVector(60.0f, 0.0f, 625.0f),
+		CVector(80.0f, 0.0f, 625.0f),
 		CVector(1.0f, 1.0f, 1.0f),
 		CVector(0.0f, 90.0f, 0.0f),
 		CVector(-30.0f, 0.0f, 0.0f),
@@ -405,13 +406,25 @@ void CStage2::Load()
 	jkmt2->AddMovePoint(CVector(-337, 00.0f, 1353.0f), 4.0f);
 	AddTask(jkmt2);
 
+	// 反射キノコ
 	CReflectionActionKinoko* rctk = new CReflectionActionKinoko
 	(
-		CVector(0.0f, 10.0f, 80.0f),
-		CVector(2.0f, 1.0f, 2.0f),
+		CVector(0.0f, 20.0f, 625.0f),
+		CVector(1.5f, 3.0f, 1.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(rctk);
+
+	//// 反射キノコ(左右)
+	//CReflectionLeftRightKinoko* rclr1 = new CReflectionLeftRightKinoko
+	//(
+	//	CVector(0.0f, 30.0f, 270.0f),
+	//	CVector(2.0f, 2.0f, 1.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	CVector(-30.0f, 0.0f, 0.0f),
+	//	10.0f
+	//);
+	//AddTask(rclr1);
 
 	//////////////////////////////////////////////////////////////////////////////////////
 

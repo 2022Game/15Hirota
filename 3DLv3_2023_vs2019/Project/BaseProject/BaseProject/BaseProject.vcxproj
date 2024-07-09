@@ -100,6 +100,8 @@
     <ClCompile Include="src\Game\CJumpingKinokoMoveTo.cpp" />
     <ClCompile Include="src\Game\CReflectionActionKinoko.cpp" />
     <ClCompile Include="src\Game\CReflectionKinoko.cpp" />
+    <ClCompile Include="src\Game\CReflectionLeftRightKinoko.cpp" />
+    <ClCompile Include="src\Game\CReflectionMove.cpp" />
     <ClCompile Include="src\Game\CReflectionObject.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoRotate.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoTurnLeft.cpp" />
@@ -334,6 +336,8 @@
     <ClInclude Include="src\Game\CJumpingKinokoMoveTo.h" />
     <ClInclude Include="src\Game\CReflectionActionKinoko.h" />
     <ClInclude Include="src\Game\CReflectionKinoko.h" />
+    <ClInclude Include="src\Game\CReflectionLeftRightKinoko.h" />
+    <ClInclude Include="src\Game\CReflectionMove.h" />
     <ClInclude Include="src\Game\CReflectionObject.h" />
     <ClInclude Include="src\Game\CJumpingKinokoRotate.h" />
     <ClInclude Include="src\Game\CJumpingKinokoTurnLeft.h" />

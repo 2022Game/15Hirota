@@ -23,6 +23,7 @@ public:
 
 	// 更新
 	void Update() override;
+
 private:
 	// ステージのデータ
 	struct StageData
@@ -31,9 +32,13 @@ private:
 		CVector btnPos;		// ステージのボタンの番号
 		int prevStageNo;	// 前のステージの番号
 		int nextStageNo;	// 次のステージの番号
+		bool canMove;       // 移動可能かどうかのフラグ
 	};
+	// ステージを移動できるかどうか
+	void UpdateStageMovement();
 	// ステージのデータのテーブル
-	static const StageData STAGE_DATA[];
+	// bool値を変更するためconstを削除した
+	static StageData STAGE_DATA[];
 	// 現在のステージ番号
 	int mSelectStageNo;
 	CStageSky* mpSky;

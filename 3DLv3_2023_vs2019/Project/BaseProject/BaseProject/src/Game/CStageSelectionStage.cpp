@@ -18,14 +18,37 @@
 #include "CVanguard.h"
 #include "CStageSky.h"
 
+
 // ステージのデータのテーブル
-const CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[]
+CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[] = 
 {
-	{0,CVector(65.0f, 4.5f,   36.0f),	-1, 1},
-	{1,CVector(65.0f, 3.5f,  -72.0f),	 0, 2},
-	{2,CVector(65.0f, 3.5f,  -185.0f),	 1, 3},
-	{3,CVector(65.0f, 3.5f,  -298.0f),	 2,-1},
+	{0, CVector(65.0f, 4.5f, 36.0f), -1, 1, true},
+	{1, CVector(65.0f, 3.5f, -72.0f), 0, 2, true},
+	{2, CVector(65.0f, 3.5f, -185.0f), 1, 3, true}, // 初期値はfalse
+	{3, CVector(65.0f, 3.5f, -298.0f), 2, -1, false} // 初期値はfalse
 };
+
+// ステージを移動できるかどうか
+void CStageSelectionStage::UpdateStageMovement()
+{
+	CPlayer* player = CPlayer::Instance();
+	if (player == nullptr) return;
+
+	// ステージ2に移行可能かどうか
+	if (player->IsStartStage2()) 
+	{
+		STAGE_DATA[2].canMove = true;
+	}
+
+	// ステージ3に移行可能かどうか
+	if (player->IsStartStage3()) 
+	{
+		STAGE_DATA[3].canMove = true;
+	}
+
+	// ステージ3以降も追加可能
+}
+
 
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
@@ -239,6 +262,9 @@ void CStageSelectionStage::Update()
 	// 現在選択中のステージデータを取得
 	StageData data = STAGE_DATA[mSelectStageNo];
 
+	// ステージの移動可能性を更新
+	UpdateStageMovement();
+
 	// プレイヤーが移動中であれば
 	if (player->CanMoveTo())
 	{
@@ -258,7 +284,7 @@ void CStageSelectionStage::Update()
 		else if (CInput::PushKey('D') || CInput::PushKey(VK_RIGHT))
 		{
 			// 次のステージが存在するか
-			if (data.nextStageNo >= 0)
+			if (data.nextStageNo >= 0 && STAGE_DATA[data.nextStageNo].canMove)
 			{
 				// 次のステージへ移動
 				mSelectStageNo = data.nextStageNo;

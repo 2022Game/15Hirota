@@ -943,6 +943,12 @@
     <ClCompile Include="src\Game\CReflectionActionKinoko.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\ReflectionKinoko</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CReflectionLeftRightKinoko.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\ReflectionKinoko</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CReflectionMove.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1634,6 +1640,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CReflectionActionKinoko.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\ReflectionKinoko</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CReflectionLeftRightKinoko.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\ReflectionKinoko</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CReflectionMove.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Reflection\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

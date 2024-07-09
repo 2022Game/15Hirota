@@ -570,6 +570,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 		else if (other->Layer() == ELayer::eReflection)
 		{
+			mReflectTime = 0.0f;
 			ChangeState(EState::eReflection);
 			// 反射するオブジェクトの法線を取得
 			mReflectionNormal = hit.adjust.Normalized();
@@ -914,6 +915,19 @@ void CPlayer::JumpingHpJudgment()
 	}
 }
 
+// ステージクリア時のアイテム削除処理
+void CPlayer::ItemDeletion()
+{
+	// 無敵アイテム削除
+	RemoveItem(ItemType::INVINCIBLE);
+	// 攻撃力アップポーション削除
+	RemoveItem(ItemType::ATTACK_UP);
+	// 回復ポーション削除
+	RemoveItem(ItemType::HEALING);
+	// 防御力アップポーション削除
+	RemoveItem(ItemType::DEFENSE);
+}
+
 // 被ダメージ処理
 void CPlayer::TakeDamage(int damage)
 {
@@ -996,7 +1010,7 @@ void CPlayer::TakeInvincible()
 void CPlayer::TakeAttackPotion(int attack)
 {
 	mIsAttackItem = true;
-	mAttackTime = 10.0;
+	mAttackTime = 3.0;
 	mCharaStatus.power += attack;
 
 	// バフ1を生成
@@ -1843,6 +1857,8 @@ void CPlayer::UpdateClear()
 	mElapsedTime = 0.0f;
 
 	mResultSmoke = true;
+
+	ItemDeletion();
 
 	mpSword->AttackEnd();
 	ChangeState(EState::eClearEnd);
@@ -3145,7 +3161,7 @@ void CPlayer::UpdateTargetPositionEnd()
 	mpClimbCol->SetEnable(true);
 }
 
-#define REFLECTION 0.5f
+#define REFLECTION 0.4f
 // 跳ね返させる処理
 void CPlayer::UpdateReflection()
 {
@@ -3164,12 +3180,12 @@ void CPlayer::UpdateReflection()
 		}
 		break;
 	case 1:
-		mStateStep = 0;
-		mReflectTime = 0.0f;
 		if (mCharaStatus.hp > 0)
 		{
 			mDamageEnemy = false;
 			mIsPlayedHitDamageSE = false;
+			mStateStep = 0;
+			mReflectTime = 0.0f;
 			ChangeState(EState::eIdle);
 		}
 		else if (mCharaStatus.hp <= 0)
@@ -3177,6 +3193,8 @@ void CPlayer::UpdateReflection()
 			mDeath = true;
 			mFallDamage = false;
 			mpDamageCol->SetEnable(false);
+			mStateStep = 0;
+			mReflectTime = 0.0f;
 			ChangeState(EState::eDeath);
 		}
 		break;
@@ -3445,11 +3463,6 @@ void CPlayer::CheckUnderFootObject()
 // 更新
 void CPlayer::Update()
 {
-	CDebugPrint::Print("mDamageEnemy:%s\n", mDamageEnemy ? "true" : "false");
-	CDebugPrint::Print("mReflectTime:%f\n", mReflectTime);
-	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
-	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
-	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
@@ -3900,7 +3913,7 @@ void CPlayer::Update()
 	// 現在のスタミナを設定
 	mpStaminaGauge->SetSutaminaValue(mCharaStatus.stamina);
 
-	if (mClimbWall && !mClimb && !mIsJumping)
+	if (mClimbWall && !mClimb && mIsGrounded)
 	{
 		mpClimbUI->SetShow(true);
 	}
@@ -3952,16 +3965,9 @@ void CPlayer::Update()
 	// 前回のプレイヤーの座標を更新
 	mLastPos = Position();
 	
-	//// 縦方向の移動速度監視
-	//CDebugPrint::Print("mMoveSpeed%f\n", mMoveSpeed.Y());
-	//// 無敵時間の時間監視
-	//CDebugPrint::Print("mInvincible:%f\n", mInvincibleStartTime);
-	//// 現在の縦方向のポジション監視
-	//CDebugPrint::Print("Position.Y %f\n", Position().Y());
-	//// コライダーの復活時間監視
-	//CDebugPrint::Print("TimeCol%f\n", mColElapsedTime);
-	//CDebugPrint::Print("mMoveSpeedY%f\n", mMoveSpeedY);
-	//CDebugPrint::Print("State:%d\n", mState);
+	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
+	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
+	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 }
 
 // アイテムを取得
