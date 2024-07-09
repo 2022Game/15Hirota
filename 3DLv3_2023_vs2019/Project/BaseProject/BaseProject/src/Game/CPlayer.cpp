@@ -3490,13 +3490,6 @@ void CPlayer::Update()
 		CDamageColorTime();
 	}
 
-	// デバッグ用にオンにしている　後で必ず消すこと	////////////////////////////////////
-
-	// ステージ3をクリアした状態
-	// falseだとステージに入れない
-	mIsStartStage2 = true;
-	//mIsStartStage3 = true;
-
 	////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -3904,8 +3897,16 @@ void CPlayer::Update()
 	}
 	else if (CInput::Key('2'))
 	{
-		// 何故かデバッグでなくても体力が増加するため削除
-		//LevelUp();
+		if (CInput::PushKey(VK_UP))
+		{
+			mIsStartStage2 = true;
+			mIsStartStage3 = true;
+		}
+		else if (CInput::PushKey(VK_DOWN))
+		{
+			mIsStartStage2 = false;
+			mIsStartStage3 = false;
+		}
 	}
 
 	// 現在のHPを設定

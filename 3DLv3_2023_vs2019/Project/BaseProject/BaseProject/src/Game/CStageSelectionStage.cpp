@@ -24,7 +24,7 @@ CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[] =
 {
 	{0, CVector(65.0f, 4.5f, 36.0f), -1, 1, true},
 	{1, CVector(65.0f, 3.5f, -72.0f), 0, 2, true},
-	{2, CVector(65.0f, 3.5f, -185.0f), 1, 3, true}, // 初期値はfalse
+	{2, CVector(65.0f, 3.5f, -185.0f), 1, 3, false}, // 初期値はfalse
 	{3, CVector(65.0f, 3.5f, -298.0f), 2, -1, false} // 初期値はfalse
 };
 
@@ -39,11 +39,19 @@ void CStageSelectionStage::UpdateStageMovement()
 	{
 		STAGE_DATA[2].canMove = true;
 	}
+	else
+	{
+		STAGE_DATA[2].canMove = false;
+	}
 
 	// ステージ3に移行可能かどうか
 	if (player->IsStartStage3()) 
 	{
 		STAGE_DATA[3].canMove = true;
+	}
+	else
+	{
+		STAGE_DATA[3].canMove = false;
 	}
 
 	// ステージ3以降も追加可能
