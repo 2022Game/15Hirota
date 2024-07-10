@@ -233,6 +233,11 @@ void CGameScene::Update()
 	// ステージの更新
 	CStageManager::Update();
 
+	if (CInput::PushKey('L'))
+	{
+		CSceneManager::Instance()->LoadScene(EScene::eStuffedRoll);
+	}
+
 	// ステージ番号の監視
 	//CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
 }

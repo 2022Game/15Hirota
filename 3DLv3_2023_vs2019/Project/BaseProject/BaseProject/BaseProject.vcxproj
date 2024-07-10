@@ -183,6 +183,8 @@
     <ClCompile Include="src\Game\CStageSelectionStage.cpp" />
     <ClCompile Include="src\Game\CStageSky.cpp" />
     <ClCompile Include="src\Game\CStageTime.cpp" />
+    <ClCompile Include="src\Game\CStuffedRoll.cpp" />
+    <ClCompile Include="src\Game\CStuffedRollScene.cpp" />
     <ClCompile Include="src\Game\CTitleMenu.cpp" />
     <ClCompile Include="src\Game\CTitleUI.cpp" />
     <ClCompile Include="src\Game\CTreasureChest.cpp" />
@@ -419,6 +421,8 @@
     <ClInclude Include="src\Game\CStageSelectionStage.h" />
     <ClInclude Include="src\Game\CStageSky.h" />
     <ClInclude Include="src\Game\CStageTime.h" />
+    <ClInclude Include="src\Game\CStuffedRoll.h" />
+    <ClInclude Include="src\Game\CStuffedRollScene.h" />
     <ClInclude Include="src\Game\CTitleMenu.h" />
     <ClInclude Include="src\Game\CTitleUI.h" />
     <ClInclude Include="src\Game\CTreasureChest.h" />

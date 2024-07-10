@@ -281,6 +281,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object\MoveLine">
       <UniqueIdentifier>{25fe477c-8147-48ba-904a-89823572669e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Ending">
+      <UniqueIdentifier>{3432f6ea-78c5-4dd9-814e-2a38d389d1af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -960,6 +963,12 @@
     </ClCompile>
     <ClCompile Include="src\Game\CCircleLine.cpp">
       <Filter>ソース ファイル\Game\Field\Object\MoveLine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStuffedRoll.cpp">
+      <Filter>ソース ファイル\Game\UI\Ending</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStuffedRollScene.cpp">
+      <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1664,6 +1673,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CCircleLine.h">
       <Filter>ソース ファイル\Game\Field\Object\MoveLine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStuffedRoll.h">
+      <Filter>ソース ファイル\Game\UI\Ending</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStuffedRollScene.h">
+      <Filter>ソース ファイル\Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #include "CSceneManager.h"
 #include "CFade.h"
 #include "CTitleScene.h"
+#include "CStuffedRollScene.h"
 #include "CGameScene.h"
 #include "CGameOverScene.h"
 #include "CClearScene.h"
@@ -107,17 +108,19 @@ void CSceneManager::ChangeNextScene()
 	switch (mNextScene)
 	{
 		//タイトルシーン
-	case EScene::eTitle:	mpScene = new CTitleScene();	break;
+	case EScene::eTitle:		mpScene = new CTitleScene();	break;
 		//ゲームシーン
-	case EScene::eGame:		mpScene = new CGameScene();		break;
+	case EScene::eGame:			mpScene = new CGameScene();		break;
 		// クリアシーン
-	case EScene::eClear:	mpScene = new CClearScene();	break;
+	case EScene::eClear:		mpScene = new CClearScene();	break;
 		// リザルトシーン
-	case EScene::eResult:	mpScene = new CResultScene();	break;
+	case EScene::eResult:		mpScene = new CResultScene();	break;
+		// スタッフロールシーン
+	case EScene::eStuffedRoll:	mpScene = new CStuffedRollScene();	break;
 		//起動時メニュー
-	case EScene::eBootMenu:	mpScene = new CBootMenuScene();	break;
+	case EScene::eBootMenu:		mpScene = new CBootMenuScene();	break;
 		//衝突判定テスト
-	case EScene::eColTest:	mpScene = new CCollisionTestScene(); break;
+	case EScene::eColTest:		mpScene = new CCollisionTestScene(); break;
 	}
 
 	//シーンを新しく生成できたら、

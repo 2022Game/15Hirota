@@ -30,6 +30,7 @@ private:
 	// インスタンス
 	static CStageTime* spInstance;
 
+
 	// 時間のテキスト
 	CText* mpTimerText;
 	// 時計の画像
