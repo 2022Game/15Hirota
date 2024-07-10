@@ -10,7 +10,7 @@ CInsideCircleEffect::CInsideCircleEffect(float angle, float dist)
 {
 	mpCircleModel = CResourceManager::Get<CModel>("CircleEffect1");
 	mpCircleModel->SetupEffectSettings();
-	Scale(5.0f, 5.0f, 5.0f);
+	Scale(5.0f, 4.0f, 5.0f);
 }
 
 // デストラクタ

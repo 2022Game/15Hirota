@@ -28,6 +28,8 @@
 #include "CJumpingKinokoMoveTo.h"
 #include "CReflectionActionKinoko.h"
 #include "CReflectionLeftRightKinoko.h"
+#include "CLineEffect.h"
+#include "CCircleLine.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -104,6 +106,10 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("Propeller",				"Field\\Gimmick\\propeller.obj");
 	// プロペラ(Col)
 	CResourceManager::Load<CModel>("PropellerWallCol",		"Field\\Gimmick\\propeller(Col).obj");
+	// ポイントライン
+	CResourceManager::Load<CModel>("PointLine",				"Field\\Gimmick\\Jump\\PointLine.obj");
+	// サークルライン
+	CResourceManager::Load<CModel>("CircleLine",			"Field\\Gimmick\\Jump\\CircleLine.obj");
 
 	// 金属の梯子オブジェクト
 	CResourceManager::Load<CModel>("Metalladder",			"Field\\HopsAndHoops\\Metalladder(Base).obj");
@@ -133,6 +139,8 @@ void CStage2::Load()
 
 	// Tキーの画像
 	CResourceManager::Load<CTexture>("TUI", "UI\\GimmickUI\\T.png");
+
+	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -269,6 +277,13 @@ void CStage2::Load()
 		10.0f
 	);
 	AddTask(jumpkinokoLeftRight1);
+	// ポイントライン
+	CLineEffect* line9 = new CLineEffect(ETag::eEffect);
+	line9->AddPoint(CVector(41.0f, 0.0f, 309.0f), 3.0f, 3.0f);
+	line9->AddPoint(CVector(-41.0f, 0.0f, 309.0f), 3.0f, 3.0f);
+	line9->SetTexture("Laser");
+	line9->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight2 = new CJumpingKinokoLeftRight
 	(
@@ -279,6 +294,13 @@ void CStage2::Load()
 		10.0f
 	);
 	AddTask(jumpkinokoLeftRight2);
+	// ポイントライン
+	CLineEffect* line8 = new CLineEffect(ETag::eEffect);
+	line8->AddPoint(CVector(-160.0f, 0.0f, 530.0f), 3.0f, 3.0f);
+	line8->AddPoint(CVector(-160.0f, 0.0f, 430.0f), 3.0f, 3.0f);
+	line8->SetTexture("Laser");
+	line8->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight3 = new CJumpingKinokoLeftRight
 	(
@@ -289,6 +311,13 @@ void CStage2::Load()
 		13.0f
 	);
 	AddTask(jumpkinokoLeftRight3);
+	// ポイントライン
+	CLineEffect* line7 = new CLineEffect(ETag::eEffect);
+	line7->AddPoint(CVector(-309.0f, 0.0f, 480.0f), 3.0f, 3.0f);
+	line7->AddPoint(CVector(-409.0f, 0.0f, 480.0f), 3.0f, 3.0f);
+	line7->SetTexture("Laser");
+	line7->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight4 = new CJumpingKinokoLeftRight
 	(
@@ -299,6 +328,13 @@ void CStage2::Load()
 		5.0f
 	);
 	AddTask(jumpkinokoLeftRight4);
+	// ポイントライン
+	CLineEffect* line6 = new CLineEffect(ETag::eEffect);
+	line6->AddPoint(CVector(45.0f, 0.0f, 632.0f), 3.0f, 3.0f);
+	line6->AddPoint(CVector(108.0f, 0.0f, 632.0f), 3.0f, 3.0f);
+	line6->SetTexture("Laser");
+	line6->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight5 = new CJumpingKinokoLeftRight
 	(
@@ -309,6 +345,12 @@ void CStage2::Load()
 		5.0f
 	);
 	AddTask(jumpkinokoLeftRight5);
+	// ポイントライン
+	CLineEffect* line5 = new CLineEffect(ETag::eEffect);
+	line5->AddPoint(CVector(-45.0f, 0.0f, 632.0f), 3.0f, 3.0f);
+	line5->AddPoint(CVector(-108.0f, 0.0f, 632.0f), 3.0f, 3.0f);
+	line5->SetTexture("Laser");
+	line5->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -322,6 +364,13 @@ void CStage2::Load()
 		10.0f
 	);
 	AddTask(jumpkinokoUpDown1);
+	// ポイントライン
+	CLineEffect* line10 = new CLineEffect(ETag::eEffect);
+	line10->AddPoint(CVector(0.0f, -15.0f, 364.0f), 3.0f, 3.0f);
+	line10->AddPoint(CVector(0.0f, 45.0f, 364.0f), 3.0f, 3.0f);
+	line10->SetTexture("Laser");
+	line10->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+
 	// 動くキノコ(上下)
 	CJumpingKinokoUpDown* jumpkinokoUpDown2 = new CJumpingKinokoUpDown
 	(
@@ -332,6 +381,12 @@ void CStage2::Load()
 		10.0f
 	);
 	AddTask(jumpkinokoUpDown2);
+	// ポイントライン
+	CLineEffect* line3 = new CLineEffect(ETag::eEffect);
+	line3->AddPoint(CVector(80.0f, 63.0f, 1175.0f), 3.0f, 3.0f);
+	line3->AddPoint(CVector(155.0f, 8.0f, 1175.0f), 3.0f, 3.0f);
+	line3->SetTexture("Laser");
+	line3->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
 	// 動くキノコ(上下)
 	CJumpingKinokoUpDown* jumpkinokoUpDown3 = new CJumpingKinokoUpDown
 	(
@@ -342,6 +397,12 @@ void CStage2::Load()
 		10.0f
 	);
 	AddTask(jumpkinokoUpDown3);
+	// ポイントライン
+	CLineEffect* line4 = new CLineEffect(ETag::eEffect);
+	line4->AddPoint(CVector(-80.0f, 63.0f, 1175.0f), 3.0f, 3.0f);
+	line4->AddPoint(CVector(-155.0f, 8.0f, 1175.0f), 3.0f, 3.0f);
+	line4->SetTexture("Laser");
+	line4->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -355,6 +416,13 @@ void CStage2::Load()
 		true
 	);
 	AddTask(rotatekinoko1);
+	CCircleLine* cline1 = new CCircleLine
+	(
+		CVector(0.0f, 55.0f, 1180.0f),
+		CVector(8.0f, 8.0f, 8.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline1);
 
 	// 動くキノコ(右円回転)
 	CJumpingKinokoTurnRight* rotatekinoko2 = new CJumpingKinokoTurnRight
@@ -366,6 +434,13 @@ void CStage2::Load()
 		true
 	);
 	AddTask(rotatekinoko2);
+	CCircleLine* cline2 = new CCircleLine
+	(
+		CVector(100.0f, 0.0f, 1400.0f),
+		CVector(8.0f, 8.0f, 8.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline2);
 
 	// 動くキノコ(左円回転)
 	CJumpingKinokoTurnLeft* rotatekinoko3 = new CJumpingKinokoTurnLeft
@@ -377,6 +452,13 @@ void CStage2::Load()
 		false
 	);
 	AddTask(rotatekinoko3);
+	CCircleLine* cline3 = new CCircleLine
+	(
+		CVector(-100.0f, 0.0f, 1400.0f),
+		CVector(8.0f, 8.0f, 8.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline3);
 
 	// 指定した移動ポイント間を移動するジャンプキノコ
 	CJumpingKinokoMoveTo* jkmt1 = new CJumpingKinokoMoveTo
@@ -386,11 +468,20 @@ void CStage2::Load()
 		1.0f
 	);
 	jkmt1->SetReturnRoute(false);
-	jkmt1->AddMovePoint(CVector(272.0f, 0.0f, 1353), 4.0f);
-	jkmt1->AddMovePoint(CVector(272, 0.0f, 1239.0f), 4.0f);
+	jkmt1->AddMovePoint(CVector(272.0f, 0.0f, 1353.0f), 4.0f);
+	jkmt1->AddMovePoint(CVector(272.0f, 0.0f, 1239.0f), 4.0f);
 	jkmt1->AddMovePoint(CVector(337.0f, 0.0f, 1239.0f), 4.0f);
-	jkmt1->AddMovePoint(CVector(337, 00.0f, 1353.0f), 4.0f);
+	jkmt1->AddMovePoint(CVector(337.0f, 0.0f, 1353.0f), 4.0f);
 	AddTask(jkmt1);
+	// ポイントライン
+	CLineEffect* line1 = new CLineEffect(ETag::eEffect);
+	line1->AddPoint(CVector(272.0f, 0.0f, 1353.0f), 3.0f, 3.0f);
+	line1->AddPoint(CVector(272.0f, 0.0f, 1239.0f), 3.0f, 3.0f);
+	line1->AddPoint(CVector(337.0f, 0.0f, 1239.0f), 3.0f, 3.0f);
+	line1->AddPoint(CVector(337.0f, 0.0f, 1353.0f), 3.0f, 3.0f);
+	line1->AddPoint(CVector(272.0f, 0.0f, 1353.0f), 3.0f, 3.0f);
+	line1->SetTexture("Laser");
+	line1->SetColor(CColor(1.0f, 1.0f, 0.0f, 1.0f));
 
 	// 指定した移動ポイント間を移動するジャンプキノコ
 	CJumpingKinokoMoveTo* jkmt2 = new CJumpingKinokoMoveTo
@@ -400,11 +491,20 @@ void CStage2::Load()
 		1.0f
 	);
 	jkmt2->SetReturnRoute(false);
-	jkmt2->AddMovePoint(CVector(-272.0f, 0.0f, 1353), 4.0f);
-	jkmt2->AddMovePoint(CVector(-272, 0.0f, 1239.0f), 4.0f);
+	jkmt2->AddMovePoint(CVector(-272.0f, 0.0f, 1353.0f), 4.0f);
+	jkmt2->AddMovePoint(CVector(-272.0f, 0.0f, 1239.0f), 4.0f);
 	jkmt2->AddMovePoint(CVector(-337.0f, 0.0f, 1239.0f), 4.0f);
-	jkmt2->AddMovePoint(CVector(-337, 00.0f, 1353.0f), 4.0f);
+	jkmt2->AddMovePoint(CVector(-337.0f, 0.0f, 1353.0f), 4.0f);
 	AddTask(jkmt2);
+	// ポイントライン
+	CLineEffect* line2 = new CLineEffect(ETag::eEffect);
+	line2->AddPoint(CVector(-272.0f, 0.0f, 1353.0f), 3.0f, 3.0f);
+	line2->AddPoint(CVector(-272.0f, 0.0f, 1239.0f), 3.0f, 3.0f);
+	line2->AddPoint(CVector(-337.0f, 0.0f, 1239.0f), 3.0f, 3.0f);
+	line2->AddPoint(CVector(-337.0f, 0.0f, 1353.0f), 3.0f, 3.0f);
+	line2->AddPoint(CVector(-272.0f, 0.0f, 1353.0f), 3.0f, 3.0f);
+	line2->SetTexture("Laser");
+	line2->SetColor(CColor(1.0f, 1.0f, 0.0f, 1.0f));
 
 	// 反射キノコ
 	CReflectionActionKinoko* rctk = new CReflectionActionKinoko
@@ -753,10 +853,10 @@ void CStage2::Load()
 	CPlayer* player = CPlayer::Instance();
 	// 初期値点 : 0.0f, 20.0f, 50.0f
 	// 中間ポイント : 0.0f, 0.0f, 480.0f
-	// 中間ポイント2 : 0.0f, 53.0f, 994.0f
+	// 中間ポイント2 : 0.0f, 56.0f, 994.0f
 	// 肉1の場所 : -483.0f, 10.0f, 483.0f
 	// ゴールポイント : 0.0f, 0.0f, 1540.0f
-	CVector playerPos = CVector(0.0f, 20.0f, 50.0f);
+	CVector playerPos = CVector(0.0f, 56.0f, 994.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

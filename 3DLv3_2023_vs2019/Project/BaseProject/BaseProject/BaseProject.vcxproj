@@ -79,6 +79,7 @@
     <ClCompile Include="src\Game\CBlueMedalEvent.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
     <ClCompile Include="src\Game\CButton1UI.cpp" />
+    <ClCompile Include="src\Game\CCircleLine.cpp" />
     <ClCompile Include="src\Game\CClimbUI.cpp" />
     <ClCompile Include="src\Game\CCutInDeathJump.cpp" />
     <ClCompile Include="src\Game\CHighKinoko.cpp" />
@@ -98,6 +99,7 @@
     <ClCompile Include="src\Game\CJumpingKinokoHigh.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMove.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMoveTo.cpp" />
+    <ClCompile Include="src\Game\CPointLine.cpp" />
     <ClCompile Include="src\Game\CReflectionActionKinoko.cpp" />
     <ClCompile Include="src\Game\CReflectionKinoko.cpp" />
     <ClCompile Include="src\Game\CReflectionLeftRightKinoko.cpp" />
@@ -314,6 +316,7 @@
     <ClInclude Include="src\Game\CBlueMedalEvent.h" />
     <ClInclude Include="src\Game\CBullet.h" />
     <ClInclude Include="src\Game\CButton1UI.h" />
+    <ClInclude Include="src\Game\CCircleLine.h" />
     <ClInclude Include="src\Game\CClimbUI.h" />
     <ClInclude Include="src\Game\CCutInDeathJump.h" />
     <ClInclude Include="src\Game\CHighKinoko.h" />
@@ -334,6 +337,7 @@
     <ClInclude Include="src\Game\CJumpingKinokoHigh.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMove.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMoveTo.h" />
+    <ClInclude Include="src\Game\CPointLine.h" />
     <ClInclude Include="src\Game\CReflectionActionKinoko.h" />
     <ClInclude Include="src\Game\CReflectionKinoko.h" />
     <ClInclude Include="src\Game\CReflectionLeftRightKinoko.h" />
