@@ -27,11 +27,11 @@ const CStuffedRoll::StafData CStuffedRoll::STAFF_DATA[] =
 	{"Programmer\n \nTanaka Taro", 19.0f},
 	{"Creator\n \nTanaka Taro", 23.0f},
 	{"Debugger\n \nTanaka Taro", 27.0f},
-	{"Homeroom Teacher\n \nNamizashi Shota\n \nTakahashi Shinobu", 24.0f},
-	{"スタッフ4", 31.0f},
-	{"スタッフ5", 35.0f},
-	{"スタッフ6", 39.0f},
-	{"Thank you for playing this game!", 43.0f},
+	{"Homeroom Teacher\n \nABCDEFG\n \nHIJKLMN", 31.0f},
+	{"スタッフ4", 35.0f},
+	{"スタッフ5", 39.0f},
+	{"スタッフ6", 43.0f},
+	{"Thank you for playing this game!", 47.0f},
 };
 
 // コンストラクタ
