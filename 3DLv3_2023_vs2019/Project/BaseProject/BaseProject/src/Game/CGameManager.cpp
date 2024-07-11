@@ -127,7 +127,6 @@ void CGameManager::ChangeState(EGameState state)
 // 準備状態の更新処理
 void CGameManager::UpdateReady()
 {
-
 }
 
 // ゲーム中の更新処理

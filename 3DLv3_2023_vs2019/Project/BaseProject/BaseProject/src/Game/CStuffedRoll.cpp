@@ -20,13 +20,18 @@ CStuffedRoll* CStuffedRoll::Instance()
 
 const CStuffedRoll::StafData CStuffedRoll::STAFF_DATA[] =
 {
-	{"Creator\ntanakataro", 3.0f},
-	{"Programmer\ntanakataro", 6.5f},
-	{"Debugger\ntanakataro", 9.5f},
-	{"Homeroom Teacher\nabcdefg\nhijklmn", 12.5f},
-	{"スタッフ4", 15.5f},
-	{"スタッフ5", 18.5f},
-	{"スタッフ6", 21.5f},
+	{"Game Title\n \nDemon Adventure", 3.0f},
+	{"Producerdirector\n \nTanaka Taro", 7.0f},
+	{"Director\n \nTanaka Taro", 11.0f},
+	{"Designer\n \nTanaka Taro", 15.0f},
+	{"Programmer\n \nTanaka Taro", 19.0f},
+	{"Creator\n \nTanaka Taro", 23.0f},
+	{"Debugger\n \nTanaka Taro", 27.0f},
+	{"Homeroom Teacher\n \nNamizashi Shota\n \nTakahashi Shinobu", 24.0f},
+	{"スタッフ4", 31.0f},
+	{"スタッフ5", 35.0f},
+	{"スタッフ6", 39.0f},
+	{"Thank you for playing this game!", 43.0f},
 };
 
 // コンストラクタ

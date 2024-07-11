@@ -24,6 +24,7 @@ CStuffedRollScene::~CStuffedRollScene()
 //ƒV[ƒ““Ç‚İ‚İ
 void CStuffedRollScene::Load()
 {
+	CInput::ShowCursor(false);
 	// ”wŒiFİ’è
 	System::SetClearColor(0.5f, 0.5f, 0.5f, 0.9f);
 
