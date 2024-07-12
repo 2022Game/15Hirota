@@ -21,18 +21,19 @@ CStuffedRoll* CStuffedRoll::Instance()
 
 const CStuffedRoll::StafData CStuffedRoll::STAFF_DATA[] =
 {
-	{"Game Title\n \nDemon Adventure",				3.0f,	450.0f},
-	{"Producer\n \nTanaka Taro",					8.0f,	450.0f},
-	{"Director\n \nTanaka Taro",					12.0f,	450.0f},
-	{"Designer\n \nTanaka Taro",					16.0f,	450.0f},
-	{"Programmer\n \nTanaka Taro",					20.0f,	750.0f},
-	{"Creator\n \nTanaka Taro",						24.0f,	750.0f},
-	{"Debugger\n \nTanaka Taro",					28.0f,	450.0f},
-	{"Homeroom Teacher\n \nABCDEFG\n \nHIJKLMN",	32.0f,	450.0f},
-	{"スタッフ4",									38.0f,	450.0f},
-	{"スタッフ5",									42.0f,	450.0f},
-	{"スタッフ6",									46.0f,	450.0f},
-	{"Thank you for Playing this Game!",			50.0f,	250.0f},
+	// テキスト名									// 開始時間		// X座標	R		G		B
+	{"Game Title\n \nDemon Adventure",				3.0f,			450.0f,		1.0f,	0.0f,	0.0f},
+	{"Producer\n \nTanaka Taro",					8.0f,			450.0f,		0.0f,	1.0f,	0.0f},
+	{"Director\n \nTanaka Taro",					12.0f,			450.0f,		0.0f,	0.0f,	1.0f},
+	{"Designer\n \nTanaka Taro",					16.0f,			450.0f,		1.0f,	1.0f,	0.0f},
+	{"Programmer\n \nTanaka Taro",					20.0f,			750.0f,		1.0f,	0.0f,	1.0f},
+	{"Creator\n \nTanaka Taro",						24.0f,			750.0f,		1.0f,	1.0f,	1.0f},
+	{"Debugger\n \nTanaka Taro",					28.0f,			450.0f,		0.0f,	1.0f,	1.0f},
+	{"Homeroom Teacher\n \nABCDEFG\n \nHIJKLMN",	32.0f,			450.0f,		1.0f,	0.0f,	0.0f},
+	{"スタッフ4",									38.0f,			450.0f,		1.0f,	0.0f,	0.0f},
+	{"スタッフ5",									42.0f,			450.0f,		1.0f,	0.0f,	0.0f},
+	{"スタッフ6",									46.0f,			450.0f,		1.0f,	0.0f,	0.0f},
+	{"Thank you for Playing this Game!",			50.0f,			250.0f,		1.0f,	0.0f,	0.0f},
 };
 
 // コンストラクタ
@@ -56,7 +57,7 @@ CStuffedRoll::CStuffedRoll()
 		CText* text = new CText
 		(
 			mpFont, 70,
-			CVector2(mXPos, 720.0f),
+			CVector2(0.0f, 720.0f),
 			CVector2(600.0f, 600),
 			CColor(1.0f, 1.0f, 0.0f, 1.0f),
 			ETaskPriority::eUI,
@@ -130,7 +131,7 @@ void CStuffedRoll::Render()
 		mStuffedRolls[i]->SetText(data.stuffName.c_str());
 		// スクロール処理
 		ScrollTextUp(mStuffedRolls[i], mTextYPositions[i], 1.0f);
-		mStuffedRolls[i]->SetColor(1.0f, 1.0f, 0.0f);
+		mStuffedRolls[i]->SetColor(data.r, data.g, data.b);
 		mStuffedRolls[i]->SetFontSize(42);
 		mStuffedRolls[i]->Render();
 	}

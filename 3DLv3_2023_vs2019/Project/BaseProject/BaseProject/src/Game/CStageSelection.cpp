@@ -1,5 +1,6 @@
 #include "CStageSelection.h"
 #include "CCollisionManager.h"
+#include "CStageManager.h"
 #include "CCamera.h"
 
 CStageSelection::CStageSelection()
@@ -20,6 +21,7 @@ CStageSelection::CStageSelection()
 
 CStageSelection::~CStageSelection()
 {
+	CStageManager::RemoveTask(this);
 	// コライダーを破棄
 	SAFE_DELETE(mpColliderMesh);
 

@@ -44,6 +44,7 @@ CStage1MenuObject::CStage1MenuObject(const CVector& pos, const CVector& scale, c
 // デストラクタ
 CStage1MenuObject::~CStage1MenuObject()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpColliderSphere);
 }
 

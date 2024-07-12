@@ -7,6 +7,7 @@
 #include "CStageManager.h"
 #include "CPlayer.h"
 #include "CButton1UI.h"
+#include "CStageManager.h"
 
 // ステージ1選択ボタンのインスタンス
 CStage2Button* CStage2Button::spInstance = nullptr;
@@ -52,6 +53,7 @@ CStage2Button::CStage2Button(const CVector& pos, const CVector& scale, const CVe
 // デストラクタ
 CStage2Button::~CStage2Button()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpColliderMesh);
 }
 

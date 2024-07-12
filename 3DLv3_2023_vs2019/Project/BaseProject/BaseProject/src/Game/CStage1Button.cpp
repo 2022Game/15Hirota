@@ -52,6 +52,7 @@ CStage1Button::CStage1Button(const CVector& pos, const CVector& scale, const CVe
 // デストラクタ
 CStage1Button::~CStage1Button()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpColliderMesh);
 	mpEnter->Kill();
 }

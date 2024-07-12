@@ -45,6 +45,7 @@ private:
 		std::string stuffName;
 		float startTime;
 		float xPos;
+		float r, g, b;
 	};
 	static const StafData STAFF_DATA[];
 
