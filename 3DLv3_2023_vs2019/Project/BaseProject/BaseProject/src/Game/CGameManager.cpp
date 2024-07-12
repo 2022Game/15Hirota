@@ -42,6 +42,12 @@ CGameManager* CGameManager::Instance()
 	return spInstance;
 }
 
+// リセット
+void CGameManager::Reset()
+{
+	Instance()->ChangeState(EGameState::eReset);
+}
+
 // ゲーム開始
 void CGameManager::GameStart()
 {
@@ -83,6 +89,12 @@ void CGameManager::GameOver()
 void CGameManager::Result()
 {
 	Instance()->ChangeState(EGameState::eResult);
+}
+
+// ゲームクリア
+void CGameManager::GameClear()
+{
+	Instance()->ChangeState(EGameState::eGameClear);
 }
 
 // ステージ1
@@ -321,6 +333,18 @@ void CGameManager::UpdateResult()
 	// ゲームシーン内でリザルト処理を行う
 }
 
+// CGameManagerにリセット
+void CGameManager::UpdateReset()
+{
+	mStageNo = 0;
+	mStateStep = 0;
+	mElapsedTime = 0.0f;
+	mElapsedStageTime = 0.0f;
+	mResultSetUp = false;
+	ChangeState(EGameState::eGame);
+}
+
+
 // 更新
 void CGameManager::Update()
 {
@@ -331,6 +355,10 @@ void CGameManager::Update()
 		// 準備中
 	case EGameState::eRaady:
 		UpdateReady();
+		break;
+		// リセット
+	case EGameState::eReset:
+		UpdateReset();
 		break;
 		// ゲーム中
 	case EGameState::eGame:

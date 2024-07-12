@@ -10,13 +10,14 @@ class CResultAnnouncement;
 enum class EGameState
 {
 	eRaady,			// 準備中
+	eReset,			// リセット
 	eGame,			// ゲーム実行中
 	eRestart,		// ゲーム再開
 	eStageClear,	// ステージクリア
 	eStageOver,		// ステージ失敗
 	eResult,		// リザルト
 	eGameClear,		// ゲームクリア
-	eGameOver,		// ゲームオーバー
+	eGameOver,		// ゲームオーバーz
 
 	eStage1,		// ステージ1
 	eStage2,		// ステージ2
@@ -39,12 +40,16 @@ public:
 	static void GameOver();
 	// リザルト
 	static void Result();
+	// ゲームクリアー
+	static void GameClear();
 	// ステージ1
 	static void Stage1();
 	// ステージ2
 	static void Stage2();
 	// ステージ2
 	static void Stage3();
+	// リセット処理
+	static void Reset();
 
 	// フェードイン状態での更新処理
 
@@ -93,6 +98,9 @@ private:
 	void UpdateStage2();
 	// ステージ3の更新処理
 	void UpdateStage3();
+
+	// リセット処理
+	void UpdateReset();
 
 
 	static CGameManager* spInstance;

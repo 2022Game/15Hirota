@@ -8,8 +8,6 @@
 #include "CBGMManager.h"
 #include "CStuffedRoll.h"
 
-#define TITLE_IMAGE "UI\\Title.png"
-
 //コンストラクタ
 CStuffedRollScene::CStuffedRollScene()
 	: CSceneBase(EScene::eStuffedRoll)

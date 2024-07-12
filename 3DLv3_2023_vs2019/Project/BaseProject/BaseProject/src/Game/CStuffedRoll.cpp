@@ -5,6 +5,7 @@
 #include "CGameManager.h"
 #include "CTaskManager.h"
 #include "CPlayer.h"
+#include "CStageManager.h"
 
 // スタッフロールクラスのインスタンス
 CStuffedRoll* CStuffedRoll::spInstance = nullptr;
@@ -70,6 +71,7 @@ CStuffedRoll::CStuffedRoll()
 // デストラクタ
 CStuffedRoll::~CStuffedRoll()
 {
+	CStageManager::RemoveTask(this);
 	spInstance = nullptr;
 	int size = mStuffedRolls.size();
 	for (int i = 0; i < size; i++)

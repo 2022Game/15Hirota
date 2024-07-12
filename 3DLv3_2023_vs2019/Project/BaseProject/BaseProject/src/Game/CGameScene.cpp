@@ -120,6 +120,7 @@ void CGameScene::Load()
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
 	//// フィールド
 	//CStageSelection* field = new CStageSelection();
 
@@ -147,16 +148,8 @@ void CGameScene::Load()
 	mpTime = new CStageTime();
 	// スコア
 	mpScore = new CScore();
-
-	mpResultUI = new CResultAnnouncement();
-
 	// リザルト
-	/*mpResult = new CResult();
-	mpResult->SetTimeAndScore(mpTime, mpScore);*/
-
-	// インベントリを作成
-	//mpInventoryMenu = new CInventoryMenu();
-	//mpInventoryMenu->SetPlayer(player);
+	mpResultUI = new CResultAnnouncement();
 	
 	CGameManager::GameStart();
 }
@@ -164,16 +157,6 @@ void CGameScene::Load()
 //シーンの更新処理
 void CGameScene::Update()
 {
-	/*CResultAnnouncement* resut = CResultAnnouncement::Instance();
-	bool resultend = resut->IsResultOpened();
-	bool opened = resut->IsOpened();
-	CDebugPrint::Print("result:%s\n", resultend ? "true" : "false");
-	CDebugPrint::Print("opned:%s\n", opened ? "true" : "false");*/
-
-	/*CResult* result = CResult::Instance();
-	int score = result->GetTotalScore();
-	CDebugPrint::Print("total: %d\n", score);*/
-
 	// ゲーム画面はカーソル非表示
 	CInput::ShowCursor(false);
 	if (CInput::PushKey('H'))
