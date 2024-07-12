@@ -30,6 +30,7 @@ CGameManager::CGameManager()
 // デストラクタ
 CGameManager::~CGameManager()
 {
+	spInstance = nullptr;
 }
 
 // インスタンス取得
@@ -341,14 +342,12 @@ void CGameManager::UpdateReset()
 	mElapsedTime = 0.0f;
 	mElapsedStageTime = 0.0f;
 	mResultSetUp = false;
-	ChangeState(EGameState::eGame);
 }
 
 
 // 更新
 void CGameManager::Update()
 {
-	//CDebugPrint::Print("mResultSetUp:%s\n", mResultSetUp ? "true" : "false");
 	// 現在の状態に合わせた更新処理を行う
 	switch (mState)
 	{

@@ -21,31 +21,32 @@ CStuffedRoll* CStuffedRoll::Instance()
 
 const CStuffedRoll::StafData CStuffedRoll::STAFF_DATA[] =
 {
-	{"Game Title\n \nDemon Adventure", 3.0f},
-	{"Producerdirector\n \nTanaka Taro", 7.0f},
-	{"Director\n \nTanaka Taro", 11.0f},
-	{"Designer\n \nTanaka Taro", 15.0f},
-	{"Programmer\n \nTanaka Taro", 19.0f},
-	{"Creator\n \nTanaka Taro", 23.0f},
-	{"Debugger\n \nTanaka Taro", 27.0f},
-	{"Homeroom Teacher\n \nABCDEFG\n \nHIJKLMN", 31.0f},
-	{"スタッフ4", 35.0f},
-	{"スタッフ5", 39.0f},
-	{"スタッフ6", 43.0f},
-	{"Thank you for playing this game!", 47.0f},
+	{"Game Title\n \nDemon Adventure",				3.0f,	450.0f},
+	{"Producer\n \nTanaka Taro",					8.0f,	450.0f},
+	{"Director\n \nTanaka Taro",					12.0f,	450.0f},
+	{"Designer\n \nTanaka Taro",					16.0f,	450.0f},
+	{"Programmer\n \nTanaka Taro",					20.0f,	750.0f},
+	{"Creator\n \nTanaka Taro",						24.0f,	750.0f},
+	{"Debugger\n \nTanaka Taro",					28.0f,	450.0f},
+	{"Homeroom Teacher\n \nABCDEFG\n \nHIJKLMN",	32.0f,	450.0f},
+	{"スタッフ4",									38.0f,	450.0f},
+	{"スタッフ5",									42.0f,	450.0f},
+	{"スタッフ6",									46.0f,	450.0f},
+	{"Thank you for Playing this Game!",			50.0f,	250.0f},
 };
 
 // コンストラクタ
 CStuffedRoll::CStuffedRoll()
 	: CTask(ETaskPriority::eUI, 0, ETaskPauseType::eDefault)
 	, mStaffRollTime(0.0f)
+	, mXPos(0.0f)
 {
 	spInstance = this;
 
 	// ロゴのフォントデータを生成
 	mpFont = new CFont("res\\Font\\toroman.ttf");
 	mpFont->SetFontSize(70);
-	mpFont->SetAlignment(FTGL::TextAlignment::ALIGN_CENTER);
+	//mpFont->SetAlignment(FTGL::TextAlignment::ALIGN_LEFT);
 	mpFont->SetLineLength(WINDOW_WIDTH);
 
 	// テキストオブジェクトと初期Y位置の設定
@@ -55,7 +56,7 @@ CStuffedRoll::CStuffedRoll()
 		CText* text = new CText
 		(
 			mpFont, 70,
-			CVector2(0.0f, 720.0f),
+			CVector2(mXPos, 720.0f),
 			CVector2(600.0f, 600),
 			CColor(1.0f, 1.0f, 0.0f, 1.0f),
 			ETaskPriority::eUI,
@@ -71,6 +72,7 @@ CStuffedRoll::CStuffedRoll()
 // デストラクタ
 CStuffedRoll::~CStuffedRoll()
 {
+	SAFE_DELETE(mpFont);
 	CStageManager::RemoveTask(this);
 	spInstance = nullptr;
 	int size = mStuffedRolls.size();
@@ -102,10 +104,16 @@ void CStuffedRoll::ScrollTextUp(CText* pText, float& yPos, float speed)
 {
 	yPos -= speed;
 
-	pText->SetPos(CVector2(0.0f, yPos));
+	pText->SetPos(CVector2(mXPos, yPos));
 
 	CDebugPrint::Print("Text Position: %f, %f\n", pText->GetPos().X(), pText->GetPos().Y());
 	CDebugPrint::Print("yPos: %f\n", yPos);
+}
+
+// テキストのX軸のポジションを設定
+void CStuffedRoll::TextXPos(const float pos)
+{
+	mXPos = pos;
 }
 
 // 描画処理
@@ -115,8 +123,9 @@ void CStuffedRoll::Render()
 	for (int i = 0; i < size; i++)
 	{
 		const StafData& data = STAFF_DATA[i];
+		mXPos = data.xPos;
 		if (mStaffRollTime < data.startTime) continue;
-		if (mStaffRollTime > data.startTime + 13.0f) continue;
+		if (mStaffRollTime > data.startTime + 15.0f) continue;
 
 		mStuffedRolls[i]->SetText(data.stuffName.c_str());
 		// スクロール処理

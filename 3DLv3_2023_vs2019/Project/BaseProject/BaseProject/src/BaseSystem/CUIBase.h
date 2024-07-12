@@ -68,9 +68,9 @@ protected:
 	bool mIsTouch;
 	bool mIsEnter;
 	CVector2 mLastMousePos;
-	CVector2 mPosition;	// 表示位置
-	CVector2 mSize;		// 表示サイズ
-	CVector2 mCenter;	// 中心位置
-	CColor mColor;		// 表示カラー
+	CVector2 mPosition;	 // 表示位置
+	CVector2 mSize;		 // 表示サイズ
+	CVector2 mCenter;	 // 中心位置
+	CColor mColor;		 // 表示カラー
 	float mScale;
 };
