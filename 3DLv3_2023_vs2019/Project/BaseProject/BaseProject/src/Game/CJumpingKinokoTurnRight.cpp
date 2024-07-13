@@ -1,4 +1,5 @@
 #include "CJumpingKinokoTurnRight.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CJumpingKinokoTurnRight::CJumpingKinokoTurnRight(const CVector& pos, const CVector& scale, const CVector& rot,
@@ -11,4 +12,5 @@ CJumpingKinokoTurnRight::CJumpingKinokoTurnRight(const CVector& pos, const CVect
 // デストラクタ
 CJumpingKinokoTurnRight::~CJumpingKinokoTurnRight()
 {
+	CStageManager::RemoveTask(this);
 }

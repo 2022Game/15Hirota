@@ -1,4 +1,5 @@
 #include "CMetalLadder.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CMetalLadder::CMetalLadder(std::string wireName, std::string topName,
@@ -26,6 +27,7 @@ CMetalLadder::CMetalLadder(std::string wireName, std::string topName,
 // デストラクタ
 CMetalLadder::~CMetalLadder()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpWallCol);
 	SAFE_DELETE(mpWallTopCol);
 }

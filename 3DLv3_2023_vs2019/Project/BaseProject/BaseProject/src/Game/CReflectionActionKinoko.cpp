@@ -1,4 +1,5 @@
 #include "CReflectionActionKinoko.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CReflectionActionKinoko::CReflectionActionKinoko(const CVector& pos, const CVector& scale, const CVector& rot)
@@ -10,5 +11,5 @@ CReflectionActionKinoko::CReflectionActionKinoko(const CVector& pos, const CVect
 // デストラクタ
 CReflectionActionKinoko::~CReflectionActionKinoko()
 {
-
+	CStageManager::RemoveTask(this);
 }

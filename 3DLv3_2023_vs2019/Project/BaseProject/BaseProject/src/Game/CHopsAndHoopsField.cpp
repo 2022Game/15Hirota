@@ -1,6 +1,7 @@
 #include "CHopsAndHoopsField.h"
 #include "CCollisionManager.h"
 #include "CCamera.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CHopsAndHoopsField::CHopsAndHoopsField()
@@ -17,6 +18,7 @@ CHopsAndHoopsField::CHopsAndHoopsField()
 // デストラクタ
 CHopsAndHoopsField::~CHopsAndHoopsField()
 {
+	CStageManager::RemoveTask(this);
 	// コライダー削除
 	SAFE_DELETE(mpFloorCol);
 }

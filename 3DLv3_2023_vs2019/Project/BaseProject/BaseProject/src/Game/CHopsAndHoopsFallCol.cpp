@@ -1,6 +1,7 @@
 #include "CHopsAndHoopsFallCol.h"
 #include "CCollisionManager.h"
 #include "CCamera.h"
+#include "CStageManager.h"
 
 CHopsAndHoopsFallCol::CHopsAndHoopsFallCol()
 	: CObjectBase(ETag::eFall, ETaskPriority::eFall)
@@ -14,6 +15,7 @@ CHopsAndHoopsFallCol::CHopsAndHoopsFallCol()
 
 CHopsAndHoopsFallCol::~CHopsAndHoopsFallCol()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpFallCol);
 }
 

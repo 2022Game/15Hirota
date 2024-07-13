@@ -1,4 +1,5 @@
 #include "CJumpingKinokoUpDown.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CJumpingKinokoUpDown::CJumpingKinokoUpDown(const CVector& pos, const CVector& scale, const CVector& rot,
@@ -11,4 +12,5 @@ CJumpingKinokoUpDown::CJumpingKinokoUpDown(const CVector& pos, const CVector& sc
 // デストラクタ
 CJumpingKinokoUpDown::~CJumpingKinokoUpDown()
 {
+	CStageManager::RemoveTask(this);
 }

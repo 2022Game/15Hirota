@@ -1,6 +1,7 @@
 #include "COneShotFloorField.h"
 #include "CCollisionManager.h"
 #include "CCamera.h"
+#include "CStageManager.h"
 
 COneShotFloorField::COneShotFloorField()
 	: CObjectBase(ETag::eFall,ETaskPriority::eFall)
@@ -16,6 +17,7 @@ COneShotFloorField::COneShotFloorField()
 
 COneShotFloorField::~COneShotFloorField()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpFallCol);
 }
 

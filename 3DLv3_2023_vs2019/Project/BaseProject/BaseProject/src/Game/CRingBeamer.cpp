@@ -44,7 +44,7 @@ CRingBeamerUpper::CRingBeamerUpper(const CVector& pos, const CVector& scale, con
 // デストラクタ
 CRingBeamerUpper::~CRingBeamerUpper()
 {
-
+	CStageManager::RemoveTask(this);
 }
 
 // 状態を切り替える
@@ -275,7 +275,7 @@ CRingBeamerLower::CRingBeamerLower(const CVector& pos, const CVector& scale, con
 
 CRingBeamerLower::~CRingBeamerLower()
 {
-
+	CStageManager::RemoveTask(this);
 }
 
 void CRingBeamerLower::Update()

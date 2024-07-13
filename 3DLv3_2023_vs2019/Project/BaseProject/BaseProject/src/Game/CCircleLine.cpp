@@ -1,4 +1,5 @@
 #include "CCircleLine.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CCircleLine::CCircleLine(const CVector& pos, const CVector& scale, const CVector& rot)
@@ -14,7 +15,7 @@ CCircleLine::CCircleLine(const CVector& pos, const CVector& scale, const CVector
 // デストラクタ
 CCircleLine::~CCircleLine()
 {
-
+	CStageManager::RemoveTask(this);
 }
 
 // 描画処理

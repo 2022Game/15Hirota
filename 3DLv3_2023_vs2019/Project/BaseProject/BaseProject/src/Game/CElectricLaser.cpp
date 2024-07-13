@@ -1,6 +1,7 @@
 #include "CElectricLaser.h"
 #include "CLineEffect.h"
 #include "Maths.h"
+#include "CStageManager.h"
 
 #define LINE_DIV_COUNT 3
 #define LINE_WIDTH 5.0f
@@ -43,6 +44,7 @@ CElectricLaser::CElectricLaser(const CVector& pos, const CVector& move, float mo
 
 CElectricLaser::~CElectricLaser()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpLine);
 
 	if (mpLineEffect != nullptr)

@@ -1,6 +1,7 @@
 #include "CPropeller.h"
 #include "Maths.h"
 #include "CModel.h"
+#include "CStageManager.h"
 
 CPropeller::CPropeller(const CVector& pos, const CVector& scale,
 	float rotateSpeedZ)
@@ -21,6 +22,7 @@ CPropeller::CPropeller(const CVector& pos, const CVector& scale,
 
 CPropeller::~CPropeller()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpRotationgCol);
 }
 

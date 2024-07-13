@@ -1,5 +1,6 @@
 #include "CJumpingKinoko.h"
 #include "CColliderMesh.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CJumpingKinoko::CJumpingKinoko(const CVector& pos, const CVector& scale, const CVector& rot,
@@ -28,4 +29,5 @@ CJumpingKinoko::CJumpingKinoko(const CVector& pos, const CVector& scale, const C
 // デストラクタ
 CJumpingKinoko::~CJumpingKinoko()
 {
+	CStageManager::RemoveTask(this);
 }

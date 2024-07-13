@@ -1,4 +1,5 @@
 #include "CJumpingKinokoMoveTo.h"
+#include "CStageManager.h"
 
 // rotの後にモデルパスを選択できる
 CJumpingKinokoMoveTo::CJumpingKinokoMoveTo(const CVector& scale, const CVector& rot
@@ -16,7 +17,7 @@ CJumpingKinokoMoveTo::CJumpingKinokoMoveTo(const CVector& scale, const CVector& 
 
 CJumpingKinokoMoveTo::~CJumpingKinokoMoveTo()
 {
-
+	CStageManager::RemoveTask(this);
 }
 
 // 移動ポイントを追加

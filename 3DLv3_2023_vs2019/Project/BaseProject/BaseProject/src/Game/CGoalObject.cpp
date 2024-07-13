@@ -1,5 +1,6 @@
 #include "CGoalObject.h"
 #include "CPlayer.h"
+#include "CStageManager.h"
 
 // コンストラクタ
 CGoalObject::CGoalObject(const CVector& pos, const CVector& scale, const CVector& rot)
@@ -41,6 +42,7 @@ CGoalObject::CGoalObject(const CVector& pos, const CVector& scale, const CVector
 // デストラクタ
 CGoalObject::~CGoalObject()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpColliderMesh);
 	SAFE_DELETE(mpColliderLine);
 	SAFE_DELETE(mpColliderSphere);
