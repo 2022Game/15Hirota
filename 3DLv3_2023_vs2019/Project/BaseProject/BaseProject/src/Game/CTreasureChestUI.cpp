@@ -48,7 +48,7 @@ void CTreasureChestUI::SetWorldPos(const CVector& worldPos)
 		return;
 	}
 
-	// 求めたスクリーン座標を自身の座標に設定
+	// スクリーン座標をUIの位置として設定
 	mPosition = screenPos;
 }
 
@@ -56,14 +56,15 @@ void CTreasureChestUI::Update()
 {
 	// ゲージの位置を設定
 	CVector2 pos = mPosition;
-	pos.X(pos.X() - 0.0f * mCenterRatio.X() * mScale);
-	mpUI->SetPos(pos + CVector2(0.0f, 5.0f) * mScale);
+	//pos.X(pos.X() - 0.0f * mCenterRatio.X() * mScale);
+	mpUI->SetPos(pos/* + CVector2(0.0f, 0.0f) * mScale*/);
+
 	mpUI->SetShow(IsShow());
 
-	// フレームの中心位置
+	// ゲージの中心位置を設定
 	mpUI->SetCenter
 	(
-		0.0f * mCenterRatio.X() * mScale,
-		0.0f * mCenterRatio.Y() * mScale
+		0.0f,
+		0.0f
 	);
 }

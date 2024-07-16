@@ -46,7 +46,7 @@ CGameScene::CGameScene()
 //デストラクタ
 CGameScene::~CGameScene()
 {
-
+	CStageManager::UnloadStage();
 }
 
 //シーン読み込み
