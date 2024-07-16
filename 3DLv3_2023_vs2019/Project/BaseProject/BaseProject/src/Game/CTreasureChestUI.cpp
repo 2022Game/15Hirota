@@ -38,7 +38,7 @@ void CTreasureChestUI::SetWorldPos(const CVector& worldPos)
 	if (cam == nullptr) return;
 
 	// 設定されたワールド座標をスクリーン座標に変換
-	CVector screenPos = cam->WorldToScreenPos(worldPos - CVector(0.0f, 0.0f, 0.0f));
+	CVector screenPos = cam->WorldToScreenPos(worldPos);
 
 	// 設定されたワールド座標がカメラの背後であれば、
 	// ゲージを表示しない
@@ -54,15 +54,16 @@ void CTreasureChestUI::SetWorldPos(const CVector& worldPos)
 
 void CTreasureChestUI::Update()
 {
-	// フレーム位置を設定
-	//CVector2 pos = mPosition - CVector2(FRAME_SIZE_X, 0.0f) * 0.5f;
-	mpUI->SetPos(mPosition);
+	// ゲージの位置を設定
+	CVector2 pos = mPosition;
+	pos.X(pos.X() - 0.0f * mCenterRatio.X() * mScale);
+	mpUI->SetPos(pos + CVector2(0.0f, 5.0f) * mScale);
 	mpUI->SetShow(IsShow());
 
 	// フレームの中心位置
 	mpUI->SetCenter
 	(
-		70.0f * mCenterRatio.X(),
-		0.0f * mCenterRatio.Y()
+		0.0f * mCenterRatio.X() * mScale,
+		0.0f * mCenterRatio.Y() * mScale
 	);
 }

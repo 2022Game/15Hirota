@@ -73,7 +73,7 @@ CTreasureChestTwo::CTreasureChestTwo(const CVector& pos, const CVector& scale, c
 {
 	// Tキーの画像表示
 	mpTUI = new CTreasureChestUI();
-	mpTUI->SetCenterRatio(CVector2(1.1f, 0.0f));
+	mpTUI->SetCenterRatio(CVector2(0.5f, 0.0f));
 	mpTUI->SetShow(false);
 
 	// 宝箱蓋モデル
@@ -180,9 +180,9 @@ void CTreasureChestTwo::Update()
 		break;
 	}
 
-	// Uキーテキスト画像を表示
-	CVector UkeyPos = Position() + CVector(0.0f, 30.0f, 0.0f);
-	mpTUI->SetWorldPos(UkeyPos);
+	CVector screenPos = Position() + CVector(0.0f, 5.0f, 0.0f);
+	mpTUI->SetWorldPos(screenPos);
+	CDebugPrint::Print("screenPos: %f %f %f\n", screenPos.X(), screenPos.Y(), screenPos.Z());
 }
 
 // プレイヤー追跡

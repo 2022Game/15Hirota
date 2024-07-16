@@ -144,12 +144,16 @@ void CGameScene::Load()
 
 	// ゲームメニューを作成
 	mpGameMenu = new CGameMenu();
+	AddTask(mpGameMenu);
 	// 時間
 	mpTime = new CStageTime();
+	AddTask(mpTime);
 	// スコア
 	mpScore = new CScore();
+	AddTask(mpScore);
 	// リザルト
 	mpResultUI = new CResultAnnouncement();
+	AddTask(mpResultUI);
 	
 	CGameManager::GameStart();
 }

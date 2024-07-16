@@ -16,18 +16,11 @@ public:
 	// デストラクタ
 	~CStuffedRoll();
 
-	// インスタンスのポインタ取得
-	static CStuffedRoll* Instance();
-
 	// 更新処理
 	void Update() override;
 	// 描画処理
 	void Render() override;
 private:
-	
-	// インスタンス
-	static CStuffedRoll* spInstance;
-
 	// テキストを移動させる処理
 	void ScrollTextUp(CText* pText, float& yPos, float speed);
 
@@ -42,10 +35,10 @@ private:
 
 	struct StafData
 	{
-		std::string stuffName;
-		float startTime;
-		float xPos;
-		float r, g, b;
+		std::string stuffName;	// テキスト名
+		float startTime;		// 開始時間
+		float xPos;				// X軸
+		float r, g, b;			// カラー
 	};
 	static const StafData STAFF_DATA[];
 

@@ -27,7 +27,7 @@ void CStuffedRollScene::Load()
 	System::SetClearColor(0.5f, 0.5f, 0.5f, 0.9f);
 
 	// BGM‚ðÄ¶
-	CBGMManager::Instance()->Play(EBGMType::eTitle);
+	//CBGMManager::Instance()->Play(EBGMType::eTitle);
 
 	CCamera* mainCamera = new CCamera
 	(

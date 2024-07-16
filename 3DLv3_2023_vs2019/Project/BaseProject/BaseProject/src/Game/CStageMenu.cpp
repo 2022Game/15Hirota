@@ -6,6 +6,7 @@
 #include "CGameManager.h"
 #include "CImage.h"
 #include "CPlayer.h"
+#include "CStageManager.h"
 
 #define MENU_ALPHA 0.75f
 
@@ -61,6 +62,7 @@ CStageMenu::CStageMenu()
 // デストラクタ
 CStageMenu::~CStageMenu()
 {
+	CStageManager::RemoveTask(this);
 	// 削除されるときにメニューが開いたマンであれば、
 	// メニューを閉じる
 	if (mIsOpened)
@@ -78,7 +80,7 @@ void CStageMenu::Open()
 	SetEnable(true);
 	SetShow(true);
 	mSelectIndex = 0;
-	CBGMManager::Instance()->Play(EBGMType::eMenu, false);
+	//CBGMManager::Instance()->Play(EBGMType::eMenu, false);
 	CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
 	// メニューを開いたフラグを立てる
 	mIsOpened = true;
@@ -92,7 +94,7 @@ void CStageMenu::Close()
 
 	SetEnable(false);
 	SetShow(false);
-	CBGMManager::Instance()->Play(EBGMType::eGame, false);
+	//CBGMManager::Instance()->Play(EBGMType::eGame, false);
 	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
 	// メニューを開いたフラグを下す
 	mIsOpened = false;

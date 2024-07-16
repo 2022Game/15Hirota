@@ -6,18 +6,7 @@
 #include "CTaskManager.h"
 #include "CPlayer.h"
 #include "CStageManager.h"
-
-// スタッフロールクラスのインスタンス
-CStuffedRoll* CStuffedRoll::spInstance = nullptr;
-
-CStuffedRoll* CStuffedRoll::Instance()
-{
-	if (spInstance == nullptr)
-	{
-		spInstance = new CStuffedRoll();
-	}
-	return spInstance;
-}
+#include "CInput.h"
 
 const CStuffedRoll::StafData CStuffedRoll::STAFF_DATA[] =
 {
@@ -42,8 +31,6 @@ CStuffedRoll::CStuffedRoll()
 	, mStaffRollTime(0.0f)
 	, mXPos(0.0f)
 {
-	spInstance = this;
-
 	// ロゴのフォントデータを生成
 	mpFont = new CFont("res\\Font\\toroman.ttf");
 	mpFont->SetFontSize(70);
@@ -75,7 +62,6 @@ CStuffedRoll::~CStuffedRoll()
 {
 	SAFE_DELETE(mpFont);
 	CStageManager::RemoveTask(this);
-	spInstance = nullptr;
 	int size = mStuffedRolls.size();
 	for (int i = 0; i < size; i++)
 	{
@@ -95,6 +81,11 @@ void CStuffedRoll::Update()
 	for (CText* text : mStuffedRolls)
 	{
 		text->Update();
+	}
+
+	if (CInput::PushKey('M'))
+	{
+
 	}
 
 	CDebugPrint::Print("mTime:%f\n", mStaffRollTime);

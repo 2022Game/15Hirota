@@ -7,6 +7,7 @@
 #include "CGameManager.h"
 #include "CImage.h"
 #include "CPlayer.h"
+#include "CStageManager.h"
 
 #define MENU_ALPHA 0.75f
 
@@ -109,6 +110,7 @@ CScreenItem::CScreenItem()
 // デストラクタ
 CScreenItem::~CScreenItem()
 {
+	CStageManager::RemoveTask(this);
 	// 削除されるときにメニューが開いたマンであれば、
 	// メニューを閉じる
 	if (mIsOpened)

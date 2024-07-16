@@ -11,6 +11,7 @@ CStageSky::CStageSky()
 CStageSky::~CStageSky()
 {
 	CStageManager::RemoveTask(this);
+	Kill();
 }
 
 void CStageSky::Update()

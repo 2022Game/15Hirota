@@ -7,6 +7,7 @@
 #include "CFade.h"
 #include "CExpandButton.h"
 #include "Easing.h"
+#include "CStageManager.h"
 
 // 「CLICK TO START」の点滅時間
 #define START_TEXT_BLINK_TIME 1.0f
@@ -130,6 +131,7 @@ CTitleUI::CTitleUI()
 // デストラクタ
 CTitleUI::~CTitleUI()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpLogoFont);
 	SAFE_DELETE(mpTitleLogo);
 	SAFE_DELETE(mpTitleBg);

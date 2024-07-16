@@ -7,6 +7,7 @@
 #include "CMeat1.h"
 #include "CMeat2.h"
 #include "CMeat3.h"
+#include "CStageManager.h"
 
 // スコアのインスタンス
 CScore* CScore::spInstance = nullptr;
@@ -39,6 +40,7 @@ CScore::CScore()
 // デストラクタ
 CScore::~CScore()
 {
+    CStageManager::RemoveTask(this);
 	spInstance = nullptr;
     SAFE_DELETE(mpScoreText);
 }

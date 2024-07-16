@@ -4,6 +4,7 @@
 #include "CGameManager.h"
 #include "CTaskManager.h"
 #include "CPlayer.h"
+#include "CStageManager.h"
 
 #define STAGE_1 300
 #define STAGE_2 300
@@ -50,6 +51,7 @@ CStageTime::CStageTime()
 // デストラクタ
 CStageTime::~CStageTime()
 {
+    CStageManager::RemoveTask(this);
     spInstance = nullptr;
     SAFE_DELETE(mpTimerText);
     SAFE_DELETE(mpTimer);

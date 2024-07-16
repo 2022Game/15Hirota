@@ -3,6 +3,7 @@
 #include "CTaskManager.h"
 #include "CBGMManager.h"
 #include "CImage.h"
+#include "CStageManager.h"
 
 #define MENU_ALPHA 0.75f
 
@@ -53,6 +54,7 @@ CGameMenu::CGameMenu()
 
 CGameMenu::~CGameMenu()
 {
+	CStageManager::RemoveTask(this);
 	// 削除されるときにメニューが開いたままであれば、
 	// メニューを閉じる
 	if (mIsOpened)
