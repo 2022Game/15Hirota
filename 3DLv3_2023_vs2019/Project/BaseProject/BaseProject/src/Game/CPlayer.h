@@ -32,7 +32,7 @@ class CHealingUpBuffs;
 class CSeesaw;
 class CMeatUI;
 class CMetalLadder;
-class CClimbUI;
+class COperationUI;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -233,7 +233,7 @@ private:
 	// “÷ƒAƒCƒeƒ€‰æ‘œ
 	CMeatUI* mpMeat;
 
-	CClimbUI* mpClimbUI;
+	COperationUI* mpClimbUI;
 
 	// SE
 	// Œ•‚ÌU‚è‚©‚´‚µUŒ‚‚ÌSE

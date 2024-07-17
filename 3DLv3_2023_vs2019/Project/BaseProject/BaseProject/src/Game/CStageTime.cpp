@@ -34,16 +34,31 @@ CStageTime::CStageTime()
 {
     // インスタンスの設定
     spInstance = this;
-    mpTimerText = new CText(nullptr, 40, CVector2(0, 0),
-        CVector2(1250, 600), CColor(1.0f, 0.5f, 0.5f, 1.0f),
-        ETaskPriority::eUI, 0);
-    mpTimerText->SetTextAlign(ETextAlignH::eRight, ETextAlignV::eTop);
+
+    // タイトルロゴのフォントデータを生成
+    mpLogoFont = new CFont("res\\Font\\toroman.ttf");
+    mpLogoFont->SetFontSize(40);
+    //mpLogoFont->SetAlignment(FTGL::TextAlignment::ALIGN_CENTER);
+    mpLogoFont->SetLineLength(WINDOW_WIDTH);
+
+    mpTimerText = new CText
+    (
+        mpLogoFont, 40,
+        CVector2(1000, 30),
+        CVector2(400, 300),
+        CColor(1.0f, 1.0f, 1.0f, 1.0f),
+        ETaskPriority::eUI,
+        0
+    );
+    mpTimerText->SetEnableOutline(true);
+    mpTimerText->SetOutlineColor(CColor(0.0f, 0.0f, 0.0f));
+    //mpTimerText->SetTextAlign(ETextAlignH::eRight, ETextAlignV::eTop);
 
     // 時計の画像を設定
     mpTimer = new CImage("Timer");
     mpTimer->SetSize(100.0f, 70.0f);
     mpTimer->SetUV(0, 0, 1, 1);
-    mpTimer->SetPos(1020, 0);
+    mpTimer->SetPos(900, 30);
     mpTimer->SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
     mpTimer->SetShow(false);
 }
@@ -53,6 +68,7 @@ CStageTime::~CStageTime()
 {
     CStageManager::RemoveTask(this);
     spInstance = nullptr;
+    SAFE_DELETE(mpLogoFont);
     SAFE_DELETE(mpTimerText);
     SAFE_DELETE(mpTimer);
 }
@@ -140,6 +156,6 @@ void CStageTime::Update()
 void CStageTime::Render()
 {
     char buffer[16];
-    sprintf_s(buffer, "TIME:%03d", mTime);
+    sprintf_s(buffer, "TIME  %03d", mTime);
     mpTimerText->SetText(buffer);
 }

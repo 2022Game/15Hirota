@@ -5,6 +5,7 @@
 
 class CText;
 class CImage;
+class CFont;
 
 class CStageTime : public CTask
 {
@@ -33,6 +34,8 @@ private:
 
 	// 時間のテキスト
 	CText* mpTimerText;
+	// フォント
+	CFont* mpLogoFont;
 	// 時計の画像
 	CImage* mpTimer;
 

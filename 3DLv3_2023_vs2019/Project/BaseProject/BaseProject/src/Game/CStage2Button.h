@@ -5,7 +5,7 @@
 #include "CObjectBase.h"
 
 class CModel;
-class CButton1UI;
+class COperationUI;
 
 // ステージ2選択ボタン
 class CStage2Button : public CObjectBase
@@ -41,7 +41,7 @@ private:
 	CColliderMesh* mpColliderMesh;
 
 	// エンターキーのUI画像
-	CButton1UI* mpEnter;
+	COperationUI* mpEnter;
 
 	// 触れた時に反応するオブジェクトのタグ
 	ETag mReactionTag;

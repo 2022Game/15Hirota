@@ -973,7 +973,7 @@
     <ClCompile Include="src\Game\CStuffedRollScene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\COperationInstructionsUI.cpp">
+    <ClCompile Include="src\Game\COperationUI.cpp">
       <Filter>ソース ファイル\Game\UI\Operation Instructions</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1686,7 +1686,7 @@
     <ClInclude Include="src\Game\CStuffedRollScene.h">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\COperationInstructionsUI.h">
+    <ClInclude Include="src\Game\COperationUI.h">
       <Filter>ソース ファイル\Game\UI\Operation Instructions</Filter>
     </ClInclude>
   </ItemGroup>

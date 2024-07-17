@@ -31,10 +31,24 @@ CScore::CScore()
 	// インスタンスの設定
 	spInstance = this;
 
+    // タイトルロゴのフォントデータを生成
+    mpLogoFont = new CFont("res\\Font\\toroman.ttf");
+    mpLogoFont->SetFontSize(30);
+    //mpLogoFont->SetAlignment(FTGL::TextAlignment::ALIGN_CENTER);
+    mpLogoFont->SetLineLength(WINDOW_WIDTH);
+
     // スコアのテキスト
-	mpScoreText = new CText(nullptr, 30, CVector2(1100, 100),
-		CVector2(1250, 100), CColor(0.0f, 1.0f, 0.5f,1.0f),
-		ETaskPriority::eUI, 0);
+    mpScoreText = new CText
+    (
+        mpLogoFont, 30,
+        CVector2(1050, 100),
+        CVector2(400, 300),
+        CColor(1.0f, 1.0f, 1.0f, 1.0f),
+        ETaskPriority::eUI,
+        0
+    );
+    mpScoreText->SetEnableOutline(true);
+    mpScoreText->SetOutlineColor(CColor(0.0f, 0.0f, 0.0f));
 }
 
 // デストラクタ
@@ -42,6 +56,7 @@ CScore::~CScore()
 {
     CStageManager::RemoveTask(this);
 	spInstance = nullptr;
+    SAFE_DELETE(mpLogoFont);
     SAFE_DELETE(mpScoreText);
 }
 
@@ -126,13 +141,13 @@ void CScore::Render()
     // 0だったら0000と表示
     if (mScore == 0)
     {
-        mpScoreText->SetText("SCORE:0000");
+        mpScoreText->SetText("SCORE  0000");
     }
     // 0以外だったらスコアを描画
     else
     {
         char buffer[16];
-        sprintf_s(buffer, "SCORE:%04d", mScore);
+        sprintf_s(buffer, "SCORE  %04d", mScore);
         mpScoreText->SetText(buffer);
     }
 }

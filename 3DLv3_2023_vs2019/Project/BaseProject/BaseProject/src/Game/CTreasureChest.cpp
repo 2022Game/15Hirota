@@ -5,7 +5,7 @@
 #include "Maths.h"
 #include "CModel.h"
 #include "CStageManager.h"
-#include "CTreasureChestUI.h"
+#include "COperationUI.h"
 
 #define WAIT_TIME 5.0f
 #define FOV_ANGLE 100.0f
@@ -72,9 +72,8 @@ CTreasureChestTwo::CTreasureChestTwo(const CVector& pos, const CVector& scale, c
 	, mStartPos(CVector::zero)
 {
 	// Tキーの画像表示
-	mpTUI = new CTreasureChestUI();
-	mpTUI->SetCenterRatio(CVector2(0.5f, 0.5f));
-	mpTUI->SetShow(false);
+	mpKey = new COperationUI("TUI");
+	mpKey->SetShow(false);
 
 	// 宝箱蓋モデル
 	mpChestTwo =  CResourceManager::Get<CModel>("TreasureChestTwo");
@@ -127,11 +126,11 @@ void CTreasureChestTwo::UpdateIdle()
 			ChangeState(EState::Two);
 		}
 
-		mpTUI->SetShow(true);
+		mpKey->SetShow(true);
 	}
 	else
 	{
-		mpTUI->SetShow(false);
+		mpKey->SetShow(false);
 	}
 }
 
@@ -161,7 +160,7 @@ void CTreasureChestTwo::UpdateTwo()
 
 void CTreasureChestTwo::UpdateEnd()
 {
-	mpTUI->SetShow(false);
+	mpKey->SetShow(false);
 }
 
 // 更新
@@ -182,8 +181,8 @@ void CTreasureChestTwo::Update()
 
 	CVector object = Position();
 	CVector chestPos = object + CVector(0.0f, 25.0f, 0.0f) + VectorX() * 3.0f;
-	mpTUI->SetWorldPos(chestPos);
-	CDebugPrint::Print("chestPos: %f %f %f\n", chestPos.X(), chestPos.Y(), chestPos.Z());
+	mpKey->SetWorldPos(chestPos);
+	/*CDebugPrint::Print("chestPos: %f %f %f\n", chestPos.X(), chestPos.Y(), chestPos.Z());*/
 }
 
 // プレイヤー追跡

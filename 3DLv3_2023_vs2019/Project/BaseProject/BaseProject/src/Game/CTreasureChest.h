@@ -6,7 +6,7 @@
 #include "CColliderMesh.h"
 
 class CModel;
-class CTreasureChestUI;
+class COperationUI;
 
 // 宝箱
 class CTreasureChest : public CObjectBase
@@ -65,7 +65,7 @@ private:
 	CColliderSphere* mpChestSphere;
 	CColliderMesh* mpChestTwoCol;
 
-	CTreasureChestUI* mpTUI;
+	COperationUI* mpKey;
 
 
 	// ベクトル関連

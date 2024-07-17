@@ -544,6 +544,13 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(beamerLow1);
+	CCircleLine* cline4 = new CCircleLine
+	(
+		CVector(-55.0f, 7.75f, 254.0f),
+		CVector(24.0f, 8.0f, 24.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline4);
 
 	// リングビーマ2
 	CRingBeamerUpper* beamerUp2 = new CRingBeamerUpper
@@ -561,6 +568,13 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(beamerLow2);
+	CCircleLine* cline5 = new CCircleLine
+	(
+		CVector(-210.0f, 7.75f, 390.0f),
+		CVector(24.0f, 8.0f, 24.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline5);
 
 	// リングビーマ3
 	CRingBeamerUpper* beamerUp3 = new CRingBeamerUpper
@@ -578,6 +592,13 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(beamerLow3);
+	CCircleLine* cline6 = new CCircleLine
+	(
+		CVector(-210.0f, 7.75f, 570.0f),
+		CVector(24.0f, 8.0f, 24.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline6);
 
 	// リングビーマ4
 	CRingBeamerUpper* beamerUp4 = new CRingBeamerUpper
@@ -595,6 +616,13 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(beamerLow4);
+	CCircleLine* cline7 = new CCircleLine
+	(
+		CVector(-312.0f, 7.75f, 1180.0f),
+		CVector(24.0f, 8.0f, 24.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline7);
 
 	// リングビーマ5
 	CRingBeamerUpper* beamerUp5 = new CRingBeamerUpper
@@ -612,6 +640,13 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(beamerLow5);
+	CCircleLine* cline8 = new CCircleLine
+	(
+		CVector(-312.0f, 7.5f, 1400.0f),
+		CVector(24.0f, 8.0f, 24.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline8);
 
 	// リングビーマ6
 	CRingBeamerUpper* beamerUp6 = new CRingBeamerUpper
@@ -629,6 +664,13 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(beamerLow6);
+	CCircleLine* cline9 = new CCircleLine
+	(
+		CVector(312.0f, 7.75f, 1400.0f),
+		CVector(24.0f, 8.0f, 24.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline9);
 
 	// リングビーマ7
 	CRingBeamerUpper* beamerUp7 = new CRingBeamerUpper
@@ -646,6 +688,13 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(beamerLow7);
+	CCircleLine* cline10 = new CCircleLine
+	(
+		CVector(312.0f, 7.75f, 1180.0f),
+		CVector(24.0f, 8.0f, 24.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline10);
 
 	// 横状の電流1
 	CElectricLaser* laser1 = new CElectricLaser
@@ -856,7 +905,7 @@ void CStage2::Load()
 	// 中間ポイント2 : 0.0f, 56.0f, 994.0f
 	// 肉1の場所 : -483.0f, 10.0f, 483.0f
 	// ゴールポイント : 0.0f, 0.0f, 1540.0f
-	CVector playerPos = CVector(0.0f, 56.0f, 994.0f);
+	CVector playerPos = CVector(0.0f, 20.0f, 50.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

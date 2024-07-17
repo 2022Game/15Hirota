@@ -4,6 +4,7 @@
 #include "CTask.h"
 
 class CText;
+class CFont;
 
 class CScore : public CTask
 {
@@ -31,6 +32,8 @@ private:
 
 	// スコアのテキスト
 	CText* mpScoreText;
+	// フォントテキスト
+	CFont* mpLogoFont;
 
 	// スコア
 	int mScore;

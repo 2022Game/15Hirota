@@ -6,7 +6,7 @@
 #include "CTaskManager.h"
 #include "CStageManager.h"
 #include "CPlayer.h"
-#include "CButton1UI.h"
+#include "COperationUI.h"
 #include "CStageManager.h"
 
 // ステージ1選択ボタンのインスタンス
@@ -31,8 +31,7 @@ CStage2Button::CStage2Button(const CVector& pos, const CVector& scale, const CVe
 	spInstance = this;
 
 	// ENTERキーの画像表示
-	mpEnter = new CButton1UI();
-	mpEnter->SetCenterRatio(CVector2(0.5f, 0.0f));
+	mpEnter = new COperationUI("EnterUI");
 	mpEnter->SetShow(false);
 
 	// ステージ選択モデルを取得
@@ -130,7 +129,7 @@ void CStage2Button::Update()
 	}
 
 	// Uキーテキスト画像を表示
-	CVector UkeyPos = Position() + CVector(0.0f, 40.0f, 5.0f);
+	CVector UkeyPos = Position() + CVector(0.0f, 35.0f, 0.0f);
 	mpEnter->SetWorldPos(UkeyPos);
 
 	mIsPlayerCollision = false;

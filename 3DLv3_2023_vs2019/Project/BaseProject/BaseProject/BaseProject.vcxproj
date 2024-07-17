@@ -99,7 +99,7 @@
     <ClCompile Include="src\Game\CJumpingKinokoHigh.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMove.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMoveTo.cpp" />
-    <ClCompile Include="src\Game\COperationInstructionsUI.cpp" />
+    <ClCompile Include="src\Game\COperationUI.cpp" />
     <ClCompile Include="src\Game\CPointLine.cpp" />
     <ClCompile Include="src\Game\CReflectionActionKinoko.cpp" />
     <ClCompile Include="src\Game\CReflectionKinoko.cpp" />
@@ -340,7 +340,7 @@
     <ClInclude Include="src\Game\CJumpingKinokoHigh.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMove.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMoveTo.h" />
-    <ClInclude Include="src\Game\COperationInstructionsUI.h" />
+    <ClInclude Include="src\Game\COperationUI.h" />
     <ClInclude Include="src\Game\CPointLine.h" />
     <ClInclude Include="src\Game\CReflectionActionKinoko.h" />
     <ClInclude Include="src\Game\CReflectionKinoko.h" />

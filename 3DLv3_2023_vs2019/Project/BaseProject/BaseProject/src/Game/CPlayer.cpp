@@ -42,7 +42,7 @@
 #include "CMeatUI.h"
 #include "CInsideCircleEffect.h"
 #include "COutsideCircleEffect.h"
-#include "CClimbUI.h"
+#include "COperationUI.h"
 
 // プレイヤー関連
 // 高さ
@@ -254,8 +254,8 @@ CPlayer::CPlayer()
 	mpStaminaGauge->SetShow(true);
 
 	// Tキーの画像表示
-	mpClimbUI = new CClimbUI();
-	mpClimbUI->SetCenterRatio(CVector2(0.5f, 0.5f));
+	mpClimbUI = new COperationUI("EUI");
+	mpClimbUI->SetSize(100.0f, 100.0f);
 	mpClimbUI->SetShow(false);
 
 	// テーブル内のアニメーションデータを読み込み
@@ -727,7 +727,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			{
 				if (CInput::PushKey('E'))
 				{
-					mpClimbUI->SetShow(false);
 					// Climb状態に移行する
 					ChangeState(EState::eClimb);
 					// 今から登る壁を記憶しておく
@@ -751,14 +750,11 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// 金属梯子のコライダー
 		if (other->Layer() == ELayer::eMetalLadder)
 		{
-			mpClimbUI->SetShow(true);
-
 			mClimbWall = true;
 			if (mState == EState::eIdle && mIsGrounded)
 			{
 				if (CInput::PushKey('E'))
 				{
-					mpClimbUI->SetShow(false);
 					CVector mSpd = mMoveSpeed;
 					mSpd = CVector(0.0f, 0.5f, 0.0f);
 					Position(Position() + mSpd);
@@ -786,14 +782,11 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// 登れる金網のコライダー
 		if (other->Layer() == ELayer::eWireClimb)
 		{
-			mpClimbUI->SetShow(true);
-
 			mClimbWall = true;
 			if (mState == EState::eIdle && mIsGrounded)
 			{
 				if (CInput::PushKey('E'))
 				{
-					mpClimbUI->SetShow(false);
 					// Climib状態に移行する
 					ChangeState(EState::eWireClimb);
 					// 今から登る壁を記憶しておく
@@ -3021,6 +3014,11 @@ void CPlayer::UpdateJumpingStart()
 // 跳ねる処理
 void CPlayer::UpdateJumping()
 {
+	if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
+	{
+		mCharaStatus.stamina += 1;
+	}
+
 	if (mMoveSpeedY <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
@@ -3034,6 +3032,11 @@ void CPlayer::UpdateJumping()
 void CPlayer::UpdateJumpingEnd()
 {
 	mMoveSpeed = CVector::zero;
+
+	if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
+	{
+		mCharaStatus.stamina += 1;
+	}
 
 	if (IsAnimationFinished() && mIsGrounded)
 	{
@@ -3058,6 +3061,11 @@ void CPlayer::UpdateHighJumpingStart()
 // 跳び跳ねる
 void CPlayer::UpdateHighJumping()
 {
+	if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
+	{
+		mCharaStatus.stamina += 1;
+	}
+
 	if (mMoveSpeedY <= 0.0f)
 	{
 		ChangeAnimation(EAnimType::eJumpEnd);
@@ -3071,6 +3079,11 @@ void CPlayer::UpdateHighJumping()
 void CPlayer::UpdateHighJumpingEnd()
 {
 	mMoveSpeed = CVector::zero;
+
+	if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
+	{
+		mCharaStatus.stamina += 1;
+	}
 
 	if (IsAnimationFinished() && mIsGrounded)
 	{
@@ -3094,6 +3107,11 @@ void CPlayer::UpdateTargetPositionStart()
 // 目的位置までジャンプ
 void CPlayer::UpdateTargetPosition()
 {
+	if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
+	{
+		mCharaStatus.stamina += 1;
+	}
+
 	if (IsAnimationFinished())
 	{
 		ChangeAnimation(EAnimType::eDashJumpLoop);
@@ -3151,6 +3169,11 @@ void CPlayer::UpdateTargetPosition()
 void CPlayer::UpdateTargetPositionEnd()
 {
 	mMoveSpeed = CVector::zero;
+
+	if (mCharaStatus.stamina < mCharaMaxStatus.stamina)
+	{
+		mCharaStatus.stamina += 1;
+	}
 
 	if (IsAnimationFinished() && mIsGrounded)
 	{
@@ -3916,15 +3939,15 @@ void CPlayer::Update()
 
 	if (mClimbWall && !mClimb && mIsGrounded)
 	{
+		// Eキーテキスト画像を表示
+		CVector EkeyPos = Position() + CVector(20.0f, 20.0f, 0.0f);
+		mpClimbUI->SetWorldPos(EkeyPos);
 		mpClimbUI->SetShow(true);
 	}
 	else
 	{
 		mpClimbUI->SetShow(false);
 	}
-	// Eキーテキスト画像を表示
-	CVector EkeyPos = Position() + CVector(0.0f, 20.0f, 0.0f);
-	mpClimbUI->SetWorldPos(EkeyPos);
 
 	// キャラクターの更新
 	CXCharacter::Update();
