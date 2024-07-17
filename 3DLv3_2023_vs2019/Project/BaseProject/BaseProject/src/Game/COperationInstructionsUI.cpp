@@ -61,7 +61,6 @@ COperationInstructionsUI::COperationInstructionsUI(std::string path)
 		ETaskPauseType::eGame,
 		false, false
 	);
-	CVector2 size(150.0f, 150.0f);
 	mpEnterUI->SetSize(size);
 	mpEnterUI->SetCenter(size * 0.5f);
 
