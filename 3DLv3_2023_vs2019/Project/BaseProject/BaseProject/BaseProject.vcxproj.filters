@@ -284,6 +284,9 @@
     <Filter Include="ソース ファイル\Game\UI\Ending">
       <UniqueIdentifier>{3432f6ea-78c5-4dd9-814e-2a38d389d1af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Operation Instructions">
+      <UniqueIdentifier>{13ccc36a-6270-4cbc-a919-604d28d71d9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -969,6 +972,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CStuffedRollScene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\COperationInstructionsUI.cpp">
+      <Filter>ソース ファイル\Game\UI\Operation Instructions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1679,6 +1685,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CStuffedRollScene.h">
       <Filter>ソース ファイル\Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\COperationInstructionsUI.h">
+      <Filter>ソース ファイル\Game\UI\Operation Instructions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

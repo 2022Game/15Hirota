@@ -2,7 +2,6 @@
 #include "Maths.h"
 #include "CImage.h"
 #include "CCamera.h"
-#include "CSignboard.h"
 #include "CPlayer.h"
 
 CTreasureChestUI::CTreasureChestUI()

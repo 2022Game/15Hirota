@@ -181,7 +181,7 @@ void CTreasureChestTwo::Update()
 	}
 
 	CVector object = Position();
-	CVector chestPos = object + CVector(0.0f, 25.0f, 0.0f);
+	CVector chestPos = object + CVector(0.0f, 25.0f, 0.0f) + VectorX() * 3.0f;
 	mpTUI->SetWorldPos(chestPos);
 	CDebugPrint::Print("chestPos: %f %f %f\n", chestPos.X(), chestPos.Y(), chestPos.Z());
 }
