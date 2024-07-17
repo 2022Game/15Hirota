@@ -39,8 +39,8 @@ COperationInstructionsUI::COperationInstructionsUI(std::string path)
 	//	mUIimages.push_back(ui);
 	//}
 
-	// バックグラウンド画像
-	mpUI = new CImage
+	// T画像
+	mpTUI = new CImage
 	(
 		"TUI",
 		ETaskPriority::eUI,
@@ -49,8 +49,21 @@ COperationInstructionsUI::COperationInstructionsUI(std::string path)
 		false, false
 	);
 	CVector2 size(150.0f, 150.0f);
-	mpUI->SetSize(size);
-	mpUI->SetCenter(size * 0.5f);
+	mpTUI->SetSize(size);
+	mpTUI->SetCenter(size * 0.5f);
+
+	// T画像
+	mpEnterUI = new CImage
+	(
+		"EnterUI",
+		ETaskPriority::eUI,
+		0,
+		ETaskPauseType::eGame,
+		false, false
+	);
+	CVector2 size(150.0f, 150.0f);
+	mpEnterUI->SetSize(size);
+	mpEnterUI->SetCenter(size * 0.5f);
 
 	// バックグラウンド画像
 	mpBG = new CImage
@@ -69,7 +82,8 @@ COperationInstructionsUI::COperationInstructionsUI(std::string path)
 COperationInstructionsUI::~COperationInstructionsUI()
 {
 	SAFE_DELETE(mpBG);
-	SAFE_DELETE(mpUI);
+	SAFE_DELETE(mpEnterUI);
+	SAFE_DELETE(mpTUI);
 	/*CStageManager::RemoveTask(this);
 	int size = mUIimages.size();
 	for (int i = 0; i < size; i++)
@@ -130,15 +144,18 @@ void COperationInstructionsUI::Update()
 
 	mpBG->SetPos(pos);
 	mpBG->SetShow(IsShow());
-	mpUI->SetPos(pos);
-	mpUI->SetShow(IsShow());
+	mpTUI->SetPos(pos);
+	mpTUI->SetShow(IsShow());
+	mpEnterUI->SetPos(pos);
+	mpEnterUI->SetShow(IsShow());
 }
 
 // 描画処理
 void COperationInstructionsUI::Render()
 {
 	mpBG->Render();
-	mpUI->Render();
+	mpTUI->Render();
+	mpEnterUI->Render();
 
 	/*int size = ARRAY_SIZE(UI_DATA);
 	for (int i = 0; i < size; i++)

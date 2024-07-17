@@ -34,8 +34,10 @@ private:
 	std::string mPath;
 	//// UI‰æ‘œ
 	//std::vector<CImage*> mUIimages;
-	// UI‰æ‘œ
-	CImage* mpUI;
+	// TUI‰æ‘œ
+	CImage* mpTUI;
+	// ENTERUI‰æ‘œ
+	CImage* mpEnterUI;
 	// ƒoƒbƒN‰æ‘œ
 	CImage* mpBG;
 	struct UIData
