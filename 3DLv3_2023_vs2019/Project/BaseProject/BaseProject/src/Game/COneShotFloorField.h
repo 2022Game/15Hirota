@@ -14,9 +14,10 @@ public:
 
 	  // 壁のコライダー取得
 	 // CColliderMesh* GetWallCol() const;
-
-	  void Update();
-	  void Render();
+	// 更新処理
+	void Update() override; 
+	// 描画処理
+	void Render() override;
 
 private:
 

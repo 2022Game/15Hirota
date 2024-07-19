@@ -3,9 +3,12 @@
 #include "CInput.h"
 #include "CImage.h"
 #include "CImage.h"
+
 class CSound;
 class CTitleMenu;
 class CTitleUI;
+class CTitleStage;
+class CStageSky;
 
 //タイトルシーン
 class CTitleScene :public CSceneBase
@@ -24,4 +27,6 @@ private:
 	/*CImage* mTitle;
 	CTitleMenu* mpTitleMenu;*/
 	CTitleUI* mpTitleUI;
+	CTitleStage* mpTitleStage;
+	CStageSky* mpStageSky;
 };

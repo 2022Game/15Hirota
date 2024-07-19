@@ -126,14 +126,14 @@ void CGameScene::Load()
 	//// フィールド
 	//CStageSelection* field = new CStageSelection();
 
-	// モンスター(プレイヤー)
+	//モンスター(プレイヤー)
 	CPlayer* player = new CPlayer();
 
-	new CGameCamera
+	/*new CGameCamera
 	(
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(0.0f, 0.0f, 0.0f)
-	);
+	);*/
 
 	//CCamera* mainCamera = new CCamera
 	//(
@@ -156,29 +156,13 @@ void CGameScene::Load()
 	// リザルト
 	mpResultUI = new CResultAnnouncement();
 	AddTask(mpResultUI);
-	
+
 	CGameManager::GameStart();
 }
 
 //シーンの更新処理
 void CGameScene::Update()
 {
-	// ゲーム画面はカーソル非表示
-	CInput::ShowCursor(false);
-	if (CInput::PushKey('H'))
-	{
-		CSceneManager::Instance()->LoadScene(EScene::eTitle);
-	}
-
-	// ゲームメニューを開いてなければ、[Ｍ]キーでメニューを開く
-	if (!mpGameMenu->IsOpened())
-	{
-		if (CInput::PushKey('M'))
-		{
-			mpGameMenu->Open();
-		}
-	}
-
 	// ゲームのステータスがeResultだったら
 	// リザルト表示
 	// (他にやり方があるかも)

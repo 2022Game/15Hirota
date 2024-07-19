@@ -187,6 +187,8 @@
     <ClCompile Include="src\Game\CStuffedRoll.cpp" />
     <ClCompile Include="src\Game\CStuffedRollScene.cpp" />
     <ClCompile Include="src\Game\CTitleMenu.cpp" />
+    <ClCompile Include="src\Game\CTitlePlayer.cpp" />
+    <ClCompile Include="src\Game\CTitleStage.cpp" />
     <ClCompile Include="src\Game\CTitleUI.cpp" />
     <ClCompile Include="src\Game\CTreasureChest.cpp" />
     <ClCompile Include="src\Game\CTreasureChestUI.cpp" />
@@ -426,6 +428,8 @@
     <ClInclude Include="src\Game\CStuffedRoll.h" />
     <ClInclude Include="src\Game\CStuffedRollScene.h" />
     <ClInclude Include="src\Game\CTitleMenu.h" />
+    <ClInclude Include="src\Game\CTitlePlayer.h" />
+    <ClInclude Include="src\Game\CTitleStage.h" />
     <ClInclude Include="src\Game\CTitleUI.h" />
     <ClInclude Include="src\Game\CTreasureChest.h" />
     <ClInclude Include="src\Game\CTreasureChestUI.h" />

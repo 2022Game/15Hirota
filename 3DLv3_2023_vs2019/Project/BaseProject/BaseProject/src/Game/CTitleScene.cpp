@@ -8,6 +8,11 @@
 #include "CSound.h"
 #include "CBGMManager.h"
 #include "CTitleUI.h"
+#include "CTitleStage.h"
+#include "CStageSky.h"
+#include "CTitlePlayer.h"
+#include "CStageManager.h"
+#include "CGameCamera.h"
 
 #define TITLE_IMAGE "UI\\Title.png"
 
@@ -22,12 +27,22 @@ CTitleScene::CTitleScene()
 //デストラクタ
 CTitleScene::~CTitleScene()
 {
-	//mpTitleMenu->Kill();
+	//CStageManager::UnloadStage();
 }
 
 //シーン読み込み
 void CTitleScene::Load()
 {
+	// プレイヤー
+	CResourceManager::Load<CModelX>("Player", "Character\\Monster1\\Monster_1.x");
+
+	// ステージモデル
+	CResourceManager::Load<CModel>("TitleStage", "Field\\TitleStage\\TitleStage.obj");
+	// 床コライダー
+	CResourceManager::Load<CModel>("TitleCol","Field\\TitleStage\\FloorCol.obj");
+	// ステージの空
+	CResourceManager::Load<CModel>("StageSky", "Field\\StageSky\\Sky(Sphere).obj");
+
 	// タイトルメニューを作成
 	//mpTitleMenu = new CTitleMenu();
 	// タイトル画面はカーソル表示
@@ -35,14 +50,35 @@ void CTitleScene::Load()
 	// 背景色設定
 	System::SetClearColor(0.2f, 0.2f, 0.2f, 0.9f);
 
+	CTitleStage* stage = new CTitleStage();
+	stage->Scale(1.0f, 1.0f, 1.0f);
+	AddTask(stage);
+
+	mpStageSky = new CStageSky();
+	mpStageSky->Scale(150.0f, 150.0f, 150.0f);
+	AddTask(mpStageSky);
+
 	// タイトルBGMを再生
 	CBGMManager::Instance()->Play(EBGMType::eTitle);
 
-	CCamera* mainCamera = new CCamera
+	// モンスター(プレイヤー)
+	CTitlePlayer* player = new CTitlePlayer();
+	player->Position(CVector(100.0f, 48.0f, -210.0f));
+	player->Scale(0.8f, 0.8f, 0.8f);
+	player->Rotation(0.0f, 10.0f, 0.0f);
+	AddTask(player);
+
+	new CGameCamera
 	(
-		CVector(0.0f, 50.0f, 75.0f),
-		CVector::zero
+		CVector(122.0f, 71.0f, -274.0f),
+		CVector(0.0f, 0.0f, 0.0f)
 	);
+
+	/*CCamera* mainCamera = new CCamera
+	(
+		CVector(122.0f, 71.0f, -274.0f),
+		CVector::zero
+	);*/
 
 	mpTitleUI = new CTitleUI();
 	AddTask(mpTitleUI);

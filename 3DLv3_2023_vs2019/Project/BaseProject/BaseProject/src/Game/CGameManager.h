@@ -9,8 +9,9 @@ class CResultAnnouncement;
 //	ゲームの状態
 enum class EGameState
 {
-	eRaady,			// 準備中
+	eReady,			// 準備中
 	eReset,			// リセット
+	eTitle,			// タイトル中
 	eGame,			// ゲーム実行中
 	eRestart,		// ゲーム再開
 	eStageClear,	// ステージクリア
@@ -28,6 +29,8 @@ enum class EGameState
 class CGameManager : public CTask
 {
 public:
+	//// タイトル開始
+	//static void TitleStart();
 	// ゲーム開始
 	static void GameStart();
 	// ゲーム再開
@@ -78,6 +81,8 @@ private:
 
 	// 準備状態の更新処理
 	void UpdateReady();
+	//// タイトル更新処理
+	//void UpdateTitle();
 	// ゲーム中の更新処理
 	void UpdateGame();
 	// ゲーム再開更新処理

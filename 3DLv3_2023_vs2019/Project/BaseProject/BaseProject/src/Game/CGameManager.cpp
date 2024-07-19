@@ -19,7 +19,7 @@ CGameManager* CGameManager::spInstance = nullptr;
 // コンストラクタ
 CGameManager::CGameManager()
 	: mStageNo(0)
-	, mState(EGameState::eRaady)
+	, mState(EGameState::eReady)
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
 	, mElapsedStageTime(0.0f)
@@ -48,12 +48,23 @@ void CGameManager::Reset()
 {
 	Instance()->ChangeState(EGameState::eReset);
 }
+//
+//// タイトル開始
+//void CGameManager::TitleStart()
+//{
+//	//// 準備状態でなければ、ゲーム開始はしない
+//	if (GameState() != EGameState::eReady) return;
+//	
+//	// タイトル開始
+//	Instance()->ChangeState(EGameState::eTitle);
+//}
 
 // ゲーム開始
 void CGameManager::GameStart()
 {
 	// 準備状態でなければ、ゲーム開始はしない
-	if (GameState() != EGameState::eRaady) return;
+	//if (GameState() != EGameState::eTitle) return;
+	if (GameState() != EGameState::eReady) return;
 
 	// 最初のステージを読み込み
 	CStageManager::LoadStage(Instance()->mStageNo);
@@ -141,50 +152,58 @@ void CGameManager::ChangeState(EGameState state)
 void CGameManager::UpdateReady()
 {
 }
+//
+//void CGameManager::UpdateTitle()
+//{
+//
+//}
 
 // ゲーム中の更新処理
 void CGameManager::UpdateGame()
 {
 	CPlayer* player = CPlayer::Instance();
 
-	if (player->IsStage1Clear() && !mResultSetUp)
+	if (player != nullptr)
 	{
-		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 1.5f)
+		if (player->IsStage1Clear() && !mResultSetUp)
 		{
-			mElapsedTime = 0.0f;
-			mResultSetUp = true;
-			ChangeState(EGameState::eResult);
+			mElapsedTime += Time::DeltaTime();
+			if (mElapsedTime > 1.5f)
+			{
+				mElapsedTime = 0.0f;
+				mResultSetUp = true;
+				ChangeState(EGameState::eResult);
+			}
 		}
-	}
-	else if (player->IsStage2Clear() && !mResultSetUp)
-	{
-		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 1.5f) 
+		else if (player->IsStage2Clear() && !mResultSetUp)
 		{
-			mElapsedTime = 0.0f;
-			mResultSetUp = true;
-			ChangeState(EGameState::eResult);
+			mElapsedTime += Time::DeltaTime();
+			if (mElapsedTime > 1.5f)
+			{
+				mElapsedTime = 0.0f;
+				mResultSetUp = true;
+				ChangeState(EGameState::eResult);
+			}
 		}
-	}
-	else if (player->IsStage3Clear() && !mResultSetUp)
-	{
-		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 1.5f)
+		else if (player->IsStage3Clear() && !mResultSetUp)
 		{
-			mElapsedTime = 0.0f;
-			mResultSetUp = true;
-			ChangeState(EGameState::eResult);
+			mElapsedTime += Time::DeltaTime();
+			if (mElapsedTime > 1.5f)
+			{
+				mElapsedTime = 0.0f;
+				mResultSetUp = true;
+				ChangeState(EGameState::eResult);
+			}
 		}
-	}
-	else if (player->IsDeath() && !mResultSetUp)
-	{
-		mElapsedTime += Time::DeltaTime();
-		if (mElapsedTime > 1.5f)
+		else if (player->IsDeath() && !mResultSetUp)
 		{
-			mElapsedTime = 0.0f;
-			mResultSetUp = true;
-			ChangeState(EGameState::eResult);
+			mElapsedTime += Time::DeltaTime();
+			if (mElapsedTime > 1.5f)
+			{
+				mElapsedTime = 0.0f;
+				mResultSetUp = true;
+				ChangeState(EGameState::eResult);
+			}
 		}
 	}
 	//CDebugPrint::Print("mEleapsedTime:%f\n", mElapsedTime);
@@ -352,13 +371,17 @@ void CGameManager::Update()
 	switch (mState)
 	{
 		// 準備中
-	case EGameState::eRaady:
+	case EGameState::eReady:
 		UpdateReady();
 		break;
 		// リセット
 	case EGameState::eReset:
 		UpdateReset();
 		break;
+	//	// タイトル中
+	//case EGameState::eTitle:
+	//	UpdateTitle();
+	//	break;
 		// ゲーム中
 	case EGameState::eGame:
 		UpdateGame();

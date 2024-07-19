@@ -686,8 +686,6 @@ private:
 
 	// ダメージを受けたかどうか
 	bool mDamaged;
-	// リザルトジャンプ中に煙を出すかどうか
-	bool mResultSmoke;
 
 
 	// ステージ1に入るかどうか

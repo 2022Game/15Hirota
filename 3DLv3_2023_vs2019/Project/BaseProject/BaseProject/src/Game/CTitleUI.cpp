@@ -45,20 +45,20 @@ CTitleUI::CTitleUI()
 		false,
 		false
 	);
-	mpTitleLogo->SetText("タイトルロゴ");
+	mpTitleLogo->SetText("デーモンアドベンチャー");
 	mpTitleLogo->SetEnableOutline(true);
 	mpTitleLogo->SetOutlineColor(CColor(0.9f, 0.9f, 0.9f));
 
-	// タイトル画面の背景イメージを生成
-	mpTitleBg = new CImage
-	(
-		"UI/TitleUI/title_bg.png",
-		ETaskPriority::eUI,
-		0,
-		ETaskPauseType::eDefault,
-		false,
-		false
-	);
+	//// タイトル画面の背景イメージを生成
+	//mpTitleBg = new CImage
+	//(
+	//	"UI/TitleUI/title_bg.png",
+	//	ETaskPriority::eUI,
+	//	0,
+	//	ETaskPauseType::eDefault,
+	//	false,
+	//	false
+	//);
 
 	// 「CLICK TO START」のテキストを生成
 	mpStartText = new CText
@@ -134,7 +134,7 @@ CTitleUI::~CTitleUI()
 	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpLogoFont);
 	SAFE_DELETE(mpTitleLogo);
-	SAFE_DELETE(mpTitleBg);
+	//SAFE_DELETE(mpTitleBg);
 	SAFE_DELETE(mpStartText);
 
 	int size = mButtons.size();
@@ -331,7 +331,7 @@ void CTitleUI::Update()
 	}
 
 	mpTitleLogo->Update();
-	mpTitleBg->Update();
+	//mpTitleBg->Update();
 	mpStartText->Update();
 	for (CButton* btn : mButtons)
 	{
@@ -346,7 +346,7 @@ void CTitleUI::Render()
 	// 背景→タイトルロゴ→「CLICK TO START」かメニューボタン
 
 	// 背景描画
-	mpTitleBg->Render();
+	//mpTitleBg->Render();
 	// タイトルロゴ描画
 	mpTitleLogo->Render();
 

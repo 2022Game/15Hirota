@@ -283,6 +283,7 @@ void CStage2::Load()
 	line9->AddPoint(CVector(-41.0f, 0.0f, 309.0f), 3.0f, 3.0f);
 	line9->SetTexture("Laser");
 	line9->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+	AddTask(line9);
 
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight2 = new CJumpingKinokoLeftRight
@@ -300,6 +301,7 @@ void CStage2::Load()
 	line8->AddPoint(CVector(-160.0f, 0.0f, 430.0f), 3.0f, 3.0f);
 	line8->SetTexture("Laser");
 	line8->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+	AddTask(line8);
 
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight3 = new CJumpingKinokoLeftRight
@@ -317,6 +319,7 @@ void CStage2::Load()
 	line7->AddPoint(CVector(-409.0f, 0.0f, 480.0f), 3.0f, 3.0f);
 	line7->SetTexture("Laser");
 	line7->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+	AddTask(line7);
 
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight4 = new CJumpingKinokoLeftRight
@@ -334,6 +337,7 @@ void CStage2::Load()
 	line6->AddPoint(CVector(108.0f, 0.0f, 632.0f), 3.0f, 3.0f);
 	line6->SetTexture("Laser");
 	line6->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+	AddTask(line6);
 
 	// 動くキノコ(左右)
 	CJumpingKinokoLeftRight* jumpkinokoLeftRight5 = new CJumpingKinokoLeftRight
@@ -351,6 +355,7 @@ void CStage2::Load()
 	line5->AddPoint(CVector(-108.0f, 0.0f, 632.0f), 3.0f, 3.0f);
 	line5->SetTexture("Laser");
 	line5->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+	AddTask(line5);
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -370,6 +375,7 @@ void CStage2::Load()
 	line10->AddPoint(CVector(0.0f, 45.0f, 364.0f), 3.0f, 3.0f);
 	line10->SetTexture("Laser");
 	line10->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+	AddTask(line10);
 
 	// 動くキノコ(上下)
 	CJumpingKinokoUpDown* jumpkinokoUpDown2 = new CJumpingKinokoUpDown
@@ -387,6 +393,7 @@ void CStage2::Load()
 	line3->AddPoint(CVector(155.0f, 8.0f, 1175.0f), 3.0f, 3.0f);
 	line3->SetTexture("Laser");
 	line3->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+	AddTask(line3);
 	// 動くキノコ(上下)
 	CJumpingKinokoUpDown* jumpkinokoUpDown3 = new CJumpingKinokoUpDown
 	(
@@ -403,6 +410,7 @@ void CStage2::Load()
 	line4->AddPoint(CVector(-155.0f, 8.0f, 1175.0f), 3.0f, 3.0f);
 	line4->SetTexture("Laser");
 	line4->SetColor(CColor(1.0f, 0.0f, 0.0f, 1.0f));
+	AddTask(line4);
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////////////////

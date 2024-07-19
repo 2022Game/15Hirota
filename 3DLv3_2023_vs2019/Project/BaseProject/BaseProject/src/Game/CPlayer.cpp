@@ -196,7 +196,6 @@ CPlayer::CPlayer()
 	, mFallDamage(false)
 	, mSavePoint1(false)
 	, mSavePoint2(false)
-	, mResultSmoke(false)
 	, mStage1Clear(false)
 	, mStage2Clear(false)
 	, mStage3Clear(false)
@@ -1849,8 +1848,6 @@ void CPlayer::UpdateClear()
 	mMoveSpeed = CVector::zero;
 	mElapsedTime = 0.0f;
 
-	mResultSmoke = true;
-
 	ItemDeletion();
 
 	mpSword->AttackEnd();
@@ -2033,7 +2030,7 @@ void CPlayer::UpdateResultJumpEnd()
 {
 	if (mIsGrounded)
 	{
-		mResultSmoke = false;
+		mMoveDistance = 0.0f;
 		ChangeState(EState::eIdle);
 	}
 }
@@ -3453,8 +3450,6 @@ bool CPlayer::IsEnableStepSmoke() const
 	if (mDash) return true;
 	// ステージ選択画面の移動中は煙エフェクトを出す
 	if (mState == EState::eMoveTo && mStateStep < 2) return true;
-	// リザルトジャンプ中は煙を出さない
-	if (mResultSmoke) return false;
 	return false;
 }
 

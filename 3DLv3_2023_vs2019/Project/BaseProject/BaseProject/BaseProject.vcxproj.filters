@@ -287,6 +287,9 @@
     <Filter Include="ソース ファイル\Game\UI\Operation Instructions">
       <UniqueIdentifier>{13ccc36a-6270-4cbc-a919-604d28d71d9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\StageField\Title Stage">
+      <UniqueIdentifier>{fe26ba35-e2ae-42aa-8aa6-2f62e348779c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -348,9 +351,6 @@
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CFont.cpp">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CApplication.cpp">
-      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CEnemy.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
@@ -976,6 +976,15 @@
     <ClCompile Include="src\Game\COperationUI.cpp">
       <Filter>ソース ファイル\Game\UI\Operation Instructions</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CTitleStage.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\Title Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTitlePlayer.cpp">
+      <Filter>ソース ファイル\Game\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CApplication.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1040,9 +1049,6 @@
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CFont.h">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CApplication.h">
-      <Filter>ソース ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CEnemy.h">
       <Filter>ソース ファイル\Game\Character</Filter>
@@ -1389,9 +1395,6 @@
     <ClInclude Include="src\BaseSystem\CUIManager.h">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CTitleUI.h">
-      <Filter>ソース ファイル\Game\UI\TitleUI</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CAttackObjectBase.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\Base</Filter>
     </ClInclude>
@@ -1688,6 +1691,18 @@
     </ClInclude>
     <ClInclude Include="src\Game\COperationUI.h">
       <Filter>ソース ファイル\Game\UI\Operation Instructions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTitleStage.h">
+      <Filter>ソース ファイル\Game\Field\StageField\Title Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTitlePlayer.h">
+      <Filter>ソース ファイル\Game\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CApplication.h">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTitleUI.h">
+      <Filter>ソース ファイル\Game\UI\TitleUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
