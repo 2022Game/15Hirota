@@ -63,7 +63,7 @@ void CTitleScene::Load()
 
 	// モンスター(プレイヤー)
 	CTitlePlayer* player = new CTitlePlayer();
-	player->Position(CVector(100.0f, 48.0f, -210.0f));
+	player->Position(CVector(106.0f, 48.0f, -231.0f));
 	player->Scale(0.8f, 0.8f, 0.8f);
 	player->Rotation(0.0f, 10.0f, 0.0f);
 	AddTask(player);

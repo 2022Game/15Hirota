@@ -134,15 +134,6 @@ void CTitlePlayer::UpdateReady()
 		// 次のステップへ
 		mStateStep++;
 		break;
-	case 1:
-		if (CGameManager::GameState() == EGameState::eTitle)
-		{
-			// プレイヤーの衝突判定をオンにする
-			SetEnableCol(true);
-			// 現在の状態を待機に切り替え
-			mCharaStatus.hp = mCharaMaxStatus.hp;
-			ChangeState(EState::eIdle);
-		}
 	}
 }
 
@@ -199,11 +190,6 @@ void CTitlePlayer::Update()
 
 		// 移動
 		Position(Position() + moveSpeed * 60.0f * Time::DeltaTime());
-	}
-
-	if (CGameManager::GameState() == EGameState::eGame)
-	{
-		Kill();
 	}
 
 	// キャラクターの更新
