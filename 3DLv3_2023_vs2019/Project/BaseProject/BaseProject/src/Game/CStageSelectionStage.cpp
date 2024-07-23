@@ -68,7 +68,6 @@ CStageSelectionStage::CStageSelectionStage()
 // デストラクタ
 CStageSelectionStage::~CStageSelectionStage()
 {
-
 }
 
 // プレイヤーんポジション設定

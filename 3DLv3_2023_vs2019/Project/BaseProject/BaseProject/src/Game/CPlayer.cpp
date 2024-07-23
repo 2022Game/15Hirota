@@ -1902,6 +1902,7 @@ void CPlayer::UpdateClearEnd()
 					Position(mStartPos);
 					mpColliderCapsule->SetEnable(true);
 				}
+				// ステージ2クリア
 				else if (CGameManager::StageNo() == 2)
 				{
 					mSavePoint1 = false;
@@ -1951,12 +1952,14 @@ void CPlayer::UpdateClearEnd()
 					}
 
 					// ステージをクリア
-					CGameManager::StageClear();
+					CGameManager::GameClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
-					ChangeState(EState::eReady);
+					//ChangeState(EState::eReady);
+					mIsStartStage2 = false;
+					mIsStartStage3 = false;
 					// 消さないように
 					// 消したら不具合
-					Position(mStartPos);
+					//Position(mStartPos);
 					mpColliderCapsule->SetEnable(true);
 				}
 			}
@@ -3481,6 +3484,8 @@ void CPlayer::CheckUnderFootObject()
 // 更新
 void CPlayer::Update()
 {
+	CDebugPrint::Print("mIStartStage2:%s\n", mIsStartStage2 ? "true" : "false");
+	CDebugPrint::Print("mIStartStage3:%s\n", mIsStartStage3 ? "true" : "false");
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;

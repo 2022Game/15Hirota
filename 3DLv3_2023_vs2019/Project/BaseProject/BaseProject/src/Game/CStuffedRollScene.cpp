@@ -7,16 +7,19 @@
 #include "CSound.h"
 #include "CBGMManager.h"
 #include "CStuffedRoll.h"
+#include "CStageManager.h"
 
 //コンストラクタ
 CStuffedRollScene::CStuffedRollScene()
 	: CSceneBase(EScene::eStuffedRoll)
 {
+
 }
 
 //デストラクタ
 CStuffedRollScene::~CStuffedRollScene()
 {
+	//CStageManager::UnloadStage();
 }
 
 //シーン読み込み

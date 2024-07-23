@@ -185,7 +185,7 @@ void CGameManager::UpdateGame()
 				ChangeState(EGameState::eResult);
 			}
 		}
-		else if (player->IsStage3Clear() && !mResultSetUp)
+		/*else if (player->IsStage3Clear() && !mResultSetUp)
 		{
 			mElapsedTime += Time::DeltaTime();
 			if (mElapsedTime > 1.5f)
@@ -194,7 +194,7 @@ void CGameManager::UpdateGame()
 				mResultSetUp = true;
 				ChangeState(EGameState::eResult);
 			}
-		}
+		}*/
 		else if (player->IsDeath() && !mResultSetUp)
 		{
 			mElapsedTime += Time::DeltaTime();
@@ -324,7 +324,7 @@ void CGameManager::UpdateStageOver()
 // ゲームクリア時の更新処理
 void CGameManager::UpdateGameClear()
 {
-
+	CSceneManager::Instance()->LoadScene(EScene::eStuffedRoll);
 }
 
 // ゲームオーバー時の更新処理
