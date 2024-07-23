@@ -30,6 +30,8 @@
 #include "CReflectionLeftRightKinoko.h"
 #include "CLineEffect.h"
 #include "CCircleLine.h"
+#include "CSpring.h"
+#include "CInput.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -78,6 +80,12 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("ReflectionKinokoCol",	"Field\\Gimmick\\Reflection\\ReflectionKinoko(Col).obj");
 	// 反射キノコモデル
 	CResourceManager::Load<CModel>("ReflectionKinokoTopCol","Field\\Gimmick\\Reflection\\ReflectionKinoko(TopCol).obj");
+	// バネモデル(上とバネ)
+	CResourceManager::Load<CModel>("Spring",				"Field\\Gimmick\\Jump\\Spring.obj");
+	// バネモデル(下)
+	CResourceManager::Load<CModel>("SpringLower",			"Field\\Gimmick\\Jump\\SpringLower.obj");
+	// バネコライダーモデル
+	CResourceManager::Load<CModel>("SpringCol",				"Field\\Gimmick\\Jump\\SpringCol.obj");
 	// リングビーマモデル(上)								  
 	CResourceManager::Load<CModel>("RingBeamerUP",			"Effect\\BeamObj(Upper).obj");
 	// リングビーマモデル(下)								  
@@ -141,6 +149,8 @@ void CStage2::Load()
 	CResourceManager::Load<CTexture>("TUI", "UI\\GimmickUI\\T.png");
 
 	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
+
+	CInput::ShowCursor(false);
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -265,6 +275,23 @@ void CStage2::Load()
 
 		AddTask(jumpkinoko); // タスクに追加
 	}
+
+	// バネ(上とバネ)
+	CSpring* spring = new CSpring
+	(
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(spring);
+	// バネ(下)
+	CSpringLower* springlower = new CSpringLower
+	(
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(springlower);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	// 動くキノコ(左右)

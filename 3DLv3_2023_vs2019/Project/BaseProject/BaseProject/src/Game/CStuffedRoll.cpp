@@ -7,22 +7,23 @@
 #include "CPlayer.h"
 #include "CStageManager.h"
 #include "CInput.h"
+#include "CSceneManager.h"
 
 const CStuffedRoll::StafData CStuffedRoll::STAFF_DATA[] =
 {
 	// テキスト名									// 開始時間		// X座標	R		G		B
 	{"Game Title\n \nDemon Adventure",				3.0f,			450.0f,		1.0f,	0.0f,	0.0f},
-	{"Producer\n \nTanaka Taro",					8.0f,			450.0f,		0.0f,	1.0f,	0.0f},
-	{"Director\n \nTanaka Taro",					12.0f,			450.0f,		0.0f,	0.0f,	1.0f},
-	{"Designer\n \nTanaka Taro",					16.0f,			450.0f,		1.0f,	1.0f,	0.0f},
-	{"Programmer\n \nTanaka Taro",					20.0f,			750.0f,		1.0f,	0.0f,	1.0f},
-	{"Creator\n \nTanaka Taro",						24.0f,			750.0f,		1.0f,	1.0f,	1.0f},
-	{"Debugger\n \nTanaka Taro",					28.0f,			450.0f,		0.0f,	1.0f,	1.0f},
-	{"Homeroom Teacher\n \nABCDEFG\n \nHIJKLMN",	32.0f,			450.0f,		1.0f,	0.0f,	0.0f},
-	{"スタッフ4",									38.0f,			450.0f,		1.0f,	0.0f,	0.0f},
-	{"スタッフ5",									42.0f,			450.0f,		1.0f,	0.0f,	0.0f},
-	{"スタッフ6",									46.0f,			450.0f,		1.0f,	0.0f,	0.0f},
-	{"Thank you for Playing this Game!",			50.0f,			250.0f,		1.0f,	0.0f,	0.0f},
+	{"Producer\n \nTanaka Taro",					10.0f,			450.0f,		0.0f,	1.0f,	0.0f},
+	{"Director\n \nTanaka Taro",					16.0f,			450.0f,		0.0f,	0.0f,	1.0f},
+	{"Designer\n \nTanaka Taro",					22.0f,			450.0f,		1.0f,	1.0f,	0.0f},
+	{"Programmer\n \nTanaka Taro",					28.0f,			750.0f,		1.0f,	0.0f,	1.0f},
+	{"Creator\n \nTanaka Taro",						34.0f,			750.0f,		1.0f,	1.0f,	1.0f},
+	{"Debugger\n \nTanaka Taro",					40.0f,			450.0f,		0.0f,	1.0f,	1.0f},
+	{"Homeroom Teacher\n \nABCDEFG\n \nHIJKLMN",	46.0f,			450.0f,		1.0f,	0.0f,	0.0f},
+	{"スタッフ4",									52.0f,			450.0f,		1.0f,	0.0f,	0.0f},
+	{"スタッフ5",									58.0f,			450.0f,		1.0f,	0.0f,	0.0f},
+	{"スタッフ6",									64.0f,			450.0f,		1.0f,	0.0f,	0.0f},
+	{"Thank you for Playing this Game!",			75.0f,			250.0f,		1.0f,	0.0f,	0.0f},
 };
 
 // コンストラクタ
@@ -76,16 +77,23 @@ CStuffedRoll::~CStuffedRoll()
 // 更新処理
 void CStuffedRoll::Update()
 {
-	mStaffRollTime += Time::DeltaTime();
-
 	for (CText* text : mStuffedRolls)
 	{
 		text->Update();
 	}
 
-	if (CInput::PushKey('M'))
+	if (CInput::Key(VK_UP))
 	{
+		mStaffRollTime += Time::DeltaTime() * 2.0f;
+	}
+	else
+	{
+		mStaffRollTime += Time::DeltaTime();
+	}
 
+	if (mStaffRollTime >= 90.0f)
+	{
+		CSceneManager::Instance()->LoadScene(EScene::eTitle);
 	}
 
 	CDebugPrint::Print("mTime:%f\n", mStaffRollTime);
@@ -94,7 +102,20 @@ void CStuffedRoll::Update()
 // テキストを移動させる処理
 void CStuffedRoll::ScrollTextUp(CText* pText, float& yPos, float speed)
 {
-	yPos -= speed;
+	if (mStaffRollTime >= 82.0f)
+	{
+		return;
+	}
+
+	// 上キーが押されている場合、2.0倍の速さでスクロール
+	if (CInput::Key(VK_UP))
+	{
+		yPos -= speed * 2.0f;
+	}
+	else
+	{
+		yPos -= speed;
+	}
 
 	pText->SetPos(CVector2(mXPos, yPos));
 
@@ -117,7 +138,8 @@ void CStuffedRoll::Render()
 		const StafData& data = STAFF_DATA[i];
 		mXPos = data.xPos;
 		if (mStaffRollTime < data.startTime) continue;
-		if (mStaffRollTime > data.startTime + 15.0f) continue;
+		// 最後の要素でない場合にのみ16.0fの制限を適用
+		if (i < mStuffedRolls.size() - 1 && mStaffRollTime > data.startTime + 16.0f) continue;
 
 		mStuffedRolls[i]->SetText(data.stuffName.c_str());
 		// スクロール処理

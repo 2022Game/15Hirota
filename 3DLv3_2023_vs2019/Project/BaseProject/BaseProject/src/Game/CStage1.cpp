@@ -15,6 +15,7 @@
 #include "CMeat1.h"
 #include "CMeat2.h"
 #include "CMeat3.h"
+#include "CInput.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -60,6 +61,8 @@ void CStage1::Load()
 
 	// 背景色設定
 	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+	CInput::ShowCursor(false);
 
 	COneShotFloorField* field = new COneShotFloorField();
 	field->Scale(1.0f, 1.0f, 1.0f);

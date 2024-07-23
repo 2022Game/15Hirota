@@ -212,8 +212,8 @@ void CGameScene::Update()
 		CSceneManager::Instance()->LoadScene(EScene::eStuffedRoll);
 	}
 
-	int stage = CGameManager::StageNo();
-	printf("StageNo:%d\n", stage);
+	/*int stage = CGameManager::StageNo();
+	printf("StageNo:%d\n", stage);*/
 
 	// ステージ番号の監視
 	//CDebugPrint::Print("StageNo:%d\n", CGameManager::StageNo());
