@@ -268,7 +268,14 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
 
-			mTargetDir = CVector(0.0f, 0.0f, -1.0f);
+			 // ˆÚ“®•ûŒü‚ð”½“]
+			mTargetDir = -mTargetDir;
+
+			// ”½“]‚µ‚½•ûŒü‚ÉŒü‚¯‚Ä‰ñ“]‚ðÝ’è
+			CVector current = VectorZ();
+			CVector target = mTargetDir;
+			CVector forward = CVector::Slerp(current, target, 0.125f);
+			Rotation(CQuaternion::LookRotation(forward));
 
 			if (other->Tag() == ETag::eRideableObject)
 			{
