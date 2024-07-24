@@ -1514,22 +1514,22 @@ void CPlayer::UpdateMove()
 							mStaminaLowerLimit = true;
 							mDash = false;
 						}
+					}
 
-						// ダッシュアタック移行
-						if (((CInput::PushKey(VK_MBUTTON))) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+					// ダッシュアタック移行
+					if (((CInput::PushKey(VK_MBUTTON))) && (mCharaStatus.stamina <= mCharaMaxStatus.stamina))
+					{
+						// ダッシュアタック移行時に、
+						// スタミナが0以下になるかどうかを確認
+						if (mCharaStatus.stamina - 20 >= 0)
 						{
-							// ダッシュアタック移行時に、
-							// スタミナが0以下になるかどうかを確認
-							if (mCharaStatus.stamina - 20 >= 0) 
-							{
-								mMoveSpeed = CVector::zero;
-								ChangeState(EState::eAttackDash);
-								// スタミナが0以下にならない場合はダッシュアタックを実行
-								mCharaStatus.stamina -= 20;
-							}
-							else
-							{
-							}
+							mMoveSpeed = CVector::zero;
+							ChangeState(EState::eAttackDash);
+							// スタミナが0以下にならない場合はダッシュアタックを実行
+							mCharaStatus.stamina -= 20;
+						}
+						else
+						{
 						}
 					}
 				}
