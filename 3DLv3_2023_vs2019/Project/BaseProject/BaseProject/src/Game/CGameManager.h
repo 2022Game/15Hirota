@@ -107,6 +107,8 @@ private:
 	// リセット処理
 	void UpdateReset();
 
+	// スコア初期化処理
+	void ScoreReset();
 
 	static CGameManager* spInstance;
 	int mStageNo;		// 現在のステージ番号

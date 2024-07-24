@@ -13,6 +13,7 @@
 #include "CMeat1.h"
 #include "CMeat2.h"
 #include "CMeat3.h"
+#include "CSoldier.h"
 
 CGameManager* CGameManager::spInstance = nullptr;
 
@@ -243,9 +244,7 @@ void CGameManager::UpdateStage1()
 		mStageNo = stageNo;
 	}
 
-	CVanguard::SetScore(0);
-	CBlueMedal::SetScore(0);
-	CMeat1::SetScore(0);
+	ScoreReset();
 	CStageManager::LoadStage(mStageNo);
 
 	mElapsedStageTime += Time::DeltaTime();
@@ -265,11 +264,7 @@ void CGameManager::UpdateStage2()
 		mStageNo = stageNo;
 	}
 
-	CVanguard::SetScore(0);
-	CBlueMedal::SetScore(0);
-	CMeat1::SetScore(0);
-	CMeat2::SetScore(0);
-	CMeat3::SetScore(0);
+	ScoreReset();
 
 	mElapsedStageTime += Time::DeltaTime();
 	if (mElapsedStageTime > 3.0f)
@@ -288,11 +283,7 @@ void CGameManager::UpdateStage3()
 		mStageNo = stageNo;
 	}
 
-	CVanguard::SetScore(0);
-	CBlueMedal::SetScore(0);
-	CMeat1::SetScore(0);
-	CMeat2::SetScore(0);
-	CMeat3::SetScore(0);
+	ScoreReset();
 
 	mElapsedStageTime += Time::DeltaTime();
 	if (mElapsedStageTime > 23.5f)
@@ -312,11 +303,7 @@ void CGameManager::UpdateStageOver()
 	}
 
 	mResultSetUp = false;
-	CVanguard::SetScore(0);
-	CBlueMedal::SetScore(0);
-	CMeat1::SetScore(0);
-	CMeat2::SetScore(0);
-	CMeat3::SetScore(0);
+	ScoreReset();
 
 	ChangeState(EGameState::eGame);
 }
@@ -338,12 +325,7 @@ void CGameManager::UpdateGameOver()
 	}
 
 	mResultSetUp = false;
-	CVanguard::SetScore(0);
-	CBlueMedal::SetScore(0);
-	CMeat1::SetScore(0);
-	CMeat2::SetScore(0);
-	CMeat3::SetScore(0);
-
+	ScoreReset();
 	ChangeState(EGameState::eGame);
 }
 
@@ -363,6 +345,16 @@ void CGameManager::UpdateReset()
 	mResultSetUp = false;
 }
 
+// スコア初期化処理
+void CGameManager::ScoreReset()
+{
+	//CSoldier
+	CVanguard::SetScore(0);
+	CBlueMedal::SetScore(0);
+	CMeat1::SetScore(0);
+	CMeat2::SetScore(0);
+	CMeat3::SetScore(0);
+}
 
 // 更新
 void CGameManager::Update()
