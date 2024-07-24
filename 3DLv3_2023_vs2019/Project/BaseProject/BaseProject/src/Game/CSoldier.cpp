@@ -368,18 +368,18 @@ void CSoldier::ChangeDerection()
 // フレームとHPゲージの表示の確認をする処理
 void CSoldier::UpdateGaugeAndFrame()
 {
-	if (!mDiscovery)
+	if (mDiscovery)
+	{
+		mpGauge->SetShow(false);
+		mpFrame->SetShow(false);
+	}
+	else
 	{
 		// HPゲージの座標を更新 (敵の座標の少し上の座標)
 		CVector gaugePos = Position() + CVector(0.0f, 45.0f, 0.0f);
 		mpGauge->SetWorldPos(gaugePos);
 		CVector framePos = Position() + CVector(0.0f, 45.0f, 0.0f);
 		mpFrame->SetWorldPos(framePos);
-	}
-	else
-	{
-		mpGauge->SetShow(false);
-		mpFrame->SetShow(false);
 	}
 }
 
@@ -402,7 +402,7 @@ void CSoldier::UpdateExclamation()
 bool CSoldier::ShouldTransitionWander()
 {
 	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
-	return randomValue < 0.01f;  // 0.1%の確率で待機に遷移
+	return randomValue < 0.01f;  // 0.01%の確率で待機に遷移
 }
 
 // 徘徊状態に遷移する条件
@@ -497,6 +497,7 @@ void CSoldier::UpdateReady()
 void CSoldier::UpdateIdle()
 {
 	mDiscovery = false;
+	mDiscoveryEnd = false;
 	mpAttackCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
@@ -504,7 +505,7 @@ void CSoldier::UpdateIdle()
 	//プレイヤーを見つけたら、敵発見状態へ移行
 	if (IsFoundPlayer())
 	{
-		if (mDiscoveryTimeEnd <= DISCOVERY_END)
+		if (mDiscoveryTimeEnd <= DISCOVERY_END && !mDiscovery)
 		{
 			ChangeState(EState::eDiscovery);
 		}
@@ -570,7 +571,7 @@ void CSoldier::UpdateAttack()
 			new CBullet
 			(
 				// 発射位置
-				Position() + CVector(0.0f, 10.0f, 0.0f) + VectorZ() * 20.0f,
+				Position() + CVector(0.0f, 13.0f, 0.0f) + VectorZ() * 20.0f,
 				VectorZ(),	// 発射方向
 				1000.0f,	// 移動距離
 				1000.0f		// 飛距離
@@ -593,7 +594,6 @@ void CSoldier::UpdateAttack()
 		ChangeState(EState::eChase);
 		mElapsedTime_End = 0.0f;
 		mDiscoveryTime = 0.0f;
-		mDiscovery = false;
 	}
 }
 
@@ -615,7 +615,6 @@ void CSoldier::UpdateAttackWait()
 			ChangeState(EState::eAimDwon);
 			mElapsedTime_End = 0.0f;
 			mDiscoveryTime = 0.0f;
-			mDiscovery = false;
 		}
 	}
 }
@@ -640,13 +639,11 @@ void CSoldier::UpdateDiscovery()
 	{
 		if (IsFoundPlayer())
 		{
-			mDiscovery = false;
 			mDiscoveryEnd = true;
 			ChangeState(EState::eChase);
 		}
 		else
 		{
-			mDiscovery = false;
 			mDiscoveryTime = 0.0f;
 			ChangeState(EState::eAimDwon);
 		}
@@ -657,7 +654,6 @@ void CSoldier::UpdateDiscovery()
 // 追跡
 void CSoldier::UpdateChase()
 {
-	mDiscovery = false;
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 	if (!IsFoundPlayer())
@@ -740,7 +736,6 @@ void CSoldier::UpdateAimDwon()
 	{
 		ChangeState(EState::eIdle);
 		mElapsedTime_End = 0.0f;
-		mDiscovery = false;
 	}
 }
 
@@ -799,7 +794,6 @@ void CSoldier::UpdateDethEnd()
 // 徘徊処理
 void CSoldier::UpdateWander()
 {
-	mDiscovery = false;
 	mpAttackCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eWalk);
 
@@ -956,10 +950,12 @@ void CSoldier::Update()
 		mDiscoveryTimeEnd += Time::DeltaTime();
 		if (mDiscoveryTimeEnd >= DISCOVERY_END)
 		{
+			mDiscovery = false;
 			mDiscoveryEnd = false;
 			mDiscoveryTimeEnd = 0.0f;
 		}
 	}
+	CDebugPrint::Print("mDiscovery:%s\n", mDiscovery ? "true" : "false");
 	//CDebugPrint::Print("discoveryTimeEnd:%f\n", mDiscoveryTimeEnd);
 
 	// 状態に合わせて、更新処理を切り替える
