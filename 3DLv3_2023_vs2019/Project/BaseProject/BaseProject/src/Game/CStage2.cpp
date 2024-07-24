@@ -517,6 +517,7 @@ void CStage2::Load()
 	line1->AddPoint(CVector(272.0f, 0.0f, 1353.0f), 3.0f, 3.0f);
 	line1->SetTexture("Laser");
 	line1->SetColor(CColor(1.0f, 1.0f, 0.0f, 1.0f));
+	AddTask(line1);
 
 	// 指定した移動ポイント間を移動するジャンプキノコ
 	CJumpingKinokoMoveTo* jkmt2 = new CJumpingKinokoMoveTo
@@ -540,6 +541,7 @@ void CStage2::Load()
 	line2->AddPoint(CVector(-272.0f, 0.0f, 1353.0f), 3.0f, 3.0f);
 	line2->SetTexture("Laser");
 	line2->SetColor(CColor(1.0f, 1.0f, 0.0f, 1.0f));
+	AddTask(line2);
 
 	// 反射キノコ
 	CReflectionActionKinoko* rctk = new CReflectionActionKinoko

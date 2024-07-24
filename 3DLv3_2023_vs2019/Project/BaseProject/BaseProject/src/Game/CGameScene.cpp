@@ -187,6 +187,8 @@ void CGameScene::Update()
 				// ゲーム開始ならば、ゲームシーンを読み込む
 				if (mpResultUI->IsStartGame())
 				{
+					// ゲーム中はカーソルをオフ
+					CInput::ShowCursor(false);
 					// メニューを閉じる
 					mpResultUI->Close();
 					CGameManager::GameRestart();
