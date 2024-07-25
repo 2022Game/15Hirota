@@ -734,11 +734,13 @@ void CStage3::Load()
 	CSoldier* soldier1 = new CSoldier();
 	soldier1->Scale(1.5f, 1.5f, 1.5f);
 	soldier1->Position(7.7f, 228.0f, -274.0f);
+	soldier1->SetCenterPoint(CVector(7.7f, 130.0f, -274.0f), 50.0f);
 	AddTask(soldier1);
 	// ソルジャー2
 	CSoldier* soldier2 = new CSoldier();
 	soldier2->Scale(1.5f, 1.5f, 1.5f);
-	soldier2->Position(7.7f, 228.0f, -284.0f);
+	soldier2->Position(-173.7f, 228.0f, -652.0f);
+	soldier2->SetCenterPoint(CVector(-173.7f, 130.0f, -652.0f), 50.0f);
 	AddTask(soldier2);
 
 
@@ -757,7 +759,7 @@ void CStage3::Load()
 	// ボス前	: 0.0f, 430.0f, -1890.0f
 	// ゴール付近:	-367.0f, 395.0f, -2060.0f
 	// 火炎放射器の前 : -207.0f, 126.0f, -912.0f
-	CVector playerPos = CVector(-367.0f, 435.0f, -2050.0f);
+	CVector playerPos = CVector(190.0f, 130.0f, 269.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

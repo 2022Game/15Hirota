@@ -109,9 +109,11 @@ CSoldier::CSoldier()
 	, mBackStepTime(0.0f)
 	, mDiscoveryTime(0.0f)
 	, mDiscoveryTimeEnd(0.0f)
+	, mMaxRadius(0.0f)
 	, mTargetDir(0.0f, 0.0f, 1.0f)
 	, mMoveSpeed(0.0f, 0.0f, 0.0f)
 	, mInitialPosition(0.0f, 0.0f, 0.0f)
+	, mCenterPoint(CVector::zero)
 	, mTimeToChange(Math::Rand(2.0f, 5.0f))
 	, mIsGrounded(false)
 	, mKickTimeEnd(false)
@@ -268,7 +270,7 @@ void CSoldier::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
 
-			 // 移動方向を反転
+			// 移動方向を反転
 			mTargetDir = -mTargetDir;
 
 			// 反転した方向に向けて回転を設定
@@ -436,19 +438,48 @@ void CSoldier::Move()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	// mMoveSpeedは敵の速度ベクトル、mMoveSpeed.X()がX軸方向の速度
-	// 適切な速度を設定し、mMoveSpeedをmTargetDirにスケーリングして移動。
-	// 速度を設定
+	// 速度の設定
 	float moveSpeed = MOVE_AUTOMATIC_SPEED;
 
-	// mTargetDir に速度を掛けて移動ベクトルを得る
+	// 移動ベクトルの計算
 	CVector moveVector = mTargetDir * moveSpeed;
 
 	// deltaTime を考慮して移動量を計算
 	moveVector *= Time::DeltaTime();
 
-	// 現在の座標を更新
-	Position(Position() + moveVector + mMoveSpeed);
+	// 新しい位置を計算
+	CVector newPosition = Position() + moveVector + mMoveSpeed;
+
+	// 中心点からの距離を計算
+	CVector offset = newPosition - mCenterPoint;
+	float distance = offset.Length();
+
+	// 距離が半径を超えた場合の修正
+	if (distance > mMaxRadius)
+	{
+		// 中心点と同じ距離のまま外に出ないように位置を修正
+		offset.Normalize();
+		newPosition = mCenterPoint + offset * mMaxRadius;
+
+		// 移動方向を反転
+		mTargetDir = -mTargetDir;
+
+		// 反転した方向に向けて回転を設定
+		CVector current = VectorZ();
+		CVector target = mTargetDir;
+		CVector forward = CVector::Slerp(current, target, 0.125f);
+		Rotation(CQuaternion::LookRotation(forward));
+	}
+
+	// 修正した位置を設定
+	Position(newPosition);
+}
+
+// 中心座標と範囲を設定
+void CSoldier::SetCenterPoint(CVector& center, float radius)
+{
+	mMaxRadius = radius;
+	mCenterPoint = center;
 }
 
 // アニメーション切り替え

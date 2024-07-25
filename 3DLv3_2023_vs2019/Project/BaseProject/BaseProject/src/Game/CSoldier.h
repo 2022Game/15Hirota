@@ -75,6 +75,9 @@ public:
 	/// <returns></returns>
 	CVector CalculateDirection(float angleDegrees);
 
+	// 中心座標と範囲を設定
+	void SetCenterPoint(CVector& center, float radius);
+
 	// ソルジャーを勝手に移動させる処理
 	void Move();
 
@@ -236,6 +239,8 @@ private:
 	CVector mMoveSpeed;
 	// 初期位置の保存
 	CVector mInitialPosition;
+	// 中心点
+	CVector mCenterPoint;
 
 	//////////////////////////////////////////////////////////
 	
@@ -262,6 +267,8 @@ private:
 	float mDiscoveryTime;
 	// プレイヤー発見時の終了時間計測
 	float mDiscoveryTimeEnd;
+	// 半径
+	float mMaxRadius;
 	// 接地しているかどうか
 	bool mIsGrounded;
 	// キックの待ち時間が終わったかどうか
