@@ -1301,7 +1301,7 @@ void CPlayer::UpdateReady()
 	{
 		// ステップ0 初期化処理
 	case 0:
-		ChangeAnimation(EAnimType::eIdle);
+		//ChangeAnimation(EAnimType::eIdle);
 		// 全ての衝突判定をオフにする
 		SetEnableCol(false);
 		// プレイヤーの移動速度を0にする
@@ -1322,7 +1322,7 @@ void CPlayer::UpdateReady()
 			SetEnableCol(true);
 			// 現在の状態を待機に切り替え
 			mCharaStatus.hp = mCharaMaxStatus.hp;
-			ChangeState(EState::eIdle);
+			ChangeState(EState::eFirstAction);
 
 			// ステージをクリアしたら
 			if (mStage1Clear || mStage2Clear || mStage3Clear)
@@ -1338,6 +1338,18 @@ void CPlayer::UpdateReady()
 			}
 		}
 		break;
+	}
+}
+
+// 最初のアクション
+void CPlayer::UpdateFirstAction()
+{
+	mMoveSpeed =  CVector::zero;
+	ChangeAnimation(EAnimType::eDashJumpLoop);
+	if (IsAnimationFinished() &&mIsGrounded)
+	{
+		ChangeAnimation(EAnimType::eIdle);
+		ChangeState(EState::eIdle);
 	}
 }
 
@@ -1428,6 +1440,7 @@ void CPlayer::UpdateIdle()
 		{
 			// 待機アニメーションに切り替え
 			ChangeAnimation(EAnimType::eIdle);
+			//ChangeAnimation(EAnimType::eDashJumpLoop);
 		}
 	}
 }
@@ -1847,6 +1860,7 @@ void CPlayer::UpdateClear()
 	mpMeat->SetShow(false);
 	mMoveSpeed = CVector::zero;
 	mElapsedTime = 0.0f;
+	mMoveDistance = 0.0f;
 
 	ItemDeletion();
 
@@ -1977,6 +1991,7 @@ void CPlayer::UpdateClearEnd()
 // リザルト時のジャンプ開始
 void CPlayer::UpdateResultJumpStart()
 {
+	mDash = false;
 	Scale(CVector(0.0f, 0.0f, 0.0f));
 	if (mpCutInResult->IsPlaying())
 	{
@@ -1990,6 +2005,7 @@ void CPlayer::UpdateResultJumpStart()
 	ChangeAnimation(EAnimType::eJumpStart);
 	ChangeState(EState::eResultJump);
 
+	mMoveDistance = 0.0f;
 	mMoveSpeedY = JUMP_CLEAR;
 	mIsGrounded = false;
 }
@@ -2018,6 +2034,7 @@ void CPlayer::UpdateResultJump()
 
 	if (mResultElapsedTime > 1.5f)
 	{
+		mMoveDistance = 0.0f;
 		if (mMoveSpeedY <= 0.0f)
 		{
 			mResultElapsedTime = 0.0f;
@@ -2064,6 +2081,7 @@ void CPlayer::UpdateResultEnd()
 			bool resultEnd = result->IsResultOpened();
 			if (resultEnd)
 			{
+				mMoveDistance = 0.0f;
 				mpCutInResult->End();
 				mpHpGauge->SetShow(true);
 				mpStaminaGauge->SetShow(true);
@@ -2083,6 +2101,7 @@ void CPlayer::UpdateResultEnd()
 			bool resultEnd = result->IsResultOpened();
 			if (resultEnd)
 			{
+				mMoveDistance = 0.0f;
 				mpCutInResult->End();
 				mpHpGauge->SetShow(true);
 				mpStaminaGauge->SetShow(true);
@@ -2102,6 +2121,7 @@ void CPlayer::UpdateResultEnd()
 			bool resultEnd = result->IsResultOpened();
 			if (resultEnd)
 			{
+				mMoveDistance = 0.0f;
 				mpCutInResult->End();
 				mpHpGauge->SetShow(true);
 				mpStaminaGauge->SetShow(true);
@@ -2221,15 +2241,6 @@ void CPlayer::UpdateStartStageJump()
 // ステージ開始時のジャンプ終了
 void CPlayer::UpdateStartStageJumpEnd()
 {
-	//// ステージ1ボタンのインスタンス
-	//CStage1Button* button1 = CStage1Button::Instance();
-	//// ステージ3ボタンのインスタンス
-	//CStage3Button* button3 = CStage3Button::Instance();
-	//// ステージ1ボタンのフラグを取得
-	//bool stage1button1 = button1->IsStage1Button();
-	//// ステージ3ボタンのフラグを取得
-	//bool stage3button3 = button3->IsStage3Button();
-
 	mMoveSpeed = CVector::zero;
 	mMoveSpeedY = -0.01f;
 	mpSword->SetAlpha(0.0f);
@@ -3484,8 +3495,6 @@ void CPlayer::CheckUnderFootObject()
 // 更新
 void CPlayer::Update()
 {
-	CDebugPrint::Print("mIStartStage2:%s\n", mIsStartStage2 ? "true" : "false");
-	CDebugPrint::Print("mIStartStage3:%s\n", mIsStartStage3 ? "true" : "false");
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
@@ -3567,6 +3576,9 @@ void CPlayer::Update()
 		// 準備中の状態
 	case EState::eReady:
 		UpdateReady();
+		break;
+	case EState::eFirstAction:
+		UpdateFirstAction();
 		break;
 		// 待機状態
 	case EState::eIdle:
@@ -3989,6 +4001,10 @@ void CPlayer::Update()
 	// 前回のプレイヤーの座標を更新
 	mLastPos = Position();
 	
+	//CDebugPrint::Print("mIStartStage2:%s\n", mIsStartStage2 ? "true" : "false");
+	//CDebugPrint::Print("mIStartStage3:%s\n", mIsStartStage3 ? "true" : "false");
+	//CDebugPrint::Print("mMoveDistance:%f\n", mMoveDistance);
+	//CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
 	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
 	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
@@ -3997,9 +4013,9 @@ void CPlayer::Update()
 // アイテムを取得
 void CPlayer::AddItem(ItemType item)
 {
-	// アイテムを一つも持っていなかったら、
+	// アイテムを3つ持っていなかったら、
 	// 追加
-	if (mInventory[item] == 0)
+	if (mInventory[item] <= 3)
 	{
 		mInventory[item]++;
 	}

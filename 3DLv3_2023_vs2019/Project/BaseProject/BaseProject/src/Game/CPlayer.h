@@ -307,6 +307,8 @@ private:
 	
 	// 準備中の状態
 	void UpdateReady();
+	// 最初のアクション
+	void UpdateFirstAction();
 	// 待機状態
 	void UpdateIdle();
 	// 停止状態
@@ -413,6 +415,7 @@ private:
 	enum class EState
 	{
 		eReady,				 // 準備中
+		eFirstAction,		 // 最初のアクション
 		eIdle,				 // 待機
 		eStop,				 // 停止
 		eClearJump,			 // リザルト前のアニメーション

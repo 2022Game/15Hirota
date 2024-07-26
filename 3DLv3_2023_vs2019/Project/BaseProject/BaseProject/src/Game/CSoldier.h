@@ -158,6 +158,8 @@ private:
 	void UpdateWander();
 	// バックステップ
 	void UpdateBackStep();
+	// 元の位置に戻す
+	//void UpdateReturnBack();
 
 	// 状態
 	enum class EState
@@ -179,6 +181,7 @@ private:
 		eJumpStart,	// ジャンプ開始
 		eJump,		// ジャンプ中
 		eJumpEnd,	// ジャンプ終了
+		eReturnBack,// 元の位置に戻す
 	};
 	// 状態変更
 	void ChangeState(EState state);

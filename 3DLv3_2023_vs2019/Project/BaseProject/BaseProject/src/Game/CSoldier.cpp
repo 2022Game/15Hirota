@@ -455,19 +455,26 @@ void CSoldier::Move()
 	float distance = offset.Length();
 
 	// ‹——£‚ª”¼Œa‚ğ’´‚¦‚½ê‡‚ÌC³
-	if (distance > mMaxRadius)
+	if (distance >= mMaxRadius)
 	{
-		// ’†S“_‚Æ“¯‚¶‹——£‚Ì‚Ü‚ÜŠO‚Éo‚È‚¢‚æ‚¤‚ÉˆÊ’u‚ğC³
 		offset.Normalize();
-		newPosition = mCenterPoint + offset * mMaxRadius;
 
-		// ˆÚ“®•ûŒü‚ğ”½“]
 		mTargetDir = -mTargetDir;
 
-		// ”½“]‚µ‚½•ûŒü‚ÉŒü‚¯‚Ä‰ñ“]‚ğİ’è
-		CVector current = VectorZ();
-		CVector target = mTargetDir;
-		CVector forward = CVector::Slerp(current, target, 0.125f);
+		CVector targetPosition = mCenterPoint + offset * mMaxRadius;
+
+		float t = 0.01f;
+		newPosition = CVector::Lerp(Position(), targetPosition, t);
+
+		CDebugPrint::Print("Position:%f %f\n", Position().X(), Position().Z());
+		CDebugPrint::Print("targetPosition:%f %f\n", targetPosition.X(), targetPosition.Z());
+
+		// “G‚ÌŒü‚«‚ğ’²®
+		mTargetDir = (mCenterPoint - Position()).Normalized();
+		mTargetDir.Y(0.0f);
+		
+		// “G‚ğ–Ú•W•ûŒü‚É‰ñ“]‚³‚¹‚é
+		CVector forward = CVector::Slerp(VectorZ(), mTargetDir, 0.125f);
 		Rotation(CQuaternion::LookRotation(forward));
 	}
 
@@ -687,6 +694,7 @@ void CSoldier::UpdateChase()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+
 	if (!IsFoundPlayer())
 	{
 		ChangeAnimation(EAnimType::eRifleIdle);
@@ -986,7 +994,7 @@ void CSoldier::Update()
 			mDiscoveryTimeEnd = 0.0f;
 		}
 	}
-	CDebugPrint::Print("mDiscovery:%s\n", mDiscovery ? "true" : "false");
+	//CDebugPrint::Print("mDiscovery:%s\n", mDiscovery ? "true" : "false");
 	//CDebugPrint::Print("discoveryTimeEnd:%f\n", mDiscoveryTimeEnd);
 
 	// ó‘Ô‚É‡‚í‚¹‚ÄAXVˆ—‚ğØ‚è‘Ö‚¦‚é

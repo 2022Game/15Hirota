@@ -546,7 +546,7 @@ void CStage2::Load()
 	// 反射キノコ
 	CReflectionActionKinoko* rctk = new CReflectionActionKinoko
 	(
-		CVector(0.0f, 20.0f, 625.0f),
+		CVector(0.0f, 30.0f, 625.0f),
 		CVector(1.5f, 3.0f, 1.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
@@ -942,7 +942,7 @@ void CStage2::Load()
 	// 中間ポイント2 : 0.0f, 56.0f, 994.0f
 	// 肉1の場所 : -483.0f, 10.0f, 483.0f
 	// ゴールポイント : 0.0f, 0.0f, 1540.0f
-	CVector playerPos = CVector(0.0f, 20.0f, 50.0f);
+	CVector playerPos = CVector(0.0f, 40.0f, 50.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
