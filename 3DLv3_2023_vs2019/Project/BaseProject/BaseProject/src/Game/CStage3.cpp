@@ -759,7 +759,7 @@ void CStage3::Load()
 	// ボス前	: 0.0f, 430.0f, -1890.0f
 	// ゴール付近:	-367.0f, 395.0f, -2060.0f
 	// 火炎放射器の前 : -207.0f, 126.0f, -912.0f
-	CVector playerPos = CVector(190.0f, 160.0f, 269.0f);
+	CVector playerPos = CVector(190.0f, 180.0f, 269.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

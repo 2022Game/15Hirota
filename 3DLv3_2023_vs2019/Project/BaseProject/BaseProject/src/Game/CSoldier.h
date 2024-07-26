@@ -282,6 +282,8 @@ private:
 	bool mDiscoveryEnd;
 	// バックステップをするか
 	bool mBackStep;
+	// 半径に入ったか
+	bool mIsLerping;
 
 	// プレイヤーを見つけたか
 	bool IsFoundPlayer() const;

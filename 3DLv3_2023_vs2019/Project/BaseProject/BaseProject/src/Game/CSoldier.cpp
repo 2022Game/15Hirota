@@ -120,6 +120,7 @@ CSoldier::CSoldier()
 	, mDiscovery(false)
 	, mDiscoveryEnd(false)
 	, mBackStep(false)
+	, mIsLerping(false)
 	, mpRideObject(nullptr)
 {
 	//インスタンスの設定
@@ -455,16 +456,33 @@ void CSoldier::Move()
 	float distance = offset.Length();
 
 	// 距離が半径を超えた場合の修正
-	if (distance >= mMaxRadius)
+	if (distance > mMaxRadius)
 	{
-		offset.Normalize();
+		mIsLerping = true;
+
+		// 目的地へのベクトルを計算
+		CVector direction = mCenterPoint - Position();
+		direction.Normalize(); // 方向ベクトルを正規化
 
 		mTargetDir = -mTargetDir;
 
-		CVector targetPosition = mCenterPoint + offset * mMaxRadius;
+		// 中心点から半径までの距離
+		CVector targetPosition = mCenterPoint + direction * mMaxRadius;
 
-		float t = 0.01f;
-		newPosition = CVector::Lerp(Position(), targetPosition, t);
+		// 一定速度で目的地に向かって移動
+		if (mIsLerping)
+		{
+			// 移動速度
+			float moveSpeed = 0.4f;
+			newPosition = Position() + direction * moveSpeed;
+
+			// 目的地に到達したら位置を更新
+			if (CVector::Distance(Position(), targetPosition) < moveSpeed)
+			{
+				newPosition = targetPosition;
+				mIsLerping = false;
+			}
+		}
 
 		CDebugPrint::Print("Position:%f %f\n", Position().X(), Position().Z());
 		CDebugPrint::Print("targetPosition:%f %f\n", targetPosition.X(), targetPosition.Z());
