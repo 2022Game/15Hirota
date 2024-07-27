@@ -32,6 +32,7 @@
 #include "CCircleLine.h"
 #include "CSpring.h"
 #include "CInput.h"
+#include "CSeesaw.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -118,6 +119,10 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("PointLine",				"Field\\Gimmick\\Jump\\PointLine.obj");
 	// サークルライン
 	CResourceManager::Load<CModel>("CircleLine",			"Field\\Gimmick\\Jump\\CircleLine.obj");
+	// シーソーモデル
+	CResourceManager::Load<CModel>("SeesawModel",			"Field\\Gimmick\\SeesawGimmick\\SeesawModel.obj");
+	// シーソーモデル
+	CResourceManager::Load<CModel>("SeesawModelCol",		"Field\\Gimmick\\SeesawGimmick\\SeesawModel(Col).obj");
 
 	// 金属の梯子オブジェクト
 	CResourceManager::Load<CModel>("Metalladder",			"Field\\HopsAndHoops\\Metalladder(Base).obj");
@@ -292,6 +297,16 @@ void CStage2::Load()
 		CVector(0.0f, 0.0f, 0.0f)
 	);
 	AddTask(springlower);
+
+	// シーソーモデル
+	CSeesaw* seesaw1 = new CSeesaw
+	(
+		CVector(0.0f, 0.0f, -5.0f),
+		CVector(8.5f, 5.5f, 10.5f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(seesaw1);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	// 動くキノコ(左右)

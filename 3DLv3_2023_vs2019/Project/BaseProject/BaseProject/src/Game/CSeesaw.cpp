@@ -4,9 +4,9 @@
 #include "CModel.h"
 
 // 回転にかかる時間
-#define ROTATE_TIME 1.5f
+#define ROTATE_TIME 2.5f
 // １秒間に回転する角度
-#define ROTATE_SPEED 30.0f
+#define ROTATE_SPEED 50.0f
 
 // コンストラクタ
 CSeesaw::CSeesaw(const CVector& pos, const CVector& scale, const CVector& rot,
@@ -110,14 +110,14 @@ void CSeesaw::UpdateIdle()
 		else if (mHitDir < 0.0f)
 		{
 			// 右に傾ける(目的の角度を45度に設定)
-			mRotateEndAngle = 35.0f;
+			mRotateEndAngle = 50.0f;
 			mElapsedTime = 0.0f;
 		}
 		// レフトコライダーに当たったら左に傾ける
 		else if (mHitDir > 0.0f)
 		{
 			// 左に傾ける(目的の角度を-45度に設定)
-			mRotateEndAngle = -35.0f;
+			mRotateEndAngle = -50.0f;
 			mElapsedTime = 0.0f;
 		}
 	}

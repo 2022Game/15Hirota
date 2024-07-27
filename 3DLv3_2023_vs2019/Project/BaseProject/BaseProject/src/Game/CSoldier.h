@@ -76,7 +76,7 @@ public:
 	CVector CalculateDirection(float angleDegrees);
 
 	// 中心座標と範囲を設定
-	void SetCenterPoint(CVector& center, float radius);
+	void SetCenterPoint(CVector& center, const float radius);
 
 	// ソルジャーを勝手に移動させる処理
 	void Move();

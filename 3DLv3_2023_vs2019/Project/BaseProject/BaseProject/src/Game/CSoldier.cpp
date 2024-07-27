@@ -404,8 +404,14 @@ void CSoldier::UpdateExclamation()
 // 待機状態遷移する条件
 bool CSoldier::ShouldTransitionWander()
 {
+	// mIsLerpingがtrueの場合、処理をスキップ
+	if (mIsLerping)
+	{
+		return false;
+	}
+
 	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
-	return randomValue < 0.01f;  // 0.01%の確率で待機に遷移
+	return randomValue < 0.01f;
 }
 
 // 徘徊状態に遷移する条件
@@ -473,7 +479,7 @@ void CSoldier::Move()
 		if (mIsLerping)
 		{
 			// 移動速度
-			float moveSpeed = 0.4f;
+			float moveSpeed = 0.5f;
 			newPosition = Position() + direction * moveSpeed;
 
 			// 目的地に到達したら位置を更新
@@ -501,7 +507,7 @@ void CSoldier::Move()
 }
 
 // 中心座標と範囲を設定
-void CSoldier::SetCenterPoint(CVector& center, float radius)
+void CSoldier::SetCenterPoint(CVector& center, const float radius)
 {
 	mMaxRadius = radius;
 	mCenterPoint = center;
