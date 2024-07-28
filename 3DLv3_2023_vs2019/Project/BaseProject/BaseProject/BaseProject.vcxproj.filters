@@ -293,6 +293,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Jumping\Spring">
       <UniqueIdentifier>{eb222605-0916-4904-9eec-ffcff45fd0aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\StageField\Seesaw Stage">
+      <UniqueIdentifier>{62773cc0-5e73-49e0-82e8-3f2810d8500f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -993,6 +996,18 @@
     </ClCompile>
     <ClCompile Include="src\Game\CSpring.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\Spring</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStage4Button.cpp">
+      <Filter>ソース ファイル\Game\Stage\StageButton</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSeesawAdventure.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\Seesaw Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStage4.cpp">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CStage4MenuObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1718,6 +1733,18 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSpring.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Jumping\Spring</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStage4Button.h">
+      <Filter>ソース ファイル\Game\Stage\StageButton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSeesawAdventure.h">
+      <Filter>ソース ファイル\Game\Field\StageField\Seesaw Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStage4.h">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CStage4MenuObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

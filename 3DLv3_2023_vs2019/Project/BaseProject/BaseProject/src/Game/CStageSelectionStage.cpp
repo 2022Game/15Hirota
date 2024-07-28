@@ -9,12 +9,14 @@
 #include "CStage1MenuObject.h"
 #include "CStage2MenuObject.h"
 #include "CStage3MenuObject.h"
+#include "CStage4MenuObject.h"
 #include "CStageSelection.h"
 #include "CTreasureChest.h"
 #include "CStageButton.h"
 #include "CStage1Button.h"
 #include "CStage2Button.h"
 #include "CStage3Button.h"
+#include "CStage4Button.h"
 #include "CVanguard.h"
 #include "CStageSky.h"
 
@@ -24,8 +26,9 @@ CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[] =
 {
 	{0, CVector(65.0f, 4.5f, 36.0f), -1, 1, true},
 	{1, CVector(65.0f, 3.5f, -72.0f), 0, 2, true},
-	{2, CVector(65.0f, 3.5f, -185.0f), 1, 3, false}, // 初期値はfalse
-	{3, CVector(65.0f, 3.5f, -298.0f), 2, -1, false} // 初期値はfalse
+	{2, CVector(65.0f, 3.5f, -185.0f), 1, 3, false},	// 初期値はfalse
+	{3, CVector(65.0f, 3.5f, -298.0f), 2, 4, false},	// 初期値はfalse
+	{4, CVector(65.0f, 3.5f, -615.0f), 3, -1, false},	// 初期値はfalse
 };
 
 // ステージを移動できるかどうか
@@ -54,7 +57,15 @@ void CStageSelectionStage::UpdateStageMovement()
 		STAGE_DATA[3].canMove = false;
 	}
 
-	// ステージ3以降も追加可能
+	// ステージ4に移行可能かどうか
+	if (player->IsStartStage4())
+	{
+		STAGE_DATA[4].canMove = true;
+	}
+	else
+	{
+		STAGE_DATA[4].canMove = false;
+	}
 }
 
 
@@ -120,6 +131,8 @@ void CStageSelectionStage::Load()
 	CResourceManager::Load<CModel>("JumpingKinoko", "Field\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
 	// 跳ねるキノココライダー
 	CResourceManager::Load<CModel>("JumpingKinokoCol", "Field\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
+	// シーソーモデル
+	CResourceManager::Load<CModel>("SeesawModel", "Field\\Gimmick\\SeesawGimmick\\SeesawModel.obj");
 	// ENTERキーの画像
 	CResourceManager::Load<CTexture>("EnterUI", "UI\\GimmickUI\\ENTER.png");
 
@@ -174,6 +187,16 @@ void CStageSelectionStage::Load()
 	);
 	AddTask(stage3button);
 
+	// ステージ4選択ボタン
+	CStage4Button* stage4button = new CStage4Button
+	(
+		STAGE_DATA[4].btnPos,
+		CVector(10.0f, 10.0f, 10.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(stage4button);
+
 	// ステージメニューオブジェクト(ステージ1)
 	CStage1MenuObject* menuobj1 = new CStage1MenuObject
 	(
@@ -203,6 +226,16 @@ void CStageSelectionStage::Load()
 		ETag::ePlayer, ELayer::eDamageCol
 	);
 	AddTask(menuobj3);
+
+	// ステージメニューオブジェクト(ステージ4)
+	CStage4MenuObject* menuobj4 = new CStage4MenuObject
+	(
+		CVector(6.0f, 30.0f, -615.0f),
+		CVector(2.2f, 2.2f, 2.2f),
+		CVector(0.0f, 40.0f, 0.0f),
+		ETag::ePlayer, ELayer::eDamageCol
+	);
+	AddTask(menuobj4);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	

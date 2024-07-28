@@ -199,10 +199,12 @@ CPlayer::CPlayer()
 	, mStage1Clear(false)
 	, mStage2Clear(false)
 	, mStage3Clear(false)
+	, mStage4Clear(false)
 	, mDamageEnemy(false)
 	, mStartStage1(false)
 	, mStartStage2(false)
 	, mStartStage3(false)
+	, mStartStage4(false)
 	, mClimbWallTop(false)
 	, mDamageObject(false)
 	, mIsStageClear(false)
@@ -211,8 +213,10 @@ CPlayer::CPlayer()
 	, mIsStage1Clear(false)
 	, mIsStage2Clear(false)
 	, mIsStage3Clear(false)
+	, mIsStage4Clear(false)
 	, mIsStartStage2(false)
 	, mIsStartStage3(false)
+	, mIsStartStage4(false)
 	, mStaminaDepleted(false)
 	, mIsPlayedSlashSE(false)
 	, mStaminaLowerLimit(false)
@@ -1140,6 +1144,12 @@ bool CPlayer::IsStage3Clear()
 	return mIsStage3Clear;
 }
 
+// ステージ4をクリアしたか
+bool CPlayer::IsStage4Clear()
+{
+	return mIsStage4Clear;
+}
+
 // ステージをクリアしたか
 bool CPlayer::IsStageClear()
 {
@@ -1156,6 +1166,12 @@ bool CPlayer::IsStartStage2()
 bool CPlayer::IsStartStage3()
 {
 	return mIsStartStage3;
+}
+
+// ステージ4に入れるかどうか
+bool CPlayer::IsStartStage4()
+{
+	return mIsStartStage4;
 }
 
 // 攻撃力アップアイテムを使用したか
@@ -1176,10 +1192,12 @@ void CPlayer::StageFlagfalse()
 	mStage1Clear = false;
 	mStage2Clear = false;
 	mStage3Clear = false;
+	mStage4Clear = false;
 
 	mStartStage1 = false;
 	mStartStage2 = false;
 	mStartStage3 = false;
+	mStartStage4 = false;
 }
 
 // アニメーション切り替え
@@ -1325,7 +1343,7 @@ void CPlayer::UpdateReady()
 			ChangeState(EState::eFirstAction);
 
 			// ステージをクリアしたら
-			if (mStage1Clear || mStage2Clear || mStage3Clear)
+			if (mStage1Clear || mStage2Clear || mStage3Clear || mStage4Clear)
 			{
 				// クリアジャンプに遷移
 				ChangeState(EState::eResultJumpStart);
@@ -1369,6 +1387,10 @@ void CPlayer::UpdateIdle()
 			ChangeState(EState::eResult);
 		}
 		else if (mStage3Clear && !mIsStage3Clear)
+		{
+			ChangeState(EState::eResult);
+		}
+		else if (mStage4Clear && !mIsStage4Clear)
 		{
 			ChangeState(EState::eResult);
 		}
@@ -1966,14 +1988,50 @@ void CPlayer::UpdateClearEnd()
 					}
 
 					// ステージをクリア
-					CGameManager::GameClear();
+					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
-					//ChangeState(EState::eReady);
+					ChangeState(EState::eReady);
 					mIsStartStage2 = false;
 					mIsStartStage3 = false;
 					// 消さないように
 					// 消したら不具合
 					//Position(mStartPos);
+					mpColliderCapsule->SetEnable(true);
+				}
+				// ステージ4クリア
+				else if (CGameManager::StageNo() == 2)
+				{
+					mSavePoint1 = false;
+					mSavePoint2 = false;
+
+					mStage4Clear = true;
+					mIsStage4Clear = false;
+
+					mIsStartStage4 = true;
+
+					if (mStage1Clear)
+					{
+						mIsStage1Clear = false;
+						mStage1Clear = false;
+					}
+					else if (mStage2Clear)
+					{
+						mIsStage2Clear = false;
+						mStage2Clear = false;
+					}
+					else if (mStage3Clear)
+					{
+						mIsStage3Clear = false;
+						mStage3Clear = false;
+					}
+
+					// ステージをクリア
+					CGameManager::GameClear();
+					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
+					ChangeState(EState::eReady);
+					mIsStartStage2 = false;
+					mIsStartStage3 = false;
+					Position(mStartPos);
 					mpColliderCapsule->SetEnable(true);
 				}
 			}
@@ -2278,6 +2336,16 @@ void CPlayer::UpdateStartStageJumpEnd()
 			CFade::FadeIn();
 			ChangeState(EState::eReady);
 			CGameManager::Stage3();
+		}
+		else if (mStartStage4)
+		{
+			mScaleTime = 0.0f;
+			mMoveSpeedY = 0.0f;
+			Scale(CVector(1.0f, 1.0f, 1.0f));
+			SetAlpha(0.0f);
+			CFade::FadeIn();
+			ChangeState(EState::eReady);
+			CGameManager::Stage4();
 		}
 	}
 }
@@ -3404,6 +3472,11 @@ void CPlayer::StartStage(int stageNo)
 	{
 		mStartStage3 = true;
 	}
+	// ステージ4を開始したら、ステージ4のフラグをオン
+	else if (stageNo == 4 && mIsStartStage4)
+	{
+		mStartStage4 = true;
+	}
 	// それ以外は、ステージ移動状態へ進行しない
 	else return;
 
@@ -3936,11 +4009,13 @@ void CPlayer::Update()
 		{
 			mIsStartStage2 = true;
 			mIsStartStage3 = true;
+			mIsStartStage4 = true;
 		}
 		else if (CInput::PushKey(VK_DOWN))
 		{
 			mIsStartStage2 = false;
 			mIsStartStage3 = false;
+			mIsStartStage4 = false;
 		}
 	}
 
@@ -3969,7 +4044,8 @@ void CPlayer::Update()
 
 	if (CGameManager::StageNo() == 1 ||
 		CGameManager::StageNo() == 2 ||
-		CGameManager::StageNo() == 3)
+		CGameManager::StageNo() == 3 ||
+		CGameManager::StageNo() == 4)
 	{
 		mpHpGauge->SetShow(true);
 		mpStaminaGauge->SetShow(true);

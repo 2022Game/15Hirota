@@ -128,6 +128,12 @@ void CGameManager::Stage3()
 	Instance()->ChangeState(EGameState::eStage3);
 }
 
+// ステージ4
+void CGameManager::Stage4()
+{
+	Instance()->ChangeState(EGameState::eStage4);
+}
+
 // 現在のゲームの状態を取得
 EGameState CGameManager::GameState()
 {
@@ -186,7 +192,7 @@ void CGameManager::UpdateGame()
 				ChangeState(EGameState::eResult);
 			}
 		}
-		/*else if (player->IsStage3Clear() && !mResultSetUp)
+		else if (player->IsStage3Clear() && !mResultSetUp)
 		{
 			mElapsedTime += Time::DeltaTime();
 			if (mElapsedTime > 1.5f)
@@ -195,7 +201,7 @@ void CGameManager::UpdateGame()
 				mResultSetUp = true;
 				ChangeState(EGameState::eResult);
 			}
-		}*/
+		}
 		else if (player->IsDeath() && !mResultSetUp)
 		{
 			mElapsedTime += Time::DeltaTime();
@@ -287,6 +293,25 @@ void CGameManager::UpdateStage3()
 
 	mElapsedStageTime += Time::DeltaTime();
 	if (mElapsedStageTime > 21.0f)
+	{
+		ChangeState(EGameState::eGame);
+	}
+}
+
+// ステージ4の更新処理
+void CGameManager::UpdateStage4()
+{
+	int stageNo = 4;
+	if (mStageNo != stageNo)
+	{
+		CStageManager::LoadStage(stageNo);
+		mStageNo = stageNo;
+	}
+
+	ScoreReset();
+
+	mElapsedStageTime += Time::DeltaTime();
+	if (mElapsedStageTime > 10.0f)
 	{
 		ChangeState(EGameState::eGame);
 	}
@@ -413,6 +438,10 @@ void CGameManager::Update()
 		// ステージ3
 	case EGameState::eStage3:
 		UpdateStage3();
+		break;
+		// ステージ4
+	case EGameState::eStage4:
+		UpdateStage4();
 		break;
 	}
 }

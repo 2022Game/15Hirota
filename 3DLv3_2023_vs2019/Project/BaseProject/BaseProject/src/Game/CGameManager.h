@@ -23,6 +23,7 @@ enum class EGameState
 	eStage1,		// ステージ1
 	eStage2,		// ステージ2
 	eStage3,		// ステージ3
+	eStage4,		// ステージ4
 };
 
 //ゲームクラスを管理するクラス
@@ -49,8 +50,10 @@ public:
 	static void Stage1();
 	// ステージ2
 	static void Stage2();
-	// ステージ2
+	// ステージ3
 	static void Stage3();
+	// ステージ4
+	static void Stage4();
 	// リセット処理
 	static void Reset();
 
@@ -103,6 +106,8 @@ private:
 	void UpdateStage2();
 	// ステージ3の更新処理
 	void UpdateStage3();
+	// ステージ4の更新処理
+	void UpdateStage4();
 
 	// リセット処理
 	void UpdateReset();

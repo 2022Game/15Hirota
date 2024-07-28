@@ -9,6 +9,7 @@
 #define STAGE_1 300
 #define STAGE_2 300
 #define STAGE_3 400
+#define STAGE_4 500
 
 #define STAR_STAGE_TIME 1.0f
 
@@ -31,6 +32,7 @@ CStageTime::CStageTime()
 	, mIsStage1(false)
 	, mIsStage2(false)
 	, mIsStage3(false)
+    , mIsStage4(false)
 {
     // インスタンスの設定
     spInstance = this;
@@ -103,6 +105,7 @@ void CStageTime::Update()
             mIsStage1 = true;
             mIsStage2 = false;
             mIsStage3 = false;
+            mIsStage4 = false;
         }
         else if (currentStage == 2 && !mIsStage2)
         {
@@ -110,6 +113,7 @@ void CStageTime::Update()
             mIsStage1 = false;
             mIsStage2 = true;
             mIsStage3 = false;
+            mIsStage4 = false;
         }
         else if (currentStage == 3 && !mIsStage3)
         {
@@ -117,6 +121,15 @@ void CStageTime::Update()
             mIsStage1 = false;
             mIsStage2 = false;
             mIsStage3 = true;
+            mIsStage4 = false;
+        }
+        else if (currentStage == 4 && !mIsStage4)
+        {
+            mTime = STAGE_4;
+            mIsStage1 = false;
+            mIsStage2 = false;
+            mIsStage3 = false;
+            mIsStage4 = true;
         }
 
         // ゲーム時間の更新
@@ -139,8 +152,11 @@ void CStageTime::Update()
         }
     }
 
-    // ステージ1,2,3のみ表示
-    if (currentStage == 1 || currentStage == 2 || currentStage == 3)
+    // ステージ1,2,3,4のみ表示
+    if (currentStage == 1 ||
+        currentStage == 2 ||
+        currentStage == 3 ||
+        currentStage == 4)
     {
         mpTimer->SetShow(true);
         mpTimerText->SetShow(true);

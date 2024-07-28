@@ -4,6 +4,7 @@
 #include "CStage1.h"
 #include "CStage2.h"
 #include "CStage3.h"
+#include "CStage4.h"
 
 CStageManager* CStageManager::spInstance = nullptr;
 CStageBase* CStageManager::spCurrentStage = nullptr;
@@ -36,6 +37,7 @@ void CStageManager::LoadStage(int no)
 	case 1: spCurrentStage = new CStage1(); break;
 	case 2: spCurrentStage = new CStage2(); break;
 	case 3: spCurrentStage = new CStage3(); break;
+	case 4: spCurrentStage = new CStage4(); break;
 	default:spCurrentStage = new CStageSelectionStage(); break;
 	}
 	// ステージが作成出来たら、ステージ読み込み

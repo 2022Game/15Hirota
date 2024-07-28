@@ -27,6 +27,7 @@ CScore::CScore()
 	, mIsStage1(false)
 	, mIsStage2(false)
 	, mIsStage3(false)
+    , mIsStage4(false)
 {
 	// インスタンスの設定
 	spInstance = this;
@@ -81,6 +82,7 @@ void CScore::Update()
         mIsStage1 = false;
         mIsStage2 = false;
         mIsStage3 = false;
+        mIsStage4 = false;
         // スコアテキストを非表示に設定
         mpScoreText->SetShow(false);
         // ステージ0の場合は他の処理をスキップ
@@ -96,6 +98,7 @@ void CScore::Update()
             mIsStage1 = true;
             mIsStage2 = false;
             mIsStage3 = false;
+            mIsStage4 = false;
             mpScoreText->SetShow(true);
         }
         // ステージ2
@@ -104,6 +107,7 @@ void CScore::Update()
             mIsStage1 = false;
             mIsStage2 = true;
             mIsStage3 = false;
+            mIsStage4 = false;
             mpScoreText->SetShow(true);
         }
         // ステージ3
@@ -112,11 +116,24 @@ void CScore::Update()
             mIsStage1 = false;
             mIsStage2 = false;
             mIsStage3 = true;
+            mIsStage4 = false;
+            mpScoreText->SetShow(true);
+        }
+        // ステージ3
+        else if (currentStage == 4 && !mIsStage4)
+        {
+            mIsStage1 = false;
+            mIsStage2 = false;
+            mIsStage3 = false;
+            mIsStage4 = true;
             mpScoreText->SetShow(true);
         }
         
         // ステージ1,2,3に入っている時のみスコアの計算を行う
-        if (mIsStage1 || mIsStage2 || mIsStage3)
+        if (mIsStage1 || 
+            mIsStage2 || 
+            mIsStage3 ||
+            mIsStage4)
         {
             // 現在のスコアの計算
             // ヴァンガードスコア + ブルーメダルスコア

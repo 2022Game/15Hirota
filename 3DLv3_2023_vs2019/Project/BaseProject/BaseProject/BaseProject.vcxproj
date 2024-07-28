@@ -163,6 +163,7 @@
     <ClCompile Include="src\Game\CScore.cpp" />
     <ClCompile Include="src\Game\CScreenItem.cpp" />
     <ClCompile Include="src\Game\CSeesaw.cpp" />
+    <ClCompile Include="src\Game\CSeesawAdventure.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CSlash.cpp" />
@@ -177,6 +178,9 @@
     <ClCompile Include="src\Game\CStage3.cpp" />
     <ClCompile Include="src\Game\CStage3Button.cpp" />
     <ClCompile Include="src\Game\CStage3MenuObject.cpp" />
+    <ClCompile Include="src\Game\CStage4.cpp" />
+    <ClCompile Include="src\Game\CStage4Button.cpp" />
+    <ClCompile Include="src\Game\CStage4MenuObject.cpp" />
     <ClCompile Include="src\Game\CStageBase.cpp" />
     <ClCompile Include="src\Game\CStageButton.cpp" />
     <ClCompile Include="src\Game\CStageManager.cpp" />
@@ -406,6 +410,7 @@
     <ClInclude Include="src\Game\CScore.h" />
     <ClInclude Include="src\Game\CScreenItem.h" />
     <ClInclude Include="src\Game\CSeesaw.h" />
+    <ClInclude Include="src\Game\CSeesawAdventure.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CSlash.h" />
@@ -420,6 +425,9 @@
     <ClInclude Include="src\Game\CStage3.h" />
     <ClInclude Include="src\Game\CStage3Button.h" />
     <ClInclude Include="src\Game\CStage3MenuObject.h" />
+    <ClInclude Include="src\Game\CStage4.h" />
+    <ClInclude Include="src\Game\CStage4Button.h" />
+    <ClInclude Include="src\Game\CStage4MenuObject.h" />
     <ClInclude Include="src\Game\CStageBase.h" />
     <ClInclude Include="src\Game\CStageButton.h" />
     <ClInclude Include="src\Game\CStageManager.h" />

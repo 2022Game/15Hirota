@@ -132,6 +132,8 @@ public:
 	bool IsStage2Clear();
 	// ステージ3をクリアしたかどうか
 	bool IsStage3Clear();
+	// ステージ4をクリアしたかどうか
+	bool IsStage4Clear();
 	// ステージをクリアしたかどうか
 	bool IsStageClear();
 
@@ -143,6 +145,8 @@ public:
 	bool IsStartStage2();
 	// ステージ3に入れるかどうかのフラグ
 	bool IsStartStage3();
+	// ステージ4に入れるかどうかのフラグ
+	bool IsStartStage4();
 
 	// 攻撃力アップアイテムを使用したかどうか
 	bool IsAttackItem();
@@ -661,20 +665,6 @@ private:
 	bool mIsSpawnedSlashEffect;
 	// 落下ダメージを受けたか
 	bool mFallDamage;
-	// ステージ1をクリアしたか
-	bool mStage1Clear;
-	// マネージャークラスに伝える用
-	bool mIsStage1Clear;
-	// ステージ2をクリアしたか
-	bool mStage2Clear;
-	// マネージャークラスに伝える用
-	bool mIsStage2Clear;
-	// ステージ3をクリアしたか
-	bool mStage3Clear;
-	// マネージャークラスに伝える用
-	bool mIsStage3Clear;
-	// (全てのステージ)クリアしたかマネージャークラスに伝えるよう
-	bool mIsStageClear;
 	// ダッシュジャンプに移行できるかどうか
 	bool mIsDashJump;
 	// 死亡したか
@@ -691,17 +681,42 @@ private:
 	bool mDamaged;
 
 
+	// 自クラス
+	// ステージ1をクリアしたか
+	bool mStage1Clear;
+	// マネージャークラスに伝える用
+	bool mIsStage1Clear;
+	// ステージ2をクリアしたか
+	bool mStage2Clear;
+	// マネージャークラスに伝える用
+	bool mIsStage2Clear;
+	// ステージ3をクリアしたか
+	bool mStage3Clear;
+	// マネージャークラスに伝える用
+	bool mIsStage3Clear;
+	// ステージ4をクリアしたか
+	bool mStage4Clear;
+	// マネージャークラスに伝える用
+	bool mIsStage4Clear;
+	// (全てのステージ)クリアしたかマネージャークラスに伝えるよう
+	bool mIsStageClear;
+
 	// ステージ1に入るかどうか
 	bool mStartStage1;
 	// ステージ2に入るかどうか
 	bool mStartStage2;
 	// ステージ3に入るかどうか
 	bool mStartStage3;
+	// ステージ4に入るかどうか
+	bool mStartStage4;
 
-	// ステージ2に入れるか
+	// 他クラスで確認用
+	// ステージ2に入れるか(別クラス用)
 	bool mIsStartStage2;
-	// ステージ3に入れるか
+	// ステージ3に入れるか(別クラス用)
 	bool mIsStartStage3;
+	// ステージ4に入れるか(別クラス用)
+	bool mIsStartStage4;
 
 	///////////////////////////////////////////////////////
 };

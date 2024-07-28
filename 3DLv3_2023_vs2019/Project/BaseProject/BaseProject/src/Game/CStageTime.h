@@ -48,5 +48,7 @@ private:
 	bool mIsStage2;
 	// ステージ3か
 	bool mIsStage3;
+	// ステージ4火
+	bool mIsStage4;
 };
 #endif
