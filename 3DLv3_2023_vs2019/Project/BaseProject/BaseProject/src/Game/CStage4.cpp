@@ -284,6 +284,13 @@ void CStage4::Load()
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
+	// ピコちゃん
+	CPicoChan* pico = new CPicoChan();
+	pico->Scale(10.5f, 10.5f, 10.5f);
+	pico->Position(328.0f, -257.0f, -700.0f);
+	pico->SetCenterPoint(CVector(328.0f, -306.0f, -700.0f),30.0f);
+	AddTask(pico);
+
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	// 初期値点 : 333.0f, -277.0f, -988.0f

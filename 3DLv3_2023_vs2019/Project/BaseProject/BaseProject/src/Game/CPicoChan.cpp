@@ -65,10 +65,12 @@ const CPicoChan::AnimData CPicoChan::ANIM_DATA[] =
 	{ "Character\\PicoChan\\anim\\Putaway_77_1.x",		false,		77.0f	},	// 取り出す1
 	{ "Character\\PicoChan\\anim\\Takeout_31_1.x",		false,		113.0f	},	// 取り出す2
 	{ "Character\\PicoChan\\anim\\WeaponDraw_48_1.x",	false,		48.0f	},	// 武器取り出し
+	{ "Character\\PicoChan\\anim\\WeakAttack_77_1.x",	false,		77.0f	},	// 弱攻撃
 	{ "Character\\PicoChan\\anim\\SpinAttack_113_1.x",	false,		113.0f	},	// 回転攻撃
-	{ "Character\\PicoChan\\anim\\Turn180_134_1.x",		false,		134.0f	},	// 振り返る
+	{ "Character\\PicoChan\\anim\\Turn180_134.x",		false,		134.0f	},	// 振り返る
 	{ "Character\\PicoChan\\anim\\Alert_223_1.x",			true,	223.0f	},	// 警戒1
 	{ "Character\\PicoChan\\anim\\Alert_454_2.x",			true,	454.0f	},	// 警戒2
+	{ "Character\\PicoChan\\anim\\Hit_72_1.x",			false,		72.0f	},	// 被弾
 };
 
 // コンストラクタ
@@ -184,7 +186,7 @@ CPicoChan::~CPicoChan()
 	SAFE_DELETE(mpLine);
 	SAFE_DELETE(mpCapsule);
 	SAFE_DELETE(mpDamageCol);
-	SAFE_DELETE(mpAttackCol);
+	//SAFE_DELETE(mpAttackCol);
 }
 
 // 衝突処理
@@ -274,7 +276,7 @@ void CPicoChan::TakeDamage(int damage)
 	// HPが0になったら
 	if (mCharaStatus.hp <= 0)
 	{
-		ChangeState(EState::eDeth);
+		ChangeState(EState::eDeath);
 	}
 }
 
@@ -465,7 +467,7 @@ void CPicoChan::UpdateIdle()
 {
 	mDiscovery = false;
 	mDiscoveryEnd = false;
-	mpAttackCol->SetEnable(false);
+	//mpAttackCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
@@ -562,4 +564,259 @@ void CPicoChan::UpdateChase()
 			ChangeState(EState::eAttack);
 		}
 	}
+}
+
+// プレイヤーの攻撃を受けた時
+void CPicoChan::UpdateHit()
+{
+	// ダメージを受けた時は移動を停止
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	ChangeAnimation(EAnimType::eHit);
+	if (IsAnimationFinished())
+	{
+		// プレイヤーのポインタが0以外の時
+		CPlayer* player = CPlayer::Instance();
+
+		// プレイヤーまでのベクトルを求める
+		CVector vp = player->Position() - Position();
+		float distancePlayer = vp.Length();
+		vp.Y(0.0f);
+		mTargetDir = vp.Normalized();
+
+		if (mCharaStatus.hp >= 1)
+		{
+			ChangeState(EState::eChase);
+		}
+		else if (mCharaStatus.hp <= 0)
+		{
+			mpDamageCol->SetEnable(false);
+			ChangeState(EState::eDeath);
+		}
+	}
+}
+
+// 死亡
+void CPicoChan::UpdateDeath()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+	ChangeAnimation(EAnimType::eDeath1);
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eDeathEnd);
+	}
+}
+
+// 死亡処理終了
+void CPicoChan::UpdateDeathEnd()
+{
+	if (IsAnimationFinished())
+	{
+		Kill();
+	}
+}
+
+// 徘徊処理
+void CPicoChan::UpdateWander()
+{
+	//mpAttackCol->SetEnable(false);
+	ChangeAnimation(EAnimType::eWalk);
+
+	// 一定時間ごとに方向転換
+	mElapsedTime += Time::DeltaTime();
+	if (mElapsedTime >= mTimeToChange)
+	{
+		ChangeDerection();
+		mElapsedTime = 0.0f;
+	}
+
+	Move();
+
+	if (IsFoundPlayer())
+	{
+		if (mDiscoveryTimeEnd <= DISCOVERY_END)
+		{
+			ChangeState(EState::eDiscovery);
+		}
+		else
+		{
+			ChangeState(EState::eChase);
+		}
+	}
+	else
+	{
+		if (ShouldTransitionWander())
+		{
+			ChangeState(EState::eIdle);
+		}
+	}
+}
+
+// プレイヤー追跡
+bool CPicoChan::IsFoundPlayer() const
+{
+	CVector playerPos = CPlayer::Instance()->Position();
+	CVector enemyPos = Position();
+
+	CVector toPlayer = (playerPos - enemyPos).Normalized();
+	CVector forward = Matrix().VectorZ().Normalized();
+
+	float dot = forward.Dot(toPlayer);
+
+	// 視野角の半分を計算する
+	float halfFOV = FOV_ANGLE * 0.5f;
+
+
+	// 視野角の半分より小さいかつプレイヤーとの距離が一定範囲以内であれば、プレイヤーを認識する
+	if (dot >= cosf(halfFOV * M_PI / 180.0f))
+	{
+		float distance = (playerPos - enemyPos).Length();
+		const float chaseRange = 100.0f;
+
+		if (distance <= chaseRange)
+			return true;
+	}
+
+	return false;
+}
+
+// 更新
+void CPicoChan::Update()
+{
+	SetParent(mpRideObject);
+	mpRideObject = nullptr;
+
+	// キックの待ち時間
+	if (mKickTimeEnd)
+	{
+		mKickTime += Time::DeltaTime();
+		if (mKickTime >= KICKCOL)
+		{
+			mKickTimeEnd = false;
+			mKickTime = 0.0f;
+		}
+	}
+
+	// バックステップの待ち時間
+	if (mBackStep)
+	{
+		mBackStepTime += Time::DeltaTime();
+		if (mBackStepTime >= BACKSTEP_WEIT_TIME)
+		{
+			mBackStep = false;
+			mBackStepTime = 0.0f;
+		}
+	}
+
+	// プレイヤーを発見した後の時間の計測
+	if (mDiscoveryTimeEnd <= DISCOVERY_END && mDiscoveryEnd)
+	{
+		mDiscoveryTimeEnd += Time::DeltaTime();
+		if (mDiscoveryTimeEnd >= DISCOVERY_END)
+		{
+			mDiscovery = false;
+			mDiscoveryEnd = false;
+			mDiscoveryTimeEnd = 0.0f;
+		}
+	}
+
+	// 状態に合わせて、更新処理を切り替える
+	switch (mState)
+	{
+		// 準備状態
+	case EState::eReady:
+		UpdateReady();
+		break;
+		// 待機状態
+	case EState::eIdle:
+		UpdateIdle();
+		break;
+	//	// 攻撃
+	//case EState::eAttack:
+	//	UpdateAttack();
+	//	break;
+	//	// キック
+	//case EState::eKick:
+	//	UpdateKick();
+	//	break;
+	//	// キック終了
+	//case EState::eKickWait:
+	//	UpdateKickEnd();
+	//	break;
+	//	// 攻撃終了待ち
+	//case EState::eAttackWait:
+	//	UpdateAttackWait();
+	//	break;
+		// プレイヤー発見
+	case EState::eDiscovery:
+		UpdateDiscovery();
+		break;
+		// 追跡状態
+	case EState::eChase:
+		UpdateChase();
+		break;
+		// プレイヤーの攻撃Hit
+	case EState::eHit:
+		UpdateHit();
+		break;
+		// 死亡
+	case EState::eDeath:
+		UpdateDeath();
+		break;
+		// 死亡処理終了
+	case EState::eDeathEnd:
+		UpdateDeathEnd();
+		break;
+		// 徘徊処理
+	case EState::eWander:
+		UpdateWander();
+		break;
+	//	// バックステップ
+	//case EState::eBackStep:
+	//	UpdateBackStep();
+	//	break;
+	//	// ジャンプ開始
+	//case EState::eJumpStart:
+	//	UpdateJumpStart();
+	//	break;
+	//	// ジャンプ中
+	//case EState::eJump:
+	//	UpdateJump();
+	//	break;
+	//	// ジャンプ終了
+	//case EState::eJumpEnd:
+	//	UpdateJumpEnd();
+	//	break;
+	}
+
+	if (mState != EState::eReady)
+	{
+		mMoveSpeed -= CVector(0.0f, GRAVITY, 0.0f);
+
+		// 移動
+		Position(Position() + mMoveSpeed * 60.0f * Time::DeltaTime());
+
+		CVector PlayerPosition;
+
+		// CSoldierを移動方向へ向ける
+		CVector current = VectorZ();
+		CVector target = mTargetDir;
+		CVector forward = CVector::Slerp(current, target, 0.125f);
+		Rotation(CQuaternion::LookRotation(forward));
+	}
+
+	// CSoldierの更新
+	CXCharacter::Update();
+	mpDamageCol->Update();
+	//mpAttackCol->Update();
+
+	mIsGrounded = false;
+}
+
+// 描画
+void CPicoChan::Render()
+{
+	CXCharacter::Render();
 }

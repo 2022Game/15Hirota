@@ -95,27 +95,27 @@ private:
 	// 待機状態
 	void UpdateIdle();
 	// ダッシュ状態
-	void UpdateDash();
+	//void UpdateDash();
 	// 攻撃状態
-	void UpdateAttack();
+	//void UpdateAttack();
 	// 攻撃終了待ち
-	void UpdateAttackWait();
+	//void UpdateAttackWait();
 	// 武器をしまう状態
-	void UpdatePutAway();
+	//void UpdatePutAway();
 	// ジャンプ開始
-	void UpdateJumpStart();
+	//void UpdateJumpStart();
 	// ジャンプ中
-	void UpdateJump();
+	//void UpdateJump();
 	// ジャンプ終了
-	void UpdateJumpEnd();
+	//void UpdateJumpEnd();
 	// プレイヤー発見
 	void UpdateDiscovery();
 	// 追跡
 	void UpdateChase();
 	// キック
-	void UpdateKick();
+	//void UpdateKick();
 	// キック終了
-	void UpdateKickEnd();
+	//void UpdateKickEnd();
 	// プレイヤーの攻撃hit
 	void UpdateHit();
 	// 死亡
@@ -125,7 +125,7 @@ private:
 	// 徘徊処理
 	void UpdateWander();
 	// バックステップ
-	void UpdateBackStep();
+	//void UpdateBackStep();
 
 	// 状態
 	enum class EState
@@ -141,8 +141,8 @@ private:
 		eKick,		// キック
 		eKickWait,	// キック終了
 		eHit,		// ダメージHit
-		eDeth,		// 死亡
-		eDethEnd,	// 死亡終了
+		eDeath,		// 死亡
+		eDeathEnd,	// 死亡終了
 		eWander,	// 徘徊処理
 		eBackStep,	// バックステップ
 		eJumpStart,	// ジャンプ開始
@@ -174,10 +174,12 @@ private:
 		ePutAway,	// 武器をしまう
 		eTakeOut,	// 武器取り出し1
 		eWeaponDraw,// 武器取り出し2
+		eWeakAttack,// 弱攻撃
 		eSpinAttack,// 回転攻撃
 		eTurn180,	// 振り返る
 		eAlert1,	// 警戒1
 		eAlert2,	// 警戒2
+		eHit,		// 被弾
 
 		Num
 	};
