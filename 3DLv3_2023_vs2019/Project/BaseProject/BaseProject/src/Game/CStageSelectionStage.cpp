@@ -231,7 +231,7 @@ void CStageSelectionStage::Load()
 	CStage4MenuObject* menuobj4 = new CStage4MenuObject
 	(
 		CVector(6.0f, 30.0f, -615.0f),
-		CVector(2.2f, 2.2f, 2.2f),
+		CVector(4.0f, 4.0f, 4.0f),
 		CVector(0.0f, 40.0f, 0.0f),
 		ETag::ePlayer, ELayer::eDamageCol
 	);

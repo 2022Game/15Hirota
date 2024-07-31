@@ -538,7 +538,8 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				Position(0.0f, 20.0f, 50.0f);
 				ChangeState(EState::eFallDamege);
 				// 2面のセーブポイント
-				if (mSavePoint1 && mSavePoint2 || !mSavePoint1 && mSavePoint2)
+				if (mSavePoint1 && mSavePoint2 ||
+					!mSavePoint1 && mSavePoint2)
 				{
 					ChangeState(EState::eFallDamege);
 					Position(0.0f, 56.0f, 994.0f);
@@ -553,7 +554,8 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			else if (currentStage == 3)
 			{
 				// 3面のセーブポイント1と2のチェック
-				if (mSavePoint1 && mSavePoint2 || !mSavePoint1 && mSavePoint2)
+				if (mSavePoint1 && mSavePoint2 ||
+					!mSavePoint1 && mSavePoint2)
 				{
 					// SavePoint2がtrueならセーブポイント2のポジションを適用
 					Position(0.0f, 440.0f, -1890.0f);
@@ -567,6 +569,28 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				{
 					// 初期値点に戻す
 					Position(190.0f, 139.0f, 269.0f);
+					ChangeState(EState::eFallDamege);
+				}
+			}
+			// ステージ番号が4だったら
+			else if (currentStage == 4)
+			{
+				// 4面のセーブポイント1と2のチェック
+				if (mSavePoint1 && mSavePoint2 ||
+					!mSavePoint1 && mSavePoint2)
+				{
+					// SavePoint2がtrueならセーブポイント2のポジションを適用
+					Position(0.0f, 440.0f, -1890.0f);
+				}
+				else if (mSavePoint1)
+				{
+					// セーブポイント1だけがtrueならセーブポイント1のポジションを適用
+					Position(328.0f, -190.0f, -546.0f);
+				}
+				else
+				{
+					// 初期値点に戻す
+					Position(328.0f, -277.0f, -958.0f);
 					ChangeState(EState::eFallDamege);
 				}
 			}

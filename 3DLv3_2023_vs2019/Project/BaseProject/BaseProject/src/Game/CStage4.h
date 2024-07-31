@@ -6,6 +6,7 @@
 class CSeesawAdventure;
 class CStageSky;
 class CSeesawAdventure;
+class CSeesawStageFallCol;
 
 // ステージ4「シーソーアドベンチャー」
 class CStage4 : public CStageBase
@@ -22,7 +23,7 @@ public:
 	void Unload() override;
 
 private:
-	//FallCol* FallCol;
+	CSeesawStageFallCol* mpFallCol;
 	CStageSky* mpSky;
 	CSeesawAdventure* mpFeild;
 };

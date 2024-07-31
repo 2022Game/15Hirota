@@ -296,6 +296,9 @@
     <Filter Include="ソース ファイル\Game\Field\StageField\Seesaw Stage">
       <UniqueIdentifier>{62773cc0-5e73-49e0-82e8-3f2810d8500f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Tilt\Base">
+      <UniqueIdentifier>{527f0ee6-4f99-4799-bf41-c42083e21966}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -1008,6 +1011,15 @@
     </ClCompile>
     <ClCompile Include="src\Game\CStage4MenuObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSeesawObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Tilt\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSplitSeesaw.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Tilt</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSeesawStageFallCol.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\Seesaw Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1745,6 +1757,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CStage4MenuObject.h">
       <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSeesawObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Tilt\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSplitSeesaw.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Tilt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSeesawStageFallCol.h">
+      <Filter>ソース ファイル\Game\Field\StageField\Seesaw Stage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

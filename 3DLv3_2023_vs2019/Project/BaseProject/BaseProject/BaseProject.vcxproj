@@ -164,9 +164,12 @@
     <ClCompile Include="src\Game\CScreenItem.cpp" />
     <ClCompile Include="src\Game\CSeesaw.cpp" />
     <ClCompile Include="src\Game\CSeesawAdventure.cpp" />
+    <ClCompile Include="src\Game\CSeesawObject.cpp" />
+    <ClCompile Include="src\Game\CSeesawStageFallCol.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CSlash.cpp" />
+    <ClCompile Include="src\Game\CSplitSeesaw.cpp" />
     <ClCompile Include="src\Game\CSpring.cpp" />
     <ClCompile Include="src\Game\CSpringObject.cpp" />
     <ClCompile Include="src\Game\CStage1.cpp" />
@@ -411,9 +414,12 @@
     <ClInclude Include="src\Game\CScreenItem.h" />
     <ClInclude Include="src\Game\CSeesaw.h" />
     <ClInclude Include="src\Game\CSeesawAdventure.h" />
+    <ClInclude Include="src\Game\CSeesawObject.h" />
+    <ClInclude Include="src\Game\CSeesawStageFallCol.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CSlash.h" />
+    <ClInclude Include="src\Game\CSplitSeesaw.h" />
     <ClInclude Include="src\Game\CSpring.h" />
     <ClInclude Include="src\Game\CSpringObject.h" />
     <ClInclude Include="src\Game\CStage1.h" />

@@ -298,15 +298,15 @@ void CStage2::Load()
 	);
 	AddTask(springlower);
 
-	// シーソーモデル
-	CSeesaw* seesaw1 = new CSeesaw
-	(
-		CVector(0.0f, 0.0f, -5.0f),
-		CVector(8.5f, 5.5f, 10.5f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(seesaw1);
+	//// シーソーモデル
+	//CSeesaw* seesaw1 = new CSeesaw
+	//(
+	//	CVector(0.0f, 0.0f, -5.0f),
+	//	CVector(8.5f, 5.5f, 10.5f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(seesaw1);
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	// 動くキノコ(左右)

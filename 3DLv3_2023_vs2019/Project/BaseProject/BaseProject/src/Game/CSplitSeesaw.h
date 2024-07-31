@@ -1,10 +1,10 @@
-#ifndef CSEESAW_H
-#define CSEESAW_H
+#ifndef CSPLITSEESAW_H
+#define CSPLITSEESAW_H
 
 #include "CSeesawObject.h"
 
 // シーソー
-class CSeesaw : public CSeesawObject
+class CSplitSeesaw : public CSeesawObject
 {
 public:
 	/// <summary>
@@ -20,12 +20,12 @@ public:
 	/// <param name="rotateRSpeed">右の回転スピード</param>
 	/// <param name="rotateLSpeed">左の回転スピード</param>
 	/// <param name="modelPath">モデルパス</param>
-	CSeesaw(const CVector& pos, const CVector& scale, const CVector& rot,
+	CSplitSeesaw(const CVector& pos, const CVector& scale, const CVector& rot,
 		ETag reactionTag, ELayer reactionLayer, const float right, const float left,
 		const float rotateRSpeed, const float rotateLSpeed,
 		std::string modelPath = "SeesawModel");
 
 	// デストラクタ
-	virtual ~CSeesaw();
+	virtual ~CSplitSeesaw();
 };
 #endif
