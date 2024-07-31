@@ -93,7 +93,7 @@ private:
 	// ベクトル関連
 	// 変数関連
 
-	// プレイヤーのインスタンス
+	// ソルジャーのインスタンス
 	static CSoldier* spInstance;
 
 

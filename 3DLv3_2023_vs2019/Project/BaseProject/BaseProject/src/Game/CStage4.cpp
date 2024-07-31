@@ -15,6 +15,7 @@
 #include "CRotateFloorTimeGimmick.h"
 #include "CSeesawStageFallCol.h"
 #include "CSavePoint1.h"
+#include "CPicoChan.h"
 
 // コンストラクタ
 CStage4::CStage4()
@@ -88,6 +89,9 @@ void CStage4::Load()
 	CResourceManager::Load<CTexture>("TUI", "UI\\GimmickUI\\T.png");
 
 	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
+
+	// ピコちゃん
+	CResourceManager::Load<CModelX>("Pico", "Character\\PicoChan\\PicoChan.x");
 
 	CInput::ShowCursor(false);
 

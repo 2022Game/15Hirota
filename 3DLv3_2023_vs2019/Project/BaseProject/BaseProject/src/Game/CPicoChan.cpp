@@ -1,0 +1,565 @@
+#include "CPicoChan.h"
+#include "CCamera.h"
+#include "CBillBoard.h"
+#include "CImage.h"
+#include "CPlayer.h"
+#include "Maths.h"
+#include "CInput.h"
+#include "CGameManager.h"
+#include "CStageManager.h"
+
+// ピコちゃんの頭上
+#define PICO_HEIGHT 5.0f
+// 移動速度
+#define MOVE_SPEED 0.7f
+// 自動移動速度
+#define MOVE_AUTOMATIC_SPEED 30.0f
+// ジャンプ速度
+#define JUMP_SPEED 1.5f
+// 重力加速度
+#define GRAVITY 0.0625f
+
+// 視野の角度
+#define FOV_ANGLE 100.0f
+// プレイヤーまでの距離
+#define ATTACK_RANGE 70.0f
+// プレイヤーまでの距離(キック)
+#define ATTACK_RANGE_KICK 25.0f
+// プレイヤーまでの距離(バックステップ)
+#define BACKSTEP_RANGE 24.0f
+// バックステップの待機時間
+#define BACKSTEP_WEIT_TIME 5.0f
+
+// 敵を見失った後の時間
+#define PLAYER_LOST 10.0f
+
+// キックコライダーの時間
+#define KICKCOL 10.0f
+
+// プレイヤーを発見した後の時間
+#define DISCOVERY 2.0f
+// プレイヤーを発見した後の待ち時間
+#define DISCOVERY_END 40.0f
+
+// ピコちゃんのインスタンス
+CPicoChan* CPicoChan::spInstance = nullptr;
+
+CPicoChan* CPicoChan::Instance()
+{
+	return spInstance;
+}
+
+// ピコちゃんのアニメーションデータのテーブル
+const CPicoChan::AnimData CPicoChan::ANIM_DATA[] =
+{
+	{ "",													true,	  0.0f	},	// Tポーズ
+	{ "Character\\PicoChan\\anim\\Idle_266_2.x",			true,   266.0f	},	// Idle1
+	{ "Character\\PicoChan\\anim\\Idle_421_1.x",			true,   421.0f	},	// Idle2
+	{ "Character\\PicoChan\\anim\\Walk_61_1.x",				true,   61.0f	},	// 歩く
+	{ "Character\\PicoChan\\anim\\Run_44_1.x",				true,   44.0f	},	// 走りゅ
+	{ "Character\\PicoChan\\anim\\BackJump_52_1.x",		false,		52.0f	},	// バックジャンプ
+	{ "Character\\PicoChan\\anim\\DashJump_53_1.x",		false,		53.0f	},	// ダッシュジャンプ
+	{ "Character\\PicoChan\\anim\\Death_235_1.x",		false,		235.0f	},	// 死亡1
+	{ "Character\\PicoChan\\anim\\Death_145_2.x",		false,		145.0f	},	// 死亡2
+	{ "Character\\PicoChan\\anim\\Kick_105_1.x",		false,		105.0f	},	// キック
+	{ "Character\\PicoChan\\anim\\Putaway_77_1.x",		false,		77.0f	},	// 取り出す1
+	{ "Character\\PicoChan\\anim\\Takeout_31_1.x",		false,		113.0f	},	// 取り出す2
+	{ "Character\\PicoChan\\anim\\WeaponDraw_48_1.x",	false,		48.0f	},	// 武器取り出し
+	{ "Character\\PicoChan\\anim\\SpinAttack_113_1.x",	false,		113.0f	},	// 回転攻撃
+	{ "Character\\PicoChan\\anim\\Turn180_134_1.x",		false,		134.0f	},	// 振り返る
+	{ "Character\\PicoChan\\anim\\Alert_223_1.x",			true,	223.0f	},	// 警戒1
+	{ "Character\\PicoChan\\anim\\Alert_454_2.x",			true,	454.0f	},	// 警戒2
+};
+
+// コンストラクタ
+CPicoChan::CPicoChan()
+	: CXCharacter(ETag::eEnemy, ETaskPriority::eEnemy)
+	, mState(EState::eReady)
+	, mStateStep(0)
+	, mElapsedTime(0.0f)
+	, mElapsedTimeEnd(0.0f)
+	, mKickTime(0.0f)
+	, mBackStepTime(0.0f)
+	, mDiscoveryTime(0.0f)
+	, mDiscoveryTimeEnd(0.0f)
+	, mMaxRadius(0.0f)
+	, mTargetDir(0.0f, 0.0f, 1.0f)
+	, mMoveSpeed(0.0f, 0.0f, 0.0f)
+	, mInitialPosition(0.0f, 0.0f, 0.0f)
+	, mCenterPoint(CVector::zero)
+	, mTimeToChange(Math::Rand(2.0f, 5.0f))
+	, mIsGrounded(false)
+	, mKickTimeEnd(false)
+	, mDiscovery(false)
+	, mDiscoveryEnd(false)
+	, mBackStep(false)
+	, mIsLerping(false)
+	, mpRideObject(nullptr)
+{
+	//インスタンスの設定
+	spInstance = this;
+
+	// 初期位置の保存
+	//Position(mInitialPosition);
+	mInitialPosition = Position();
+
+	// モデルデータ取得
+	CModelX* model = CResourceManager::Get<CModelX>("Pico");
+
+	// テーブル内のアニメーションデータを読み込み
+	int size = ARRAY_SIZE(ANIM_DATA);
+	for (int i = 0; i < size; i++)
+	{
+		const AnimData& data = ANIM_DATA[i];
+		if (data.path.empty()) continue;
+		model->AddAnimationSet(data.path.c_str());
+	}
+	// CXCharacterの初期化
+	Init(model);
+
+	// 最初は待機アニメーションを再生
+	ChangeAnimation(EAnimType::eIdle1);
+
+	// フィールドとの当たり判定を取るコライダー
+	mpLine = new CColliderLine
+	(
+		this, ELayer::eField,
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, PICO_HEIGHT, 0.0f)
+	);
+	mpLine->SetCollisionLayers({ ELayer::eField });
+
+	// 一時的な当たり判定を取るコライダー
+	mpCapsule = new CColliderCapsule
+	(
+		this, ELayer::ePlayer,
+		CVector(0.0f, 8.0f, 2.0f),
+		CVector(0.0f, PICO_HEIGHT, 2.0f),
+		4.0f,
+		true,
+		1.0f
+	);
+	mpCapsule->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eFieldEnemyWall });
+	mpCapsule->Position(0.0f, 5.0f, 1.0f);
+
+	// ダメージを受けるコライダー
+	mpDamageCol = new CColliderSphere
+	(
+		this, ELayer::eDamageCol,
+		0.5f
+	);
+	// ダメージを受けるコライダーと
+	// 衝突判定を行うコライダーのレイヤーとタグを設定
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy });
+	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy });
+	// ダメージを受けるコライダーを少し下へずらす
+	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
+	//const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
+	//mpDamageCol->SetAttachMtx(spineMtx);
+
+	//// ダメージを与えるコライダー
+	//mpAttackCol = new CColliderSphere
+	//(
+	//	this, ELayer::eKickCol,
+	//	0.3f
+	//);
+	//mpAttackCol->SetCollisionLayers({ ELayer::eDamageCol });
+	//mpAttackCol->SetCollisionTags({ ETag::ePlayer });
+	//mpAttackCol->SetEnable(false);
+	//// 右足
+	//const CMatrix* spineMtxK = GetFrameMtx("Armature_mixamorig_RightToeBase");
+	//mpAttackCol->SetAttachMtx(spineMtxK);
+
+	// 最初に1レベルに設定
+	ChangeLevel(1);
+}
+
+// デストラクタ
+CPicoChan::~CPicoChan()
+{
+	// 作成したタスクを取り除く
+	CStageManager::RemoveTask(this);
+
+	// コライダー関連の破棄
+	SAFE_DELETE(mpLine);
+	SAFE_DELETE(mpCapsule);
+	SAFE_DELETE(mpDamageCol);
+	SAFE_DELETE(mpAttackCol);
+}
+
+// 衝突処理
+void CPicoChan::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+{
+	// 乗れるコライダー
+	if (self == mpLine)
+	{
+		if (other->Layer() == ELayer::eField)
+		{
+			mMoveSpeed.Y(0.0f);
+			Position(Position() + hit.adjust);
+			mIsGrounded = true;
+
+			if (other->Tag() == ETag::eRideableObject)
+			{
+				mpRideObject = other->Owner();
+			}
+		}
+	}
+
+	// 主に壁との当たり判定を取るコライダー
+	if (self == mpCapsule)
+	{
+		if (other->Layer() == ELayer::eFieldWall)
+		{
+			Position(Position() + hit.adjust); //+ hit.adjust * hit.weight
+
+			// 移動方向を反転
+			mTargetDir = -mTargetDir;
+
+			// 反転した方向に向けて回転を設定
+			CVector current = VectorZ();
+			CVector target = mTargetDir;
+			CVector forward = CVector::Slerp(current, target, 0.125f);
+			Rotation(CQuaternion::LookRotation(forward));
+
+			if (other->Tag() == ETag::eRideableObject)
+			{
+				mpRideObject = other->Owner();
+			}
+		}
+		else if (other->Layer() == ELayer::eField)
+		{
+			Position(Position() + hit.adjust);
+		}
+		else if (other->Layer() == ELayer::eFieldEnemyWall)
+		{
+			Position(Position() + hit.adjust);
+		}
+	}
+
+	// ダメージを受けるコライダー
+	if (self == mpDamageCol)
+	{
+		if (other->Layer() == ELayer::eAttackCol)
+		{
+			if (mState != EState::eKick)
+			{
+				ChangeState(EState::eHit);
+			}
+		}
+
+		// 敵と当たるコライダー
+		if (other->Layer() == ELayer::eDamageCol)
+		{
+			(other->Tag() == ETag::eEnemy);
+			{
+				Position(Position() + hit.adjust);
+			}
+		}
+	}
+}
+
+// 状態変更
+void CPicoChan::ChangeState(EState state)
+{
+	mState = state;
+	mStateStep = 0;
+}
+
+// 被ダメージ処理
+void CPicoChan::TakeDamage(int damage)
+{
+	mCharaStatus.hp -= damage;
+
+	// HPが0になったら
+	if (mCharaStatus.hp <= 0)
+	{
+		ChangeState(EState::eDeth);
+	}
+}
+
+// レベルアップ
+void CPicoChan::LevelUp()
+{
+	int level = mCharaStatus.level;
+	ChangeLevel(level + 1);
+}
+
+// レベルを変更
+void CPicoChan::ChangeLevel(int level)
+{
+	// ステータスのテーブルのインデックス地に変換
+	int index = Math::Clamp(level - 1, 0, ENEMY_LEVEL_MAX);
+	// 最大ステータスに設定
+	mCharaMaxStatus = ENEMY_STATUS[index];
+	// 現在のステータスを最大値にすることで、HP回復
+	mCharaStatus = mCharaMaxStatus;
+}
+
+// ピコちゃんの方向をランダムに変更する処理
+void CPicoChan::ChangeDerection()
+{
+	// ランダムな方向に変更
+	// ランダムな角度を求める
+	float randomAngle = Math::Rand(0.0f, 1.0f) * 360.0f;
+	// 方向の計算を角度に代入
+	mTargetDir = CalculateDirection(randomAngle);
+}
+
+// 待機状態遷移する条件
+bool CPicoChan::ShouldTransitionWander()
+{
+	// mIsLerpingがtrueの場合、処理をスキップ
+	if (mIsLerping)
+	{
+		return false;
+	}
+
+	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
+	return randomValue < 0.01f;
+}
+
+// 徘徊状態に遷移する条件
+bool CPicoChan::ShouldTransition()
+{
+	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
+	return randomValue < 0.1f;  // 0.1%の確率で徘徊状態に遷移
+}
+
+// 360度の角度を求めて、x軸とy軸から計算する
+CVector CPicoChan::CalculateDirection(float angleDegrees)
+{
+	// 初期角度にランダムなオフセットを追加
+	float randomOffset = Math::Rand(0.0f, 1.0f);  // 0から1のランダムな値
+	float randomAngle = angleDegrees + 2.0f * M_PI * randomOffset;
+
+	// 角度からラジアンに変換
+	float angleRadians = randomAngle * M_PI / 180.0f;
+
+	// ベクトルの計算
+	float x = cos(angleRadians);
+	float y = 0.0f;					// Y軸方向に移動させる場合は必要に応じて変更
+	float z = sin(angleRadians);
+
+	return CVector(x, y, z);
+}
+
+// 移動処理
+void CPicoChan::Move()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	// 速度の設定
+	float moveSpeed = MOVE_AUTOMATIC_SPEED;
+
+	// 移動ベクトルの計算
+	CVector moveVector = mTargetDir * moveSpeed;
+
+	// deltaTime を考慮して移動量を計算
+	moveVector *= Time::DeltaTime();
+
+	// 新しい位置を計算
+	CVector newPosition = Position() + moveVector + mMoveSpeed;
+
+	// 中心点からの距離を計算
+	CVector offset = newPosition - mCenterPoint;
+	float distance = offset.Length();
+
+	// 距離が半径を超えた場合の修正
+	if (distance > mMaxRadius)
+	{
+		mIsLerping = true;
+
+		// 目的地へのベクトルを計算
+		CVector direction = mCenterPoint - Position();
+		direction.Normalize(); // 方向ベクトルを正規化
+
+		mTargetDir = -mTargetDir;
+
+		// 中心点から半径までの距離
+		CVector targetPosition = mCenterPoint + direction * mMaxRadius;
+
+		// 一定速度で目的地に向かって移動
+		if (mIsLerping)
+		{
+			// 移動速度
+			float moveSpeed = 0.5f;
+			newPosition = Position() + direction * moveSpeed;
+
+			// 目的地に到達したら位置を更新
+			if (CVector::Distance(Position(), targetPosition) < moveSpeed)
+			{
+				newPosition = targetPosition;
+				mIsLerping = false;
+			}
+		}
+
+		/*CDebugPrint::Print("Position:%f %f\n", Position().X(), Position().Z());
+		CDebugPrint::Print("targetPosition:%f %f\n", targetPosition.X(), targetPosition.Z());*/
+
+		// 敵の向きを調整
+		mTargetDir = (mCenterPoint - Position()).Normalized();
+		mTargetDir.Y(0.0f);
+
+		// 敵を目標方向に回転させる
+		CVector forward = CVector::Slerp(VectorZ(), mTargetDir, 0.125f);
+		Rotation(CQuaternion::LookRotation(forward));
+	}
+
+	// 修正した位置を設定
+	Position(newPosition);
+}
+
+// 中心座標と範囲を設定
+void CPicoChan::SetCenterPoint(CVector& center, const float radius)
+{
+	mMaxRadius = radius;
+	mCenterPoint = center;
+}
+
+// アニメーション切り替え
+void CPicoChan::ChangeAnimation(EAnimType type)
+{
+	if (!(EAnimType::None < type && type < EAnimType::Num)) return;
+	AnimData data = ANIM_DATA[(int)type];
+	CXCharacter::ChangeAnimation((int)type, data.loop, data.frameLength);
+}
+
+// 準備中の状態
+void CPicoChan::UpdateReady()
+{
+	// ステップごとに処理を切り替える
+	switch (mStateStep)
+	{
+		// ステップ0 初期化処理
+	case 0:
+		ChangeAnimation(EAnimType::eIdle2);
+		// 全ての衝突判定をオフにする
+		SetEnableCol(false);
+		// ピコちゃんの移動速度を0にする
+		mMoveSpeed = CVector::zero;
+		mCharaStatus.stamina = mCharaMaxStatus.stamina;
+		mCharaStatus.hp = mCharaMaxStatus.hp;
+		// 次のステップへ
+		mStateStep++;
+		break;
+		// ステップ1 ステージの読み込みから
+	case 1:
+		// ゲームが開始したら
+		if (CGameManager::GameState() == EGameState::eGame)
+		{
+			mElapsedTime = 0.0f;
+			// ピコちゃんの衝突判定をオンにする
+			SetEnableCol(true);
+			// 現在の状態を待機に切り替え
+			mCharaStatus.hp = mCharaMaxStatus.hp;
+			ChangeState(EState::eIdle);
+		}
+		break;
+	}
+}
+
+// 待機
+void CPicoChan::UpdateIdle()
+{
+	mDiscovery = false;
+	mDiscoveryEnd = false;
+	mpAttackCol->SetEnable(false);
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	//プレイヤーを見つけたら、敵発見状態へ移行
+	if (IsFoundPlayer())
+	{
+		if (mDiscoveryTimeEnd <= DISCOVERY_END && !mDiscovery)
+		{
+			ChangeState(EState::eDiscovery);
+		}
+		else
+		{
+			ChangeState(EState::eChase);
+		}
+	}
+	else
+	{
+		ChangeAnimation(EAnimType::eIdle2);
+
+		// 確率で徘徊状態に移行
+		if (ShouldTransition())
+		{
+			ChangeState(EState::eWander);
+		}
+	}
+}
+
+// プレイヤー発見
+void CPicoChan::UpdateDiscovery()
+{
+	mDiscovery = true;
+	mMoveSpeed.Y(0.0f);
+	mMoveSpeed.Z(0.0f);
+	ChangeAnimation(EAnimType::eTakeOut);
+
+	// プレイヤーまでのベクトルを求める
+	CPlayer* player = CPlayer::Instance();
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
+	mDiscoveryTime += Time::DeltaTime();
+	if (mDiscoveryTime >= DISCOVERY)
+	{
+		if (IsFoundPlayer())
+		{
+			mDiscoveryEnd = true;
+			ChangeState(EState::eChase);
+		}
+		else
+		{
+			mDiscoveryTime = 0.0f;
+			ChangeState(EState::ePutAway);
+		}
+	}
+	//CDebugPrint::Print("discovery:%f\n", mDiscoveryTime);
+}
+
+// 追跡
+void CPicoChan::UpdateChase()
+{
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	if (!IsFoundPlayer())
+	{
+		ChangeAnimation(EAnimType::eIdle1);
+		mElapsedTimeEnd += Time::DeltaTime();
+		//CDebugPrint::Print("TimeEnd%f\n", mElapsedTime_End);
+		if (mElapsedTimeEnd >= PLAYER_LOST)
+		{
+			ChangeState(EState::ePutAway);
+			mElapsedTimeEnd = 0.0f; // プレイヤーが視界から消えたら経過時間をリセット
+		}
+	}
+	else
+	{
+		mElapsedTimeEnd = 0.0f;
+		CPlayer* player = CPlayer::Instance();
+		CVector playerPos = player->Position();
+		playerPos.Y(Position().Y());
+
+		CVector toPlayer = (playerPos - Position()).Normalized();
+		mMoveSpeed += toPlayer * MOVE_SPEED;
+		mTargetDir = toPlayer;
+
+		// プレイヤーとの距離が一定範囲以内であれば攻撃モードに切り替える
+		float distanceToPlayer = (player->Position() - Position()).Length();
+		ChangeAnimation(EAnimType::eAlert1);
+
+		if (distanceToPlayer <= ATTACK_RANGE)
+		{
+			ChangeState(EState::eAttack);
+		}
+	}
+}

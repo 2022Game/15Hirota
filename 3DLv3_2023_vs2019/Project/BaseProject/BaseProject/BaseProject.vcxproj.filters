@@ -299,6 +299,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Tilt\Base">
       <UniqueIdentifier>{527f0ee6-4f99-4799-bf41-c42083e21966}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Enemy">
+      <UniqueIdentifier>{6d5f08c6-c82d-45ac-bb9b-370e6b8b5825}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -361,9 +364,6 @@
     <ClCompile Include="src\BaseSystem\CFont.cpp">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CEnemy.cpp">
-      <Filter>ソース ファイル\Game\Character</Filter>
-    </ClCompile>
     <ClCompile Include="src\BaseSystem\CEffect.cpp">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
     </ClCompile>
@@ -422,12 +422,6 @@
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CharaStatus.cpp">
-      <Filter>ソース ファイル\Game\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CUnityChan.cpp">
-      <Filter>ソース ファイル\Game\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CYukari.cpp">
       <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CClearScene.cpp">
@@ -508,9 +502,6 @@
     <ClCompile Include="src\Game\CYukariGauge.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CSoldier.cpp">
-      <Filter>ソース ファイル\Game\Character</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CKick.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
@@ -582,9 +573,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CExclamationMark.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CVanguard.cpp">
-      <Filter>ソース ファイル\Game\Character</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CVanguardGauge.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
@@ -1021,6 +1009,24 @@
     <ClCompile Include="src\Game\CSeesawStageFallCol.cpp">
       <Filter>ソース ファイル\Game\Field\StageField\Seesaw Stage</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CEnemy.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSoldier.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CUnityChan.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CVanguard.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CYukari.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CPicoChan.cpp">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1085,9 +1091,6 @@
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CFont.h">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CEnemy.h">
-      <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CEffect.h">
       <Filter>ソース ファイル\BaseSystem\Effect</Filter>
@@ -1163,12 +1166,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CImage.h">
       <Filter>ソース ファイル\BaseSystem\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CUnityChan.h">
-      <Filter>ソース ファイル\Game\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CYukari.h">
-      <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CharaStatus.h">
       <Filter>ソース ファイル\Game\Character</Filter>
@@ -1251,9 +1248,6 @@
     <ClInclude Include="src\Game\CYukariGauge.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CSoldier.h">
-      <Filter>ソース ファイル\Game\Character</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CKick.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
@@ -1328,9 +1322,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CExclamationMark.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CVanguard.h">
-      <Filter>ソース ファイル\Game\Character</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CVanguardGauge.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
@@ -1766,6 +1757,24 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSeesawStageFallCol.h">
       <Filter>ソース ファイル\Game\Field\StageField\Seesaw Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CEnemy.h">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSoldier.h">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CUnityChan.h">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CVanguard.h">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CYukari.h">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CPicoChan.h">
+      <Filter>ソース ファイル\Game\Character\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
