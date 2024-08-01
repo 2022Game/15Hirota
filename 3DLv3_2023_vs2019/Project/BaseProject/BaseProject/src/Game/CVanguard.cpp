@@ -449,7 +449,7 @@ void CVanguard::UpdateExclamation()
 bool CVanguard::ShouldTransitionWander()
 {
 	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
-	return randomValue < 0.01f;  // 0.1%の確率で待機に遷移
+	return randomValue < 0.01f;
 }
 
 // 徘徊状態に遷移する条件
@@ -516,7 +516,7 @@ void CVanguard::UpdateReady()
 		ChangeAnimation(EAnimType::eIdle1);
 		// 全ての衝突判定をオフにする
 		SetEnableCol(false);
-		// プレイヤーの移動速度を0にする
+		// ヴァンガードの移動速度を0にする
 		mMoveSpeed = CVector::zero;
 		mCharaStatus.stamina = mCharaMaxStatus.stamina;
 		mCharaStatus.hp = mCharaMaxStatus.hp;
@@ -529,7 +529,7 @@ void CVanguard::UpdateReady()
 		if (CGameManager::GameState() == EGameState::eGame)
 		{
 			mElapsedTime = 0.0f;
-			// プレイヤーの衝突判定をオンにする
+			// ヴァンガードの衝突判定をオンにする
 			SetEnableCol(true);
 			// 現在の状態を待機に切り替え
 			mCharaStatus.hp = mCharaMaxStatus.hp;

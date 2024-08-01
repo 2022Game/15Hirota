@@ -9,9 +9,11 @@
 #include "CStageManager.h"
 
 // ピコちゃんの頭上
-#define PICO_HEIGHT 5.0f
+#define PICO_HEIGHT 1.0f
 // 移動速度
-#define MOVE_SPEED 0.7f
+#define MOVE_SPEED 0.6f
+// ダッシュ速度
+#define DASH_SPEED 1.2f
 // 自動移動速度
 #define MOVE_AUTOMATIC_SPEED 30.0f
 // ジャンプ速度
@@ -56,21 +58,22 @@ const CPicoChan::AnimData CPicoChan::ANIM_DATA[] =
 	{ "Character\\PicoChan\\anim\\Idle_266_2.x",			true,   266.0f	},	// Idle1
 	{ "Character\\PicoChan\\anim\\Idle_421_1.x",			true,   421.0f	},	// Idle2
 	{ "Character\\PicoChan\\anim\\Walk_61_1.x",				true,   61.0f	},	// 歩く
-	{ "Character\\PicoChan\\anim\\Run_44_1.x",				true,   44.0f	},	// 走りゅ
-	{ "Character\\PicoChan\\anim\\BackJump_52_1.x",		false,		52.0f	},	// バックジャンプ
-	{ "Character\\PicoChan\\anim\\DashJump_53_1.x",		false,		53.0f	},	// ダッシュジャンプ
-	{ "Character\\PicoChan\\anim\\Death_235_1.x",		false,		235.0f	},	// 死亡1
-	{ "Character\\PicoChan\\anim\\Death_145_2.x",		false,		145.0f	},	// 死亡2
-	{ "Character\\PicoChan\\anim\\Kick_105_1.x",		false,		105.0f	},	// キック
-	{ "Character\\PicoChan\\anim\\Putaway_77_1.x",		false,		77.0f	},	// 取り出す1
-	{ "Character\\PicoChan\\anim\\Takeout_31_1.x",		false,		113.0f	},	// 取り出す2
-	{ "Character\\PicoChan\\anim\\WeaponDraw_48_1.x",	false,		48.0f	},	// 武器取り出し
-	{ "Character\\PicoChan\\anim\\WeakAttack_77_1.x",	false,		77.0f	},	// 弱攻撃
-	{ "Character\\PicoChan\\anim\\SpinAttack_113_1.x",	false,		113.0f	},	// 回転攻撃
-	{ "Character\\PicoChan\\anim\\Turn180_134.x",		false,		134.0f	},	// 振り返る
+	{ "Character\\PicoChan\\anim\\Walk_82_2.x",				true,   82.0f	},	// 武器持ち歩き
+	{ "Character\\PicoChan\\anim\\Run_44_1.x",				true,   44.0f	},	// 走る
+	{ "Character\\PicoChan\\anim\\Run_37_2.x",				true,   37.0f	},	// 武器持ち走り
+	{ "Character\\PicoChan\\anim\\BackJump_52_1.x",		false,		52.0f	},	// バックジャンプ(false)
+	{ "Character\\PicoChan\\anim\\DashJump_53_1.x",		false,		53.0f	},	// ダッシュジャンプ(false)
+	{ "Character\\PicoChan\\anim\\Death_235_1.x",		false,		235.0f	},	// 死亡1(false)
+	{ "Character\\PicoChan\\anim\\Death_145_2.x",		false,		145.0f	},	// 死亡2(false)
+	{ "Character\\PicoChan\\anim\\Kick_105_1.x",		false,		105.0f	},	// キック(false)
+	{ "Character\\PicoChan\\anim\\Putaway_45_1.x",		false,		45.0f	},	// 武器をしまう
+	{ "Character\\PicoChan\\anim\\WeaponDraw_48_1.x",	false,		48.0f	},	// 武器取り出し(false)
+	{ "Character\\PicoChan\\anim\\WeakAttack_77_1.x",	false,		77.0f	},	// 弱攻撃(false)
+	{ "Character\\PicoChan\\anim\\SpinAttack_113_1.x",	false,		113.0f	},	// 回転攻撃(false)
+	{ "Character\\PicoChan\\anim\\Turn180_134.x",		false,		134.0f	},	// 振り返る(false)
 	{ "Character\\PicoChan\\anim\\Alert_223_1.x",			true,	223.0f	},	// 警戒1
 	{ "Character\\PicoChan\\anim\\Alert_454_2.x",			true,	454.0f	},	// 警戒2
-	{ "Character\\PicoChan\\anim\\Hit_72_1.x",			false,		72.0f	},	// 被弾
+	{ "Character\\PicoChan\\anim\\Hit_72_1.x",			false,		72.0f	},	// 被弾(false)
 };
 
 // コンストラクタ
@@ -97,6 +100,8 @@ CPicoChan::CPicoChan()
 	, mBackStep(false)
 	, mIsLerping(false)
 	, mpRideObject(nullptr)
+	, mDash(false)
+	, mDashTime(0.0f)
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -135,9 +140,9 @@ CPicoChan::CPicoChan()
 	mpCapsule = new CColliderCapsule
 	(
 		this, ELayer::ePlayer,
-		CVector(0.0f, 8.0f, 2.0f),
-		CVector(0.0f, PICO_HEIGHT, 2.0f),
-		4.0f,
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, PICO_HEIGHT, 0.0f),
+		3.0f,
 		true,
 		1.0f
 	);
@@ -148,14 +153,14 @@ CPicoChan::CPicoChan()
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		0.5f
+		0.35f
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy });
 	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy });
 	// ダメージを受けるコライダーを少し下へずらす
-	mpDamageCol->Position(0.0f, 0.0f, 0.0f);
+	mpDamageCol->Position(0.0f, 1.0f, 0.0f);
 	//const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	//mpDamageCol->SetAttachMtx(spineMtx);
 
@@ -244,9 +249,29 @@ void CPicoChan::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 	{
 		if (other->Layer() == ELayer::eAttackCol)
 		{
-			if (mState != EState::eKick)
+			bool canBeHit = (mState != EState::eWeakAttack && mState != EState::eSpinAttack);
+			if (canBeHit)
 			{
-				ChangeState(EState::eHit);
+				CPlayer* player = CPlayer::Instance();
+				CVector vp = player->Position() - Position();
+				float distancePlayer = vp.Length();
+				vp.Y(0.0f);
+				mTargetDir = vp.Normalized();
+
+				int hitRand = Math::Rand(0, 100);
+				if (hitRand >= 95) // 5%の確率で下の処理を実行
+				{
+					int random = Math::Rand(0, 2);
+					mpDamageCol->SetEnable(false);
+					if (random == 0)
+					{
+						ChangeState(EState::eHit);
+					}
+					/*else if (random == 1)
+					{
+						ChangeState(EState::eHit2);
+					}*/
+				}
 			}
 		}
 
@@ -318,14 +343,14 @@ bool CPicoChan::ShouldTransitionWander()
 	}
 
 	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
-	return randomValue < 0.01f;
+	return randomValue < 0.1f;
 }
 
 // 徘徊状態に遷移する条件
 bool CPicoChan::ShouldTransition()
 {
 	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
-	return randomValue < 0.1f;  // 0.1%の確率で徘徊状態に遷移
+	return randomValue < 0.01f;  // 0.1%の確率で徘徊状態に遷移
 }
 
 // 360度の角度を求めて、x軸とy軸から計算する
@@ -351,6 +376,8 @@ void CPicoChan::Move()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+
+	mIsLerping = false;
 
 	// 速度の設定
 	float moveSpeed = MOVE_AUTOMATIC_SPEED;
@@ -485,7 +512,15 @@ void CPicoChan::UpdateIdle()
 	}
 	else
 	{
-		ChangeAnimation(EAnimType::eIdle2);
+		int random = Math::Rand(0.0f, 1.0f);
+		if (random >= 0.5f)
+		{
+			ChangeAnimation(EAnimType::eIdle1);
+		}
+		else
+		{
+			ChangeAnimation(EAnimType::eIdle2);
+		}
 
 		// 確率で徘徊状態に移行
 		if (ShouldTransition())
@@ -501,7 +536,6 @@ void CPicoChan::UpdateDiscovery()
 	mDiscovery = true;
 	mMoveSpeed.Y(0.0f);
 	mMoveSpeed.Z(0.0f);
-	ChangeAnimation(EAnimType::eTakeOut);
 
 	// プレイヤーまでのベクトルを求める
 	CPlayer* player = CPlayer::Instance();
@@ -509,6 +543,12 @@ void CPicoChan::UpdateDiscovery()
 	float distancePlayer = vp.Length();
 	vp.Y(0.0f);
 	mTargetDir = vp.Normalized();
+
+	ChangeAnimation(EAnimType::eWeaponDraw);
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eDrawn);
+	}
 
 	mDiscoveryTime += Time::DeltaTime();
 	if (mDiscoveryTime >= DISCOVERY)
@@ -532,10 +572,10 @@ void CPicoChan::UpdateChase()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
-
+	
 	if (!IsFoundPlayer())
 	{
-		ChangeAnimation(EAnimType::eIdle1);
+		ChangeAnimation(EAnimType::eAlert1);
 		mElapsedTimeEnd += Time::DeltaTime();
 		//CDebugPrint::Print("TimeEnd%f\n", mElapsedTime_End);
 		if (mElapsedTimeEnd >= PLAYER_LOST)
@@ -552,17 +592,206 @@ void CPicoChan::UpdateChase()
 		playerPos.Y(Position().Y());
 
 		CVector toPlayer = (playerPos - Position()).Normalized();
-		mMoveSpeed += toPlayer * MOVE_SPEED;
+		float distanceToPlayer = (player->Position() - Position()).Length();
+
+		const float DASH_DISTANCE = 45.0f;
+		const float WALK_DISTANCE = 44.0f;
+
+		// プレイヤーとの距離に基づいて状態を変更
+		if (distanceToPlayer > DASH_DISTANCE)
+		{
+			// Dash状態にする
+			ChangeAnimation(EAnimType::eWeaponDash);
+			mMoveSpeed = toPlayer * DASH_SPEED;
+		}
+		else if (distanceToPlayer <= WALK_DISTANCE)
+		{
+			// Walk状態にする
+			ChangeAnimation(EAnimType::eWeaponWalk);
+			mMoveSpeed = toPlayer * MOVE_SPEED;
+		}
+		else if (DASH_DISTANCE >= distanceToPlayer <= WALK_DISTANCE)
+		{
+			mMoveSpeed = toPlayer * MOVE_SPEED;
+		}
+		//CDebugPrint::Print("mDash:%s\n", mDash ? "true" : "false");
+		CDebugPrint::Print("distanceToPlayer:%f\n", distanceToPlayer);
+
 		mTargetDir = toPlayer;
 
-		// プレイヤーとの距離が一定範囲以内であれば攻撃モードに切り替える
-		float distanceToPlayer = (player->Position() - Position()).Length();
-		ChangeAnimation(EAnimType::eAlert1);
-
-		if (distanceToPlayer <= ATTACK_RANGE)
+		// 距離がさらに一定以内であれば攻撃モードに切り替える
+		if (distanceToPlayer <= 35.0f)
 		{
 			ChangeState(EState::eAttack);
 		}
+	}
+}
+
+// 攻撃状態
+void CPicoChan::UpdateAttack()
+{
+	mDiscovery = false;
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
+	if (distancePlayer <= ATTACK_RANGE)
+	{
+
+		CPlayer* player = CPlayer::Instance();
+		CVector playerPos = player->Position();
+		playerPos.Y(Position().Y());
+
+		CVector toPlayer = (playerPos - Position()).Normalized();
+		mMoveSpeed += toPlayer * 0.25;
+		mTargetDir = toPlayer;
+
+		if (distancePlayer <= 24.0f)
+		{
+			int random = Math::Rand(0, 1);
+			if (random == 0)
+			{
+				ChangeState(EState::eWeakAttack);
+			}
+			else if (random == 1)
+			{
+				ChangeState(EState::eSpinAttack);
+			}
+		}
+
+		//if (distancePlayer <= BACKSTEP_RANGE/* && !mRollingEnd*/)
+		//{
+		//	//ChangeState(EState::eRolling);
+		//	return;
+		//}
+		//else if (distancePlayer <= ATTACK_RANGE_KICK && !mKickTimeEnd)
+		//{
+		//	/*ChangeState(EState::eAttackKick);
+		//	mKickTimeEnd = true;*/
+		//	return;
+		//}
+		//else if (distancePlayer <= 23.0f)
+		//{
+		//	int random = Math::Rand(0, 1);
+		//	if (random == 0)
+		//	{
+		//		ChangeState(EState::eWeakAttack);
+		//	}
+		//	else if (random == 1)
+		//	{
+		//		ChangeState(EState::eSpinAttack);
+		//	}
+		//}
+	}
+	else
+	{
+		ChangeState(EState::eChase);
+		mElapsedTimeEnd = 0.0f;
+		mDiscoveryTime = 0.0f;
+		mDiscovery = false;
+	}
+}
+
+// 弱攻撃
+void CPicoChan::UpdateWeakAttack()
+{
+	mDiscovery = false;
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	ChangeAnimation(EAnimType::eWeakAttack);
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
+	if (GetAnimationFrame() >= 20.0f)
+	{
+		//mpSword->AttackStart();
+		if (IsAnimationFinished())
+		{
+			//mpAttackCol->SetEnable(true);
+			ChangeState(EState::eAttackEnd);
+		}
+	}
+}
+
+// 回転攻撃
+void CPicoChan::UpdateSpinAttack()
+{
+	mDiscovery = false;
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
+	ChangeAnimation(EAnimType::eSpinAttack);
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
+	// プレイヤーの方向に少しだけ移動
+	float moveAmount = 0.1f;
+	mMoveSpeed = mTargetDir * moveAmount;
+
+	if (GetAnimationFrame() >= 20.0f)
+	{
+		//mpSword->AttackStart();
+		if (IsAnimationFinished())
+		{
+			//mpAttackCol->SetEnable(true);
+			ChangeState(EState::eAttackEnd);
+		}
+	}
+}
+
+// 武器を取り出す
+void CPicoChan::UpdateDrawn()
+{
+	if (GetAnimationFrame() >= 20.0f)
+	{
+		// マジックソード作成
+		//mpSword->SetAlpha(1.0f);
+	}
+
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eChase);
+	}
+}
+
+// 武器をしまう
+void CPicoChan::UpdatePutAway()
+{
+	ChangeAnimation(EAnimType::ePutAway);
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eIdle);
+	}
+}
+
+// 攻撃終了待ち
+void CPicoChan::UpdateAttackEnd()
+{
+	//mpSword->AttackEnd();
+	if (IsAnimationFinished())
+	{
+		ChangeState(EState::eChase);
 	}
 }
 
@@ -685,6 +914,7 @@ bool CPicoChan::IsFoundPlayer() const
 // 更新
 void CPicoChan::Update()
 {
+	CDebugPrint::Print("mLerping:%s\n", mIsLerping ? "true" : "false");
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
 
@@ -733,10 +963,34 @@ void CPicoChan::Update()
 	case EState::eIdle:
 		UpdateIdle();
 		break;
-	//	// 攻撃
-	//case EState::eAttack:
-	//	UpdateAttack();
-	//	break;
+		// 攻撃
+	case EState::eAttack:
+		UpdateAttack();
+		break;
+		// 攻撃
+	case EState::eAttackEnd:
+		UpdateAttackEnd();
+		break;
+		// 攻撃終了待ち
+	case EState::eAttackWait:
+		UpdateAttackEnd();
+		break;
+		// 弱攻撃
+	case EState::eWeakAttack:
+		UpdateWeakAttack();
+		break;
+		// 回転攻撃
+	case EState::eSpinAttack:
+		UpdateSpinAttack();
+		break;
+		// 武器を取り出す状態
+	case EState::eDrawn:
+		UpdateDrawn();
+		break;
+		// 武器をしまう状態
+	case EState::ePutAway:
+		UpdatePutAway();
+		break;
 	//	// キック
 	//case EState::eKick:
 	//	UpdateKick();
@@ -744,10 +998,6 @@ void CPicoChan::Update()
 	//	// キック終了
 	//case EState::eKickWait:
 	//	UpdateKickEnd();
-	//	break;
-	//	// 攻撃終了待ち
-	//case EState::eAttackWait:
-	//	UpdateAttackWait();
 	//	break;
 		// プレイヤー発見
 	case EState::eDiscovery:

@@ -286,8 +286,8 @@ void CStage4::Load()
 
 	// ƒsƒR‚¿‚á‚ñ
 	CPicoChan* pico = new CPicoChan();
-	pico->Scale(10.5f, 10.5f, 10.5f);
-	pico->Position(328.0f, -257.0f, -700.0f);
+	pico->Scale(15.5f, 15.5f, 15.5f);
+	pico->Position(328.0f, -277.0f, -700.0f);
 	pico->SetCenterPoint(CVector(328.0f, -306.0f, -700.0f),30.0f);
 	AddTask(pico);
 

@@ -97,11 +97,17 @@ private:
 	// ダッシュ状態
 	//void UpdateDash();
 	// 攻撃状態
-	//void UpdateAttack();
+	void UpdateAttack();
 	// 攻撃終了待ち
-	//void UpdateAttackWait();
+	void UpdateAttackEnd();
+	// 弱攻撃状態
+	void UpdateWeakAttack();
+	// 回転攻撃状態
+	void UpdateSpinAttack();
+	// 武器を取り出す状態
+	void UpdateDrawn();
 	// 武器をしまう状態
-	//void UpdatePutAway();
+	void UpdatePutAway();
 	// ジャンプ開始
 	//void UpdateJumpStart();
 	// ジャンプ中
@@ -134,7 +140,11 @@ private:
 		eIdle,		// 待機
 		eDash,		// 走る
 		eAttack,	// 攻撃
+		eAttackEnd,	// 攻撃終了
+		eWeakAttack,// 弱攻撃
+		eSpinAttack,// 回転攻撃
 		eAttackWait,// 攻撃終了待ち
+		eDrawn,		// 武器を取り出す
 		ePutAway,	// 武器をしまう
 		eDiscovery,	// プレイヤー発見
 		eChase,		// 追跡
@@ -165,19 +175,20 @@ private:
 		eIdle1,		// Idle1
 		eIdle2,		// Idle2
 		eWalk,		// 歩く
+		eWeaponWalk,// 武器持ち歩き
 		eRun,		// 走る
+		eWeaponDash,// 武器持ち走り
 		eBackJump,	// バックジャンプ
 		eDashJump,	// ダッシュジャンプ
 		eDeath1,	// 死亡1
 		eDeath2,	// 死亡2
 		eKick,		// キック
 		ePutAway,	// 武器をしまう
-		eTakeOut,	// 武器取り出し1
-		eWeaponDraw,// 武器取り出し2
+		eWeaponDraw,// 武器取り出し(後ろから)
 		eWeakAttack,// 弱攻撃
 		eSpinAttack,// 回転攻撃
 		eTurn180,	// 振り返る
-		eAlert1,	// 警戒1
+		eAlert1,	// 警戒1(武器持ち)
 		eAlert2,	// 警戒2
 		eHit,		// 被弾
 
@@ -235,6 +246,9 @@ private:
 	bool mBackStep;
 	// 半径に入ったか
 	bool mIsLerping;
+
+	bool mDash;
+	float mDashTime;
 
 	// プレイヤーを見つけたか
 	bool IsFoundPlayer() const;
