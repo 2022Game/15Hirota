@@ -4,7 +4,7 @@
 #include "CObjectBase.h"
 #include "CColliderMesh.h"
 
-// 登れる金属(Stage2)
+// 登れる金属梯子
 class CMetalLadder : public CObjectBase
 {
 public:
@@ -15,7 +15,7 @@ public:
 	/// <param name="TopName">登れる金網の頂上のモデルのデータのリソース名</param>
 	/// <param name="moveUp">頂上へ上った時の上方向の移動量</param>
 	/// <param name="moveForward">頂上へ上った時の正面方向の移動量</param>
-	CMetalLadder(std::string wireName, std::string topName,
+	CMetalLadder(std::string wireName, std::string wireCol, std::string topName,
 		const CVector& moveUp, const CVector& moveForward);
 	// デストラクタ
 	~CMetalLadder();

@@ -637,20 +637,20 @@ void CPicoChan::UpdateChase()
 		{
 			// DashèÛë‘Ç…Ç∑ÇÈ
 			ChangeAnimation(EAnimType::eWeaponDash);
-			//mMoveSpeed = toPlayer * DASH_SPEED;
-			mMoveSpeed = toPlayer * 0.0f;
+			mMoveSpeed = toPlayer * DASH_SPEED;
+			//mMoveSpeed = toPlayer * 0.0f;
 		}
 		else if (distanceToPlayer <= WALK_DISTANCE)
 		{
 			// WalkèÛë‘Ç…Ç∑ÇÈ
 			ChangeAnimation(EAnimType::eWeaponWalk);
-			//mMoveSpeed = toPlayer * MOVE_SPEED;
-			mMoveSpeed = toPlayer * 0.0f;
+			mMoveSpeed = toPlayer * MOVE_SPEED;
+			//mMoveSpeed = toPlayer * 0.0f;
 		}
 		else if (DASH_DISTANCE >= distanceToPlayer <= WALK_DISTANCE)
 		{
-			//mMoveSpeed = toPlayer * MOVE_SPEED;
-			mMoveSpeed = toPlayer * 0.0f;
+			mMoveSpeed = toPlayer * MOVE_SPEED;
+			//mMoveSpeed = toPlayer * 0.0f;
 		}
 		//CDebugPrint::Print("mDash:%s\n", mDash ? "true" : "false");
 		CDebugPrint::Print("distanceToPlayer:%f\n", distanceToPlayer);

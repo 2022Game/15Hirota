@@ -16,6 +16,7 @@
 #include "CSeesawStageFallCol.h"
 #include "CSavePoint1.h"
 #include "CPicoChan.h"
+#include "CMetalLadder.h"
 
 // コンストラクタ
 CStage4::CStage4()
@@ -71,6 +72,13 @@ void CStage4::Load()
 	CResourceManager::Load<CModel>("RotateFloorFrontColOpposition", "Field\\Gimmick\\Rotate\\RotateFloorFrontCol(Opposition).obj");
 	// 回転する床の後ろコライダー(反対)
 	CResourceManager::Load<CModel>("RotateFloorBackColOpposition", "Field\\Gimmick\\Rotate\\RotateFloorBackCol(Opposition).obj");
+
+	// 金属の梯子オブジェクト
+	CResourceManager::Load<CModel>("4Metalladder", "Field\\SeesawStage\\SeesawStage(MetalLadder).obj");
+	// 金属の梯子オブジェクト(Col)
+	CResourceManager::Load<CModel>("4MetalladderCol", "Field\\SeesawStage\\SeesawStage(MetalLadderCol).obj");
+	// 金属の梯子オブジェクト(TopCol)
+	CResourceManager::Load<CModel>("4MetalladderTopCol", "Field\\SeesawStage\\SeesawStage(MetalLadderColTop).obj");
 
 	// セーブポイントモデル
 	CResourceManager::Load<CModel>("SavePoint", "Field\\Gimmick\\SavePoint.obj");
@@ -234,6 +242,16 @@ void CStage4::Load()
 	);
 	AddTask(springlower2);
 
+	// 登れる金網を作成
+	CMetalLadder* metalladder = new CMetalLadder
+	(
+		"4Metalladder", "4MetalladderCol", "4MetalladderTopCol",
+		CVector(0.0f, 15.0f, 0.0f),	// 上方向の移動
+		CVector(0.0f, 0.0f, 15.0f)	// 正面方向の移動
+	);
+	metalladder->Scale(4.0f, 4.0f, 4.0f);
+	AddTask(metalladder);
+
 
 	//// 肉オブジェクト /////////////////////////////////////////////////////////////////
 
@@ -284,12 +302,12 @@ void CStage4::Load()
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	// ピコちゃん
-	CPicoChan* pico = new CPicoChan();
-	pico->Scale(15.5f, 15.5f, 15.5f);
-	pico->Position(328.0f, -277.0f, -700.0f);
-	pico->SetCenterPoint(CVector(328.0f, -306.0f, -700.0f),30.0f);
-	AddTask(pico);
+	//// ピコちゃん
+	//CPicoChan* pico = new CPicoChan();
+	//pico->Scale(15.5f, 15.5f, 15.5f);
+	//pico->Position(328.0f, -277.0f, -700.0f);
+	//pico->SetCenterPoint(CVector(328.0f, -306.0f, -700.0f),30.0f);
+	//AddTask(pico);
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();

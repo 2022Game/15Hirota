@@ -305,6 +305,9 @@
     <Filter Include="ソース ファイル\Game\Character\CharaObject\Sword">
       <UniqueIdentifier>{d9ea124f-ff19-4f5e-abc5-fb57181fc500}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage4">
+      <UniqueIdentifier>{045cace2-37c1-49a1-8f90-df86c90888f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -1032,6 +1035,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CPicoSword.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSeesawClimb.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage4</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1784,6 +1790,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CPicoSword.h">
       <Filter>ソース ファイル\Game\Character\CharaObject\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSeesawClimb.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage4</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

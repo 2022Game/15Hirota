@@ -164,6 +164,7 @@
     <ClCompile Include="src\Game\CScreenItem.cpp" />
     <ClCompile Include="src\Game\CSeesaw.cpp" />
     <ClCompile Include="src\Game\CSeesawAdventure.cpp" />
+    <ClCompile Include="src\Game\CSeesawClimb.cpp" />
     <ClCompile Include="src\Game\CSeesawObject.cpp" />
     <ClCompile Include="src\Game\CSeesawStageFallCol.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
@@ -416,6 +417,7 @@
     <ClInclude Include="src\Game\CScreenItem.h" />
     <ClInclude Include="src\Game\CSeesaw.h" />
     <ClInclude Include="src\Game\CSeesawAdventure.h" />
+    <ClInclude Include="src\Game\CSeesawClimb.h" />
     <ClInclude Include="src\Game\CSeesawObject.h" />
     <ClInclude Include="src\Game\CSeesawStageFallCol.h" />
     <ClInclude Include="src\Game\CSignboard.h" />

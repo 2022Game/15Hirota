@@ -4104,8 +4104,8 @@ void CPlayer::Update()
 	//CDebugPrint::Print("mMoveDistance:%f\n", mMoveDistance);
 	//CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
 	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
-	//CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
-	//CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
+	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
+	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 }
 
 // ƒAƒCƒeƒ€‚ðŽæ“¾

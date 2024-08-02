@@ -2,7 +2,7 @@
 #include "CStageManager.h"
 
 // コンストラクタ
-CMetalLadder::CMetalLadder(std::string wireName, std::string topName,
+CMetalLadder::CMetalLadder(std::string wireName, std::string wireCol, std::string topName,
 	const CVector& moveUp, const CVector& moveForward)
 	: CObjectBase(ETag::eField, ETaskPriority::eBackground)
 	, mClimbedMoveUp(moveUp)
@@ -12,8 +12,8 @@ CMetalLadder::CMetalLadder(std::string wireName, std::string topName,
 	mpMetalLadderModel = CResourceManager::Get<CModel>(wireName);
 
 	// 登れる金網のコライダー取得
-	CModel* wireCol = CResourceManager::Get<CModel>("MetalladderCol");
-	mpWallCol = new CColliderMesh(this, ELayer::eMetalLadder, wireCol, true);
+	CModel* wirecol = CResourceManager::Get<CModel>(wireCol);
+	mpWallCol = new CColliderMesh(this, ELayer::eMetalLadder, wirecol, true);
 	mpWallCol->SetCollisionTags({ ETag::ePlayer });
 
 	// 登れる金網の頂上コライダー取得
