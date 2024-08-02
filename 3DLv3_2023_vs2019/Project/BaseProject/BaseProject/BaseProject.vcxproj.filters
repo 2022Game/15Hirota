@@ -302,6 +302,9 @@
     <Filter Include="ソース ファイル\Game\Character\Enemy">
       <UniqueIdentifier>{6d5f08c6-c82d-45ac-bb9b-370e6b8b5825}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\CharaObject\Sword">
+      <UniqueIdentifier>{d9ea124f-ff19-4f5e-abc5-fb57181fc500}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -481,9 +484,6 @@
     <ClCompile Include="src\Game\CBullet.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CMajicSword.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CWeaponEnemy.cpp">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
@@ -576,9 +576,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CVanguardGauge.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CMajicSwordEnemy.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CStageSelectionStage.cpp">
       <Filter>ソース ファイル\Game\Stage</Filter>
@@ -1027,6 +1024,15 @@
     <ClCompile Include="src\Game\CPicoChan.cpp">
       <Filter>ソース ファイル\Game\Character\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CMajicSword.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CMajicSwordEnemy.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CPicoSword.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\Sword</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1227,9 +1233,6 @@
     <ClInclude Include="src\Game\CBullet.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CMajicSword.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CWeaponEnemy.h">
       <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
@@ -1325,9 +1328,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CVanguardGauge.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CMajicSwordEnemy.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CStageSelectionStage.h">
       <Filter>ソース ファイル\Game\Stage</Filter>
@@ -1775,6 +1775,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CPicoChan.h">
       <Filter>ソース ファイル\Game\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMajicSword.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMajicSwordEnemy.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CPicoSword.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\Sword</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,6 +8,8 @@
 #include "CRideableObject.h"
 #include "CEffect.h"
 
+class CPicoSword;
+
 // ピコちゃんクラス
 class CPicoChan : public CXCharacter
 {
@@ -70,6 +72,9 @@ public:
 	// ピコちゃんを勝手に移動させる処理
 	void Move();
 
+	// 攻撃を開始して、武器を持つかどうか
+	bool IsAttack();
+
 	// 更新
 	void Update();
 	// 描画
@@ -88,6 +93,9 @@ private:
 	CColliderSphere* mpDamageCol;
 	// ダメージを与えるコライダー
 	CColliderSphere* mpAttackCol;
+
+	// マジックソードモデル
+	CPicoSword* mpSword;
 
 
 	// 準備中の状態
@@ -249,6 +257,7 @@ private:
 
 	bool mDash;
 	float mDashTime;
+	bool mIsAttack;
 
 	// プレイヤーを見つけたか
 	bool IsFoundPlayer() const;

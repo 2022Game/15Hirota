@@ -3,6 +3,9 @@
 #include "CCharaBase.h"
 #include "CCollider.h"
 #include "CModel.h"
+#include <vector>
+
+class CPicoChan;
 
 /*
 エネミークラス
@@ -13,9 +16,10 @@ class CEnemy : public CCharaBase
 public:
 	// コンストラクタ
 	CEnemy();
+
 	// 更新処理
 	void Update();
+
 private:
 };
-
 #endif

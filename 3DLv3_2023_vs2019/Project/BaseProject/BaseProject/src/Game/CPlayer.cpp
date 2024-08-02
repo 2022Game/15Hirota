@@ -1853,8 +1853,6 @@ void CPlayer::UpdateDashAttackWait()
 	// Œ•‚ÉUŒ‚I—¹‚ð“`‚¦‚é
 	mpSword->AttackEnd();
 	mMoveSpeed = CVector::zero;
-	// Œ•‚ÉUŒ‚I—¹‚ð“`‚¦‚é
-	mpSword->AttackEnd();
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eIdle);
@@ -4105,9 +4103,9 @@ void CPlayer::Update()
 	//CDebugPrint::Print("mIStartStage3:%s\n", mIsStartStage3 ? "true" : "false");
 	//CDebugPrint::Print("mMoveDistance:%f\n", mMoveDistance);
 	//CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
-	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
-	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
+	//CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
+	//CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 }
 
 // ƒAƒCƒeƒ€‚ðŽæ“¾

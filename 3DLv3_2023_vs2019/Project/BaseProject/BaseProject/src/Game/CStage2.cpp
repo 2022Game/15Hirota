@@ -33,6 +33,7 @@
 #include "CSpring.h"
 #include "CInput.h"
 #include "CSeesaw.h"
+#include "CPicoChan.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -281,22 +282,22 @@ void CStage2::Load()
 		AddTask(jumpkinoko); // タスクに追加
 	}
 
-	// バネ(上とバネ)
-	CSpring* spring = new CSpring
-	(
-		CVector(0.0f, 0.0f, 0.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(spring);
-	// バネ(下)
-	CSpringLower* springlower = new CSpringLower
-	(
-		CVector(0.0f, 0.0f, 0.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(springlower);
+	//// バネ(上とバネ)
+	//CSpring* spring = new CSpring
+	//(
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, 0.0f, 0.0f)
+	//);
+	//AddTask(spring);
+	//// バネ(下)
+	//CSpringLower* springlower = new CSpringLower
+	//(
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, 0.0f, 0.0f)
+	//);
+	//AddTask(springlower);
 
 	//// シーソーモデル
 	//CSeesaw* seesaw1 = new CSeesaw
@@ -949,6 +950,13 @@ void CStage2::Load()
 	AddTask(meat3);
 
 	/////////////////////////////////////////////////////////////////////////////////////
+
+	// ピコちゃん
+	CPicoChan* pico = new CPicoChan();
+	pico->Scale(15.5f, 15.5f, 15.5f);
+	pico->Position(0.0f, 40.0f, 70.0f);
+	pico->SetCenterPoint(CVector(0.0f, 10.0f, 70.0f), 30.0f);
+	AddTask(pico);
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();

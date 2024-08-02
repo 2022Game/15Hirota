@@ -237,6 +237,7 @@
     <ClCompile Include="src\Game\CItemObjectBase.cpp" />
     <ClCompile Include="src\Game\CHealingUpBuffs.cpp" />
     <ClCompile Include="src\Game\CPicoChan.cpp" />
+    <ClCompile Include="src\Game\CPicoSword.cpp" />
     <ClCompile Include="src\Game\PlayerItem.cpp" />
     <ClCompile Include="src\Game\CResultAnnouncement.cpp" />
     <ClCompile Include="src\Game\CSmoke.cpp" />
@@ -489,6 +490,7 @@
     <ClInclude Include="src\Game\CItemObjectBase.h" />
     <ClInclude Include="src\Game\CHealingUpBuffs.h" />
     <ClInclude Include="src\Game\CPicoChan.h" />
+    <ClInclude Include="src\Game\CPicoSword.h" />
     <ClInclude Include="src\Game\PlayerItem.h" />
     <ClInclude Include="src\Game\CResultAnnouncement.h" />
     <ClInclude Include="src\Game\CSmoke.h" />

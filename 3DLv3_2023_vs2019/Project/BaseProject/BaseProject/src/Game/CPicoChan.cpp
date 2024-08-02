@@ -7,6 +7,7 @@
 #include "CInput.h"
 #include "CGameManager.h"
 #include "CStageManager.h"
+#include "CPicoSword.h"
 
 // ピコちゃんの頭上
 #define PICO_HEIGHT 1.0f
@@ -102,6 +103,7 @@ CPicoChan::CPicoChan()
 	, mpRideObject(nullptr)
 	, mDash(false)
 	, mDashTime(0.0f)
+	, mIsAttack(false)
 {
 	//インスタンスの設定
 	spInstance = this;
@@ -177,6 +179,13 @@ CPicoChan::CPicoChan()
 	//const CMatrix* spineMtxK = GetFrameMtx("Armature_mixamorig_RightToeBase");
 	//mpAttackCol->SetAttachMtx(spineMtxK);
 
+	// マジックソード作成
+	mpSword = new CPicoSword();
+	//mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+	mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
+	mpSword->SetPicoChanInstance(this);
+	mpSword->SetOwner(this);
+
 	// 最初に1レベルに設定
 	ChangeLevel(1);
 }
@@ -192,6 +201,9 @@ CPicoChan::~CPicoChan()
 	SAFE_DELETE(mpCapsule);
 	SAFE_DELETE(mpDamageCol);
 	//SAFE_DELETE(mpAttackCol);
+
+	// マジックソード破棄
+	mpSword->Kill();
 }
 
 // 衝突処理
@@ -343,7 +355,7 @@ bool CPicoChan::ShouldTransitionWander()
 	}
 
 	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
-	return randomValue < 0.1f;
+	return randomValue < 0.05f;
 }
 
 // 徘徊状態に遷移する条件
@@ -440,6 +452,11 @@ void CPicoChan::Move()
 	Position(newPosition);
 }
 
+bool CPicoChan::IsAttack()
+{
+	return mIsAttack;
+}
+
 // 中心座標と範囲を設定
 void CPicoChan::SetCenterPoint(CVector& center, const float radius)
 {
@@ -497,6 +514,15 @@ void CPicoChan::UpdateIdle()
 	//mpAttackCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+
+	if (mIsAttack)
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+	}
+	else
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
+	}
 
 	//プレイヤーを見つけたら、敵発見状態へ移行
 	if (IsFoundPlayer())
@@ -572,6 +598,15 @@ void CPicoChan::UpdateChase()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+
+	if (mIsAttack)
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+	}
+	else
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
+	}
 	
 	if (!IsFoundPlayer())
 	{
@@ -602,17 +637,20 @@ void CPicoChan::UpdateChase()
 		{
 			// Dash状態にする
 			ChangeAnimation(EAnimType::eWeaponDash);
-			mMoveSpeed = toPlayer * DASH_SPEED;
+			//mMoveSpeed = toPlayer * DASH_SPEED;
+			mMoveSpeed = toPlayer * 0.0f;
 		}
 		else if (distanceToPlayer <= WALK_DISTANCE)
 		{
 			// Walk状態にする
 			ChangeAnimation(EAnimType::eWeaponWalk);
-			mMoveSpeed = toPlayer * MOVE_SPEED;
+			//mMoveSpeed = toPlayer * MOVE_SPEED;
+			mMoveSpeed = toPlayer * 0.0f;
 		}
 		else if (DASH_DISTANCE >= distanceToPlayer <= WALK_DISTANCE)
 		{
-			mMoveSpeed = toPlayer * MOVE_SPEED;
+			//mMoveSpeed = toPlayer * MOVE_SPEED;
+			mMoveSpeed = toPlayer * 0.0f;
 		}
 		//CDebugPrint::Print("mDash:%s\n", mDash ? "true" : "false");
 		CDebugPrint::Print("distanceToPlayer:%f\n", distanceToPlayer);
@@ -633,6 +671,7 @@ void CPicoChan::UpdateAttack()
 	mDiscovery = false;
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+	mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
 
 	// プレイヤーのポインタが0以外の時
 	CPlayer* player = CPlayer::Instance();
@@ -706,6 +745,7 @@ void CPicoChan::UpdateWeakAttack()
 	mDiscovery = false;
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+	mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
 
 	ChangeAnimation(EAnimType::eWeakAttack);
 	// プレイヤーのポインタが0以外の時
@@ -719,7 +759,7 @@ void CPicoChan::UpdateWeakAttack()
 
 	if (GetAnimationFrame() >= 20.0f)
 	{
-		//mpSword->AttackStart();
+		mpSword->AttackStart();
 		if (IsAnimationFinished())
 		{
 			//mpAttackCol->SetEnable(true);
@@ -734,6 +774,7 @@ void CPicoChan::UpdateSpinAttack()
 	mDiscovery = false;
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+	mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
 
 	ChangeAnimation(EAnimType::eSpinAttack);
 	// プレイヤーのポインタが0以外の時
@@ -751,10 +792,9 @@ void CPicoChan::UpdateSpinAttack()
 
 	if (GetAnimationFrame() >= 20.0f)
 	{
-		//mpSword->AttackStart();
+		mpSword->AttackStart();
 		if (IsAnimationFinished())
 		{
-			//mpAttackCol->SetEnable(true);
 			ChangeState(EState::eAttackEnd);
 		}
 	}
@@ -763,10 +803,14 @@ void CPicoChan::UpdateSpinAttack()
 // 武器を取り出す
 void CPicoChan::UpdateDrawn()
 {
-	if (GetAnimationFrame() >= 20.0f)
+	mIsAttack = true;
+	if (mIsAttack)
 	{
-		// マジックソード作成
-		//mpSword->SetAlpha(1.0f);
+		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+	}
+	else
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
 	}
 
 	if (IsAnimationFinished())
@@ -781,6 +825,7 @@ void CPicoChan::UpdatePutAway()
 	ChangeAnimation(EAnimType::ePutAway);
 	if (IsAnimationFinished())
 	{
+		mIsAttack = false;
 		ChangeState(EState::eIdle);
 	}
 }
@@ -788,7 +833,7 @@ void CPicoChan::UpdatePutAway()
 // 攻撃終了待ち
 void CPicoChan::UpdateAttackEnd()
 {
-	//mpSword->AttackEnd();
+	mpSword->AttackEnd();
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eChase);
@@ -801,6 +846,7 @@ void CPicoChan::UpdateHit()
 	// ダメージを受けた時は移動を停止
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+	mpSword->AttackEnd();
 
 	ChangeAnimation(EAnimType::eHit);
 	if (IsAnimationFinished())
@@ -914,7 +960,7 @@ bool CPicoChan::IsFoundPlayer() const
 // 更新
 void CPicoChan::Update()
 {
-	CDebugPrint::Print("mLerping:%s\n", mIsLerping ? "true" : "false");
+	CDebugPrint::Print("mIsAttack:%s\n", mIsAttack ? "true" : "false");
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
 
@@ -1060,6 +1106,7 @@ void CPicoChan::Update()
 	// CSoldierの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
+	mpSword->UpdateAttachMtx();
 	//mpAttackCol->Update();
 
 	mIsGrounded = false;

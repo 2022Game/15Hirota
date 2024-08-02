@@ -1,6 +1,7 @@
 #include "CEnemy.h"
 #include "CEffect.h"
 #include "CCollisionManager.h"
+#include "CPicoChan.h"
 
 //“G1‚Ìƒ‚ƒfƒ‹
 //#define MODEL_Enemy "Character\\Player\\Maria.Model.x"
