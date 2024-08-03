@@ -17,6 +17,8 @@
 #include "CSavePoint1.h"
 #include "CPicoChan.h"
 #include "CMetalLadder.h"
+#include "CRengaBlock.h"
+#include "CHatenaBlock.h"
 
 // コンストラクタ
 CStage4::CStage4()
@@ -82,9 +84,27 @@ void CStage4::Load()
 
 	// セーブポイントモデル
 	CResourceManager::Load<CModel>("SavePoint", "Field\\Gimmick\\SavePoint.obj");
+
+	// ハテナブロック(アイテム保有)
+	CResourceManager::Load<CModel>("HatenaBlock", "Field\\Object\\hatena.obj");
+	// ハテナブロック(アイテム不保有)
+	CResourceManager::Load<CModel>("HatenaBlockAfter", "Field\\Object\\UsedHatenaBlock.obj");
+	// レンガブロック
+	CResourceManager::Load<CModel>("RengaBlock", "Field\\Object\\RengaBlock.obj");
 	
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
+	// 回復オブジェクト
+	CResourceManager::Load<CModel>("Heart", "Item\\StatusItem\\Heart.obj");
+	// 無敵オブジェクト
+	CResourceManager::Load<CModel>("Star", "Item\\StatusItem\\Star.obj");
+	// 得点オブジェクト
+	CResourceManager::Load<CModel>("Medal", "Item\\StatusItem\\Medal.obj");
+	// 回復薬オブジェクト
+	CResourceManager::Load<CModel>("Healing", "Item\\StatusItem\\HealingItem.obj");
+	// 攻撃力アップモデル
+	CResourceManager::Load<CModel>("AttackPotion", "Item\\StatusItem\\AttackPotion.obj");
+
 	// サークルエフェクト
 	CResourceManager::Load<CModel>("CircleEffect1", "Effect\\CharacterEffect\\CharaEffectCircle.obj");
 	CResourceManager::Load<CModel>("CircleEffect2", "Effect\\CharacterEffect\\CharaEffectCircle(Widthver).obj");
@@ -242,6 +262,30 @@ void CStage4::Load()
 	);
 	AddTask(springlower2);
 
+	// レンガブロック1
+	CRengaBlock* renga1 = new CRengaBlock
+	(
+		CVector(300.0f, -150.0f, -80.0f),
+		CVector(9.0f, 9.0f, 9.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(renga1);
+	// ハテナブロック1
+	CHatenaBlock* hatena1 = new CHatenaBlock
+	(
+		CVector(287.0f, -150.0f, -80.0f),
+		CVector(9.0f, 9.0f, 9.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(hatena1);
+	// レンガブロック1
+	CRengaBlock* renga2 = new CRengaBlock(
+		CVector(274.0f, -150.0f, -80.0f),
+		CVector(9.0f, 9.0f, 9.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(renga2);
+
 	// 登れる金網を作成
 	CMetalLadder* metalladder = new CMetalLadder
 	(
@@ -302,12 +346,12 @@ void CStage4::Load()
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	//// ピコちゃん
-	//CPicoChan* pico = new CPicoChan();
-	//pico->Scale(15.5f, 15.5f, 15.5f);
-	//pico->Position(328.0f, -277.0f, -700.0f);
-	//pico->SetCenterPoint(CVector(328.0f, -306.0f, -700.0f),30.0f);
-	//AddTask(pico);
+	// ピコちゃん
+	CPicoChan* pico = new CPicoChan();
+	pico->Scale(15.5f, 15.5f, 15.5f);
+	pico->Position(415.0f, -127.0f, -80.0f);
+	pico->SetCenterPoint(CVector(415.0f, -125.0f, -80.0f),30.0f);
+	AddTask(pico);
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();

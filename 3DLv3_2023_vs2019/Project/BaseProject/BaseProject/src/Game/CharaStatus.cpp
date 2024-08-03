@@ -27,6 +27,17 @@ const CharaStatus ENEMY_STATUS[ENEMY_LEVEL_MAX] =
 	{	5,			50,			10,				0,				50,				 0,					1.0f},
 };
 
+// ピコちゃんのレベルごとのテーブル
+const CharaStatus PICOCHAN_STATUS[ENEMY_LEVEL_MAX] =
+{
+	// レベル		HP		攻撃力			防御		スタミナ				バリア				移動速度
+	{	1,			15,			 2,				0,				50,				 0,					1.0f},
+	{	2,			20,			 4,				0,				50,				 0,					1.0f},
+	{	3,			30,			 6,				0,				50,				 0,					1.0f},
+	{	4,			40,			 8,				0,				50,				 0,					1.0f},
+	{	5,			50,			10,				0,				50,				 0,					1.0f},
+};
+
 // ヴァンガードのレベルごとのテーブル
 const CharaStatus VANGUARD_STATUS[VANGUARD_LEVEL_MAX] =
 {

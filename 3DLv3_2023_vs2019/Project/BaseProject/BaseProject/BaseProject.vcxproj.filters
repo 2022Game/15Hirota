@@ -308,6 +308,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage4">
       <UniqueIdentifier>{045cace2-37c1-49a1-8f90-df86c90888f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\EnemyUI\PicoChan">
+      <UniqueIdentifier>{fc6f9d8a-b545-4790-83d8-56bb5eba4e27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -1038,6 +1041,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CSeesawClimb.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CPicoChanUI.cpp">
+      <Filter>ソース ファイル\Game\UI\EnemyUI\PicoChan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1793,6 +1799,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSeesawClimb.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Climb\Stage4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CPicoChanUI.h">
+      <Filter>ソース ファイル\Game\UI\EnemyUI\PicoChan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

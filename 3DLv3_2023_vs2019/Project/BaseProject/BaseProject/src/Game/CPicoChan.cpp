@@ -8,6 +8,7 @@
 #include "CGameManager.h"
 #include "CStageManager.h"
 #include "CPicoSword.h"
+#include "CPicoChanUI.h"
 
 // ピコちゃんの頭上
 #define PICO_HEIGHT 1.0f
@@ -40,7 +41,7 @@
 #define KICKCOL 10.0f
 
 // プレイヤーを発見した後の時間
-#define DISCOVERY 2.0f
+#define DISCOVERY 1.0f
 // プレイヤーを発見した後の待ち時間
 #define DISCOVERY_END 40.0f
 
@@ -115,6 +116,9 @@ CPicoChan::CPicoChan()
 	// モデルデータ取得
 	CModelX* model = CResourceManager::Get<CModelX>("Pico");
 
+	mpUI = new CPicoChanUI();
+	mpUI->SetCenterRatio(CVector2(0.3f, 0.0f));
+
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
 	for (int i = 0; i < size; i++)
@@ -166,18 +170,18 @@ CPicoChan::CPicoChan()
 	//const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	//mpDamageCol->SetAttachMtx(spineMtx);
 
-	//// ダメージを与えるコライダー
-	//mpAttackCol = new CColliderSphere
-	//(
-	//	this, ELayer::eKickCol,
-	//	0.3f
-	//);
-	//mpAttackCol->SetCollisionLayers({ ELayer::eDamageCol });
-	//mpAttackCol->SetCollisionTags({ ETag::ePlayer });
-	//mpAttackCol->SetEnable(false);
-	//// 右足
-	//const CMatrix* spineMtxK = GetFrameMtx("Armature_mixamorig_RightToeBase");
-	//mpAttackCol->SetAttachMtx(spineMtxK);
+	// ダメージを与えるコライダー
+	mpAttackCol = new CColliderSphere
+	(
+		this, ELayer::eKickCol,
+		0.1f
+	);
+	mpAttackCol->SetCollisionLayers({ ELayer::eDamageCol });
+	mpAttackCol->SetCollisionTags({ ETag::ePlayer });
+	mpAttackCol->SetEnable(false);
+	// 右足
+	const CMatrix* spineMtxK = GetFrameMtx("root_LeftToe_end");
+	mpAttackCol->SetAttachMtx(spineMtxK);
 
 	// マジックソード作成
 	mpSword = new CPicoSword();
@@ -200,10 +204,12 @@ CPicoChan::~CPicoChan()
 	SAFE_DELETE(mpLine);
 	SAFE_DELETE(mpCapsule);
 	SAFE_DELETE(mpDamageCol);
-	//SAFE_DELETE(mpAttackCol);
+	SAFE_DELETE(mpAttackCol);
 
 	// マジックソード破棄
 	mpSword->Kill();
+
+	mpUI->Kill();
 }
 
 // 衝突処理
@@ -271,11 +277,11 @@ void CPicoChan::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 				mTargetDir = vp.Normalized();
 
 				int hitRand = Math::Rand(0, 100);
-				if (hitRand >= 95) // 5%の確率で下の処理を実行
+				if (hitRand >= 90) // 10%の確率で下の処理を実行
 				{
 					int random = Math::Rand(0, 2);
 					mpDamageCol->SetEnable(false);
-					if (random == 0)
+					if (random == 0 || random == 1 || random == 2)
 					{
 						ChangeState(EState::eHit);
 					}
@@ -328,11 +334,29 @@ void CPicoChan::LevelUp()
 void CPicoChan::ChangeLevel(int level)
 {
 	// ステータスのテーブルのインデックス地に変換
-	int index = Math::Clamp(level - 1, 0, ENEMY_LEVEL_MAX);
+	int index = Math::Clamp(level - 1, 0, PICOCHAN_LEVEL_MAX);
 	// 最大ステータスに設定
 	mCharaMaxStatus = ENEMY_STATUS[index];
 	// 現在のステータスを最大値にすることで、HP回復
 	mCharaStatus = mCharaMaxStatus;
+
+	mpUI->SetMaxValue(mCharaMaxStatus.hp);
+	mpUI->SetValue(mCharaStatus.hp);
+}
+
+// フレームとHPゲージの表示の確認をする処理
+void CPicoChan::UpdateGaugeAndFrame()
+{
+	if (mDiscovery)
+	{
+		mpUI->SetShow(false);
+	}
+	else
+	{
+		// HPゲージの座標を更新 (敵の座標の少し上の座標)
+		CVector gaugePos = Position() + CVector(0.0f, 45.0f, 0.0f);
+		mpUI->SetWorldPos(gaugePos);
+	}
 }
 
 // ピコちゃんの方向をランダムに変更する処理
@@ -390,6 +414,15 @@ void CPicoChan::Move()
 	mMoveSpeed.Z(0.0f);
 
 	mIsLerping = false;
+
+	if (mIsAttack)
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+	}
+	else
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
+	}
 
 	// 速度の設定
 	float moveSpeed = MOVE_AUTOMATIC_SPEED;
@@ -511,7 +544,7 @@ void CPicoChan::UpdateIdle()
 {
 	mDiscovery = false;
 	mDiscoveryEnd = false;
-	//mpAttackCol->SetEnable(false);
+	mpAttackCol->SetEnable(false);
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
@@ -538,8 +571,8 @@ void CPicoChan::UpdateIdle()
 	}
 	else
 	{
-		int random = Math::Rand(0.0f, 1.0f);
-		if (random >= 0.5f)
+		int random = Math::Rand(0, 1);
+		if (random == 1)
 		{
 			ChangeAnimation(EAnimType::eIdle1);
 		}
@@ -570,11 +603,9 @@ void CPicoChan::UpdateDiscovery()
 	vp.Y(0.0f);
 	mTargetDir = vp.Normalized();
 
+	mIsAttack = true;
+	mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
 	ChangeAnimation(EAnimType::eWeaponDraw);
-	if (IsAnimationFinished())
-	{
-		ChangeState(EState::eDrawn);
-	}
 
 	mDiscoveryTime += Time::DeltaTime();
 	if (mDiscoveryTime >= DISCOVERY)
@@ -660,6 +691,7 @@ void CPicoChan::UpdateChase()
 		// 距離がさらに一定以内であれば攻撃モードに切り替える
 		if (distanceToPlayer <= 35.0f)
 		{
+			mIsAttack = true;
 			ChangeState(EState::eAttack);
 		}
 	}
@@ -671,7 +703,15 @@ void CPicoChan::UpdateAttack()
 	mDiscovery = false;
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
-	mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+
+	if (mIsAttack)
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+	}
+	else
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
+	}
 
 	// プレイヤーのポインタが0以外の時
 	CPlayer* player = CPlayer::Instance();
@@ -684,7 +724,6 @@ void CPicoChan::UpdateAttack()
 
 	if (distancePlayer <= ATTACK_RANGE)
 	{
-
 		CPlayer* player = CPlayer::Instance();
 		CVector playerPos = player->Position();
 		playerPos.Y(Position().Y());
@@ -695,7 +734,7 @@ void CPicoChan::UpdateAttack()
 
 		if (distancePlayer <= 24.0f)
 		{
-			int random = Math::Rand(0, 1);
+			int random = Math::Rand(0, 2);
 			if (random == 0)
 			{
 				ChangeState(EState::eWeakAttack);
@@ -703,6 +742,10 @@ void CPicoChan::UpdateAttack()
 			else if (random == 1)
 			{
 				ChangeState(EState::eSpinAttack);
+			}
+			else if (random == 2)
+			{
+				ChangeState(EState::eKick);
 			}
 		}
 
@@ -745,7 +788,15 @@ void CPicoChan::UpdateWeakAttack()
 	mDiscovery = false;
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
-	mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+
+	if (mIsAttack)
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+	}
+	else
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
+	}
 
 	ChangeAnimation(EAnimType::eWeakAttack);
 	// プレイヤーのポインタが0以外の時
@@ -774,8 +825,16 @@ void CPicoChan::UpdateSpinAttack()
 	mDiscovery = false;
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
-	mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
 
+	if (mIsAttack)
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+	}
+	else
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
+	}
+	
 	ChangeAnimation(EAnimType::eSpinAttack);
 	// プレイヤーのポインタが0以外の時
 	CPlayer* player = CPlayer::Instance();
@@ -790,7 +849,7 @@ void CPicoChan::UpdateSpinAttack()
 	float moveAmount = 0.1f;
 	mMoveSpeed = mTargetDir * moveAmount;
 
-	if (GetAnimationFrame() >= 20.0f)
+	if (GetAnimationFrame() >= 70.0f)
 	{
 		mpSword->AttackStart();
 		if (IsAnimationFinished())
@@ -800,10 +859,14 @@ void CPicoChan::UpdateSpinAttack()
 	}
 }
 
-// 武器を取り出す
-void CPicoChan::UpdateDrawn()
+
+// キック
+void CPicoChan::UpdateKick()
 {
-	mIsAttack = true;
+	// 攻撃するときは移動を停止
+	mMoveSpeed.X(0.0f);
+	mMoveSpeed.Z(0.0f);
+
 	if (mIsAttack)
 	{
 		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
@@ -813,6 +876,37 @@ void CPicoChan::UpdateDrawn()
 		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
 	}
 
+	// プレイヤーのポインタが0以外の時
+	CPlayer* player = CPlayer::Instance();
+
+	// プレイヤーまでのベクトルを求める
+	CVector vp = player->Position() - Position();
+	float distancePlayer = vp.Length();
+	vp.Y(0.0f);
+	mTargetDir = vp.Normalized();
+
+	ChangeAnimation(EAnimType::eKick);
+	if (mAnimationFrame >= 45.0f)
+	{
+		mpAttackCol->SetEnable(true);
+		ChangeState(EState::eKickEnd);
+	}
+}
+
+// キック終了
+void CPicoChan::UpdateKickEnd()
+{
+	if (IsAnimationFinished())
+	{
+		mpAttackCol->SetEnable(false);
+		ChangeState(EState::eChase);
+	}
+}
+
+
+// 武器を取り出す
+void CPicoChan::UpdateDrawn()
+{
 	if (IsAnimationFinished())
 	{
 		ChangeState(EState::eChase);
@@ -822,6 +916,7 @@ void CPicoChan::UpdateDrawn()
 // 武器をしまう
 void CPicoChan::UpdatePutAway()
 {
+	mIsAttack = false;
 	ChangeAnimation(EAnimType::ePutAway);
 	if (IsAnimationFinished())
 	{
@@ -896,7 +991,7 @@ void CPicoChan::UpdateDeathEnd()
 // 徘徊処理
 void CPicoChan::UpdateWander()
 {
-	//mpAttackCol->SetEnable(false);
+	mpAttackCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eWalk);
 
 	// 一定時間ごとに方向転換
@@ -1037,14 +1132,14 @@ void CPicoChan::Update()
 	case EState::ePutAway:
 		UpdatePutAway();
 		break;
-	//	// キック
-	//case EState::eKick:
-	//	UpdateKick();
-	//	break;
-	//	// キック終了
-	//case EState::eKickWait:
-	//	UpdateKickEnd();
-	//	break;
+		// キック
+	case EState::eKick:
+		UpdateKick();
+		break;
+		// キック終了
+	case EState::eKickEnd:
+		UpdateKickEnd();
+		break;
 		// プレイヤー発見
 	case EState::eDiscovery:
 		UpdateDiscovery();
@@ -1103,11 +1198,15 @@ void CPicoChan::Update()
 		Rotation(CQuaternion::LookRotation(forward));
 	}
 
+	mpUI->SetValue(mCharaStatus.hp);
+
 	// CSoldierの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
 	mpSword->UpdateAttachMtx();
-	//mpAttackCol->Update();
+	mpAttackCol->Update();
+
+	UpdateGaugeAndFrame();
 
 	mIsGrounded = false;
 }

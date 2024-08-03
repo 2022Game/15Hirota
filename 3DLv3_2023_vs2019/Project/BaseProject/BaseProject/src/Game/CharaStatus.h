@@ -23,6 +23,12 @@ extern const CharaStatus PLAYER_STATUS[PLAYER_LEVEL_MAX];
 // 敵のレベルごとのステータスのテーブル
 extern const CharaStatus ENEMY_STATUS[ENEMY_LEVEL_MAX];
 
+// 敵の最大レベル
+#define PICOCHAN_LEVEL_MAX 5
+// 敵のレベルごとのステータスのテーブル
+extern const CharaStatus PICOCHAN_STATUS[PICOCHAN_LEVEL_MAX];
+
+
 // ヴァンガードの最大レベル
 #define VANGUARD_LEVEL_MAX 5
 // ヴァンガードごとのステータスのテーブル

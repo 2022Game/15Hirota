@@ -9,6 +9,7 @@
 #include "CEffect.h"
 
 class CPicoSword;
+class CPicoChanUI;
 
 // ピコちゃんクラス
 class CPicoChan : public CXCharacter
@@ -48,8 +49,8 @@ public:
 	// ピコちゃんの方向をランダムに変更する処理
 	void ChangeDerection();
 
-	//// フレームとHPゲージの表示の確認をする処理
-	//void UpdateGaugeAndFrame();
+	// フレームとHPゲージの表示の確認をする処理
+	void UpdateGaugeAndFrame();
 
 	//// ビックリマークの表示の確認をする処理
 	//void UpdateExclamation();
@@ -97,6 +98,9 @@ private:
 	// マジックソードモデル
 	CPicoSword* mpSword;
 
+	// UI
+	CPicoChanUI* mpUI;
+
 
 	// 準備中の状態
 	void UpdateReady();
@@ -127,9 +131,9 @@ private:
 	// 追跡
 	void UpdateChase();
 	// キック
-	//void UpdateKick();
+	void UpdateKick();
 	// キック終了
-	//void UpdateKickEnd();
+	void UpdateKickEnd();
 	// プレイヤーの攻撃hit
 	void UpdateHit();
 	// 死亡
@@ -157,7 +161,7 @@ private:
 		eDiscovery,	// プレイヤー発見
 		eChase,		// 追跡
 		eKick,		// キック
-		eKickWait,	// キック終了
+		eKickEnd,	// キック終了
 		eHit,		// ダメージHit
 		eDeath,		// 死亡
 		eDeathEnd,	// 死亡終了

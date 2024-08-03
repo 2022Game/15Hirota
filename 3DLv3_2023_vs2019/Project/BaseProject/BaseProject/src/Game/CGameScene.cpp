@@ -95,6 +95,10 @@ void CGameScene::Load()
 	CResourceManager::Load<CTexture>("SignboardUI",			"UI\\Ukye_1.png");					// Uキーの画像
 	CResourceManager::Load<CTexture>("ExclamationMark",		"UI\\bikkurimark.png");				// ビックリマーク画像
 	CResourceManager::Load<CTexture>("Timer",				"UI\\StageUI\\Timer.png");			// タイマー画像
+	// ピコちゃんUI(フレーム)
+	CResourceManager::Load<CTexture>("PicoFrame", "UI\\PicoChan\\PicoChanFrame.png");
+	// ピコちゃんUI(フレーム)
+	CResourceManager::Load<CTexture>("PicoGauge", "UI\\PicoChan\\PicoChanGauge.png");
 	// Eキーの画像
 	CResourceManager::Load<CTexture>("EUI", "UI\\GimmickUI\\E.png");
 	// キーのフレーム画像
