@@ -192,7 +192,7 @@ void CGameManager::UpdateGame()
 				ChangeState(EGameState::eResult);
 			}
 		}
-		else if (player->IsStage3Clear() && !mResultSetUp)
+		/*else if (player->IsStage3Clear() && !mResultSetUp)
 		{
 			mElapsedTime += Time::DeltaTime();
 			if (mElapsedTime > 1.5f)
@@ -201,7 +201,7 @@ void CGameManager::UpdateGame()
 				mResultSetUp = true;
 				ChangeState(EGameState::eResult);
 			}
-		}
+		}*/
 		else if (player->IsDeath() && !mResultSetUp)
 		{
 			mElapsedTime += Time::DeltaTime();
@@ -273,7 +273,7 @@ void CGameManager::UpdateStage2()
 	ScoreReset();
 
 	mElapsedStageTime += Time::DeltaTime();
-	if (mElapsedStageTime > 3.0f)
+	if (mElapsedStageTime > 7.0f)
 	{
 		ChangeState(EGameState::eGame);
 	}
@@ -292,7 +292,7 @@ void CGameManager::UpdateStage3()
 	ScoreReset();
 
 	mElapsedStageTime += Time::DeltaTime();
-	if (mElapsedStageTime > 21.0f)
+	if (mElapsedStageTime > 8.0f)
 	{
 		ChangeState(EGameState::eGame);
 	}

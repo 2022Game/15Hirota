@@ -684,7 +684,7 @@ void CPicoChan::UpdateChase()
 			//mMoveSpeed = toPlayer * 0.0f;
 		}
 		//CDebugPrint::Print("mDash:%s\n", mDash ? "true" : "false");
-		CDebugPrint::Print("distanceToPlayer:%f\n", distanceToPlayer);
+		//CDebugPrint::Print("distanceToPlayer:%f\n", distanceToPlayer);
 
 		mTargetDir = toPlayer;
 
@@ -1055,7 +1055,7 @@ bool CPicoChan::IsFoundPlayer() const
 // çXêV
 void CPicoChan::Update()
 {
-	CDebugPrint::Print("mIsAttack:%s\n", mIsAttack ? "true" : "false");
+	//CDebugPrint::Print("mIsAttack:%s\n", mIsAttack ? "true" : "false");
 	SetParent(mpRideObject);
 	mpRideObject = nullptr;
 

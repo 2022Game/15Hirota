@@ -404,6 +404,8 @@ CPlayer::~CPlayer()
 // 衝突処理
 void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
+	if (mState == EState::eReady) return;
+
 	// 乗れるコライダー
 	if (self == mpColliderLine)
 	{
@@ -1927,10 +1929,7 @@ void CPlayer::UpdateClearEnd()
 				mElapsedTime += Time::DeltaTime();
 			}
 			else
-			{
-				mElapsedTime = 0.0f;
-				mpCutInClear->End();
-				
+			{	
 				// ステージ1「ワンショット・フロア」
 				if (CGameManager::StageNo() == 1)
 				{
@@ -1952,7 +1951,9 @@ void CPlayer::UpdateClearEnd()
 						mStage3Clear = false;
 					}
 
-					
+					mElapsedTime = 0.0f;
+					mpCutInClear->End();
+
 					// ステージをクリア
 					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
@@ -1982,6 +1983,8 @@ void CPlayer::UpdateClearEnd()
 						mStage3Clear = false;
 					}
 
+					mElapsedTime = 0.0f;
+					mpCutInClear->End();
 					// ステージをクリア
 					CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
@@ -2009,8 +2012,12 @@ void CPlayer::UpdateClearEnd()
 						mStage2Clear = false;
 					}
 
+					mElapsedTime = 0.0f;
+					mpCutInClear->End();
 					// ステージをクリア
-					CGameManager::StageClear();
+					CGameManager::GameClear();
+					// ステージをクリア
+					//CGameManager::StageClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
 					ChangeState(EState::eReady);
 					mIsStartStage2 = false;
@@ -2047,6 +2054,8 @@ void CPlayer::UpdateClearEnd()
 						mStage3Clear = false;
 					}
 
+					mElapsedTime = 0.0f;
+					mpCutInClear->End();
 					// ステージをクリア
 					CGameManager::GameClear();
 					// ステージをクリアしたら、次のステージ開始まで準備中の状態に変更
@@ -3590,6 +3599,9 @@ void CPlayer::CheckUnderFootObject()
 // 更新
 void CPlayer::Update()
 {
+	mIsStartStage2 = true;
+	mIsStartStage3 = true;
+
 	SetParent(mpRideObject);
 	SetColor(CColor(1.0, 1.0, 1.0, 1.0));
 	mpRideObject = nullptr;
@@ -4031,7 +4043,7 @@ void CPlayer::Update()
 		{
 			mIsStartStage2 = true;
 			mIsStartStage3 = true;
-			mIsStartStage4 = true;
+			//mIsStartStage4 = true;
 		}
 		else if (CInput::PushKey(VK_DOWN))
 		{
@@ -4104,8 +4116,8 @@ void CPlayer::Update()
 	//CDebugPrint::Print("mMoveDistance:%f\n", mMoveDistance);
 	//CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
 	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
-	CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
-	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
+	//CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
+	//CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 }
 
 // アイテムを取得

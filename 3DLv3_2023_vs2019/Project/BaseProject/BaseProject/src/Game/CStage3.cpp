@@ -35,6 +35,7 @@
 #include "CMeat2.h"
 #include "CMeat3.h"
 #include "CInput.h"
+#include "CPicoChan.h"
 
 // コンストラクタ
 CStage3::CStage3()
@@ -218,8 +219,6 @@ void CStage3::Load()
 	// キャラクター関連
 	// ヴァンガード
 	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");
-	// ソルジャー
-	CResourceManager::Load<CModelX>("Soldier", "Character\\Gas mask soldier\\GasMask_Soldier_Model.x");
 
 	// 弾
 	CResourceManager::Load<CModel>("Bullet", "Item\\Bullet1\\Bullet.obj");
@@ -743,12 +742,19 @@ void CStage3::Load()
 	soldier2->SetCenterPoint(CVector(-173.7f, 130.0f, -652.0f), 40.0f);
 	AddTask(soldier2);
 
+	// ピコちゃん
+	CPicoChan* pico = new CPicoChan();
+	pico->Scale(15.5f, 15.5f, 15.5f);
+	pico->Position(-187.0f, 130.0f, -903.0f);
+	pico->SetCenterPoint(CVector(-187.0f, 130.0f, -903.0f), 30.0f);
+	AddTask(pico);
+
 
 	// ヴァンガード
 	CVanguard* van = new CVanguard();
 	CVanguard* vanPos = CVanguard::Instance();
 	van->Scale(1.4f, 1.4f, 1.4f);
-	van->Position(0.0f, 500.0f, -2050.0f);
+	van->Position(0.0f, 900.0f, -2050.0f);
 	AddTask(van);
 
 	// モンスター(プレイヤー)
@@ -757,9 +763,9 @@ void CStage3::Load()
 	// 初期値点 : 190.0f, 130.0f.0f, 269.0f
 	// 中間地点 : 0.0f, 320.0f, -1050.0f
 	// ボス前	: 0.0f, 430.0f, -1890.0f
-	// ゴール付近:	-367.0f, 395.0f, -2060.0f
+	// ゴール付近:	-367.0f, 395.0f, -2040.0f
 	// 火炎放射器の前 : -207.0f, 126.0f, -912.0f
-	CVector playerPos = CVector(190.0f, 180.0f, 269.0f);
+	CVector playerPos = CVector(190.0f, 140.0f, 269.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

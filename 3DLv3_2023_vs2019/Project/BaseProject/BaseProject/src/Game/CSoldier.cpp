@@ -490,8 +490,8 @@ void CSoldier::Move()
 			}
 		}
 
-		CDebugPrint::Print("Position:%f %f\n", Position().X(), Position().Z());
-		CDebugPrint::Print("targetPosition:%f %f\n", targetPosition.X(), targetPosition.Z());
+		//CDebugPrint::Print("Position:%f %f\n", Position().X(), Position().Z());
+		//CDebugPrint::Print("targetPosition:%f %f\n", targetPosition.X(), targetPosition.Z());
 
 		// “G‚ÌŒü‚«‚ğ’²®
 		mTargetDir = (mCenterPoint - Position()).Normalized();

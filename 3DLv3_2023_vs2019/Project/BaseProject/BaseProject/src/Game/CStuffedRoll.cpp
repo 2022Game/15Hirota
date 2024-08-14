@@ -16,8 +16,8 @@ const CStuffedRoll::StafData CStuffedRoll::STAFF_DATA[] =
 	{"Producer\n \nTanaka Taro",					10.0f,			450.0f,		0.0f,	1.0f,	0.0f},
 	{"Director\n \nTanaka Taro",					16.0f,			450.0f,		0.0f,	0.0f,	1.0f},
 	{"Designer\n \nTanaka Taro",					22.0f,			450.0f,		1.0f,	1.0f,	0.0f},
-	{"Programmer\n \nTanaka Taro",					28.0f,			750.0f,		1.0f,	0.0f,	1.0f},
-	{"Creator\n \nTanaka Taro",						34.0f,			750.0f,		1.0f,	1.0f,	1.0f},
+	{"Programmer\n \nTanaka Taro",					28.0f,			450.0f,		1.0f,	0.0f,	1.0f},
+	{"Creator\n \nTanaka Taro",						34.0f,			450.0f,		1.0f,	1.0f,	1.0f},
 	{"Debugger\n \nTanaka Taro",					40.0f,			450.0f,		0.0f,	1.0f,	1.0f},
 	{"Homeroom Teacher\n \nABCDEFG\n \nHIJKLMN",	46.0f,			450.0f,		1.0f,	0.0f,	0.0f},
 	{"スタッフ4",									52.0f,			450.0f,		1.0f,	0.0f,	0.0f},
@@ -96,7 +96,7 @@ void CStuffedRoll::Update()
 		CSceneManager::Instance()->LoadScene(EScene::eTitle);
 	}
 
-	CDebugPrint::Print("mTime:%f\n", mStaffRollTime);
+	//CDebugPrint::Print("mTime:%f\n", mStaffRollTime);
 }
 
 // テキストを移動させる処理
@@ -119,8 +119,8 @@ void CStuffedRoll::ScrollTextUp(CText* pText, float& yPos, float speed)
 
 	pText->SetPos(CVector2(mXPos, yPos));
 
-	CDebugPrint::Print("Text Position: %f, %f\n", pText->GetPos().X(), pText->GetPos().Y());
-	CDebugPrint::Print("yPos: %f\n", yPos);
+	//CDebugPrint::Print("Text Position: %f, %f\n", pText->GetPos().X(), pText->GetPos().Y());
+	//CDebugPrint::Print("yPos: %f\n", yPos);
 }
 
 // テキストのX軸のポジションを設定
