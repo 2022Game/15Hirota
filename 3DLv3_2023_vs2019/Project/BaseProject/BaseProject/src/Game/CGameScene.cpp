@@ -69,6 +69,9 @@ void CGameScene::Load()
 	CResourceManager::Load<CModelX>("Pico", "Character\\PicoChan\\PicoChan.x");
 	// ソルジャー
 	CResourceManager::Load<CModelX>("Soldier", "Character\\Gas mask soldier\\GasMask_Soldier_Model.x");
+	// ヴァンガード
+	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");
+
 	//CResourceManager::Load<CModelX>("Soldier",				"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
 	////CResourceManager::Load<CModelX>("UnityChan",			"Character\\UnityChan\\unitychan.x");						// ユニティちゃん
 	////CResourceManager::Load<CModelX>("Yukari",				"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん

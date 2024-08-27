@@ -217,9 +217,7 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("Meat",							"Item\\StageItem\\niku.obj");
 
 	// キャラクター関連
-	// ヴァンガード
-	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");
-
+	
 	// 弾
 	CResourceManager::Load<CModel>("Bullet", "Item\\Bullet1\\Bullet.obj");
 	// M1ガーランド(銃)

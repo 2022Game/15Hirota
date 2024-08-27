@@ -571,14 +571,19 @@ void CPicoChan::UpdateIdle()
 	}
 	else
 	{
-		int random = Math::Rand(0, 1);
-		if (random == 1)
-		{
-			ChangeAnimation(EAnimType::eIdle1);
-		}
-		else
-		{
-			ChangeAnimation(EAnimType::eIdle2);
+		// 現在のアニメーションが終了しているかどうかをチェック
+		if (IsAnimationFinished())
+		{	
+			// ランダムに次のアニメーションを選択
+			int random = Math::Rand(0, 1);
+			if (random == 1)
+			{
+				ChangeAnimation(EAnimType::eIdle1);
+			}
+			else
+			{
+				ChangeAnimation(EAnimType::eIdle2);
+			}
 		}
 
 		// 確率で徘徊状態に移行
@@ -647,6 +652,7 @@ void CPicoChan::UpdateChase()
 		if (mElapsedTimeEnd >= PLAYER_LOST)
 		{
 			ChangeState(EState::ePutAway);
+			mElapsedTime = 0.0f;
 			mElapsedTimeEnd = 0.0f; // プレイヤーが視界から消えたら経過時間をリセット
 		}
 	}
@@ -916,13 +922,34 @@ void CPicoChan::UpdateDrawn()
 // 武器をしまう
 void CPicoChan::UpdatePutAway()
 {
-	mIsAttack = false;
 	ChangeAnimation(EAnimType::ePutAway);
-	if (IsAnimationFinished())
+	if (GetAnimationFrame() >= 40.0f)
 	{
 		mIsAttack = false;
-		ChangeState(EState::eIdle);
 	}
+
+	if (mIsAttack)
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+	}
+	else
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
+	}
+
+	if (IsAnimationFinished())
+	{
+		if (mElapsedTime >= 0.2f)
+		{
+			mElapsedTime = 0.0f;
+			ChangeState(EState::eIdle);
+		}
+		else
+		{
+			mElapsedTime += Time::DeltaTime();
+		}
+	}
+	CDebugPrint::Print("elapsed:%f\n", mElapsedTime);
 }
 
 // 攻撃終了待ち
@@ -1019,6 +1046,7 @@ void CPicoChan::UpdateWander()
 	{
 		if (ShouldTransitionWander())
 		{
+			ChangeAnimation(EAnimType::eIdle1);
 			ChangeState(EState::eIdle);
 		}
 	}

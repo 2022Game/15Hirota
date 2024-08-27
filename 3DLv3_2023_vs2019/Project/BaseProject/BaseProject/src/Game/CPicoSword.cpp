@@ -116,7 +116,7 @@ CMatrix CPicoSword::Matrix() const
 		else
 		{
 			CMatrix translate;
-			translate.Translate(0.0f, -5.0f, 15.0f);
+			translate.Translate(0.0f, -8.0f, 17.0f);
 
 			// 90“x‰ñ“]‚ğ•\‚·s—ñ‚ğì¬
 			CMatrix rotateY;

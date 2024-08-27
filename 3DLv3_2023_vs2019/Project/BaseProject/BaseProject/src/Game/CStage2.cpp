@@ -951,12 +951,12 @@ void CStage2::Load()
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	//// ピコちゃん
-	//CPicoChan* pico = new CPicoChan();
-	//pico->Scale(15.5f, 15.5f, 15.5f);
-	//pico->Position(0.0f, 40.0f, 70.0f);
-	//pico->SetCenterPoint(CVector(0.0f, 10.0f, 70.0f), 30.0f);
-	//AddTask(pico);
+	// ピコちゃん
+	CPicoChan* pico = new CPicoChan();
+	pico->Scale(15.5f, 15.5f, 15.5f);
+	pico->Position(0.0f, 40.0f, 70.0f);
+	pico->SetCenterPoint(CVector(0.0f, 10.0f, 70.0f), 30.0f);
+	AddTask(pico);
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
