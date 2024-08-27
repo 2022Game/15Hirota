@@ -926,6 +926,7 @@ void CPicoChan::UpdatePutAway()
 	if (GetAnimationFrame() >= 40.0f)
 	{
 		mIsAttack = false;
+		ChangeState(EState::eIdle);
 	}
 
 	if (mIsAttack)
@@ -939,7 +940,7 @@ void CPicoChan::UpdatePutAway()
 
 	if (IsAnimationFinished())
 	{
-		if (mElapsedTime >= 0.2f)
+		if (mElapsedTime >= 0.1f)
 		{
 			mElapsedTime = 0.0f;
 			ChangeState(EState::eIdle);
