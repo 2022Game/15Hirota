@@ -648,7 +648,6 @@ void CPicoChan::UpdateChase()
 	{
 		ChangeAnimation(EAnimType::eAlert1);
 		mElapsedTimeEnd += Time::DeltaTime();
-		//CDebugPrint::Print("TimeEnd%f\n", mElapsedTime_End);
 		if (mElapsedTimeEnd >= PLAYER_LOST)
 		{
 			ChangeState(EState::ePutAway);
@@ -684,14 +683,13 @@ void CPicoChan::UpdateChase()
 			mMoveSpeed = toPlayer * MOVE_SPEED;
 			//mMoveSpeed = toPlayer * 0.0f;
 		}
-		else if (DASH_DISTANCE >= distanceToPlayer <= WALK_DISTANCE)
+		//else if (DASH_DISTANCE >= distanceToPlayer <= WALK_DISTANCE)
+		else if (DASH_DISTANCE >= distanceToPlayer|| distanceToPlayer <= WALK_DISTANCE)
 		{
 			mMoveSpeed = toPlayer * MOVE_SPEED;
 			//mMoveSpeed = toPlayer * 0.0f;
 		}
-		//CDebugPrint::Print("mDash:%s\n", mDash ? "true" : "false");
-		//CDebugPrint::Print("distanceToPlayer:%f\n", distanceToPlayer);
-
+		
 		mTargetDir = toPlayer;
 
 		// ‹——£‚ª‚³‚ç‚Éˆê’èˆÈ“à‚Å‚ ‚ê‚ÎUŒ‚ƒ‚[ƒh‚ÉØ‚è‘Ö‚¦‚é

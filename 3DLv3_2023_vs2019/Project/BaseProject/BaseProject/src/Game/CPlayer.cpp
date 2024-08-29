@@ -70,7 +70,7 @@
 // スタートジャンプ
 #define JUMP_START_STAGE 2.0f
 // 目的位置までジャンプ
-#define JUMP_TARGET 10.0f
+#define JUMP_TARGET 15.0f
 // 重力
 #define GRAVITY 0.0625f
 // ジャンプ終了時
@@ -3332,7 +3332,7 @@ void CPlayer::UpdateReflection()
 		}
 		break;
 	}
-	CDebugPrint::Print("mStateStep:%d\n", mStateStep);
+	//CDebugPrint::Print("mStateStep:%d\n", mStateStep);
 }
 
 // 死亡ジャンプ開始

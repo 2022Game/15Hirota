@@ -63,6 +63,8 @@ public:
 	// 描画
 	void Render();
 
+	void Render3D();
+
 private:
 	// コンストラクタ
 	CTaskManager();

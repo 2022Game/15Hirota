@@ -168,6 +168,7 @@
     <ClCompile Include="src\Game\CSeesawClimb.cpp" />
     <ClCompile Include="src\Game\CSeesawObject.cpp" />
     <ClCompile Include="src\Game\CSeesawStageFallCol.cpp" />
+    <ClCompile Include="src\Game\CShadowMap.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CSlash.cpp" />
@@ -422,6 +423,7 @@
     <ClInclude Include="src\Game\CSeesawClimb.h" />
     <ClInclude Include="src\Game\CSeesawObject.h" />
     <ClInclude Include="src\Game\CSeesawStageFallCol.h" />
+    <ClInclude Include="src\Game\CShadowMap.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CSlash.h" />
@@ -545,11 +547,13 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>include;$(IncludePath)</IncludePath>
     <LibraryPath>lib;$(LibraryPath)</LibraryPath>
+    <TargetName>Demon Adventure</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>include;$(IncludePath)</IncludePath>
     <LibraryPath>lib;$(LibraryPath)</LibraryPath>
+    <TargetName>Demon Adventure</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -1045,6 +1045,9 @@
     <ClCompile Include="src\Game\CPicoChanUI.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI\PicoChan</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CShadowMap.cpp">
+      <Filter>ソース ファイル\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1802,6 +1805,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CPicoChanUI.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI\PicoChan</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CShadowMap.h">
+      <Filter>ソース ファイル\Test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 #pragma once
 
-#define GAME_TITLE "GameTitle"	//ゲームタイトル
+#define GAME_TITLE "Demon Adventure"	//ゲームタイトル
 
 #define WINDOW_WIDTH 1280		//ウィンドウの幅
 #define WINDOW_HEIGHT 720		//ウィンドウの高さ

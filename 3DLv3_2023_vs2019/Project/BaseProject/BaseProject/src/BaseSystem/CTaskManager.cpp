@@ -2,9 +2,15 @@
 #include "CCamera.h"
 #include "CDebugCamera.h"
 #include "CBillBoard.h"
+#include "CShadowMap.h"
+
+#define TEXWIDTH  8192  //テクスチャ幅
+#define TEXHEIGHT  6144  //テクスチャ高さ
 
 //タスクマネージャのインスタンス
 CTaskManager* CTaskManager::mpInstance = nullptr;
+
+CShadowMap mShadowMap;
 
 // インスタンスを取得
 CTaskManager* CTaskManager::Instance()
@@ -24,11 +30,21 @@ void CTaskManager::ClearInstance()
 	mpInstance = nullptr;
 }
 
+// 描画用関数
+void RenderShadow()
+{
+	CTaskManager::Instance()->Render3D();
+}
+
 // コンストラクタ
 CTaskManager::CTaskManager()
 	: mPauseBit(0)
 
 {
+	float shadowColor[] = { 0.4f, 0.4f, 0.4f, 0.2f };  //影の色
+	float lightPos[] = { 50.0f, 2000.0f, 50.0f };  //光源の位置
+	mShadowMap.Init(TEXWIDTH, TEXHEIGHT, RenderShadow,
+		shadowColor, lightPos);
 }
 
 // デストラクタ
@@ -299,6 +315,8 @@ void CTaskManager::Render()
 	{
 		// 現在のカメラを反映
 		current->Apply();
+		mShadowMap.Render();
+
 		// 3D関連の描画
 		for (CTask* task : m3dTasks)
 		{
@@ -325,4 +343,18 @@ void CTaskManager::Render()
 	}
 	// 3D描画用のカメラへ戻す
 	CCamera::End2DCamera();
+}
+
+void CTaskManager::Render3D()
+{
+	// 3D関連の描画
+	for (CTask* task : m3dTasks)
+	{
+		// 表示フラグがオンならば
+		if (task->IsShow())
+		{
+			// タスクを描画
+			task->Render();
+		}
+	}
 }
