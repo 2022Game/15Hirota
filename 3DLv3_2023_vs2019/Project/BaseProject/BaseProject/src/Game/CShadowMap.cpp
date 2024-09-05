@@ -32,19 +32,21 @@ void CShadowMap::Init()
 	glBindTexture(GL_TEXTURE_2D, mDepthTextureID);
 
 	// Depthテクスチャの割り当て
+	// GL_UNSIGNED_BYTE
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
 		mTextureWidth, mTextureHeight, 0, GL_DEPTH_COMPONENT,
-		GL_UNSIGNED_BYTE, 0);
+		GL_UNSIGNED_SHORT, 0);
 
 	// テクスチャを拡大・縮小する方法の指定
 	// GL_NEAREST : 最も近いピクセルの色をそのまま使用する
-	// GL_LINEARにしたが側面がギザギザのまま
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// GL_LINEAR
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 	// テクスチャの繰り返し方法の指定
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	// GL_CLAMP 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	// 書き込むポリゴンのテクスチャ座標地のRとテクスチャとの比較を行うようにする
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
@@ -175,11 +177,17 @@ void CShadowMap::Render()
 	// デプスバッファには背面のポリゴンの奥行きを記録するようにする
 	glCullFace(GL_FRONT);
 
+	// シャドウマップの描画時にバイアスを適用する
+	glEnable(GL_POLYGON_OFFSET_FILL);
+	glPolygonOffset(1.5f, 3.5f);
+
 	// デプステクスチャへの描画
 	if (mpRender)
 	{
 		(*mpRender)();
 	}
+
+	glDisable(GL_POLYGON_OFFSET_FILL);
 
 	// フレームバッファオブジェクトへのレンダリング終了
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);

@@ -6,6 +6,8 @@
 
 #define TEXWIDTH  8192  //テクスチャ幅
 #define TEXHEIGHT  6144  //テクスチャ高さ
+//#define TEXWIDTH  4096  //テクスチャ幅
+//#define TEXHEIGHT  3072  //テクスチャ高さ
 
 //タスクマネージャのインスタンス
 CTaskManager* CTaskManager::mpInstance = nullptr;
@@ -42,7 +44,7 @@ CTaskManager::CTaskManager()
 
 {
 	float shadowColor[] = { 0.3f, 0.3f, 0.3f, 0.15f };  //影の色
-	float lightPos[] = { 50.0f, 2000.0f, 50.0f };  //光源の位置
+	float lightPos[] = { 600.0f, 2000, 0.0f };  //光源の位置 :2000.0f
 	mShadowMap.Init(TEXWIDTH, TEXHEIGHT, RenderShadow,
 		shadowColor, lightPos);
 }
