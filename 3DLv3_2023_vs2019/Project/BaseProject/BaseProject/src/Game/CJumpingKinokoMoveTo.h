@@ -17,7 +17,6 @@ public:
 	// デストラクタ
 	virtual ~CJumpingKinokoMoveTo();
 
-	
 	/// <summary>
 	/// 移動ポイントを追加
 	/// </summary>

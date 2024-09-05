@@ -1,6 +1,10 @@
 #ifndef CSHADOWMAP_H
 #define CSHADOWMAP_H
 
+/// <summary>
+/// 参考記事 : https://marina.sys.wakayama-u.ac.jp/~tokoi/?date=20050926
+/// </summary>
+
 class CShadowMap
 {
 	// 光源の位置
@@ -11,6 +15,7 @@ class CShadowMap
 	int mTextureWidth;
 	// デプステクスチャの高さ
 	int mTextureHeight;
+	// GLuint : 符号なし整数型
 	// デプステクスチャID
 	GLuint mDepthTextureID;
 	// フレームバッファ識別子

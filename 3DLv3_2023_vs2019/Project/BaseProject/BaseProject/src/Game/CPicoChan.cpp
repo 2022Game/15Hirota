@@ -1065,7 +1065,6 @@ bool CPicoChan::IsFoundPlayer() const
 	// 視野角の半分を計算する
 	float halfFOV = FOV_ANGLE * 0.5f;
 
-
 	// 視野角の半分より小さいかつプレイヤーとの距離が一定範囲以内であれば、プレイヤーを認識する
 	if (dot >= cosf(halfFOV * M_PI / 180.0f))
 	{

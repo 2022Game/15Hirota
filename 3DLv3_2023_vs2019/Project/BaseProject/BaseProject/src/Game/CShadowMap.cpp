@@ -2,6 +2,26 @@
 #include "CShadowMap.h"
 #include "CMatrix.h"
 
+CShadowMap::CShadowMap()
+	: mDepthTextureID(0)
+	, mFb(0)
+{
+}
+
+CShadowMap::~CShadowMap()
+{
+	if (mDepthTextureID)
+	{
+		glDeleteTextures(1, &mDepthTextureID);
+		mDepthTextureID = 0;
+	}
+	if (mFb)
+	{
+		glDeleteFramebuffers(1, &mFb);
+		mFb = 0;
+	}
+}
+
 void CShadowMap::Init()
 {
 	// テクスチャユニット1をDepthテクスチャで使用
@@ -18,6 +38,7 @@ void CShadowMap::Init()
 
 	// テクスチャを拡大・縮小する方法の指定
 	// GL_NEAREST : 最も近いピクセルの色をそのまま使用する
+	// GL_LINEARにしたが側面がギザギザのまま
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
@@ -25,7 +46,7 @@ void CShadowMap::Init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-	// 書き込むポリゴンのテクスチャ座標地のRとテクスチャとの比較をおっこなうようにする
+	// 書き込むポリゴンのテクスチャ座標地のRとテクスチャとの比較を行うようにする
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 
 	// もしRの値がテクスチャの値以下なら真(つまり日向)
@@ -35,7 +56,7 @@ void CShadowMap::Init()
 	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_ALPHA);
 	// アルファテストの比較関数
 	glAlphaFunc(GL_GEQUAL, 0.5f);
-
+	
 	// テクスチャ座標に視点座標系における物体の座標値を用いる
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
@@ -261,24 +282,4 @@ void CShadowMap::Render()
 	glActiveTexture(GL_TEXTURE0);
 
 	glMatrixMode(GL_MODELVIEW);
-}
-
-CShadowMap::CShadowMap()
-	: mDepthTextureID(0)
-	, mFb(0)
-{
-}
-
-CShadowMap::~CShadowMap()
-{
-	if (mDepthTextureID)
-	{
-		glDeleteTextures(1, &mDepthTextureID);
-		mDepthTextureID = 0;
-	}
-	if (mFb)
-	{
-		glDeleteFramebuffers(1, &mFb);
-		mFb = 0;
-	}
 }

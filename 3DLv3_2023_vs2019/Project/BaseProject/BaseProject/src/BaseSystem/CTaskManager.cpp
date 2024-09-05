@@ -41,7 +41,7 @@ CTaskManager::CTaskManager()
 	: mPauseBit(0)
 
 {
-	float shadowColor[] = { 0.4f, 0.4f, 0.4f, 0.2f };  //‰e‚ÌF
+	float shadowColor[] = { 0.3f, 0.3f, 0.3f, 0.15f };  //‰e‚ÌF
 	float lightPos[] = { 50.0f, 2000.0f, 50.0f };  //ŒõŒ¹‚ÌˆÊ’u
 	mShadowMap.Init(TEXWIDTH, TEXHEIGHT, RenderShadow,
 		shadowColor, lightPos);
