@@ -87,6 +87,8 @@ void CGameScene::Load()
 	//CResourceManager::Load<CModel>("Star",					"Item\\StatusItem\\Star.obj");				// 無敵オブジェクト
 	//CResourceManager::Load<CModel>("Medal",					"Item\\StatusItem\\Medal.obj");				// 得点オブジェクト
 	//CResourceManager::Load<CModel>("Healing",				"Item\\StatusItem\\HealingItem.obj");		// 回復薬オブジェクト
+	// とげとげボール
+	CResourceManager::Load<CModel>("SpikyBall", "Item\\AttackItem\\SpikyBall.obj");
 
 
 	// UI関連

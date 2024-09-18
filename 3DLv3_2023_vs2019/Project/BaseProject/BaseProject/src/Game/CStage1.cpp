@@ -15,6 +15,8 @@
 #include "CMeat1.h"
 #include "CMeat2.h"
 #include "CMeat3.h"
+#include "CNeedleUpDown.h"
+#include "CNeedleLeftRight.h"
 #include "CInput.h"
 
 // コンストラクタ
@@ -53,6 +55,22 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("SavePoint", "Field\\Gimmick\\SavePoint.obj");				// セーブポイントモデル
 	CResourceManager::Load<CModel>("GoalPost", "Field\\Object\\GoalPost.obj");					// ゴールポストモデル
 	CResourceManager::Load<CModel>("GoalCube", "Field\\Object\\GoalCube.obj");					// ゴールブロックモデル
+	// 針モデル(上下)
+	CResourceManager::Load<CModel>("Needle", "Field\\Gimmick\\Needle\\NeedleObject(needle).obj");
+	// 針モデルコライダー(上下)
+	CResourceManager::Load<CModel>("NeedleCol", "Field\\Gimmick\\Needle\\NeedleObjectCol.obj");
+	// 針ベースモデル(上下)
+	CResourceManager::Load<CModel>("NeedleBase", "Field\\Gimmick\\Needle\\NeedleObject(base).obj");
+	// 針ベースコライダー(上下)
+	CResourceManager::Load<CModel>("NeedleBaseCol", "Field\\Gimmick\\Needle\\NeedleObjectBaseCol.obj");
+	// 針モデル(左右)
+	CResourceManager::Load<CModel>("NeedleLeftRight", "Field\\Gimmick\\Needle\\NeedleObjLeftRight(Needle).obj");
+	// 針モデルコライダー(左右)
+	CResourceManager::Load<CModel>("NeedleColLeftRight", "Field\\Gimmick\\Needle\\NeedleObjLeftRight(NeedleCol).obj");
+	// 針ベースモデル(左右)
+	CResourceManager::Load<CModel>("NeedleBaseLeftRight", "Field\\Gimmick\\Needle\\NeedleObjLeftRight(Base).obj");
+	// 針ベースコライダー(左右)
+	CResourceManager::Load<CModel>("NeedleBaseColLeftRight", "Field\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
 
@@ -174,27 +192,36 @@ void CStage1::Load()
 	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
 	AddTask(savepoint1);
 
+	// 針モデル1
+	CNeedleUpDown* needle1 = new CNeedleUpDown(
+		CVector(0.0f, 10.0f, 450.0f),
+		CVector(20.0f, 20.0f, 20.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		3.6f,
+		ETag::ePlayer, ELayer::ePlayer);
+	AddTask(needle1);
+	// 針モデルベース1
+	CNeedleUpDownBase* needlebase1 = new CNeedleUpDownBase(
+		CVector(0.0f, 10.0f, 450.0f),
+		CVector(20.0f, 20.0f, 20.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer);
+	AddTask(needlebase1);
 
-	//// 宝箱
-	//CTreasureChest* treasure = new CTreasureChest
-	//(
-	//	CVector(0.0f, 18.0f, 779.0f),
-	//	CVector(4.0f, 4.0f, 4.0f),
-	//	CVector(0.0f, 90.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(treasure);
-	//// 宝箱蓋
-	//CTreasureChestTwo* treasureTwo = new CTreasureChestTwo
-	//(
-	//	CVector(0.0f, 20.8f, 779.0f),
-	//	CVector(4.0f, 4.0f, 4.0f),
-	//	CVector(0.0f, 90.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(treasureTwo);
-
-
+	//// 針モデル1
+	//CNeedleLeftRight* needle1 = new CNeedleLeftRight(
+	//	CVector(-130.0f, 280.0f, -1080.0f),
+	//	CVector(10.0f, 10.0f, 10.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer);
+	//AddTask(needle1);
+	//// 針モデルベース1
+	//CNeedleLeftRightBase* needlebase1 = new CNeedleLeftRightBase(
+	//	CVector(-130.0f, 280.0f, -1080.0f),
+	//	CVector(10.0f, 10.0f, 10.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer);
+	//AddTask(needlebase1);
 	// 火炎放射器モデル
 	// 左方向
 	CFixedFlamethrower* flamethrower1 = new CFixedFlamethrower
@@ -269,7 +296,7 @@ void CStage1::Load()
 		player->Rotation(0.0f, 0.0f, 0.0f);
 	}
 	// カメラの位置と向きを設定
-	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 50.0f, -100.0f);
+	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 20.0f, -80.0f);
 	CCamera* mainCamera = CCamera::MainCamera();
 	mainCamera->LookAt(
 		camPos,
@@ -332,7 +359,7 @@ void CStage1::Load()
 	(
 		CVector(0.0f, 25.0f, 623.0f),
 		CQuaternion(0.0f, 0.0f, 0.0f),
-		CVector(2.0f, 20.0f, 0.2f)
+		CVector(4.0f, 20.0f, 0.2f)
 	);
 	AddTask(wall);
 	wall->SetEvent(bmEvent);

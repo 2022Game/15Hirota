@@ -468,7 +468,8 @@ void CSoldier::Move()
 
 		// 目的地へのベクトルを計算
 		CVector direction = mCenterPoint - Position();
-		direction.Normalize(); // 方向ベクトルを正規化
+		// 方向ベクトルを正規化
+		direction.Normalize();
 
 		mTargetDir = -mTargetDir;
 

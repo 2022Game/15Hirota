@@ -29,7 +29,6 @@ public:
 	// •Ší‚Ìs—ñ‚ğæ“¾
 	CMatrix Matrix() const override;
 
-
 	// XVˆ—
 	void Update();
 	// •`‰æˆ—

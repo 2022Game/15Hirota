@@ -172,6 +172,8 @@
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CSlash.cpp" />
+    <ClCompile Include="src\Game\CSpikyBall.cpp" />
+    <ClCompile Include="src\Game\CSpikyBallUI.cpp" />
     <ClCompile Include="src\Game\CSplitSeesaw.cpp" />
     <ClCompile Include="src\Game\CSpring.cpp" />
     <ClCompile Include="src\Game\CSpringObject.cpp" />
@@ -427,6 +429,8 @@
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CSlash.h" />
+    <ClInclude Include="src\Game\CSpikyBall.h" />
+    <ClInclude Include="src\Game\CSpikyBallUI.h" />
     <ClInclude Include="src\Game\CSplitSeesaw.h" />
     <ClInclude Include="src\Game\CSpring.h" />
     <ClInclude Include="src\Game\CSpringObject.h" />

@@ -566,6 +566,7 @@ void CStage3::Load()
 		CVector(-150.0f, 408.0f, -1890.0f),
 		CVector(10.0f, 10.0f, 10.0f),
 		CVector(0.0f, 0.0f, 0.0f),
+		1.4f,
 		ETag::ePlayer, ELayer::ePlayer);
 	AddTask(needle1);
 	// 針モデルベース1
@@ -770,7 +771,7 @@ void CStage3::Load()
 		player->Rotation(0.0f, 180.0f, 0.0f);
 	}
 	// カメラの位置と向きを設定
-	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 30.0f, -100.0f);
+	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 20.0f, -80.0f);
 	CCamera* mainCamera = CCamera::MainCamera();
 	mainCamera->LookAt(
 		camPos,

@@ -311,6 +311,15 @@
     <Filter Include="ソース ファイル\Game\UI\EnemyUI\PicoChan">
       <UniqueIdentifier>{fc6f9d8a-b545-4790-83d8-56bb5eba4e27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\CharaObject\ItemObject\SpikyBall">
+      <UniqueIdentifier>{10188671-a706-4b33-9725-1702b6099b7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Item">
+      <UniqueIdentifier>{eb428df2-373d-43f1-a9d3-6e273ef7d9a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Item\SpikyBall">
+      <UniqueIdentifier>{22de713a-7d63-4968-b2e3-89142a2570b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -639,9 +648,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CStage3.cpp">
       <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CTitleMenu.cpp">
-      <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CScreenItem.cpp">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
@@ -1048,6 +1054,15 @@
     <ClCompile Include="src\Game\CShadowMap.cpp">
       <Filter>ソース ファイル\Test</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CSpikyBall.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\SpikyBall</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CSpikyBallUI.cpp">
+      <Filter>ソース ファイル\Game\UI\Item\SpikyBall</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTitleMenu.cpp">
+      <Filter>ソース ファイル\Game\UI\TitleUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1400,9 +1415,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CStage3.h">
       <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CTitleMenu.h">
-      <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CScreenItem.h">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
@@ -1808,6 +1820,15 @@
     </ClInclude>
     <ClInclude Include="src\Game\CShadowMap.h">
       <Filter>ソース ファイル\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSpikyBall.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\SpikyBall</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CSpikyBallUI.h">
+      <Filter>ソース ファイル\Game\UI\Item\SpikyBall</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTitleMenu.h">
+      <Filter>ソース ファイル\Game\UI\TitleUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

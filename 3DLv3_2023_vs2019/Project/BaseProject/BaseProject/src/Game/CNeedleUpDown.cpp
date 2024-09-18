@@ -19,7 +19,7 @@
 #define WAIT_ATTACK_TIME 5.0f
 
 // コンストラクタ
-CNeedleUpDown::CNeedleUpDown(const CVector& pos, const CVector& scale, const CVector& rot,
+CNeedleUpDown::CNeedleUpDown(const CVector& pos, const CVector& scale, const CVector& rot, const float endPos,
 	ETag reactionTag, ELayer reactionLayer)
 	: CObjectBase(ETag::eNeedleObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 	, mState(EState::Idle)
@@ -31,7 +31,7 @@ CNeedleUpDown::CNeedleUpDown(const CVector& pos, const CVector& scale, const CVe
 	, mElapsedTime(0.0f)
 	, mWaitAttackTime(0.0f)
 	, mStartPosition(0.0f)
-	, mEndPosition(0.0f)
+	, mEndPosition(endPos)
 	, mIsCollision(false)
 	, mIsAttack(false)
 {
@@ -152,7 +152,7 @@ void CNeedleUpDown::UpdateIdle()
 		// 初期位置を設定
 		mStartPosition = 0.0f;
 		// 最後の位置を設定
-		mEndPosition = 1.4f;
+		//mEndPosition = 1.4f;
 		mElapsedTime = 0.0f;
 		// 攻撃状態へ移行
 		ChangeState(EState::Attack);

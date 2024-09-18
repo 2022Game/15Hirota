@@ -27,12 +27,14 @@ class CCutInClear;
 class CCutInResult;
 class CCutInDeathJump;
 class CScreenItem;
+class CSpikyBallUI;
 class CSmoke;
 class CHealingUpBuffs;
 class CSeesaw;
 class CMeatUI;
 class CMetalLadder;
 class COperationUI;
+class CSpikyBall;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -153,6 +155,11 @@ public:
 	// 回復アップアイテムを使用したかどうか
 	bool IsHealingItem();
 
+	// とげとげボールを使用するかどうか
+	bool IsSpikyBall();
+	// とげボールのリチャージ時間
+	float GetSpikyTime() const;
+
 	// 他のクラスで使っている為publicに置いておく
 	// ジャンプ開始1
 	void UpdateJumpStart();
@@ -226,6 +233,9 @@ private:
 	// オブジェクトアイテム
 	// マジックソードモデル
 	CMajicSword* mpSword;
+
+	// とげとげボール
+	CSpikyBall* mpSpiky;
 	
 	// UI
 	// HPゲージ
@@ -234,6 +244,8 @@ private:
 	CStaminaGauge* mpStaminaGauge;
 	// スクリーンアイテム画像
 	CScreenItem* mpScreenItem;
+	// とげボール画像
+	CSpikyBallUI* mpSpikyBallUI;
 	// 肉アイテム画像
 	CMeatUI* mpMeat;
 
@@ -594,6 +606,10 @@ private:
 	float mElapsedTime;
 	// 計測時間終了
 	float mElapsedTimeEnd;
+	// とげボール計測時間
+	float mSpikTime;
+	// とげボールリチャージ時間
+	float mSpikRechargeTime;
 	// 点滅時間計測用
 	float mBlinkElapsedTime;
 	// コライダーの計測時間
@@ -679,6 +695,10 @@ private:
 
 	// ダメージを受けたかどうか
 	bool mDamaged;
+	// とげとげボールを使用するかどうか
+	bool mSpikyBall;
+	// とげとげボールを出現させているか
+	bool mSpik;
 
 
 	// 自クラス

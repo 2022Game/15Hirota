@@ -19,7 +19,7 @@ public:
 	/// <param name="rot">回転</param>
 	/// <param name="reactionTag">反応するオブジェクトタグ</param>
 	/// <param name="reactionLayer">反応するオブジェクトレイヤー</param>
-	CNeedleUpDown(const CVector& pos, const CVector& scale, const CVector& rot,
+	CNeedleUpDown(const CVector& pos, const CVector& scale, const CVector& rot, const float endPos,
 		ETag reactionTag, ELayer reactionLayer);
 
 	// デストラクタ

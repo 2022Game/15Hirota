@@ -17,6 +17,8 @@ public:
 	// 追従する行列の値を更新
 	void UpdateAttachMtx();
 
+	void DetachMtx();
+
 	//　攻撃開始
 	virtual void AttackStart();
 

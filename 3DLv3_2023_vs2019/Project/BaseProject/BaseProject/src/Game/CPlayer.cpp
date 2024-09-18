@@ -29,6 +29,7 @@
 #include "CCutInDeathJump.h"
 #include "CResultAnnouncement.h"
 #include "CScreenItem.h"
+#include "CSpikyBallUI.h"
 #include "Easing.h"
 #include "CStageMenu.h"
 #include "CStage1Button.h"
@@ -43,6 +44,8 @@
 #include "CInsideCircleEffect.h"
 #include "COutsideCircleEffect.h"
 #include "COperationUI.h"
+#include "CBullet.h"
+#include "CSpikyBall.h"
 
 // プレイヤー関連
 // 高さ
@@ -159,6 +162,7 @@ CPlayer::CPlayer()
 	, mWeaponTime(0.0f)
 	, mMoveSpeedY(0.0f)
 	, mElapsedTime(0.0f)
+	, mSpikTime(0.0f)
 	, mHealingTime(0.0f)
 	, mReflectTime(0.0f)
 	, mMoveDistance(0.0f)
@@ -171,6 +175,7 @@ CPlayer::CPlayer()
 	, mStageElapsedTime(0.0f)
 	, mResultElapsedTime(0.0f)
 	, mInvincibleStartTime(10.0f)
+	, mSpikRechargeTime(0.0f)
 	, mLastPos(CVector::zero)
 	, mStartPos(CVector::zero)
 	, mMoveSpeed(CVector::zero)
@@ -222,9 +227,12 @@ CPlayer::CPlayer()
 	, mStaminaLowerLimit(false)
 	, mIsPlayedHitDamageSE(false)
 	, mIsSpawnedSlashEffect(false)
+	, mSpikyBall(false)
+	, mSpik(false)
 	, mpRideObject(nullptr)
 	, mpUnderFootObject(nullptr)
 	, mpScreenItem(nullptr)
+	, mpSpikyBallUI(nullptr)
 	, mpMeat(nullptr)
 {
 	ClearItems();
@@ -353,7 +361,6 @@ CPlayer::CPlayer()
 	mpSword->SetOwner(this);
 	//CStageManager::AddTask(mpSword);
 
-
 	/*mpFlamethrower = new CFlamethrower
 	(
 		this, nullptr,
@@ -369,8 +376,9 @@ CPlayer::CPlayer()
 
 	mpScreenItem = new CScreenItem();
 	mpMeat = new CMeatUI();
-	//CStageManager::AddTask(mpScreenItem);
-	//mpScreenItem->SetPlayer(player);
+	
+	mpSpikyBallUI = new CSpikyBallUI();
+
 
 
 	// 最初に1レベルに設定
@@ -1212,6 +1220,16 @@ bool CPlayer::IsHealingItem()
 	return mIsHealingItem;
 }
 
+bool CPlayer::IsSpikyBall()
+{
+	return mSpikyBall;
+}
+
+float CPlayer::GetSpikyTime() const
+{
+	return mSpikRechargeTime;
+}
+
 // ステージフラグをfalseにする関数
 void CPlayer::StageFlagfalse()
 {
@@ -1238,6 +1256,19 @@ void CPlayer::ChangeAnimation(EAnimType type)
 CVector CPlayer::CalcMoveVec() const
 {
 	CVector move = CVector::zero;
+
+	// とげボール溜め中
+	if (mSpik)
+	{
+		if (CInput::Key('A'))
+		{
+			
+		}
+		else if (CInput::Key('D'))
+		{
+
+		}
+	}
 
 	// キーの入力ベクトルを取得
 	CVector input = CVector::zero;
@@ -1453,15 +1484,15 @@ void CPlayer::UpdateIdle()
 			mMoveSpeed = CVector::zero;
 			ChangeState(EState::eAttack);
 		}
-		// Kキーで強攻撃
-		else if (CInput::PushKey(VK_RBUTTON))
+		// マウス右クリックで強攻撃
+		else if (CInput::PushKey(VK_RBUTTON) && mSpikRechargeTime <= 0.0f)
 		{
 			mMoveSpeed = CVector::zero;
+			// チャージ時間をリセット
+			mSpikTime = 0.0f;
 			ChangeState(EState::eAttackStrong);
 		}
 		// SPACEキーでジャンプ開始へ移行
-		// 長く押すと大ジャンプ
-		// 短く押すと小ジャンプ
 		else if (CInput::PushKey(VK_SPACE) && !mIsDashJump)
 		{
 			if (mCharaStatus.stamina - 20 >= 0)
@@ -1707,14 +1738,110 @@ void CPlayer::UpdateAttack()
 // 強攻撃
 void CPlayer::UpdateAttackStrong()
 {
+	mSpikyBall = false;
 	mIsAttack = false;
-	mWeaponTime = 0.0f;
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 	mWeaponTime = 0.0f;
+
+	//const CMatrix* initialMtx = GetFrameMtx("Armature_mixamorig_LeftHandMiddle1");
+	
 	// 強攻撃アニメーションを開始
 	ChangeAnimation(EAnimType::eAttackStrong);
-	// 攻撃終了待ち状態へ移行
-	ChangeState(EState::eAttackStrongWait);
+
+	// 右クリックを離したタイミングで飛距離を計算
+	float maxChargeTime = 2.0f; // 最大チャージ時間（秒）
+	float maxDistance = 300.0f; // 最大飛距離
+
+	// 飛距離を計算
+	float distance = 50.0f + (Math::Clamp01(mSpikTime / maxChargeTime) * (maxDistance - 100.0f));
+
+	// スピード計算
+	float speed = 50.0f + (Math::Clamp01(mSpikTime / maxChargeTime) * 100.0f); // 基本スピード100に比例して最大100まで増加
+
+	CVector current = VectorZ();
+	current.Normalize();
+
+	if (!mSpik)
+	{
+		mSpik = true;
+		// とげとげボールを生成
+		mpSpiky = new CSpikyBall
+		(
+			Position() + CVector(0.0f, 10.0f, 0.0f) + current * 5.0f,
+			current,
+			speed,
+			distance
+		);
+		mpSpiky->AttachMtx(GetFrameMtx("Armature_mixamorig_LeftHandMiddle1"));
+	}
+
+	if (GetAnimationFrame() >= 50.0f)
+	{
+		SetAnimationSpeed(0.0f);
+		if (CInput::Key(VK_RBUTTON))
+		{
+			mSpikTime += Time::DeltaTime();
+			if (mSpikTime >= maxChargeTime)
+			{
+				//mSpik = false;
+				if (mpSpiky != nullptr)
+				{
+					mpSpiky->SetSpeed(speed);
+					mpSpiky->SetDistance(distance);
+				}
+				ChangeState(EState::eAttackStrongWait);
+			}
+		}
+		else if (!CInput::PullKey(VK_RBUTTON))
+		{
+			//mSpik = false;
+			if (mpSpiky != nullptr)
+			{
+				mpSpiky->SetSpeed(speed);
+				mpSpiky->SetDistance(distance);
+			}
+			ChangeState(EState::eAttackStrongWait);
+		}
+	}
+	else if (GetAnimationFrame() <= 50.0f && CInput::PullKey(VK_RBUTTON))
+	{
+		mSpik = false;
+		if (mpSpiky != nullptr)
+		{
+			mpSpiky->Kill();
+		}
+		ChangeState(EState::eIdle);
+	}
+	CDebugPrint::Print("spiktime:%f\n", mSpikTime);
+}
+
+// 強攻撃終了待ち
+void CPlayer::UpdateAttackStrongWait()
+{
+	SetAnimationSpeed(1.0f);
+
+	if (GetAnimationFrame() >= 75.0f)
+	{
+		mSpikyBall = true;
+		mpSpiky->DetachMtx();
+		if (mSpik)
+		{
+			if (mpSpiky != nullptr)
+			{
+				// 何故かコライダーがオンにならないが
+				// 最初からコライダーをオンにしても特に問題がないため
+				// 一応そのまま
+				mpSpiky->AttackStart();
+			}
+		}
+	}
+
+	if (IsAnimationFinished())
+	{
+		mSpikRechargeTime = 5.0f;
+		ChangeState(EState::eIdle);
+		ChangeAnimation(EAnimType::eIdle);
+	}
 }
 
 // ダッシュアタック
@@ -1839,16 +1966,6 @@ void CPlayer::UpdateAttackWait()
 	}
 }
 
-// 強攻撃終了待ち
-void CPlayer::UpdateAttackStrongWait()
-{
-	if (IsAnimationFinished())
-	{
-		ChangeState(EState::eIdle);
-		ChangeAnimation(EAnimType::eIdle);
-	}
-}
-
 // ダッシュアタック終了待ち
 void CPlayer::UpdateDashAttackWait()
 {
@@ -1901,6 +2018,7 @@ void CPlayer::UpdateClear()
 	mpHpGauge->SetShow(false);
 	mpStaminaGauge->SetShow(false);
 	mpScreenItem->SetShow(false);
+	mpSpikyBallUI->SetShow(false);
 	mpColliderCapsule->SetEnable(false);
 
 	mpMeat->SetShow(false);
@@ -2175,6 +2293,7 @@ void CPlayer::UpdateResultEnd()
 				mpHpGauge->SetShow(true);
 				mpStaminaGauge->SetShow(true);
 				mpScreenItem->SetShow(true);
+				mpSpikyBallUI->SetShow(true);
 				mpMeat->SetShow(true);
 				mIsStageClear = false;
 
@@ -2195,6 +2314,7 @@ void CPlayer::UpdateResultEnd()
 				mpHpGauge->SetShow(true);
 				mpStaminaGauge->SetShow(true);
 				mpScreenItem->SetShow(true);
+				mpSpikyBallUI->SetShow(true);
 				mpMeat->SetShow(true);
 				mIsStageClear = false;
 
@@ -2215,6 +2335,7 @@ void CPlayer::UpdateResultEnd()
 				mpHpGauge->SetShow(true);
 				mpStaminaGauge->SetShow(true);
 				mpScreenItem->SetShow(true);
+				mpSpikyBallUI->SetShow(true);
 				mpMeat->SetShow(true);
 				mIsStageClear = false;
 
@@ -3230,7 +3351,7 @@ void CPlayer::UpdateTargetPosition()
 	// 目標地点まで移動させる処理
 	CPlayer* player = CPlayer::Instance();
 	CVector playerPos = player->Position();
-	CVector targetPos = CVector(0.0f, 10.0f, 480.0f);
+	CVector targetPos = CVector(0.0f, 10.0f, 480.0f); // 個々の処理は変更予定
 	float duration = 25.0f;
 	float stopDistance = 3.0f; // プレイヤーが目標に到達とみなす距離の閾値
 
@@ -3629,6 +3750,18 @@ void CPlayer::Update()
 		CDamageColorTime();
 	}
 
+	if (mSpikyBall)
+	{
+		mSpikRechargeTime -= Time::DeltaTime();
+		if (mSpikRechargeTime <= 0.0f)
+		{
+			mSpik = false;
+			mSpikRechargeTime = 0.0f;
+		}
+	}
+	// とげボールリチャージ
+	//CDebugPrint::Print("spiktime:%f\n", mSpikRechargeTime);
+
 	////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -3948,6 +4081,8 @@ void CPlayer::Update()
 			// プレイヤーの向きを調整
 			CVector current = VectorZ();
 			CVector target = moveSpeed;
+			float rotationSpeed = 0.125f;
+
 			if (mState == EState::eClimb)
 			{
 				// 壁の法線の反対方向を向く
@@ -3966,6 +4101,27 @@ void CPlayer::Update()
 			{
 				target = -mReflectionNormal;
 			}
+			else if (mState == EState::eAttackStrong)
+			{
+				if (CInput::Key('A'))
+				{
+					target = CVector::Cross(CVector::up, current);
+					target.Normalize();
+					target.Y(0.0f);
+					rotationSpeed = 0.005f;
+				}
+				else if (CInput::Key('D'))
+				{
+					target = CVector::Cross(current, CVector::up);
+					target.Normalize();
+					target.Y(0.0f);
+					rotationSpeed = 0.005f;
+				}
+				else
+				{
+					target = current;
+				}
+			}
 			// それ以外の時は、プレイヤーの移動方向へ向ける
 			else
 			{
@@ -3973,7 +4129,7 @@ void CPlayer::Update()
 				target.Y(0.0f);
 				target.Normalize();
 			}
-			CVector forward = CVector::Slerp(current, target, 0.125f);
+			CVector forward = CVector::Slerp(current, target, rotationSpeed);
 			Rotation(CQuaternion::LookRotation(forward));
 		}
 	}
@@ -4075,7 +4231,14 @@ void CPlayer::Update()
 	mpDamageCol->Update();
 	mpColliderCapsule->Update();
 	mpSword->UpdateAttachMtx();
-
+	if (mSpik)
+	{
+		if (mpSpiky != nullptr)
+		{
+			mpSpiky->UpdateAttachMtx();
+		}
+	}
+	
 	if (CGameManager::StageNo() == 1 ||
 		CGameManager::StageNo() == 2 ||
 		CGameManager::StageNo() == 3 ||
@@ -4085,6 +4248,8 @@ void CPlayer::Update()
 		mpStaminaGauge->SetShow(true);
 		mpScreenItem->SetShow(true);
 		mpScreenItem->Open();
+		mpSpikyBallUI->SetShow(true);
+		mpSpikyBallUI->Open();
 		mpMeat->SetShow(true);
 		mpMeat->Open();
 	}
@@ -4094,6 +4259,8 @@ void CPlayer::Update()
 		mpStaminaGauge->SetShow(false);
 		mpScreenItem->SetShow(false);
 		mpScreenItem->Close();
+		mpSpikyBallUI->SetShow(false);
+		mpSpikyBallUI->Close();
 		mpMeat->SetShow(false);
 		mpMeat->Close();
 	}
