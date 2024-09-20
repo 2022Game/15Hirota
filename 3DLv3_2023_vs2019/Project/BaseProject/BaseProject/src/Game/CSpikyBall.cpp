@@ -178,7 +178,7 @@ void CSpikyBall::Update()
 		// …•½•ûŒü‚ÌˆÚ“®
 		Position(Position() + player->VectorZ() * moveSpeed);
 		// ‚’¼•ûŒü‚ÌˆÚ“®
-		CVector moveSpeedXZ = mMoveSpeedXZ + CVector(0.0f, mMoveSpeedY, mPosition.Z());
+		CVector moveSpeedXZ = mMoveSpeedXZ + CVector(0.0f, mMoveSpeedY, 0.0f);
 
 		// ˆÚ“®
 		Position(Position() + moveSpeedXZ * 60.0f * Time::DeltaTime());
