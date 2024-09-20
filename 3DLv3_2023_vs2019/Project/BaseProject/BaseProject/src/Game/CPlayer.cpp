@@ -1780,8 +1780,8 @@ void CPlayer::UpdateAttackStrong()
 
 	float initialVelocityY = 1.4f; // Y軸の速度に比例する
 
-	CVector current = VectorZ();
-	current.Normalize();
+	CVector forward = VectorZ();
+	forward.Normalize();
 
 	if (!mSpik)
 	{
@@ -1794,13 +1794,13 @@ void CPlayer::UpdateAttackStrong()
 		mpSpiky = new CSpikyBall
 		(
 			Position(),
-			current,
+			forward,
 			speed,
 			distance,
 			initialVelocityY
 		);
 		// 位置を設定
-		mpSpiky->SetPosition(Position() + CVector(0.0f, 10.0f, 0.0f) + current * 5.0f);
+		mpSpiky->SetPosition(Position() + CVector(0.0f, 10.0f, 0.0f) + forward * 5.0f);
 		mpSpiky->AttachMtx(GetFrameMtx("Armature_mixamorig_LeftHandMiddle1"));
 	}
 
@@ -1851,13 +1851,23 @@ void CPlayer::UpdateAttackStrongWait()
 	{
 		mSpikyBall = true;
 
-		CVector current = VectorZ();
-		current.Normalize();
+		// 現在の位置
+		CVector current = Position();
 
-		// プレイヤーの現在位置
-		CVector correctedPosition = Position() + CVector(0.0f, 12.0f, 0.0f) + current * 5.0f;
+		// 前方
+		CVector forward = VectorZ();
+		forward.Normalize();
 
-		// とげボールの位置を補正
+		// 動く床に乗っているかどうか
+		if (mpRideObject != nullptr) {
+			// 床の位置を考慮
+			current += mpRideObject->Position();
+		}
+
+		// とげボールの位置を再設定
+		CVector correctedPosition = current + CVector(0.0f, 10.0f, 0.0f) + forward * 5.0f;
+
+		// プレヤーの位置に応じて位置を変更
 		mpSpiky->SetPosition(correctedPosition);
 		CDebugPrint::Print("Position:%f %f %f\n", Position().X(), Position().Y(), Position().Z());
 		CDebugPrint::Print("correctedPosition:%f %f %f\n", correctedPosition.X(), correctedPosition.Y(), correctedPosition.Z());

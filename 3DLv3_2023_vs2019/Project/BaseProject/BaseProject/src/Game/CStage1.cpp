@@ -18,6 +18,7 @@
 #include "CNeedleUpDown.h"
 #include "CNeedleLeftRight.h"
 #include "CInput.h"
+#include "CRotationg.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -41,6 +42,10 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("NumberFallCol", "Field\\FallCol.obj");							// 落下判定コライダー
 
 	// ギミック関連
+	// 回転する床のモデル
+	CResourceManager::Load<CModel>("Rotationg", "Field\\Gimmick\\Rotate\\Rotationg.obj");
+	// 回転する床のコライダー
+	CResourceManager::Load<CModel>("RotationgCol", "Field\\Gimmick\\Rotate\\RotationgCol.obj");
 	CResourceManager::Load<CModel>("Number0", "Field\\Object\\number0.obj");					// 零番目の床
 	CResourceManager::Load<CModel>("Number1", "Field\\Object\\number1.obj");					// 一番目の床ブロック
 	CResourceManager::Load<CModel>("Number2", "Field\\Object\\number2.obj");					// 二番目の床ブロック
@@ -100,6 +105,15 @@ void CStage1::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rising);
+
+	// ずっと回転するモデル1
+	CRotationg* rotationg = new CRotationg
+	(
+		CVector(60.0f, 12.0f, -70.0f),
+		CVector(10.0f, 10.0f, 10.0f),
+		1.0f
+	);
+	AddTask(rotationg);
 
 	// 中間値点
 	CRisingObject* rising1 = new CRisingObject

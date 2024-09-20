@@ -194,6 +194,8 @@ void CSpikyBall::Update()
 		//// à⁄ìÆ
 		//Position(Position() + CVector(moveSpeedXZ.X(), VelocityY.Y(), moveSpeedXZ.Z()));
 
+		CDebugPrint::Print("mPosition:%f %f %f\n", mPosition.X(), mPosition.Y(), mPosition.Z());
+
 
 		// åªç›ÇÃîÚãóó£ÇçXêV
 		mCurrentFlyingDistance += abs(moveSpeed);
@@ -202,8 +204,6 @@ void CSpikyBall::Update()
 	{
 
 	}
-
-	CDebugPrint::Print("Position:%f %f %f\n", Position().X(), Position().Y(), Position().Z());
 	//CDebugPrint::Print("mPosition:%f %f %f\n", mPosition.X(), mPosition.Y(), mPosition.Z());
 	/*CDebugPrint::Print("distance:%f\n", mFlyingDistance);
 	CDebugPrint::Print("speed:%f\n", mMoveSpeed);*/
