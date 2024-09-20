@@ -9,8 +9,6 @@
 // 重力
 #define GRAVITY 0.0625f
 
-CPlayer* player = CPlayer::Instance();
-
 CSpikyBall::CSpikyBall(const CVector& pos, const CVector& dir,
 	float speed, float distance, float initialVelocityY)
 	: mPosition(pos)
@@ -153,6 +151,7 @@ void CSpikyBall::Update()
 {
 	if (IsKill()) return;
 	
+	CPlayer* player = CPlayer::Instance();
 	bool hand = player->IsSpikyBall();
 
 	if (hand)
@@ -256,6 +255,7 @@ void CSpikyBall::DrawProjectilePath(const CVector& startPosition, const CVector&
 // 弾道の予測ラインを描画する関数
 void CSpikyBall::RenderPredictionLine()
 {
+	CPlayer* player = CPlayer::Instance();
 	// 位置が違うので後で変更
 	CVector startPosition = player->Position() + CVector(0.0f, 18.0f, 0.0f) + player->VectorZ() * 5.0f;
 
@@ -293,6 +293,7 @@ void CSpikyBall::RenderPredictionLine()
 // 描画処理
 void CSpikyBall::Render()
 {
+	CPlayer* player = CPlayer::Instance();
 	// とげが出現しているか
 	bool spik = player->IsSpikyBallAppearance();
 	// とげボールの予測線を描画するかどうかを判断
