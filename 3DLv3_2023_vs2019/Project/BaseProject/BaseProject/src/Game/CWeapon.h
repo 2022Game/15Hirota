@@ -16,7 +16,7 @@ public:
 	const CMatrix* GetAttachMtx() const;
 	// 追従する行列の値を更新
 	void UpdateAttachMtx();
-
+	// 追従を解除
 	void DetachMtx();
 
 	//　攻撃開始

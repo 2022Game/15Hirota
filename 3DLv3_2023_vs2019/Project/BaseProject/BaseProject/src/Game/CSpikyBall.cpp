@@ -4,20 +4,23 @@
 #include "CPlayer.h"
 #include "CTrailEffect.h"
 #include <Test/Primitive.h>
+#include "CPointLine.h"
 
 // 重力
 #define GRAVITY 0.0625f
 
+CPlayer* player = CPlayer::Instance();
+
 CSpikyBall::CSpikyBall(const CVector& pos, const CVector& dir,
-	float speed, float distance)
-	: mMoveSpeedY(0.0f)
+	float speed, float distance, float initialVelocityY)
+	: mPosition(pos)
 	, mMoveSpeed(speed)
 	, mFlyingDistance(distance)
-	, mCurrentFlyingDistance(0.0f)
-	, mHasLaunched(false)
+	, mMoveSpeedY(initialVelocityY)
 	, mMoveSpeedXZ(CVector::zero)
+	, mCurrentFlyingDistance(0.0f)
 {
-	Position(pos);
+	Position(mPosition);
 	Rotation(CQuaternion::LookRotation(dir, CVector::up));
 
 	mpSpikyBallModel = CResourceManager::Get<CModel>("SpikyBall");
@@ -51,8 +54,6 @@ CSpikyBall::CSpikyBall(const CVector& pos, const CVector& dir,
 
 	// 最初は攻撃判定用のコライダーをオフにしておく
 	mpAttackCol->SetEnable(true);
-
-	//SetAlpha(0.0f);
 }
 
 CSpikyBall::~CSpikyBall()
@@ -124,14 +125,27 @@ CMatrix CSpikyBall::Matrix() const
 	}
 }
 
+// 現在のスピード設定
 void CSpikyBall::SetSpeed(float newSpeed)
 {
 	mMoveSpeed = newSpeed;
 }
 
+// 現在の飛距離設定
 void CSpikyBall::SetDistance(float newDistance)
 {
 	mFlyingDistance = newDistance;
+}
+
+// 現在の位置設定
+void CSpikyBall::SetPosition(CVector pos)
+{
+	mPosition = pos;
+}
+// 現在の位置を返す
+CVector CSpikyBall::GetPosition() const
+{
+	return mPosition;
 }
 
 // 更新処理
@@ -139,22 +153,10 @@ void CSpikyBall::Update()
 {
 	if (IsKill()) return;
 	
-	CPlayer* player = CPlayer::Instance();
 	bool hand = player->IsSpikyBall();
 
 	if (hand)
 	{
-		if (!mHasLaunched)
-		{
-			mHasLaunched = true;
-			mMoveSpeedY = 1.4f;
-		}
-		else
-		{
-
-		}
-
-		CDebugPrint::Print("has:%s\n", mHasLaunched ? "true" : "false");
 		// 残り飛距離が0ならば、弾丸削除
 		float remain = mFlyingDistance - mCurrentFlyingDistance;
 		if (remain <= 0.0f)
@@ -176,29 +178,133 @@ void CSpikyBall::Update()
 
 		// 水平方向の移動
 		Position(Position() + player->VectorZ() * moveSpeed);
-
-		CVector moveSpeedXZ = mMoveSpeedXZ + CVector(0.0f, mMoveSpeedY, 0.0f * Time::DeltaTime());
+		// 垂直方向の移動
+		CVector moveSpeedXZ = mMoveSpeedXZ + CVector(0.0f, mMoveSpeedY, mPosition.Z());
 
 		// 移動
 		Position(Position() + moveSpeedXZ * 60.0f * Time::DeltaTime());
 
+		//// 水平方向の移動
+		//Position(Position() + player->VectorZ() * moveSpeed);
+
+		//// 垂直方向の移動
+		//CVector VelocityY(0.0f, mMoveSpeedY, 0.0f);
+		//// 水平方向の移動
+		//CVector moveSpeedXZ = mMoveSpeedXZ * Time::DeltaTime();
+
+		//// 移動
+		//Position(Position() + CVector(moveSpeedXZ.X(), VelocityY.Y(), moveSpeedXZ.Z()));
+
+
 		// 現在の飛距離を更新
 		mCurrentFlyingDistance += abs(moveSpeed);
-
-		//CDebugPrint::Print("mMoveSpeedY:%f\n", mMoveSpeedY);
 	}
 	else
 	{
 
 	}
+
+	CDebugPrint::Print("Position:%f %f %f\n", Position().X(), Position().Y(), Position().Z());
+	//CDebugPrint::Print("mPosition:%f %f %f\n", mPosition.X(), mPosition.Y(), mPosition.Z());
 	/*CDebugPrint::Print("distance:%f\n", mFlyingDistance);
 	CDebugPrint::Print("speed:%f\n", mMoveSpeed);*/
+	//float speed = player->GetSpikyBallSpeed();
+	//CDebugPrint::Print("speed%f\n", speed);
+	//CDebugPrint::Print("mMoveSpeed:%f\n", mMoveSpeed);
+}
+
+// 予測線のパスを設定
+void CSpikyBall::DrawProjectilePath(const CVector& startPosition, const CVector& initialVelocityXZ, float initialVelocityY, float gravity, float timeStep, int numPoints, const CColor& color, float lineWidth)
+{
+	// 弾の初期値点
+	CVector currentPosition = startPosition;
+	// XZ平面での現在の速度
+	CVector velocityXZ = initialVelocityXZ;
+	// 垂直方向での現在の速度
+	float velocityY = initialVelocityY;
+
+	std::vector<CVector> pathPoints;
+
+	float t = 0.0f;
+
+	for (int i = 0; i < numPoints; ++i) 
+	{
+		// 現在の位置をリストに追加
+		pathPoints.push_back(currentPosition);
+
+		// 時間を進める
+		t += timeStep;
+
+		// 水平方向の位置の更新
+		CVector displacementXZ = velocityXZ * timeStep;
+		currentPosition += displacementXZ;
+
+		// Y座標の更新
+		float currentY = startPosition.Y() + velocityY * t - 0.5f * gravity * t * t;
+		currentPosition = CVector(currentPosition.X(), currentY, currentPosition.Z());
+
+		// 垂直方向の速度を更新
+		velocityY -= gravity * timeStep;
+	}
+
+	// 線を描画
+	for (size_t i = 0; i < pathPoints.size() - 1; ++i) {
+		Primitive::DrawLine(pathPoints[i], pathPoints[i + 1], color, lineWidth);
+	}
+}
+
+// 弾道の予測ラインを描画する関数
+void CSpikyBall::RenderPredictionLine()
+{
+	// 位置が違うので後で変更
+	CVector startPosition = player->Position() + CVector(0.0f, 18.0f, 0.0f) + player->VectorZ() * 5.0f;
+
+	// プレイヤーから速度を取得
+	float speed = player->GetSpikyBallSpeed();
+
+	// プレイヤーの前方向ベクトルを取得して正規化
+	CVector forwardDirection = player->VectorZ();
+	if (forwardDirection.Length() != 0.0f) 
+	{
+		forwardDirection.Normalize();
+	}
+
+	// 初速度をプレイヤーの前方向ベクトルに基づいて設定
+	// 0.020～0.030の間
+	CVector initialVelocityXZ = forwardDirection * speed * 0.028f;
+	//printf("velocityXZ:%f %f %f\n", initialVelocityXZ.X(), initialVelocityXZ.Y(), initialVelocityXZ.Z());
+
+	// 垂直方向の初速度
+	float initialVelocityY = mMoveSpeedY;
+	// 重力
+	float gravity = GRAVITY;
+
+	// パスの色
+	CColor lineColor(1.0f, 0.0f, 0.0f, 0.5f);
+	// ラインの太さ
+	float lineWidth = 6.0f;
+
+	// パスを描画
+	float stepInterval = 8.0f;
+	int numSteps = 15;
+	DrawProjectilePath(startPosition, initialVelocityXZ, initialVelocityY, gravity, stepInterval, numSteps, lineColor, lineWidth);
 }
 
 // 描画処理
 void CSpikyBall::Render()
 {
+	// とげが出現しているか
+	bool spik = player->IsSpikyBallAppearance();
+	// とげボールの予測線を描画するかどうかを判断
+	if (spik) 
+	{
+		RenderPredictionLine();
+	}
+
+	// とげボールの描画
 	mpSpikyBallModel->SetColor(mColor);
 	mpSpikyBallModel->Render(Matrix());
+
+	// とげボールのスフィア描画
 	Primitive::DrawSphere(Matrix(), 0.5f, mColor);
 }

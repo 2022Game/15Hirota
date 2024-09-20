@@ -155,10 +155,14 @@ public:
 	// 回復アップアイテムを使用したかどうか
 	bool IsHealingItem();
 
-	// とげとげボールを使用するかどうか
+	// とげボールを使用するかどうか
 	bool IsSpikyBall();
+	// とげボールを出現させているかどうか
+	bool IsSpikyBallAppearance();
 	// とげボールのリチャージ時間
 	float GetSpikyTime() const;
+	float GetSpikyBallSpeed() const;
+	float GetSpikyBallInitialVelocityY() const;
 
 	// 他のクラスで使っている為publicに置いておく
 	// ジャンプ開始1
@@ -335,10 +339,12 @@ private:
 	void UpdateDashEnd();
 	// 攻撃
 	void UpdateAttack();
-	// 強攻撃
-	void UpdateAttackStrong();
 	// 攻撃終了待ち
 	void UpdateAttackWait();
+	// 強攻撃開始
+	void UpdateAttackStrongStart();
+	// 強攻撃
+	void UpdateAttackStrong();
 	// 強攻撃終了待ち
 	void UpdateAttackStrongWait();
 	// ダッシュアタック
@@ -436,6 +442,7 @@ private:
 		eStop,				 // 停止
 		eClearJump,			 // リザルト前のアニメーション
 		eAttack,			 // 攻撃
+		eAttackStrongStart,	 // 強攻撃開始
 		eAttackStrong,		 // 強攻撃
 		eAttackDash,		 // ダッシュアタック
 		eAttackWait,		 // 攻撃終了待ち
@@ -567,6 +574,7 @@ private:
 	CVector mMoveStartPos;		// 指定された位置まで移動するときの移動開始位置
 	CVector mMoveTargetPos;		// 指定された位置まで移動するときの移動終了位置
 	CVector mLastPos;			// プレイヤーの前回の位置
+	CVector mAttackStrongPos;	// 強攻撃開始位置
 
 	///////////////////////////////////////////////////////
 
