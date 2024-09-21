@@ -6,6 +6,8 @@
 #include "CTrailEffect.h"
 #include "CModel.h"
 
+class CPlayer;
+
 // とげとげボールクラス
 class CSpikyBall : public CWeapon
 {
@@ -58,6 +60,9 @@ public:
 	// 弾道の予測ラインを描画する関数
 	void RenderPredictionLine();
 
+	// プレイヤーの向きを保存する関数
+	void PlayerVectorZ(const CPlayer& player);
+
 	// 更新処理
 	void Update();
 	// 描画処理
@@ -81,6 +86,8 @@ private:
 	CVector mPosition;
 	// 弾の初期位置
 	CVector mInitialPos;
+	// プレイヤーの前方向の向き
+	CVector ForwardVectorZ;
 
 	// 移動速度
 	float mMoveSpeed;

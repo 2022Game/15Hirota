@@ -229,12 +229,15 @@ CPlayer::CPlayer()
 	, mIsPlayedHitDamageSE(false)
 	, mIsSpawnedSlashEffect(false)
 	, mSpikyBall(false)
-	, mSpik(false)
+	, mSpik1(false)
+	, mSpik2(false)
 	, mpRideObject(nullptr)
 	, mpUnderFootObject(nullptr)
 	, mpScreenItem(nullptr)
 	, mpSpikyBallUI(nullptr)
 	, mpMeat(nullptr)
+	, mpSpiky1(nullptr)
+	, mpSpiky2(nullptr)
 {
 	ClearItems();
 	//, mInventory(std::vector<ItemType>())
@@ -1228,7 +1231,7 @@ bool CPlayer::IsSpikyBall()
 
 bool CPlayer::IsSpikyBallAppearance()
 {
-	return mSpik;
+	return mSpik1;
 }
 
 float CPlayer::GetSpikyTime() const
@@ -1237,23 +1240,28 @@ float CPlayer::GetSpikyTime() const
 }
 
 #define MAXCHARGETIME 2.0f
-#define VELOCITY_Y 1.4f
+#define SPIKYCHARGETIME 5.0f
+#define SPIKYBALLVELOCITY_Y 1.4f
+#define MAXVELOCITY_Y 3.0f
+#define SPIKYSPEED 50.0f
+#define SPIKYDISTANCE 50.0f
+#define SPIKYMAXSPEED 100.0f
+#define MAXDISTANCE 300.0f
+#define REDUCEDISTANCE 100.0f
 
 float CPlayer::GetSpikyBallSpeed() const
 {
-	float maxChargeTime = 2.0f; // 最大チャージ時間（秒）
-	return 50.0f + (Math::Clamp01(mSpikTime / maxChargeTime) * 100.0f);
+	return SPIKYSPEED + (Math::Clamp01(mSpikTime / MAXCHARGETIME) * SPIKYMAXSPEED);
+}
+
+float CPlayer::GetSpikyBallDistance() const
+{
+	return SPIKYDISTANCE + (Math::Clamp01(mSpikTime / MAXCHARGETIME) * (MAXDISTANCE - REDUCEDISTANCE));
 }
 
 float CPlayer::GetSpikyBallInitialVelocityY() const
 {
-	// 後でdefine化しておく
-	float maxChargeTime = 2.0f;				// 最大チャージ時間（秒）
-	float baseInitialVelocityY = 1.4f;		// 基本の初期Y軸速度
-	float maxAdditionalVelocityY = 3.0f;	// 最大追加速度
-
-	// mSpikTimeをチャージ時間に基づいて計算
-	return baseInitialVelocityY + (Math::Clamp01(mSpikTime / maxChargeTime) * maxAdditionalVelocityY);
+	return SPIKYBALLVELOCITY_Y + (Math::Clamp01(mSpikTime / MAXCHARGETIME) * MAXVELOCITY_Y);
 }
 
 // ステージフラグをfalseにする関数
@@ -1763,45 +1771,24 @@ void CPlayer::UpdateAttackStrong()
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 	mWeaponTime = 0.0f;
 
-	//const CMatrix* initialMtx = GetFrameMtx("Armature_mixamorig_LeftHandMiddle1");
-	
 	// 強攻撃アニメーションを開始
 	ChangeAnimation(EAnimType::eAttackStrong);
-
-	// 右クリックを離したタイミングで飛距離を計算
-	float maxChargeTime = 2.0f; // 最大チャージ時間
-	float maxDistance = 300.0f; // 最大飛距離
-
-	// 飛距離を計算
-	float distance = 50.0f + (Math::Clamp01(mSpikTime / maxChargeTime) * (maxDistance - 100.0f));
-
-	// スピード計算
-	float speed = 50.0f + (Math::Clamp01(mSpikTime / maxChargeTime) * 100.0f);
-
-	float initialVelocityY = 1.4f; // Y軸の速度に比例する
 
 	CVector forward = VectorZ();
 	forward.Normalize();
 
-	if (!mSpik)
+	if (!mSpik1)
 	{
-		mSpik = true;
-		// 必要ないかも
-		float dynamicOffsetX = 0.0f + (mAttackStrongPos.X() - Position().X());
-		float dynamicOffsetY = 8.0f + (mAttackStrongPos.Y() - Position().Y());
-		float dynamicOffsetZ = 0.0f + (mAttackStrongPos.Z() - Position().Z());
-		// とげとげボールを生成
-		mpSpiky = new CSpikyBall
+		mSpik1 = true;
+		mpSpiky1 = new CSpikyBall
 		(
 			Position(),
 			forward,
-			speed,
-			distance,
-			initialVelocityY
+			GetSpikyBallSpeed(),
+			GetSpikyBallDistance(),
+			SPIKYBALLVELOCITY_Y
 		);
-		// 位置を設定
-		mpSpiky->SetPosition(Position() + CVector(0.0f, 10.0f, 0.0f) + forward * 5.0f);
-		mpSpiky->AttachMtx(GetFrameMtx("Armature_mixamorig_LeftHandMiddle1"));
+		mpSpiky1->AttachMtx(GetFrameMtx("Armature_mixamorig_LeftHandMiddle1"));
 	}
 
 	if (GetAnimationFrame() >= 50.0f)
@@ -1810,36 +1797,27 @@ void CPlayer::UpdateAttackStrong()
 		if (CInput::Key(VK_RBUTTON))
 		{
 			mSpikTime += Time::DeltaTime();
-			if (mSpikTime >= maxChargeTime)
+			if (mSpikTime >= MAXCHARGETIME)
 			{
-				if (mpSpiky != nullptr)
-				{
-					mpSpiky->SetSpeed(speed);
-					mpSpiky->SetDistance(distance);
-				}
 				ChangeState(EState::eAttackStrongWait);
 			}
 		}
-		else if (!CInput::PullKey(VK_RBUTTON))
+		else if (CInput::PullKey(VK_RBUTTON))
 		{
-			if (mpSpiky != nullptr)
-			{
-				mpSpiky->SetSpeed(speed);
-				mpSpiky->SetDistance(distance);
-			}
 			ChangeState(EState::eAttackStrongWait);
 		}
 	}
 	else if (GetAnimationFrame() <= 50.0f && CInput::PullKey(VK_RBUTTON))
 	{
-		mSpik = false;
-		if (mpSpiky != nullptr)
-		{
-			mpSpiky->Kill();
-		}
+		mpSpiky1->Kill();
+		mSpik1 = false;
 		ChangeState(EState::eIdle);
 	}
-	//CDebugPrint::Print("spiktime:%f\n", mSpikTime);
+
+	if (mpSpiky1 != nullptr)
+	{
+		mpSpiky1->UpdateAttachMtx();
+	}
 }
 
 // 強攻撃終了待ち
@@ -1847,47 +1825,53 @@ void CPlayer::UpdateAttackStrongWait()
 {
 	SetAnimationSpeed(1.0f);
 
-	if (GetAnimationFrame() >= 75.0f)
+	CVector forward = VectorZ();
+	forward.Normalize();
+
+	if (GetAnimationFrame() >= 74.0f && mSpik1 && mpSpiky1 != nullptr)
 	{
+		mSpik1 = false;
+		mpSpiky1->DetachMtx();
+		mpSpiky1->Kill();
+	}
+	else if (GetAnimationFrame() >= 50.0f && GetAnimationFrame() <= 75.0f)
+	{
+		if (mpSpiky1 != nullptr && mSpik1)
+		{
+			mpSpiky1->UpdateAttachMtx();
+		}
+	}
+
+	if (GetAnimationFrame() >= 75.0f && !mSpik2)
+	{
+		if (mpSpiky2 == nullptr)
+		{
+			mSpik2 = true;
+			mpSpiky2 = new CSpikyBall
+			(
+				Position() + CVector(0.0f, 10.0f, 0.0f) + forward * 5.0f,
+				forward,
+				GetSpikyBallSpeed(),
+				GetSpikyBallDistance(),
+				SPIKYBALLVELOCITY_Y
+			);
+			mpSpiky2->SetAlpha(1.0f);
+			mpSpiky2->AttachMtx(GetFrameMtx("Armature_mixamorig_LeftHandMiddle1"));
+			mpSpiky2->AttackStart();
+			mpSpiky2->DetachMtx();
+			mpSpiky2->PlayerVectorZ(*spInstance);
+		}
 		mSpikyBall = true;
 
-		// 現在の位置
-		CVector current = Position();
-
-		// 前方
-		CVector forward = VectorZ();
-		forward.Normalize();
-
-		// 動く床に乗っているかどうか
-		if (mpRideObject != nullptr) {
-			// 床の位置を考慮
-			current += mpRideObject->Position();
-		}
-
-		// とげボールの位置を再設定
-		CVector correctedPosition = current + CVector(0.0f, 10.0f, 0.0f) + forward * 5.0f;
-
-		// プレヤーの位置に応じて位置を変更
-		mpSpiky->SetPosition(correctedPosition);
-		CDebugPrint::Print("Position:%f %f %f\n", Position().X(), Position().Y(), Position().Z());
-		CDebugPrint::Print("correctedPosition:%f %f %f\n", correctedPosition.X(), correctedPosition.Y(), correctedPosition.Z());
-		
-		mpSpiky->DetachMtx();
-		if (mSpik)
+		if (mpSpiky2 != nullptr && mSpik2)
 		{
-			if (mpSpiky != nullptr)
-			{
-				// 何故かコライダーがオンにならないが
-				// 最初からコライダーをオンにしても特に問題がないため
-				// 一応そのまま
-				mpSpiky->AttackStart();
-			}
+			mpSpiky2->UpdateAttachMtx();
 		}
 	}
 
 	if (IsAnimationFinished())
 	{
-		mSpikRechargeTime = 5.0f;
+		mSpikRechargeTime = SPIKYCHARGETIME;
 		ChangeState(EState::eIdle);
 		ChangeAnimation(EAnimType::eIdle);
 	}
@@ -3769,7 +3753,9 @@ void CPlayer::CheckUnderFootObject()
 // 更新
 void CPlayer::Update()
 {
-	CDebugPrint::Print("strongpos:%f %f %f\n", mAttackStrongPos.X(), mAttackStrongPos.Y(), mAttackStrongPos.Z());
+	CDebugPrint::Print("speed:%f:\n", GetSpikyBallSpeed());
+	//CDebugPrint::Print("mSpik2:%s\n", mSpik2 ? "true" : "false");
+	//CDebugPrint::Print("strongpos:%f %f %f\n", mAttackStrongPos.X(), mAttackStrongPos.Y(), mAttackStrongPos.Z());
 	mIsStartStage2 = true;
 	mIsStartStage3 = true;
 
@@ -3802,13 +3788,19 @@ void CPlayer::Update()
 
 	if (mSpikyBall)
 	{
-		mSpikRechargeTime -= Time::DeltaTime();
-		if (mSpikRechargeTime <= 0.0f)
+		if (mState != EState::eAttackStrongWait && mpSpiky2 != nullptr)
 		{
-			mSpik = false;
-			mSpikRechargeTime = 0.0f;
+			mSpikRechargeTime -= Time::DeltaTime();
+			if (mSpikRechargeTime <= 0.0f)
+			{
+				mSpik1 = false;
+				mSpik2 = false;
+				mpSpiky2 = nullptr;
+				mSpikRechargeTime = 0.0f;
+			}
 		}
 	}
+	CDebugPrint::Print("mTime:%f\n", mSpikRechargeTime);
 	// とげボールリチャージ
 	//CDebugPrint::Print("spiktime:%f\n", mSpikRechargeTime);
 
@@ -4283,13 +4275,6 @@ void CPlayer::Update()
 	mpDamageCol->Update();
 	mpColliderCapsule->Update();
 	mpSword->UpdateAttachMtx();
-	if (mSpik)
-	{
-		if (mpSpiky != nullptr)
-		{
-			mpSpiky->UpdateAttachMtx();
-		}
-	}
 	
 	if (CGameManager::StageNo() == 1 ||
 		CGameManager::StageNo() == 2 ||

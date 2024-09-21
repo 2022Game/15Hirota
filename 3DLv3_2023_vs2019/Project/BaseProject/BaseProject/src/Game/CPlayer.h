@@ -162,7 +162,9 @@ public:
 	// とげボールのリチャージ時間
 	float GetSpikyTime() const;
 	float GetSpikyBallSpeed() const;
+	float GetSpikyBallDistance() const;
 	float GetSpikyBallInitialVelocityY() const;
+
 
 	// 他のクラスで使っている為publicに置いておく
 	// ジャンプ開始1
@@ -239,7 +241,8 @@ private:
 	CMajicSword* mpSword;
 
 	// とげとげボール
-	CSpikyBall* mpSpiky;
+	CSpikyBall* mpSpiky1;
+	CSpikyBall* mpSpiky2;
 	
 	// UI
 	// HPゲージ
@@ -701,12 +704,14 @@ private:
 	bool mIsHealingItem;
 	// 無敵アイテムを使用したか
 
+
 	// ダメージを受けたかどうか
 	bool mDamaged;
 	// とげとげボールを使用するかどうか
 	bool mSpikyBall;
 	// とげとげボールを出現させているか
-	bool mSpik;
+	bool mSpik1;
+	bool mSpik2;
 
 
 	// 自クラス

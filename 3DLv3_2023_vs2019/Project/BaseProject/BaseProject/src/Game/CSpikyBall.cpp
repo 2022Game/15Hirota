@@ -11,14 +11,14 @@
 
 CSpikyBall::CSpikyBall(const CVector& pos, const CVector& dir,
 	float speed, float distance, float initialVelocityY)
-	: mPosition(pos)
-	, mMoveSpeed(speed)
+	: mMoveSpeed(speed)
 	, mFlyingDistance(distance)
 	, mMoveSpeedY(initialVelocityY)
 	, mMoveSpeedXZ(CVector::zero)
 	, mCurrentFlyingDistance(0.0f)
+	, ForwardVectorZ(CVector::zero)
 {
-	Position(mPosition);
+	Position(pos);
 	Rotation(CQuaternion::LookRotation(dir, CVector::up));
 
 	mpSpikyBallModel = CResourceManager::Get<CModel>("SpikyBall");
@@ -140,10 +140,16 @@ void CSpikyBall::SetPosition(CVector pos)
 {
 	mPosition = pos;
 }
+
 // 現在の位置を返す
 CVector CSpikyBall::GetPosition() const
 {
 	return mPosition;
+}
+
+void CSpikyBall::PlayerVectorZ(const CPlayer& player)
+{
+	ForwardVectorZ = player.VectorZ();
 }
 
 // 更新処理
@@ -156,7 +162,7 @@ void CSpikyBall::Update()
 
 	if (hand)
 	{
-		// 残り飛距離が0ならば、弾丸削除
+		// 残り飛距離が0ならば、とげ削除
 		float remain = mFlyingDistance - mCurrentFlyingDistance;
 		if (remain <= 0.0f)
 		{
@@ -176,12 +182,12 @@ void CSpikyBall::Update()
 		}
 
 		// 水平方向の移動
-		Position(Position() + player->VectorZ() * moveSpeed);
+		Position(Position() + ForwardVectorZ * moveSpeed);
 		// 垂直方向の移動
 		CVector moveSpeedXZ = mMoveSpeedXZ + CVector(0.0f, mMoveSpeedY, 0.0f);
-
 		// 移動
 		Position(Position() + moveSpeedXZ * 60.0f * Time::DeltaTime());
+
 
 		//// 水平方向の移動
 		//Position(Position() + player->VectorZ() * moveSpeed);
@@ -194,8 +200,7 @@ void CSpikyBall::Update()
 		//// 移動
 		//Position(Position() + CVector(moveSpeedXZ.X(), VelocityY.Y(), moveSpeedXZ.Z()));
 
-		CDebugPrint::Print("mPosition:%f %f %f\n", mPosition.X(), mPosition.Y(), mPosition.Z());
-
+		printf("mPosition:%f %f %f\n", mPosition.X(), mPosition.Y(), mPosition.Z());
 
 		// 現在の飛距離を更新
 		mCurrentFlyingDistance += abs(moveSpeed);
@@ -270,8 +275,8 @@ void CSpikyBall::RenderPredictionLine()
 	}
 
 	// 初速度をプレイヤーの前方向ベクトルに基づいて設定
-	// 0.020～0.030の間
-	CVector initialVelocityXZ = forwardDirection * speed * 0.028f;
+	// 適宜変更
+	CVector initialVelocityXZ = forwardDirection * speed * 0.032f;
 	//printf("velocityXZ:%f %f %f\n", initialVelocityXZ.X(), initialVelocityXZ.Y(), initialVelocityXZ.Z());
 
 	// 垂直方向の初速度

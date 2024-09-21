@@ -35,7 +35,10 @@ void CWeapon::UpdateAttachMtx()
 // ’Ç]‚ğ‰ğœ
 void CWeapon::DetachMtx()
 {
-	mpAttachMtx = nullptr;
+	if (mpAttachMtx != nullptr)
+	{
+		mpAttachMtx = nullptr; // ‰ğœŒã‚Énullptr‚Éİ’è
+	}
 }
 
 // UŒ‚ŠJn
