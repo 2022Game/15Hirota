@@ -5,8 +5,8 @@
 #include "CXCharacter.h"
 #include "CColliderLine.h"
 #include "CColliderSphere.h"
+#include "CColliderCapsule.h"
 #include "CRideableObject.h"
-#include "CEffect.h"
 
 class CGun;
 class CBullet;
@@ -14,12 +14,9 @@ class CPlayer;
 class CSoldierFrame;
 class CSoldierGauge;
 class CExclamationMark;
+class CEffect;
 
-/*
-ソルジャークラス
-キャラクタクラスを継承
-*/
-
+// ソルジャークラス(銃タイプ)
 class CSoldier : public CXCharacter
 {
 public:
@@ -37,77 +34,79 @@ public:
 	/// </summary>
 	/// <param name="self">衝突した自身のコライダー</param>
 	/// <param name="other">衝突した相手のコライダー</param>
+	/// <param name="hit">衝突情報</param>
 	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
 
 	/// <summary>
-	/// ダメージ処理
+	/// 被ダメージ処理
 	/// </summary>
-	/// <param name="damage">受けるダメージ</param>
+	/// <param name="damage">受けるダメージ量</param>
 	void TakeDamage(int damage) override;
 
-	// レベル処理
 	// レベルアップ
 	void LevelUp();
 	/// <summary>
-	/// レベル変更
+	/// レベル変更処理
 	/// </summary>
-	/// <param name="level">ソルジャーレベル</param>
+	/// <param name="level">レベル変更量</param>
 	void ChangeLevel(int level);
 
-	// ソルジャーの方向をランダムに変更する処理
-	void ChangeDerection();
+	// 初期設定
+	// 開始時の中心座標と範囲を設定
+	void SetCenterPoint(CVector& center, const float radius);
 
-	// フレームとHPゲージの表示の確認をする処理
-	void UpdateGaugeAndFrame();
+	// 更新処理
+	void Update();
+	// 描画処理
+	void Render();
 
-	// ビックリマークの表示の確認をする処理
-	void UpdateExclamation();
+private:
+	
+	// ソルジャーのインスタンス
+	static CSoldier* spInstance;
 
-	// 1%の確率を求める処理
-	bool ShouldTransitionWander();
-	// 上記と同様
-	bool ShouldTransition();
-
+	// 移動処理
+	// ソルジャーを勝手に移動させる処理
+	void Move();
 	/// <summary>
 	/// 360度の角度を求めて、x軸とy軸から計算する
 	/// </summary>
 	/// <param name="angleDegrees">角度</param>
 	/// <returns></returns>
 	CVector CalculateDirection(float angleDegrees);
+	// ソルジャーの方向をランダムに変更する処理
+	void ChangeDerection();
 
-	// 中心座標と範囲を設定
-	void SetCenterPoint(CVector& center, const float radius);
+	// 移動の条件処理
+	// 待機状態に遷移する条件
+	bool WaitingCondition();
+	// 徘徊状態に遷移する条件
+	bool WanderingConditions();
+	// プレイヤー追跡処理
+	bool IsFoundPlayer() const;
 
-	// ソルジャーを勝手に移動させる処理
-	void Move();
+	// UI処理
+	// フレームとHPゲージの表示の確認をする処理
+	void UpdateGaugeAndFrame();
+	// ビックリマークの表示の確認をする処理
+	void UpdateExclamation();
 
-	// 更新
-	void Update();
-	// 描画
-	void Render();
+	// 時間処理
+	// キックの待ち時間
+	void KickWaitTime();
+	// バックステップの待ち時間
+	void BackStepWaitTime();
+	// プレイヤーを発見した後の待ち時間
+	void DiscoveryWaitTime();
 
-private:
-	// モデル・素材関連
-	// 状態関連
-	// アニメーション関連
-	// ベクトル関連
-	// 変数関連
-
-	// ソルジャーのインスタンス
-	static CSoldier* spInstance;
-
-
-	//// モデル・素材関連 /////////////////////////////////
-
-	// フィールドとの当たり判定を取るコライダー
+	// 縦の線分コライダー
 	CColliderLine* mpColliderLine;
-	// 一時的な当たり判定を取るコライダー
-	// カプセルコライダが完成したら変更
-	CColliderSphere* mpColliderSphere;
-	// ダメージを受けるコライダー
-	CColliderSphere* mpDamageCol;
+	// 壁やオブジェクトとの当たり判定を取るコライダー
+	CColliderCapsule* mpColliderCapsule;
 	// ダメージを与えるコライダー
 	CColliderSphere* mpAttackCol;
+	// ダメージを受けるコライダー
+	CColliderSphere* mpDamageCol;
 
 	// 銃モデル
 	CGun* mpGun;
@@ -119,48 +118,38 @@ private:
 	// ビックリマーク
 	CExclamationMark* mpExclamationMark;
 
-	///////////////////////////////////////////////////////
-
-
-	//// 状態関連 /////////////////////////////////////////
-	
 	// 準備中の状態
 	void UpdateReady();
 	// 待機状態
 	void UpdateIdle();
-	// 攻撃
-	void UpdateAttack();
-	// 攻撃終了待ち
-	void UpdateAttackWait();
-	// ジャンプ開始
-	void UpdateJumpStart();
-	// ジャンプ中
-	void UpdateJump();
-	// ジャンプ終了
-	void UpdateJumpEnd();
-	// プレイヤー発見
-	void UpdateDiscovery();
-	// 追跡
-	void UpdateChase();
-	// キック
-	void UpdateKick();
-	// キック終了
-	void UpdateKickWait();
-	// エイム解除
-	void UpdateAimDwon();
-	// プレイヤーの攻撃Hit
-	void UpdateHit();
-	// 死亡
-	void UpdateDeth();
-	// 死亡処理終了
-	void UpdateDethEnd();
-	// 徘徊処理
-	void UpdateWander();
-	// バックステップ
-	void UpdateBackStep();
-	// 元の位置に戻す
-	//void UpdateReturnBack();
 
+	// 攻撃状態
+	void UpdateAttack();
+	// 攻撃終了待ち状態
+	void UpdateAttackWait();
+	// キック状態
+	void UpdateKick();
+	// キック終了状態
+	void UpdateKickWait();
+	// エイム解除状態
+	void UpdateAimDwon();
+
+	// プレイヤー発見状態
+	void UpdateDiscovery();
+	// 追跡状態
+	void UpdateChase();
+	// 徘徊状態
+	void UpdateWander();
+	// バックステップ状態
+	void UpdateBackStep();
+	
+	// プレイヤーの攻撃Hit状態
+	void UpdateHit();
+	// 死亡状態
+	void UpdateDeth();
+	// 死亡処理終了状態
+	void UpdateDethEnd();
+	
 	// 状態
 	enum class EState
 	{
@@ -168,20 +157,16 @@ private:
 		eIdle,		// 待機
 		eAttack,	// 攻撃
 		eAttackWait,// 攻撃終了待ち
-		eDiscovery,	// プレイヤー発見
-		eChase,		// 追跡
 		eKick,		// キック
 		eKickWait,	// キック終了
 		eAimDwon,	// エイム解除
-		eHit,		// ダメージHit
-		eDeth,		// 死亡
-		eDethEnd,	// 死亡終了
+		eDiscovery,	// プレイヤー発見
+		eChase,		// 追跡
 		eWander,	// 徘徊処理
 		eBackStep,	// バックステップ
-		eJumpStart,	// ジャンプ開始
-		eJump,		// ジャンプ中
-		eJumpEnd,	// ジャンプ終了
-		eReturnBack,// 元の位置に戻す
+		eHit,		// プレイヤーの攻撃Hit
+		eDeth,		// 死亡
+		eDethEnd,	// 死亡終了
 	};
 	// 状態変更
 	void ChangeState(EState state);
@@ -190,11 +175,6 @@ private:
 	// 乗れるオブジェクトに乗っているか
 	CTransform* mpRideObject;
 
-	//////////////////////////////////////////////////////////
-
-
-	//// アニメーション関連 //////////////////////////////////
-	
 	// アニメーションの種類
 	enum class EAnimType
 	{
@@ -212,9 +192,6 @@ private:
 		eHit,		// ダメージHit
 		eDeth,		// 死亡
 		eBackStep,	// バックステップ
-		eJumpEnd,	// ジャンプ終了
-		eJumpStart,	// ジャンプ開始
-		eJump,		// ジャンプ中
 
 		Num
 	};
@@ -231,63 +208,51 @@ private:
 	// アニメーションデータのテーブル
 	static const AnimData ANIM_DATA[];
 
-	//////////////////////////////////////////////////////////
-
-
-	//// ベクトル関連 ////////////////////////////////////////
-
 	// ソルジャーの見る方向
 	CVector mTargetDir;
 	// 移動速度
 	CVector mMoveSpeed;
 	// 初期位置の保存
 	CVector mInitialPosition;
-	// 中心点
+	// 開始時の中心点
 	CVector mCenterPoint;
 
-	//////////////////////////////////////////////////////////
-	
-
-	//// 変数関連 ////////////////////////////////////////////
-	
+	// 状態内のステップ
+	int mStateStep;
 	// 銃の弾の開始値
 	int mTimeShot;
 	// 銃の弾の終わり値
 	int mTimeShotEnd;
-	// 状態内のステップ
-	int mStateStep;
 	// 経過時間計測用
 	float mElapsedTime;
 	// 解除時間計測用
 	float mElapsedTime_End;
-	// ランダム時間計算
-	float mTimeToChange;
+	// 方向転換時間計測用
+	float mChangeTime;
+	// ランダム時間計測用
+	float mRandomCalculationTime;
 	// キックの時間計測用
 	float mKickTime;
-	// バックステップの時間計測
+	// バックステップの時間計測用
 	float mBackStepTime;
-	// プレイヤー発見時の時間計測
+	// プレイヤー発見時の時間計測用
 	float mDiscoveryTime;
-	// プレイヤー発見時の終了時間計測
+	// プレイヤー発見時の終了時間計測用
 	float mDiscoveryTimeEnd;
-	// 半径
+	// 開始時の半径の設定用
 	float mMaxRadius;
 	// 接地しているかどうか
 	bool mIsGrounded;
 	// キックの待ち時間が終わったかどうか
-	bool mKickTimeEnd;
+	bool mKickWaitingEnd;
 	// プレイヤーを発見して一定時間経ったかどうか
 	bool mDiscovery;
-	// プレイヤーを発見し終わった後の時間がどれくらい経ったか
+	// プレイヤーを発見し終わった後の時間がどれくらい経ったかどうか
 	bool mDiscoveryEnd;
-	// バックステップをするか
+	// バックステップをするかどうか
 	bool mBackStep;
-	// 半径に入ったか
-	bool mIsLerping;
+	// 開始時の範囲内に入ったかどうか
+	bool mEnteredTheRange;
 
-	// プレイヤーを見つけたか
-	bool IsFoundPlayer() const;
-
-	//////////////////////////////////////////////////////////
 };
 #endif
