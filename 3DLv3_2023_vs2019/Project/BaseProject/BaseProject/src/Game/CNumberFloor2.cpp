@@ -1,9 +1,9 @@
-#include "CNumberFloor1.h"
+#include "CNumberFloor2.h"
 #include "CColliderMesh.h"
 #include "CStageManager.h"
 
 // コンストラクタ
-CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale, const CVector& rot,
+CNumberFloor2::CNumberFloor2(const CVector& pos, const CVector& scale, const CVector& rot,
 	std::string modelPath)
 	: CNumberFloorBase(pos, scale, rot)
 	, mStateStep(0)
@@ -16,7 +16,7 @@ CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale, const CVe
 	mpCollider->SetCollisionTags({ ETag::ePlayer });
 	mpCollider->SetCollisionLayers({ ELayer::ePlayer });
 
-	SetModelPath("Number1");
+	SetModelPath("Number2");
 
 	Position(pos);
 	Scale(scale);
@@ -26,17 +26,21 @@ CNumberFloor1::CNumberFloor1(const CVector& pos, const CVector& scale, const CVe
 }
 
 // デストラクタ
-CNumberFloor1::~CNumberFloor1()
+CNumberFloor2::~CNumberFloor2()
 {
 	CStageManager::RemoveTask(this);
 }
 
 // 待ち状態の処理
-void CNumberFloor1::UpdateWaiting()
+void CNumberFloor2::UpdateWaiting()
 {
 	if (mIsCollision)
 	{
 		SetColor(CColor(0.5f, 0.1f, 0.1f, 1.0f));
+	}
+	else
+	{
+		SetColor(CColor(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
 	switch (mStateStep)
@@ -44,24 +48,41 @@ void CNumberFloor1::UpdateWaiting()
 		// ステップ0 オブジェクト表示の変更
 	case 0:
 	{
-		if (!mIsCollision)
+		if (!mCase0End)
 		{
+			// プレイヤーが離れたらIdleに遷移
+			if (!mIsCollision)
+			{
+				mpModel = CResourceManager::Get<CModel>("Number1");
+				mStateStep++;
+				mCase0End = true;
+				ChangeState(EState::Idle);
+			}
+			break;
+		}
+
+		if (!mIsCollision && mCase0End)
+		{
+			SetColor(CColor(0.5f, 0.0f, 0.0f, 1.0f));
 			mStateStep++;
 		}
 		break;
 	}
+	// ステップ1 状態遷移
 	case 1:
 	{
-		mpModel = CResourceManager::Get<CModel>("Number0");
-		mStateStep = 0;
-		ChangeState(EState::Falling);
-		break;
+		if (!mIsCollision)
+		{
+			mpModel = CResourceManager::Get<CModel>("Number0");
+			mStateStep = 0;
+			ChangeState(EState::Falling);
+		}
 	}
 	break;
 	}
 }
 
-void CNumberFloor1::Update()
+void CNumberFloor2::Update()
 {
 	CDebugPrint::Print("step:%d\n", mStateStep);
 	CNumberFloorBase::Update();

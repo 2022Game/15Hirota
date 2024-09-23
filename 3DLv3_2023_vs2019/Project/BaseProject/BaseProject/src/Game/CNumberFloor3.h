@@ -1,10 +1,10 @@
-#ifndef CNUMBERFLOOR1_H
-#define CNUMBERFLOOR1_H
+#ifndef CNUMBERFLOOR3_H
+#define CNUMBERFLOOR3_H
 
 #include "CNumberFloorBase.h"
 
-// 回数で落ちる床(1回)クラス
-class CNumberFloor1 : public CNumberFloorBase
+// 回数で落ちる床(3回)クラス
+class CNumberFloor3 : public CNumberFloorBase
 {
 public:
 	/// <summary>
@@ -12,11 +12,11 @@ public:
 	/// </summary>
 	/// <param name="pos">初期位置</param>
 	/// <param name="scale">スケール値</param>
-	CNumberFloor1(const CVector& pos, const CVector& scale, const CVector& rot,
-		std::string modelPath = "Number1");
+	CNumberFloor3(const CVector& pos, const CVector& scale, const CVector& rot,
+		std::string modelPath = "Number3");
 
 	// デストラクタ
-	virtual ~CNumberFloor1();
+	virtual ~CNumberFloor3();
 
 	// プレイヤー待機状態
 	virtual void UpdateWaiting();

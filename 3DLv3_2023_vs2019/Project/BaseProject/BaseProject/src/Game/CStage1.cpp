@@ -3,7 +3,8 @@
 #include "CStageSky.h"
 #include "CPlayer.h"
 #include "CNumberFloor1.h"
-#include "CNumberFloorOnce.h"
+#include "CNumberFloor2.h"
+#include "CNumberFloor3.h"
 #include "CRisingObject.h"
 #include "CTreasureChest.h"
 #include "CSavePoint1.h"
@@ -38,28 +39,44 @@ void CStage1::Load()
 	// オブジェクト関連
 	// ステージの空
 	CResourceManager::Load<CModel>("StageSky", "Field\\StageSky\\Sky(Sphere).obj");
-	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");						// 初期の四角のモデル
-	CResourceManager::Load<CModel>("NumberFallCol", "Field\\FallCol.obj");							// 落下判定コライダー
+	// 初期の四角のモデル
+	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");
+	// 落下判定コライダー
+	CResourceManager::Load<CModel>("NumberFallCol", "Field\\FallCol.obj");
 
 	// ギミック関連
 	// 回転する床のモデル
 	CResourceManager::Load<CModel>("Rotationg", "Field\\Gimmick\\Rotate\\Rotationg.obj");
 	// 回転する床のコライダー
 	CResourceManager::Load<CModel>("RotationgCol", "Field\\Gimmick\\Rotate\\RotationgCol.obj");
-	CResourceManager::Load<CModel>("Number0", "Field\\Object\\number0.obj");					// 零番目の床
-	CResourceManager::Load<CModel>("Number1", "Field\\Object\\number1.obj");					// 一番目の床ブロック
-	CResourceManager::Load<CModel>("Number2", "Field\\Object\\number2.obj");					// 二番目の床ブロック
-	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");					// 三番目の床ブロック
-	//CResourceManager::Load<CModel>("TreasureChest", "Field\\Gimmick\\TreasureChest.obj");			// 宝箱
-	//CResourceManager::Load<CModel>("TreasureChestTwo", "Field\\Gimmick\\TreasureChestTwo.obj");		// 宝箱(蓋)
-	//CResourceManager::Load<CModel>("TreasureChestCol", "Field\\Gimmick\\TreasureChest(FloorCol).obj");	// 宝箱(蓋コライダー)
-	//CResourceManager::Load<CModel>("TreasureChestWallCol", "Field\\Gimmick\\TreasureChest(WallCol).obj");	// 宝箱(壁コライダー)
-	CResourceManager::Load<CModel>("FlamethrowerModel", "Field\\Gimmick\\Fire\\Flamethrower(foundation).obj");// 火炎放射器(土台)
-	CResourceManager::Load<CModel>("FlamethrowerTank", "Field\\Gimmick\\Fire\\Flamethrower(tank).obj");		// 火炎放射器(タンク)
-	CResourceManager::Load<CModel>("FlamethrowerCol", "Field\\Gimmick\\Fire\\Flamethrower(WallCol).obj");	// 火炎放射器(コライダー)
-	CResourceManager::Load<CModel>("SavePoint", "Field\\Gimmick\\SavePoint.obj");				// セーブポイントモデル
-	CResourceManager::Load<CModel>("GoalPost", "Field\\Object\\GoalPost.obj");					// ゴールポストモデル
-	CResourceManager::Load<CModel>("GoalCube", "Field\\Object\\GoalCube.obj");					// ゴールブロックモデル
+	// 零番目の床
+	CResourceManager::Load<CModel>("Number0", "Field\\Object\\number0.obj");
+	// 一番目の床ブロック
+	CResourceManager::Load<CModel>("Number1", "Field\\Object\\number1.obj");
+	// 二番目の床ブロック
+	CResourceManager::Load<CModel>("Number2", "Field\\Object\\number2.obj");
+	// 三番目の床ブロック
+	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");
+	// 宝箱
+	//CResourceManager::Load<CModel>("TreasureChest", "Field\\Gimmick\\TreasureChest.obj");
+	// // 宝箱(蓋)
+	//CResourceManager::Load<CModel>("TreasureChestTwo", "Field\\Gimmick\\TreasureChestTwo.obj");
+	// // 宝箱(蓋コライダー)
+	//CResourceManager::Load<CModel>("TreasureChestCol", "Field\\Gimmick\\TreasureChest(FloorCol).obj");
+	// // 宝箱(壁コライダー)
+	//CResourceManager::Load<CModel>("TreasureChestWallCol", "Field\\Gimmick\\TreasureChest(WallCol).obj");
+	// 火炎放射器(土台)
+	CResourceManager::Load<CModel>("FlamethrowerModel", "Field\\Gimmick\\Fire\\Flamethrower(foundation).obj");
+	// 火炎放射器(タンク)
+	CResourceManager::Load<CModel>("FlamethrowerTank", "Field\\Gimmick\\Fire\\Flamethrower(tank).obj");
+	// 火炎放射器(コライダー)
+	CResourceManager::Load<CModel>("FlamethrowerCol", "Field\\Gimmick\\Fire\\Flamethrower(WallCol).obj");
+	// セーブポイントモデル
+	CResourceManager::Load<CModel>("SavePoint", "Field\\Gimmick\\SavePoint.obj");
+	// ゴールポストモデル
+	CResourceManager::Load<CModel>("GoalPost", "Field\\Object\\GoalPost.obj");
+	// ゴールブロックモデル
+	CResourceManager::Load<CModel>("GoalCube", "Field\\Object\\GoalCube.obj");
 	// 針モデル(上下)
 	CResourceManager::Load<CModel>("Needle", "Field\\Gimmick\\Needle\\NeedleObject(needle).obj");
 	// 針モデルコライダー(上下)
@@ -80,7 +97,8 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
 
 	// アイテム関連
-	CResourceManager::Load<CModel>("BlueMedal", "Field\\Object\\Bluemedal.obj");				// ブルーメダルモデル
+	// ブルーメダルモデル
+	CResourceManager::Load<CModel>("BlueMedal", "Field\\Object\\Bluemedal.obj");
 
 	// 背景色設定
 	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -105,6 +123,31 @@ void CStage1::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rising);
+
+
+	CNumberFloor1* floor1 = new CNumberFloor1
+	(
+		CVector(-60.0f, 0.0f, -70.0f),
+		CVector(4.0f, 3.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(floor1);
+
+	CNumberFloor2* floor2 = new CNumberFloor2
+	(
+		CVector(-120.0f, 0.0f, -70.0f),
+		CVector(4.0f, 3.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(floor2);
+
+	CNumberFloor3* floor3 = new CNumberFloor3
+	(
+		CVector(-180.0f, 0.0f, -70.0f),
+		CVector(4.0f, 3.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(floor3);
 
 	// ずっと回転するモデル1
 	CRotationg* rotationg = new CRotationg
@@ -185,15 +228,14 @@ void CStage1::Load()
 		if (i == 13) zScale = 6.0f;
 
 		// オブジェクトを作成してタスクに追加
-		CNumberFloorOnce* numberfloor = new CNumberFloorOnce
+		CNumberFloor1* numberfloor1 = new CNumberFloor1
 		(
 			CVector(xPos, yPos, zPos),
 			CVector(xScale, 3.0f, zScale),
-			CVector(0.0f, 90.0f, 0.0f),
-			ETag::ePlayer, ELayer::ePlayer
+			CVector(0.0f, 90.0f, 0.0f)
 		);
 
-		AddTask(numberfloor); // タスクに追加
+		AddTask(numberfloor1); // タスクに追加
 	}
 
 	// セーブポイント

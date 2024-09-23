@@ -15,7 +15,7 @@
 #include "CRotateFloorTimeGimmick.h"
 #include "CRotateFloorGimmick.h"
 #include "CFixedFlamethrower.h"
-#include "CNumberFloorOnce.h"
+#include "CNumberFloor3.h"
 #include "CJumpingObject.h"
 #include "CTreasureChest.h"
 #include "CNumberFloor1.h"
@@ -333,35 +333,34 @@ void CStage3::Load()
 	);
 	AddTask(jumping2);
 
-	// 回数オブジェクト(一回)
-	CNumberFloorOnce* numberfloor1 = new CNumberFloorOnce
+	// 回数オブジェクト(3回)
+	CNumberFloor3* numberfloor3 = new CNumberFloor3
 	(
 		CVector(0.0f, 323.0f, -1273.0f),
 		CVector(4.0f, 1.0f, 4.0f),
-		CVector(0.0f, -90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(numberfloor1);
-
-	// 回数オブジェクト(3回)
-	CNumberFloor1* numberfloor2 = new CNumberFloor1
-	(
-		CVector(0.0f, 366.0f, -1440.0f),
-		CVector(4.0f, 1.0f, 4.0f),
-		CVector(0.0f, -90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(numberfloor2);
-
-	// 回数オブジェクト(3回)
-	CNumberFloor1* numberfloor3 = new CNumberFloor1
-	(
-		CVector(0.0f, 366.0f, -1750.0f),
-		CVector(4.0f, 1.0f, 4.0f),
-		CVector(0.0f, -90.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer
+		CVector(0.0f, -90.0f, 0.0f)
 	);
 	AddTask(numberfloor3);
+
+	//// 回数オブジェクト(3回)
+	//CNumberFloor1* numberfloor2 = new CNumberFloor1
+	//(
+	//	CVector(0.0f, 366.0f, -1440.0f),
+	//	CVector(4.0f, 1.0f, 4.0f),
+	//	CVector(0.0f, -90.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(numberfloor2);
+
+	//// 回数オブジェクト(3回)
+	//CNumberFloor1* numberfloor3 = new CNumberFloor1
+	//(
+	//	CVector(0.0f, 366.0f, -1750.0f),
+	//	CVector(4.0f, 1.0f, 4.0f),
+	//	CVector(0.0f, -90.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(numberfloor3);
 
 	// ずっと回転するモデル1
 	CRotationg* rotationg = new CRotationg

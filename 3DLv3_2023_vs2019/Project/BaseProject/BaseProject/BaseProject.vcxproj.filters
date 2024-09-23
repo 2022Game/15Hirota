@@ -320,6 +320,12 @@
     <Filter Include="ソース ファイル\Game\UI\Item\SpikyBall">
       <UniqueIdentifier>{22de713a-7d63-4968-b2e3-89142a2570b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\Player\Attack">
+      <UniqueIdentifier>{0f5aae12-c7fd-4003-bc8c-c3e1f6191132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase">
+      <UniqueIdentifier>{082bb57d-a2a3-45fd-bd35-e8f856e61ba7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -763,9 +769,6 @@
     <ClCompile Include="src\Game\CNumberFloor1.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CNumberFloorOnce.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CDamageObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj</Filter>
     </ClCompile>
@@ -1062,6 +1065,18 @@
     </ClCompile>
     <ClCompile Include="src\Game\CTitleMenu.cpp">
       <Filter>ソース ファイル\Game\UI\TitleUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CPlayerAttack.cpp">
+      <Filter>ソース ファイル\Game\Character\Player\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNumberFloorBase.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNumberFloor2.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNumberFloor3.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1527,9 +1542,6 @@
     <ClInclude Include="src\Game\CNumberFloor1.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CNumberFloorOnce.h">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CDamageObject.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj</Filter>
     </ClInclude>
@@ -1829,6 +1841,18 @@
     </ClInclude>
     <ClInclude Include="src\Game\CTitleMenu.h">
       <Filter>ソース ファイル\Game\UI\TitleUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CPlayerAttack.h">
+      <Filter>ソース ファイル\Game\Character\Player\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNumberFloorBase.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNumberFloor2.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNumberFloor3.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

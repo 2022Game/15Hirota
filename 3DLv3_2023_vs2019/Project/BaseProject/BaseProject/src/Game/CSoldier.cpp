@@ -467,20 +467,22 @@ bool CSoldier::WaitingCondition()
 	}
 
 	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
-	return randomValue < (0.1f * M_PI);
+	// 30%
+	return randomValue < (0.3f * M_PI);
 }
 
 // œpœjó‘Ô‚É‘JˆÚ‚·‚éðŒ
 bool CSoldier::WanderingConditions()
 {
 	float randomValue = Math::Rand(0.0f, 1.0f) * M_PI;
-	return randomValue < (0.01f * M_PI);
+	// 50%
+	return randomValue < (0.5f * M_PI);
 }
 
 // ƒvƒŒƒCƒ„[’ÇÕˆ—
 bool CSoldier::IsFoundPlayer() const
 {
-	CVector playerPos = CPlayer::Instance()->Position();
+	CVector playerPos = PLAYER_INSTANCE->Position();
 	CVector enemyPos = Position();
 
 	CVector toPlayer = (playerPos - enemyPos).Normalized();

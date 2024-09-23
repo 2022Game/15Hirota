@@ -32,6 +32,7 @@ enum class ETag
 	eSavePoint2,		// セーブポイント
 	eJumpingObject,		// ジャンプするオブジェクト
 	eNeedleObject,		// 針オブジェクト
+	eNumberObject,		// 回数制限オブジェクト
 	eFall,				// 落下判定用オブジェクト
 	eRingBeam,			// リングビームオブジェクト
 

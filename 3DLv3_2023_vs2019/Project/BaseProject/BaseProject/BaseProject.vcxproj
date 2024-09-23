@@ -99,8 +99,12 @@
     <ClCompile Include="src\Game\CJumpingKinokoHigh.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMove.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMoveTo.cpp" />
+    <ClCompile Include="src\Game\CNumberFloor2.cpp" />
+    <ClCompile Include="src\Game\CNumberFloor3.cpp" />
+    <ClCompile Include="src\Game\CNumberFloorBase.cpp" />
     <ClCompile Include="src\Game\COperationUI.cpp" />
     <ClCompile Include="src\Game\CPicoChanUI.cpp" />
+    <ClCompile Include="src\Game\CPlayerAttack.cpp" />
     <ClCompile Include="src\Game\CPointLine.cpp" />
     <ClCompile Include="src\Game\CReflectionActionKinoko.cpp" />
     <ClCompile Include="src\Game\CReflectionKinoko.cpp" />
@@ -145,7 +149,6 @@
     <ClCompile Include="src\Game\CNeedleUpDown.cpp" />
     <ClCompile Include="src\Game\COneShotFloorField.cpp" />
     <ClCompile Include="src\Game\CNumberFloor1.cpp" />
-    <ClCompile Include="src\Game\CNumberFloorOnce.cpp" />
     <ClCompile Include="src\Game\CObstacle.cpp" />
     <ClCompile Include="src\Game\CObstacleWall.cpp" />
     <ClCompile Include="src\Game\CPropeller.cpp" />
@@ -358,8 +361,12 @@
     <ClInclude Include="src\Game\CJumpingKinokoHigh.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMove.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMoveTo.h" />
+    <ClInclude Include="src\Game\CNumberFloor2.h" />
+    <ClInclude Include="src\Game\CNumberFloor3.h" />
+    <ClInclude Include="src\Game\CNumberFloorBase.h" />
     <ClInclude Include="src\Game\COperationUI.h" />
     <ClInclude Include="src\Game\CPicoChanUI.h" />
+    <ClInclude Include="src\Game\CPlayerAttack.h" />
     <ClInclude Include="src\Game\CPointLine.h" />
     <ClInclude Include="src\Game\CReflectionActionKinoko.h" />
     <ClInclude Include="src\Game\CReflectionKinoko.h" />
@@ -402,7 +409,6 @@
     <ClInclude Include="src\Game\CNeedleUpDown.h" />
     <ClInclude Include="src\Game\COneShotFloorField.h" />
     <ClInclude Include="src\Game\CNumberFloor1.h" />
-    <ClInclude Include="src\Game\CNumberFloorOnce.h" />
     <ClInclude Include="src\Game\CObstacle.h" />
     <ClInclude Include="src\Game\CObstacleWall.h" />
     <ClInclude Include="src\Game\CPropeller.h" />

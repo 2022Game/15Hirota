@@ -51,13 +51,13 @@
 // 高さ
 #define PLAYER_HEIGHT 16.0f
 // スピード
-#define MOVE_SPEED 0.9f
+#define MOVE_SPEED 1.1f
 // ダッシュジャンプスピード
 #define DASH_JUMP_SPEED 2.0f
 // 移動スピード
-#define RUN_SPEED 1.3f
+#define RUN_SPEED 1.4f
 // ダッシュスピード
-#define DASH_SPEED 2.0f
+#define DASH_SPEED 2.1f
 // ジャンプ
 #define JUMP_SPEED 1.5f
 // 大ジャンプ
@@ -296,7 +296,6 @@ CPlayer::CPlayer()
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol,
 		ELayer::eBlockCol });
-
 
 	// 一時的な当たり判定を取るコライダー
 	mpColliderCapsule = new CColliderCapsule
