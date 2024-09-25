@@ -79,6 +79,8 @@
     <ClCompile Include="src\Game\CBlueMedalEvent.cpp" />
     <ClCompile Include="src\Game\CBullet.cpp" />
     <ClCompile Include="src\Game\CButton1UI.cpp" />
+    <ClCompile Include="src\Game\CCannon.cpp" />
+    <ClCompile Include="src\Game\CCannonBall.cpp" />
     <ClCompile Include="src\Game\CCircleLine.cpp" />
     <ClCompile Include="src\Game\CClimbUI.cpp" />
     <ClCompile Include="src\Game\CCutInDeathJump.cpp" />
@@ -340,6 +342,8 @@
     <ClInclude Include="src\Game\CBlueMedalEvent.h" />
     <ClInclude Include="src\Game\CBullet.h" />
     <ClInclude Include="src\Game\CButton1UI.h" />
+    <ClInclude Include="src\Game\CCannon.h" />
+    <ClInclude Include="src\Game\CCannonBall.h" />
     <ClInclude Include="src\Game\CCircleLine.h" />
     <ClInclude Include="src\Game\CClimbUI.h" />
     <ClInclude Include="src\Game\CCutInDeathJump.h" />

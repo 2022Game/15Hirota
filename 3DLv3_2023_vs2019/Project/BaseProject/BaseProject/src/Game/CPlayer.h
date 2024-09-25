@@ -54,6 +54,7 @@ public:
 		HEALING,	// 回復アイテム
 		ATTACK_UP,	// 攻撃力アップアイテム
 		DEFENSE,	// 防御力アップアイテム
+		ESPIKYBALL,	// とげボールアイテム
 	};
 	// インベントリを管理
 	std::map<ItemType, int> mInventory;
@@ -71,6 +72,8 @@ public:
 	void UseHealingItem();
 	// 攻撃力アップアイテムの使用
 	void UseAttackPotion();
+	// とげボールの使用
+	void UseSpikyBall();
 	// インベントリから特定のアイテムを削除
 	void RemoveItem(ItemType item);
 

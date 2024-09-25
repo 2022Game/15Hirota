@@ -232,7 +232,7 @@ void CStage1::Load()
 		(
 			CVector(xPos, yPos, zPos),
 			CVector(xScale, 3.0f, zScale),
-			CVector(0.0f, 90.0f, 0.0f)
+			CVector(0.0f, 45.0f, 0.0f)
 		);
 
 		AddTask(numberfloor1); // É^ÉXÉNÇ…í«â¡

@@ -7,9 +7,9 @@
 #include "Easing.h"
 
 #define MENU_ALPHA 0.75
-// 「SpikyBall」の点滅時間
+// SpikyBallの点滅時間
 #define SPIKYBALL_BLINK_TIME 0.75f
-// 「SpikyBall」の点滅間隔
+// SpikyBallの点滅間隔
 #define SPIKYBALL_INTERVAL_TIME 1.0f
 // SpikyBallのアニメーション時間
 #define OPEN_ANIM_TIME 0.25f

@@ -69,6 +69,8 @@ CNeedleUpDown::CNeedleUpDown(const CVector& pos, const CVector& scale, const CVe
 	mpColliderBaseMesh->SetCollisionTag(mReactionTag, true);
 	mpColliderBaseMesh->SetCollisionLayer(mReactionLayer, true);
 
+	mpColliderBaseMesh->Position(0.0f, -3.0f, 0.0f);
+
 	Position(pos);
 	Scale(scale);
 	Rotation(rot);

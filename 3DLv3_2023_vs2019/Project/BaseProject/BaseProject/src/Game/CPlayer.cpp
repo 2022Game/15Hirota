@@ -382,8 +382,6 @@ CPlayer::CPlayer()
 	
 	mpSpikyBallUI = new CSpikyBallUI();
 
-
-
 	// 最初に1レベルに設定
 	ChangeLevel(1);
 }
@@ -4381,6 +4379,11 @@ void CPlayer::UseAttackPotion()
 		TakeAttackPotion(1);
 		RemoveItem(ItemType::ATTACK_UP);
 	}
+}
+
+// とげボールの使用
+void CPlayer::UseSpikyBall()
+{
 }
 
 // インベントリから特定のアイテムを削除
