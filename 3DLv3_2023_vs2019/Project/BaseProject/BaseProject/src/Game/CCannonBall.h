@@ -31,6 +31,8 @@ public:
     void Render() override;
 
 private:
+    // ‘å–C‚Ì’eƒ‚ƒfƒ‹
+    CModel* mpCannonBall;
     // –C’e‚ÌƒRƒ‰ƒCƒ_[
     CColliderSphere* mpSpherer;
 

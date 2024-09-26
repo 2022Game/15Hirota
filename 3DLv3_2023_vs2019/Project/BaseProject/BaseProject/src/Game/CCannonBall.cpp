@@ -14,16 +14,21 @@ CCannonBall::CCannonBall(const CVector& pos, const CVector& dir,
 	, mCurrentFlyingDistance(0.0f)
 {
 	Position(pos);
+	Scale(2.0f, 2.0f, 2.0f);
 	Rotation(CQuaternion::LookRotation(dir, CVector::up));
+
+	// 大砲の弾モデル
+	mpCannonBall = CResourceManager::Get<CModel>("CannonBall");
 
 	// 大砲の弾のコライダー
 	mpSpherer = new CColliderSphere
 	(
 		this, ELayer::eBulletCol,
-		5.0f
+		2.5f
 	);
 	mpSpherer->SetCollisionLayers({ ELayer::eDamageCol });
 	mpSpherer->SetCollisionTags({ ETag::ePlayer });
+	//mpSpherer->Position(0.0f, 1.5f, -5.5f);
 }
 
 // デストラクタ
@@ -67,12 +72,11 @@ void CCannonBall::Update()
 
 	// 現在の飛距離を更新
 	mCurrentFlyingDistance += abs(moveSpeed);
-	CDebugPrint::Print("mCurrentFlyingDistance:%f\n", mCurrentFlyingDistance);
-	CDebugPrint::Print("mFlyingDistance:%f\n", mFlyingDistance);
 }
 
 // 描画処理
 void CCannonBall::Render()
 {
-
+	mpCannonBall->SetColor(mColor);
+	mpCannonBall->Render(Matrix());
 }

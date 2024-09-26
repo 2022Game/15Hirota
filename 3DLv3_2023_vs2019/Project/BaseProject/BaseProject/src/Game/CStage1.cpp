@@ -51,7 +51,7 @@ void CStage1::Load()
 	// 回転する床のコライダー
 	CResourceManager::Load<CModel>("RotationgCol", "GameGimmick\\Gimmick\\Rotate\\RotationgCol.obj");
 	// 零番目の床
-	CResourceManager::Load<CModel>("Number0", "GameGimmick\\Object\\number0.obj");
+	CResourceManager::Load<CModel>("Number0", "GameGimmick\\Gimmick\\NumberFloor\\number0.obj");
 	// 一番目の床ブロック
 	CResourceManager::Load<CModel>("Number1", "GameGimmick\\Gimmick\\NumberFloor\\number1.obj");
 	// 二番目の床ブロック
@@ -94,8 +94,12 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("NeedleBaseLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(Base).obj");
 	// 針ベースコライダー(左右)
 	CResourceManager::Load<CModel>("NeedleBaseColLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
-	// 浜川大砲モデル
-	CResourceManager::Load<CModel>("Cannon", "GameGimmick\\Object\\Cannon.obj");
+	// 大砲土台モデル
+	CResourceManager::Load<CModel>("CannonFound", "GameGimmick\\Gimmick\\Cannon\\CannonFoundations.obj");
+	// 大砲
+	CResourceManager::Load<CModel>("Cannon", "GameGimmick\\Gimmick\\Cannon\\Cannon.obj");
+	// 大砲玉モデル
+	CResourceManager::Load<CModel>("CannonBall", "GameGimmick\\Gimmick\\Cannon\\CannonBall.obj");
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
 
@@ -127,14 +131,22 @@ void CStage1::Load()
 	);
 	AddTask(rising);
 
-	// 浜川大砲
+	// 大砲
 	CCannon* cannon = new CCannon
 	(
-		CVector(0.0f, 15.0f, 325.0f),
-		CVector(7.0f, 7.0f, 7.0f),
+		CVector(0.0f, 25.0f, 325.0f),
+		CVector(3.0f, 3.0f, 3.0f),
 		CVector(0.0f, 180.0f, 0.0f)
 	);
 	AddTask(cannon);
+	// 大砲土台
+	CCannonFoundations* cannonfound = new CCannonFoundations
+	(
+		CVector(0.0f, 25.0f, 325.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, 180.0f, 0.0f)
+	);
+	AddTask(cannonfound);
 
 
 	CNumberFloor1* floor1 = new CNumberFloor1
