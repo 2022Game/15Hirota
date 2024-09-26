@@ -56,41 +56,41 @@ void CStage4::Load()
 	CResourceManager::Load<CModel>("SplitSeesawModelCol", "Field\\Gimmick\\SeesawGimmick\\SplitSeesawCol.obj");
 
 	// バネモデル(上とバネ)
-	CResourceManager::Load<CModel>("Spring", "Field\\Gimmick\\Jump\\Spring.obj");
+	CResourceManager::Load<CModel>("Spring", "GameGimmick\\Gimmick\\Jump\\Spring.obj");
 	// バネモデル(下)
-	CResourceManager::Load<CModel>("SpringLower", "Field\\Gimmick\\Jump\\SpringLower.obj");
+	CResourceManager::Load<CModel>("SpringLower", "GameGimmick\\Gimmick\\Jump\\SpringLower.obj");
 	// バネコライダーモデル
-	CResourceManager::Load<CModel>("SpringCol", "Field\\Gimmick\\Jump\\SpringCol.obj");
+	CResourceManager::Load<CModel>("SpringCol", "GameGimmick\\Gimmick\\Jump\\SpringCol.obj");
 
 	// 回転する床
-	CResourceManager::Load<CModel>("RotateFloor", "Field\\Gimmick\\Rotate\\RotateFloor.obj");
+	CResourceManager::Load<CModel>("RotateFloor", "GameGimmick\\Gimmick\\Rotate\\RotateFloor.obj");
 	// 回転する床の前コライダー
-	CResourceManager::Load<CModel>("RotateFloorFrontCol", "Field\\Gimmick\\Rotate\\RotateFloorFrontCol.obj");
+	CResourceManager::Load<CModel>("RotateFloorFrontCol", "GameGimmick\\Gimmick\\Rotate\\RotateFloorFrontCol.obj");
 	// 回転する床の後ろコライダー
-	CResourceManager::Load<CModel>("RotateFloorBackCol", "Field\\Gimmick\\Rotate\\RotateFloorBackCol.obj");
+	CResourceManager::Load<CModel>("RotateFloorBackCol", "GameGimmick\\Gimmick\\Rotate\\RotateFloorBackCol.obj");
 	// 回転する床(反対)
-	CResourceManager::Load<CModel>("RotateFloorOpposition", "Field\\Gimmick\\Rotate\\RotateFloor(Opposition).obj");
+	CResourceManager::Load<CModel>("RotateFloorOpposition", "GameGimmick\\Gimmick\\Rotate\\RotateFloor(Opposition).obj");
 	// 回転する床の前コライダー(反対)
-	CResourceManager::Load<CModel>("RotateFloorFrontColOpposition", "Field\\Gimmick\\Rotate\\RotateFloorFrontCol(Opposition).obj");
+	CResourceManager::Load<CModel>("RotateFloorFrontColOpposition", "GameGimmick\\Gimmick\\Rotate\\RotateFloorFrontCol(Opposition).obj");
 	// 回転する床の後ろコライダー(反対)
-	CResourceManager::Load<CModel>("RotateFloorBackColOpposition", "Field\\Gimmick\\Rotate\\RotateFloorBackCol(Opposition).obj");
+	CResourceManager::Load<CModel>("RotateFloorBackColOpposition", "GameGimmick\\Gimmick\\Rotate\\RotateFloorBackCol(Opposition).obj");
 
 	// 金属の梯子オブジェクト
-	CResourceManager::Load<CModel>("4Metalladder", "Field\\SeesawStage\\SeesawStage(MetalLadder).obj");
+	CResourceManager::Load<CModel>("4Metalladder", "GameGimmick\\SeesawStage\\SeesawStage(MetalLadder).obj");
 	// 金属の梯子オブジェクト(Col)
-	CResourceManager::Load<CModel>("4MetalladderCol", "Field\\SeesawStage\\SeesawStage(MetalLadderCol).obj");
+	CResourceManager::Load<CModel>("4MetalladderCol", "GameGimmick\\SeesawStage\\SeesawStage(MetalLadderCol).obj");
 	// 金属の梯子オブジェクト(TopCol)
-	CResourceManager::Load<CModel>("4MetalladderTopCol", "Field\\SeesawStage\\SeesawStage(MetalLadderColTop).obj");
+	CResourceManager::Load<CModel>("4MetalladderTopCol", "GameGimmick\\SeesawStage\\SeesawStage(MetalLadderColTop).obj");
 
 	// セーブポイントモデル
-	CResourceManager::Load<CModel>("SavePoint", "Field\\Gimmick\\SavePoint.obj");
+	CResourceManager::Load<CModel>("SavePoint", "GameGimmick\\Gimmick\\SaveFlag\\SavePoint.obj");
 
 	// ハテナブロック(アイテム保有)
-	CResourceManager::Load<CModel>("HatenaBlock", "Field\\Object\\hatena.obj");
+	CResourceManager::Load<CModel>("HatenaBlock", "GameGimmick\\Object\\hatena.obj");
 	// ハテナブロック(アイテム不保有)
-	CResourceManager::Load<CModel>("HatenaBlockAfter", "Field\\Object\\UsedHatenaBlock.obj");
+	CResourceManager::Load<CModel>("HatenaBlockAfter", "GameGimmick\\Object\\UsedHatenaBlock.obj");
 	// レンガブロック
-	CResourceManager::Load<CModel>("RengaBlock", "Field\\Object\\RengaBlock.obj");
+	CResourceManager::Load<CModel>("RengaBlock", "GameGimmick\\Object\\RengaBlock.obj");
 	
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");

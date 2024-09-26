@@ -63,6 +63,5 @@ void CNumberFloor1::UpdateWaiting()
 
 void CNumberFloor1::Update()
 {
-	CDebugPrint::Print("step:%d\n", mStateStep);
 	CNumberFloorBase::Update();
 }

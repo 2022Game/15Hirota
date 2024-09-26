@@ -34,6 +34,7 @@
 #include "CInput.h"
 #include "CSeesaw.h"
 #include "CPicoChan.h"
+#include "CCannon.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -59,35 +60,35 @@ void CStage2::Load()
 	// ステージ床コライダー
 	CResourceManager::Load<CModel>("HopsAndHoops(FallCol)", "Field\\HopsAndHoops\\Stage2(FallCol).obj");
 	// セーブポイントモデル
-	CResourceManager::Load<CModel>("SavePoint",				"Field\\Gimmick\\SavePoint.obj");
+	CResourceManager::Load<CModel>("SavePoint",				"GameGimmick\\Gimmick\\SaveFlag\\SavePoint.obj");
 	// ゴールポストモデル							    
-	CResourceManager::Load<CModel>("GoalPost",				"Field\\Object\\GoalPost.obj");
+	CResourceManager::Load<CModel>("GoalPost",				"GameGimmick\\Gimmick\\Goal\\GoalPost.obj");
 	// ゴールブロックモデル							   
-	CResourceManager::Load<CModel>("GoalCube",				"Field\\Object\\GoalCube.obj");
+	CResourceManager::Load<CModel>("GoalCube",				"GameGimmick\\Gimmick\\Goal\\GoalCube.obj");
 	// 跳ねるキノコモデル							    
-	CResourceManager::Load<CModel>("JumpingKinoko",			"Field\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
+	CResourceManager::Load<CModel>("JumpingKinoko",			"GameGimmick\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
 	// 跳ねるキノコモデル2						    
-	CResourceManager::Load<CModel>("JumpingKinoko2Color",	"Field\\Gimmick\\Jump\\JumpingKinoko(Base_2Color).obj");
+	CResourceManager::Load<CModel>("JumpingKinoko2Color",	"GameGimmick\\Gimmick\\Jump\\JumpingKinoko(Base_2Color).obj");
 	// 跳ねるキノコモデル3						    
-	CResourceManager::Load<CModel>("JumpingKinoko3Color",	"Field\\Gimmick\\Jump\\JumpingKinoko(Base_3Color).obj");
+	CResourceManager::Load<CModel>("JumpingKinoko3Color",	"GameGimmick\\Gimmick\\Jump\\JumpingKinoko(Base_3Color).obj");
 	// 跳ねるキノココライダー								 
-	CResourceManager::Load<CModel>("JumpingKinokoCol",		"Field\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
+	CResourceManager::Load<CModel>("JumpingKinokoCol",		"GameGimmick\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
 	// 超ジャンプキノコモデル
-	CResourceManager::Load<CModel>("HighKinoko",			"Field\\Gimmick\\Jump\\HighJumpKinoko.obj");
+	CResourceManager::Load<CModel>("HighKinoko",			"GameGimmick\\Gimmick\\Jump\\HighJumpKinoko.obj");
 	// 超ジャンプキノココライダー
-	CResourceManager::Load<CModel>("JumpingKinokoCol",		"Field\\Gimmick\\Jump\\HighJumpKinokoCol.obj");
+	CResourceManager::Load<CModel>("JumpingKinokoCol",		"GameGimmick\\Gimmick\\Jump\\HighJumpKinokoCol.obj");
 	// 反射キノコモデル
-	CResourceManager::Load<CModel>("ReflectionKinoko",		"Field\\Gimmick\\Reflection\\ReflectionKinoko(Base).obj");
+	CResourceManager::Load<CModel>("ReflectionKinoko",		"GameGimmick\\Gimmick\\Reflection\\ReflectionKinoko(Base).obj");
 	// 反射キノコモデル
-	CResourceManager::Load<CModel>("ReflectionKinokoCol",	"Field\\Gimmick\\Reflection\\ReflectionKinoko(Col).obj");
+	CResourceManager::Load<CModel>("ReflectionKinokoCol",	"GameGimmick\\Gimmick\\Reflection\\ReflectionKinoko(Col).obj");
 	// 反射キノコモデル
-	CResourceManager::Load<CModel>("ReflectionKinokoTopCol","Field\\Gimmick\\Reflection\\ReflectionKinoko(TopCol).obj");
+	CResourceManager::Load<CModel>("ReflectionKinokoTopCol","GameGimmick\\Gimmick\\Reflection\\ReflectionKinoko(TopCol).obj");
 	// バネモデル(上とバネ)
-	CResourceManager::Load<CModel>("Spring",				"Field\\Gimmick\\Jump\\Spring.obj");
+	CResourceManager::Load<CModel>("Spring",				"GameGimmick\\Gimmick\\Jump\\Spring.obj");
 	// バネモデル(下)
-	CResourceManager::Load<CModel>("SpringLower",			"Field\\Gimmick\\Jump\\SpringLower.obj");
+	CResourceManager::Load<CModel>("SpringLower",			"GameGimmick\\Gimmick\\Jump\\SpringLower.obj");
 	// バネコライダーモデル
-	CResourceManager::Load<CModel>("SpringCol",				"Field\\Gimmick\\Jump\\SpringCol.obj");
+	CResourceManager::Load<CModel>("SpringCol",				"GameGimmick\\Gimmick\\Jump\\SpringCol.obj");
 	// リングビーマモデル(上)								  
 	CResourceManager::Load<CModel>("RingBeamerUP",			"Effect\\BeamObj(Upper).obj");
 	// リングビーマモデル(下)								  
@@ -99,31 +100,33 @@ void CStage2::Load()
 	// リングビーマモデル(コライダー)						  
 	CResourceManager::Load<CTexture>("LightningBolt",		"Effect\\lightning_bolt.png");
 	// ハテナブロック(アイテム保有)
-	CResourceManager::Load<CModel>("HatenaBlock",			"Field\\Object\\hatena.obj");
+	CResourceManager::Load<CModel>("HatenaBlock",			"GameGimmick\\Gimmick\\Block\\hatena.obj");
 	// ハテナブロック(アイテム不保有)
-	CResourceManager::Load<CModel>("HatenaBlockAfter",		"Field\\Object\\UsedHatenaBlock.obj");
+	CResourceManager::Load<CModel>("HatenaBlockAfter",		"GameGimmick\\Gimmick\\Block\\UsedHatenaBlock.obj");
 	// レンガブロック
-	CResourceManager::Load<CModel>("RengaBlock",			"Field\\Object\\RengaBlock.obj");
+	CResourceManager::Load<CModel>("RengaBlock",			"GameGimmick\\Gimmick\\Block\\RengaBlock.obj");
 	// 宝箱
-	CResourceManager::Load<CModel>("TreasureChest",			"Field\\Gimmick\\Chest\\TreasureChest.obj");
+	CResourceManager::Load<CModel>("TreasureChest",			"GameGimmick\\Gimmick\\Chest\\TreasureChest.obj");
 	// 宝箱(蓋)
-	CResourceManager::Load<CModel>("TreasureChestTwo",		"Field\\Gimmick\\Chest\\TreasureChestTwo.obj");
+	CResourceManager::Load<CModel>("TreasureChestTwo",		"GameGimmick\\Gimmick\\Chest\\TreasureChestTwo.obj");
 	// 宝箱(蓋コライダー)
-	CResourceManager::Load<CModel>("TreasureChestCol",		"Field\\Gimmick\\Chest\\TreasureChest(FloorCol).obj");
+	CResourceManager::Load<CModel>("TreasureChestCol",		"GameGimmick\\Gimmick\\Chest\\TreasureChest(FloorCol).obj");
 	// 宝箱(壁コライダー)
-	CResourceManager::Load<CModel>("TreasureChestWallCol",	"Field\\Gimmick\\Chest\\TreasureChest(WallCol).obj");
+	CResourceManager::Load<CModel>("TreasureChestWallCol",	"GameGimmick\\Gimmick\\Chest\\TreasureChest(WallCol).obj");
 	// プロペラ
-	CResourceManager::Load<CModel>("Propeller",				"Field\\Gimmick\\propeller.obj");
+	CResourceManager::Load<CModel>("Propeller",				"GameGimmick\\Gimmick\\Propeller\\propeller.obj");
 	// プロペラ(Col)
-	CResourceManager::Load<CModel>("PropellerWallCol",		"Field\\Gimmick\\propeller(Col).obj");
+	CResourceManager::Load<CModel>("PropellerWallCol",		"GameGimmick\\Gimmick\\Propeller\\propeller(Col).obj");
 	// ポイントライン
-	CResourceManager::Load<CModel>("PointLine",				"Field\\Gimmick\\Jump\\PointLine.obj");
+	CResourceManager::Load<CModel>("PointLine",				"GameGimmick\\Gimmick\\Jump\\PointLine.obj");
 	// サークルライン
-	CResourceManager::Load<CModel>("CircleLine",			"Field\\Gimmick\\Jump\\CircleLine.obj");
+	CResourceManager::Load<CModel>("CircleLine",			"GameGimmick\\Gimmick\\Jump\\CircleLine.obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("SeesawModel",			"Field\\Gimmick\\SeesawGimmick\\SeesawModel.obj");
+	CResourceManager::Load<CModel>("SeesawModel",			"GameGimmick\\Gimmick\\SeesawGimmick\\SeesawModel.obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("SeesawModelCol",		"Field\\Gimmick\\SeesawGimmick\\SeesawModel(Col).obj");
+	CResourceManager::Load<CModel>("SeesawModelCol",		"GameGimmick\\Gimmick\\SeesawGimmick\\SeesawModel(Col).obj");
+	// 浜川大砲モデル
+	CResourceManager::Load<CModel>("Cannon",				"GameGimmick\\Object\\Cannon.obj");
 
 	// 金属の梯子オブジェクト
 	CResourceManager::Load<CModel>("Metalladder",			"Field\\HopsAndHoops\\Metalladder(Base).obj");
@@ -281,6 +284,15 @@ void CStage2::Load()
 
 		AddTask(jumpkinoko); // タスクに追加
 	}
+
+	// 浜川大砲
+	CCannon* cannon = new CCannon
+	(
+		CVector(0.0f, 0.0f, 480.0f),
+		CVector(7.0f, 7.0f, 7.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cannon);
 
 	//// バネ(上とバネ)
 	//CSpring* spring = new CSpring

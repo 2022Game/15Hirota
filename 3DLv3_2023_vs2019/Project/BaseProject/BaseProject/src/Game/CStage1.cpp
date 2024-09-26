@@ -20,6 +20,7 @@
 #include "CNeedleLeftRight.h"
 #include "CInput.h"
 #include "CRotationg.h"
+#include "CCannon.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -40,65 +41,67 @@ void CStage1::Load()
 	// ステージの空
 	CResourceManager::Load<CModel>("StageSky", "Field\\StageSky\\Sky(Sphere).obj");
 	// 初期の四角のモデル
-	CResourceManager::Load<CModel>("FieldCube", "Field\\Object\\cube.obj");
+	CResourceManager::Load<CModel>("FieldCube", "GameGimmick\\Object\\cube.obj");
 	// 落下判定コライダー
 	CResourceManager::Load<CModel>("NumberFallCol", "Field\\FallCol.obj");
 
 	// ギミック関連
 	// 回転する床のモデル
-	CResourceManager::Load<CModel>("Rotationg", "Field\\Gimmick\\Rotate\\Rotationg.obj");
+	CResourceManager::Load<CModel>("Rotationg", "GameGimmick\\Gimmick\\Rotate\\Rotationg.obj");
 	// 回転する床のコライダー
-	CResourceManager::Load<CModel>("RotationgCol", "Field\\Gimmick\\Rotate\\RotationgCol.obj");
+	CResourceManager::Load<CModel>("RotationgCol", "GameGimmick\\Gimmick\\Rotate\\RotationgCol.obj");
 	// 零番目の床
-	CResourceManager::Load<CModel>("Number0", "Field\\Object\\number0.obj");
+	CResourceManager::Load<CModel>("Number0", "GameGimmick\\Object\\number0.obj");
 	// 一番目の床ブロック
-	CResourceManager::Load<CModel>("Number1", "Field\\Object\\number1.obj");
+	CResourceManager::Load<CModel>("Number1", "GameGimmick\\Gimmick\\NumberFloor\\number1.obj");
 	// 二番目の床ブロック
-	CResourceManager::Load<CModel>("Number2", "Field\\Object\\number2.obj");
+	CResourceManager::Load<CModel>("Number2", "GameGimmick\\Gimmick\\NumberFloor\\number2.obj");
 	// 三番目の床ブロック
-	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");
+	CResourceManager::Load<CModel>("Number3", "GameGimmick\\Gimmick\\NumberFloor\\number3.obj");
 	// 宝箱
-	//CResourceManager::Load<CModel>("TreasureChest", "Field\\Gimmick\\TreasureChest.obj");
+	//CResourceManager::Load<CModel>("TreasureChest", "GameGimmick\\Gimmick\\TreasureChest.obj");
 	// // 宝箱(蓋)
-	//CResourceManager::Load<CModel>("TreasureChestTwo", "Field\\Gimmick\\TreasureChestTwo.obj");
+	//CResourceManager::Load<CModel>("TreasureChestTwo", "GameGimmick\\Gimmick\\TreasureChestTwo.obj");
 	// // 宝箱(蓋コライダー)
-	//CResourceManager::Load<CModel>("TreasureChestCol", "Field\\Gimmick\\TreasureChest(FloorCol).obj");
+	//CResourceManager::Load<CModel>("TreasureChestCol", "GameGimmick\\Gimmick\\TreasureChest(FloorCol).obj");
 	// // 宝箱(壁コライダー)
-	//CResourceManager::Load<CModel>("TreasureChestWallCol", "Field\\Gimmick\\TreasureChest(WallCol).obj");
+	//CResourceManager::Load<CModel>("TreasureChestWallCol", "GameGimmick\\Gimmick\\TreasureChest(WallCol).obj");
 	// 火炎放射器(土台)
-	CResourceManager::Load<CModel>("FlamethrowerModel", "Field\\Gimmick\\Fire\\Flamethrower(foundation).obj");
+	CResourceManager::Load<CModel>("FlamethrowerModel", "GameGimmick\\Gimmick\\Flame\\Flamethrower(foundation).obj");
 	// 火炎放射器(タンク)
-	CResourceManager::Load<CModel>("FlamethrowerTank", "Field\\Gimmick\\Fire\\Flamethrower(tank).obj");
+	CResourceManager::Load<CModel>("FlamethrowerTank", "GameGimmick\\Gimmick\\Flame\\Flamethrower(tank).obj");
 	// 火炎放射器(コライダー)
-	CResourceManager::Load<CModel>("FlamethrowerCol", "Field\\Gimmick\\Fire\\Flamethrower(WallCol).obj");
+	CResourceManager::Load<CModel>("FlamethrowerCol", "GameGimmick\\Gimmick\\Flame\\Flamethrower(WallCol).obj");
 	// セーブポイントモデル
-	CResourceManager::Load<CModel>("SavePoint", "Field\\Gimmick\\SavePoint.obj");
+	CResourceManager::Load<CModel>("SavePoint", "GameGimmick\\Gimmick\\SaveFlag\\SavePoint.obj");
 	// ゴールポストモデル
-	CResourceManager::Load<CModel>("GoalPost", "Field\\Object\\GoalPost.obj");
+	CResourceManager::Load<CModel>("GoalPost", "GameGimmick\\Gimmick\\Goal\\GoalPost.obj");
 	// ゴールブロックモデル
-	CResourceManager::Load<CModel>("GoalCube", "Field\\Object\\GoalCube.obj");
+	CResourceManager::Load<CModel>("GoalCube", "GameGimmick\\Gimmick\\Goal\\GoalCube.obj");
 	// 針モデル(上下)
-	CResourceManager::Load<CModel>("Needle", "Field\\Gimmick\\Needle\\NeedleObject(needle).obj");
+	CResourceManager::Load<CModel>("Needle", "GameGimmick\\Gimmick\\Needle\\NeedleObject(needle).obj");
 	// 針モデルコライダー(上下)
-	CResourceManager::Load<CModel>("NeedleCol", "Field\\Gimmick\\Needle\\NeedleObjectCol.obj");
+	CResourceManager::Load<CModel>("NeedleCol", "GameGimmick\\Gimmick\\Needle\\NeedleObjectCol.obj");
 	// 針ベースモデル(上下)
-	CResourceManager::Load<CModel>("NeedleBase", "Field\\Gimmick\\Needle\\NeedleObject(base).obj");
+	CResourceManager::Load<CModel>("NeedleBase", "GameGimmick\\Gimmick\\Needle\\NeedleObject(base).obj");
 	// 針ベースコライダー(上下)
-	CResourceManager::Load<CModel>("NeedleBaseCol", "Field\\Gimmick\\Needle\\NeedleObjectBaseCol.obj");
+	CResourceManager::Load<CModel>("NeedleBaseCol", "GameGimmick\\Gimmick\\Needle\\NeedleObjectBaseCol.obj");
 	// 針モデル(左右)
-	CResourceManager::Load<CModel>("NeedleLeftRight", "Field\\Gimmick\\Needle\\NeedleObjLeftRight(Needle).obj");
+	CResourceManager::Load<CModel>("NeedleLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(Needle).obj");
 	// 針モデルコライダー(左右)
-	CResourceManager::Load<CModel>("NeedleColLeftRight", "Field\\Gimmick\\Needle\\NeedleObjLeftRight(NeedleCol).obj");
+	CResourceManager::Load<CModel>("NeedleColLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(NeedleCol).obj");
 	// 針ベースモデル(左右)
-	CResourceManager::Load<CModel>("NeedleBaseLeftRight", "Field\\Gimmick\\Needle\\NeedleObjLeftRight(Base).obj");
+	CResourceManager::Load<CModel>("NeedleBaseLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(Base).obj");
 	// 針ベースコライダー(左右)
-	CResourceManager::Load<CModel>("NeedleBaseColLeftRight", "Field\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
+	CResourceManager::Load<CModel>("NeedleBaseColLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
+	// 浜川大砲モデル
+	CResourceManager::Load<CModel>("Cannon", "GameGimmick\\Object\\Cannon.obj");
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
 
 	// アイテム関連
 	// ブルーメダルモデル
-	CResourceManager::Load<CModel>("BlueMedal", "Field\\Object\\Bluemedal.obj");
+	CResourceManager::Load<CModel>("BlueMedal", "Item\\BlueMedal\\Bluemedal.obj");
 
 	// 背景色設定
 	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -123,6 +126,15 @@ void CStage1::Load()
 		ETag::ePlayer, ELayer::ePlayer
 	);
 	AddTask(rising);
+
+	// 浜川大砲
+	CCannon* cannon = new CCannon
+	(
+		CVector(0.0f, 15.0f, 325.0f),
+		CVector(7.0f, 7.0f, 7.0f),
+		CVector(0.0f, 180.0f, 0.0f)
+	);
+	AddTask(cannon);
 
 
 	CNumberFloor1* floor1 = new CNumberFloor1
@@ -296,23 +308,23 @@ void CStage1::Load()
 	);
 	AddTask(dodai);
 
-	// 火炎放射器モデル
-	// 右方向 
-	CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
-	(
-		CVector(-100.0f, 15.0f, 625.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, -90.0f, 0.0f)
-	);
-	AddTask(flamethrower2);
-	// 火炎放射器の土台
-	CRisingObject* dodai2 = new CRisingObject
-	(
-		CVector(-100.0f, 15.0f, 625.0f),
-		CVector(1.0f, 1.0f, 1.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(dodai2);
+	//// 火炎放射器モデル
+	//// 右方向 
+	//CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
+	//(
+	//	CVector(-100.0f, 15.0f, 625.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, -90.0f, 0.0f)
+	//);
+	//AddTask(flamethrower2);
+	//// 火炎放射器の土台
+	//CRisingObject* dodai2 = new CRisingObject
+	//(
+	//	CVector(-100.0f, 15.0f, 625.0f),
+	//	CVector(1.0f, 1.0f, 1.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(dodai2);
 
 	CMeat1* meat1 = new CMeat1
 	(

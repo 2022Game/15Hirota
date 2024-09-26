@@ -124,15 +124,15 @@ void CStageSelectionStage::Load()
 	CResourceManager::Load<CModel>("StageSelect", "Field\\StageSelect\\StageSelect.obj");				// ステージのオブジェクト
 	CResourceManager::Load<CModel>("StageSelectFloor", "Field\\StageSelect\\StageSelectFloorCol.obj");		// ステージの床コライダー
 
-	CResourceManager::Load<CModel>("StageButton", "Field\\Object\\StageBotan.obj");					// ステージボタンモデル
-	CResourceManager::Load<CModel>("SkyIslandMenu", "Field\\Object\\Skyisland.obj");					// 空島モデル
-	CResourceManager::Load<CModel>("Number3", "Field\\Object\\number3.obj");
+	CResourceManager::Load<CModel>("StageButton", "GameGimmick\\Gimmick\\StageButton\\StageBotan.obj");					// ステージボタンモデル
+	CResourceManager::Load<CModel>("SkyIslandMenu", "GameGimmick\\Object\\Skyisland.obj");					// 空島モデル
+	CResourceManager::Load<CModel>("Number3", "GameGimmick\\Gimmick\\NumberFloor\\number3.obj");
 	// 跳ねるキノコモデル
-	CResourceManager::Load<CModel>("JumpingKinoko", "Field\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
+	CResourceManager::Load<CModel>("JumpingKinoko", "GameGimmick\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
 	// 跳ねるキノココライダー
-	CResourceManager::Load<CModel>("JumpingKinokoCol", "Field\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
+	CResourceManager::Load<CModel>("JumpingKinokoCol", "GameGimmick\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
 	// シーソーモデル
-	CResourceManager::Load<CModel>("SeesawModel", "Field\\Gimmick\\SeesawGimmick\\SeesawModel.obj");
+	CResourceManager::Load<CModel>("SeesawModel", "GameGimmick\\Gimmick\\SeesawGimmick\\SeesawModel.obj");
 	// ENTERキーの画像
 	CResourceManager::Load<CTexture>("EnterUI", "UI\\GimmickUI\\ENTER.png");
 
