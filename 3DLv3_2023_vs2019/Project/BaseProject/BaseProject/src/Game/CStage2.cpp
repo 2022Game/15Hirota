@@ -125,8 +125,10 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("SeesawModel",			"GameGimmick\\Gimmick\\SeesawGimmick\\SeesawModel.obj");
 	// シーソーモデル
 	CResourceManager::Load<CModel>("SeesawModelCol",		"GameGimmick\\Gimmick\\SeesawGimmick\\SeesawModel(Col).obj");
-	// 浜川大砲モデル
-	CResourceManager::Load<CModel>("Cannon",				"GameGimmick\\Object\\Cannon.obj");
+	// 大砲土台モデル
+	CResourceManager::Load<CModel>("CannonFound", "GameGimmick\\Gimmick\\Cannon\\CannonFoundations.obj");
+	// 大砲
+	CResourceManager::Load<CModel>("Cannon", "GameGimmick\\Gimmick\\Cannon\\Cannon.obj");
 
 	// 金属の梯子オブジェクト
 	CResourceManager::Load<CModel>("Metalladder",			"Field\\HopsAndHoops\\Metalladder(Base).obj");
