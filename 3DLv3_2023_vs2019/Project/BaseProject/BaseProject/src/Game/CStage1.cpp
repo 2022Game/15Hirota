@@ -1,5 +1,6 @@
 #include "CStage1.h"
 #include "COneShotFloorField.h"
+#include "COneShotFallCol.h"
 #include "CStageSky.h"
 #include "CPlayer.h"
 #include "CNumberFloor1.h"
@@ -38,12 +39,16 @@ CStage1::~CStage1()
 void CStage1::Load()
 {
 	// オブジェクト関連
+	// ステージのベースモデル
+	CResourceManager::Load<CModel>("Stage1Base", "Field\\OneShotFloor\\StageBase.obj");
+	// ステージの床コライダー
+	CResourceManager::Load<CModel>("Stage1FloorCol", "Field\\OneShotFloor\\FloorCol.obj");
+	// ステージの落下コライダー
+	CResourceManager::Load<CModel>("Stage1Base", "Field\\OneShotFloor\\FallCol.obj");
 	// ステージの空
 	CResourceManager::Load<CModel>("StageSky", "Field\\StageSky\\Sky(Sphere).obj");
 	// 初期の四角のモデル
 	CResourceManager::Load<CModel>("FieldCube", "GameGimmick\\Object\\cube.obj");
-	// 落下判定コライダー
-	CResourceManager::Load<CModel>("NumberFallCol", "Field\\FallCol.obj");
 
 	// ギミック関連
 	// 回転する床のモデル
@@ -112,24 +117,19 @@ void CStage1::Load()
 
 	CInput::ShowCursor(false);
 
-	//COneShotFloorField* field = new COneShotFloorField();
-	//field->Scale(1.0f, 1.0f, 1.0f);
-	//field->Position(0.0f, -200.0f, 0.0f);
-	//AddTask(field);
+	// フィールド
+	mpField = new COneShotFloorField();
+	mpField->Scale(1.0f, 1.0f, 1.0f);
+	AddTask(mpField);
+	// 落下コライダー
+	mpFallCol = new COneShotFallCol();
+	mpFallCol->Scale(1.0f, 1.0f, 1.0f);
+	AddTask(mpFallCol);
 
 	//// 空
 	//mpSky = new CStageSky();
 	//mpSky->Scale(150.0f, 150.0f, 150.0f);
 	//AddTask(mpSky);
-
-	//// 初期値点
-	//CRisingObject* rising = new CRisingObject
-	//(
-	//	CVector(0.0f, 12.0f, -70.0f),
-	//	CVector(1.0f, 1.0f, 1.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(rising);
 
 	//// 大砲
 	//CCannon* cannon = new CCannon
@@ -338,38 +338,38 @@ void CStage1::Load()
 	////);
 	////AddTask(dodai2);
 
-	//CMeat1* meat1 = new CMeat1
-	//(
-	//	CVector(0.0f, 45.0f, 134.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	CVector(4.0f, 4.0f, 4.0f)
-	//);
-	//AddTask(meat1);
-	//meat1->SetMeatNumber(1);
+	CMeat1* meat1 = new CMeat1
+	(
+		CVector(0.0f, 45.0f, 134.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	AddTask(meat1);
+	meat1->SetMeatNumber(1);
 
-	//CMeat2* meat2 = new CMeat2
-	//(
-	//	CVector(70.0f, 25.0f, 390.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	CVector(4.0f, 4.0f, 4.0f)
-	//);
-	//meat2->SetMeatNumber(2);
-	//AddTask(meat2);
+	CMeat2* meat2 = new CMeat2
+	(
+		CVector(70.0f, 25.0f, 390.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	meat2->SetMeatNumber(2);
+	AddTask(meat2);
 
-	//CMeat3* meat3 = new CMeat3
-	//(
-	//	CVector(-70.0f, 25.0f, 390.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	CVector(4.0f, 4.0f, 4.0f)
-	//);
-	//meat3->SetMeatNumber(3);
-	//AddTask(meat3);
+	CMeat3* meat3 = new CMeat3
+	(
+		CVector(-70.0f, 25.0f, 390.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(4.0f, 4.0f, 4.0f)
+	);
+	meat3->SetMeatNumber(3);
+	AddTask(meat3);
 
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(0.0f, 25.5f, 0.0f);	//197.0f,1235.0f,279.0f
+	CVector playerPos = CVector(26.0f, 6.5f, -28.0f);	//197.0f,1235.0f,279.0f
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

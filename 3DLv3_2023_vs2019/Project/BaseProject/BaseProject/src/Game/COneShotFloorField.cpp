@@ -3,29 +3,23 @@
 #include "CCamera.h"
 #include "CStageManager.h"
 
+// コンストラクタ
 COneShotFloorField::COneShotFloorField()
 	: CObjectBase(ETag::eFall,ETaskPriority::eFall)
 {
-	// 落下判定用のコライダー
-	mpStageModel = CResourceManager::Get<CModel>("NumberFallCol");
+	// ステージのモデル取得
+	mpStageModel = CResourceManager::Get<CModel>("Stage1Base");
 
-	// 落下判定用のコライダー作成
-	mpFallCol = new CColliderMesh(this, ELayer::eFall, mpStageModel, true);
-	mpFallCol->SetCollisionTags({ ETag::ePlayer });
-	mpFallCol->SetCollisionLayers({ ELayer::ePlayer });
+	// ステージのコライダー取得
+	CModel* floorCol = CResourceManager::Get<CModel>("Stage1FloorCol");
+	mpStageFloorCol = new CColliderMesh(this, ELayer::eField, floorCol, true);
 }
 
 COneShotFloorField::~COneShotFloorField()
 {
 	CStageManager::RemoveTask(this);
-	SAFE_DELETE(mpFallCol);
+	SAFE_DELETE(mpStageFloorCol);
 }
-
-// 壁のコライダーが必要であれば実装
-//CColliderMesh* COneShotFloorField::GetWallCol() const
-//{
-//	
-//}
 
 void COneShotFloorField::Update()
 {

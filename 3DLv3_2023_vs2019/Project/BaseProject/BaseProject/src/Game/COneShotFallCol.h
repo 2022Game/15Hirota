@@ -1,17 +1,17 @@
-#ifndef CHOPSANDHOOPSFALLCOL_H
-#define CHOPSANDHOOPSFALLCOL_H
+#ifndef CONESHOTFALLCOL_H
+#define CONESHOTFALLCOL_H
 
 #include "CObjectBase.h"
 #include "CColliderMesh.h"
 
-// 「ホップ＆フープス」の落下コライダー
-class CHopsAndHoopsFallCol : public CObjectBase
+// 「連続ジャンプステージ」の落下コライダー
+class COneShotFallCol : public CObjectBase
 {
 public:
 	// コンストラクタ
-	CHopsAndHoopsFallCol();
+	COneShotFallCol();
 	// デストラクタ
-	~CHopsAndHoopsFallCol();
+	~COneShotFallCol();
 
 	// 更新処理
 	void Update() override;

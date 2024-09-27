@@ -1,34 +1,33 @@
-#include "CHopsAndHoopsFallCol.h"
+#include "COneShotFallCol.h"
 #include "CCollisionManager.h"
-#include "CCamera.h"
 #include "CStageManager.h"
 
 // コンストラクタ
-CHopsAndHoopsFallCol::CHopsAndHoopsFallCol()
+COneShotFallCol::COneShotFallCol()
 	: CObjectBase(ETag::eFall, ETaskPriority::eFall)
 {
 	// 落下コライダー
-	CModel* fallCol = CResourceManager::Get<CModel>("HopsAndHoops(FallCol)");
+	CModel* fallCol = CResourceManager::Get<CModel>("Stage1FallCol");
 	mpFallCol = new CColliderMesh(this, ELayer::eFall, fallCol, true);
 	mpFallCol->SetCollisionTags({ ETag::ePlayer });
 	mpFallCol->SetCollisionLayers({ ELayer::ePlayer });
 }
 
 // デストラクタ
-CHopsAndHoopsFallCol::~CHopsAndHoopsFallCol()
+COneShotFallCol::~COneShotFallCol()
 {
 	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpFallCol);
 }
 
 // 更新処理
-void CHopsAndHoopsFallCol::Update()
+void COneShotFallCol::Update()
 {
 
 }
 
 // 描画処理
-void CHopsAndHoopsFallCol::Render()
+void COneShotFallCol::Render()
 {
 
 }

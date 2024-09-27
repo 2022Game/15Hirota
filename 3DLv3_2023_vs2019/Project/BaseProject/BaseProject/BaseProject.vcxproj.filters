@@ -1087,6 +1087,9 @@
     <ClCompile Include="src\Game\CCannonBall.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\COneShotFallCol.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\One Shot Floor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1868,6 +1871,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CCannonBall.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\COneShotFallCol.h">
+      <Filter>ソース ファイル\Game\Field\StageField\One Shot Floor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

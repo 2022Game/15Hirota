@@ -5,6 +5,7 @@
 #include "CColliderMesh.h"
 #include "CColliderSphere.h"
 
+// 「キノコジャンプステージ」
 class CHopsAndHoopsField : public CObjectBase
 {
 public:
@@ -21,7 +22,6 @@ public:
 private:
 	// ステージのモデル
 	CModel* mpStageModel;
-
 	// ステージのコライダー
 	CColliderMesh* mpFloorCol;
 };

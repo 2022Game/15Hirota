@@ -4,6 +4,8 @@
 
 class CStageTime;
 class CStageSky;
+class COneShotFloorField;
+class COneShotFallCol;
 
 // ステージ1「ワンショット・フロア」
 class CStage1 : public CStageBase
@@ -20,6 +22,8 @@ public:
 	void Unload() override;
 
 private:
+	COneShotFloorField* mpField;
+	COneShotFallCol* mpFallCol;
 	CStageSky* mpSky;
 };
 #endif
