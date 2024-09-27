@@ -112,264 +112,264 @@ void CStage1::Load()
 
 	CInput::ShowCursor(false);
 
-	COneShotFloorField* field = new COneShotFloorField();
-	field->Scale(1.0f, 1.0f, 1.0f);
-	field->Position(0.0f, -200.0f, 0.0f);
-	AddTask(field);
+	//COneShotFloorField* field = new COneShotFloorField();
+	//field->Scale(1.0f, 1.0f, 1.0f);
+	//field->Position(0.0f, -200.0f, 0.0f);
+	//AddTask(field);
 
-	// 空
-	mpSky = new CStageSky();
-	mpSky->Scale(150.0f, 150.0f, 150.0f);
-	AddTask(mpSky);
+	//// 空
+	//mpSky = new CStageSky();
+	//mpSky->Scale(150.0f, 150.0f, 150.0f);
+	//AddTask(mpSky);
 
-	// 初期値点
-	CRisingObject* rising = new CRisingObject
-	(
-		CVector(0.0f, 12.0f, -70.0f),
-		CVector(1.0f, 1.0f, 1.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rising);
-
-	// 大砲
-	CCannon* cannon = new CCannon
-	(
-		CVector(0.0f, 25.0f, 325.0f),
-		CVector(3.0f, 3.0f, 3.0f),
-		CVector(0.0f, 180.0f, 0.0f)
-	);
-	AddTask(cannon);
-	// 大砲土台
-	CCannonFoundations* cannonfound = new CCannonFoundations
-	(
-		CVector(0.0f, 25.0f, 325.0f),
-		CVector(3.0f, 3.0f, 3.0f),
-		CVector(0.0f, 180.0f, 0.0f)
-	);
-	AddTask(cannonfound);
-
-
-	CNumberFloor1* floor1 = new CNumberFloor1
-	(
-		CVector(-60.0f, 0.0f, -70.0f),
-		CVector(4.0f, 3.0f, 4.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(floor1);
-
-	CNumberFloor2* floor2 = new CNumberFloor2
-	(
-		CVector(-120.0f, 0.0f, -70.0f),
-		CVector(4.0f, 3.0f, 4.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(floor2);
-
-	CNumberFloor3* floor3 = new CNumberFloor3
-	(
-		CVector(-180.0f, 0.0f, -70.0f),
-		CVector(4.0f, 3.0f, 4.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(floor3);
-
-	// ずっと回転するモデル1
-	CRotationg* rotationg = new CRotationg
-	(
-		CVector(60.0f, 12.0f, -70.0f),
-		CVector(10.0f, 10.0f, 10.0f),
-		1.0f
-	);
-	AddTask(rotationg);
-
-	// 中間値点
-	CRisingObject* rising1 = new CRisingObject
-	(
-		CVector(0.0f, 12.0f, 325.0f),
-		CVector(1.0f, 1.0f, 1.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rising1);
-
-	// ゴール値点
-	CRisingObject* rising2 = new CRisingObject
-	(
-		CVector(0.0f, 12.0f, 670.0f),
-		CVector(2.0f, 1.0f, 2.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(rising2);
-
-	// ゴールポスト0.0f, 10.0f, 720.0f
-	CGoalObject* goal = new CGoalObject
-	(
-		CVector(0.0f, 0.5f, 669.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, 90.0f, 0.0f)
-	);
-	AddTask(goal);
-
-	// オブジェクトを配置するループ
-	for (int i = 0; i < 14; ++i) {
-
-		// X軸の位置を設定
-		float xPos = 0.0f;
-		if (i == 5) xPos = 70.0f;
-		if (i == 6) xPos = -70.0f;
-		if (i == 7) xPos = 70.0f;
-		if (i == 8) xPos = -70.0f;
-		if (i == 9) xPos = 70.0f;
-		if (i == 10) xPos = -70.0f;
-		if (i == 11) xPos = 50.0f;
-		if (i == 12) xPos = -50.0f;
-		if (i == 13) xPos = 0.0f;
-
-		// Y軸の位置を設定
-		float yPos = i * 0.0f;
-		if (i == 4) yPos = 2.5f;
-
-		// Z軸の位置を設定
-		float zPos = i * 65.0f;
-		if (i == 5)   zPos = 5 * 65.0f;
-		if (i == 6)   zPos = 5 * 65.0f;
-		if (i == 7)   zPos = 6 * 65.0f;
-		if (i == 8)   zPos = 6 * 65.0f;
-		if (i == 9)   zPos = 7 * 65.0f;
-		if (i == 10)  zPos = 7 * 65.0f;
-		if (i == 11)  zPos = 8 * 65.0f;
-		if (i == 12)  zPos = 8 * 65.0f;
-		if (i == 13)  zPos = 9 * 65.0f;
-
-		// X軸のスケール値を設定
-		float xScale = 4.0f;
-		if (i == 2) xScale = 6.0f;
-		if (i == 13)xScale = 6.0f;
-
-
-		// Z軸のスケール値を設定
-		float zScale = 4.0f;
-		if (i == 2) zScale = 6.0f;
-		if (i == 13) zScale = 6.0f;
-
-		// オブジェクトを作成してタスクに追加
-		CNumberFloor1* numberfloor1 = new CNumberFloor1
-		(
-			CVector(xPos, yPos, zPos),
-			CVector(xScale, 3.0f, zScale),
-			CVector(0.0f, 45.0f, 0.0f)
-		);
-
-		AddTask(numberfloor1); // タスクに追加
-	}
-
-	// セーブポイント
-	CSavePoint1* savepoint1 = new CSavePoint1
-	(
-		CVector(0.0f, 15.0f, 325.0f),
-		CVector(8.0f, 8.0f, 8.0f),
-		CVector(0.0f, 10.0f, 0.0f)
-	);
-	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
-	AddTask(savepoint1);
-
-	// 針モデル1
-	CNeedleUpDown* needle1 = new CNeedleUpDown(
-		CVector(0.0f, 10.0f, 450.0f),
-		CVector(20.0f, 20.0f, 20.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		3.6f,
-		ETag::ePlayer, ELayer::ePlayer);
-	AddTask(needle1);
-	// 針モデルベース1
-	CNeedleUpDownBase* needlebase1 = new CNeedleUpDownBase(
-		CVector(0.0f, 10.0f, 450.0f),
-		CVector(20.0f, 20.0f, 20.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		ETag::ePlayer, ELayer::ePlayer);
-	AddTask(needlebase1);
-
-	//// 針モデル1
-	//CNeedleLeftRight* needle1 = new CNeedleLeftRight(
-	//	CVector(-130.0f, 280.0f, -1080.0f),
-	//	CVector(10.0f, 10.0f, 10.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer);
-	//AddTask(needle1);
-	//// 針モデルベース1
-	//CNeedleLeftRightBase* needlebase1 = new CNeedleLeftRightBase(
-	//	CVector(-130.0f, 280.0f, -1080.0f),
-	//	CVector(10.0f, 10.0f, 10.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer);
-	//AddTask(needlebase1);
-	// 火炎放射器モデル
-	// 左方向
-	CFixedFlamethrower* flamethrower1 = new CFixedFlamethrower
-	(
-		CVector(-100.0f, 15.0f, 140.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, -90.0f, 0.0f)
-	);
-	AddTask(flamethrower1);
-	// 火炎放射器の土台
-	CRisingObject* dodai = new CRisingObject
-	(
-		CVector(-100.0f, 15.0f, 140.0f),
-		CVector(1.0f, 1.0f, 1.0f),
-		ETag::ePlayer, ELayer::ePlayer
-	);
-	AddTask(dodai);
-
-	//// 火炎放射器モデル
-	//// 右方向 
-	//CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
+	//// 初期値点
+	//CRisingObject* rising = new CRisingObject
 	//(
-	//	CVector(-100.0f, 15.0f, 625.0f),
-	//	CVector(2.0f, 2.0f, 2.0f),
-	//	CVector(0.0f, -90.0f, 0.0f)
-	//);
-	//AddTask(flamethrower2);
-	//// 火炎放射器の土台
-	//CRisingObject* dodai2 = new CRisingObject
-	//(
-	//	CVector(-100.0f, 15.0f, 625.0f),
+	//	CVector(0.0f, 12.0f, -70.0f),
 	//	CVector(1.0f, 1.0f, 1.0f),
 	//	ETag::ePlayer, ELayer::ePlayer
 	//);
-	//AddTask(dodai2);
+	//AddTask(rising);
 
-	CMeat1* meat1 = new CMeat1
-	(
-		CVector(0.0f, 45.0f, 134.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		CVector(4.0f, 4.0f, 4.0f)
-	);
-	AddTask(meat1);
-	meat1->SetMeatNumber(1);
+	//// 大砲
+	//CCannon* cannon = new CCannon
+	//(
+	//	CVector(0.0f, 25.0f, 325.0f),
+	//	CVector(3.0f, 3.0f, 3.0f),
+	//	CVector(0.0f, 180.0f, 0.0f)
+	//);
+	//AddTask(cannon);
+	//// 大砲土台
+	//CCannonFoundations* cannonfound = new CCannonFoundations
+	//(
+	//	CVector(0.0f, 25.0f, 325.0f),
+	//	CVector(3.0f, 3.0f, 3.0f),
+	//	CVector(0.0f, 180.0f, 0.0f)
+	//);
+	//AddTask(cannonfound);
 
-	CMeat2* meat2 = new CMeat2
-	(
-		CVector(70.0f, 25.0f, 390.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		CVector(4.0f, 4.0f, 4.0f)
-	);
-	meat2->SetMeatNumber(2);
-	AddTask(meat2);
 
-	CMeat3* meat3 = new CMeat3
-	(
-		CVector(-70.0f, 25.0f, 390.0f),
-		CVector(0.0f, 0.0f, 0.0f),
-		CVector(4.0f, 4.0f, 4.0f)
-	);
-	meat3->SetMeatNumber(3);
-	AddTask(meat3);
+	//CNumberFloor1* floor1 = new CNumberFloor1
+	//(
+	//	CVector(-60.0f, 0.0f, -70.0f),
+	//	CVector(4.0f, 3.0f, 4.0f),
+	//	CVector(0.0f, 0.0f, 0.0f)
+	//);
+	//AddTask(floor1);
+
+	//CNumberFloor2* floor2 = new CNumberFloor2
+	//(
+	//	CVector(-120.0f, 0.0f, -70.0f),
+	//	CVector(4.0f, 3.0f, 4.0f),
+	//	CVector(0.0f, 0.0f, 0.0f)
+	//);
+	//AddTask(floor2);
+
+	//CNumberFloor3* floor3 = new CNumberFloor3
+	//(
+	//	CVector(-180.0f, 0.0f, -70.0f),
+	//	CVector(4.0f, 3.0f, 4.0f),
+	//	CVector(0.0f, 0.0f, 0.0f)
+	//);
+	//AddTask(floor3);
+
+	//// ずっと回転するモデル1
+	//CRotationg* rotationg = new CRotationg
+	//(
+	//	CVector(60.0f, 12.0f, -70.0f),
+	//	CVector(10.0f, 10.0f, 10.0f),
+	//	1.0f
+	//);
+	//AddTask(rotationg);
+
+	//// 中間値点
+	//CRisingObject* rising1 = new CRisingObject
+	//(
+	//	CVector(0.0f, 12.0f, 325.0f),
+	//	CVector(1.0f, 1.0f, 1.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(rising1);
+
+	//// ゴール値点
+	//CRisingObject* rising2 = new CRisingObject
+	//(
+	//	CVector(0.0f, 12.0f, 670.0f),
+	//	CVector(2.0f, 1.0f, 2.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(rising2);
+
+	//// ゴールポスト0.0f, 10.0f, 720.0f
+	//CGoalObject* goal = new CGoalObject
+	//(
+	//	CVector(0.0f, 0.5f, 669.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, 90.0f, 0.0f)
+	//);
+	//AddTask(goal);
+
+	//// オブジェクトを配置するループ
+	//for (int i = 0; i < 14; ++i) {
+
+	//	// X軸の位置を設定
+	//	float xPos = 0.0f;
+	//	if (i == 5) xPos = 70.0f;
+	//	if (i == 6) xPos = -70.0f;
+	//	if (i == 7) xPos = 70.0f;
+	//	if (i == 8) xPos = -70.0f;
+	//	if (i == 9) xPos = 70.0f;
+	//	if (i == 10) xPos = -70.0f;
+	//	if (i == 11) xPos = 50.0f;
+	//	if (i == 12) xPos = -50.0f;
+	//	if (i == 13) xPos = 0.0f;
+
+	//	// Y軸の位置を設定
+	//	float yPos = i * 0.0f;
+	//	if (i == 4) yPos = 2.5f;
+
+	//	// Z軸の位置を設定
+	//	float zPos = i * 65.0f;
+	//	if (i == 5)   zPos = 5 * 65.0f;
+	//	if (i == 6)   zPos = 5 * 65.0f;
+	//	if (i == 7)   zPos = 6 * 65.0f;
+	//	if (i == 8)   zPos = 6 * 65.0f;
+	//	if (i == 9)   zPos = 7 * 65.0f;
+	//	if (i == 10)  zPos = 7 * 65.0f;
+	//	if (i == 11)  zPos = 8 * 65.0f;
+	//	if (i == 12)  zPos = 8 * 65.0f;
+	//	if (i == 13)  zPos = 9 * 65.0f;
+
+	//	// X軸のスケール値を設定
+	//	float xScale = 4.0f;
+	//	if (i == 2) xScale = 6.0f;
+	//	if (i == 13)xScale = 6.0f;
+
+
+	//	// Z軸のスケール値を設定
+	//	float zScale = 4.0f;
+	//	if (i == 2) zScale = 6.0f;
+	//	if (i == 13) zScale = 6.0f;
+
+	//	// オブジェクトを作成してタスクに追加
+	//	CNumberFloor1* numberfloor1 = new CNumberFloor1
+	//	(
+	//		CVector(xPos, yPos, zPos),
+	//		CVector(xScale, 3.0f, zScale),
+	//		CVector(0.0f, 45.0f, 0.0f)
+	//	);
+
+	//	AddTask(numberfloor1); // タスクに追加
+	//}
+
+	//// セーブポイント
+	//CSavePoint1* savepoint1 = new CSavePoint1
+	//(
+	//	CVector(0.0f, 15.0f, 325.0f),
+	//	CVector(8.0f, 8.0f, 8.0f),
+	//	CVector(0.0f, 10.0f, 0.0f)
+	//);
+	//savepoint1->Rotation(0.0f, 90.0f, 0.0f);
+	//AddTask(savepoint1);
+
+	//// 針モデル1
+	//CNeedleUpDown* needle1 = new CNeedleUpDown(
+	//	CVector(0.0f, 10.0f, 450.0f),
+	//	CVector(20.0f, 20.0f, 20.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	3.6f,
+	//	ETag::ePlayer, ELayer::ePlayer);
+	//AddTask(needle1);
+	//// 針モデルベース1
+	//CNeedleUpDownBase* needlebase1 = new CNeedleUpDownBase(
+	//	CVector(0.0f, 10.0f, 450.0f),
+	//	CVector(20.0f, 20.0f, 20.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	ETag::ePlayer, ELayer::ePlayer);
+	//AddTask(needlebase1);
+
+	////// 針モデル1
+	////CNeedleLeftRight* needle1 = new CNeedleLeftRight(
+	////	CVector(-130.0f, 280.0f, -1080.0f),
+	////	CVector(10.0f, 10.0f, 10.0f),
+	////	CVector(0.0f, 0.0f, 0.0f),
+	////	ETag::ePlayer, ELayer::ePlayer);
+	////AddTask(needle1);
+	////// 針モデルベース1
+	////CNeedleLeftRightBase* needlebase1 = new CNeedleLeftRightBase(
+	////	CVector(-130.0f, 280.0f, -1080.0f),
+	////	CVector(10.0f, 10.0f, 10.0f),
+	////	CVector(0.0f, 0.0f, 0.0f),
+	////	ETag::ePlayer, ELayer::ePlayer);
+	////AddTask(needlebase1);
+	//// 火炎放射器モデル
+	//// 左方向
+	//CFixedFlamethrower* flamethrower1 = new CFixedFlamethrower
+	//(
+	//	CVector(-100.0f, 15.0f, 140.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, -90.0f, 0.0f)
+	//);
+	//AddTask(flamethrower1);
+	//// 火炎放射器の土台
+	//CRisingObject* dodai = new CRisingObject
+	//(
+	//	CVector(-100.0f, 15.0f, 140.0f),
+	//	CVector(1.0f, 1.0f, 1.0f),
+	//	ETag::ePlayer, ELayer::ePlayer
+	//);
+	//AddTask(dodai);
+
+	////// 火炎放射器モデル
+	////// 右方向 
+	////CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
+	////(
+	////	CVector(-100.0f, 15.0f, 625.0f),
+	////	CVector(2.0f, 2.0f, 2.0f),
+	////	CVector(0.0f, -90.0f, 0.0f)
+	////);
+	////AddTask(flamethrower2);
+	////// 火炎放射器の土台
+	////CRisingObject* dodai2 = new CRisingObject
+	////(
+	////	CVector(-100.0f, 15.0f, 625.0f),
+	////	CVector(1.0f, 1.0f, 1.0f),
+	////	ETag::ePlayer, ELayer::ePlayer
+	////);
+	////AddTask(dodai2);
+
+	//CMeat1* meat1 = new CMeat1
+	//(
+	//	CVector(0.0f, 45.0f, 134.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	CVector(4.0f, 4.0f, 4.0f)
+	//);
+	//AddTask(meat1);
+	//meat1->SetMeatNumber(1);
+
+	//CMeat2* meat2 = new CMeat2
+	//(
+	//	CVector(70.0f, 25.0f, 390.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	CVector(4.0f, 4.0f, 4.0f)
+	//);
+	//meat2->SetMeatNumber(2);
+	//AddTask(meat2);
+
+	//CMeat3* meat3 = new CMeat3
+	//(
+	//	CVector(-70.0f, 25.0f, 390.0f),
+	//	CVector(0.0f, 0.0f, 0.0f),
+	//	CVector(4.0f, 4.0f, 4.0f)
+	//);
+	//meat3->SetMeatNumber(3);
+	//AddTask(meat3);
 
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(0.0f, 25.5f, -70.0f);	//197.0f,1235.0f,279.0f
+	CVector playerPos = CVector(0.0f, 25.5f, 0.0f);	//197.0f,1235.0f,279.0f
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

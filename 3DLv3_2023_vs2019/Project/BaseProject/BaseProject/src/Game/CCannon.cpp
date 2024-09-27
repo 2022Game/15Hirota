@@ -143,7 +143,7 @@ void CCannon::Update()
                     // ¶¬
                     CCannonBall* cannonBall = new CCannonBall
                     (
-                        cannonPos + CVector(0.0f, 3.0f, -10.0f),    // ”­ËˆÊ’u
+                        cannonPos + CVector(0.0f, 4.0f, -10.0f),    // ”­ËˆÊ’u
                         direction,                                  // ”­Ë•ûŒü
                         initialSpeed,                               // ”­Ë‘¬“x
                         1000.0f,                                    // Å‘å”ò‹——£
