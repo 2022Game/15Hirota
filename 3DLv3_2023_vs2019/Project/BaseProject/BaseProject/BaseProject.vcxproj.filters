@@ -329,6 +329,24 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Cannon">
       <UniqueIdentifier>{073cb453-b754-4cc8-b367-73e91aa9e28c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate">
+      <UniqueIdentifier>{0a9a9cfb-27d0-4282-9896-db911f03601e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle">
+      <UniqueIdentifier>{bbea09d7-e1e7-491f-88c8-eaee1ab568be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Circle">
+      <UniqueIdentifier>{65a80193-36d8-4834-80ed-fadee7bdb54d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Move">
+      <UniqueIdentifier>{b437c77a-7026-48a0-9cd3-9681e2f3ce0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle\Move">
+      <UniqueIdentifier>{47952965-2a8f-4365-bb90-0724c6f98168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle\Always">
+      <UniqueIdentifier>{fb9d3c05-2393-4d40-9728-f0ce72f77231}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -745,12 +763,6 @@
     <ClCompile Include="src\Game\CStone1.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Obstacle\Stone</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CNeedleLeftRight.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CNeedleUpDown.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CRotateFloor.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\RotateFloor</Filter>
     </ClCompile>
@@ -1089,6 +1101,45 @@
     </ClCompile>
     <ClCompile Include="src\Game\COneShotFallCol.cpp">
       <Filter>ソース ファイル\Game\Field\StageField\One Shot Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCircleNbFlLeft1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCircleNbFlRight1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCircleNbFlRight2.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCircleNbFlLeft2.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCircleNbFl1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCircleNbFl2.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCircleNbFl3.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCircleNbFlRight3.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCircleNbFlLeft3.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CMoveToNbFl1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNeedleLeftRight.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNeedleUpDown.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CAlwaysVerticalNeedle.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle\Always</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1527,12 +1578,6 @@
     <ClInclude Include="src\Game\CStone1.h">
       <Filter>ソース ファイル\Game\Field\Object\Obstacle\Stone</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CNeedleLeftRight.h">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CNeedleUpDown.h">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CRotateFloor.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\RotateFloor</Filter>
     </ClInclude>
@@ -1874,6 +1919,45 @@
     </ClInclude>
     <ClInclude Include="src\Game\COneShotFallCol.h">
       <Filter>ソース ファイル\Game\Field\StageField\One Shot Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCircleNbFlLeft1.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCircleNbFlRight1.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCircleNbFlRight2.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCircleNbFlLeft2.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCircleNbFl1.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCircleNbFl2.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCircleNbFl3.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCircleNbFlRight3.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCircleNbFlLeft3.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Rotate\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CMoveToNbFl1.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNeedleLeftRight.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNeedleUpDown.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CAlwaysVerticalNeedle.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\DamageObj\Needle\Always</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

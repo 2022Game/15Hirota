@@ -532,14 +532,23 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 			// ステージ番号が1だったら
 			if (currentStage == 1)
 			{
-				// 初期値点に戻す
-				Position(0.0f, 17.0f, -70.0f);
-				ChangeState(EState::eFallDamege);
 				// 1面のセーブポイント
-				if (mSavePoint1)
+				if (mSavePoint1 && mSavePoint2 ||
+					!mSavePoint1 && mSavePoint2)
 				{
 					ChangeState(EState::eFallDamege);
-					Position(0.0f, 15.0f, 325.0f);
+					Position(26.0f, 10.0f, 390.0f);
+				}
+				else if (mSavePoint2)
+				{
+					ChangeState(EState::eFallDamege);
+					Position(26.0f, 10.0f, 673.0f);
+				}
+				else
+				{
+					// 初期値点に戻す
+					Position(26.0f, 6.5f, -28.0f);
+					ChangeState(EState::eFallDamege);
 				}
 			}
 			// ステージ番号が2だったら
@@ -4318,7 +4327,7 @@ void CPlayer::Update()
 	//CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
 	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
 	//CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
-	//CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
+	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 }
 
 // アイテムを取得

@@ -6,9 +6,16 @@
 #include "CNumberFloor1.h"
 #include "CNumberFloor2.h"
 #include "CNumberFloor3.h"
+#include "CCircleNbFlRight1.h"
+#include "CCircleNbFlRight2.h"
+#include "CCircleNbFlRight3.h"
+#include "CCircleNbFlLeft1.h"
+#include "CCircleNbFlLeft2.h"
+#include "CCircleNbFlLeft3.h"
 #include "CRisingObject.h"
 #include "CTreasureChest.h"
 #include "CSavePoint1.h"
+#include "CSavePoint2.h"
 #include "CFixedFlamethrower.h"
 #include "CGoalObject.h"
 #include "CBlueMedalEvent.h"
@@ -22,6 +29,9 @@
 #include "CInput.h"
 #include "CRotationg.h"
 #include "CCannon.h"
+#include "CSpring.h"
+#include "CMoveToNbFl1.h"
+#include "CAlwaysVerticalNeedle.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -41,10 +51,12 @@ void CStage1::Load()
 	// オブジェクト関連
 	// ステージのベースモデル
 	CResourceManager::Load<CModel>("Stage1Base", "Field\\OneShotFloor\\StageBase.obj");
+	// ステージのラインモデル
+	CResourceManager::Load<CModel>("Stage1Line", "Field\\OneShotFloor\\Line.obj");
 	// ステージの床コライダー
 	CResourceManager::Load<CModel>("Stage1FloorCol", "Field\\OneShotFloor\\FloorCol.obj");
 	// ステージの落下コライダー
-	CResourceManager::Load<CModel>("Stage1Base", "Field\\OneShotFloor\\FallCol.obj");
+	CResourceManager::Load<CModel>("Stage1FallCol", "Field\\OneShotFloor\\FallCol.obj");
 	// ステージの空
 	CResourceManager::Load<CModel>("StageSky", "Field\\StageSky\\Sky(Sphere).obj");
 	// 初期の四角のモデル
@@ -83,28 +95,40 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("GoalPost", "GameGimmick\\Gimmick\\Goal\\GoalPost.obj");
 	// ゴールブロックモデル
 	CResourceManager::Load<CModel>("GoalCube", "GameGimmick\\Gimmick\\Goal\\GoalCube.obj");
-	// 針モデル(上下)
-	CResourceManager::Load<CModel>("Needle", "GameGimmick\\Gimmick\\Needle\\NeedleObject(needle).obj");
-	// 針モデルコライダー(上下)
-	CResourceManager::Load<CModel>("NeedleCol", "GameGimmick\\Gimmick\\Needle\\NeedleObjectCol.obj");
-	// 針ベースモデル(上下)
-	CResourceManager::Load<CModel>("NeedleBase", "GameGimmick\\Gimmick\\Needle\\NeedleObject(base).obj");
-	// 針ベースコライダー(上下)
-	CResourceManager::Load<CModel>("NeedleBaseCol", "GameGimmick\\Gimmick\\Needle\\NeedleObjectBaseCol.obj");
-	// 針モデル(左右)
-	CResourceManager::Load<CModel>("NeedleLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(Needle).obj");
-	// 針モデルコライダー(左右)
-	CResourceManager::Load<CModel>("NeedleColLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(NeedleCol).obj");
-	// 針ベースモデル(左右)
-	CResourceManager::Load<CModel>("NeedleBaseLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(Base).obj");
-	// 針ベースコライダー(左右)
-	CResourceManager::Load<CModel>("NeedleBaseColLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
+	//// 針モデル(上下)
+	//CResourceManager::Load<CModel>("Needle", "GameGimmick\\Gimmick\\Needle\\NeedleObject(needle).obj");
+	//// 針モデルコライダー(上下)
+	//CResourceManager::Load<CModel>("NeedleCol", "GameGimmick\\Gimmick\\Needle\\NeedleObjectCol.obj");
+	//// 針ベースモデル(上下)
+	//CResourceManager::Load<CModel>("NeedleBase", "GameGimmick\\Gimmick\\Needle\\NeedleObject(base).obj");
+	//// 針ベースコライダー(上下)
+	//CResourceManager::Load<CModel>("NeedleBaseCol", "GameGimmick\\Gimmick\\Needle\\NeedleObjectBaseCol.obj");
+	//// 針モデル(左右)
+	//CResourceManager::Load<CModel>("NeedleLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(Needle).obj");
+	//// 針モデルコライダー(左右)
+	//CResourceManager::Load<CModel>("NeedleColLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(NeedleCol).obj");
+	//// 針ベースモデル(左右)
+	//CResourceManager::Load<CModel>("NeedleBaseLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(Base).obj");
+	//// 針ベースコライダー(左右)
+	//CResourceManager::Load<CModel>("NeedleBaseColLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
 	// 大砲土台モデル
 	CResourceManager::Load<CModel>("CannonFound", "GameGimmick\\Gimmick\\Cannon\\CannonFoundations.obj");
 	// 大砲
 	CResourceManager::Load<CModel>("Cannon", "GameGimmick\\Gimmick\\Cannon\\Cannon.obj");
 	// 大砲玉モデル
 	CResourceManager::Load<CModel>("CannonBall", "GameGimmick\\Gimmick\\Cannon\\CannonBall.obj");
+	// バネモデル(上とバネ)
+	CResourceManager::Load<CModel>("Spring", "GameGimmick\\Gimmick\\Jump\\Spring.obj");
+	// バネモデル(下)
+	CResourceManager::Load<CModel>("SpringLower", "GameGimmick\\Gimmick\\Jump\\SpringLower.obj");
+	// バネコライダーモデル
+	CResourceManager::Load<CModel>("SpringCol", "GameGimmick\\Gimmick\\Jump\\SpringCol.obj");
+	// 常時出ている針モデル
+	CResourceManager::Load<CModel>("AlwaysNeedle", "GameGimmick\\Gimmick\\Needle\\Always\\AlwaysNeedleBase.obj");
+	// 常時出ている針モデルのコライダー
+	CResourceManager::Load<CModel>("AlwaysNeedleBaseCol", "GameGimmick\\Gimmick\\Needle\\Always\\AlwaysNeedleBaseCol.obj");
+	// 常時出ている針モデルの針コライダー
+	CResourceManager::Load<CModel>("AlwaysNeedleCol", "GameGimmick\\Gimmick\\Needle\\Always\\AlwaysNeedleBaseNeedleCol.obj");
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
 
@@ -113,7 +137,7 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("BlueMedal", "Item\\BlueMedal\\Bluemedal.obj");
 
 	// 背景色設定
-	System::SetClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	System::SetClearColor(0.0f, 0.0f, 0.8f, 1.0f);
 
 	CInput::ShowCursor(false);
 
@@ -130,6 +154,235 @@ void CStage1::Load()
 	//mpSky = new CStageSky();
 	//mpSky->Scale(150.0f, 150.0f, 150.0f);
 	//AddTask(mpSky);
+
+	// セーブポイント1
+	CSavePoint1* savepoint1 = new CSavePoint1
+	(
+		CVector(26.0f, 5.0f, 390.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 10.0f, 0.0f)
+	);
+	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
+	AddTask(savepoint1);
+	// セーブポイント2
+	CSavePoint2* savepoint2 = new CSavePoint2
+	(
+		CVector(26.0f, 5.0f, 673.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 10.0f, 0.0f)
+	);
+	savepoint2->Rotation(0.0f, 90.0f, 0.0f);
+	AddTask(savepoint2);
+
+	// オブジェクトを配置するループ
+	for (int i = 0; i < 1; ++i) {
+
+		// X軸の位置を設定
+		float xPos = 0.0f;
+		if (i == 0) xPos = 26.0f;
+
+		// Y軸の位置を設定
+		float yPos = 0.0f;
+		if (i == 0) yPos = 0.0f;
+
+		// Z軸の位置を設定
+		float zPos = 0.0f;
+		if (i == 0)   zPos = 340.0f;
+		
+		// X軸のスケール値を設定
+		float xScale = 3.0f;
+		
+		// Z軸のスケール値を設定
+		float zScale = 3.0f;
+	
+		// オブジェクトを作成してタスクに追加
+		CNumberFloor1* numberfloor1 = new CNumberFloor1
+		(
+			CVector(xPos, yPos, zPos),
+			CVector(xScale, 2.0f, zScale),
+			CVector(0.0f, 45.0f, 0.0f)
+		);
+
+		AddTask(numberfloor1); // タスクに追加
+	}
+
+	// オブジェクトを配置するループ
+	for (int i = 0; i < 2; ++i) {
+
+		// X軸の位置を設定
+		float xPos = 0.0f;
+		if (i == 0) xPos = 75.0f;
+		if (i == 1) xPos = -23.0f;
+
+		// Y軸の位置を設定
+		float yPos = 0.0f;
+		if (i == 0) yPos = 0.0f;
+		if (i == 1) yPos = 0.0f;
+
+		// Z軸の位置を設定
+		float zPos = 0.0f;
+		if (i == 0) zPos = 305.0f;
+		if (i == 1) zPos = 305.0f;
+
+		// X軸のスケール値を設定
+		float xScale = 3.0f;
+
+		// Z軸のスケール値を設定
+		float zScale = 3.0f;
+		
+		// オブジェクトを作成してタスクに追加
+		CNumberFloor2* numberfloor2 = new CNumberFloor2
+		(
+			CVector(xPos, yPos, zPos),
+			CVector(xScale, 2.0f, zScale),
+			CVector(0.0f, 45.0f, 0.0f)
+		);
+
+		AddTask(numberfloor2); // タスクに追加
+	}
+
+	// オブジェクトを配置するループ
+	for (int i = 0; i < 5; ++i) {
+
+		// X軸の位置を設定
+		float xPos = 0.0f;
+		if (i == 0) xPos = 26.0f;
+		if (i == 1) xPos = 26.0f;
+		// 左ルート
+		if (i == 2) xPos = 95.0f;
+		if (i == 3) xPos = 143.0f;
+		if (i == 4) xPos = 173.0f;
+		
+		// Y軸の位置を設定
+		float yPos = 0.0f;
+		if (i == 0) yPos = -35.0f;
+		if (i == 1) yPos = 5.0f;
+		// 左ルート
+		if (i == 2) yPos = 0.0f;
+		if (i == 3) yPos = 0.0f;
+		if (i == 4) yPos = 0.0f;
+
+		// Z軸の位置を設定
+		float zPos = 0.0f;
+		if (i == 0)   zPos = 26.0f;
+		if (i == 1)   zPos = 630.0f;
+		// 左ルート
+		if (i == 2)   zPos = 720.0f;
+		if (i == 3)   zPos = 770.0f;
+		if (i == 4)   zPos = 820.0f;
+		
+		// X軸のスケール値を設定
+		float xScale = 3.0f;
+
+		// Z軸のスケール値を設定
+		float zScale = 3.0f;
+
+		// Y軸の回転値を設定
+		float yRotate = 45.0f;
+		if (i == 2) yRotate = 30.0f;
+		if (i == 3) yRotate = 38.0f;
+		if (i == 4) yRotate = 45.0f;
+		
+		// オブジェクトを作成してタスクに追加
+		CNumberFloor3* numberfloor3 = new CNumberFloor3
+		(
+			CVector(xPos, yPos, zPos),
+			CVector(xScale, 2.0f, zScale),
+			CVector(0.0f, yRotate, 0.0f)
+		);
+
+		AddTask(numberfloor3); // タスクに追加
+	}
+
+	// 動く床(右円回転)
+	CCircleNbFlRight3* floor3right1 = new CCircleNbFlRight3
+	(
+		CVector(26.0f, -3.0f, 490.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		30.0f, 35.0f, 35.0f,
+		true
+	);
+	AddTask(floor3right1);
+
+	// 動く床(左円回転)
+	CCircleNbFlLeft3* floor3left1 = new CCircleNbFlLeft3
+	(
+		CVector(205.0f, 0.0f, 927.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		30.0f, 30.0f, 30.0f,
+		true
+	);
+	AddTask(floor3left1);
+
+	// 指定した移動ポイント間を移動する回数制限床
+	CMoveToNbFl1* mnf1 = new CMoveToNbFl1
+	(
+		CVector(3.0f, 2.0f, 3.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		7.0f
+	);
+	mnf1->SetReturnRoute(false);
+	mnf1->AddMovePoint(CVector(-37.0f, 0.0f, 473.0f), 10.0f);
+	mnf1->AddMovePoint(CVector(-37.0f, 0.0f, 640.0f), 10.0f);
+	AddTask(mnf1);
+
+	// 指定した移動ポイント間を移動する回数制限床
+	CMoveToNbFl1* mnf2 = new CMoveToNbFl1
+	(
+		CVector(3.0f, 2.0f, 3.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		7.0f
+	);
+	mnf2->SetReturnRoute(false);
+	mnf2->AddMovePoint(CVector(90.0f, 0.0f, 640.0f), 15.0f);
+	mnf2->AddMovePoint(CVector(90.0f, 0.0f, 473.0f), 15.0f);
+	AddTask(mnf2);
+
+	// 常時出ている針モデル
+	CAlwaysVerticalNeedle* alwaysNeedle1 = new CAlwaysVerticalNeedle
+	(
+		CVector(26.0f, 7.0f, 580.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(alwaysNeedle1);
+
+	// 常時出ている針モデル
+	CAlwaysVerticalNeedle* alwaysNeedle2 = new CAlwaysVerticalNeedle
+	(
+		CVector(90.0f, 7.0f, 640.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(alwaysNeedle2);
+
+	// 常時出ている針モデル
+	CAlwaysVerticalNeedle* alwaysNeedle3 = new CAlwaysVerticalNeedle
+	(
+		CVector(-37.0f, 7.0f, 640.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(alwaysNeedle3);
+
+	// バネ(上とバネ)
+	CSpring* spring1 = new CSpring
+	(
+		CVector(26.0f, -26.0f, 114.0f),
+		CVector(1.8f, 1.8f, 1.8f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(spring1);
+	// バネ(下)
+	CSpringLower* springlower1 = new CSpringLower
+	(
+		CVector(26.0f, -26.0f, 114.0f),
+		CVector(1.8f, 1.8f, 1.8f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(springlower1);
 
 	//// 大砲
 	//CCannon* cannon = new CCannon
@@ -208,59 +461,6 @@ void CStage1::Load()
 	//	CVector(0.0f, 90.0f, 0.0f)
 	//);
 	//AddTask(goal);
-
-	//// オブジェクトを配置するループ
-	//for (int i = 0; i < 14; ++i) {
-
-	//	// X軸の位置を設定
-	//	float xPos = 0.0f;
-	//	if (i == 5) xPos = 70.0f;
-	//	if (i == 6) xPos = -70.0f;
-	//	if (i == 7) xPos = 70.0f;
-	//	if (i == 8) xPos = -70.0f;
-	//	if (i == 9) xPos = 70.0f;
-	//	if (i == 10) xPos = -70.0f;
-	//	if (i == 11) xPos = 50.0f;
-	//	if (i == 12) xPos = -50.0f;
-	//	if (i == 13) xPos = 0.0f;
-
-	//	// Y軸の位置を設定
-	//	float yPos = i * 0.0f;
-	//	if (i == 4) yPos = 2.5f;
-
-	//	// Z軸の位置を設定
-	//	float zPos = i * 65.0f;
-	//	if (i == 5)   zPos = 5 * 65.0f;
-	//	if (i == 6)   zPos = 5 * 65.0f;
-	//	if (i == 7)   zPos = 6 * 65.0f;
-	//	if (i == 8)   zPos = 6 * 65.0f;
-	//	if (i == 9)   zPos = 7 * 65.0f;
-	//	if (i == 10)  zPos = 7 * 65.0f;
-	//	if (i == 11)  zPos = 8 * 65.0f;
-	//	if (i == 12)  zPos = 8 * 65.0f;
-	//	if (i == 13)  zPos = 9 * 65.0f;
-
-	//	// X軸のスケール値を設定
-	//	float xScale = 4.0f;
-	//	if (i == 2) xScale = 6.0f;
-	//	if (i == 13)xScale = 6.0f;
-
-
-	//	// Z軸のスケール値を設定
-	//	float zScale = 4.0f;
-	//	if (i == 2) zScale = 6.0f;
-	//	if (i == 13) zScale = 6.0f;
-
-	//	// オブジェクトを作成してタスクに追加
-	//	CNumberFloor1* numberfloor1 = new CNumberFloor1
-	//	(
-	//		CVector(xPos, yPos, zPos),
-	//		CVector(xScale, 3.0f, zScale),
-	//		CVector(0.0f, 45.0f, 0.0f)
-	//	);
-
-	//	AddTask(numberfloor1); // タスクに追加
-	//}
 
 	//// セーブポイント
 	//CSavePoint1* savepoint1 = new CSavePoint1
@@ -395,55 +595,55 @@ void CStage1::Load()
 
 	///////////////////////////////////////////////////////////////////////////
 
-	// ブルーメダルを作成
-	CBlueMedal* medal1 = new CBlueMedal
-	(
-		CVector(70.0f, 22.0f, 325.0f),
-		CVector(3.0f, 3.0f, 3.0f)
-	);
-	AddTask(medal1);
-	medal1->SetEvent(bmEvent);
-	bmEvent->AddBlueMedal(medal1);
+	//// ブルーメダルを作成
+	//CBlueMedal* medal1 = new CBlueMedal
+	//(
+	//	CVector(70.0f, 22.0f, 325.0f),
+	//	CVector(3.0f, 3.0f, 3.0f)
+	//);
+	//AddTask(medal1);
+	//medal1->SetEvent(bmEvent);
+	//bmEvent->AddBlueMedal(medal1);
 
-	CBlueMedal* medal2 = new CBlueMedal
-	(
-		CVector(-70.0f, 22.0f, 455.0f),
-		CVector(3.0f, 3.0f, 3.0f)
-	);
-	AddTask(medal2);
-	medal2->SetEvent(bmEvent);
-	bmEvent->AddBlueMedal(medal2);
+	//CBlueMedal* medal2 = new CBlueMedal
+	//(
+	//	CVector(-70.0f, 22.0f, 455.0f),
+	//	CVector(3.0f, 3.0f, 3.0f)
+	//);
+	//AddTask(medal2);
+	//medal2->SetEvent(bmEvent);
+	//bmEvent->AddBlueMedal(medal2);
 
-	CBlueMedal* medal3 = new CBlueMedal
-	(
-		CVector(70.0f, 22.0f, 455.0f),
-		CVector(3.0f, 3.0f, 3.0f)
-	);
-	AddTask(medal3);
-	medal3->SetEvent(bmEvent);
-	bmEvent->AddBlueMedal(medal3);
+	//CBlueMedal* medal3 = new CBlueMedal
+	//(
+	//	CVector(70.0f, 22.0f, 455.0f),
+	//	CVector(3.0f, 3.0f, 3.0f)
+	//);
+	//AddTask(medal3);
+	//medal3->SetEvent(bmEvent);
+	//bmEvent->AddBlueMedal(medal3);
 
-	CBlueMedal* medal4 = new CBlueMedal
-	(
-		CVector(0.0f, 22.0f, 130.0f),
-		CVector(3.0f, 3.0f, 3.0f)
-	);
-	AddTask(medal4);
-	medal4->SetEvent(bmEvent);
-	bmEvent->AddBlueMedal(medal4);
+	//CBlueMedal* medal4 = new CBlueMedal
+	//(
+	//	CVector(0.0f, 22.0f, 130.0f),
+	//	CVector(3.0f, 3.0f, 3.0f)
+	//);
+	//AddTask(medal4);
+	//medal4->SetEvent(bmEvent);
+	//bmEvent->AddBlueMedal(medal4);
 
 	///////////////////////////////////////////////////////////////////////////
 
-	//障害物の壁を作成
-	CObstacleWall* wall = new CObstacleWall
-	(
-		CVector(0.0f, 25.0f, 623.0f),
-		CQuaternion(0.0f, 0.0f, 0.0f),
-		CVector(4.0f, 20.0f, 0.2f)
-	);
-	AddTask(wall);
-	wall->SetEvent(bmEvent);
-	bmEvent->SetObstacle(wall);
+	////障害物の壁を作成
+	//CObstacleWall* wall = new CObstacleWall
+	//(
+	//	CVector(0.0f, 25.0f, 623.0f),
+	//	CQuaternion(0.0f, 0.0f, 0.0f),
+	//	CVector(4.0f, 20.0f, 0.2f)
+	//);
+	//AddTask(wall);
+	//wall->SetEvent(bmEvent);
+	//bmEvent->SetObstacle(wall);
 }
 
 // ステージ破棄

@@ -171,21 +171,21 @@ void CStage3::Load()
 	// 跳ねるキノココライダー
 	CResourceManager::Load<CModel>("JumpingKinokoCol",				"GameGimmick\\Gimmick\\Jump\\JumpingKinoko(Col).obj");
 	// 針モデル(上下)
-	CResourceManager::Load<CModel>("Needle",						"GameGimmick\\Gimmick\\Needle\\NeedleObject(needle).obj");
+	CResourceManager::Load<CModel>("Needle",						"GameGimmick\\Gimmick\\Needle\\UpDown\\NeedleObject(needle).obj");
 	// 針モデルコライダー(上下)
-	CResourceManager::Load<CModel>("NeedleCol",						"GameGimmick\\Gimmick\\Needle\\NeedleObjectCol.obj");
+	CResourceManager::Load<CModel>("NeedleCol",						"GameGimmick\\Gimmick\\Needle\\UpDown\\NeedleObjectCol.obj");
 	// 針ベースモデル(上下)
-	CResourceManager::Load<CModel>("NeedleBase",					"GameGimmick\\Gimmick\\Needle\\NeedleObject(base).obj");
+	CResourceManager::Load<CModel>("NeedleBase",					"GameGimmick\\Gimmick\\Needle\\UpDown\\NeedleObject(base).obj");
 	// 針ベースコライダー(上下)
-	CResourceManager::Load<CModel>("NeedleBaseCol",					"GameGimmick\\Gimmick\\Needle\\NeedleObjectBaseCol.obj");
+	CResourceManager::Load<CModel>("NeedleBaseCol",					"GameGimmick\\Gimmick\\Needle\\UpDown\\NeedleObjectBaseCol.obj");
 	// 針モデル(左右)
-	CResourceManager::Load<CModel>("NeedleLeftRight",				"GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(Needle).obj");
+	CResourceManager::Load<CModel>("NeedleLeftRight",				"GameGimmick\\Gimmick\\Needle\\LeftRight\\NeedleObjLeftRight(Needle).obj");
 	// 針モデルコライダー(左右)
-	CResourceManager::Load<CModel>("NeedleColLeftRight",			"GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(NeedleCol).obj");
+	CResourceManager::Load<CModel>("NeedleColLeftRight",			"GameGimmick\\Gimmick\\Needle\\LeftRight\\eedleObjLeftRight(NeedleCol).obj");
 	// 針ベースモデル(左右)
-	CResourceManager::Load<CModel>("NeedleBaseLeftRight",			"GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(Base).obj");
+	CResourceManager::Load<CModel>("NeedleBaseLeftRight",			"GameGimmick\\Gimmick\\Needle\\LeftRight\\NeedleObjLeftRight(Base).obj");
 	// 針ベースコライダー(左右)
-	CResourceManager::Load<CModel>("NeedleBaseColLeftRight",		"GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
+	CResourceManager::Load<CModel>("NeedleBaseColLeftRight",		"GameGimmick\\Gimmick\\Needle\\LeftRight\\NeedleObjLeftRight(BaseCol).obj");
 	// リングビーマモデル(上)
 	CResourceManager::Load<CModel>("RingBeamerUP",					"Effect\\BeamObj(Upper).obj");
 	// リングビーマモデル(下)

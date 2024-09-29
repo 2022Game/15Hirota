@@ -133,6 +133,13 @@ void CStage2::Load()
 	// 金属の梯子オブジェクト(TopCol)
 	CResourceManager::Load<CModel>("MetalladderTopCol",		"Field\\HopsAndHoops\\Metalladder(TopCol).obj");
 
+	// 大砲土台モデル
+	CResourceManager::Load<CModel>("CannonFound", "GameGimmick\\Gimmick\\Cannon\\CannonFoundations.obj");
+	// 大砲
+	CResourceManager::Load<CModel>("Cannon", "GameGimmick\\Gimmick\\Cannon\\Cannon.obj");
+	// 大砲玉モデル
+	CResourceManager::Load<CModel>("CannonBall", "GameGimmick\\Gimmick\\Cannon\\CannonBall.obj");
+
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat",			"Item\\StageItem\\niku.obj");
 	// 回復薬オブジェクト
@@ -282,15 +289,6 @@ void CStage2::Load()
 
 		AddTask(jumpkinoko); // タスクに追加
 	}
-
-	// 浜川大砲
-	CCannon* cannon = new CCannon
-	(
-		CVector(0.0f, 0.0f, 480.0f),
-		CVector(7.0f, 7.0f, 7.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(cannon);
 
 	//// バネ(上とバネ)
 	//CSpring* spring = new CSpring

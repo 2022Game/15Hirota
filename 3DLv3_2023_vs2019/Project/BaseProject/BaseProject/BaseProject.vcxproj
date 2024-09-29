@@ -69,6 +69,7 @@
     <ClCompile Include="src\BaseSystem\CObjectBase.cpp" />
     <ClCompile Include="src\BaseSystem\Easing.cpp" />
     <ClCompile Include="src\BaseSystem\Maths.cpp" />
+    <ClCompile Include="src\Game\CAlwaysVerticalNeedle.cpp" />
     <ClCompile Include="src\Game\CAppearFloor.cpp" />
     <ClCompile Include="src\Game\CApplication.cpp" />
     <ClCompile Include="src\Game\CAttackObjectBase.cpp" />
@@ -82,6 +83,15 @@
     <ClCompile Include="src\Game\CCannon.cpp" />
     <ClCompile Include="src\Game\CCannonBall.cpp" />
     <ClCompile Include="src\Game\CCircleLine.cpp" />
+    <ClCompile Include="src\Game\CCircleNbFl1.cpp" />
+    <ClCompile Include="src\Game\CCircleNbFl2.cpp" />
+    <ClCompile Include="src\Game\CCircleNbFl3.cpp" />
+    <ClCompile Include="src\Game\CCircleNbFlLeft1.cpp" />
+    <ClCompile Include="src\Game\CCircleNbFlLeft2.cpp" />
+    <ClCompile Include="src\Game\CCircleNbFlLeft3.cpp" />
+    <ClCompile Include="src\Game\CCircleNbFlRight1.cpp" />
+    <ClCompile Include="src\Game\CCircleNbFlRight2.cpp" />
+    <ClCompile Include="src\Game\CCircleNbFlRight3.cpp" />
     <ClCompile Include="src\Game\CClimbUI.cpp" />
     <ClCompile Include="src\Game\CCutInDeathJump.cpp" />
     <ClCompile Include="src\Game\CHighKinoko.cpp" />
@@ -101,6 +111,7 @@
     <ClCompile Include="src\Game\CJumpingKinokoHigh.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMove.cpp" />
     <ClCompile Include="src\Game\CJumpingKinokoMoveTo.cpp" />
+    <ClCompile Include="src\Game\CMoveToNbFl1.cpp" />
     <ClCompile Include="src\Game\CNumberFloor2.cpp" />
     <ClCompile Include="src\Game\CNumberFloor3.cpp" />
     <ClCompile Include="src\Game\CNumberFloorBase.cpp" />
@@ -333,6 +344,7 @@
     <ClInclude Include="src\BaseSystem\ObjectTag.h" />
     <ClInclude Include="src\BaseSystem\Time.h" />
     <ClInclude Include="src\Define.h" />
+    <ClInclude Include="src\Game\CAlwaysVerticalNeedle.h" />
     <ClInclude Include="src\Game\CAppearFloor.h" />
     <ClInclude Include="src\Game\CApplication.h" />
     <ClInclude Include="src\Game\CAttackObjectBase.h" />
@@ -346,6 +358,15 @@
     <ClInclude Include="src\Game\CCannon.h" />
     <ClInclude Include="src\Game\CCannonBall.h" />
     <ClInclude Include="src\Game\CCircleLine.h" />
+    <ClInclude Include="src\Game\CCircleNbFl1.h" />
+    <ClInclude Include="src\Game\CCircleNbFl2.h" />
+    <ClInclude Include="src\Game\CCircleNbFl3.h" />
+    <ClInclude Include="src\Game\CCircleNbFlLeft1.h" />
+    <ClInclude Include="src\Game\CCircleNbFlLeft2.h" />
+    <ClInclude Include="src\Game\CCircleNbFlLeft3.h" />
+    <ClInclude Include="src\Game\CCircleNbFlRight1.h" />
+    <ClInclude Include="src\Game\CCircleNbFlRight2.h" />
+    <ClInclude Include="src\Game\CCircleNbFlRight3.h" />
     <ClInclude Include="src\Game\CClimbUI.h" />
     <ClInclude Include="src\Game\CCutInDeathJump.h" />
     <ClInclude Include="src\Game\CHighKinoko.h" />
@@ -366,6 +387,7 @@
     <ClInclude Include="src\Game\CJumpingKinokoHigh.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMove.h" />
     <ClInclude Include="src\Game\CJumpingKinokoMoveTo.h" />
+    <ClInclude Include="src\Game\CMoveToNbFl1.h" />
     <ClInclude Include="src\Game\CNumberFloor2.h" />
     <ClInclude Include="src\Game\CNumberFloor3.h" />
     <ClInclude Include="src\Game\CNumberFloorBase.h" />

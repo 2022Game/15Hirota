@@ -64,7 +64,7 @@ void CNumberFloorBase::ChangeState(EState state)
 	if (mState == state) return;
 	mState = state;
 	mStateStep = 0;
-	mFallingSwitch = 0;
+	//mFallingSwitch = 0;
 }
 
 // 元の位置に戻る際のモデルパス設定

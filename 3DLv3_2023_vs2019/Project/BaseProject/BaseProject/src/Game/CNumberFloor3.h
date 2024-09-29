@@ -23,9 +23,10 @@ public:
 
 	void Update() override;
 
-private:
-
+protected:
 	// 状態内のステップ
 	int mStateStep;
+	// 回転方向
+	bool mRotateAngle;
 };
 #endif

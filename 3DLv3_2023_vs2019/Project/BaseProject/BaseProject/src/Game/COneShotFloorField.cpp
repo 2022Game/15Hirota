@@ -10,6 +10,9 @@ COneShotFloorField::COneShotFloorField()
 	// ステージのモデル取得
 	mpStageModel = CResourceManager::Get<CModel>("Stage1Base");
 
+	// ラインのモデル取得
+	mpLineModel = CResourceManager::Get<CModel>("Stage1Line");
+
 	// ステージのコライダー取得
 	CModel* floorCol = CResourceManager::Get<CModel>("Stage1FloorCol");
 	mpStageFloorCol = new CColliderMesh(this, ELayer::eField, floorCol, true);
@@ -30,4 +33,6 @@ void COneShotFloorField::Render()
 {
 	mpStageModel->SetColor(mColor);
 	mpStageModel->Render(Matrix());
+	mpLineModel->SetColor(mColor);
+	mpLineModel->Render(Matrix());
 }

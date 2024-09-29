@@ -22,6 +22,8 @@ public:
 private:
 	// ステージのモデル
 	CModel* mpStageModel;
+	// ラインモデル
+	CModel* mpLineModel;
 	// ステージのコライダー
 	CColliderMesh* mpStageFloorCol;
 };
