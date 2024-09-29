@@ -12,6 +12,9 @@
 #include "CCircleNbFlLeft1.h"
 #include "CCircleNbFlLeft2.h"
 #include "CCircleNbFlLeft3.h"
+#include "CMoveToNbFl1.h"
+#include "CMoveToNbFl2.h"
+#include "CMoveToNbFl3.h"
 #include "CRisingObject.h"
 #include "CTreasureChest.h"
 #include "CSavePoint1.h"
@@ -30,7 +33,6 @@
 #include "CRotationg.h"
 #include "CCannon.h"
 #include "CSpring.h"
-#include "CMoveToNbFl1.h"
 #include "CAlwaysVerticalNeedle.h"
 
 // コンストラクタ
@@ -242,7 +244,7 @@ void CStage1::Load()
 	}
 
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < 6; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
@@ -252,6 +254,7 @@ void CStage1::Load()
 		if (i == 2) xPos = 95.0f;
 		if (i == 3) xPos = 143.0f;
 		if (i == 4) xPos = 173.0f;
+		if (i == 5) xPos = 240.0f;
 		
 		// Y軸の位置を設定
 		float yPos = 0.0f;
@@ -261,6 +264,7 @@ void CStage1::Load()
 		if (i == 2) yPos = 0.0f;
 		if (i == 3) yPos = 0.0f;
 		if (i == 4) yPos = 0.0f;
+		if (i == 5) yPos = 0.0f;
 
 		// Z軸の位置を設定
 		float zPos = 0.0f;
@@ -270,12 +274,15 @@ void CStage1::Load()
 		if (i == 2)   zPos = 720.0f;
 		if (i == 3)   zPos = 770.0f;
 		if (i == 4)   zPos = 820.0f;
+		if (i == 5)   zPos = 1100.0f;
 		
 		// X軸のスケール値を設定
 		float xScale = 3.0f;
+		if (i == 5) xScale = 5.0f;
 
 		// Z軸のスケール値を設定
 		float zScale = 3.0f;
+		if (i == 5) zScale = 5.0f;
 
 		// Y軸の回転値を設定
 		float yRotate = 45.0f;
@@ -308,7 +315,7 @@ void CStage1::Load()
 	// 動く床(左円回転)
 	CCircleNbFlLeft3* floor3left1 = new CCircleNbFlLeft3
 	(
-		CVector(205.0f, 0.0f, 927.0f),
+		CVector(220.0f, -5.0f, 927.0f),
 		CVector(3.0f, 3.0f, 3.0f),
 		CVector(0.0f, 45.0f, 0.0f),
 		30.0f, 30.0f, 30.0f,
@@ -317,28 +324,52 @@ void CStage1::Load()
 	AddTask(floor3left1);
 
 	// 指定した移動ポイント間を移動する回数制限床
-	CMoveToNbFl1* mnf1 = new CMoveToNbFl1
+	CMoveToNbFl3* mn3f1 = new CMoveToNbFl3
 	(
 		CVector(3.0f, 2.0f, 3.0f),
 		CVector(0.0f, 45.0f, 0.0f),
-		7.0f
+		5.0f
 	);
-	mnf1->SetReturnRoute(false);
-	mnf1->AddMovePoint(CVector(-37.0f, 0.0f, 473.0f), 10.0f);
-	mnf1->AddMovePoint(CVector(-37.0f, 0.0f, 640.0f), 10.0f);
-	AddTask(mnf1);
+	mn3f1->SetReturnRoute(false);
+	mn3f1->AddMovePoint(CVector(-37.0f, 0.0f, 473.0f), 9.0f);
+	mn3f1->AddMovePoint(CVector(-37.0f, 0.0f, 640.0f), 9.0f);
+	AddTask(mn3f1);
 
 	// 指定した移動ポイント間を移動する回数制限床
-	CMoveToNbFl1* mnf2 = new CMoveToNbFl1
+	CMoveToNbFl3* mn3f2 = new CMoveToNbFl3
 	(
 		CVector(3.0f, 2.0f, 3.0f),
 		CVector(0.0f, 45.0f, 0.0f),
-		7.0f
+		5.0f
 	);
-	mnf2->SetReturnRoute(false);
-	mnf2->AddMovePoint(CVector(90.0f, 0.0f, 640.0f), 15.0f);
-	mnf2->AddMovePoint(CVector(90.0f, 0.0f, 473.0f), 15.0f);
-	AddTask(mnf2);
+	mn3f2->SetReturnRoute(false);
+	mn3f2->AddMovePoint(CVector(90.0f, 0.0f, 640.0f), 9.0f);
+	mn3f2->AddMovePoint(CVector(90.0f, 0.0f, 473.0f), 9.0f);
+	AddTask(mn3f2);
+
+	// 指定した移動ポイント間を移動する回数制限床
+	CMoveToNbFl3* mn3f4 = new CMoveToNbFl3
+	(
+		CVector(3.0f, 2.0f, 3.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		5.0f
+	);
+	mn3f4->SetReturnRoute(false);
+	mn3f4->AddMovePoint(CVector(133.0f, 0.0f, 1021.0f), 5.0f);
+	mn3f4->AddMovePoint(CVector(319.0f, 0.0f, 1021.0f), 5.0f);
+	AddTask(mn3f4);
+
+	// 指定した移動ポイント間を移動する回数制限床
+	CMoveToNbFl3* mn3f5 = new CMoveToNbFl3
+	(
+		CVector(3.0f, 2.0f, 3.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		5.0f
+	);
+	mn3f5->SetReturnRoute(false);
+	mn3f5->AddMovePoint(CVector(319.0f, 0.0f, 1164.0f), 5.0f);
+	mn3f5->AddMovePoint(CVector(133.0f, 0.0f, 1164.0f), 5.0f);
+	AddTask(mn3f5);
 
 	// 常時出ている針モデル
 	CAlwaysVerticalNeedle* alwaysNeedle1 = new CAlwaysVerticalNeedle
@@ -569,7 +600,9 @@ void CStage1::Load()
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
-	CVector playerPos = CVector(26.0f, 6.5f, -28.0f);	//197.0f,1235.0f,279.0f
+	// セーブポイント1 : 26.0f, 10.0f, 390.0f
+	// セーブポイント2 : 26.0f, 10.0f, 673.0f
+	CVector playerPos = CVector(26.0f, 10.0f, 673.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

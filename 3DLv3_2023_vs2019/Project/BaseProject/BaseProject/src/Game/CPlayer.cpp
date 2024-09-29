@@ -537,12 +537,12 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					!mSavePoint1 && mSavePoint2)
 				{
 					ChangeState(EState::eFallDamege);
-					Position(26.0f, 10.0f, 390.0f);
+					Position(26.0f, 10.0f, 673.0f);
 				}
-				else if (mSavePoint2)
+				else if (mSavePoint1)
 				{
 					ChangeState(EState::eFallDamege);
-					Position(26.0f, 10.0f, 673.0f);
+					Position(26.0f, 10.0f, 390.0f);
 				}
 				else
 				{
