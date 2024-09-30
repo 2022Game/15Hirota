@@ -244,7 +244,7 @@ void CStage1::Load()
 	}
 
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; i < 7; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
@@ -255,6 +255,7 @@ void CStage1::Load()
 		if (i == 3) xPos = 143.0f;
 		if (i == 4) xPos = 173.0f;
 		if (i == 5) xPos = 240.0f;
+		if (i == 6) xPos = 240.0f;
 		
 		// Y軸の位置を設定
 		float yPos = 0.0f;
@@ -265,6 +266,7 @@ void CStage1::Load()
 		if (i == 3) yPos = 0.0f;
 		if (i == 4) yPos = 0.0f;
 		if (i == 5) yPos = 0.0f;
+		if (i == 6) yPos = 0.0f;
 
 		// Z軸の位置を設定
 		float zPos = 0.0f;
@@ -275,6 +277,7 @@ void CStage1::Load()
 		if (i == 3)   zPos = 770.0f;
 		if (i == 4)   zPos = 820.0f;
 		if (i == 5)   zPos = 1100.0f;
+		if (i == 5)   zPos = 1200.0f;
 		
 		// X軸のスケール値を設定
 		float xScale = 3.0f;
