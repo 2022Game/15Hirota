@@ -41,8 +41,6 @@ private:
 
 	// 大砲モデル
 	CModel* mpCannon;
-	// 大砲の土台モデル
-	CModel* mpCannonFoundations;
 	// 大砲のコライダー
 	//CColliderMesh* mpColliderMesh;
 

@@ -15,6 +15,9 @@
 #include "CMoveToNbFl1.h"
 #include "CMoveToNbFl2.h"
 #include "CMoveToNbFl3.h"
+#include "CNbFlUpDown1.h"
+#include "CNbFlUpDown2.h"
+#include "CNbFlUpDown3.h"
 #include "CRisingObject.h"
 #include "CTreasureChest.h"
 #include "CSavePoint1.h"
@@ -32,8 +35,10 @@
 #include "CInput.h"
 #include "CRotationg.h"
 #include "CCannon.h"
+#include "CHorizontalCannon.h"
 #include "CSpring.h"
 #include "CAlwaysVerticalNeedle.h"
+#include "CRotationg.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -115,8 +120,12 @@ void CStage1::Load()
 	//CResourceManager::Load<CModel>("NeedleBaseColLeftRight", "GameGimmick\\Gimmick\\Needle\\NeedleObjLeftRight(BaseCol).obj");
 	// 大砲土台モデル
 	CResourceManager::Load<CModel>("CannonFound", "GameGimmick\\Gimmick\\Cannon\\CannonFoundations.obj");
+	// 水平大砲土台モデル
+	CResourceManager::Load<CModel>("HorizontalCannonFound", "GameGimmick\\Gimmick\\Cannon\\CannonFoundation(Horizontal).obj");
 	// 大砲
 	CResourceManager::Load<CModel>("Cannon", "GameGimmick\\Gimmick\\Cannon\\Cannon.obj");
+	// 水平大砲
+	CResourceManager::Load<CModel>("HorizontalCannon", "GameGimmick\\Gimmick\\Cannon\\HorizontalCannon.obj");
 	// 大砲玉モデル
 	CResourceManager::Load<CModel>("CannonBall", "GameGimmick\\Gimmick\\Cannon\\CannonBall.obj");
 	// バネモデル(上とバネ)
@@ -131,6 +140,10 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("AlwaysNeedleBaseCol", "GameGimmick\\Gimmick\\Needle\\Always\\AlwaysNeedleBaseCol.obj");
 	// 常時出ている針モデルの針コライダー
 	CResourceManager::Load<CModel>("AlwaysNeedleCol", "GameGimmick\\Gimmick\\Needle\\Always\\AlwaysNeedleBaseNeedleCol.obj");
+	// ずっと回転する床
+	CResourceManager::Load<CModel>("Rotationg", "GameGimmick\\Gimmick\\Rotate\\Rotationg.obj");
+	// ずっと回転する床コライダー
+	CResourceManager::Load<CModel>("Rotationg", "GameGimmick\\Gimmick\\Rotate\\RotationgCol.obj");
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
 
@@ -152,10 +165,10 @@ void CStage1::Load()
 	mpFallCol->Scale(1.0f, 1.0f, 1.0f);
 	AddTask(mpFallCol);
 
-	//// 空
-	//mpSky = new CStageSky();
-	//mpSky->Scale(150.0f, 150.0f, 150.0f);
-	//AddTask(mpSky);
+	// 空
+	mpSky = new CStageSky();
+	mpSky->Scale(150.0f, 150.0f, 150.0f);
+	AddTask(mpSky);
 
 	// セーブポイント1
 	CSavePoint1* savepoint1 = new CSavePoint1
@@ -177,32 +190,74 @@ void CStage1::Load()
 	AddTask(savepoint2);
 
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < 8; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
 		if (i == 0) xPos = 26.0f;
+		// 右ルート
+		if (i == 1) xPos = -26.0f;
+		if (i == 2) xPos = -56.0f;
+		if (i == 3) xPos = -86.0f;
+		if (i == 4) xPos = -265.0f;
+		if (i == 5) xPos = -300.0f;
+		if (i == 6) xPos = -335.0f;
+		if (i == 7) xPos = -358.0f;
 
 		// Y軸の位置を設定
 		float yPos = 0.0f;
 		if (i == 0) yPos = 0.0f;
+		// 右ルート
+		if (i == 1) yPos = 0.0f;
+		if (i == 2) yPos = 0.0f;
+		if (i == 3) yPos = 0.0f;
+		if (i == 4) yPos = 0.0f;
+		if (i == 5) yPos = 0.0f;
+		if (i == 6) yPos = 0.0f;
+		if (i == 7) yPos = 0.0f;
 
 		// Z軸の位置を設定
 		float zPos = 0.0f;
 		if (i == 0)   zPos = 340.0f;
+		// 右ルート
+		if (i == 1)   zPos = 720.0f;;
+		if (i == 2)   zPos = 770.0f;;
+		if (i == 3)   zPos = 820.0f;;
+		if (i == 4)   zPos = 843.0f;;
+		if (i == 5)   zPos = 843.0f;;
+		if (i == 6)   zPos = 843.0f;;
+		if (i == 7)   zPos = 890.0f;;
 		
 		// X軸のスケール値を設定
 		float xScale = 3.0f;
+		if (i == 4) xScale = 2.0f;
+		if (i == 5) xScale = 2.0f;
+		if (i == 6) xScale = 2.0f;
+		if (i == 7) xScale = 2.0f;
 		
 		// Z軸のスケール値を設定
 		float zScale = 3.0f;
+		if (i == 4) zScale = 2.0f;
+		if (i == 5) zScale = 2.0f;
+		if (i == 6) zScale = 2.0f;
+		if (i == 7) zScale = 2.0f;
+
+		// Y軸の回転値を設定
+		float yRotate = 45.0f;
+		if (i == 1) yRotate = 60.0f;
+		if (i == 2) yRotate = 52.0f;
+		if (i == 3) yRotate = 48.0f;
+		if (i == 4) yRotate = 90.0f;
+		if (i == 5) yRotate = 90.0f;
+		if (i == 6) yRotate = 90.0f;
+		if (i == 7) yRotate = 45.0f;
 	
 		// オブジェクトを作成してタスクに追加
 		CNumberFloor1* numberfloor1 = new CNumberFloor1
 		(
 			CVector(xPos, yPos, zPos),
 			CVector(xScale, 2.0f, zScale),
-			CVector(0.0f, 45.0f, 0.0f)
+			CVector(0.0f, yRotate, 0.0f)
 		);
 
 		AddTask(numberfloor1); // タスクに追加
@@ -244,7 +299,7 @@ void CStage1::Load()
 	}
 
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 7; ++i) {
+	for (int i = 0; i < 10; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
@@ -256,6 +311,10 @@ void CStage1::Load()
 		if (i == 4) xPos = 173.0f;
 		if (i == 5) xPos = 240.0f;
 		if (i == 6) xPos = 240.0f;
+		// ゴール付近
+		if (i == 7) xPos = 26.0f;
+		if (i == 8) xPos = 26.0f;
+		if (i == 9) xPos = 26.0f;
 		
 		// Y軸の位置を設定
 		float yPos = 0.0f;
@@ -267,17 +326,25 @@ void CStage1::Load()
 		if (i == 4) yPos = 0.0f;
 		if (i == 5) yPos = 0.0f;
 		if (i == 6) yPos = 0.0f;
+		// ゴール付近
+		if (i == 7) yPos = 5.0f;
+		if (i == 8) yPos = 15.0f;
+		if (i == 9) yPos = 25.0f;
 
 		// Z軸の位置を設定
 		float zPos = 0.0f;
-		if (i == 0)   zPos = 26.0f;
-		if (i == 1)   zPos = 630.0f;
+		if (i == 0) zPos = 26.0f;
+		if (i == 1) zPos = 630.0f;
 		// 左ルート
-		if (i == 2)   zPos = 720.0f;
-		if (i == 3)   zPos = 770.0f;
-		if (i == 4)   zPos = 820.0f;
-		if (i == 5)   zPos = 1100.0f;
-		if (i == 5)   zPos = 1200.0f;
+		if (i == 2) zPos = 720.0f;
+		if (i == 3) zPos = 770.0f;
+		if (i == 4) zPos = 820.0f;
+		if (i == 5) zPos = 1100.0f;
+		if (i == 5) zPos = 1250.0f;
+		// ゴール付近
+		if (i == 7) zPos = 1450.0f;
+		if (i == 8) zPos = 1500.0f;
+		if (i == 9) zPos = 1580.0f;
 		
 		// X軸のスケール値を設定
 		float xScale = 3.0f;
@@ -325,6 +392,39 @@ void CStage1::Load()
 		true
 	);
 	AddTask(floor3left1);
+
+	// 動く床(右円回転)
+	CCircleNbFlRight1* floor1right1 = new CCircleNbFlRight1
+	(
+		CVector(-165.0f, -5.0f, 910.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		30.0f, 30.0f, 40.0f,
+		false
+	);
+	AddTask(floor1right1);
+
+	// 上下移動する床(3回)
+	CNbFlUpDown3* floor3updown1 = new CNbFlUpDown3
+	(
+		CVector(240.0f, -5.0f, 1100.0f),
+		CVector(5.0f, 2.0f, 5.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		CVector(0.0f, 30.0f, 0.0f),
+		10.0f
+	);
+	AddTask(floor3updown1);
+
+	// 上下移動する床(1回)
+	CNbFlUpDown1* floor1updown1 = new CNbFlUpDown1
+	(
+		CVector(-295.0f, -5.0f, 1080.0f),
+		CVector(3.0f, 2.0f, 3.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		CVector(0.0f, 30.0f, 0.0f),
+		13.0f
+	);
+	AddTask(floor1updown1);
 
 	// 指定した移動ポイント間を移動する回数制限床
 	CMoveToNbFl3* mn3f1 = new CMoveToNbFl3
@@ -374,6 +474,18 @@ void CStage1::Load()
 	mn3f5->AddMovePoint(CVector(133.0f, 0.0f, 1164.0f), 5.0f);
 	AddTask(mn3f5);
 
+	// 指定した移動ポイント間を移動する回数制限床
+	CMoveToNbFl2* mn2f1 = new CMoveToNbFl2
+	(
+		CVector(4.0f, 2.0f, 3.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		5.0f
+	);
+	mn2f1->SetReturnRoute(false);
+	mn2f1->AddMovePoint(CVector(-355.0f, 0.0f, 926.0f), 5.0f);
+	mn2f1->AddMovePoint(CVector(-355.0f, 0.0f, 1330.0f), 15.0f);
+	AddTask(mn2f1);
+
 	// 常時出ている針モデル
 	CAlwaysVerticalNeedle* alwaysNeedle1 = new CAlwaysVerticalNeedle
 	(
@@ -401,6 +513,51 @@ void CStage1::Load()
 	);
 	AddTask(alwaysNeedle3);
 
+	// 常時出ている針モデル
+	CAlwaysVerticalNeedle* alwaysNeedle4 = new CAlwaysVerticalNeedle
+	(
+		CVector(103.0f, 4.0f, 1021.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, 90.0f, 0.0f)
+	);
+	AddTask(alwaysNeedle4);
+
+	// 常時出ている針モデル
+	CAlwaysVerticalNeedle* alwaysNeedle5 = new CAlwaysVerticalNeedle
+	(
+		CVector(349.0f, 4.0f, 1021.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, -90.0f, 0.0f)
+	);
+	AddTask(alwaysNeedle5);
+
+	// 常時出ている針モデル
+	CAlwaysVerticalNeedle* alwaysNeedle6 = new CAlwaysVerticalNeedle
+	(
+		CVector(349.0f, 4.0f, 1164.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, -90.0f, 0.0f)
+	);
+	AddTask(alwaysNeedle6);
+
+	// 常時出ている針モデル
+	CAlwaysVerticalNeedle* alwaysNeedle7 = new CAlwaysVerticalNeedle
+	(
+		CVector(103.0f, 4.0f, 1164.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, 90.0f, 0.0f)
+	);
+	AddTask(alwaysNeedle7);
+
+	// 常時出ている針モデル
+	CAlwaysVerticalNeedle* alwaysNeedle8 = new CAlwaysVerticalNeedle
+	(
+		CVector(-196.0f, 4.0f, 930.0f),
+		CVector(2.0f, 3.0f, 3.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(alwaysNeedle8);
+
 	// バネ(上とバネ)
 	CSpring* spring1 = new CSpring
 	(
@@ -418,22 +575,48 @@ void CStage1::Load()
 	);
 	AddTask(springlower1);
 
-	//// 大砲
-	//CCannon* cannon = new CCannon
-	//(
-	//	CVector(0.0f, 25.0f, 325.0f),
-	//	CVector(3.0f, 3.0f, 3.0f),
-	//	CVector(0.0f, 180.0f, 0.0f)
-	//);
-	//AddTask(cannon);
-	//// 大砲土台
-	//CCannonFoundations* cannonfound = new CCannonFoundations
-	//(
-	//	CVector(0.0f, 25.0f, 325.0f),
-	//	CVector(3.0f, 3.0f, 3.0f),
-	//	CVector(0.0f, 180.0f, 0.0f)
-	//);
-	//AddTask(cannonfound);
+	// バネ(上とバネ)
+	CSpring* spring2 = new CSpring
+	(
+		CVector(26.0f, -5.0f, 1407.0f),
+		CVector(1.8f, 1.8f, 1.8f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(spring2);
+	// バネ(下)
+	CSpringLower* springlower2 = new CSpringLower
+	(
+		CVector(26.0f, -5.0f, 1407.0f),
+		CVector(1.8f, 1.8f, 1.8f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(springlower2);
+
+	// ずっと回転するモデル
+	CRotationg* rotationg1 = new CRotationg
+	(
+		CVector(-260.0f, 6.0f, 1319.0f),
+		CVector(10.0f, 10.0f, 10.0f),
+		1.0f
+	);
+	AddTask(rotationg1);
+
+	// 大砲
+	CHorizontalCannon* cannon = new CHorizontalCannon
+	(
+		CVector(0.0f, 5.0f, 1507.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, 180.0f, 0.0f)
+	);
+	AddTask(cannon);
+	// 大砲土台
+	CCannonFoundationsHorizontal* cannonfound = new CCannonFoundationsHorizontal
+	(
+		CVector(0.0f, 5.0f, 1507.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, 180.0f, 0.0f)
+	);
+	AddTask(cannonfound);
 
 
 	//CNumberFloor1* floor1 = new CNumberFloor1
@@ -605,7 +788,8 @@ void CStage1::Load()
 	player->MaxStatus();
 	// セーブポイント1 : 26.0f, 10.0f, 390.0f
 	// セーブポイント2 : 26.0f, 10.0f, 673.0f
-	CVector playerPos = CVector(26.0f, 10.0f, 673.0f);
+	// ゴール前		   : 26.0f, 10.0f, 1380.0f
+	CVector playerPos = CVector(26.0f, 10.0f, 1360.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

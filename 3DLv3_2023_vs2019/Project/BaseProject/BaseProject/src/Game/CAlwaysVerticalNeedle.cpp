@@ -57,16 +57,22 @@ void CAlwaysVerticalNeedle::Collision(CCollider* self, CCollider* other, const C
 		// 相手のコライダーの持ち主がキャラであれば
 		if (chara != nullptr)
 		{
-			// すでに攻撃済みのキャラでなければ
-			if (!IsAttackHitObj(chara))
+			if (!mIsAttack)
 			{
 				// ダメージを与える
 				chara->TakeDamage(1);
-
-				// 攻撃済みリストに追加
-				AddAttackHitObj(chara);
-
 				mIsAttack = true;
+				//// すでに攻撃済みのキャラでなければ
+				//if (!IsAttackHitObj(chara))
+				//{
+				//	// ダメージを与える
+				//	chara->TakeDamage(1);
+
+				//	// 攻撃済みリストに追加
+				//	AddAttackHitObj(chara);
+
+				//	mIsAttack = true;
+				//}
 			}
 			mIsCollision = true;
 		}
@@ -86,9 +92,9 @@ void CAlwaysVerticalNeedle::Update()
 			mWaitAttackTime = 0.0f;
 			mIsAttack = false;
 			mAttackHitObjects.clear();
+			mpNeedleCol->SetEnable(true);
 		}
 	}
-
 	mIsCollision = false;
 }
 

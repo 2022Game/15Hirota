@@ -350,6 +350,12 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Number\MoveTo">
       <UniqueIdentifier>{337109b9-950c-4bb4-b071-93409bbd7fbc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Number\Move">
+      <UniqueIdentifier>{75354b76-bcef-4c2c-9fb9-9a2c17a26a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Cannon\CannonBall">
+      <UniqueIdentifier>{987994eb-453a-4c61-849d-cdbd4a209717}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -1099,9 +1105,6 @@
     <ClCompile Include="src\Game\CCannon.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CCannonBall.cpp">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\COneShotFallCol.cpp">
       <Filter>ソース ファイル\Game\Field\StageField\One Shot Floor</Filter>
     </ClCompile>
@@ -1149,6 +1152,33 @@
     </ClCompile>
     <ClCompile Include="src\Game\CMoveToNbFl3.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\MoveTo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNbFlMove1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNbFlUpDown1.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNbFlMove2.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNbFlMove3.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNbFlUpDown2.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CNbFlUpDown3.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCannonBall.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon\CannonBall</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CHorizontalCannonBall.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon\CannonBall</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CHorizontalCannon.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1923,9 +1953,6 @@
     <ClInclude Include="src\Game\CCannon.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CCannonBall.h">
-      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\COneShotFallCol.h">
       <Filter>ソース ファイル\Game\Field\StageField\One Shot Floor</Filter>
     </ClInclude>
@@ -1973,6 +2000,33 @@
     </ClInclude>
     <ClInclude Include="src\Game\CMoveToNbFl3.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\MoveTo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNbFlMove1.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNbFlUpDown1.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNbFlMove2.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNbFlMove3.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\NumberFloorBase\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNbFlUpDown2.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CNbFlUpDown3.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Number\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCannonBall.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon\CannonBall</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CHorizontalCannonBall.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon\CannonBall</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CHorizontalCannon.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

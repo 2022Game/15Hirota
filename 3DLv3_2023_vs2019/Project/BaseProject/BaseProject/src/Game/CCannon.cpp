@@ -11,6 +11,8 @@
 #define GRAVITY 0.0625f
 // 発射角
 #define LAUNCH_ANGLE 45.0f
+// 弾の発射待機時間
+#define WEIT_TIME 4.0f
 
 // コンストラクタ
 CCannon::CCannon(const CVector& pos, const CVector& scale, const CVector& rot)
@@ -79,7 +81,7 @@ void CCannon::Update()
 
     // 大砲からプレイヤーまでの距離
     CVector directionToPlayer = playerPos - cannonPos;
-    // 垂直方向のY軸は虫
+    // 垂直方向のY軸は無視
     directionToPlayer.Y(0.0f);
     directionToPlayer.Normalize();
 
@@ -93,7 +95,7 @@ void CCannon::Update()
     Rotation(CQuaternion::LookRotation(forward));
 
     // 大砲がプレイヤーの方に向いているかどうかを確認
-    if (forward.Dot(directionToPlayer) > 0.99999999f);
+    if (forward.Dot(directionToPlayer) > 0.9999999999f)
     {
         // プレイヤーと大砲の間の水平距離
         float horizontalDistance = sqrt(pow(playerPos.X() - cannonPos.X(), 2) + pow(playerPos.Z() - cannonPos.Z(), 2));
@@ -154,6 +156,53 @@ void CCannon::Update()
                     mFire = true;
                 }
             }
+            else
+            {
+                // 発射角を45度に設定し、ラジアンに変換
+                float theta = atan2(verticalDistance, horizontalDistance);
+                // 角度のタンジェントを計算
+                float tanTheta = tan(theta);
+
+                // 初速の計算
+                // 目標となるプレイヤーの位置に基づいて初速を計算
+                float initialSpeed = sqrt((g * horizontalDistance * horizontalDistance) / (2 * (horizontalDistance * tan(theta) - verticalDistance)));
+
+                // 初速が加算されていれば
+                if (initialSpeed > 0)
+                {
+                    // verticalSpeedの計算を調整
+                    float verticalSpeed = initialSpeed * sin(theta);
+                    float horizontalSpeed = initialSpeed * cos(theta);
+
+                    // 水平方向の速度をX軸とZ軸に設定
+                    // プレイヤーと大砲のX軸の差分
+                    float dx = playerPos.X() - cannonPos.X();
+                    // プレイヤーと大砲のY軸の差分
+                    float dz = playerPos.Z() - cannonPos.Z();
+                    // 発射された物体がどれだけの速さでX軸方向に進むかを計算
+                    // X軸の速さ
+                    float horizontalSpeedX = horizontalSpeed * (dx / horizontalDistance);
+                    // Z軸の速さ
+                    float horizontalSpeedZ = horizontalSpeed * (dz / horizontalDistance);
+
+                    // 発射方向を計算
+                    CVector direction(horizontalSpeedX, verticalSpeed, horizontalSpeedZ);
+                    direction.Normalize();
+
+                    // 生成
+                    CCannonBall* cannonBall = new CCannonBall
+                    (
+                        cannonPos + CVector(0.0f, 4.0f, -10.0f),    // 発射位置
+                        direction,                                  // 発射方向
+                        initialSpeed,                               // 発射速度
+                        1000.0f,                                    // 最大飛距離
+                        verticalSpeed                               // Y軸の初速
+                    );
+                    cannonBall->SetVerticalSpeed(verticalSpeed);
+                    // 打てなくする
+                    mFire = true;
+                }
+            }
         }
     }
 
@@ -161,7 +210,7 @@ void CCannon::Update()
     if (mFire)
     {
         mFireTime += Time::DeltaTime();
-        if (mFireTime >= 4.0f)
+        if (mFireTime >= WEIT_TIME)
         {
             // 一定時間が経過すると
             // 打てるようにする

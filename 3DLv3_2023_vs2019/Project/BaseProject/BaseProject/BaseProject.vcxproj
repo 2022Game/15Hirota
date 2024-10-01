@@ -95,6 +95,8 @@
     <ClCompile Include="src\Game\CClimbUI.cpp" />
     <ClCompile Include="src\Game\CCutInDeathJump.cpp" />
     <ClCompile Include="src\Game\CHighKinoko.cpp" />
+    <ClCompile Include="src\Game\CHorizontalCannon.cpp" />
+    <ClCompile Include="src\Game\CHorizontalCannonBall.cpp" />
     <ClCompile Include="src\Game\CInsideCircleEffect.cpp" />
     <ClCompile Include="src\Game\CClearScene.cpp" />
     <ClCompile Include="src\Game\CCutInCamera.cpp" />
@@ -114,6 +116,12 @@
     <ClCompile Include="src\Game\CMoveToNbFl1.cpp" />
     <ClCompile Include="src\Game\CMoveToNbFl2.cpp" />
     <ClCompile Include="src\Game\CMoveToNbFl3.cpp" />
+    <ClCompile Include="src\Game\CNbFlMove1.cpp" />
+    <ClCompile Include="src\Game\CNbFlMove2.cpp" />
+    <ClCompile Include="src\Game\CNbFlMove3.cpp" />
+    <ClCompile Include="src\Game\CNbFlUpDown1.cpp" />
+    <ClCompile Include="src\Game\CNbFlUpDown2.cpp" />
+    <ClCompile Include="src\Game\CNbFlUpDown3.cpp" />
     <ClCompile Include="src\Game\CNumberFloor2.cpp" />
     <ClCompile Include="src\Game\CNumberFloor3.cpp" />
     <ClCompile Include="src\Game\CNumberFloorBase.cpp" />
@@ -372,6 +380,8 @@
     <ClInclude Include="src\Game\CClimbUI.h" />
     <ClInclude Include="src\Game\CCutInDeathJump.h" />
     <ClInclude Include="src\Game\CHighKinoko.h" />
+    <ClInclude Include="src\Game\CHorizontalCannon.h" />
+    <ClInclude Include="src\Game\CHorizontalCannonBall.h" />
     <ClInclude Include="src\Game\CInsideCircleEffect.h" />
     <ClInclude Include="src\Game\CClearScene.h" />
     <ClInclude Include="src\Game\CClimbWall.h" />
@@ -392,6 +402,12 @@
     <ClInclude Include="src\Game\CMoveToNbFl1.h" />
     <ClInclude Include="src\Game\CMoveToNbFl2.h" />
     <ClInclude Include="src\Game\CMoveToNbFl3.h" />
+    <ClInclude Include="src\Game\CNbFlMove1.h" />
+    <ClInclude Include="src\Game\CNbFlMove2.h" />
+    <ClInclude Include="src\Game\CNbFlMove3.h" />
+    <ClInclude Include="src\Game\CNbFlUpDown1.h" />
+    <ClInclude Include="src\Game\CNbFlUpDown2.h" />
+    <ClInclude Include="src\Game\CNbFlUpDown3.h" />
     <ClInclude Include="src\Game\CNumberFloor2.h" />
     <ClInclude Include="src\Game\CNumberFloor3.h" />
     <ClInclude Include="src\Game\CNumberFloorBase.h" />
