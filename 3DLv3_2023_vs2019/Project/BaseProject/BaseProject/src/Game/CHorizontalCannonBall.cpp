@@ -13,7 +13,7 @@ CHorizontalCannonBall::CHorizontalCannonBall(const CVector& pos, const CVector& 
 	, mVerticalSpeed(0.0f)
 {
 	Position(pos);
-	Scale(2.0f, 2.0f, 2.0f);
+	Scale(1.2f, 1.2f, 1.2f);
 	Rotation(CQuaternion::LookRotation(dir, CVector::up));
 
 	// 大砲の弾モデル
@@ -23,7 +23,7 @@ CHorizontalCannonBall::CHorizontalCannonBall(const CVector& pos, const CVector& 
 	mpSpherer = new CColliderSphere
 	(
 		this, ELayer::eBulletCol,
-		2.5f
+		1.7f
 	);
 	mpSpherer->SetCollisionLayers({ ELayer::eDamageCol });
 	mpSpherer->SetCollisionTags({ ETag::ePlayer });
@@ -59,7 +59,7 @@ void CHorizontalCannonBall::Update()
 
 	// バウンス効果のパラメータ
 	static float bounceTime = 0.0f;         // バウンス効果の時間
-	const float bounceSpeed = 15.0f;         // 跳ね返りの速さ
+	const float bounceSpeed = 17.0f;         // 跳ね返りの速さ
 	const float bounceHeight = 0.5f;        // 最大バウンスの高さ
 
 	// 増分時間

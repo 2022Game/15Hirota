@@ -27,12 +27,12 @@ public:
 	/// <param name="self">衝突した自身のコライダー</param>
 	/// <param name="other">衝突した自身のコライダー</param>
 	/// <param name="hit">衝突したときの情報</param>
-	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit);
+	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
 
 	// 更新処理
-	void Update();
+	void Update() override;
 	// 描画処理
-	void Render();
+	void Render() override;
 
 private:
 
@@ -70,12 +70,12 @@ public:
 	/// <param name="self">衝突した自身のコライダー</param>
 	/// <param name="other">衝突した自身のコライダー</param>
 	/// <param name="hit">衝突したときの情報</param>
-	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit);
+	void Collision(CCollider* self, CCollider* other, const CHitInfo& hit) override;
 
 	// 更新処理
-	void Update();
+	void Update() override;
 	// 描画処理
-	void Render();
+	void Render() override;
 
 private:
 

@@ -209,6 +209,9 @@ public:
 	// 指定された番号のステージを開始
 	void StartStage(int stageNo);
 
+	// 移動速度を取得
+	CVector Velocity() const;
+
 	// 更新
 	void Update();
 	// 描画

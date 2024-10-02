@@ -8,7 +8,9 @@
 // 視野の角度
 #define FOV_ANGLE 100.0f
 // 弾の発射待機時間
-#define WEIT_TIME 4.0f
+#define WEIT_TIME 2.0f
+// プレイヤーを見つける距離
+#define CASERANGE 200.0f
 
 // コンストラクタ
 CHorizontalCannon::CHorizontalCannon(const CVector& pos, const CVector& scale, const CVector& rot)
@@ -54,7 +56,7 @@ bool CHorizontalCannon::IsFoundPlayer() const
     if (dot >= cosf(halfFOV * M_PI / 180.0f))
     {
         float distance = (playerPos - enemyPos).Length();
-        const float chaseRange = 350.0f;
+        const float chaseRange = CASERANGE;
 
         if (distance <= chaseRange)
             return true;

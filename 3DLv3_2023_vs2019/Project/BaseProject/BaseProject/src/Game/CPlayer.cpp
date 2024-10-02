@@ -2091,6 +2091,7 @@ void CPlayer::UpdateClearEnd()
 				if (CGameManager::StageNo() == 1)
 				{
 					mSavePoint1 = false;
+					mSavePoint2 = false;
 
 					mStage1Clear = true;
 					mIsStage1Clear = false;
@@ -3756,6 +3757,12 @@ void CPlayer::CheckUnderFootObject()
 	}
 }
 
+// ˆÚ“®‘¬“x‚ğæ“¾
+CVector CPlayer::Velocity() const
+{
+	return mMoveSpeed + CVector(0.0f, mMoveSpeedY, 0.0f);
+}
+
 // XV
 void CPlayer::Update()
 {
@@ -4122,7 +4129,7 @@ void CPlayer::Update()
 			mMoveSpeedY = 0.0f;
 		}
 
-		CVector moveSpeed = mMoveSpeed + CVector(0.0f, mMoveSpeedY, 0.0f * Time::DeltaTime());
+		CVector moveSpeed = mMoveSpeed + CVector(0.0f, mMoveSpeedY, 0.0f);
 
 		// ˆÚ“®
 		Position(Position() + moveSpeed * 60.0f * Time::DeltaTime());

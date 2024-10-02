@@ -189,6 +189,15 @@ void CStage1::Load()
 	savepoint2->Rotation(0.0f, 90.0f, 0.0f);
 	AddTask(savepoint2);
 
+	// ゴールポスト0.0f, 10.0f, 720.0f
+	CGoalObject* goal = new CGoalObject
+	(
+		CVector(26.0f, -10.0f, 1650.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 90.0f, 0.0f)
+	);
+	AddTask(goal);
+
 	// オブジェクトを配置するループ
 	for (int i = 0; i < 8; ++i) {
 
@@ -434,8 +443,8 @@ void CStage1::Load()
 		5.0f
 	);
 	mn3f1->SetReturnRoute(false);
-	mn3f1->AddMovePoint(CVector(-37.0f, 0.0f, 473.0f), 9.0f);
-	mn3f1->AddMovePoint(CVector(-37.0f, 0.0f, 640.0f), 9.0f);
+	mn3f1->AddMovePoint(CVector(-52.0f, 0.0f, 473.0f), 10.0f);
+	mn3f1->AddMovePoint(CVector(-52.0f, 0.0f, 630.0f), 8.0f);
 	AddTask(mn3f1);
 
 	// 指定した移動ポイント間を移動する回数制限床
@@ -446,8 +455,8 @@ void CStage1::Load()
 		5.0f
 	);
 	mn3f2->SetReturnRoute(false);
-	mn3f2->AddMovePoint(CVector(90.0f, 0.0f, 640.0f), 9.0f);
-	mn3f2->AddMovePoint(CVector(90.0f, 0.0f, 473.0f), 9.0f);
+	mn3f2->AddMovePoint(CVector(105.0f, 0.0f, 630.0f), 10.0f);
+	mn3f2->AddMovePoint(CVector(105.0f, 0.0f, 473.0f), 10.0f);
 	AddTask(mn3f2);
 
 	// 指定した移動ポイント間を移動する回数制限床
@@ -498,7 +507,7 @@ void CStage1::Load()
 	// 常時出ている針モデル
 	CAlwaysVerticalNeedle* alwaysNeedle2 = new CAlwaysVerticalNeedle
 	(
-		CVector(90.0f, 7.0f, 640.0f),
+		CVector(105.0f, 7.0f, 640.0f),
 		CVector(3.0f, 3.0f, 3.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
@@ -507,7 +516,7 @@ void CStage1::Load()
 	// 常時出ている針モデル
 	CAlwaysVerticalNeedle* alwaysNeedle3 = new CAlwaysVerticalNeedle
 	(
-		CVector(-37.0f, 7.0f, 640.0f),
+		CVector(-52.0f, 7.0f, 640.0f),
 		CVector(3.0f, 3.0f, 3.0f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
@@ -578,7 +587,7 @@ void CStage1::Load()
 	// バネ(上とバネ)
 	CSpring* spring2 = new CSpring
 	(
-		CVector(26.0f, -5.0f, 1407.0f),
+		CVector(26.0f, -10.0f, 1407.0f),
 		CVector(1.8f, 1.8f, 1.8f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
@@ -586,7 +595,7 @@ void CStage1::Load()
 	// バネ(下)
 	CSpringLower* springlower2 = new CSpringLower
 	(
-		CVector(26.0f, -5.0f, 1407.0f),
+		CVector(26.0f, -10.0f, 1407.0f),
 		CVector(1.8f, 1.8f, 1.8f),
 		CVector(0.0f, 0.0f, 0.0f)
 	);
@@ -602,140 +611,55 @@ void CStage1::Load()
 	AddTask(rotationg1);
 
 	// 大砲
-	CHorizontalCannon* cannon = new CHorizontalCannon
+	CCannon* targetCannon = new CCannon
 	(
-		CVector(0.0f, 5.0f, 1507.0f),
-		CVector(3.0f, 3.0f, 3.0f),
+		CVector(26.0f, 0.0f, 1700.0f),
+		CVector(2.0f, 2.0f, 2.0f),
 		CVector(0.0f, 180.0f, 0.0f)
 	);
-	AddTask(cannon);
+	AddTask(targetCannon);
 	// 大砲土台
-	CCannonFoundationsHorizontal* cannonfound = new CCannonFoundationsHorizontal
+	CCannonFoundations* targetCannonfound = new CCannonFoundations
 	(
-		CVector(0.0f, 5.0f, 1507.0f),
-		CVector(3.0f, 3.0f, 3.0f),
+		CVector(26.0f, 0.0f, 1700.0f),
+		CVector(2.0f, 2.0f, 2.0f),
 		CVector(0.0f, 180.0f, 0.0f)
 	);
-	AddTask(cannonfound);
+	AddTask(targetCannonfound);
 
+	// 大砲
+	CHorizontalCannon* cannon1 = new CHorizontalCannon
+	(
+		CVector(250.0f, 20.0f, 524.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 90.0f, 0.0f)
+	);
+	AddTask(cannon1);
+	// 大砲土台
+	CCannonFoundationsHorizontal* cannonfound1 = new CCannonFoundationsHorizontal
+	(
+		CVector(250.0f, 20.0f, 524.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 90.0f, 0.0f)
+	);
+	AddTask(cannonfound1);
 
-	//CNumberFloor1* floor1 = new CNumberFloor1
-	//(
-	//	CVector(-60.0f, 0.0f, -70.0f),
-	//	CVector(4.0f, 3.0f, 4.0f),
-	//	CVector(0.0f, 0.0f, 0.0f)
-	//);
-	//AddTask(floor1);
-
-	//CNumberFloor2* floor2 = new CNumberFloor2
-	//(
-	//	CVector(-120.0f, 0.0f, -70.0f),
-	//	CVector(4.0f, 3.0f, 4.0f),
-	//	CVector(0.0f, 0.0f, 0.0f)
-	//);
-	//AddTask(floor2);
-
-	//CNumberFloor3* floor3 = new CNumberFloor3
-	//(
-	//	CVector(-180.0f, 0.0f, -70.0f),
-	//	CVector(4.0f, 3.0f, 4.0f),
-	//	CVector(0.0f, 0.0f, 0.0f)
-	//);
-	//AddTask(floor3);
-
-	//// ずっと回転するモデル1
-	//CRotationg* rotationg = new CRotationg
-	//(
-	//	CVector(60.0f, 12.0f, -70.0f),
-	//	CVector(10.0f, 10.0f, 10.0f),
-	//	1.0f
-	//);
-	//AddTask(rotationg);
-
-	//// 中間値点
-	//CRisingObject* rising1 = new CRisingObject
-	//(
-	//	CVector(0.0f, 12.0f, 325.0f),
-	//	CVector(1.0f, 1.0f, 1.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(rising1);
-
-	//// ゴール値点
-	//CRisingObject* rising2 = new CRisingObject
-	//(
-	//	CVector(0.0f, 12.0f, 670.0f),
-	//	CVector(2.0f, 1.0f, 2.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(rising2);
-
-	//// ゴールポスト0.0f, 10.0f, 720.0f
-	//CGoalObject* goal = new CGoalObject
-	//(
-	//	CVector(0.0f, 0.5f, 669.0f),
-	//	CVector(2.0f, 2.0f, 2.0f),
-	//	CVector(0.0f, 90.0f, 0.0f)
-	//);
-	//AddTask(goal);
-
-	//// セーブポイント
-	//CSavePoint1* savepoint1 = new CSavePoint1
-	//(
-	//	CVector(0.0f, 15.0f, 325.0f),
-	//	CVector(8.0f, 8.0f, 8.0f),
-	//	CVector(0.0f, 10.0f, 0.0f)
-	//);
-	//savepoint1->Rotation(0.0f, 90.0f, 0.0f);
-	//AddTask(savepoint1);
-
-	//// 針モデル1
-	//CNeedleUpDown* needle1 = new CNeedleUpDown(
-	//	CVector(0.0f, 10.0f, 450.0f),
-	//	CVector(20.0f, 20.0f, 20.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	3.6f,
-	//	ETag::ePlayer, ELayer::ePlayer);
-	//AddTask(needle1);
-	//// 針モデルベース1
-	//CNeedleUpDownBase* needlebase1 = new CNeedleUpDownBase(
-	//	CVector(0.0f, 10.0f, 450.0f),
-	//	CVector(20.0f, 20.0f, 20.0f),
-	//	CVector(0.0f, 0.0f, 0.0f),
-	//	ETag::ePlayer, ELayer::ePlayer);
-	//AddTask(needlebase1);
-
-	////// 針モデル1
-	////CNeedleLeftRight* needle1 = new CNeedleLeftRight(
-	////	CVector(-130.0f, 280.0f, -1080.0f),
-	////	CVector(10.0f, 10.0f, 10.0f),
-	////	CVector(0.0f, 0.0f, 0.0f),
-	////	ETag::ePlayer, ELayer::ePlayer);
-	////AddTask(needle1);
-	////// 針モデルベース1
-	////CNeedleLeftRightBase* needlebase1 = new CNeedleLeftRightBase(
-	////	CVector(-130.0f, 280.0f, -1080.0f),
-	////	CVector(10.0f, 10.0f, 10.0f),
-	////	CVector(0.0f, 0.0f, 0.0f),
-	////	ETag::ePlayer, ELayer::ePlayer);
-	////AddTask(needlebase1);
-	//// 火炎放射器モデル
-	//// 左方向
-	//CFixedFlamethrower* flamethrower1 = new CFixedFlamethrower
-	//(
-	//	CVector(-100.0f, 15.0f, 140.0f),
-	//	CVector(2.0f, 2.0f, 2.0f),
-	//	CVector(0.0f, -90.0f, 0.0f)
-	//);
-	//AddTask(flamethrower1);
-	//// 火炎放射器の土台
-	//CRisingObject* dodai = new CRisingObject
-	//(
-	//	CVector(-100.0f, 15.0f, 140.0f),
-	//	CVector(1.0f, 1.0f, 1.0f),
-	//	ETag::ePlayer, ELayer::ePlayer
-	//);
-	//AddTask(dodai);
+	// 大砲
+	CHorizontalCannon* cannon2 = new CHorizontalCannon
+	(
+		CVector(-200.0f, 20.0f, 524.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, -90.0f, 0.0f)
+	);
+	AddTask(cannon2);
+	// 大砲土台
+	CCannonFoundationsHorizontal* cannonfound2 = new CCannonFoundationsHorizontal
+	(
+		CVector(-200.0f, 20.0f, 524.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, -90.0f, 0.0f)
+	);
+	AddTask(cannonfound2);
 
 	////// 火炎放射器モデル
 	////// 右方向 
@@ -789,7 +713,7 @@ void CStage1::Load()
 	// セーブポイント1 : 26.0f, 10.0f, 390.0f
 	// セーブポイント2 : 26.0f, 10.0f, 673.0f
 	// ゴール前		   : 26.0f, 10.0f, 1380.0f
-	CVector playerPos = CVector(26.0f, 10.0f, 1360.0f);
+	CVector playerPos = CVector(26.0f, 10.0f, 1380.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
