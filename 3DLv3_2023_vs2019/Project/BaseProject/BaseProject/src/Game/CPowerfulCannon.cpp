@@ -1,12 +1,12 @@
-#include "CCannon.h"
-#include "CPlayer.h"
-#include "CCannonBall.h"
+#include "CPowerfulCannon.h"
 #include "CStageManager.h"
+#include "CCannonBall.h"
+#include "CPlayer.h"
 
 // 重力
 #define GRAVITY 0.0625f
 // 弾の発射待機時間
-#define WEIT_TIME 2.0f
+#define WEIT_TIME 4.0f
 
 // プレイヤーの最小距離
 #define MIN_DISTANCE 10.0f
@@ -22,28 +22,28 @@
 #define MIN_SPEED 2.0f
 
 // コンストラクタ
-CCannon::CCannon(const CVector& pos, const CVector& scale, const CVector& rot,
-    std::string modelPath)
-    : CCannonBase(pos, scale, rot)
+CPowerfulCannon::CPowerfulCannon(const CVector& pos, const CVector& scale, const CVector& rot,
+	std::string modelPath)
+	: CCannonBase(pos, scale, rot)
     , mFireTime(0.0f)
     , mFire(false)
 {
-    // 大砲モデルを取得
-    mpCannon = CResourceManager::Get<CModel>(modelPath);
+	// 大砲のモデル取得
+	mpCannon = CResourceManager::Get<CModel>(modelPath);
 
-    Position(pos);
-    Scale(scale);
-    Rotate(rot);
+	Position(pos);
+	Scale(scale);
+	Rotate(rot);
 }
 
 // デストラクタ
-CCannon::~CCannon()
+CPowerfulCannon::~CPowerfulCannon()
 {
-    CStageManager::RemoveTask(this);
+	CStageManager::RemoveTask(this);
 }
 
 // 更新処理
-void CCannon::Update()
+void CPowerfulCannon::Update()
 {
     //// 初期設定 ////
     // プレイヤーのインスタンス
@@ -91,32 +91,46 @@ void CCannon::Update()
         // Y成分を除いた距離計算
         float horizontalDistance = sqrt(dx * dx + dz * dz);
 
+        // 着弾地点までの距離を計算
+        // 水平距離
+        float ImpactPointToPlayer = HorizontalDistance;
+
         // プレイヤーまでの3次元距離を計算
-        float ImpactPointToPlayer = sqrt(dx * dx + dy * dy + dz * dz);
+        // Y成分を含めた距離計算
+        ImpactPointToPlayer = sqrt(dx * dx + dy * dy + dz * dz);
 
         // 角度係数を計算
-        float AngleFactor = (ImpactPointToPlayer - MIN_DISTANCE) / (MAX_DISTANCE - MIN_DISTANCE);
+        float AngleFactor = (ImpactPointToPlayer - MIN_DISTANCE * 0.5f) / (MAX_DISTANCE - MIN_DISTANCE * 0.5f);
+        // 0から1の範囲
         AngleFactor = std::max(0.0f, std::min(1.0f, AngleFactor));
 
         // 発射速度の計算
+        // 角度に基づいて速度を調整
         float v = MIN_SPEED + (AngleFactor * (MAX_SPEED - MIN_SPEED));
 
         // 到達時間を計算
         // 水平距離を速度で割る
         float TimeToPlayer = horizontalDistance / v;
 
-        // 必要なY軸の移動量を計算
+        // プレイヤーの未来の位置を計算
+        float PredictedPlayerX = PlayerPos.X() + PlayerSpeed.X() * TimeToPlayer;
+        float PredictedPlayerY = PlayerPos.Y() + PlayerSpeed.Y() * TimeToPlayer;
+        float PredictedPlayerZ = PlayerPos.Z() + PlayerSpeed.Z() * TimeToPlayer;
+
+        // 大砲の発射位置のY座標
         float InitialY = CannonPos.Y();
         float VerticalDrop = 0.5f * g * TimeToPlayer * TimeToPlayer;
 
         // 最終的な目標Yを設定
-        float TargetY = PlayerPos.Y();
+        // 未来のY位置を使用
+        float TargetY = PredictedPlayerY;
 
         // 必要な初期Y軸速度を計算
         float initialVerticalSpeed = (TargetY - InitialY + VerticalDrop) / TimeToPlayer;
 
         // 弾の発射方向を計算
-        CVector DirectionToTarget(dx, TargetY * 0.3f - InitialY * 0.3f, dz);
+        CVector DirectionToTarget(PredictedPlayerX - CannonPos.X(), TargetY * 0.3f - InitialY * 0.3f, PredictedPlayerZ - CannonPos.Z());
+        // 単位ベクトルに正規化
         DirectionToTarget.Normalize();
 
         if (IsFoundPlayer() && !mFire)

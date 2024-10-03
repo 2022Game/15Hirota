@@ -2,6 +2,8 @@
 
 // 重力
 #define GRAVITY 0.0625f
+// 重力
+//#define GRAVITY 9.81f
 
 // コンストラクタ
 CCannonBall::CCannonBall(const CVector& pos, const CVector& dir,
@@ -59,14 +61,14 @@ void CCannonBall::Update()
 	// 移動速度を計算
 	// 移動速度が残りの飛距離より大きい場合は、
 	// 残りの飛距離を移動速度とする
-	float moveSpeed = mMoveSpeed * Time::DeltaTime();
+	float moveSpeed = mMoveSpeed;
 	if (abs(moveSpeed) > remain)
 	{
 		moveSpeed = remain * (moveSpeed < 0.0f ? -1.0f : 1.0f);
 	}
 
 	mVerticalSpeed -= GRAVITY; // 重力を加算
-
+	 
 	// 弾丸の位置を更新
 	Position(Position() + mDirection * moveSpeed + CVector(0.0f, mVerticalSpeed, 0.0f));
 

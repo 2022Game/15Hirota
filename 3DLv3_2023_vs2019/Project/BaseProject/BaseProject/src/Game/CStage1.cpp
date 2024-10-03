@@ -36,6 +36,7 @@
 #include "CRotationg.h"
 #include "CCannon.h"
 #include "CHorizontalCannon.h"
+#include "CPowerfulCannon.h"
 #include "CSpring.h"
 #include "CAlwaysVerticalNeedle.h"
 #include "CRotationg.h"
@@ -610,22 +611,41 @@ void CStage1::Load()
 	);
 	AddTask(rotationg1);
 
-	// ëÂñC
-	CCannon* targetCannon = new CCannon
+	// ëÂñC(ïŒç∑åÇÇø)
+	CPowerfulCannon* targetCannon = new CPowerfulCannon
 	(
-		CVector(26.0f, 0.0f, 1700.0f),
+		CVector(26.0f, -5.0f, 1700.0f),
 		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, 180.0f, 0.0f)
+		CVector(0.0f, 180.0f, 0.0f),
+		"Cannon"
 	);
 	AddTask(targetCannon);
 	// ëÂñCìyë‰
-	CCannonFoundations* targetCannonfound = new CCannonFoundations
+	CCannonFoundationsBase* targetCannonfound = new CCannonFoundationsBase
 	(
-		CVector(26.0f, 0.0f, 1700.0f),
+		CVector(26.0f, -5.0f, 1700.0f),
 		CVector(2.0f, 2.0f, 2.0f),
 		CVector(0.0f, 180.0f, 0.0f)
 	);
 	AddTask(targetCannonfound);
+
+	// ëÂñC
+	CCannon* Cannon = new CCannon
+	(
+		CVector(10.0f, 0.0f, 1600.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 90.0f, 0.0f),
+		"Cannon"
+	);
+	AddTask(Cannon);
+	// ëÂñCìyë‰
+	CCannonFoundationsBase* Cannonfound = new CCannonFoundationsBase
+	(
+		CVector(10.0f, 0.0f, 1600.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(Cannonfound);
 
 	// ëÂñC
 	CHorizontalCannon* cannon1 = new CHorizontalCannon

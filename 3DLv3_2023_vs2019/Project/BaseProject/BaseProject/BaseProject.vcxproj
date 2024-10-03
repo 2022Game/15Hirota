@@ -82,6 +82,7 @@
     <ClCompile Include="src\Game\CButton1UI.cpp" />
     <ClCompile Include="src\Game\CCannon.cpp" />
     <ClCompile Include="src\Game\CCannonBall.cpp" />
+    <ClCompile Include="src\Game\CCannonBase.cpp" />
     <ClCompile Include="src\Game\CCircleLine.cpp" />
     <ClCompile Include="src\Game\CCircleNbFl1.cpp" />
     <ClCompile Include="src\Game\CCircleNbFl2.cpp" />
@@ -130,6 +131,7 @@
     <ClCompile Include="src\Game\CPicoChanUI.cpp" />
     <ClCompile Include="src\Game\CPlayerAttack.cpp" />
     <ClCompile Include="src\Game\CPointLine.cpp" />
+    <ClCompile Include="src\Game\CPowerfulCannon.cpp" />
     <ClCompile Include="src\Game\CReflectionActionKinoko.cpp" />
     <ClCompile Include="src\Game\CReflectionKinoko.cpp" />
     <ClCompile Include="src\Game\CReflectionLeftRightKinoko.cpp" />
@@ -367,6 +369,7 @@
     <ClInclude Include="src\Game\CButton1UI.h" />
     <ClInclude Include="src\Game\CCannon.h" />
     <ClInclude Include="src\Game\CCannonBall.h" />
+    <ClInclude Include="src\Game\CCannonBase.h" />
     <ClInclude Include="src\Game\CCircleLine.h" />
     <ClInclude Include="src\Game\CCircleNbFl1.h" />
     <ClInclude Include="src\Game\CCircleNbFl2.h" />
@@ -416,6 +419,7 @@
     <ClInclude Include="src\Game\CPicoChanUI.h" />
     <ClInclude Include="src\Game\CPlayerAttack.h" />
     <ClInclude Include="src\Game\CPointLine.h" />
+    <ClInclude Include="src\Game\CPowerfulCannon.h" />
     <ClInclude Include="src\Game\CReflectionActionKinoko.h" />
     <ClInclude Include="src\Game\CReflectionKinoko.h" />
     <ClInclude Include="src\Game\CReflectionLeftRightKinoko.h" />

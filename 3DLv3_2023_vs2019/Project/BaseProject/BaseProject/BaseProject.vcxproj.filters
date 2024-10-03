@@ -356,6 +356,9 @@
     <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Cannon\CannonBall">
       <UniqueIdentifier>{987994eb-453a-4c61-849d-cdbd4a209717}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\Object\Gimmick\Cannon\CannonBase">
+      <UniqueIdentifier>{5e6d3a75-19f0-4a57-9afd-0310d89f0e71}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -1179,6 +1182,12 @@
     </ClCompile>
     <ClCompile Include="src\Game\CHorizontalCannon.cpp">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CPowerfulCannon.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CCannonBase.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon\CannonBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2027,6 +2036,12 @@
     </ClInclude>
     <ClInclude Include="src\Game\CHorizontalCannon.h">
       <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CPowerfulCannon.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCannonBase.h">
+      <Filter>ソース ファイル\Game\Field\Object\Gimmick\Cannon\CannonBase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
