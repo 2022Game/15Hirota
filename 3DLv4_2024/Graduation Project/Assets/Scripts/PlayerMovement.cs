@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -63,7 +64,6 @@ public class PlayerMovement : MonoBehaviour
                 direction = d;
                 Message.add(direction.ToString());
                 transform.rotation = DirUtil.DirToRotation(direction);
-                //newGrid = DirUtil.GetNewGrid(grid, direction);
                 newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
                 grid = Move(grid, newGrid, ref currentFrame);
             }

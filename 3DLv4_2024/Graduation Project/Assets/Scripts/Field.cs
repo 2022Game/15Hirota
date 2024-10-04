@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Field : MonoBehaviour
 {
@@ -9,13 +8,6 @@ public class Field : MonoBehaviour
     private Array2D map;
     private const float oneTile = 1.0f;
     private const float floorSize = 10.0f / oneTile;
-
-    //void Start()
-    //{
-    //    Array2D mapdata = new Array2D(10, 10);
-    //    mapdata.Set(1, 1, 1);
-    //    Create(mapdata);
-    //}
 
     // グリッド座標をワールド座標に変換
     public static float ToWorldX(int xgrid)
@@ -42,14 +34,15 @@ public class Field : MonoBehaviour
         return Mathf.FloorToInt(zworld / oneTile);
     }
 
-    // マップデータの生成
+    /**
+    * マップデータの生成
+    */
     public void Create(Array2D mapdata)
     {
         map = mapdata;
         float floorw = map.width / floorSize;
         float floorh = map.height / floorSize;
         floor.transform.localScale = new Vector3(floorw, 1, floorh);
-
         float floorx = (map.width - 1) / 2.0f * oneTile;
         float floorz = (map.height - 1) / 2.0f * oneTile;
         floor.transform.position = new Vector3(floorx, 0, floorz);
@@ -57,30 +50,22 @@ public class Field : MonoBehaviour
         {
             for (int x = 0; x < map.width; x++)
             {
-                if (map.Get(x,z) > 0)
+                if (map.Get(x, z) > 0)
                 {
                     GameObject block = Instantiate(wall);
                     float xblock = ToWorldX(x);
                     float zblock = ToWorldZ(z);
                     block.transform.localScale = new Vector3(oneTile, 2, oneTile);
                     block.transform.position = new Vector3(xblock, 1, zblock);
-                    // ここにエラーチェックを追加
-                    if (floor.transform.childCount > 0)
-                    {
-                        block.transform.SetParent(floor.transform.GetChild(0));
-                    }
-                    else
-                    {
-                        Debug.LogError("No child found under floor object!");
-                        // floor の子が存在しない場合は floor 自体を親に設定する
-                        block.transform.SetParent(floor.transform);
-                    }
+                    block.transform.SetParent(floor.transform.GetChild(0));
                 }
             }
         }
     }
 
-    // 生成したマップのリセット
+    /**
+    * 生成したマップのリセット
+    */
     public void Reset()
     {
         Transform walls = floor.transform.GetChild(0);
@@ -90,7 +75,9 @@ public class Field : MonoBehaviour
         }
     }
 
-    // 指定の座標かどうかをチェック
+    /**
+    * 指定の座標が壁かどうかをチェック
+    */
     public bool IsCollide(int xgrid, int zgrid)
     {
         return map.Get(xgrid, zgrid) != 0;
