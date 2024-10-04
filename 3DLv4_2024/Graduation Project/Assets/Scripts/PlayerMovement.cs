@@ -31,10 +31,10 @@ public class PlayerMovement : MonoBehaviour
     // 補間で計算して進む
     private Pos2D Move(Pos2D currentPos,Pos2D newPos,ref int frame)
     {
-        float px1 = ToWorldX(currentPos.x);
-        float pz1 = ToWorldX(currentPos.z);
-        float px2 =ToWorldX(newPos.x);
-        float pz2 = ToWorldZ(newPos.z);
+        float px1 = Field.ToWorldX(currentPos.x);
+        float pz1 = Field.ToWorldX(currentPos.z);
+        float px2 = Field.ToWorldX(newPos.x);
+        float pz2 = Field.ToWorldZ(newPos.z);
         frame += 1;
         float t = frame / complementFrame;
         float newX = px1 + (px2 - px1) * t;
@@ -44,30 +44,10 @@ public class PlayerMovement : MonoBehaviour
         if (complementFrame <= frame)
         {
             frame = 0;
+            transform.position = new Vector3(px2, 0, pz2);
             return newPos;
         }
         return currentPos;
-    }
-
-    // 現在の座標(position)と移動したい方向(d)を渡すと
-    // 移動先の座標を取得
-    private Pos2D GetNewGrid(Pos2D position,EDir d)
-    {
-        Pos2D newP = new Pos2D();
-        newP.x = position.x;
-        newP.z = position.z;
-        switch (d)
-        {
-            case EDir.Up:
-                newP.z += 1; break;
-            case EDir.Left:
-                newP.x -= 1; break;
-            case EDir.Down:
-                newP.z -= 1; break;
-            case EDir.Right:
-                newP.x += 1; break;
-        }
-        return newP;
     }
 
     // Update is called once per frame
@@ -75,124 +55,32 @@ public class PlayerMovement : MonoBehaviour
     {
         if (currentFrame == 0)
         {
-            EDir d = KeyToDir();
+            EDir d = DirUtil.KeyToDir();
             if (d == EDir.Pause)
                 animator.SetFloat(hashSpeedPara, 0.0f, speedDampTime, Time.deltaTime);
             else
             {
                 direction = d;
                 Message.add(direction.ToString());
-                transform.rotation = DirToRotation(direction);
-                newGrid = GetNewGrid(grid, direction);
+                transform.rotation = DirUtil.DirToRotation(direction);
+                //newGrid = DirUtil.GetNewGrid(grid, direction);
+                newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
                 grid = Move(grid, newGrid, ref currentFrame);
             }
         }
         else grid = Move(grid, newGrid, ref currentFrame);
     }
 
-    // 入力されたキーに対応する向きを返す
-    private EDir KeyToDir()
-    {
-        // GetKey : 押している間ずっと関数が呼び出される
-
-        if (!Input.anyKey)
-        {
-            return EDir.Pause;
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            return EDir.Up;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            return EDir.Left;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            return EDir.Down;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            return EDir.Right;
-        }
-        return EDir.Pause;
-    }
-
-    // 引数で与えられた向きに対応する回転のベクトルを返す
-    private Quaternion DirToRotation(EDir d)
-    {
-        Quaternion r = Quaternion.Euler(0, 0, 0);
-        switch (d)
-        {
-            case EDir.Up:
-                r = Quaternion.Euler(0, 0, 0); break;
-            case EDir.Left:
-                r = Quaternion.Euler(0, 270, 0); break;
-            case EDir.Down:
-                r = Quaternion.Euler(0, 180, 0); break;
-            case EDir.Right:
-                r = Quaternion.Euler(0, 90, 0); break;
-        }
-        return r;
-    }
-
-    // グリッド座標をワールド座標に変換
-    private float ToWorldX(int xgrid)
-    {
-        return xgrid * 2;
-    }
-
-    private float ToWorldZ(int zgrid)
-    {
-        return zgrid * 2;
-    }
-
-    // ワールド座標をグリッド座標に変換
-    // FloorToInt : 小数点以下の値を切り捨てる関数
-    private int ToGridX(float xworld)
-    {
-        return Mathf.FloorToInt(xworld / 2);
-    }
-
-    private int ToGridZ(float zworld)
-    {
-        return Mathf.FloorToInt(zworld / 2);
-    }
-
     // インスペクターの値が変わった時に呼び出される
     void OnValidate()
     {
-        if (grid.x != ToGridX(transform.position.x) || grid.z != ToGridZ(transform.position.z))
+        if (grid.x != Field.ToGridX(transform.position.x) || grid.z != Field.ToGridZ(transform.position.z))
         {
-            transform.position = new Vector3(ToWorldX(grid.x),0,ToWorldZ(grid.z));
+            transform.position = new Vector3(Field.ToWorldX(grid.x),0, Field.ToWorldZ(grid.z));
         }
-        if (direction != RotationToDir(transform.rotation))
+        if (direction != DirUtil.RotationToDir(transform.rotation))
         {
-            transform.rotation = DirToRotation(direction);
+            transform.rotation = DirUtil.DirToRotation(direction);
         }
-    }
-
-    // 引数で与えられた回転のベクトルに対応する向きを返す
-    private EDir RotationToDir(Quaternion r)
-    {
-        float y = r.eulerAngles.y;
-        if (y < 45)
-        {
-            return EDir.Up;
-        }
-        else if (y < 135)
-        {
-            return EDir.Right;
-        }
-        else if (y < 225)
-        {
-            return EDir.Down;
-        }
-        else if (y < 315)
-        {
-            return EDir.Left;
-        }
-
-        return EDir.Up;
     }
 }
