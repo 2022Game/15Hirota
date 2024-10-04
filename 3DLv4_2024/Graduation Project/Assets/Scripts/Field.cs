@@ -4,6 +4,7 @@ public class Field : MonoBehaviour
 {
     public GameObject floor;
     public GameObject wall;
+    public GameObject line;
 
     private Array2D map;
     private const float oneTile = 1.0f;
@@ -61,6 +62,7 @@ public class Field : MonoBehaviour
                 }
             }
         }
+        ShowGridEffects();
     }
 
     /**
@@ -73,6 +75,12 @@ public class Field : MonoBehaviour
         {
             Destroy(walls.GetChild(i).gameObject);
         }
+
+        Transform effects = floor.transform.GetChild(1);
+        for (int i = 0; i < effects.childCount; i++)
+        {
+            Destroy(effects.GetChild(i).gameObject);
+        }
     }
 
     /**
@@ -81,5 +89,23 @@ public class Field : MonoBehaviour
     public bool IsCollide(int xgrid, int zgrid)
     {
         return map.Get(xgrid, zgrid) != 0;
+    }
+
+    // 升目のエフェクトを表示する
+    private void ShowGridEffects()
+    {
+        for (int x = 1; x < map.width; x++)
+        {
+            GameObject obj = Instantiate(line, floor.transform.GetChild(1));
+            obj.transform.position = new Vector3(x * oneTile - oneTile / 2, 0.1f, -oneTile / 2);
+            obj.transform.localScale = new Vector3(1, 1, floorSize * oneTile);
+        }
+        for (int z = 1; z < map.height; z++)
+        {
+            GameObject obj = Instantiate(line, floor.transform.GetChild(1));
+            obj.transform.position = new Vector3(-oneTile / 2, 0.1f, z * oneTile - oneTile / 2);
+            obj.transform.rotation = Quaternion.Euler(0, 90, 0);
+            obj.transform.localScale = new Vector3(1, 1, floorSize * oneTile);
+        }
     }
 }
