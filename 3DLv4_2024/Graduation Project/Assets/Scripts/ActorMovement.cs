@@ -4,7 +4,7 @@ using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerMovement : MonoBehaviour
+public class ActorMovement : MonoBehaviour
 {
     public Animator animator;
     public EDir direction = EDir.Up;
@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         complementFrame = maxPerFrame / Time.deltaTime;
+        newGrid = grid;
     }
 
     // 補間で計算して進む
@@ -54,20 +55,24 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (currentFrame == 0)
-        {
-            EDir d = DirUtil.KeyToDir();
-            if (d == EDir.Pause)
-                animator.SetFloat(hashSpeedPara, 0.0f, speedDampTime, Time.deltaTime);
-            else
-            {
-                direction = d;
-                Message.Add(direction.ToString());
-                transform.rotation = DirUtil.DirToRotation(direction);
-                newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
-                grid = Move(grid, newGrid, ref currentFrame);
-            }
-        }
+        //if (currentFrame == 0)
+        //{
+        //    EDir d = DirUtil.KeyToDir();
+        //    if (d == EDir.Pause)
+        //        animator.SetFloat(hashSpeedPara, 0.0f, speedDampTime, Time.deltaTime);
+        //    else
+        //    {
+        //        direction = d;
+        //        Message.Add(direction.ToString());
+        //        transform.rotation = DirUtil.DirToRotation(direction);
+        //        newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
+        //        grid = Move(grid, newGrid, ref currentFrame);
+        //    }
+        //}
+        //else grid = Move(grid, newGrid, ref currentFrame);
+
+        if (grid.Equals(newGrid) && currentFrame == 0)
+            animator.SetFloat(hashSpeedPara, 0.0f, speedDampTime, Time.deltaTime);
         else grid = Move(grid, newGrid, ref currentFrame);
     }
 
@@ -92,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
         grid.x = xgrid;
         grid.z = zgrid;
         transform.position = new Vector3(Field.ToWorldX(xgrid), 0, Field.ToWorldZ(zgrid));
+        newGrid = grid;
     }
 
     // 指定した向きに合わせて回転ベクトルも変更する
@@ -99,5 +105,14 @@ public class PlayerMovement : MonoBehaviour
     {
         direction = d;
         transform.rotation = DirUtil.DirToRotation(d);
+    }
+
+    // 歩行アニメーション開始
+    public void Walk()
+    {
+        if (currentFrame > 0) return;
+        Message.Add(direction.ToString());
+        newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
+        grid = Move(grid, newGrid, ref currentFrame);
     }
 }

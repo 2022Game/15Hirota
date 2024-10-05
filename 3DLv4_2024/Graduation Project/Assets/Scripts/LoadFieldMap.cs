@@ -5,7 +5,7 @@ public class LoadFieldMap : MonoBehaviour
 {
     public string mapName;
     public Field field;
-    public PlayerMovement player;
+    public ActorMovement player;
 
     // Start is called before the first frame update
     void Start()
