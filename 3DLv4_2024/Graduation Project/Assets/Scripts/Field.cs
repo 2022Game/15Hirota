@@ -108,4 +108,18 @@ public class Field : MonoBehaviour
             obj.transform.localScale = new Vector3(1, 1, floorSize * oneTile);
         }
     }
+
+    // マップデータを返す
+    public Array2D GetMapData()
+    {
+        Array2D mapdata = new Array2D(map.width,map.height);
+        for (int z = 0; z < map.height; z++)
+        {
+            for (int x = 0; x < map.width; x++)
+            {
+                mapdata.Set(x,z,map.Get(x,z));
+            }
+        }
+        return mapdata;
+    }
 }

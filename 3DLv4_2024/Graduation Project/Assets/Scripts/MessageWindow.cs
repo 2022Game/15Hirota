@@ -43,13 +43,13 @@ public class MessageWindow : MonoBehaviour
     */
     private void ShowMessage()
     {
-        if (Message.getCount() > 0)
+        if (Message.GetCount() > 0)
         {
             isAdding = true;
             isFalling = transform.childCount > 0;
-            string m = Message.get();
+            string m = Message.Get();
             Text msg = Instantiate(text, transform);
-            msg.transform.position = transform.position + new Vector3(-400, 0, 0);
+            msg.transform.position = transform.position + new Vector3(-2000, 0, 0);
             msg.text = m;
         }
     }

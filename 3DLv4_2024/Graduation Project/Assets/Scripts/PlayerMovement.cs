@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 direction = d;
-                Message.add(direction.ToString());
+                Message.Add(direction.ToString());
                 transform.rotation = DirUtil.DirToRotation(direction);
                 newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
                 grid = Move(grid, newGrid, ref currentFrame);
@@ -92,5 +92,12 @@ public class PlayerMovement : MonoBehaviour
         grid.x = xgrid;
         grid.z = zgrid;
         transform.position = new Vector3(Field.ToWorldX(xgrid), 0, Field.ToWorldZ(zgrid));
+    }
+
+    // 指定した向きに合わせて回転ベクトルも変更する
+    public void SetDirection(EDir d)
+    {
+        direction = d;
+        transform.rotation = DirUtil.DirToRotation(d);
     }
 }

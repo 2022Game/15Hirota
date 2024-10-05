@@ -9,7 +9,7 @@ public static class Message
     /**
     * 文字列をキューに加える
     */
-    public static void add(string m)
+    public static void Add(string m)
     {
         texts.Enqueue(m);
     }
@@ -17,7 +17,7 @@ public static class Message
     /**
     * キューから文字列を取り出す
     */
-    public static string get()
+    public static string Get()
     {
         if (texts.Count > 0)
         {
@@ -29,7 +29,7 @@ public static class Message
     /**
      * キューに格納されている文字列の数を返す
      */
-    public static int getCount()
+    public static int GetCount()
     {
         return texts.Count;
     }

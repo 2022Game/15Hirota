@@ -1,13 +1,15 @@
+[System.Serializable]
 public class Array2D
 {
     public int width;
     public int height;
-    private int[,] data;
+    [UnityEngine.SerializeField] private int[] data;
+    //private int[,] data;
 
     public Array2D(int w, int h)
     {
         width = w; height = h;
-        data = new int[width, height];
+        data = new int[width*height];
     }
 
     // X/ZÀ•W‚É‚ ‚é’l‚ðŽæ“¾‚·‚é
@@ -15,7 +17,7 @@ public class Array2D
     {
         if (x >= 0 && z >= 0 && x < width && z < height)
         {
-            return data[x, z];
+            return data[x + z * width];
         }
         return -1;
     }
@@ -25,7 +27,7 @@ public class Array2D
     {
         if (x >= 0 && z >= 0 && x < width && z < height)
         {
-            data[x, z] = v;
+            data[x + z * width] = v;
             return v;
         }
         return -1;
