@@ -827,7 +827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c45360863271c43856e23c30a5c2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapName: Assets/Maps/dangeonmap.tmx
+  mapName: Assets/Maps/Dangeonmap_EX.tmx
   field: {fileID: 1688660920}
   player: {fileID: 1667112540}
 --- !u!4 &1688660919
