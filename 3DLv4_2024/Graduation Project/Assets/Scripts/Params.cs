@@ -7,6 +7,7 @@ public class Params
     public int hp;      // HP
     public int hpmax;   // Å‘åHP
     public int str;     // UŒ‚—Í
+    public int def;     // –hŒä—Í
     public int exp;     // Šl“¾‚µ‚½ŒoŒ±’l
     public int xp;      // “|‚µ‚½‚Æ‚«‚É“¾‚ç‚ê‚éŒoŒ±’l
 }

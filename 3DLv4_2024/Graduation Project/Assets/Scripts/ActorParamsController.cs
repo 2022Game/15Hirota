@@ -15,6 +15,7 @@ public class ActorParamsController : MonoBehaviour
         p.hp = parameter.hp;
         p.hpmax = parameter.hpmax;
         p.str = parameter.str;
+        p.def = parameter.def;
         p.exp = parameter.exp;
         p.xp = parameter.xp;
         return p;
@@ -28,6 +29,7 @@ public class ActorParamsController : MonoBehaviour
         parameter.hp = p.hp;
         parameter.hpmax = p.hpmax;
         parameter.str = p.str;
+        parameter.def = p.def;
         parameter.exp = p.exp;
         parameter.xp = p.xp;
     }
@@ -35,6 +37,12 @@ public class ActorParamsController : MonoBehaviour
     // ダメージを受ける
     public void Damaged(int str)
     {
-        parameter.hp -= str;
+        parameter.hp -= CalcDamage(str, parameter.def);
+    }
+
+    // ダメージを計算する
+    private static int CalcDamage(int str, int def)
+    {
+        return Mathf.CeilToInt(str * Mathf.Pow(0.9375f, def));
     }
 }

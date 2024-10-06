@@ -72,6 +72,7 @@ public class LoadFieldMap : MonoBehaviour
                                 GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + name);
                                 GameObject enemy = Instantiate(enemyObj, enemies.transform);
                                 enemy.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
+                                enemy.GetComponent<EnemyOperation>().target = player;
                             }
                         }
                         break;

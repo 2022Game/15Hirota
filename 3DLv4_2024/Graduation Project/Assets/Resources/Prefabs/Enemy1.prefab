@@ -3993,6 +3993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c43fe8236677a9b4389d9bd7e569aae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 4106292565348418331, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
 --- !u!114 &-992544589661613256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4011,6 +4012,7 @@ MonoBehaviour:
     hp: 30
     hpmax: 50
     str: 6
+    def: 3
     exp: 0
     xp: 0
 --- !u!1 &4414871117353324497

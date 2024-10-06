@@ -8764,5 +8764,6 @@ MonoBehaviour:
     hp: 50
     hpmax: 100
     str: 5
+    def: 5
     exp: 0
     xp: 0

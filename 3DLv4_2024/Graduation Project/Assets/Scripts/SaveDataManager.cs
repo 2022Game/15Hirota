@@ -71,13 +71,8 @@ public class SaveDataManager : MonoBehaviour
             GameObject enemyObj = (GameObject)Resources.Load("Prefabs/Enemy" + data.parameter.id);
             GameObject enemy = Instantiate(enemyObj, enemies.transform);
             LoadActorData(data, enemy.transform);
+            enemy.GetComponent<EnemyOperation>().target = player.GetComponent<ActorMovement>();
         }
-        //GameObject enemyObj = (GameObject)Resources.Load("Prefabs/minotaur1");
-        //foreach (var data in saveData.enemyDatas)
-        //{
-        //    GameObject enemy = Instantiate(enemyObj, enemies.transform);
-        //    LoadActorData(data, enemy.transform);
-        //}
     }
 
     // マップデータを作成、返す
