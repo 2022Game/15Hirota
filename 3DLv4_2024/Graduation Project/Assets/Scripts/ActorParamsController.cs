@@ -31,4 +31,10 @@ public class ActorParamsController : MonoBehaviour
         parameter.exp = p.exp;
         parameter.xp = p.xp;
     }
+
+    // ƒ_ƒ[ƒW‚ğó‚¯‚é
+    public void Damaged(int str)
+    {
+        parameter.hp -= str;
+    }
 }

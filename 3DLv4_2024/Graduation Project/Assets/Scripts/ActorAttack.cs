@@ -31,4 +31,12 @@ public class ActorAttack : MonoBehaviour
         }
         return EAct.Act;
     }
+
+    // 指定した相手がnullでなければダメージを与える
+    public void DamageOpponent(GameObject actor)
+    {
+        if (actor == null) return;
+        int str = GetComponent<ActorParamsController>().parameter.str;
+        actor.GetComponent<ActorParamsController>().Damaged(str);
+    }
 }

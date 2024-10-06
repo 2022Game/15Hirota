@@ -48,6 +48,11 @@ public class ActorAction : MonoBehaviour
     private void Act()
     {
         action = actorAttack.Attacking();
+        if (action == EAct.ActEnd)
+        {
+            Pos2D grid = DirUtil.GetNewGrid(actorMovement.grid, actorMovement.direction);
+            actorAttack.DamageOpponent(GetComponentInParent<Field>().GetExistActor(grid.x, grid.z));
+        }
     }
 
     // アクションが終わった

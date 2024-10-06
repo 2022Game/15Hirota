@@ -95,17 +95,21 @@ public class Field : MonoBehaviour
     */
     public bool IsCollide(int xgrid, int zgrid)
     {
-        //return map.Get(xgrid, zgrid) != 0;
-        // マップ上の衝突確認
-        if (map.Get(xgrid, zgrid) != 0) return true;
+        return map.Get(xgrid, zgrid) != 0;
+    }
+
+    // 指定の座標にキャラクターが居たらそのゲームオブジェクトを返す
+    // いなければnullを返す
+    public GameObject GetExistActor(int xgrid, int zgrid)
+    {
         if (xgrid == playerMovement.newGrid.x && zgrid == playerMovement.newGrid.z)
-            return true;
+            return playerMovement.gameObject;
         foreach (var enemyMovement in enemies.GetComponentsInChildren<ActorMovement>())
         {
             if (xgrid == enemyMovement.newGrid.x && zgrid == enemyMovement.newGrid.z)
-                return true;
+                return enemyMovement.gameObject;
         }
-        return false;
+        return null;
     }
 
     // 升目のエフェクトを表示する

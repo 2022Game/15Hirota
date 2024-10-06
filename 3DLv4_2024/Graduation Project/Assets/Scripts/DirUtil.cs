@@ -120,7 +120,8 @@ public static class DirUtil
     public static Pos2D Move(Field field, Pos2D position, EDir d)
     {
         Pos2D newP = GetNewGrid(position, d);
-        if (field.IsCollide(newP.x, newP.z)) return position;
+        if (field.IsCollide(newP.x, newP.z) || field.GetExistActor(newP.x, newP.z) != null)
+            return position;
         return newP;
     }
 }
