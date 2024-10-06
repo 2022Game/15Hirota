@@ -68,6 +68,7 @@ public class LoadFieldMap : MonoBehaviour
                             }
                             if (name.Contains("Enemy"))
                             {
+                                // ‚±‚±‚ğ•ÏX‚µ‚Ä‚¢‚é
                                 GameObject enemyObj = (GameObject)Resources.Load("Prefabs/minotaur1");
                                 GameObject enemy = Instantiate(enemyObj, enemies.transform);
                                 enemy.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);

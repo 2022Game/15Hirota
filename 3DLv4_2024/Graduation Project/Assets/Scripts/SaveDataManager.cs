@@ -16,15 +16,6 @@ public class SaveDataManager : MonoBehaviour
         saveData = new SaveData();    
     }
 
-    // データを保存する
-    private void Save()
-    {
-        saveData.playerData = MakePlayerData();
-        saveData.enemyDatas = MakeEnemyDatas();
-        saveData.mapData = MakeMapData();
-        PlayerPrefs.SetString(saveKey, JsonUtility.ToJson(saveData));
-    }
-
     // アクターデータを作成、返す
     private ActorSaveData MakeActorData(Transform actor)
     {
@@ -34,21 +25,8 @@ public class SaveDataManager : MonoBehaviour
         actorSaveData.grid.x = move.grid.x;
         actorSaveData.grid.z = move.grid.z;
         actorSaveData.direction = move.direction;
+        actorSaveData.parameter = actor.GetComponent<ActorParamsController>().GetParameter();
         return actorSaveData;
-    }
-
-
-    // データを読み込む
-    private void Load()
-    {
-        if (PlayerPrefs.HasKey(saveKey))
-        {
-            var data = PlayerPrefs.GetString(saveKey);
-            JsonUtility.FromJsonOverwrite(data, saveData);
-            LoadMapData(saveData);
-            LoadEnemyDatas(saveData);
-            LoadPlayerData(saveData);
-        }
     }
 
     // アクターデータをアクターに反映する
@@ -57,6 +35,7 @@ public class SaveDataManager : MonoBehaviour
         ActorMovement move = actor.GetComponent<ActorMovement>();
         move.SetPosition(data.grid.x, data.grid.z);
         move.SetDirection(data.direction);
+        actor.GetComponent<ActorParamsController>().SetParameter(data.parameter);
     }
 
     // プレイヤーデータを作成、返す
@@ -84,7 +63,7 @@ public class SaveDataManager : MonoBehaviour
         return enemySaveDatas;
     }
 
-    // 敵データを反映する
+    // 敵データを反映するminotaur1
     private void LoadEnemyDatas(SaveData saveData)
     {
         GameObject enemyObj = (GameObject)Resources.Load("Prefabs/minotaur1");
@@ -108,6 +87,28 @@ public class SaveDataManager : MonoBehaviour
     {
         field.Reset();
         field.Create(saveData.mapData.map);
+    }
+
+    // データを保存する
+    private void Save()
+    {
+        saveData.playerData = MakePlayerData();
+        saveData.enemyDatas = MakeEnemyDatas();
+        saveData.mapData = MakeMapData();
+        PlayerPrefs.SetString(saveKey, JsonUtility.ToJson(saveData));
+    }
+
+    // データを読み込む
+    private void Load()
+    {
+        if (PlayerPrefs.HasKey(saveKey))
+        {
+            var data = PlayerPrefs.GetString(saveKey);
+            JsonUtility.FromJsonOverwrite(data, saveData);
+            LoadMapData(saveData);
+            LoadEnemyDatas(saveData);
+            LoadPlayerData(saveData);
+        }
     }
 
     // Update is called once per frame

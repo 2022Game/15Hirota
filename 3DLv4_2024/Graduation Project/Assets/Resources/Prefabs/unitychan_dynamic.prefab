@@ -8434,6 +8434,7 @@ GameObject:
   - component: {fileID: 6658354057550921997}
   - component: {fileID: 4496677277841315748}
   - component: {fileID: 144739883336975244}
+  - component: {fileID: 7522716868439318746}
   m_Layer: 0
   m_Name: unitychan_dynamic
   m_TagString: Untagged
@@ -8745,3 +8746,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 9500000}
   animationLength: 1
+--- !u!114 &7522716868439318746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad20740f5661fd74c8d6b1c1f33399d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameter:
+    id: 0
+    lv: 1
+    hp: 50
+    hpmax: 100
+    str: 5
+    exp: 0
+    xp: 0
