@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="2">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="4">
  <tileset firstgid="1" source="マップチップ画像(仮のダンジョンチップ).tsx"/>
- <layer id="1" name="タイルレイヤー1" width="30" height="30">
+ <layer id="1" name="Tile Layer" width="30" height="30">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
@@ -35,7 +35,9 @@
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 </data>
  </layer>
- <objectgroup id="2" name="Player">
+ <objectgroup id="2" name="Object Layer">
   <object id="1" name="Player" x="162" y="160" width="32" height="32"/>
+  <object id="2" name="Enemy1" x="193" y="285" width="32" height="32"/>
+  <object id="3" name="Enemy1" x="257" y="256" width="32" height="32"/>
  </objectgroup>
 </map>

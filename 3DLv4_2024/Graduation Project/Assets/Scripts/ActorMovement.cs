@@ -15,7 +15,7 @@ public class ActorMovement : MonoBehaviour
     //public int maxFrame = 100;
 
     private int currentFrame = 0;
-    private Pos2D newGrid = null;
+    public Pos2D newGrid = null;
 
     public float maxPerFrame = 1.67f;
     private float complementFrame;
@@ -52,30 +52,6 @@ public class ActorMovement : MonoBehaviour
         return currentPos;
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        //if (currentFrame == 0)
-        //{
-        //    EDir d = DirUtil.KeyToDir();
-        //    if (d == EDir.Pause)
-        //        animator.SetFloat(hashSpeedPara, 0.0f, speedDampTime, Time.deltaTime);
-        //    else
-        //    {
-        //        direction = d;
-        //        Message.Add(direction.ToString());
-        //        transform.rotation = DirUtil.DirToRotation(direction);
-        //        newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
-        //        grid = Move(grid, newGrid, ref currentFrame);
-        //    }
-        //}
-        //else grid = Move(grid, newGrid, ref currentFrame);
-
-        if (grid.Equals(newGrid) && currentFrame == 0)
-            animator.SetFloat(hashSpeedPara, 0.0f, speedDampTime, Time.deltaTime);
-        else grid = Move(grid, newGrid, ref currentFrame);
-    }
-
     // インスペクターの値が変わった時に呼び出される
     void OnValidate()
     {
@@ -107,12 +83,41 @@ public class ActorMovement : MonoBehaviour
         transform.rotation = DirUtil.DirToRotation(d);
     }
 
+    // 移動開始できるかどうか
+    public bool IsMoveBegin()
+    {
+        newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
+        if (grid.Equals(newGrid)) return false;
+        return true;
+    }
+
     // 歩行アニメーション開始
     public void Walk()
     {
         if (currentFrame > 0) return;
         Message.Add(direction.ToString());
-        newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
+        //newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
         grid = Move(grid, newGrid, ref currentFrame);
+    }
+
+    // 歩行中
+    public EAct Walking()
+    {
+        if (grid.Equals(newGrid) && currentFrame == 0)
+        {
+            animator.SetFloat(hashSpeedPara, 0.0f, speedDampTime, Time.deltaTime);
+            return EAct.MoveEnd;
+        }
+        grid = Move(grid, newGrid, ref currentFrame);
+        return EAct.Move;
+    }
+
+    // 停止
+    public void Stop()
+    {
+        if (animator.GetFloat(hashSpeedPara) > 0.0f)
+        {
+            animator.SetFloat(hashSpeedPara, 0.0f, speedDampTime, Time.deltaTime);
+        }
     }
 }

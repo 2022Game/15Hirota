@@ -5,6 +5,8 @@ public class Field : MonoBehaviour
     public GameObject floor;
     public GameObject wall;
     public GameObject line;
+    public ActorMovement playerMovement;
+    public GameObject enemies;
 
     private Array2D map;
     private const float oneTile = 1.0f;
@@ -70,6 +72,11 @@ public class Field : MonoBehaviour
     */
     public void Reset()
     {
+        for (int i = 0; i < enemies.transform.childCount; i++)
+        {
+            Destroy(enemies.transform.GetChild(i).gameObject);
+        }
+
         Transform walls = floor.transform.GetChild(0);
         for (int i = 0; i < walls.childCount; i++)
         {
@@ -88,7 +95,17 @@ public class Field : MonoBehaviour
     */
     public bool IsCollide(int xgrid, int zgrid)
     {
-        return map.Get(xgrid, zgrid) != 0;
+        //return map.Get(xgrid, zgrid) != 0;
+        // マップ上の衝突確認
+        if (map.Get(xgrid, zgrid) != 0) return true;
+        if (xgrid == playerMovement.newGrid.x && zgrid == playerMovement.newGrid.z)
+            return true;
+        foreach (var enemyMovement in enemies.GetComponentsInChildren<ActorMovement>())
+        {
+            if (xgrid == enemyMovement.newGrid.x && zgrid == enemyMovement.newGrid.z)
+                return true;
+        }
+        return false;
     }
 
     // 升目のエフェクトを表示する

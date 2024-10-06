@@ -2184,8 +2184,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4414871116264575562}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 24, y: 0.93, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2193,7 +2193,7 @@ Transform:
   - {fileID: 4414871116722903027}
   - {fileID: 4414871117141215352}
   m_Father: {fileID: 4414871117303439923}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!1 &4414871116353375776
 GameObject:
   m_ObjectHideFlags: 0
@@ -3618,8 +3618,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4414871117141215353}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07453181, y: 0.70316786, z: 0.07453181, w: 0.70316786}
-  m_LocalPosition: {x: -1.9709482e-17, y: 0.15181218, z: 0.9818004}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3877,6 +3877,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4414871117303439923}
   - component: {fileID: 4414871117303439920}
+  - component: {fileID: 9159862957443725678}
+  - component: {fileID: 8970358000242903484}
+  - component: {fileID: 6677289447604826363}
+  - component: {fileID: 4674998360771244642}
   m_Layer: 0
   m_Name: minotaur1
   m_TagString: Untagged
@@ -3912,8 +3916,8 @@ Animator:
   m_GameObject: {fileID: 4414871117303439921}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 63e974d9ec82619419e69ae2287be94e, type: 3}
-  m_Controller: {fileID: 9100000, guid: 1ec31ee6b4e699b4c919f9ddd24f6f73, type: 2}
-  m_CullingMode: 0
+  m_Controller: {fileID: 9100000, guid: 453e0a8426b43a04b8648fb307a24ea3, type: 2}
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -3924,6 +3928,70 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9159862957443725678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414871117303439921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00f0b6a5c826ac7469816e00bb844310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 4414871117303439920}
+  animationLength: 1
+--- !u!114 &8970358000242903484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414871117303439921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d140d8905f79d104087464e38c171783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 4414871117303439920}
+  direction: 1
+  speed: 0.9
+  speedDampTime: 0.1
+  grid:
+    x: 0
+    z: 0
+  newGrid:
+    x: 0
+    z: 0
+  maxPerFrame: 1.67
+--- !u!114 &6677289447604826363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414871117303439921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e25a511d14e0b4eb67e10b87c229e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actorMovement: {fileID: 8970358000242903484}
+  actorOperation: {fileID: 4674998360771244642}
+  actorAttack: {fileID: 9159862957443725678}
+--- !u!114 &4674998360771244642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414871117303439921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c43fe8236677a9b4389d9bd7e569aae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4414871117353324497
 GameObject:
   m_ObjectHideFlags: 0

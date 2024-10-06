@@ -1,0 +1,101 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class ActorAction : MonoBehaviour
+{
+    public ActorMovement actorMovement;
+    public ActorOperation actorOperation;
+    public ActorAttack actorAttack;
+
+    private EAct action = EAct.KeyInput;
+
+    // 独自の更新メソッド
+    public void Proc()
+    {
+        switch (action)
+        {
+            case EAct.KeyInput: KeyInput(); break;
+            case EAct.ActBegin: ActBegin(); break;
+            case EAct.Act: Act(); break;
+            case EAct.ActEnd: ActEnd(); break;
+            case EAct.MoveBegin: MoveBegin(); break;
+            case EAct.Move: Move(); break;
+            case EAct.MoveEnd: MoveEnd(); break;
+            case EAct.TurnEnd: TurnEnd(); break;
+        }
+    }
+
+    // 現在の行動状態を返す
+    public EAct GetAction() => action;
+
+    // 待機中
+    private void KeyInput()
+    {
+        action = actorOperation.Operate(actorMovement);
+        if (action != EAct.MoveBegin) actorMovement.Stop();
+    }
+
+    // アクションを始める
+    private void ActBegin()
+    {
+        actorAttack.Attack();
+        action = EAct.Act;
+    }
+
+    // アクション中
+    private void Act()
+    {
+        action = actorAttack.Attacking();
+    }
+
+    // アクションが終わった
+    private void ActEnd()
+    {
+        action = EAct.TurnEnd;
+    }
+
+    // 移動を始める
+    private void MoveBegin()
+    {
+        actorMovement.Walk();
+        action = EAct.Move;
+    }
+
+    // 移動中
+    private void Move()
+    {
+        action = actorMovement.Walking();
+    }
+
+    // 移動が終わった
+    private void MoveEnd()
+    {
+        action = EAct.TurnEnd;
+    }
+
+    // ターンが終わった
+    private void TurnEnd()
+    {
+        action = EAct.KeyInput;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    // 歩行アニメーションをストップさせる
+    public void StopWalkingAnimation()
+    {
+        actorMovement.Stop();
+    }
+}

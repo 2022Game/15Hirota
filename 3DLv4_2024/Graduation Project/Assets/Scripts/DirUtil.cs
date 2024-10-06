@@ -51,6 +51,24 @@ public static class DirUtil
         return r;
     }
 
+    // ランダムな向きを返す
+    public static EDir RandomDirection()
+    {
+        int dirnum = UnityEngine.Random.Range(0, 4);
+        switch (dirnum)
+        {
+            case 0:
+                return EDir.Up;
+            case 1:
+                return EDir.Left;
+            case 2:
+                return EDir.Down;
+            case 3:
+                return EDir.Right;
+        }
+        return EDir.Down;
+    }
+
     // 引数で与えられた回転のベクトルに対応する向きを返す
     public static EDir RotationToDir(Quaternion r)
     {

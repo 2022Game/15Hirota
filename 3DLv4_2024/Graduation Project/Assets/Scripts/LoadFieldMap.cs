@@ -6,12 +6,13 @@ public class LoadFieldMap : MonoBehaviour
     public string mapName;
     public Field field;
     public ActorMovement player;
+    public GameObject enemies;
 
     // Start is called before the first frame update
     void Start()
     {
         field.Reset();
-        Array2D mapdata = readMapFile(mapName);
+        Array2D mapdata = ReadMapFile(mapName);
         if (mapdata != null)
         {
             field.Create(mapdata);
@@ -21,7 +22,7 @@ public class LoadFieldMap : MonoBehaviour
     /**
     * TMXファイルからマップデータを取得する
     */
-    private Array2D readMapFile(string path)
+    private Array2D ReadMapFile(string path)
     {
         try
         {
@@ -55,17 +56,22 @@ public class LoadFieldMap : MonoBehaviour
                     case "2":
                         foreach (var obj in objgp.Elements("object"))
                         {
-                            switch (obj.Attribute("name").Value)
+                            int x = int.Parse(obj.Attribute("x").Value);
+                            int z = int.Parse(obj.Attribute("y").Value);
+                            int pw = int.Parse(obj.Attribute("width").Value);
+                            int ph = int.Parse(obj.Attribute("height").Value);
+                            string name = obj.Attribute("name").Value;
+                            if (name == "Player")
                             {
-                                case "Player":
-                                    int x = int.Parse(obj.Attribute("x").Value);
-                                    int z = int.Parse(obj.Attribute("y").Value);
-                                    int pw = int.Parse(obj.Attribute("width").Value);
-                                    int ph = int.Parse(obj.Attribute("height").Value);
-                                    player.SetPosition(ToMirrorX(x / pw, w), z / ph);
-                                    break;
+                                player.SetPosition(ToMirrorX(x / pw, w), z / ph);
+                                continue;
                             }
-                            break;
+                            if (name.Contains("Enemy"))
+                            {
+                                GameObject enemyObj = (GameObject)Resources.Load("Prefabs/minotaur1");
+                                GameObject enemy = Instantiate(enemyObj, enemies.transform);
+                                enemy.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
+                            }
                         }
                         break;
                 }
