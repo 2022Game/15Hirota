@@ -87,7 +87,7 @@ public class SaveDataManager : MonoBehaviour
     // “Gƒf[ƒ^‚ğ”½‰f‚·‚é
     private void LoadEnemyDatas(SaveData saveData)
     {
-        GameObject enemyObj = (GameObject)Resources.Load("Prefabs/Enemy1");
+        GameObject enemyObj = (GameObject)Resources.Load("Prefabs/minotaur1");
         foreach (var data in saveData.enemyDatas)
         {
             GameObject enemy = Instantiate(enemyObj, enemies.transform);
