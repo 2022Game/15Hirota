@@ -8,121 +8,149 @@ public class SequenceManager : MonoBehaviour
     public ActorAction playerAction;
     public GameObject enemies;
 
+    private List<ActorAction> actEnemies = new List<ActorAction>();
+    private List<ActorAction> moveEnemies = new List<ActorAction>();
+    private List<ActorAction> operatedEnemies = new List<ActorAction>();
     private bool isEnemyDeterminedBehaviour = false;
-    private bool isEnemyEndedAct = false;
-    private bool isEnemyEndedMovement = false;
 
     // Update is called once per frame
     void Update()
     {
-
         EAct pAct = playerAction.GetAction();
         if (pAct == EAct.KeyInput || pAct == EAct.ActBegin || pAct == EAct.Act)
         {
             playerAction.Proc();
-            foreach (var enemyAction in enemies.GetComponentsInChildren<ActorAction>())
-            {
-                enemyAction.StopWalkingAnimation();
-            }
+            AllEnemyStopWalkingAnimation();
             return;
         }
         if (pAct == EAct.TurnEnd)
         {
-            playerAction.Proc();
-            AllEnemyProc();
+            AllOperatedProc();
             isEnemyDeterminedBehaviour = false;
-            isEnemyEndedAct = false;
-            isEnemyEndedMovement = false;
-            return;
-        }
-        if (isEnemyEndedAct && isEnemyEndedMovement)
-        {
-            playerAction.Proc();
-            AllEnemyProc();
+            operatedEnemies.Clear();
             return;
         }
         if (pAct == EAct.ActEnd && !isEnemyDeterminedBehaviour)
         {
-            AllEnemyProc();
-            isEnemyDeterminedBehaviour = true;
+            AllEnemyDetermineBehaviour();
+            return;
+        }
+        if (actEnemies.Count < 1 && moveEnemies.Count < 1 && (pAct == EAct.ActEnd || pAct == EAct.MoveEnd))
+        {
+            AllOperatedProc();
             return;
         }
         if (pAct == EAct.MoveBegin)
         {
             playerAction.Proc();
-            AllEnemyProc();
+            AllEnemyDetermineBehaviour();
             isEnemyDeterminedBehaviour = true;
             return;
         }
-        if (pAct == EAct.ActEnd && isEnemyEndedAct)
+        if (pAct == EAct.ActEnd && actEnemies.Count < 1)
         {
-            bool isNotEnd = false;
-            foreach (var enemyAction in enemies.GetComponentsInChildren<ActorAction>())
-            {
-                EAct eAct = enemyAction.GetAction();
-                if (eAct == EAct.MoveBegin || eAct == EAct.Move)
-                {
-                    enemyAction.Proc();
-                    isNotEnd = true;
-                }
-            }
-            isEnemyEndedMovement = !isNotEnd;
+            OperatedEnemyProc(moveEnemies, EAct.MoveEnd);
             return;
         }
         if (pAct == EAct.ActEnd && isEnemyDeterminedBehaviour)
         {
-            bool isNotEnd = false;
-            playerAction.StopWalkingAnimation();
-            foreach (var enemyAction in enemies.GetComponentsInChildren<ActorAction>())
-            {
-                EAct eAct = enemyAction.GetAction();
-                if (eAct == EAct.ActBegin || eAct == EAct.Act)
-                {
-                    enemyAction.Proc();
-                    isNotEnd = true;
-                }
-                enemyAction.StopWalkingAnimation();
-            }
-            isEnemyEndedAct = !isNotEnd;
+            EnemyAct();
             return;
         }
-        if (pAct == EAct.MoveEnd && isEnemyEndedMovement)
+        if (pAct == EAct.MoveEnd && moveEnemies.Count < 1)
         {
-            bool isNotEnd = false;
-            playerAction.StopWalkingAnimation();
-            foreach (var enemyAction in enemies.GetComponentsInChildren<ActorAction>())
-            {
-                EAct eAct = enemyAction.GetAction();
-                if (eAct == EAct.ActBegin || eAct == EAct.Act)
-                {
-                    enemyAction.Proc();
-                    isNotEnd = true;
-                }
-                enemyAction.StopWalkingAnimation();
-            }
-            isEnemyEndedAct = !isNotEnd;
+            EnemyAct();
             return;
         }
         if (isEnemyDeterminedBehaviour)
         {
-            bool isNotEnd = false;
             if (pAct == EAct.Move)
             {
                 playerAction.Proc();
-                isNotEnd = true;
             }
-            foreach (var enemyAction in enemies.GetComponentsInChildren<ActorAction>())
-            {
-                EAct eAct = enemyAction.GetAction();
-                if (eAct == EAct.MoveBegin || eAct == EAct.Move)
-                {
-                    enemyAction.Proc();
-                    isNotEnd = true;
-                }
-            }
-            isEnemyEndedMovement = !isNotEnd;
+            OperatedEnemyProc(moveEnemies, EAct.MoveEnd);
             return;
         }
+    }
+
+    // 動作したキャラクター全員の更新メソッドを呼び出す
+    private void AllOperatedProc()
+    {
+        playerAction.Proc();
+        foreach (var enemyAction in operatedEnemies)
+        {
+            enemyAction.Proc();
+        }
+    }
+
+    // 全敵の動作決定
+    private void AllEnemyDetermineBehaviour()
+    {
+        ActorAction[] src = this.enemies.GetComponentsInChildren<ActorAction>();
+        List<ActorAction> enemies = new List<ActorAction>();
+        enemies.AddRange(src);
+        Pos2D pgrid = playerAction.GetComponent<ActorMovement>().grid;
+        System.Comparison<ActorAction> p = (a, b) =>
+        {
+            Pos2D agrid = a.GetComponent<ActorMovement>().grid;
+            Pos2D bgrid = b.GetComponent<ActorMovement>().grid;
+            int p_a = Mathf.Abs(agrid.x - pgrid.x) + Mathf.Abs(agrid.z - pgrid.z);
+            int p_b = Mathf.Abs(bgrid.x - pgrid.x) + Mathf.Abs(bgrid.z - pgrid.z);
+            return p_a - p_b;
+        };
+        enemies.Sort(p);
+        foreach (var enemyAction in enemies)
+        {
+            enemyAction.Proc();
+            EAct eAct = enemyAction.GetAction();
+            if (eAct == EAct.ActBegin)
+            {
+                actEnemies.Add(enemyAction);
+                operatedEnemies.Add(enemyAction);
+            }
+            else if ( eAct == EAct.MoveBegin)
+            {
+                moveEnemies.Add(enemyAction);
+                operatedEnemies.Add(enemyAction);
+                enemyAction.Proc();
+            }
+        }
+        actEnemies.Reverse();
+        moveEnemies.Reverse();
+        isEnemyDeterminedBehaviour = true;
+    }
+
+    // 敵を動作させる
+    private void OperatedEnemyProc(List<ActorAction> enemies, EAct targetAct, bool isAll = true)
+    {
+        for (int i = enemies.Count - 1; i >= 0; i--)
+        {
+            enemies[i].Proc();
+            EAct eAct = enemies[i].GetAction();
+            if (eAct == targetAct)
+            {
+                enemies.RemoveAt(i);
+                continue;
+            }
+            if (!isAll) break;
+        }
+    }
+
+    // 前敵の歩行アニメーションを止める
+    private void AllEnemyStopWalkingAnimation()
+    {
+        foreach (var enemyAction in enemies.GetComponentsInChildren<ActorAction>())
+        {
+            enemyAction.StopWalkingAnimation();
+        }
+    }
+
+    // 敵が行動する
+    private void EnemyAct()
+    {
+        OperatedEnemyProc(actEnemies, EAct.ActEnd, false);
+        playerAction.StopWalkingAnimation();
+        AllEnemyStopWalkingAnimation();
     }
 
     /**
