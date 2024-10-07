@@ -11,6 +11,7 @@ public class LoadFieldMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Application.targetFrameRate = 100;
         field.Reset();
         Array2D mapdata = ReadMapFile(mapName);
         if (mapdata != null)

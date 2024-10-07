@@ -12,7 +12,7 @@ public class MessageWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        Message.LoadData();
     }
 
     // Update is called once per frame
@@ -32,7 +32,7 @@ public class MessageWindow : MonoBehaviour
             {
                 anim = transform.GetChild(i).GetComponent<MessageAnimation>();
                 if (anim.IsDeleting()) continue;
-                isFalling = !anim.MoveMessage(transform.position + new Vector3(0, -100 * (transform.childCount - i - 1), 0), maxPerFrameV);
+                isFalling = !anim.MoveMessage(transform.position + new Vector3(0, -130 * (transform.childCount - i - 1), 0), maxPerFrameV);
             }
         }
         else ShowMessage();
@@ -47,10 +47,11 @@ public class MessageWindow : MonoBehaviour
         {
             isAdding = true;
             isFalling = transform.childCount > 0;
-            string m = Message.Get();
+            Message.Data m = Message.Get();
             Text msg = Instantiate(text, transform);
-            msg.transform.position = transform.position + new Vector3(-2000, 0, 0);
-            msg.text = m;
+            msg.transform.position = transform.position + new Vector3(-1000, 0, 0);
+            msg.color = m.GetColor();
+            msg.text = m.str;
         }
     }
 

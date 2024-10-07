@@ -14,6 +14,7 @@ public class MessageAnimation : MonoBehaviour
     void Start()
     {
         prevPos = transform.position;
+        //Application.targetFrameRate = 150;
     }
 
     // Update is called once per frame
@@ -27,12 +28,26 @@ public class MessageAnimation : MonoBehaviour
     */
     public bool MoveMessage(Vector3 p2, float maxPerFrame)
     {
+        // 移動中かどうかのフラグ
         isMoving = !isDeleting;
+
+        // 各フレームでカウントを進める
         frame += 1;
+
+        // c: 必要なフレーム数の計算
         float c = maxPerFrame / Time.deltaTime;
+
+        // 移動の進行割合 (0.0～1.0) を計算
         float t = frame / c;
-        transform.position = prevPos + (p2 - prevPos) * t;
-        if (c <= frame)
+
+        // Mathf.SmoothStepで補間して滑らかに移動
+        t = Mathf.SmoothStep(0.0f, 1.0f, t);
+
+        // 位置の更新（線形補間の代わりにSmoothStepを利用）
+        transform.position = Vector3.Lerp(prevPos, p2, t);
+
+        // 移動が完了した場合
+        if (t >= 1.0f)
         {
             frame = 0;
             transform.position = p2;
@@ -40,6 +55,7 @@ public class MessageAnimation : MonoBehaviour
             isMoving = false;
             return true;
         }
+
         return false;
     }
 

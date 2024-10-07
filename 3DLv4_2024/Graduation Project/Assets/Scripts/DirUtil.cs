@@ -33,6 +33,23 @@ public static class DirUtil
         return EDir.Pause; // デフォルト
     }
 
+    // 反対の向きを返す
+    public static EDir ReverseDirection(EDir dir)
+    {
+        switch (dir)
+        {
+            case EDir.Up:
+                return EDir.Down;
+            case EDir.Left:
+                return EDir.Right;
+            case EDir.Down:
+                return EDir.Up;
+            case EDir.Right:
+                return EDir.Left;
+        }
+        return EDir.Pause;
+    }
+
     // 引数で与えられた向きに対応する回転のベクトルを返す
     public static Quaternion DirToRotation(EDir d)
     {

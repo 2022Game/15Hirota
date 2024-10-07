@@ -95,7 +95,7 @@ public class ActorMovement : MonoBehaviour
     public void Walk()
     {
         if (currentFrame > 0) return;
-        Message.Add(direction.ToString());
+        //Message.Add(direction.ToString());
         //newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
         grid = Move(grid, newGrid, ref currentFrame);
     }

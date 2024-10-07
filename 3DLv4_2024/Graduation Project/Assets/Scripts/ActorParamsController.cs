@@ -88,7 +88,10 @@ public class ActorParamsController : MonoBehaviour
     // ダメージを受ける
     public void Damaged(int str)
     {
-        parameter.hp -= CalcDamage(str, parameter.def);
+        int d = CalcDamage(str, parameter.def);
+        parameter.hp -= d;
+        if (parameter.id < 1) Message.Add(1, actorName, d.ToString());
+        else Message.Add(2, actorName, d.ToString());
     }
 
     // ダメージを計算する
