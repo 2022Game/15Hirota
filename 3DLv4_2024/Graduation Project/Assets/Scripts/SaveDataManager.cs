@@ -68,7 +68,10 @@ public class SaveDataManager : MonoBehaviour
     {
         foreach (var data in saveData.enemyDatas)
         {
-            GameObject enemyObj = (GameObject)Resources.Load("Prefabs/Enemy" + data.parameter.id);
+            ExcelActorData database = Resources.Load<ExcelActorData>("Datas/ExcelActorData");
+            ExcelActorData.ActorData actorData =
+                database.Data.Find(n => n.id == data.parameter.id);
+            GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + actorData.prefab);
             GameObject enemy = Instantiate(enemyObj, enemies.transform);
             LoadActorData(data, enemy.transform);
             enemy.GetComponent<EnemyOperation>().target = player.GetComponent<ActorMovement>();

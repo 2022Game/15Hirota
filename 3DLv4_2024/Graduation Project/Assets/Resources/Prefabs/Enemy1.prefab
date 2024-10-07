@@ -4009,12 +4009,14 @@ MonoBehaviour:
   parameter:
     id: 1
     lv: 1
+    lvmax: 10
     hp: 30
-    hpmax: 50
-    str: 6
-    def: 3
+    hpmax: 85
+    str: 5
+    def: 5
     exp: 0
-    xp: 0
+    xp: 10
+  actorName: "\u30DF\u30CE\u30BF\u30A6\u30ED\u30B9"
 --- !u!1 &4414871117353324497
 GameObject:
   m_ObjectHideFlags: 0

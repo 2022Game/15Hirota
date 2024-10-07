@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +7,61 @@ public class ActorParamsController : MonoBehaviour
 {
     public Params parameter;
 
+    private List<Params> paramsData;
+    private int prevLv = 0;
+
+    public string actorName;
+
+    void Reset()
+    {
+        ExcelActorData database = Resources.Load<ExcelActorData>("Datas/ExcelActorData");
+        ExcelActorData.ActorData actorData =
+            database.Data.Find(n => n.prefab == gameObject.name.Replace("(Clone)", ""));
+        paramsData = database.GetParamsData(actorData.status);
+        parameter.id = actorData.id;
+        parameter.lvmax = paramsData[0].lvmax;
+        actorName = actorData.name;
+    }
+
+    private void OnValidate()
+    {
+        if (prevLv != parameter.lv)
+        {
+            if (parameter.lv < 1) parameter.lv = 1;
+            if (parameter.lv > parameter.lvmax) parameter.lv = parameter.lvmax;
+            Reset();
+            parameter = GetParameterFromLv(parameter.lv);
+            prevLv = parameter.lv;
+        }
+    }
+
+
+    // レベルから参照したパラメーターを返す
+    private Params GetParameterFromLv(int lv)
+    {
+        Params p = new Params();
+        p.id = parameter.id;
+        p.lv = lv;
+        p.lvmax = parameter.lvmax;
+        for (int i = 0; i < lv; i++)
+        {
+            p.hp += paramsData[i].hp;
+            p.hpmax += paramsData[i].hpmax;
+            p.str += paramsData[i].str;
+            p.def += paramsData[i].def;
+            p.exp += paramsData[i].exp;
+            p.xp += paramsData[i].xp;
+        }
+        return p;
+    }
+
     // パラメーターのコピーを返す
     public Params GetParameter()
     {
         Params p = new Params();
         p.id = parameter.id;
         p.lv = parameter.lv;
+        p.lvmax = parameter.lvmax;
         p.hp = parameter.hp;
         p.hpmax = parameter.hpmax;
         p.str = parameter.str;
@@ -26,6 +76,7 @@ public class ActorParamsController : MonoBehaviour
     {
         parameter.id = p.id;
         parameter.lv = p.lv;
+        parameter.lvmax = p.lvmax;
         parameter.hp = p.hp;
         parameter.hpmax = p.hpmax;
         parameter.str = p.str;

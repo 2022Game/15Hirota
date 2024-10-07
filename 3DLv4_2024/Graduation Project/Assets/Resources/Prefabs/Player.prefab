@@ -8436,7 +8436,7 @@ GameObject:
   - component: {fileID: 144739883336975244}
   - component: {fileID: 7522716868439318746}
   m_Layer: 0
-  m_Name: unitychan_dynamic
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8760,10 +8760,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parameter:
     id: 0
-    lv: 1
-    hp: 50
-    hpmax: 100
-    str: 5
-    def: 5
-    exp: 0
+    lv: 2
+    lvmax: 10
+    hp: 52
+    hpmax: 102
+    str: 6
+    def: 6
+    exp: 10
     xp: 0
+  actorName: "\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
