@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Xml.Linq;
+using static ExcelActorData;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class LoadFieldMap : MonoBehaviour
 {
@@ -7,6 +10,8 @@ public class LoadFieldMap : MonoBehaviour
     public Field field;
     public ActorMovement player;
     public GameObject enemies;
+    public GameObject items;
+    List<ActorData> actorDatas = new List<ActorData>();
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +55,8 @@ public class LoadFieldMap : MonoBehaviour
                         break;
                 }
             }
+            // 個々の処理は本来はDataActorで取得できるがエラーが発生するので
+            // そのままプレハブから取得している
             foreach (var objgp in map.Elements("objectgroup"))
             {
                 switch (objgp.Attribute("id").Value)
@@ -74,6 +81,12 @@ public class LoadFieldMap : MonoBehaviour
                                 GameObject enemy = Instantiate(enemyObj, enemies.transform);
                                 enemy.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
                                 enemy.GetComponent<EnemyOperation>().target = player;
+                            }
+                            if (name.Contains("Item"))
+                            {
+                                GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + name);
+                                GameObject item = Instantiate(itemObj, items.transform);
+                                item.GetComponent<ItemMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
                             }
                         }
                         break;

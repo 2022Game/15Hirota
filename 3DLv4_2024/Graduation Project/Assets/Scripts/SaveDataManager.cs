@@ -7,6 +7,7 @@ public class SaveDataManager : MonoBehaviour
     public Field field;
     public GameObject player;
     public GameObject enemies;
+    public GameObject items;
     private SaveData saveData;
     private const string saveKey = "GameData";
 
@@ -78,6 +79,37 @@ public class SaveDataManager : MonoBehaviour
         }
     }
 
+    // アイテムデータを作成、返す
+    private ItemSaveData[] MakeItemDatas()
+    {
+        int itemCount = items.transform.childCount;
+        ItemSaveData[] itemSaveDatas = new ItemSaveData[itemCount];
+        for (int i = 0; i < itemCount; i++)
+        {
+            Transform it = items.transform.GetChild(i);
+            ItemMovement move = it.GetComponent<ItemMovement>();
+            ItemSaveData itemSaveData = new ItemSaveData();
+            itemSaveData.grid = new Pos2D();
+            itemSaveData.grid.x = move.grid.x;
+            itemSaveData.grid.z = move.grid.z;
+            itemSaveDatas[i] = itemSaveData;
+        }
+        return itemSaveDatas;
+    }
+
+
+    // アイテムデータをマップ上に反映する
+    private void LoadItemData(SaveData saveData)
+    {
+        GameObject itemObj = (GameObject)Resources.Load("Prefabs/Item1");
+        foreach (var data in saveData.itemDatas)
+        {
+            GameObject it = Instantiate(itemObj, items.transform);
+            ItemMovement move = it.GetComponent<ItemMovement>();
+            move.SetPosition(data.grid.x, data.grid.z);
+        }
+    }
+
     // マップデータを作成、返す
     private MapSaveData MakeMapData()
     {
@@ -99,6 +131,7 @@ public class SaveDataManager : MonoBehaviour
         saveData.playerData = MakePlayerData();
         saveData.enemyDatas = MakeEnemyDatas();
         saveData.mapData = MakeMapData();
+        saveData.itemDatas = MakeItemDatas();
         PlayerPrefs.SetString(saveKey, JsonUtility.ToJson(saveData));
     }
 
@@ -112,6 +145,7 @@ public class SaveDataManager : MonoBehaviour
             LoadMapData(saveData);
             LoadEnemyDatas(saveData);
             LoadPlayerData(saveData);
+            LoadItemData(saveData);
         }
     }
 

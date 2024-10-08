@@ -7,6 +7,7 @@ public class Field : MonoBehaviour
     public GameObject line;
     public ActorMovement playerMovement;
     public GameObject enemies;
+    public GameObject items;
 
     private Array2D map;
     private const float oneTile = 1.0f;
@@ -72,6 +73,10 @@ public class Field : MonoBehaviour
     */
     public void Reset()
     {
+        for (int i =0; i < items.transform.childCount; i++)
+        {
+            Destroy(items.transform.GetChild(i).gameObject);
+        }
         for (int i = 0; i < enemies.transform.childCount; i++)
         {
             Destroy(enemies.transform.GetChild(i).gameObject);
