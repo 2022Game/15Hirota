@@ -40,6 +40,9 @@
 #include "CSpring.h"
 #include "CAlwaysVerticalNeedle.h"
 #include "CRotationg.h"
+#include "CRengaBlock.h"
+#include "CHatenaBlock.h"
+#include "CPicoChan.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -145,8 +148,30 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("Rotationg", "GameGimmick\\Gimmick\\Rotate\\Rotationg.obj");
 	// ずっと回転する床コライダー
 	CResourceManager::Load<CModel>("Rotationg", "GameGimmick\\Gimmick\\Rotate\\RotationgCol.obj");
+	// ハテナブロック(アイテム保有)
+	CResourceManager::Load<CModel>("HatenaBlock", "GameGimmick\\Gimmick\\Block\\hatena.obj");
+	// ハテナブロック(アイテム不保有)
+	CResourceManager::Load<CModel>("HatenaBlockAfter", "GameGimmick\\Gimmick\\Block\\UsedHatenaBlock.obj");
+	// レンガブロック
+	CResourceManager::Load<CModel>("RengaBlock", "GameGimmick\\Gimmick\\Block\\RengaBlock.obj");
+
+	// 回復オブジェクト
+	CResourceManager::Load<CModel>("Heart", "Item\\StatusItem\\Heart.obj");
+	// 無敵オブジェクト
+	CResourceManager::Load<CModel>("Star", "Item\\StatusItem\\Star.obj");
+	// 得点オブジェクト
+	CResourceManager::Load<CModel>("Medal", "Item\\StatusItem\\Medal.obj");
+	// 回復薬オブジェクト
+	CResourceManager::Load<CModel>("Healing", "Item\\StatusItem\\HealingItem.obj");
+	// 攻撃力アップモデル
+	CResourceManager::Load<CModel>("AttackPotion", "Item\\StatusItem\\AttackPotion.obj");
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
+
+	// キャラクターエフェクト
+	CResourceManager::Load<CModel>("CharEffect", "Effect\\CharacterEffect\\CharacterEffect(Up).obj");
+	// キャラクターエフェクト(ライン)
+	CResourceManager::Load<CModel>("LineEffect", "Effect\\CharacterEffect\\CharacterEffect(Line).obj");
 
 	// アイテム関連
 	// ブルーメダルモデル
@@ -611,42 +636,69 @@ void CStage1::Load()
 	);
 	AddTask(rotationg1);
 
-	// 大砲(偏差撃ち)
-	CPowerfulCannon* targetCannon = new CPowerfulCannon
+	// レンガブロック1
+	CRengaBlock* renga1 = new CRengaBlock
 	(
-		CVector(26.0f, -5.0f, 1700.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, 180.0f, 0.0f),
-		"Cannon"
+		CVector(112.0f, 0.0f, 187.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		ETag::ePlayer, ELayer::ePlayer
 	);
-	AddTask(targetCannon);
-	// 大砲土台
-	CCannonFoundationsBase* targetCannonfound = new CCannonFoundationsBase
+	AddTask(renga1);
+	// ハテナブロック1
+	CHatenaBlock* hatena1 = new CHatenaBlock
 	(
-		CVector(26.0f, -5.0f, 1700.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, 180.0f, 0.0f)
+		CVector(112.0f, 0.0f, 195.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		ETag::ePlayer, ELayer::ePlayer
 	);
-	AddTask(targetCannonfound);
+	AddTask(hatena1);
+	// レンガブロック1
+	CRengaBlock* renga2 = new CRengaBlock
+	(
+		CVector(112.0f, 0.0f, 203.0f),
+		CVector(6.0f, 6.0f, 6.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(renga2);
 
-	// 大砲
-	CCannon* Cannon = new CCannon
-	(
-		CVector(10.0f, 0.0f, 1600.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, 90.0f, 0.0f),
-		"Cannon"
-	);
-	AddTask(Cannon);
-	// 大砲土台
-	CCannonFoundationsBase* Cannonfound = new CCannonFoundationsBase
-	(
-		CVector(10.0f, 0.0f, 1600.0f),
-		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, 0.0f, 0.0f)
-	);
-	AddTask(Cannonfound);
+	//// 大砲(偏差撃ち)
+	//CPowerfulCannon* targetCannon = new CPowerfulCannon
+	//(
+	//	CVector(26.0f, -5.0f, 1700.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, 180.0f, 0.0f),
+	//	"Cannon"
+	//);
+	//AddTask(targetCannon);
+	//// 大砲土台
+	//CCannonFoundationsBase* targetCannonfound = new CCannonFoundationsBase
+	//(
+	//	CVector(26.0f, -5.0f, 1700.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, 180.0f, 0.0f)
+	//);
+	//AddTask(targetCannonfound);
 
+	//// 大砲
+	//CCannon* Cannon = new CCannon
+	//(
+	//	CVector(10.0f, 0.0f, 1600.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, 90.0f, 0.0f),
+	//	"Cannon"
+	//);
+	//AddTask(Cannon);
+
+	//// 大砲土台
+	//CCannonFoundationsBase* Cannonfound = new CCannonFoundationsBase
+	//(
+	//	CVector(10.0f, 0.0f, 1600.0f),
+	//	CVector(2.0f, 2.0f, 2.0f),
+	//	CVector(0.0f, 0.0f, 0.0f)
+	//);
+	//AddTask(Cannonfound);
+
+	// 道中の揺れる弾の大砲 //
 	// 大砲
 	CHorizontalCannon* cannon1 = new CHorizontalCannon
 	(
@@ -681,66 +733,59 @@ void CStage1::Load()
 	);
 	AddTask(cannonfound2);
 
-	////// 火炎放射器モデル
-	////// 右方向 
-	////CFixedFlamethrower* flamethrower2 = new CFixedFlamethrower
-	////(
-	////	CVector(-100.0f, 15.0f, 625.0f),
-	////	CVector(2.0f, 2.0f, 2.0f),
-	////	CVector(0.0f, -90.0f, 0.0f)
-	////);
-	////AddTask(flamethrower2);
-	////// 火炎放射器の土台
-	////CRisingObject* dodai2 = new CRisingObject
-	////(
-	////	CVector(-100.0f, 15.0f, 625.0f),
-	////	CVector(1.0f, 1.0f, 1.0f),
-	////	ETag::ePlayer, ELayer::ePlayer
-	////);
-	////AddTask(dodai2);
-
+	// お肉アイテム
+	// 肉1
 	CMeat1* meat1 = new CMeat1
 	(
-		CVector(0.0f, 45.0f, 134.0f),
+		CVector(26.0f, 16.0f, 341.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);
 	AddTask(meat1);
 	meat1->SetMeatNumber(1);
 
+	// 肉2
 	CMeat2* meat2 = new CMeat2
 	(
-		CVector(70.0f, 25.0f, 390.0f),
+		CVector(-296.0f, 45.0f, 1080.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);
 	meat2->SetMeatNumber(2);
 	AddTask(meat2);
 
+	// 肉3
 	CMeat3* meat3 = new CMeat3
 	(
-		CVector(-70.0f, 25.0f, 390.0f),
+		CVector(26.0f, 25.0f, 1407.0f),
 		CVector(0.0f, 0.0f, 0.0f),
 		CVector(4.0f, 4.0f, 4.0f)
 	);
 	meat3->SetMeatNumber(3);
 	AddTask(meat3);
 
+	//// ピコちゃん
+	//CPicoChan* pico = new CPicoChan();
+	//pico->Position(26.0f, 8.0f, 195.0f);
+	//pico->Scale(15.5f, 15.5f, 15.5f);
+	//pico->SetCenterPoint(CVector(26.0f, 6.0f, 195.0f), 20.0f);
+	//AddTask(pico);
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
+	// 初期値点		   : 26.0f, 6.5f, -28.0f
 	// セーブポイント1 : 26.0f, 10.0f, 390.0f
 	// セーブポイント2 : 26.0f, 10.0f, 673.0f
 	// ゴール前		   : 26.0f, 10.0f, 1380.0f
-	CVector playerPos = CVector(26.0f, 10.0f, 1380.0f);
+	CVector playerPos = CVector(26.0f, 6.5f, -28.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
 		player->Rotation(0.0f, 0.0f, 0.0f);
 	}
 	// カメラの位置と向きを設定
-	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 20.0f, -80.0f);
+	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 19.0f, -80.0f);
 	CCamera* mainCamera = CCamera::MainCamera();
 	mainCamera->LookAt(
 		camPos,
@@ -754,8 +799,8 @@ void CStage1::Load()
 
 
 	// ブルーメダル獲得イベントを生成
-	CBlueMedalEvent* bmEvent = new CBlueMedalEvent();
-	AddTask(bmEvent);
+	/*CBlueMedalEvent* bmEvent = new CBlueMedalEvent();
+	AddTask(bmEvent);*/
 
 	///////////////////////////////////////////////////////////////////////////
 

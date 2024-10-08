@@ -8435,6 +8435,7 @@ GameObject:
   - component: {fileID: 4496677277841315748}
   - component: {fileID: 144739883336975244}
   - component: {fileID: 7522716868439318746}
+  - component: {fileID: 4052380344925068634}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -8694,17 +8695,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d140d8905f79d104087464e38c171783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 9500000}
-  direction: 1
-  speed: 0.9
-  speedDampTime: 0.1
   grid:
     x: 0
     z: 0
   newGrid:
     x: 0
     z: 0
+  direction: 1
   maxPerFrame: 1.67
+  animator: {fileID: 9500000}
+  speed: 0.9
+  speedDampTime: 0.1
 --- !u!114 &6658354057550921997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8769,3 +8770,17 @@ MonoBehaviour:
     exp: 10
     xp: 0
   actorName: "\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
+--- !u!114 &4052380344925068634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49d2c2007dff0924d9f99821193f2639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemNumMax: 10
+  items: []

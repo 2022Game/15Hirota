@@ -11,7 +11,9 @@ public class LoadFieldMap : MonoBehaviour
     public ActorMovement player;
     public GameObject enemies;
     public GameObject items;
-    List<ActorData> actorDatas = new List<ActorData>();
+    //List<ActorData> actorDatas = new List<ActorData>();
+    // 合っているとは思うが後々問題が出たら直接prefabsからデータを取得する方針にする
+    private List<ActorData> actorDatas = new List<ActorData>();
 
     // Start is called before the first frame update
     void Start()
@@ -71,12 +73,11 @@ public class LoadFieldMap : MonoBehaviour
                             string name = obj.Attribute("name").Value;
                             if (name == "Player")
                             {
-                                player.SetPosition(ToMirrorX(x / pw, w), z / ph);
+                                player.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
                                 continue;
                             }
                             if (name.Contains("Enemy"))
                             {
-                                // ここを変更している
                                 GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + name);
                                 GameObject enemy = Instantiate(enemyObj, enemies.transform);
                                 enemy.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
@@ -88,6 +89,23 @@ public class LoadFieldMap : MonoBehaviour
                                 GameObject item = Instantiate(itemObj, items.transform);
                                 item.GetComponent<ItemMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
                             }
+                            // この処理でも実行できるが、プレイヤーをエネミーの位置がおかしいため
+                            // 今までの処理を実行
+                            //foreach (var actorData in actorDatas)
+                            //{
+                            //    if (name == actorData.prefab)
+                            //    {
+                            //        if (actorData.id > 0)
+                            //        {
+                            //            GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + name);
+                            //            GameObject enemy = Instantiate(enemyObj, enemies.transform);
+                            //            enemy.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
+                            //            enemy.GetComponent<EnemyOperation>().target = player;
+                            //            break;
+                            //        }
+                            //        break;
+                            //    }
+                            //}
                         }
                         break;
                 }

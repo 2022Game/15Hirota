@@ -68,7 +68,7 @@ void CPowerfulCannon::Update()
     // 水平距離
     float HorizontalDistance = DirectionToPlayer.Length();
     DirectionToPlayer.Normalize();
-    // 回転速度を調整できる
+    // 回転速度を調整
     float RotationSpeed = 1.0f;
     // 向きをSlerpで補間
     CVector Forward = CVector::Slerp(CannonForward, DirectionToPlayer, RotationSpeed);
@@ -129,7 +129,7 @@ void CPowerfulCannon::Update()
         float initialVerticalSpeed = (TargetY - InitialY + VerticalDrop) / TimeToPlayer;
 
         // 弾の発射方向を計算
-        CVector DirectionToTarget(PredictedPlayerX - CannonPos.X(), TargetY * 0.3f - InitialY * 0.3f, PredictedPlayerZ - CannonPos.Z());
+        CVector DirectionToTarget(PredictedPlayerX - CannonPos.X(), TargetY * 0.2f - InitialY * 0.2f, PredictedPlayerZ - CannonPos.Z());
         // 単位ベクトルに正規化
         DirectionToTarget.Normalize();
 

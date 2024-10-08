@@ -3882,6 +3882,7 @@ GameObject:
   - component: {fileID: 6677289447604826363}
   - component: {fileID: 4674998360771244642}
   - component: {fileID: -992544589661613256}
+  - component: {fileID: -6273848224669715841}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Untagged
@@ -3955,17 +3956,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d140d8905f79d104087464e38c171783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 4414871117303439920}
-  direction: 1
-  speed: 0.9
-  speedDampTime: 0.1
   grid:
     x: 0
     z: 0
   newGrid:
     x: 0
     z: 0
+  direction: 1
   maxPerFrame: 1.67
+  animator: {fileID: 4414871117303439920}
+  speed: 0.9
+  speedDampTime: 0.1
 --- !u!114 &6677289447604826363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4017,6 +4018,20 @@ MonoBehaviour:
     exp: 0
     xp: 10
   actorName: "\u30DF\u30CE\u30BF\u30A6\u30ED\u30B9"
+--- !u!114 &-6273848224669715841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414871117303439921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49d2c2007dff0924d9f99821193f2639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemNumMax: 10
+  items: []
 --- !u!1 &4414871117353324497
 GameObject:
   m_ObjectHideFlags: 0

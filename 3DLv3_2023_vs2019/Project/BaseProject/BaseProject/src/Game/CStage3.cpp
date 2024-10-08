@@ -181,7 +181,7 @@ void CStage3::Load()
 	// 針モデル(左右)
 	CResourceManager::Load<CModel>("NeedleLeftRight",				"GameGimmick\\Gimmick\\Needle\\LeftRight\\NeedleObjLeftRight(Needle).obj");
 	// 針モデルコライダー(左右)
-	CResourceManager::Load<CModel>("NeedleColLeftRight",			"GameGimmick\\Gimmick\\Needle\\LeftRight\\eedleObjLeftRight(NeedleCol).obj");
+	CResourceManager::Load<CModel>("NeedleColLeftRight",			"GameGimmick\\Gimmick\\Needle\\LeftRight\\NeedleObjLeftRight(NeedleCol).obj");
 	// 針ベースモデル(左右)
 	CResourceManager::Load<CModel>("NeedleBaseLeftRight",			"GameGimmick\\Gimmick\\Needle\\LeftRight\\NeedleObjLeftRight(Base).obj");
 	// 針ベースコライダー(左右)
@@ -232,6 +232,14 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("CharEffect", "Effect\\CharacterEffect\\CharacterEffect(Up).obj");
 	// キャラクターエフェクト(ライン)
 	CResourceManager::Load<CModel>("LineEffect", "Effect\\CharacterEffect\\CharacterEffect(Line).obj");
+	// エフェクト
+	CResourceManager::Load<CModel>("CircleEffect1", "Effect\\CharacterEffect\\CharaEffectCircle.obj");
+	CResourceManager::Load<CModel>("CircleEffect2", "Effect\\CharacterEffect\\CharaEffectCircle(Widthver).obj");
+	// キャラクターエフェクト
+	CResourceManager::Load<CModel>("CharEffect", "Effect\\CharacterEffect\\CharacterEffect(Up).obj");
+	// キャラクターエフェクト(ライン)
+	CResourceManager::Load<CModel>("LineEffect", "Effect\\CharacterEffect\\CharacterEffect(Line).obj");
+
 
 	// Tキーの画像
 	CResourceManager::Load<CTexture>("TUI", "UI\\GimmickUI\\T.png");

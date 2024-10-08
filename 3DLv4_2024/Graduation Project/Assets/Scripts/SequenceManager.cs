@@ -7,18 +7,26 @@ public class SequenceManager : MonoBehaviour
 {
     public ActorAction playerAction;
     public GameObject enemies;
+    public InventoryAction inventoryAction;
 
     private List<ActorAction> actEnemies = new List<ActorAction>();
     private List<ActorAction> moveEnemies = new List<ActorAction>();
     private List<ActorAction> operatedEnemies = new List<ActorAction>();
-    private bool isEnemyDeterminedBehaviour = false;
+    private bool isEnemyDeterminedBehaviour = false;   
 
     // Update is called once per frame
     void Update()
     {
+        EAct iAct = inventoryAction.GetAction();
+        if (iAct != EAct.KeyInput)
+        {
+            inventoryAction.Proc();
+            return;
+        }
         EAct pAct = playerAction.GetAction();
         if (pAct == EAct.KeyInput || pAct == EAct.ActBegin || pAct == EAct.Act)
         {
+            inventoryAction.Proc();
             playerAction.Proc();
             AllEnemyStopWalkingAnimation();
             return;
