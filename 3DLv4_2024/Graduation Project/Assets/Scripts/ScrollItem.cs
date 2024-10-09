@@ -18,8 +18,8 @@ public class ScrollItem : MonoBehaviour
         float x2 = x1 + transform.rect.width;
         float vx1 = viewport.rect.x + viewport.position.x;
         float vx2 = vx1 + viewport.rect.width;
-        if (x1 < vx2) return new Vector3(vx1 - x1 + paddingX, 0);
-        if (x2 < vx2) return new Vector3(vx2 - x2 + paddingX, 0);
+        if (x1 < vx1) return new Vector3(vx1 - x1 + paddingX, 0);
+        if (x2 > vx2) return new Vector3(vx2 - x2 - paddingX, 0);
         return new Vector3(0, 0);
     }
 

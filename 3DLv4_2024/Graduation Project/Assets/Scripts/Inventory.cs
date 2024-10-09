@@ -11,7 +11,7 @@ public class Inventory : MonoBehaviour
     // もし所持可能数を超えていなければ、アイテムをインベントリに加える
     public bool Add(Item it)
     {
-        if (items.Count <itemNumMax)
+        if (items.Count < itemNumMax)
         {
             items.Add(it);
             return true;

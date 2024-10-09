@@ -31,17 +31,17 @@ void CStage3::Load()
 {
 	// ステージ関連
 	// ステージの空
-	CResourceManager::Load<CModel>("StageSky",						"Field\\StageSky\\Sky(Sphere).obj");
+	CResourceManager::Load<CModel>("StageSky",		"Field\\StageSky\\Sky(Sphere).obj");
 	// ステージモデル
-	CResourceManager::Load<CModel>("Stage3Base",							"Field\\GameStage(Worlds_3)\\GameStage_1(Stage).obj");
-	// ステージ空モデル
-	CResourceManager::Load<CModel>("StageSky",						"Field\\GameStage(Worlds_3)\\GameStage_1(StageSky).obj");
+	CResourceManager::Load<CModel>("Stage3Base",	"Field\\Final Stage\\Base.obj");
+	// ステージのラインモデル
+	CResourceManager::Load<CModel>("Stage3Line",	"Field\\Final Stage\\Line.obj");
 	// 床のコライダー
-	CResourceManager::Load<CModel>("Stage3FallCol",						"Field\\GameStage(Worlds_3)\\GameStage_1(floorCol).obj");
+	CResourceManager::Load<CModel>("Stage3FloorCol","Field\\Final Stage\\FloorCol.obj");
 	// 壁のコライダー
-	CResourceManager::Load<CModel>("WallCol",						"Field\\GameStage(Worlds_3)\\GameStage_1(wallCol).obj");
+	//CResourceManager::Load<CModel>("WallCol",		"Field\\GameStage(Worlds_3)\\GameStage_1(wallCol).obj");
 	// 落下判定コライダー
-	CResourceManager::Load<CModel>("FallCol",						"Field\\GameStage(Worlds_3)\\GameStage_1(FallCol).obj");
+	//CResourceManager::Load<CModel>("Stage3FallCol",	"Field\\GameStage(Worlds_3)\\GameStage_1(FallCol).obj");
 	
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
