@@ -156,20 +156,20 @@ CSoldier::CSoldier()
 	mpColliderCapsule = new CColliderCapsule
 	(
 		this, ELayer::eEnemy,
-		CVector(0.0f, 8.0f, 2.0f),
-		CVector(0.0f, ENEMY_HEIGHT, 2.0f),
-		4.0f,
+		CVector(0.0f, 4.0f, 2.0f),
+		CVector(0.0f, 12.0f, 2.0f),
+		5.0f,
 		true,
 		1.0f
 	);
 	mpColliderCapsule->SetCollisionLayers({ ELayer::eFieldWall ,ELayer::eField, ELayer::eFieldEnemyWall });
-	mpColliderCapsule->Position(0.0f, 5.0f, 1.0f);
+	//mpColliderCapsule->Position(0.0f, 0.0f, 0.0f);
 
 	// ダメージを与えるコライダー
 	mpAttackCol = new CColliderSphere
 	(
 		this, ELayer::eKickCol,
-		0.3f
+		1.3f
 	);
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpAttackCol->SetCollisionLayers({ ELayer::eDamageCol });
@@ -183,13 +183,13 @@ CSoldier::CSoldier()
 	mpDamageCol = new CColliderSphere
 	(
 		this, ELayer::eDamageCol,
-		0.5f
+		5.0f
 	);
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
 	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy });
 	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy });
-	// ダメージを受けるコライダーを少し下へずらす
-	//mpDamageCol->Position(0.0f, 0.0f, 0.0f);
+	// ダメージを受けるコライダーを少し↑へずらす
+	mpDamageCol->Position(0.0f, 8.0f, 0.0f);
 	const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
 	mpDamageCol->SetAttachMtx(spineMtx);
 

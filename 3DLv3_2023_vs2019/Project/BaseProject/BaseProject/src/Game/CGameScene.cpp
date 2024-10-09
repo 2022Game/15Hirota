@@ -56,13 +56,6 @@ void CGameScene::Load()
 	//ここでゲーム中に必要な
 	//リソースの読み込みやクラスの生成を行う
 
-	// フィールド関連
-	//CResourceManager::Load<CModel>("FieldCylinder",			 "Field\\Object\\cylinder.obj");					// 初期の回転する四角モデル
-	//CResourceManager::Load<CModel>("HatenaBlock",			 "Field\\Object\\hatena.obj");						// ハテナブロック(アイテム保有)
-	//CResourceManager::Load<CModel>("HatenaBlockAfter",		 "Field\\Object\\UsedHatenaBlock.obj");				// ハテナブロック(アイテム不保有)
-	//CResourceManager::Load<CModel>("RengaBlock",			 "Field\\Object\\RengaBlock.obj");					// レンガブロック
-
-
 	// キャラクター関連
 	CResourceManager::Load<CModelX>("Player",				"Character\\Monster1\\Monster_1.x");						// プレイヤー
 	// ピコちゃん
@@ -72,23 +65,34 @@ void CGameScene::Load()
 	// ヴァンガード
 	CResourceManager::Load<CModelX>("Vanguard", "Character\\Vanguard\\VanguardModel.x");
 
-	//CResourceManager::Load<CModelX>("Soldier",				"Character\\Gas mask soldier\\GasMask_Soldier_Model.x");	// ソルジャー
-	////CResourceManager::Load<CModelX>("UnityChan",			"Character\\UnityChan\\unitychan.x");						// ユニティちゃん
-	////CResourceManager::Load<CModelX>("Yukari",				"Character\\Yukari\\Yukari_Model.x");						// ゆかりさん
-
-
+	
 	// アイテム関連
-	//CResourceManager::Load<CModel>("Bullet",				"Item\\Bullet1\\Bullet.obj");				// 弾
-	//CResourceManager::Load<CModel>("Gun_M1G",				"Item\\Gun_M1Garand\\Gun_M1Garand.obj");	// M1ガーランド(銃)
-	CResourceManager::Load<CModel>("MajicSword",			"Item\\MajicSword\\MajicSword.obj");		// 魔法剣
-	CResourceManager::Load<CModel>("MajicSwordVan",			"Item\\MajicSword\\MajicSword(Van).obj");	// 魔法剣ヴァンガード
-	CResourceManager::Load<CModel>("MajicSwordPico", "Item\\MajicSword\\MajicSword(Pico).obj");	// 魔法剣ヴァンガード
-	//CResourceManager::Load<CModel>("Heart",					"Item\\StatusItem\\Heart.obj");				// 回復オブジェクト
-	//CResourceManager::Load<CModel>("Star",					"Item\\StatusItem\\Star.obj");				// 無敵オブジェクト
-	//CResourceManager::Load<CModel>("Medal",					"Item\\StatusItem\\Medal.obj");				// 得点オブジェクト
-	//CResourceManager::Load<CModel>("Healing",				"Item\\StatusItem\\HealingItem.obj");		// 回復薬オブジェクト
+	// 魔法剣
+	CResourceManager::Load<CModel>("MajicSword",			"Item\\MajicSword\\MajicSword.obj");
+	// 魔法剣ヴァンガード
+	CResourceManager::Load<CModel>("MajicSwordVan",			"Item\\MajicSword\\MajicSword(Van).obj");
+	// 魔法剣ヴァンガード
+	CResourceManager::Load<CModel>("MajicSwordPico", "Item\\MajicSword\\MajicSword(Pico).obj");
 	// とげとげボール
 	CResourceManager::Load<CModel>("SpikyBall", "Item\\AttackItem\\SpikyBall.obj");
+
+	// エフェクト関連
+	// 弾のエフェクト
+	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
+	// スラッシュエフェクト
+	CResourceManager::Load<CModel>("Slash", "Effect\\slash.obj");
+	// キャラクターエフェクト
+	CResourceManager::Load<CModel>("CharEffect", "Effect\\CharacterEffect\\CharacterEffect(Up).obj");
+	// キャラクターエフェクト(ライン)
+	CResourceManager::Load<CModel>("LineEffect", "Effect\\CharacterEffect\\CharacterEffect(Line).obj");
+	// エフェクト
+	CResourceManager::Load<CModel>("CircleEffect1", "Effect\\CharacterEffect\\CharaEffectCircle.obj");
+	CResourceManager::Load<CModel>("CircleEffect2", "Effect\\CharacterEffect\\CharaEffectCircle(Widthver).obj");
+	// キャラクターエフェクト
+	CResourceManager::Load<CModel>("CharEffect", "Effect\\CharacterEffect\\CharacterEffect(Up).obj");
+	// キャラクターエフェクト(ライン)
+	CResourceManager::Load<CModel>("LineEffect", "Effect\\CharacterEffect\\CharacterEffect(Line).obj");
+
 
 
 	// UI関連
@@ -111,12 +115,7 @@ void CGameScene::Load()
 	// キーのフレーム画像
 	CResourceManager::Load<CTexture>("Frame", "UI\\GimmickUI\\framework.png");
 
-	// アイテムUI関連
-	//CResourceManager::Load<CTexture>("InvincibleUI",		"UI\\Item\\Invincible Item.png");			// 無敵アイテム用のUI
-	//CResourceManager::Load<CTexture>("AttackUpUI",			"UI\\Item\\Increase Attack Power.png");		// 攻撃力アップアイテム用のUI
-	//CResourceManager::Load<CTexture>("HealthUI",			"UI\\Item\\Health Recovery Items.png");		// 防御力アップアイテム用のUI
-	//CResourceManager::Load<CTexture>("No ItemUI",			"UI\\Item\\NoItemUI.png");					// アイテム無し用のUI
-
+	
 	// BGM・SE関連
 	// 剣　スラッシュ
 	CResourceManager::Load<CSound>("SlashSound", "Sound\\SE\\slash.wav");

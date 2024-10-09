@@ -95,6 +95,8 @@
     <ClCompile Include="src\Game\CCircleNbFlRight3.cpp" />
     <ClCompile Include="src\Game\CClimbUI.cpp" />
     <ClCompile Include="src\Game\CCutInDeathJump.cpp" />
+    <ClCompile Include="src\Game\CFinalStageFallCol.cpp" />
+    <ClCompile Include="src\Game\CFinalStageField.cpp" />
     <ClCompile Include="src\Game\CHighKinoko.cpp" />
     <ClCompile Include="src\Game\CHorizontalCannon.cpp" />
     <ClCompile Include="src\Game\CHorizontalCannonBall.cpp" />
@@ -382,6 +384,8 @@
     <ClInclude Include="src\Game\CCircleNbFlRight3.h" />
     <ClInclude Include="src\Game\CClimbUI.h" />
     <ClInclude Include="src\Game\CCutInDeathJump.h" />
+    <ClInclude Include="src\Game\CFinalStageFallCol.h" />
+    <ClInclude Include="src\Game\CFinalStageField.h" />
     <ClInclude Include="src\Game\CHighKinoko.h" />
     <ClInclude Include="src\Game\CHorizontalCannon.h" />
     <ClInclude Include="src\Game\CHorizontalCannonBall.h" />

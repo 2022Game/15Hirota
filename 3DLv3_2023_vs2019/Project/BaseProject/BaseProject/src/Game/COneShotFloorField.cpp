@@ -5,7 +5,7 @@
 
 // コンストラクタ
 COneShotFloorField::COneShotFloorField()
-	: CObjectBase(ETag::eFall,ETaskPriority::eFall)
+	: CObjectBase(ETag::eField,ETaskPriority::eDefault)
 {
 	// ステージのモデル取得
 	mpStageModel = CResourceManager::Get<CModel>("Stage1Base");

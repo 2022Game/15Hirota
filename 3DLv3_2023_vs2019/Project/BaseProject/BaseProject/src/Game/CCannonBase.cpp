@@ -38,20 +38,24 @@ bool CCannonBase::IsFoundPlayer() const
     CVector playerPos = player->Position();
     CVector enemyPos = Position();
 
+    // プレイヤーへのベクトル
     CVector toPlayer = (playerPos - enemyPos).Normalized();
+    // 敵の前方向ベクトル
     CVector forward = Matrix().VectorZ().Normalized();
 
+    // ドット積計算 (前方向かどうかの判定)
     float dot = forward.Dot(toPlayer);
 
     // 視野角の半分を計算する
     float halfFOV = FOV_ANGLE * 0.5f;
 
-    // 視野角の半分より小さいかつプレイヤーとの距離が一定範囲以内であれば、プレイヤーを認識する
-    if (dot >= cosf(halfFOV * M_PI / 180.0f))
+    // 視野角内かつ前方向にプレイヤーがいるかチェック
+    if (dot >= cosf(halfFOV * M_PI / 180.0f) && dot > 0) // dot > 0 で前方向だけを対象にする
     {
         float distance = (playerPos - enemyPos).Length();
         const float chaseRange = 350.0f;
 
+        // プレイヤーとの距離が一定範囲以内であれば追跡
         if (distance <= chaseRange)
             return true;
     }

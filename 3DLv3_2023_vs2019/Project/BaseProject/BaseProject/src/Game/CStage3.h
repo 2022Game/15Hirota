@@ -2,8 +2,8 @@
 #define CSTAGE3_H
 #include "CStageBase.h"
 
-class CPlainsStageField;
-class CPlainsStageFallCol;
+class CFinalStageField;
+class CFinalStageFallCol;
 class CStageTime;
 class CStageSky;
 
@@ -22,8 +22,8 @@ public:
 	void Unload() override;
 
 private:
-	CPlainsStageField* mpPlainsStageField;	// フィールド
-	CPlainsStageFallCol* mpCPlainsStageFallCol;
+	CFinalStageField* mpFinalStage;
+	CFinalStageFallCol* mpFinalStageFallCol;
 
 	CStageSky* mpSky;
 };

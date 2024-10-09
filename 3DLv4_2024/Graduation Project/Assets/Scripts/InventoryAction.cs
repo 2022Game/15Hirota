@@ -6,6 +6,7 @@ using UnityEngine;
 public class InventoryAction : MonoBehaviour
 {
     public InventoryAnimation anim;
+    public ItemSlotDisplay display;
 
     private EAct action = EAct.KeyInput;
     private bool isOpen = false;
@@ -72,7 +73,11 @@ public class InventoryAction : MonoBehaviour
     private void MoveBegin()
     {
         isOpen = !isOpen;
-        if (isOpen) gameObject.SetActive(true);
+        if (isOpen)
+        {
+            display.Show();
+            gameObject.SetActive(true);
+        }
         action = EAct.Move;
     }
 

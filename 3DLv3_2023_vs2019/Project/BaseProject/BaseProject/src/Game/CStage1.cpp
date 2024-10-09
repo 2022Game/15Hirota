@@ -168,11 +168,6 @@ void CStage1::Load()
 	// 肉モデル
 	CResourceManager::Load<CModel>("Meat", "Item\\StageItem\\niku.obj");
 
-	// キャラクターエフェクト
-	CResourceManager::Load<CModel>("CharEffect", "Effect\\CharacterEffect\\CharacterEffect(Up).obj");
-	// キャラクターエフェクト(ライン)
-	CResourceManager::Load<CModel>("LineEffect", "Effect\\CharacterEffect\\CharacterEffect(Line).obj");
-
 	// アイテム関連
 	// ブルーメダルモデル
 	CResourceManager::Load<CModel>("BlueMedal", "Item\\BlueMedal\\Bluemedal.obj");

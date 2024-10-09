@@ -151,14 +151,6 @@ void CStage2::Load()
 	// 攻撃力アップモデル
 	CResourceManager::Load<CModel>("AttackPotion",	"Item\\StatusItem\\AttackPotion.obj");
 
-	// エフェクト
-	CResourceManager::Load<CModel>("CircleEffect1",			"Effect\\CharacterEffect\\CharaEffectCircle.obj");
-	CResourceManager::Load<CModel>("CircleEffect2",			"Effect\\CharacterEffect\\CharaEffectCircle(Widthver).obj");
-	// キャラクターエフェクト
-	CResourceManager::Load<CModel>("CharEffect",			"Effect\\CharacterEffect\\CharacterEffect(Up).obj");
-	// キャラクターエフェクト(ライン)
-	CResourceManager::Load<CModel>("LineEffect",			"Effect\\CharacterEffect\\CharacterEffect(Line).obj");
-
 	// Tキーの画像
 	CResourceManager::Load<CTexture>("TUI", "UI\\GimmickUI\\T.png");
 
