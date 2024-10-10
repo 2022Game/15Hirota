@@ -7,6 +7,8 @@ public class InventoryAction : MonoBehaviour
 {
     public InventoryAnimation anim;
     public ItemSlotDisplay display;
+    public GameObject subMenu;
+    private Item selectItem = null;
 
     private EAct action = EAct.KeyInput;
     private bool isOpen = false;
@@ -48,7 +50,12 @@ public class InventoryAction : MonoBehaviour
     */
     private void ActBegin()
     {
-        KeyInput();
+        if (selectItem == null)
+        {
+            KeyInput();
+            SelectItem();
+        }
+        else UnSelectItem();
     }
 
     /**
@@ -124,5 +131,25 @@ public class InventoryAction : MonoBehaviour
     private void TurnEnd()
     {
         action = EAct.KeyInput;
+    }
+
+    // アイテムを選択
+    private void SelectItem()
+    {
+        if (Input.anyKeyDown && Input.GetKeyDown(KeyCode.Space))
+        {
+            selectItem = display.GetSelectItem();
+            if (selectItem != null) subMenu.SetActive(true);
+        }
+    }
+
+    // アイテムの選択を解除
+    private void UnSelectItem()
+    {
+        if (Input.anyKeyDown && Input.GetKeyDown(KeyCode.E))
+        {
+            selectItem = null;
+            subMenu.SetActive(false);
+        }
     }
 }

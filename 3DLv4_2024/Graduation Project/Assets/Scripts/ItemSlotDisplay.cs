@@ -103,4 +103,7 @@ public class ItemSlotDisplay : MonoBehaviour
             }
         }
     }
+
+    // 現在選択しているアイテムスロットのアイテムを返す
+    public Item GetSelectItem() => inventory.Get(selectItemIndex);
 }
