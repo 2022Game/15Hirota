@@ -21,22 +21,22 @@ public class ItemSlotDisplay : MonoBehaviour
         selectItemIndex = prevViewSelectItemIndex = view.GetSelectItemIndex();
     }
 
-    // Update is called once per frame
-    void Update()
+    // EDirを受け取って、その方向にカーソルを動かす
+    public bool MoveSelect(EDir d)
     {
-        if (!gameObject.activeInHierarchy) return;
+        if (!view.MoveSelect(d)) return false;
         int viewSelectItemIndex = view.GetSelectItemIndex();
-        if (viewSelectItemIndex == prevViewSelectItemIndex) return;
         ScrollItem[] contents = content.GetComponentsInChildren<ScrollItem>();
         if (viewSelectItemIndex == prevViewSelectItemIndex + 1)
         {
-            if (viewSelectItemIndex == maxShowItemNum - 1 && selectItemIndex < inventory.itemNumMax - 2)
+            if (viewSelectItemIndex > maxShowItemNum - 2 && selectItemIndex < inventory.itemNumMax - 2)
             {
                 contents[0].transform.SetParent(null);
                 contents[0].transform.SetParent(content.transform);
                 leadShowItemIndex++;
                 Vector3 moveDistance = contents[viewSelectItemIndex].GetBackDistance(true);
                 view.MoveContentPosition(moveDistance);
+                viewSelectItemIndex--;
                 ShowItemInfo();
             }
         }
@@ -47,7 +47,7 @@ public class ItemSlotDisplay : MonoBehaviour
         }
         if (viewSelectItemIndex == prevViewSelectItemIndex - 1)
         {
-            if (viewSelectItemIndex == 0 && selectItemIndex > 1)
+            if (viewSelectItemIndex < 1 && selectItemIndex > 1)
             {
                 for (int i = 0; i < maxShowItemNum - 1; i++)
                     contents[i].transform.SetParent(null);
@@ -56,6 +56,7 @@ public class ItemSlotDisplay : MonoBehaviour
                 leadShowItemIndex--;
                 Vector3 moveDistance = contents[viewSelectItemIndex].GetBackDistance(false);
                 view.MoveContentPosition(moveDistance);
+                viewSelectItemIndex++;
                 ShowItemInfo();
             }
         }
@@ -66,7 +67,55 @@ public class ItemSlotDisplay : MonoBehaviour
         }
         selectItemIndex = leadShowItemIndex + viewSelectItemIndex;
         prevViewSelectItemIndex = viewSelectItemIndex;
+        return true;
     }
+
+    // Update is called once per frame
+    //void Update()
+    //{
+    //    if (!gameObject.activeInHierarchy) return;
+    //    int viewSelectItemIndex = view.GetSelectItemIndex();
+    //    if (viewSelectItemIndex == prevViewSelectItemIndex) return;
+    //    ScrollItem[] contents = content.GetComponentsInChildren<ScrollItem>();
+    //    if (viewSelectItemIndex == prevViewSelectItemIndex + 1)
+    //    {
+    //        if (viewSelectItemIndex == maxShowItemNum - 1 && selectItemIndex < inventory.itemNumMax - 2)
+    //        {
+    //            contents[0].transform.SetParent(null);
+    //            contents[0].transform.SetParent(content.transform);
+    //            leadShowItemIndex++;
+    //            Vector3 moveDistance = contents[viewSelectItemIndex].GetBackDistance(true);
+    //            view.MoveContentPosition(moveDistance);
+    //            ShowItemInfo();
+    //        }
+    //    }
+    //    if (prevViewSelectItemIndex == maxShowItemNum - 1 && viewSelectItemIndex == 0)
+    //    {
+    //        leadShowItemIndex = 0;
+    //        ShowItemInfo();
+    //    }
+    //    if (viewSelectItemIndex == prevViewSelectItemIndex - 1)
+    //    {
+    //        if (viewSelectItemIndex == 0 && selectItemIndex > 1)
+    //        {
+    //            for (int i = 0; i < maxShowItemNum - 1; i++)
+    //                contents[i].transform.SetParent(null);
+    //            for (int i = 0; i < maxShowItemNum - 1; i++)
+    //                contents[i].transform.SetParent(content.transform);
+    //            leadShowItemIndex--;
+    //            Vector3 moveDistance = contents[viewSelectItemIndex].GetBackDistance(false);
+    //            view.MoveContentPosition(moveDistance);
+    //            ShowItemInfo();
+    //        }
+    //    }
+    //    if (prevViewSelectItemIndex == 0 && viewSelectItemIndex == maxShowItemNum - 1)
+    //    {
+    //        leadShowItemIndex = inventory.itemNumMax - maxShowItemNum;
+    //        ShowItemInfo();
+    //    }
+    //    selectItemIndex = leadShowItemIndex + viewSelectItemIndex;
+    //    prevViewSelectItemIndex = viewSelectItemIndex;
+    //}
 
     /**
     * インベントリを参照し、アイテムスロットを表示する

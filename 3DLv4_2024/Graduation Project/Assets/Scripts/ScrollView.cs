@@ -6,11 +6,11 @@ public class ScrollView : MonoBehaviour
 {
     public GameObject viewPort;
     public GameObject content;
-    public float inputHoldDelay = 0.5f;
+    //public float inputHoldDelay = 0.5f;
     public float maxPerFrameScroll = 0.3f;
 
     private int selectItemIndex = 0;
-    private float time = 0;
+    //private float time = 0;
     private float prevPosX;
     private float nextPosX;
     private int frame = 0;
@@ -24,49 +24,70 @@ public class ScrollView : MonoBehaviour
         nextPosX = prevPosX = content.transform.position.x;
     }
 
-    // Update is called once per frame
-    void Update()
+    // EDirを受け取って、その方向にカーソルを動かす
+    public bool MoveSelect(EDir d)
     {
-        if (!transform.parent.gameObject.activeInHierarchy) return;
         ScrollItem[] contents = content.GetComponentsInChildren<ScrollItem>();
-        if (contents.Length < 1) return;
-        if (frame > 0) Move(nextPosX, maxPerFrameScroll);
+        if (contents.Length < 1) return true;
+        if (frame > 0) return Move(nextPosX, maxPerFrameScroll);
         selectItemIndex = GetSelectItemIndexFor(contents);
-        Vector3 moveDistance;
-        if (Input.anyKeyDown)
-        {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                selectItemIndex = (selectItemIndex + 1) % contents.Length;
-            }
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                selectItemIndex = (selectItemIndex + contents.Length - 1) % contents.Length;
-            }
-            moveDistance = contents[selectItemIndex].GetMoveDistance(viewPort.GetComponent<RectTransform>());
-            nextPosX = content.transform.position.x + moveDistance.x;
-            Move(nextPosX, maxPerFrameScroll);
-            contents[selectItemIndex].SetSelected(true);
-            time = 0;
-            return;
-        }
-        time += Time.deltaTime;
-        if (time < inputHoldDelay) return;
-        if (!Input.anyKey) return;
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (d == EDir.Right)
         {
             selectItemIndex = (selectItemIndex + 1) % contents.Length;
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (d == EDir.Left)
         {
             selectItemIndex = (selectItemIndex + contents.Length - 1) % contents.Length;
         }
-        moveDistance = contents[selectItemIndex].GetMoveDistance(viewPort.GetComponent<RectTransform>());
+        Vector3 moveDistance = contents[selectItemIndex].GetMoveDistance(viewPort.GetComponent<RectTransform>());
         nextPosX = content.transform.position.x + moveDistance.x;
-        Move(nextPosX, maxPerFrameScroll);
         contents[selectItemIndex].SetSelected(true);
-        time = 0;
+        return Move(nextPosX, maxPerFrameScroll);
     }
+
+    // Update is called once per frame
+    //void Update()
+    //{
+    //    if (!transform.parent.gameObject.activeInHierarchy) return;
+    //    ScrollItem[] contents = content.GetComponentsInChildren<ScrollItem>();
+    //    if (contents.Length < 1) return;
+    //    if (frame > 0) Move(nextPosX, maxPerFrameScroll);
+    //    selectItemIndex = GetSelectItemIndexFor(contents);
+    //    Vector3 moveDistance;
+    //    if (Input.anyKeyDown)
+    //    {
+    //        if (Input.GetKeyDown(KeyCode.RightArrow))
+    //        {
+    //            selectItemIndex = (selectItemIndex + 1) % contents.Length;
+    //        }
+    //        if (Input.GetKeyDown(KeyCode.LeftArrow))
+    //        {
+    //            selectItemIndex = (selectItemIndex + contents.Length - 1) % contents.Length;
+    //        }
+    //        moveDistance = contents[selectItemIndex].GetMoveDistance(viewPort.GetComponent<RectTransform>());
+    //        nextPosX = content.transform.position.x + moveDistance.x;
+    //        Move(nextPosX, maxPerFrameScroll);
+    //        contents[selectItemIndex].SetSelected(true);
+    //        time = 0;
+    //        return;
+    //    }
+    //    time += Time.deltaTime;
+    //    if (time < inputHoldDelay) return;
+    //    if (!Input.anyKey) return;
+    //    if (Input.GetKey(KeyCode.RightArrow))
+    //    {
+    //        selectItemIndex = (selectItemIndex + 1) % contents.Length;
+    //    }
+    //    if (Input.GetKey(KeyCode.LeftArrow))
+    //    {
+    //        selectItemIndex = (selectItemIndex + contents.Length - 1) % contents.Length;
+    //    }
+    //    moveDistance = contents[selectItemIndex].GetMoveDistance(viewPort.GetComponent<RectTransform>());
+    //    nextPosX = content.transform.position.x + moveDistance.x;
+    //    Move(nextPosX, maxPerFrameScroll);
+    //    contents[selectItemIndex].SetSelected(true);
+    //    time = 0;
+    //}
 
     // 選択されているアイテムのインデックスを返す
     public int GetSelectItemIndex() => selectItemIndex;

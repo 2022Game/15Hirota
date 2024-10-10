@@ -7,8 +7,11 @@ public class InventoryAction : MonoBehaviour
 {
     public InventoryAnimation anim;
     public ItemSlotDisplay display;
-    public GameObject subMenu;
+    public SubMenu subMenu;
     private Item selectItem = null;
+    public float inputHoldDelay = 0.3f;
+    private float inputTime = 0;
+    private bool isCursorMoving = false;
 
     private EAct action = EAct.KeyInput;
     private bool isOpen = false;
@@ -50,12 +53,23 @@ public class InventoryAction : MonoBehaviour
     */
     private void ActBegin()
     {
+        if (isCursorMoving)
+        {
+            isCursorMoving = !MoveSelectItem();
+            return;
+        }
         if (selectItem == null)
         {
+            isCursorMoving = !MoveSelectItem();
+            if (isCursorMoving) return;
             KeyInput();
             SelectItem();
         }
-        else UnSelectItem();
+        else
+        {
+            MoveSelectSubMenuItem();
+            UnSelectItem();
+        }
     }
 
     /**
@@ -139,7 +153,7 @@ public class InventoryAction : MonoBehaviour
         if (Input.anyKeyDown && Input.GetKeyDown(KeyCode.Space))
         {
             selectItem = display.GetSelectItem();
-            if (selectItem != null) subMenu.SetActive(true);
+            if (selectItem != null) subMenu.Show();
         }
     }
 
@@ -149,7 +163,44 @@ public class InventoryAction : MonoBehaviour
         if (Input.anyKeyDown && Input.GetKeyDown(KeyCode.E))
         {
             selectItem = null;
-            subMenu.SetActive(false);
+            subMenu.Hide();
         }
+    }
+
+    // 選択スロットを変更する
+    private bool MoveSelectItem()
+    {
+        if (isCursorMoving) return display.MoveSelect(EDir.Pause);
+        if (Input.anyKeyDown)
+        {
+            inputTime = 0;
+            if (Input.GetKeyDown(KeyCode.LeftArrow)) return display.MoveSelect(EDir.Left);
+            if (Input.GetKeyDown(KeyCode.RightArrow)) return display.MoveSelect(EDir.Right);
+        }
+        inputTime += Time.deltaTime;
+        if (inputTime < inputHoldDelay) return true;
+        if (!Input.anyKey) return true;
+        inputTime = 0;
+        if (Input.GetKey(KeyCode.LeftArrow)) return display.MoveSelect(EDir.Left);
+        if (Input.GetKey(KeyCode.RightArrow)) return display.MoveSelect(EDir.Right);
+        return true;
+    }
+
+    // 選択するサブメニューの項目を変更する
+    private bool MoveSelectSubMenuItem()
+    {
+        if (Input.anyKeyDown)
+        {
+            inputTime = 0;
+            if (Input.GetKeyDown(KeyCode.UpArrow)) return subMenu.MoveSelect(EDir.Up);
+            if (Input.GetKeyDown(KeyCode.DownArrow)) return subMenu.MoveSelect(EDir.Down);
+        }
+        inputTime += Time.deltaTime;
+        if (inputTime < inputHoldDelay) return true;
+        if (!Input.anyKey) return true;
+        inputTime = 0;
+        if (Input.GetKey(KeyCode.UpArrow)) return subMenu.MoveSelect(EDir.Up);
+        if (Input.GetKey(KeyCode.DownArrow)) return subMenu.MoveSelect(EDir.Down);
+        return true;
     }
 }
