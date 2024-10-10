@@ -23,6 +23,15 @@ public class ScrollItem : MonoBehaviour
         return new Vector3(0, 0);
     }
 
+    // このスクリプトがアタッチされているオブジェクトが
+    // 戻るべき距離を返す
+    public Vector3 GetBackDistance(bool isRight)
+    {
+        RectTransform transform = GetComponent<RectTransform>();
+        if (isRight) return new Vector3(transform.rect.width + paddingX, 0);
+        return new Vector3(-transform.rect.width - paddingX, 0);
+    }
+
     // 選択状態を返す
     public bool GetSelected() => isSelected;
 

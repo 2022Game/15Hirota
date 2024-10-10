@@ -280,9 +280,9 @@ void CPicoChan::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 				if (hitRand >= 90) // 10%‚ÌŠm—¦‚Å‰º‚Ìˆ—‚ðŽÀs
 				{
 					int random = Math::Rand(0, 2);
-					mpDamageCol->SetEnable(false);
 					if (random == 0 || random == 1 || random == 2)
 					{
+						mpDamageCol->SetEnable(false);
 						ChangeState(EState::eHit);
 					}
 					/*else if (random == 1)
@@ -983,6 +983,7 @@ void CPicoChan::UpdateHit()
 
 		if (mCharaStatus.hp >= 1)
 		{
+			mpDamageCol->SetEnable(true);
 			ChangeState(EState::eChase);
 		}
 		else if (mCharaStatus.hp <= 0)

@@ -31,6 +31,7 @@ public class ScrollView : MonoBehaviour
         ScrollItem[] contents = content.GetComponentsInChildren<ScrollItem>();
         if (contents.Length < 1) return;
         if (frame > 0) Move(nextPosX, maxPerFrameScroll);
+        selectItemIndex = GetSelectItemIndexFor(contents);
         Vector3 moveDistance;
         if (Input.anyKeyDown)
         {
@@ -85,5 +86,23 @@ public class ScrollView : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    // 配列から選択されているアイテムのインデックスを返す
+    private int GetSelectItemIndexFor(ScrollItem[] contents)
+    {
+        for (int i = 0; i < contents.Length; i++)
+        {
+            if (contents[i].GetSelected()) return i;
+        }
+        return 0;
+    }
+
+    // コンテンツオブジェクトの位置を移動する
+    public void MoveContentPosition(Vector3 p)
+    {
+        content.transform.position += p;
+        prevPosX += p.x;
+        nextPosX += p.x;
     }
 }

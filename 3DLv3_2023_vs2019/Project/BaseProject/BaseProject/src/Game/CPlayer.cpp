@@ -578,17 +578,19 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					!mSavePoint1 && mSavePoint2)
 				{
 					// SavePoint2がtrueならセーブポイント2のポジションを適用
+					ChangeState(EState::eFallDamege);
 					Position(0.0f, 440.0f, -1890.0f);
 				}
 				else if (mSavePoint1)
 				{
 					// セーブポイント1だけがtrueならセーブポイント1のポジションを適用
+					ChangeState(EState::eFallDamege);
 					Position(0.0f, 320.0f, -1173.0f);
 				}
 				else
 				{
 					// 初期値点に戻す
-					Position(190.0f, 139.0f, 269.0f);
+					Position(0.0f, 10.0f, 0.0f);
 					ChangeState(EState::eFallDamege);
 				}
 			}

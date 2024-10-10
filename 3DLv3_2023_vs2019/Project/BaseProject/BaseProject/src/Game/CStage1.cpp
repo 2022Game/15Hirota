@@ -759,13 +759,6 @@ void CStage1::Load()
 	meat3->SetMeatNumber(3);
 	AddTask(meat3);
 
-	//// ピコちゃん
-	//CPicoChan* pico = new CPicoChan();
-	//pico->Position(26.0f, 8.0f, 195.0f);
-	//pico->Scale(15.5f, 15.5f, 15.5f);
-	//pico->SetCenterPoint(CVector(26.0f, 6.0f, 195.0f), 20.0f);
-	//AddTask(pico);
-
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();

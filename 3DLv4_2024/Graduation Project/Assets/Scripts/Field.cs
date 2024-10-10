@@ -148,4 +148,16 @@ public class Field : MonoBehaviour
         }
         return mapdata;
     }
+
+    // 指定の座標にアイテムがあったらそのゲームオブジェクトを返す
+    // 無ければnull
+    public GameObject GetExistItem(int xgrid, int zgrid)
+    {
+        foreach (var itemMovement in items.GetComponentsInChildren<ItemMovement>())
+        {
+            if (xgrid == itemMovement.grid.x && zgrid == itemMovement.grid.z)
+                return itemMovement.gameObject;
+        }
+        return null;
+    }
 }

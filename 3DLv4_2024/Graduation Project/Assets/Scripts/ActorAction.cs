@@ -8,6 +8,7 @@ public class ActorAction : MonoBehaviour
     public ActorMovement actorMovement;
     public ActorOperation actorOperation;
     public ActorAttack actorAttack;
+    public ActorUseItems actorUseItems;
 
     private EAct action = EAct.KeyInput;
 
@@ -72,6 +73,7 @@ public class ActorAction : MonoBehaviour
     private void Move()
     {
         action = actorMovement.Walking();
+        if (action == EAct.MoveEnd) actorUseItems.PickUp();
     }
 
     // à⁄ìÆÇ™èIÇÌÇ¡ÇΩ

@@ -3883,6 +3883,7 @@ GameObject:
   - component: {fileID: 4674998360771244642}
   - component: {fileID: -992544589661613256}
   - component: {fileID: -6273848224669715841}
+  - component: {fileID: 6558828820448414358}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Untagged
@@ -3982,6 +3983,7 @@ MonoBehaviour:
   actorMovement: {fileID: 8970358000242903484}
   actorOperation: {fileID: 4674998360771244642}
   actorAttack: {fileID: 9159862957443725678}
+  actorUseItems: {fileID: 6558828820448414358}
 --- !u!114 &4674998360771244642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4032,6 +4034,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemNumMax: 10
   items: []
+--- !u!114 &6558828820448414358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414871117303439921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5758c8aba3d2394d9583d24f60dc4be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  move: {fileID: 8970358000242903484}
+  param: {fileID: -992544589661613256}
+  inventory: {fileID: -6273848224669715841}
 --- !u!1 &4414871117353324497
 GameObject:
   m_ObjectHideFlags: 0

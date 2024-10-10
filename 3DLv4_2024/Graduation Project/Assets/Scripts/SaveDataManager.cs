@@ -28,6 +28,7 @@ public class SaveDataManager : MonoBehaviour
         actorSaveData.grid.z = move.grid.z;
         actorSaveData.direction = move.direction;
         actorSaveData.parameter = actor.GetComponent<ActorParamsController>().GetParameter();
+        actorSaveData.inventory = MakeInventoryData(actor);
         return actorSaveData;
     }
 
@@ -38,6 +39,7 @@ public class SaveDataManager : MonoBehaviour
         move.SetPosition(data.grid.x, data.grid.z);
         move.SetDirection(data.direction);
         actor.GetComponent<ActorParamsController>().SetParameter(data.parameter);
+        LoadInventoryData(data.inventory, actor);
     }
 
     // プレイヤーデータを作成、返す
@@ -109,6 +111,23 @@ public class SaveDataManager : MonoBehaviour
             ItemMovement move = it.GetComponent<ItemMovement>();
             move.SetPosition(data.grid.x, data.grid.z);
         }
+    }
+
+    // インベントリデータを作成、返す
+    private InventorySaveData MakeInventoryData(Transform actor)
+    {
+        Inventory inventory = actor.GetComponent<Inventory>();
+        InventorySaveData inventorySaveData = new InventorySaveData();
+        inventorySaveData.items = inventory.GetAllItem();
+        inventorySaveData.maxItemNum = inventory.itemNumMax;
+        return inventorySaveData;
+    }
+
+    // インベントリデータをアクターに反映する
+    private void LoadInventoryData(InventorySaveData data, Transform actor)
+    {
+        Inventory inventory = actor.GetComponent<Inventory>();
+        inventory.SetAllItem(data.items, data.maxItemNum);
     }
 
     // マップデータを作成、返す
