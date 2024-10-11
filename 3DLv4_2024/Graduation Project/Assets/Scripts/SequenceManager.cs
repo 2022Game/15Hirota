@@ -18,22 +18,23 @@ public class SequenceManager : MonoBehaviour
     void Update()
     {
         EAct iAct = inventoryAction.GetAction();
-        if (iAct != EAct.KeyInput)
+        if (iAct != EAct.KeyInput && iAct != EAct.ActEnd && iAct != EAct.TurnEnd)
         {
             inventoryAction.Proc();
             return;
         }
-        EAct pAct = playerAction.GetAction();
+        EAct pAct = (iAct == EAct.ActEnd || iAct == EAct.TurnEnd) ? iAct : playerAction.GetAction();
         if (pAct == EAct.KeyInput || pAct == EAct.ActBegin || pAct == EAct.Act)
         {
             inventoryAction.Proc();
+            if (iAct != EAct.KeyInput) return;
             playerAction.Proc();
             AllEnemyStopWalkingAnimation();
             return;
         }
         if (pAct == EAct.TurnEnd)
         {
-            AllOperatedProc();
+            AllOperatedProc(iAct == EAct.TurnEnd);
             isEnemyDeterminedBehaviour = false;
             operatedEnemies.Clear();
             return;
@@ -45,7 +46,7 @@ public class SequenceManager : MonoBehaviour
         }
         if (actEnemies.Count < 1 && moveEnemies.Count < 1 && (pAct == EAct.ActEnd || pAct == EAct.MoveEnd))
         {
-            AllOperatedProc();
+            AllOperatedProc(iAct == EAct.ActEnd);
             return;
         }
         if (pAct == EAct.MoveBegin)
@@ -82,9 +83,10 @@ public class SequenceManager : MonoBehaviour
     }
 
     // 動作したキャラクター全員の更新メソッドを呼び出す
-    private void AllOperatedProc()
+    private void AllOperatedProc(bool isUseItem)
     {
-        playerAction.Proc();
+        if (isUseItem) inventoryAction.Proc();
+        else playerAction.Proc();
         foreach (var enemyAction in operatedEnemies)
         {
             enemyAction.Proc();

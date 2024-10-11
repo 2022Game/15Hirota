@@ -57,6 +57,16 @@ public class Inventory : MonoBehaviour
         itemNumMax = maxNum;
         this.items = items;
     }
+
+    // インベントリから指定したアイテムを削除する
+    public bool Remove(Item it)
+    {
+        if (it != null)
+        {
+            return items.Remove(it);
+        }
+        return false;
+    }
     // Start is called before the first frame update
     void Start()
     {

@@ -68,6 +68,7 @@ public class InventoryAction : MonoBehaviour
         else
         {
             MoveSelectSubMenuItem();
+            SelectSubMenuItem();
             UnSelectItem();
         }
     }
@@ -77,7 +78,7 @@ public class InventoryAction : MonoBehaviour
     */
     private void Act()
     {
-
+        action = EAct.MoveBegin;
     }
 
     /**
@@ -135,7 +136,18 @@ public class InventoryAction : MonoBehaviour
         else
         {
             gameObject.SetActive(false);
-            action = EAct.TurnEnd;
+            if (selectItem == null)
+            {
+                action = EAct.KeyInput;
+                return;
+            }
+            ActorUseItems actorUse = display.inventory.GetComponentInParent<ActorUseItems>();
+            ActorUseItems.UseItem use = actorUse.GetDelegate(subMenu.GetSelectItemMethod());
+            if (use(selectItem))
+            {
+                selectItem = null;
+                action = EAct.ActEnd;
+            }
         }
     }
 
@@ -202,5 +214,15 @@ public class InventoryAction : MonoBehaviour
         if (Input.GetKey(KeyCode.UpArrow)) return subMenu.MoveSelect(EDir.Up);
         if (Input.GetKey(KeyCode.DownArrow)) return subMenu.MoveSelect(EDir.Down);
         return true;
+    }
+
+    // サブメニューの項目を選択
+    private void SelectSubMenuItem()
+    {
+        if (Input.anyKeyDown && Input.GetKeyDown(KeyCode.Space))
+        {
+            action = EAct.Act;
+            subMenu.Hide();
+        }
     }
 }
