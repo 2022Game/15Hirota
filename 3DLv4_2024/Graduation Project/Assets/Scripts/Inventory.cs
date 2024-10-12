@@ -67,6 +67,19 @@ public class Inventory : MonoBehaviour
         }
         return false;
     }
+
+    // もしあれば足下にあるアイテムを返す
+    public Item GetFootItem()
+    {
+        Pos2D grid = GetComponent<ActorMovement>().grid;
+        GameObject obj = GetComponentInParent<Field>().GetExistItem(grid.x, grid.z);
+        if (obj == null) return null;
+        return obj.GetComponent<ItemParamsController>().parameter;
+    }
+
+    // インベントリがいっぱいかどうか
+    public bool IsFull() => items.Count >= itemNumMax;
+
     // Start is called before the first frame update
     void Start()
     {

@@ -164,8 +164,21 @@ public class InventoryAction : MonoBehaviour
     {
         if (Input.anyKeyDown && Input.GetKeyDown(KeyCode.Space))
         {
+            selectItem = display.GetSelectFootItem();
+            if (selectItem != null)
+            {
+                if (display.inventory.IsFull()) subMenu.SetChoices("PickUpUse, PickUpThrow");
+                else subMenu.SetChoices("PickUp, PickUpUse, PickUpThrow");
+                subMenu.Show();
+                return;
+            }
             selectItem = display.GetSelectItem();
-            if (selectItem != null) subMenu.Show();
+            if (selectItem != null)
+            {
+                if (display.inventory.GetFootItem() == null) subMenu.SetChoices("Use, Put, Throw");
+                else subMenu.SetChoices("Use, Replace, Throw");
+                subMenu.Show();
+            }
         }
     }
 
