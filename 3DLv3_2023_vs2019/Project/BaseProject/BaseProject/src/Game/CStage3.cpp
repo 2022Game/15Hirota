@@ -38,6 +38,7 @@
 #include "CMeat1.h"
 #include "CMeat2.h"
 #include "CMeat3.h"
+#include "CCircleLine.h"
 
 // コンストラクタ
 CStage3::CStage3()
@@ -64,9 +65,19 @@ void CStage3::Load()
 	// 床のコライダー
 	CResourceManager::Load<CModel>("Stage3FloorCol","Field\\Final Stage\\FloorCol.obj");
 	// 壁のコライダー
-	//CResourceManager::Load<CModel>("WallCol",		"Field\\GameStage(Worlds_3)\\GameStage_1(wallCol).obj");
+	CResourceManager::Load<CModel>("Stage3WallCol",		"Field\\Final Stage\\WallCol.obj");
 	// 落下判定コライダー
 	CResourceManager::Load<CModel>("Stage3FallCol", "Field\\Final Stage\\FallCol.obj");
+
+	// 空島モデル
+	CResourceManager::Load<CModel>("Skyisland", "GameGimmick\\Object\\Skyisland.obj");
+
+	// セーブポイントモデル
+	CResourceManager::Load<CModel>("SavePoint", "GameGimmick\\Gimmick\\SaveFlag\\SavePoint.obj");
+	// ゴールポストモデル
+	CResourceManager::Load<CModel>("GoalPost", "GameGimmick\\Gimmick\\Goal\\GoalPost.obj");
+	// ゴールブロックモデル
+	CResourceManager::Load<CModel>("GoalCube", "GameGimmick\\Gimmick\\Goal\\GoalCube.obj");
 
 	// 零番目の床
 	CResourceManager::Load<CModel>("Number0", "GameGimmick\\Gimmick\\NumberFloor\\number0.obj");
@@ -88,12 +99,38 @@ void CStage3::Load()
 	// 大砲玉モデル
 	CResourceManager::Load<CModel>("CannonBall", "GameGimmick\\Gimmick\\Cannon\\CannonBall.obj");
 
+	// リングビーマモデル(上)								  
+	CResourceManager::Load<CModel>("RingBeamerUP", "Effect\\BeamObj(Upper).obj");
+	// リングビーマモデル(下)								  
+	CResourceManager::Load<CModel>("RingBeamerLO", "Effect\\BeamObj(Lower).obj");
+	// ビリビリエフェクト							    
+	CResourceManager::Load<CModel>("Biribiri", "Effect\\BhimaEffect.obj");
+	// リングビーマモデル(コライダー)						  
+	CResourceManager::Load<CModel>("BiribiriCol", "Effect\\BhimaEffect(Col).obj");
+	// リングビーマモデル(コライダー)						  
+	CResourceManager::Load<CTexture>("LightningBolt", "Effect\\lightning_bolt.png");
+	// サークルライン
+	CResourceManager::Load<CModel>("CircleLine", "GameGimmick\\Gimmick\\Jump\\CircleLine.obj");
+
+	// 回転する床モデル
+	CResourceManager::Load<CModel>("RotateFloor", "GameGimmick\\Gimmick\\Rotate\\RotateFloor.obj");
+	// 回転する床の表側のコライダー
+	CResourceManager::Load<CModel>("RotateFloorFrontCol", "GameGimmick\\Gimmick\\Rotate\\RotateFloorFrontCol.obj");
+	// 回転する床の裏側のコライダー
+	CResourceManager::Load<CModel>("RotateFloorBackCol", "GameGimmick\\Gimmick\\Rotate\\RotateFloorBackCol.obj");
+	// 回転する床モデル(反対)
+	CResourceManager::Load<CModel>("RotateFloorOpposition", "GameGimmick\\Gimmick\\Rotate\\RotateFloor(Opposition).obj");
+	// 回転する床の表側のコライダー(反対)
+	CResourceManager::Load<CModel>("RotateFloorFrontColOpposition", "GameGimmick\\Gimmick\\Rotate\\RotateFloorFrontCol(Opposition).obj");
+	// 回転する床の裏側のコライダー(反対)
+	CResourceManager::Load<CModel>("RotateFloorBackColOpposition", "GameGimmick\\Gimmick\\Rotate\\RotateFloorBackCol(Opposition).obj");
+
 	// 火炎放射器(タンク)
-	CResourceManager::Load<CModel>("", "");	
+	//CResourceManager::Load<CModel>("", "");	
 	// 火炎放射器(土台)
-	CResourceManager::Load<CModel>("", "");
+	//CResourceManager::Load<CModel>("", "");
 	// 火炎放射器(コライダー)
-	CResourceManager::Load<CModel>("", "");
+	//CResourceManager::Load<CModel>("", "");
 
 	// 跳ねるキノコモデル							    
 	CResourceManager::Load<CModel>("JumpingKinoko", "GameGimmick\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
@@ -127,51 +164,43 @@ void CStage3::Load()
 	mpSky->Scale(150.0f, 150.0f, 150.0f);
 	AddTask(mpSky);
 
+	// セーブポイント1
+	CSavePoint1* savepoint1 = new CSavePoint1
+	(
+		CVector(0.0f, 0.0f, 453.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 10.0f, 0.0f)
+	);
+	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
+	AddTask(savepoint1);
+
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < 2; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
-		//if (i == 0) xPos = 26.0f;
-
-		// 左ルート
-		//if (i == 2) xPos = 95.0f;
 		
-		// ゴール付近
-		//if (i == 7) xPos = 26.0f;
-
-
 		// Y軸の位置を設定
 		float yPos = -2.0f;
-		//if (i == 0) yPos = -35.0f;
+		if (i == 1) yPos = -10.0f;
 		
-		// 左ルート
-		//if (i == 2) yPos = 0.0f;
-		
-		// ゴール付近
-		//if (i == 7) yPos = 5.0f;		
-
 		// Z軸の位置を設定
 		float zPos = 0.0f;
 		if (i == 0) zPos = 80.0f;
-
-		// 左ルート
-		//if (i == 2) zPos = 720.0f;
-
-		// ゴール付近
-		//if (i == 7) zPos = 1450.0f;
+		if (i == 1) zPos = 1050.0f;
 
 		// X軸のスケール値を設定
 		float xScale = 2.0f;
-		//if (i == 5) xScale = 5.0f;
+		if (i == 0) xScale = 3.0f;
+		if (i == 1) xScale = 6.0f;
 
 		// Z軸のスケール値を設定
 		float zScale = 2.0f;
-		//if (i == 5) zScale = 5.0f;
+		if (i == 0) zScale = 4.0f;
+		if (i == 1) zScale = 7.0f;
 
 		// Y軸の回転値を設定
 		float yRotate = 45.0f;
-		//if (i == 2) yRotate = 30.0f;
 
 		// オブジェクトを作成してタスクに追加
 		CNumberFloor3* numberfloor3 = new CNumberFloor3
@@ -181,7 +210,7 @@ void CStage3::Load()
 			CVector(0.0f, yRotate, 0.0f)
 		);
 
-		AddTask(numberfloor3); // タスクに追加
+		AddTask(numberfloor3);
 	}
 
 	// 動く床(右円回転)
@@ -260,10 +289,225 @@ void CStage3::Load()
 		CVector(1.5f, 1.5f, 1.5f),
 		CVector(0.0f, 90.0f, 0.0f)
 	);
-
 	AddTask(jumpkinoko);
 
-	
+	// 指定した位置に移動するジャンプキノコ
+	CJumpingKinokoMoveTo* jkmt1 = new CJumpingKinokoMoveTo
+	(
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		1.0f
+	);
+	jkmt1->SetReturnRoute(false);
+	jkmt1->AddMovePoint(CVector(55.0f, 0.0f, 690.0f), 4.0f);
+	jkmt1->AddMovePoint(CVector(202.0f, 0.0f, 690.0f), 4.0f);
+	jkmt1->AddMovePoint(CVector(202.0f, 0.0f, 776.0f), 4.0f);
+	jkmt1->AddMovePoint(CVector(55.0f, 0.0f, 776.0f), 4.0f);
+	AddTask(jkmt1);
+
+	// 指定した位置に移動するジャンプキノコ
+	CJumpingKinokoMoveTo* jkmt2 = new CJumpingKinokoMoveTo
+	(
+		CVector(1.0f, 1.0f, 1.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		1.0f
+	);
+	jkmt2->SetReturnRoute(false);
+	jkmt2->AddMovePoint(CVector(-55.0f, 0.0f, 690.0f), 4.0f);
+	jkmt2->AddMovePoint(CVector(-202.0f, 0.0f, 690.0f), 4.0f);
+	jkmt2->AddMovePoint(CVector(-202.0f, 0.0f, 776.0f), 4.0f);
+	jkmt2->AddMovePoint(CVector(-55.0f, 0.0f, 776.0f), 4.0f);
+	AddTask(jkmt2);
+
+	// リングビーマ1
+	CRingBeamerUpper* beamerUp1 = new CRingBeamerUpper
+	(
+		CVector(124.0f, 8.0f, 735.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp1);
+	// リングビーマ1
+	CRingBeamerLower* beamerLow1 = new CRingBeamerLower
+	(
+		CVector(124.0f, 7.5f, 735.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLow1);
+	CCircleLine* cline4 = new CCircleLine
+	(
+		CVector(124.0f, 8.0f, 735.0f),
+		CVector(24.0f, 8.0f, 24.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline4);
+
+	// リングビーマ2
+	CRingBeamerUpper* beamerUp2 = new CRingBeamerUpper
+	(
+		CVector(-124.0f, 8.0f, 735.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerUp2);
+	// リングビーマ2
+	CRingBeamerLower* beamerLow2 = new CRingBeamerLower
+	(
+		CVector(-124.0f, 7.5f, 735.0f),
+		CVector(5.0f, 5.0f, 5.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(beamerLow2);
+	CCircleLine* cline5 = new CCircleLine
+	(
+		CVector(-124.0f, 8.0f, 735.0f),
+		CVector(24.0f, 8.0f, 24.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(cline5);
+
+	// 回転する床
+	for (int i = 0; i < 7; ++i) {
+
+		// X軸の位置を設定
+		float xPos = 0.0f;
+		if (i == 1) xPos = 73.0f;
+		if (i == 2) xPos = -76.0f;
+		if (i == 3) xPos = 36.5f;
+		if (i == 4) xPos = -38.0f;
+		if (i == 5) xPos = 109.5f;
+		if (i == 6) xPos = -114.0f;
+		
+		// Y軸の位置を設定
+		//float yPos = 0.0f;
+
+		// Z軸の位置を設定
+		float zPos = 0.0f;
+		if (i == 0) zPos = 826.0f;
+		if (i == 1) zPos = 866.0f;
+		if (i == 2) zPos = 866.0f;
+		if (i == 3) zPos = 906.0f;
+		if (i == 4) zPos = 906.0f;
+		if (i == 5) zPos = 986.0f;
+		if (i == 6) zPos = 986.0f;
+
+		// 回転する床
+		CRotateFloorGimmick* floorGimmick1 = new CRotateFloorGimmick
+		(
+			CVector(xPos, 0.0f, zPos),
+			CVector(4.0f, 4.0f, 4.0f),
+			CVector(0.0f, 0.0f, 0.0f),
+			ETag::ePlayer, ELayer::ePlayer
+		);
+		AddTask(floorGimmick1);
+	}
+
+	// 回転する床(反対)
+	for (int i = 0; i < 4; ++i) {
+
+		// X軸の位置を設定
+		float xPos = 0.0f;
+		if (i == 0) xPos = 73.0f;
+		if (i == 1) xPos = -76.0f;
+		if (i == 2) xPos = 109.5f;
+		if (i == 3) xPos = -114.0f;
+
+		// Y軸の位置を設定
+		//float yPos = 0.0f;
+
+		// Z軸の位置を設定
+		float zPos = 0.0f;
+		if (i == 0) zPos = 946.0f;
+		if (i == 1) zPos = 946.0f;
+		if (i == 2) zPos = 1066.0f;
+		if (i == 3) zPos = 1066.0f;
+
+		// 回転する床
+		CRotateFloorGimmickOpposition* floorGimmickOpt1 = new CRotateFloorGimmickOpposition
+		(
+			CVector(xPos, 0.0f, zPos),
+			CVector(4.0f, 4.0f, 4.0f),
+			CVector(0.0f, 0.0f, 0.0f),
+			ETag::ePlayer, ELayer::ePlayer
+		);
+		AddTask(floorGimmickOpt1);
+	}
+
+	// 時間で回転する床
+	CRotateFloorTimeGimmick* timeGimmick1 = new CRotateFloorTimeGimmick
+	(
+		CVector(109.0f, 0.0f, 1026.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(timeGimmick1);
+
+	// 時間で回転する床
+	CRotateFloorTimeGimmick* timeGimmick2 = new CRotateFloorTimeGimmick
+	(
+		CVector(-114.0f, 0.0f, 1026.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 0.0f, 0.0f),
+		ETag::ePlayer, ELayer::ePlayer
+	);
+	AddTask(timeGimmick2);
+
+	// 大砲
+	CCannon* Cannon = new CCannon
+	(
+		CVector(390.0f, 8.0f, 1090.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		"Cannon"
+	);
+	AddTask(Cannon);
+	// 大砲土台
+	CCannonFoundationsBase* Cannonfound = new CCannonFoundationsBase
+	(
+		CVector(390.0f, 8.0f, 1090.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, -90.0f, 0.0f)
+	);
+	AddTask(Cannonfound);
+
+	// 大砲
+	CCannon* Cannon1 = new CCannon
+	(
+		CVector(-390.0f, 8.0f, 1090.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, -45.0f, 0.0f),
+		"Cannon"
+	);
+	AddTask(Cannon1);
+	// 大砲土台
+	CCannonFoundationsBase* Cannonfound1 = new CCannonFoundationsBase
+	(
+		CVector(-390.0f, 8.0f, 1090.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 90.0f, 0.0f)
+	);
+	AddTask(Cannonfound1);
+
+	// 大砲(偏差撃ち)
+	CPowerfulCannon* targetCannon = new CPowerfulCannon
+	(
+		CVector(4.0f, 85.0f, 1303.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 90.0f, 0.0f),
+		"Cannon"
+	);
+	AddTask(targetCannon);
+	// 大砲土台
+	CCannonFoundationsBase* targetCannonfound = new CCannonFoundationsBase
+	(
+		CVector(4.0f, 85.0f, 1303.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 00.0f, 0.0f)
+	);
+	AddTask(targetCannonfound);
+
 	// スコアアイテム
 
 	//// ブルーメダル1
@@ -334,11 +578,8 @@ void CStage3::Load()
 	CPlayer* player = CPlayer::Instance();
 	player->MaxStatus();
 	// 初期値点 : 0.0f, 10.0f, 0.0f
-	// 中間地点 : 0.0f, 320.0f, -1050.0f
-	// ボス前	: 0.0f, 430.0f, -1890.0f
-	// ゴール付近:	-367.0f, 395.0f, -2040.0f
-	// 火炎放射器の前 : -207.0f, 126.0f, -912.0f
-	CVector playerPos = CVector(0.0f, 15.0f, 0.0f);
+	// 回転する床 : 10.0f, 10.0f, 826.0f
+	CVector playerPos = CVector(10.0f, 10.0f, 826.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

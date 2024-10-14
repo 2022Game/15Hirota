@@ -585,7 +585,7 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 				{
 					// セーブポイント1だけがtrueならセーブポイント1のポジションを適用
 					ChangeState(EState::eFallDamege);
-					Position(0.0f, 320.0f, -1173.0f);
+					Position(0.0f, 10.0f, 453.0f);
 				}
 				else
 				{
@@ -2620,6 +2620,15 @@ void CPlayer::UpdateHit()
 		mDamageEnemy = true;
 	}
 
+	if (mSpik1)
+	{
+		mSpik1 = false;
+		if (mpSpiky1 != nullptr)
+		{
+			mpSpiky1->Kill();
+		}
+	}
+
 	mpDamageCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eHitJ);
 
@@ -2640,6 +2649,15 @@ void CPlayer::UpdateHitBullet()
 		mDamageEnemy = true;
 	}
 
+	if (mSpik1)
+	{
+		mSpik1 = false;
+		if (mpSpiky1 != nullptr)
+		{
+			mpSpiky1->Kill();
+		}
+	}
+
 	mpDamageCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eHit);
 
@@ -2656,6 +2674,15 @@ void CPlayer::UpdateHitSword()
 	if (!mDamageEnemy)
 	{
 		mDamageEnemy = true;
+	}
+
+	if (mSpik1)
+	{
+		mSpik1 = false;
+		if (mpSpiky1 != nullptr)
+		{
+			mpSpiky1->Kill();
+		}
 	}
 
 	mpDamageCol->SetEnable(false);
@@ -2676,6 +2703,15 @@ void CPlayer::UpdateHitObj()
 		mDamageEnemy = true;
 	}
 
+	if (mSpik1)
+	{
+		mSpik1 = false;
+		if (mpSpiky1 != nullptr)
+		{
+			mpSpiky1->Kill();
+		}
+	}
+
 	mpDamageCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eHit);
 
@@ -2692,6 +2728,15 @@ void CPlayer::UpdateFallDamage()
 	{
 		mFallDamage = true;
 		TakeDamage(1);
+	}
+
+	if (mSpik1)
+	{
+		mSpik1 = false;
+		if (mpSpiky1 != nullptr)
+		{
+			mpSpiky1->Kill();
+		}
 	}
 
 	mpDamageCol->SetEnable(false);
