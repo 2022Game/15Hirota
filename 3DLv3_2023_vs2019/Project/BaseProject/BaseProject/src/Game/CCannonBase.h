@@ -40,6 +40,8 @@ protected:
 
 	// ‘å–Cƒ‚ƒfƒ‹
 	CModel* mpCannon;
+	// Å‰‚ÉŒü‚¢‚Ä‚¢‚é•ûŒü
+	CVector InitialVectorZ;
 };
 
 class CCannonFoundationsBase : public CObjectBase

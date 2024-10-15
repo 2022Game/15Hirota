@@ -11,6 +11,8 @@ public class ActorUseItems : MonoBehaviour
 
     public delegate bool UseItem(Item it);
 
+    private GameObject usingItem = null;
+
     // 文字列に対応するデリゲートを返す
     public UseItem GetDelegate(string method)
     {
@@ -53,7 +55,23 @@ public class ActorUseItems : MonoBehaviour
     // 引数で渡されたアイテムを投げる
     public bool Throw(Item it)
     {
-        return true;
+        if (usingItem == null)
+        {
+            Message.Add(13, it.name);
+            GameObject items = GetComponentInParent<Field>().items;
+            GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + it.prefab);
+            usingItem = Instantiate(itemObj, items.transform);
+            usingItem.GetComponent<ItemMovement>().SetPosition(move.grid.x, move.grid.z);
+            usingItem.GetComponent<ItemParamsController>().SetParams(it);
+            inventory.Remove(it);
+            return false;
+        }
+        if (usingItem.GetComponent<ItemMovement>().Throwing(move.direction))
+        {
+            usingItem = null;
+            return true;
+        }
+        return false;
     }
 
     // もしアイテムがあれば拾ってインベントリに加える

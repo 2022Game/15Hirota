@@ -173,31 +173,71 @@ void CStage3::Load()
 	);
 	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
 	AddTask(savepoint1);
+	// セーブポイント2
+	CSavePoint1* savepoint2 = new CSavePoint1
+	(
+		CVector(0.0f, 0.0f, 1550.0f),
+		CVector(4.0f, 4.0f, 4.0f),
+		CVector(0.0f, 10.0f, 0.0f)
+	);
+	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
+	AddTask(savepoint2);
+
+	// ゴールポスト
+	CGoalObject* goal = new CGoalObject
+	(
+		CVector(0.0f, -5.0f, 1850.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 0.0f, 0.0f)
+	);
+	AddTask(goal);
 
 	// オブジェクトを配置するループ
-	for (int i = 0; i < 2; ++i) {
+	for (int i = 0; i < 8; ++i) {
 
 		// X軸の位置を設定
 		float xPos = 0.0f;
+		if (i == 2) xPos = 109.0f;
+		if (i == 3) xPos = -114.0f;
+		if (i == 4) xPos = 119.0f;
+		if (i == 5) xPos = -124.0f;
+		if (i == 6) xPos = 109.0f;
+		if (i == 7) xPos = -114.0f;
 		
 		// Y軸の位置を設定
 		float yPos = -2.0f;
 		if (i == 1) yPos = -10.0f;
+		if (i == 2) yPos = -10.0f;
+		if (i == 3) yPos = -10.0f;
+		if (i == 4) yPos = -10.0f;
+		if (i == 5) yPos = -10.0f;
+		if (i == 6) yPos = -10.0f;
+		if (i == 7) yPos = -10.0f;
 		
 		// Z軸の位置を設定
 		float zPos = 0.0f;
 		if (i == 0) zPos = 80.0f;
 		if (i == 1) zPos = 1050.0f;
+		if (i == 2) zPos = 1100.0f;
+		if (i == 3) zPos = 1100.0f;
+		if (i == 4) zPos = 1150.0f;
+		if (i == 5) zPos = 1150.0f;
+		if (i == 6) zPos = 1210.0f;
+		if (i == 7) zPos = 1210.0f;
 
 		// X軸のスケール値を設定
 		float xScale = 2.0f;
 		if (i == 0) xScale = 3.0f;
 		if (i == 1) xScale = 6.0f;
+		if (i == 4) xScale = 4.0f;
+		if (i == 5) xScale = 4.0f;
 
 		// Z軸のスケール値を設定
 		float zScale = 2.0f;
 		if (i == 0) zScale = 4.0f;
 		if (i == 1) zScale = 7.0f;
+		if (i == 4) zScale = 5.0f;
+		if (i == 5) zScale = 5.0f;
 
 		// Y軸の回転値を設定
 		float yRotate = 45.0f;
@@ -213,6 +253,24 @@ void CStage3::Load()
 		AddTask(numberfloor3);
 	}
 
+	// 1回床
+	CNumberFloor1* number1 = new CNumberFloor1
+	(
+		CVector(104.0f, -10.0f, 1380.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 45.0f, 0.0f)
+	);
+	AddTask(number1);
+
+	// 1回床
+	CNumberFloor1* number2 = new CNumberFloor1
+	(
+		CVector(-114.0f, -10.0f, 1380.0f),
+		CVector(2.0f, 2.0f, 2.0f),
+		CVector(0.0f, 45.0f, 0.0f)
+	);
+	AddTask(number2);
+
 	// 動く床(右円回転)
 	CCircleNbFlRight2* floor2right1 = new CCircleNbFlRight2
 	(
@@ -225,7 +283,7 @@ void CStage3::Load()
 	AddTask(floor2right1);
 
 	// 動く床(左円回転)
-	CCircleNbFlLeft2* floor2left2 = new CCircleNbFlLeft2
+	CCircleNbFlLeft2* floor2left1 = new CCircleNbFlLeft2
 	(
 		CVector(63.0f, -15.0f, 153.0f),
 		CVector(2.0f, 2.0f, 2.0f),
@@ -233,8 +291,29 @@ void CStage3::Load()
 		30.0f, 30.0f, 40.0f,
 		false
 	);
-	AddTask(floor2left2);
+	AddTask(floor2left1);
 
+	// 動く床(右円回転)
+	CCircleNbFlRight2* floor2right2 = new CCircleNbFlRight2
+	(
+		CVector(109.0f, -10.0f, 1300.0f),
+		CVector(3.0f, 2.0f, 3.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		30.0f, 30.0f, 40.0f,
+		true
+	);
+	AddTask(floor2right2);
+
+	// 動く床(左円回転)
+	CCircleNbFlLeft2* floor2left2 = new CCircleNbFlLeft2
+	(
+		CVector(-114.0f, -10.0f, 1300.0f),
+		CVector(3.0f, 3.0f, 3.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		30.0f, 30.0f, 40.0f,
+		false
+	);
+	AddTask(floor2left2);
 
 	// 指定した移動ポイント間を移動する回数制限床
 	CMoveToNbFl1* mn1f1 = new CMoveToNbFl1
@@ -247,6 +326,18 @@ void CStage3::Load()
 	mn1f1->AddMovePoint(CVector(78.0f, -15.0f, 237), 3.0f);
 	mn1f1->AddMovePoint(CVector(-78.0f, -15.0f, 237), 3.0f);
 	AddTask(mn1f1);
+
+	// 指定した移動ポイント間を移動する回数制限床
+	CMoveToNbFl1* mn1f2 = new CMoveToNbFl1
+	(
+		CVector(3.0f, 2.0f, 3.0f),
+		CVector(0.0f, 45.0f, 0.0f),
+		2.0f
+	);
+	mn1f2->SetReturnRoute(false);
+	mn1f2->AddMovePoint(CVector(100.0f, -10.0f, 1450.0f), 3.0f);
+	mn1f2->AddMovePoint(CVector(-100.0f, -10.0f, 1450.0f), 3.0f);
+	AddTask(mn1f2);
 
 	// 大砲(揺れる大砲の弾)
 	CHorizontalCannon* cannon1 = new CHorizontalCannon
@@ -579,7 +670,8 @@ void CStage3::Load()
 	player->MaxStatus();
 	// 初期値点 : 0.0f, 10.0f, 0.0f
 	// 回転する床 : 10.0f, 10.0f, 826.0f
-	CVector playerPos = CVector(10.0f, 10.0f, 826.0f);
+	// セーブポイント2 : 0.0f, 0.0f, 1550.0f
+	CVector playerPos = CVector(0.0f, 10.0f, 1550.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

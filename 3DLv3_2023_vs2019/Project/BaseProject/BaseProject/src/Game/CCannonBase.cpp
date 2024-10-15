@@ -10,7 +10,9 @@
 CCannonBase::CCannonBase(const CVector& pos, const CVector& scale, const CVector& rot)
     : CObjectBase(ETag::eEnemy, ETaskPriority::eDefault, 0, ETaskPauseType::eGame)
     , mpCannon(nullptr)
+    , InitialVectorZ(CVector::zero)
 {
+    InitialVectorZ = Matrix().VectorZ().Normalized();
     // 大砲モデルを取得
     //mpCannon = CResourceManager::Get<CModel>("Cannon");
 
@@ -49,13 +51,12 @@ bool CCannonBase::IsFoundPlayer() const
     // 視野角の半分を計算する
     float halfFOV = FOV_ANGLE * 0.5f;
 
-    // 視野角内かつ前方向にプレイヤーがいるかチェック
-    if (dot >= cosf(halfFOV * M_PI / 180.0f) && dot > 0) // dot > 0 で前方向だけを対象にする
+    // 視野角の半分より小さいかつプレイヤーとの距離が一定範囲以内であれば、プレイヤーを認識する
+    if (dot >= cosf(halfFOV * M_PI / 180.0f))
     {
         float distance = (playerPos - enemyPos).Length();
         const float chaseRange = 350.0f;
 
-        // プレイヤーとの距離が一定範囲以内であれば追跡
         if (distance <= chaseRange)
             return true;
     }
