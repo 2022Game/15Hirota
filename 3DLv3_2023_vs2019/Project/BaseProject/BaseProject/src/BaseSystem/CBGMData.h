@@ -7,8 +7,14 @@ enum class EBGMType
 
 	eTitle,	// タイトル画面のBGM
 	eClear,	// クリアした時のBGM
+	eMap,	// ステージ選択時のBGM
+	eStage1,// ステージ1のBGM
+	eStage2,// ステージ1のBGM
+	eStage3,// ステージ1のBGM
 	eGame,	// ゲーム画面のBGM
 	eMenu,	// メニューを開いている時のBGM
+	eResult,// リザルト時のBGM
+	eEnding,// エンディング時のBGM
 
 	Num
 };

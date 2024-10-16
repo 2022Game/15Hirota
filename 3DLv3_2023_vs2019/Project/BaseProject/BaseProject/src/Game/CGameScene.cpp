@@ -129,7 +129,7 @@ void CGameScene::Load()
 	CResourceManager::Load<CSound>("CreatureGrowl1", "Sound\\VOICE\\CreatureStereo5.wav");
 
 	// ゲーム内のBGM
-	CBGMManager::Instance()->Play(EBGMType::eGame);
+	//CBGMManager::Instance()->Play(EBGMType::eGame);
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,6 +188,8 @@ void CGameScene::Update()
 		if (!mpResultUI->IsOpened())
 		{
 			// 開く
+			// BGMを再生
+			CBGMManager::Instance()->Play(EBGMType::eEnding);
 			mpResultUI->Open();
 			mpResultUI->Update();
 		}
@@ -204,6 +206,8 @@ void CGameScene::Update()
 					CInput::ShowCursor(false);
 					// メニューを閉じる
 					mpResultUI->Close();
+					// BGMを再生
+					CBGMManager::Instance()->Play(EBGMType::eMap);
 					CGameManager::GameRestart();
 				}
 				// ゲーム終了ならば、アプリを閉じる

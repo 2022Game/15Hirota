@@ -2,6 +2,7 @@
 #include "CPlayer.h"
 #include "CCannonBall.h"
 #include "CStageManager.h"
+#include "Maths.h"
 
 // 重力
 #define GRAVITY 0.0625f
@@ -77,10 +78,24 @@ void CCannon::Update()
 
         // 大砲を横方向に回転させる
         Rotation(CQuaternion::LookRotation(Forward));
+        // 現在の大砲の向きとプレイヤー方向との角度を計算
+        float AngleToPlayer = acos(CVector::Dot(VectorZ(), DirectionToPlayer));
 
-        // 大砲がプレイヤーの方に向いているかどうかを確認
-        if (Forward.Dot(DirectionToPlayer) > 0.99f)
+        // 角度の制限
+        // ラジアンに変換
+        float MaxRotationAngle = 45.0f * (M_PI / 180.0f);
+
+        // 角度が制限範囲内にあるかチェック
+        if (AngleToPlayer <= MaxRotationAngle)
         {
+            // 回転速度を調整できる
+            float RotationSpeed = 1.0f;
+            // 向きをSlerpで補間
+            CVector Forward = CVector::Slerp(CannonForward, DirectionToPlayer, RotationSpeed);
+
+            // 大砲を回転させる
+            Rotation(CQuaternion::LookRotation(Forward));
+
             // 重力加速度
             const float g = GRAVITY;
 
@@ -121,7 +136,7 @@ void CCannon::Update()
             CVector DirectionToTarget(dx, TargetY * 0.3f - InitialY * 0.3f, dz);
             DirectionToTarget.Normalize();
 
-            if (IsFoundPlayer() && !mFire)
+            if (!mFire)
             {
                 // 弾丸を発射
                 CCannonBall* cannonBall = new CCannonBall
@@ -134,9 +149,20 @@ void CCannon::Update()
                 );
                 mFire = true; // 発射フラグを立てる
             }
+            //// 大砲がプレイヤーの方に向いているかどうかを確認
+            //if (Forward.Dot(DirectionToPlayer) > 0.99f)
+            //{
+            //    
+            //}
+        }
+        else
+        {
+            // 制限範囲を超えた場合、回転しない（または制限角度まで回転）
+            // 必要に応じて別の処理を追加
         }
     }
 
+    CDebugPrint::Print("isFound:%s\n", IsFoundPlayer() ? "true" : "false");
     // 打った後の処理
     if (mFire)
     {

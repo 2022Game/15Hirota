@@ -83,7 +83,7 @@ void CTitleMenu::Close()
 
 	SetEnable(false);
 	SetShow(false);
-	CBGMManager::Instance()->Play(EBGMType::eGame, false);
+	//CBGMManager::Instance()->Play(EBGMType::eGame, false);
 	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
 	// メニューを開いたフラグを下す
 	mIsOpened = false;

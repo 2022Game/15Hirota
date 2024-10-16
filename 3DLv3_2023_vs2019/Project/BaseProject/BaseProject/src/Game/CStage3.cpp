@@ -39,6 +39,7 @@
 #include "CMeat2.h"
 #include "CMeat3.h"
 #include "CCircleLine.h"
+#include "CBGMManager.h"
 
 // コンストラクタ
 CStage3::CStage3()
@@ -147,6 +148,9 @@ void CStage3::Load()
 	// 背景色設定
 	System::SetClearColor(0.1960784f, 0.6f, 0.8f, 1.0f);
 
+	// BGMを再生
+	CBGMManager::Instance()->Play(EBGMType::eStage3);
+
 	CInput::ShowCursor(false);
 
 	//// フィールド関連 /////////////////////////////////////////////////////////////////
@@ -174,11 +178,11 @@ void CStage3::Load()
 	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
 	AddTask(savepoint1);
 	// セーブポイント2
-	CSavePoint1* savepoint2 = new CSavePoint1
+	CSavePoint2* savepoint2 = new CSavePoint2
 	(
 		CVector(0.0f, 0.0f, 1550.0f),
 		CVector(4.0f, 4.0f, 4.0f),
-		CVector(0.0f, 10.0f, 0.0f)
+		CVector(0.0f, 90.0f, 0.0f)
 	);
 	savepoint1->Rotation(0.0f, 90.0f, 0.0f);
 	AddTask(savepoint2);
@@ -188,7 +192,7 @@ void CStage3::Load()
 	(
 		CVector(0.0f, -5.0f, 1850.0f),
 		CVector(2.0f, 2.0f, 2.0f),
-		CVector(0.0f, 0.0f, 0.0f)
+		CVector(0.0f, 90.0f, 0.0f)
 	);
 	AddTask(goal);
 

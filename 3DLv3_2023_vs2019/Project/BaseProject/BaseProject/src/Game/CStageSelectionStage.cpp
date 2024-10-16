@@ -19,7 +19,7 @@
 #include "CStage4Button.h"
 #include "CVanguard.h"
 #include "CStageSky.h"
-
+#include "CBGMManager.h"
 
 // ステージのデータのテーブル
 CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[] = 
@@ -121,11 +121,15 @@ void CStageSelectionStage::Load()
 {
 	// ステージの空
 	CResourceManager::Load<CModel>("StageSky", "Field\\StageSky\\Sky(Sphere).obj");
-	CResourceManager::Load<CModel>("StageSelect", "Field\\StageSelect\\StageSelect.obj");				// ステージのオブジェクト
-	CResourceManager::Load<CModel>("StageSelectFloor", "Field\\StageSelect\\StageSelectFloorCol.obj");		// ステージの床コライダー
-
-	CResourceManager::Load<CModel>("StageButton", "GameGimmick\\Gimmick\\StageButton\\StageBotan.obj");					// ステージボタンモデル
-	CResourceManager::Load<CModel>("SkyIslandMenu", "GameGimmick\\Object\\Skyisland.obj");					// 空島モデル
+	// ステージのオブジェクト
+	CResourceManager::Load<CModel>("StageSelect", "Field\\StageSelect\\StageSelect.obj");
+	// ステージの床コライダー
+	CResourceManager::Load<CModel>("StageSelectFloor", "Field\\StageSelect\\StageSelectFloorCol.obj");
+	// ステージボタンモデル
+	CResourceManager::Load<CModel>("StageButton", "GameGimmick\\Gimmick\\StageButton\\StageBotan.obj");
+	// 空島モデル
+	CResourceManager::Load<CModel>("SkyIslandMenu", "GameGimmick\\Object\\Skyisland.obj");
+	// ナンバーモデル
 	CResourceManager::Load<CModel>("Number3", "GameGimmick\\Gimmick\\NumberFloor\\number3.obj");
 	// 跳ねるキノコモデル
 	CResourceManager::Load<CModel>("JumpingKinoko", "GameGimmick\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
@@ -138,6 +142,9 @@ void CStageSelectionStage::Load()
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
+
+	// タイトルBGMを再生
+	CBGMManager::Instance()->Play(EBGMType::eMap);
 
 	// ゲーム中はカーソルをオフ
 	CInput::ShowCursor(false);

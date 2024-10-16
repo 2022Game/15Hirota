@@ -187,7 +187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 100}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &109622491
@@ -235,6 +235,13 @@ MonoBehaviour:
   inventory: {fileID: 1667112557}
   footItem:
     id: 0
+    type: 0
+    atk: 0
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 0
+    detail: 
     name: 
     sprite: 
     prefab: 
@@ -735,61 +742,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: itemNumMax
-      value: 4
+    - target: {fileID: 7522716868439318746, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
+      propertyPath: parameter.hp
+      value: 50
       objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.size
-      value: 4
+    - target: {fileID: 7522716868439318746, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
+      propertyPath: parameter.lv
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[0].name
-      value: "\u56DE\u5FA9\u85AC(\u5C0F)"
+    - target: {fileID: 7522716868439318746, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
+      propertyPath: parameter.def
+      value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[1].name
-      value: "\u56DE\u5FA9\u85AC(\u5C0F)"
+    - target: {fileID: 7522716868439318746, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
+      propertyPath: parameter.exp
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[2].name
-      value: "\u56DE\u5FA9\u85AC(\u5C0F)"
+    - target: {fileID: 7522716868439318746, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
+      propertyPath: parameter.str
+      value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[3].name
-      value: "\u56DE\u5FA9\u85AC(\u5C0F)"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[0].prefab
-      value: Item1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[0].sprite
-      value: S_ItemHeavyOutline_PotionRed_00
-      objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[1].prefab
-      value: Item1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[1].sprite
-      value: S_ItemHeavyOutline_PotionRed_00
-      objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[2].prefab
-      value: Item1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[2].sprite
-      value: S_ItemHeavyOutline_PotionRed_00
-      objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[3].prefab
-      value: Item1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4052380344925068634, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
-      propertyPath: items.Array.data[3].sprite
-      value: S_ItemHeavyOutline_PotionRed_00
+    - target: {fileID: 7522716868439318746, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
+      propertyPath: parameter.hpmax
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

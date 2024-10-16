@@ -136,7 +136,18 @@ public class ActorUseItems : MonoBehaviour
     // ˆø”‚Å“n‚³‚ê‚½ƒAƒCƒeƒ€‚ğE‚Á‚Ä“Š‚°‚é
     public bool PickUpThrow(Item it)
     {
-        return true;
+        if (usingItem == null)
+        {
+            Message.Add(13, it.name);
+            usingItem = GetComponentInParent<Field>().GetExistItem(move.grid.x, move.grid.z);
+            return false;
+        }
+        if (usingItem.GetComponent<ItemMovement>().Throwing(move.direction))
+        {
+            usingItem = null;
+            return true;
+        }
+        return false;
     }
 
     // ‰½‚à‚µ‚È‚¢

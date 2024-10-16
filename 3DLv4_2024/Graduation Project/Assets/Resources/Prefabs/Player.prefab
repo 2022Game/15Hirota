@@ -8784,12 +8784,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d2c2007dff0924d9f99821193f2639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemNumMax: 1
+  itemNumMax: 5
   items:
   - id: 0
+    type: 0
+    atk: 0
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 0
+    detail: 
     name: "\u56DE\u5FA9\u85AC(\u5C0F)"
     sprite: S_ItemHeavyOutline_PotionRed_00
     prefab: Item1
+  - id: 0
+    type: 0
+    atk: 0
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 0
+    detail: 
+    name: "\u56DE\u5FA9\u85AC(\u5C0F)"
+    sprite: S_ItemHeavyOutline_PotionRed_00
+    prefab: Item1
+  - id: 0
+    type: 0
+    atk: 0
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 0
+    detail: 
+    name: "\u56DE\u5FA9\u85AC(\u5C0F)"
+    sprite: S_ItemHeavyOutline_PotionRed_00
+    prefab: Item1
+  - id: 0
+    type: 0
+    atk: 0
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 0
+    detail: 
+    name: "\u56DE\u5FA9\u85AC(\u5C0F)"
+    sprite: S_ItemHeavyOutline_PotionRed_00
+    prefab: Item1
+  - id: 0
+    type: 0
+    atk: 0
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 0
+    detail: 
+    name: 
+    sprite: 
+    prefab: 
 --- !u!114 &6971253333704748204
 MonoBehaviour:
   m_ObjectHideFlags: 0

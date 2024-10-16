@@ -43,6 +43,7 @@
 #include "CRengaBlock.h"
 #include "CHatenaBlock.h"
 #include "CPicoChan.h"
+#include "CBGMManager.h"
 
 // コンストラクタ
 CStage1::CStage1()
@@ -171,6 +172,9 @@ void CStage1::Load()
 	// アイテム関連
 	// ブルーメダルモデル
 	CResourceManager::Load<CModel>("BlueMedal", "Item\\BlueMedal\\Bluemedal.obj");
+
+	// BGMを再生
+	CBGMManager::Instance()->Play(EBGMType::eStage1);
 
 	// 背景色設定
 	System::SetClearColor(0.0f, 0.0f, 0.8f, 1.0f);

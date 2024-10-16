@@ -134,10 +134,10 @@ public static class DirUtil
 
     // マップのデータ(map)と現在の座標(position)と移動したい方向(d)を渡すと
     // (もし移動できるならば)移動先の座標を取得
-    public static Pos2D Move(Field field, Pos2D position, EDir d)
+    public static Pos2D Move(Field field, Pos2D position, EDir d, bool isCheckCharacter = true)
     {
         Pos2D newP = GetNewGrid(position, d);
-        if (field.IsCollide(newP.x, newP.z) || field.GetExistActor(newP.x, newP.z) != null)
+        if (field.IsCollide(newP.x, newP.z) || (isCheckCharacter && field.GetExistActor(newP.x, newP.z) != null))
             return position;
         return newP;
     }

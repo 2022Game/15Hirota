@@ -122,6 +122,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parameter:
     id: 0
+    type: 0
+    atk: 0
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 0
+    detail: 
     name: "\u56DE\u5FA9\u85AC(\u5C0F)"
     sprite: S_ItemHeavyOutline_PotionRed_00
     prefab: Item1

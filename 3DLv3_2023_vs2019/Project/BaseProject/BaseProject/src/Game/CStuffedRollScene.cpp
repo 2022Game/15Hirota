@@ -26,8 +26,10 @@ CStuffedRollScene::~CStuffedRollScene()
 void CStuffedRollScene::Load()
 {
 	CInput::ShowCursor(false);
+	// BGM‚ðÄ¶
+	CBGMManager::Instance()->Play(EBGMType::eEnding);
 	// ”wŒiFÝ’è
-	System::SetClearColor(0.5f, 0.5f, 0.5f, 0.9f);
+	System::SetClearColor(0.0f, 0.0f, 0.0f, 0.7f);
 
 	// BGM‚ðÄ¶
 	//CBGMManager::Instance()->Play(EBGMType::eTitle);

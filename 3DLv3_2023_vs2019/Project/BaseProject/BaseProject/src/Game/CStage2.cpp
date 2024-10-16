@@ -35,6 +35,7 @@
 #include "CSeesaw.h"
 #include "CPicoChan.h"
 #include "CCannon.h"
+#include "CBGMManager.h"
 
 // コンストラクタ
 CStage2::CStage2()
@@ -157,6 +158,9 @@ void CStage2::Load()
 	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
 
 	CInput::ShowCursor(false);
+
+	// BGMを再生
+	CBGMManager::Instance()->Play(EBGMType::eStage2);
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
