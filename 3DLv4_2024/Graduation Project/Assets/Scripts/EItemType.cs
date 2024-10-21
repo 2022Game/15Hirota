@@ -5,5 +5,5 @@ public enum EItemType
     Weapon,
     Armor,
     Food,
-    Position,
+    Potion
 };

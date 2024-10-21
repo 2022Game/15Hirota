@@ -6,6 +6,6 @@ using UnityEngine;
 [ExcelAsset]
 public class ExcelItemData : ScriptableObject
 {
-	public List<Item> Equipments;
-	public List<Item> Goods;
+    public List<Item> Equipments;
+    public List<Item> Goods;
 }

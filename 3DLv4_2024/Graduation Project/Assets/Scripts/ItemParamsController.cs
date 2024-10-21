@@ -14,6 +14,7 @@ public class ItemParamsController : MonoBehaviour
         p.name = it.name;
         p.prefab = it.prefab;
         p.sprite = it.sprite;
+
         p.type = it.type;
         p.atk = it.atk;
         p.def = it.def;
