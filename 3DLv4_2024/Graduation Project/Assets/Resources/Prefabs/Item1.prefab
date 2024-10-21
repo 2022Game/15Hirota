@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a38de2af0ebcd1d438398af9491043ac, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2f605f8487435b64780f2f663cc01c4c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -124,8 +124,8 @@ MonoBehaviour:
     id: 1021
     type: 4
     name: "\u521D\u7D1A\u30DD\u30FC\u30B7\u30E7\u30F3"
-    sprite: S_ItemNoOutline_PotionRed_00
-    prefab: Item2
+    sprite: S_ItemHeavyOutline_PotionRed_00
+    prefab: item1
     atk: 0
     def: 0
     hp: 0

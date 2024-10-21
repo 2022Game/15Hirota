@@ -62,10 +62,10 @@ public class InventoryEditor : Editor
     {
         Item p = new Item();
         p.id = it.id;
-        p.type = it.type;
         p.name = it.name;
-        p.prefab = it.prefab;
+        p.type = it.type;
         p.sprite = it.sprite;
+        p.prefab = it.prefab;
         p.atk = it.atk;
         p.def = it.def;
         p.hp = it.hp;
