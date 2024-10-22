@@ -121,9 +121,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parameter:
+    isEquip: 0
     id: 0
     type: 0
-    name: 
+    name: "\u56DE\u5FA9\u85AC(\u5C0F)"
     sprite: 
     prefab: 
     atk: 0

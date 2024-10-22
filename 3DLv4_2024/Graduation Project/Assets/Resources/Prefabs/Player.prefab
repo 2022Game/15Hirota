@@ -8771,6 +8771,33 @@ MonoBehaviour:
     def: 5
     exp: 0
     xp: 0
+  equipment:
+    weapon:
+      isEquip: 0
+      id: 0
+      type: 0
+      name: 
+      sprite: 
+      prefab: 
+      atk: 0
+      def: 0
+      hp: 0
+      food: 0
+      dmg: 0
+      detail: 
+    armor:
+      isEquip: 0
+      id: 0
+      type: 0
+      name: 
+      sprite: 
+      prefab: 
+      atk: 0
+      def: 0
+      hp: 0
+      food: 0
+      dmg: 0
+      detail: 
   actorName: "\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
 --- !u!114 &4052380344925068634
 MonoBehaviour:
@@ -8784,57 +8811,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d2c2007dff0924d9f99821193f2639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemNumMax: 5
+  itemNumMax: 10
   items:
-  - id: 1021
+  - isEquip: 0
+    id: 1021
     type: 4
-    name: "\u521D\u7D1A\u30DD\u30FC\u30B7\u30E7\u30F3"
-    sprite: hp
-    prefab: item2
-    atk: 0
-    def: 0
-    hp: 10
-    food: 0
-    dmg: 0
-    detail: "\u5E8F\u76E4\u306F\u3053\u308C\u3060\u3051\u3067\u5927\u4E08\u592B\u2026\u2026\u306A\u306F\u305A\uFF01(\u4F53\u529B+10)"
-  - id: 1021
-    type: 4
-    name: "\u521D\u7D1A\u30DD\u30FC\u30B7\u30E7\u30F3"
-    sprite: hp
-    prefab: item2
-    atk: 0
-    def: 0
-    hp: 10
-    food: 0
-    dmg: 0
-    detail: "\u5E8F\u76E4\u306F\u3053\u308C\u3060\u3051\u3067\u5927\u4E08\u592B\u2026\u2026\u306A\u306F\u305A\uFF01(\u4F53\u529B+10)"
-  - id: 1021
-    type: 4
-    name: "\u521D\u7D1A\u30DD\u30FC\u30B7\u30E7\u30F3"
-    sprite: hp
-    prefab: item2
-    atk: 0
-    def: 0
-    hp: 10
-    food: 0
-    dmg: 0
-    detail: "\u5E8F\u76E4\u306F\u3053\u308C\u3060\u3051\u3067\u5927\u4E08\u592B\u2026\u2026\u306A\u306F\u305A\uFF01(\u4F53\u529B+10)"
-  - id: 1021
-    type: 4
-    name: "\u521D\u7D1A\u30DD\u30FC\u30B7\u30E7\u30F3"
-    sprite: hp
-    prefab: item2
-    atk: 0
-    def: 0
-    hp: 10
-    food: 0
-    dmg: 0
-    detail: "\u5E8F\u76E4\u306F\u3053\u308C\u3060\u3051\u3067\u5927\u4E08\u592B\u2026\u2026\u306A\u306F\u305A\uFF01(\u4F53\u529B+10)"
-  - id: 1021
-    type: 4
-    name: "\u521D\u7D1A\u30DD\u30FC\u30B7\u30E7\u30F3"
-    sprite: hp
-    prefab: item2
+    name: "\u56DE\u5FA9\u85AC(\u5C0F)"
+    sprite: S_ItemHeavyOutline_PotionRed_00
+    prefab: Item1
     atk: 0
     def: 0
     hp: 10

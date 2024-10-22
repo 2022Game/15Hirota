@@ -25,6 +25,7 @@ public class ActorUseItems : MonoBehaviour
             case "PickUpUse": return new UseItem(PickUpUse);
             case "Replace": return new UseItem(Replace);
             case "PickUpThrow": return new UseItem(PickUpThrow);
+            case "Equip": return new UseItem(Equip);
         }
         return new UseItem(DoNothing);
     }
@@ -153,6 +154,13 @@ public class ActorUseItems : MonoBehaviour
     // ‰½‚à‚µ‚È‚¢
     public bool DoNothing(Item it)
     {
+        return true;
+    }
+
+    // ˆø”‚Å“n‚³‚ê‚½ƒAƒCƒeƒ€‚ğ‘•”õ‚·‚é
+    public bool Equip(Item it)
+    {
+        param.EquipItem(it);
         return true;
     }
 

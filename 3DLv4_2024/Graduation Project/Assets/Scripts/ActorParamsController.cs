@@ -3,9 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class Equipment
+{
+    public Item weapon;
+    public Item armor;
+}
+
 public class ActorParamsController : MonoBehaviour
 {
     public Params parameter;
+    public Equipment equipment;
 
     private List<Params> paramsData;
     private int prevLv = 0;
@@ -83,6 +91,41 @@ public class ActorParamsController : MonoBehaviour
         parameter.def = p.def;
         parameter.exp = p.exp;
         parameter.xp = p.xp;
+    }
+
+    // アイテムを装備する
+    public void EquipItem(Item it)
+    {
+        RemoveEquipment(it);
+        if (it.type == EItemType.Weapon)
+        {
+            Message.Add(6, it.name);
+            equipment.weapon = it;
+            it.isEquip = true;
+        }
+        else if (it.type == EItemType.Armor)
+        {
+            Message.Add(6, it.name);
+            equipment.armor = it;
+            it.isEquip = true;
+        }
+    }
+
+    // 装備アイテムを外す
+    public void RemoveEquipment(Item it)
+    {
+        if (it.type == EItemType.Weapon && equipment.weapon != null && equipment.weapon.isEquip)
+        {
+            Message.Add(7, equipment.weapon.name);
+            equipment.weapon.isEquip = false;
+            equipment.weapon = null;
+        }
+        else if (it.type == EItemType.Armor && equipment.armor != null && equipment.armor.isEquip)
+        {
+            Message.Add(7, equipment.armor.name);
+            equipment.armor.isEquip = false;
+            equipment.armor = null;
+        }
     }
 
     // ダメージを受ける

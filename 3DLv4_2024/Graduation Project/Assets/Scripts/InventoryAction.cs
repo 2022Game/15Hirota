@@ -164,19 +164,24 @@ public class InventoryAction : MonoBehaviour
     {
         if (Input.anyKeyDown && Input.GetKeyDown(KeyCode.Space))
         {
+            string choiceOrder = "";
             selectItem = display.GetSelectFootItem();
             if (selectItem != null)
             {
-                if (display.inventory.IsFull()) subMenu.SetChoices("PickUpUse, PickUpThrow");
-                else subMenu.SetChoices("PickUp, PickUpUse, PickUpThrow");
+                if (display.inventory.IsFull()) choiceOrder = "PickUpUse, PickUpThrow";
+                else choiceOrder = "PickUp, PickUpUse, PickUpThrow";
+                if ((int)selectItem.id < 1001) choiceOrder = choiceOrder.Replace(" PickUpUse,", "");
+                subMenu.SetChoices(choiceOrder);
                 subMenu.Show();
                 return;
             }
             selectItem = display.GetSelectItem();
             if (selectItem != null)
             {
-                if (display.inventory.GetFootItem() == null) subMenu.SetChoices("Use, Put, Throw");
-                else subMenu.SetChoices("Use, Replace, Throw");
+                if (display.inventory.GetFootItem() == null) choiceOrder = "Use, Put, Throw";
+                else choiceOrder = "Use, Replace, Throw";
+                if ((int)selectItem.id < 1001) choiceOrder = choiceOrder.Replace("Use", "Equip");
+                subMenu.SetChoices(choiceOrder);
                 subMenu.Show();
             }
         }
