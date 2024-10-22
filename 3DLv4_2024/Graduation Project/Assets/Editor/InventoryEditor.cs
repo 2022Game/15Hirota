@@ -60,18 +60,6 @@ public class InventoryEditor : Editor
 
     private void SetItem(Item it, ref Item parameter)
     {
-        Item p = new Item();
-        p.id = it.id;
-        p.name = it.name;
-        p.type = it.type;
-        p.sprite = it.sprite;
-        p.prefab = it.prefab;
-        p.atk = it.atk;
-        p.def = it.def;
-        p.hp = it.hp;
-        p.food = it.food;
-        p.dmg = it.dmg;
-        p.detail = it.detail;
-        parameter = p;
+        parameter = it.Get();
     }
 }

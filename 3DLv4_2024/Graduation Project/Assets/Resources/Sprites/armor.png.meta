@@ -1,12 +1,5 @@
 fileFormatVersion: 2
-guid: 5d9ba4e7d0964044ea54abe409d81dfd
-AssetOrigin:
-  serializedVersion: 1
-  productId: 56687
-  packageName: RPG inventory icons
-  packageVersion: 1.0
-  assetPath: Assets/RPG_inventory_icons/apple.png
-  uploadId: 104269
+guid: 48025c6593fd11c4d82bf265aedac937
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

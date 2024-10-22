@@ -32,11 +32,7 @@ public class Inventory : MonoBehaviour
         Item[] itemList = new Item[items.Count];
         for (int i = 0; i < items.Count; i++)
         {
-            Item it = new Item();
-            it.id = items[i].id;
-            it.name = items[i].name;
-            it.sprite = items[i].sprite;
-            itemList[i] = it;
+            itemList[i] = items[i].Get();
         }
         return itemList;
     }
@@ -48,11 +44,7 @@ public class Inventory : MonoBehaviour
         int itemCnt = itemList.Length < maxNum ? itemList.Length : maxNum;
         for (int i = 0; i < itemCnt; i++)
         {
-            Item it = new Item();
-            it.id = itemList[i].id;
-            it.name = itemList[i].name;
-            it.sprite = itemList[i].sprite;
-            items.Add(it);
+            items.Add(itemList[i].Get());
         }
         itemNumMax = maxNum;
         this.items = items;

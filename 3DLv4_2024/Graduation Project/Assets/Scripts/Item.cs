@@ -1,6 +1,8 @@
 [System.Serializable]
 public class Item
 {
+    public bool isEquip;
+
     public EItem id;
 
     public EItemType type;
@@ -13,4 +15,22 @@ public class Item
     public int food;
     public int dmg;
     public string detail;
+
+    public Item Get()
+    {
+        Item p = new Item();
+        p.id = id;
+        p.type = type;
+        p.name = name;
+        p.prefab = prefab;
+        p.sprite = sprite;
+        p.isEquip = isEquip;
+        p.atk = atk;
+        p.def = def;
+        p.hp = hp;
+        p.food = food;
+        p.dmg = dmg;
+        p.detail = detail;
+        return p;
+    }
 }

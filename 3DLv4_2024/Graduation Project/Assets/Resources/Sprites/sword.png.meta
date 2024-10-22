@@ -1,12 +1,5 @@
 fileFormatVersion: 2
-guid: 5d9ba4e7d0964044ea54abe409d81dfd
-AssetOrigin:
-  serializedVersion: 1
-  productId: 56687
-  packageName: RPG inventory icons
-  packageVersion: 1.0
-  assetPath: Assets/RPG_inventory_icons/apple.png
-  uploadId: 104269
+guid: 45df7a3d64f5dd048b1360bb5e05f63f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -53,7 +46,7 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 7
+  alignment: 6
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}

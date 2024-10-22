@@ -95,6 +95,7 @@ public class SaveDataManager : MonoBehaviour
             itemSaveData.grid = new Pos2D();
             itemSaveData.grid.x = move.grid.x;
             itemSaveData.grid.z = move.grid.z;
+            itemSaveData.parameter = it.GetComponent<ItemParamsController>().GetParams();
             itemSaveDatas[i] = itemSaveData;
         }
         return itemSaveDatas;
@@ -104,12 +105,13 @@ public class SaveDataManager : MonoBehaviour
     // アイテムデータをマップ上に反映する
     private void LoadItemData(SaveData saveData)
     {
-        GameObject itemObj = (GameObject)Resources.Load("Prefabs/Item1");
         foreach (var data in saveData.itemDatas)
         {
+            GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + data.parameter.prefab);
             GameObject it = Instantiate(itemObj, items.transform);
             ItemMovement move = it.GetComponent<ItemMovement>();
             move.SetPosition(data.grid.x, data.grid.z);
+            it.GetComponent<ItemParamsController>().SetParams(data.parameter);
         }
     }
 

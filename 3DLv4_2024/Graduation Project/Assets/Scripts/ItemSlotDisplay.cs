@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ItemSlotDisplay : MonoBehaviour
 {
     public Inventory inventory;
+    public GameObject detail;
     //public List<Item> footItem = new List<Item>();
     public Item footItem;
     public GameObject content;
@@ -41,12 +42,14 @@ public class ItemSlotDisplay : MonoBehaviour
                 view.MoveContentPosition(moveDistance);
                 viewSelectItemIndex--;
                 ShowItemInfo();
+                ShowItemDetail();
             }
         }
         if (prevViewSelectItemIndex == maxShowItemNum - 1 && viewSelectItemIndex == 0)
         {
             leadShowItemIndex = 0;
             ShowItemInfo();
+            ShowItemDetail();
         }
         if (viewSelectItemIndex == prevViewSelectItemIndex - 1)
         {
@@ -61,15 +64,18 @@ public class ItemSlotDisplay : MonoBehaviour
                 view.MoveContentPosition(moveDistance);
                 viewSelectItemIndex++;
                 ShowItemInfo();
+                ShowItemDetail();
             }
         }
         if (prevViewSelectItemIndex == 0 && viewSelectItemIndex == maxShowItemNum - 1)
         {
             leadShowItemIndex = inventoryNum - maxShowItemNum;
             ShowItemInfo();
+            ShowItemDetail();
         }
         selectItemIndex = leadShowItemIndex + viewSelectItemIndex;
         prevViewSelectItemIndex = viewSelectItemIndex;
+        ShowItemDetail();
         return true;
     }
 
@@ -137,6 +143,7 @@ public class ItemSlotDisplay : MonoBehaviour
         inventoryNum = (footItem == null ? 0 : 1) + inventory.itemNumMax;
         maxShowItemNum = maxShowItemNum > inventoryNum ? inventoryNum : maxShowItemNum;
         ShowItemInfo();
+        ShowItemDetail();
     }
 
     /**
@@ -162,6 +169,22 @@ public class ItemSlotDisplay : MonoBehaviour
                 slot.GetComponentsInChildren<Image>()[1].sprite = Resources.Load<Sprite>("Sprites/" + it.sprite);
             }
         }
+    }
+
+    // アイテムの詳細を表示する
+    private void ShowItemDetail()
+    {
+        int idx = prevViewSelectItemIndex + leadShowItemIndex;
+        Item it = idx == inventory.itemNumMax ? footItem : inventory.Get(idx);
+        if (it == null) detail.GetComponentInChildren<Text>().text = "";
+        else detail.GetComponentInChildren<Text>().text = it.detail;
+        for (int i = 0; i < maxShowItemNum; i++)
+        {
+            Transform slot = content.transform.GetChild(i);
+            slot.GetChild(2).gameObject.SetActive(false);
+        }
+        Transform currentSlot = content.transform.GetChild(prevViewSelectItemIndex);
+        currentSlot.GetChild(2).gameObject.SetActive(true);
     }
 
     // 現在選択しているアイテムスロットのアイテムを返す

@@ -57,8 +57,11 @@ public class LoadFieldMap : MonoBehaviour
                         break;
                 }
             }
-            // 個々の処理は本来はDataActorで取得できるがエラーが発生するので
+            // ここの処理は本来はDataActorで取得できるがエラーが発生するので
             // そのままプレハブから取得している
+            ExcelActorData actorDatabase = Resources.Load<ExcelActorData>("Datas/ExcelActorData");
+            ExcelActorData.ActorData[] actorDatas = actorDatabase.Data.ToArray();
+            ExcelItemData itemDatabase = Resources.Load<ExcelItemData>("Datas/ExcelItemData");
             foreach (var objgp in map.Elements("objectgroup"))
             {
                 switch (objgp.Attribute("id").Value)
@@ -71,41 +74,40 @@ public class LoadFieldMap : MonoBehaviour
                             int pw = int.Parse(obj.Attribute("width").Value);
                             int ph = int.Parse(obj.Attribute("height").Value);
                             string name = obj.Attribute("name").Value;
-                            if (name == "Player")
+                            bool isContinue = false;
+                            foreach (var actorData in actorDatas)
                             {
-                                player.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
-                                continue;
+                                if (name == actorData.prefab)
+                                {
+                                    if (actorData.id > 0)
+                                    {
+                                        GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + name);
+                                        GameObject enemy = Instantiate(enemyObj, enemies.transform);
+                                        enemy.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
+                                        enemy.GetComponent<EnemyOperation>().target = player;
+                                        isContinue = true;
+                                        break;
+                                    }
+                                    player.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
+                                    isContinue = true;
+                                    break;
+                                }
                             }
-                            if (name.Contains("Enemy"))
+                            if (isContinue) continue;
+                            foreach (EItem itemId in System.Enum.GetValues(typeof(EItem)))
                             {
-                                GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + name);
-                                GameObject enemy = Instantiate(enemyObj, enemies.transform);
-                                enemy.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
-                                enemy.GetComponent<EnemyOperation>().target = player;
+                                if (name == itemId.ToString())
+                                {
+                                    Item itemData;
+                                    if ((int)itemId > 1000) itemData = itemDatabase.Goods.Find(n => n.id == itemId);
+                                    else itemData = itemDatabase.Equipments.Find(n => n.id == itemId);
+                                    if (itemData == null) break;
+                                    GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + itemData.prefab);
+                                    GameObject item = Instantiate(itemObj, items.transform);
+                                    item.GetComponent<ItemMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
+                                    item.GetComponent<ItemParamsController>().SetParams(itemData);
+                                }
                             }
-                            if (name.Contains("Item"))
-                            {
-                                GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + name);
-                                GameObject item = Instantiate(itemObj, items.transform);
-                                item.GetComponent<ItemMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
-                            }
-                            // この処理でも実行できるが、プレイヤーをエネミーの位置がおかしいため
-                            // 今までの処理を実行
-                            //foreach (var actorData in actorDatas)
-                            //{
-                            //    if (name == actorData.prefab)
-                            //    {
-                            //        if (actorData.id > 0)
-                            //        {
-                            //            GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + name);
-                            //            GameObject enemy = Instantiate(enemyObj, enemies.transform);
-                            //            enemy.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
-                            //            enemy.GetComponent<EnemyOperation>().target = player;
-                            //            break;
-                            //        }
-                            //        break;
-                            //    }
-                            //}
                         }
                         break;
                 }
