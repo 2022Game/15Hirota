@@ -407,6 +407,7 @@ MonoBehaviour:
   - "\u4EA4\u63DB\u3059\u308B"
   - "\u62FE\u3063\u3066\u6295\u3052\u308B"
   - "\u88C5\u5099"
+  - "\u5916\u3059"
   choiceMethods:
   - Use
   - Put
@@ -416,6 +417,7 @@ MonoBehaviour:
   - Replace
   - PickUpThrow
   - Equip
+  - Remove
 --- !u!1 &263060084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1800,7 +1802,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979996584}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.51597804, y: -0.000000020844121, z: 0.000000012555551, w: 0.85660183}
+  m_LocalRotation: {x: 0.51597804, y: 0.000000020844114, z: -0.000000012555546, w: 0.85660183}
   m_LocalPosition: {x: 0, y: 9.17, z: -5.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2884,7 +2886,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1821393096}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.51597804, y: -0.000000020844121, z: 0.000000012555551, w: 0.85660183}
+  m_LocalRotation: {x: 0.51597804, y: 0.000000020844114, z: -0.000000012555546, w: 0.85660183}
   m_LocalPosition: {x: 0, y: 9.17, z: -5.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

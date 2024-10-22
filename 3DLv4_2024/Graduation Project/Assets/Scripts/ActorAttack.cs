@@ -36,9 +36,10 @@ public class ActorAttack : MonoBehaviour
     public void DamageOpponent(GameObject actor)
     {
         if (actor == null) return;
-        int str = GetComponent<ActorParamsController>().parameter.str;
-        actor.GetComponent<ActorParamsController>().Damaged(str);
         EDir d = DirUtil.ReverseDirection(GetComponent<ActorMovement>().direction);
         actor.GetComponent<ActorMovement>().SetDirection(d);
+        ActorParamsController param = GetComponent<ActorParamsController>();
+        int str = param.parameter.str + param.equipment.GetAllAtk();
+        actor.GetComponent<ActorParamsController>().Damaged(str);
     }
 }

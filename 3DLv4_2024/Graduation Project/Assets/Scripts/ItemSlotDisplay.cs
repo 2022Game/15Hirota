@@ -161,12 +161,15 @@ public class ItemSlotDisplay : MonoBehaviour
             {
                 slot.GetComponentInChildren<Text>().text = "";
                 slot.GetChild(0).gameObject.SetActive(false);
+                slot.GetChild(3).gameObject.SetActive(false);
             }
             else
             {
                 slot.GetComponentInChildren<Text>().text = it.name;
                 slot.GetChild(0).gameObject.SetActive(true);
                 slot.GetComponentsInChildren<Image>()[1].sprite = Resources.Load<Sprite>("Sprites/" + it.sprite);
+                if (it.isEquip) slot.GetChild(3).gameObject.SetActive(true);
+                else slot.GetChild(3).gameObject.SetActive(false);
             }
         }
     }

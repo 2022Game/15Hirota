@@ -8,6 +8,18 @@ public class Equipment
 {
     public Item weapon;
     public Item armor;
+
+    // 全ての身に着けている装備品の攻撃力の合算値を返す
+    public int GetAllAtk()
+    {
+        return (weapon == null ? 0 : weapon.atk) + (armor == null ? 0 : armor.atk);
+    }
+
+    // 全ての身に着けている装備品の防御力の合算値を返す
+    public int GetAllDef()
+    {
+        return (weapon == null ? 0 : weapon.def) + (armor == null ? 0 : armor.def);
+    }
 }
 
 public class ActorParamsController : MonoBehaviour
@@ -131,7 +143,7 @@ public class ActorParamsController : MonoBehaviour
     // ダメージを受ける
     public void Damaged(int str)
     {
-        int d = CalcDamage(str, parameter.def);
+        int d = CalcDamage(str, parameter.def + equipment.GetAllDef());
         parameter.hp -= d;
         if (parameter.id < 1) Message.Add(1, actorName, d.ToString());
         else Message.Add(2, actorName, d.ToString());
