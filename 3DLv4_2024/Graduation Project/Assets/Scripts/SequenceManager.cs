@@ -12,7 +12,7 @@ public class SequenceManager : MonoBehaviour
     private List<ActorAction> actEnemies = new List<ActorAction>();
     private List<ActorAction> moveEnemies = new List<ActorAction>();
     private List<ActorAction> operatedEnemies = new List<ActorAction>();
-    private bool isEnemyDeterminedBehaviour = false;   
+    private bool isEnemyDeterminedBehaviour = false;
 
     // Update is called once per frame
     void Update()
@@ -37,6 +37,7 @@ public class SequenceManager : MonoBehaviour
             AllOperatedProc(iAct == EAct.TurnEnd);
             isEnemyDeterminedBehaviour = false;
             operatedEnemies.Clear();
+            DecreaseFood();
             return;
         }
         if (pAct == EAct.ActEnd && !isEnemyDeterminedBehaviour)
@@ -172,5 +173,11 @@ public class SequenceManager : MonoBehaviour
         {
             enemyAction.Proc();
         }
+    }
+
+    // ñûï†ìxÇå∏è≠Ç≥ÇπÇÈ
+    private void DecreaseFood()
+    {
+        playerAction.GetComponent<ActorParamsController>().DecreaseFood();
     }
 }

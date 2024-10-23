@@ -162,7 +162,7 @@ void CCannon::Update()
         }
     }
 
-    CDebugPrint::Print("isFound:%s\n", IsFoundPlayer() ? "true" : "false");
+    //CDebugPrint::Print("isFound:%s\n", IsFoundPlayer() ? "true" : "false");
     // ‘Å‚Á‚½Œã‚Ìˆ—
     if (mFire)
     {

@@ -29,6 +29,7 @@ public class ActorParamsController : MonoBehaviour
 
     private List<Params> paramsData;
     private int prevLv = 0;
+    public float decFoodPt = 0.25f;
 
     public string actorName;
 
@@ -67,6 +68,8 @@ public class ActorParamsController : MonoBehaviour
         {
             p.hp += paramsData[i].hp;
             p.hpmax += paramsData[i].hpmax;
+            p.food += paramsData[i].food;
+            p.foodmax += paramsData[i].foodmax;
             p.str += paramsData[i].str;
             p.def += paramsData[i].def;
             p.exp += paramsData[i].exp;
@@ -84,6 +87,8 @@ public class ActorParamsController : MonoBehaviour
         p.lvmax = parameter.lvmax;
         p.hp = parameter.hp;
         p.hpmax = parameter.hpmax;
+        p.food = parameter.food;
+        p.foodmax = parameter.foodmax;
         p.str = parameter.str;
         p.def = parameter.def;
         p.exp = parameter.exp;
@@ -99,6 +104,8 @@ public class ActorParamsController : MonoBehaviour
         parameter.lvmax = p.lvmax;
         parameter.hp = p.hp;
         parameter.hpmax = p.hpmax;
+        parameter.food = p.food;
+        parameter.foodmax = p.foodmax;
         parameter.str = p.str;
         parameter.def = p.def;
         parameter.exp = p.exp;
@@ -153,5 +160,38 @@ public class ActorParamsController : MonoBehaviour
     private static int CalcDamage(int str, int def)
     {
         return Mathf.CeilToInt(str * Mathf.Pow(0.9375f, def));
+    }
+
+    // –ž• “x‚ðŒ¸­‚³‚¹‚é
+    public void DecreaseFood()
+    {
+        if (parameter.food > 0)
+        {
+            parameter.food -= decFoodPt;
+            if (parameter.food < 0) parameter.food = 0;
+        }
+        else parameter.hp--;
+    }
+
+    // –ž• “x‚ð‰ñ•œ‚·‚é
+    public void RecoveryFood(int food)
+    {
+        parameter.food += food;
+        if (parameter.food > parameter.foodmax)
+        {
+            parameter.food = parameter.foodmax;
+            Message.Add(17);
+            return;
+        }
+        Message.Add(18);
+    }
+
+    // ‘Ì—Í‚ð‰ñ•œ‚·‚é
+    public void RecoveryHp(int p)
+    {
+        int hp = parameter.hpmax - parameter.hp;
+        hp = p < hp ? p : hp;
+        Message.Add(15, actorName, hp.ToString());
+        parameter.hp += hp;
     }
 }

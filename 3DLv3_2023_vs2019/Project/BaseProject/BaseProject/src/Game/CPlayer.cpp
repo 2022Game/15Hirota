@@ -3277,6 +3277,7 @@ void CPlayer::UpdateDashJumpStart()
 {
 	// 足元に煙のエフェクトを発生させる
 	PlayStepSmoke();
+	mDash = false;
 
 	mMoveSpeedY += JUMP_DASH;
 	mIsJumping = true;

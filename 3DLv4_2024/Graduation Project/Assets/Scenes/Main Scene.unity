@@ -821,6 +821,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7522716868439318746, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
+      propertyPath: parameter.food
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7522716868439318746, guid: 49f2055d53eeb4e5a92af590a44bddee, type: 3}
+      propertyPath: parameter.foodmax
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -27,6 +27,8 @@ MonoBehaviour:
     lvmax: 10
     hp: 50
     hpmax: 100
+    food: 100
+    foodmax: 100
     str: 5
     def: 5
     exp: 0
@@ -36,6 +38,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 2
     hpmax: 2
+    food: 101
+    foodmax: 101
     str: 1
     def: 1
     exp: 10
@@ -45,6 +49,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 3
     hpmax: 3
+    food: 102
+    foodmax: 102
     str: 1
     def: 1
     exp: 15
@@ -54,6 +60,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 2
     hpmax: 2
+    food: 103
+    foodmax: 103
     str: 1
     def: 1
     exp: 20
@@ -63,6 +71,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 3
     hpmax: 3
+    food: 104
+    foodmax: 104
     str: 2
     def: 1
     exp: 25
@@ -72,6 +82,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 2
     hpmax: 2
+    food: 105
+    foodmax: 105
     str: 1
     def: 1
     exp: 30
@@ -81,6 +93,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 3
     hpmax: 3
+    food: 106
+    foodmax: 106
     str: 1
     def: 1
     exp: 35
@@ -90,6 +104,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 2
     hpmax: 2
+    food: 107
+    foodmax: 107
     str: 1
     def: 1
     exp: 40
@@ -99,6 +115,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 3
     hpmax: 3
+    food: 108
+    foodmax: 108
     str: 1
     def: 1
     exp: 45
@@ -108,6 +126,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 2
     hpmax: 2
+    food: 109
+    foodmax: 109
     str: 1
     def: 1
     exp: 50
@@ -118,6 +138,8 @@ MonoBehaviour:
     lvmax: 10
     hp: 30
     hpmax: 85
+    food: 0
+    foodmax: 0
     str: 5
     def: 5
     exp: 0
@@ -127,6 +149,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 2
     hpmax: 2
+    food: 0
+    foodmax: 0
     str: 1
     def: 1
     exp: 10
@@ -136,6 +160,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 3
     hpmax: 3
+    food: 0
+    foodmax: 0
     str: 1
     def: 1
     exp: 15
@@ -145,6 +171,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 2
     hpmax: 2
+    food: 0
+    foodmax: 0
     str: 1
     def: 1
     exp: 20
@@ -154,6 +182,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 3
     hpmax: 3
+    food: 0
+    foodmax: 0
     str: 2
     def: 1
     exp: 25
@@ -163,6 +193,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 2
     hpmax: 2
+    food: 0
+    foodmax: 0
     str: 1
     def: 1
     exp: 30
@@ -172,6 +204,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 3
     hpmax: 3
+    food: 0
+    foodmax: 0
     str: 1
     def: 1
     exp: 35
@@ -181,6 +215,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 2
     hpmax: 2
+    food: 0
+    foodmax: 0
     str: 1
     def: 1
     exp: 40
@@ -190,6 +226,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 3
     hpmax: 3
+    food: 0
+    foodmax: 0
     str: 1
     def: 1
     exp: 45
@@ -199,6 +237,8 @@ MonoBehaviour:
     lvmax: 0
     hp: 2
     hpmax: 2
+    food: 0
+    foodmax: 0
     str: 1
     def: 1
     exp: 50

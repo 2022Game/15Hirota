@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 
 public class ActorUseItems : MonoBehaviour
@@ -68,7 +69,7 @@ public class ActorUseItems : MonoBehaviour
             inventory.Remove(it);
             return false;
         }
-        if (usingItem.GetComponent<ItemMovement>().Throwing(move.direction))
+        if (usingItem.GetComponent<ItemMovement>().Throwing(move.direction, param))
         {
             usingItem = null;
             return true;
@@ -145,7 +146,7 @@ public class ActorUseItems : MonoBehaviour
             usingItem = GetComponentInParent<Field>().GetExistItem(move.grid.x, move.grid.z);
             return false;
         }
-        if (usingItem.GetComponent<ItemMovement>().Throwing(move.direction))
+        if (usingItem.GetComponent<ItemMovement>().Throwing(move.direction, param))
         {
             usingItem = null;
             return true;
@@ -176,16 +177,15 @@ public class ActorUseItems : MonoBehaviour
     // 回復する
     private void Recovery(Item it)
     {
-        if (it.hp > 0)
+        if (it.hp == 0 && it.food == 0)
         {
-            GameObject effectObj = Resources.Load<GameObject>("Prefabs/RecoveryEffect");
-            effect = Instantiate(effectObj, transform);
-            int hp = param.parameter.hpmax - param.parameter.hp;
-            hp = it.hp < hp ? it.hp : hp;
-            Message.Add(15, param.actorName, hp.ToString());
-            param.parameter.hp += hp;
+            Message.Add(16);
+            return;
         }
-        if (it.hp == 0 && it.food == 0) Message.Add(16);
+        GameObject effectObj = Resources.Load<GameObject>("Prefabs/RecoveryEffect");
+        effect = Instantiate(effectObj, transform);
+        if (it.hp > 0) param.RecoveryHp(it.hp);
+        if (it.food > 0) param.RecoveryFood(it.food);
     }
 
     // 使用したアイテムによって処理を分岐させる

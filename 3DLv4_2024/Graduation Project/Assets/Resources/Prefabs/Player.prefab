@@ -8771,6 +8771,8 @@ MonoBehaviour:
     def: 5
     exp: 0
     xp: 0
+    food: 0
+    foodmax: 0
   equipment:
     weapon:
       isEquip: 0
@@ -8798,6 +8800,7 @@ MonoBehaviour:
       food: 0
       dmg: 0
       detail: 
+  decFoodPt: 0.25
   actorName: "\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
 --- !u!114 &4052380344925068634
 MonoBehaviour:
