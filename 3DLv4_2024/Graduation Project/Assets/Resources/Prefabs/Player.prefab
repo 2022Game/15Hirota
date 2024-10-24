@@ -8767,12 +8767,12 @@ MonoBehaviour:
     lvmax: 10
     hp: 50
     hpmax: 100
+    food: 100
+    foodmax: 100
     str: 5
     def: 5
     exp: 0
     xp: 0
-    food: 0
-    foodmax: 0
   equipment:
     weapon:
       isEquip: 0
@@ -8828,6 +8828,30 @@ MonoBehaviour:
     food: 0
     dmg: 0
     detail: "\u5E8F\u76E4\u306F\u3053\u308C\u3060\u3051\u3067\u5927\u4E08\u592B\u2026\u2026\u306A\u306F\u305A\uFF01(\u4F53\u529B+10)"
+  - isEquip: 0
+    id: 1
+    type: 1
+    name: "\u52631"
+    sprite: sword
+    prefab: Item3
+    atk: 2
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 2
+    detail: "\u666E\u901A\u306E\u5263(\u653B\u6483+2)"
+  - isEquip: 0
+    id: 1
+    type: 1
+    name: "\u52631"
+    sprite: sword
+    prefab: Item3
+    atk: 2
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 2
+    detail: "\u666E\u901A\u306E\u5263(\u653B\u6483+2)"
 --- !u!114 &6971253333704748204
 MonoBehaviour:
   m_ObjectHideFlags: 0

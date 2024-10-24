@@ -124,7 +124,7 @@ MonoBehaviour:
     isEquip: 0
     id: 0
     type: 0
-    name: "\u56DE\u5FA9\u85AC(\u5C0F)"
+    name: 
     sprite: 
     prefab: 
     atk: 0

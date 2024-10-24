@@ -13,7 +13,9 @@ public class ActorUseItems : MonoBehaviour
     public delegate bool UseItem(Item it);
 
     private GameObject usingItem = null;
-    private GameObject effect = null;
+    //private GameObject effect = null;
+    private EffectManager_Original effect;
+    private bool isActive = false;
 
     // 文字列に対応するデリゲートを返す
     public UseItem GetDelegate(string method)
@@ -36,7 +38,7 @@ public class ActorUseItems : MonoBehaviour
     // 引数で渡されたアイテムを使う
     public bool Use(Item it)
     {
-        if (effect == null) inventory.Remove(it);
+        if (!isActive) inventory.Remove(it);
         return UseEffect(it);
     }
 
@@ -98,17 +100,19 @@ public class ActorUseItems : MonoBehaviour
     // 引数で渡されたアイテムを拾ってインベントリに加える
     public bool PickUp(Item it)
     {
-        inventory.Add(it);
-        GameObject item = GetComponentInParent<Field>().GetExistItem(move.grid.x, move.grid.z);
-        if (item != null) Destroy(item);
-        Message.Add(8, param.actorName, it.name);
+        if (inventory.Add(it))
+        {
+            GameObject item = GetComponentInParent<Field>().GetExistItem(move.grid.x, move.grid.z);
+            if (item != null) Destroy(item);
+            Message.Add(8, param.actorName, it.name);
+        }
         return true;
     }
 
     // 引数で渡されたアイテムを拾って使う
     public bool PickUpUse(Item it)
     {
-        if (effect == null)
+        if (!isActive)
         {
             GameObject item = GetComponentInParent<Field>().GetExistItem(move.grid.x, move.grid.z);
             if (item != null) Destroy(item);
@@ -182,8 +186,7 @@ public class ActorUseItems : MonoBehaviour
             Message.Add(16);
             return;
         }
-        GameObject effectObj = Resources.Load<GameObject>("Prefabs/RecoveryEffect");
-        effect = Instantiate(effectObj, transform);
+        effect.Play(EffectManager_Original.EType.Recovery, gameObject);
         if (it.hp > 0) param.RecoveryHp(it.hp);
         if (it.food > 0) param.RecoveryFood(it.food);
     }
@@ -191,35 +194,31 @@ public class ActorUseItems : MonoBehaviour
     // 使用したアイテムによって処理を分岐させる
     private bool UseEffect(Item it)
     {
-        if (effect == null)
+        if (isActive && !effect.IsPlaying())
         {
-            switch (it.type)
-            {
-                case EItemType.Food:
-                    Message.Add(5, param.actorName, it.name);
-                    Recovery(it);
-                    break;
-                case EItemType.Potion:
-                    Message.Add(14, param.actorName, it.name);
-                    Recovery(it);
-                    break;
-            }
+            isActive = false;
+            return true;
         }
-        else
+        if (isActive) return false;
+        switch (it.type)
         {
-            if (effect.GetComponentInChildren<ParticleSystem>().isStopped)
-            {
-                Destroy(effect);
-                return true;
-            }
+            case EItemType.Food:
+                Message.Add(5, param.actorName, it.name);
+                Recovery(it);
+                break;
+            case EItemType.Potion:
+                Message.Add(16, param.actorName, it.name);
+                Recovery(it);
+                break;
         }
+        isActive = true;
         return false;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        effect = GetComponentInParent<EffectManager_Original>();
     }
 
     // Update is called once per frame
