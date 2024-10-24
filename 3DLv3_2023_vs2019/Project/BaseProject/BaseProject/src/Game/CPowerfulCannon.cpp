@@ -47,31 +47,31 @@ CPowerfulCannon::~CPowerfulCannon()
 // 更新処理
 void CPowerfulCannon::Update()
 {
-    //// 初期設定 ////
-    // プレイヤーのインスタンス
-    CPlayer* player = CPlayer::Instance();
-    // プレイヤーの位置
-    CVector PlayerPos = player->Position();
-    // プレイヤーの移動速度
-    CVector PlayerSpeed = player->Velocity();
-    // 大砲の位置
-    CVector CannonPos = Position();
-    // 大砲の正面方向のベクトル
-    CVector CannonForward = VectorZ();
-    // 正面方向に10.0f移動
-    // 砲口の位置が斜め前のため初期Z位置を変更
-    CannonPos = CannonPos + (CannonForward * 11.0f);
-
-    // 大砲からプレイヤーまでの距離
-    CVector DirectionToPlayer = PlayerPos - CannonPos;
-    // 垂直方向のY軸は無視
-    DirectionToPlayer.Y(0.0f);
-    // 水平距離
-    float HorizontalDistance = DirectionToPlayer.Length();
-    DirectionToPlayer.Normalize();
-
     if (IsFoundPlayer())
     {
+        //// 初期設定 ////
+        // プレイヤーのインスタンス
+        CPlayer* player = CPlayer::Instance();
+        // プレイヤーの位置
+        CVector PlayerPos = player->Position();
+        // プレイヤーの移動速度
+        CVector PlayerSpeed = player->Velocity();
+        // 大砲の位置
+        CVector CannonPos = Position();
+        // 大砲の正面方向のベクトル
+        CVector CannonForward = VectorZ();
+        // 正面方向に10.0f移動
+        // 砲口の位置が斜め前のため初期Z位置を変更
+        CannonPos = CannonPos + (CannonForward * 11.0f);
+
+        // 大砲からプレイヤーまでの距離
+        CVector DirectionToPlayer = PlayerPos - CannonPos;
+        // 垂直方向のY軸は無視
+        DirectionToPlayer.Y(0.0f);
+        // 水平距離
+        float HorizontalDistance = DirectionToPlayer.Length();
+        DirectionToPlayer.Normalize();
+
         //// 大砲の向きを変える処理 ////
         // 大砲の前方向とプレイヤー方向の角度を計算
         float AngleToPlayer = acos(CVector::Dot(CannonForward, DirectionToPlayer)) * RAD_TO_DEG;
@@ -164,6 +164,10 @@ void CPowerfulCannon::Update()
             //    
             //}
         }
+    }
+    else
+    {
+        
     }
 
     // 打った後の処理

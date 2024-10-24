@@ -46,23 +46,23 @@ CCannon::~CCannon()
 // 更新処理
 void CCannon::Update()
 {
-    //// 初期設定 ////
-    // プレイヤーのインスタンス
-    CPlayer* player = CPlayer::Instance();
-    // プレイヤーの位置
-    CVector PlayerPos = player->Position();
-    // プレイヤーの移動速度
-    CVector PlayerSpeed = player->Velocity();
-    // 大砲の位置
-    CVector CannonPos = Position();
-    // 大砲の正面方向のベクトル
-    CVector CannonForward = VectorZ();
-    // 正面方向に10.0f移動
-    // 砲口の位置が斜め前のため初期Z位置を変更
-    CannonPos = CannonPos + (CannonForward * 11.0f);
-
     if (IsFoundPlayer())
     {
+        //// 初期設定 ////
+        // プレイヤーのインスタンス
+        CPlayer* player = CPlayer::Instance();
+        // プレイヤーの位置
+        CVector PlayerPos = player->Position();
+        // プレイヤーの移動速度
+        CVector PlayerSpeed = player->Velocity();
+        // 大砲の位置
+        CVector CannonPos = Position();
+        // 大砲の正面方向のベクトル
+        CVector CannonForward = VectorZ();
+        // 正面方向に10.0f移動
+        // 砲口の位置が斜め前のため初期Z位置を変更
+        CannonPos = CannonPos + (CannonForward * 11.0f);
+
         //// 大砲の向きを変える処理 ////
         // 大砲からプレイヤーまでの距離
         CVector DirectionToPlayer = PlayerPos - CannonPos;
