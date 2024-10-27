@@ -113,7 +113,7 @@ void CHorizontalCannon::Update()
         }
     }
     
-    CDebugPrint::Print("mFireTime:%f\n", mFireTime);
+    //CDebugPrint::Print("mFireTime:%f\n", mFireTime);
 }
 
 // •`‰æˆ—

@@ -185,7 +185,7 @@ void CTitleUI::OnClickStart()
 	mIsEnd = true;
 }
 
-// [OPTION]クリック時のコールバック関数
+// [zzz]クリック時のコールバック関数
 void CTitleUI::OnClickOption()
 {
 	if (mIsEnd) return;

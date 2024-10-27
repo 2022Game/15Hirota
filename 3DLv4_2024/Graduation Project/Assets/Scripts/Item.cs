@@ -14,12 +14,13 @@ public class Item
     public int hp;
     public int food;
     public int dmg;
+    public EItem shot;
     public string detail;
 
     public Item Get()
     {
         Item p = new Item();
-        p.id = id;
+        p.id = id;        
         p.type = type;
         p.name = name;
         p.prefab = prefab;
@@ -30,6 +31,7 @@ public class Item
         p.hp = hp;
         p.food = food;
         p.dmg = dmg;
+        p.shot = shot;
         p.detail = detail;
         return p;
     }

@@ -210,6 +210,8 @@ public class ActorUseItems : MonoBehaviour
                 Message.Add(16, param.actorName, it.name);
                 Recovery(it);
                 break;
+            case EItemType.Wand:
+                return Shot(it);
         }
         isActive = true;
         return false;
@@ -225,5 +227,19 @@ public class ActorUseItems : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // ”­ŽË‚·‚é
+    private bool Shot(Item it)
+    {
+        if (usingItem == null)
+        {
+            Message.Add(21, param.actorName, it.name);
+            ExcelItemData database = Resources.Load<ExcelItemData>("Datas/ExcelItemData");
+            Item item = database.Goods.Find(n => n.id == it.shot).Get();
+            Debug.LogWarning("Item not found with id: " + it.shot);
+            return Throw(item);
+        }
+        return Throw(null);
     }
 }

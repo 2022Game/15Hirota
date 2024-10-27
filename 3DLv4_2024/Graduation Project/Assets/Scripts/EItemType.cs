@@ -5,5 +5,7 @@ public enum EItemType
     Weapon,
     Armor,
     Food,
-    Potion
+    Potion,
+    Wand,
+    Magic
 };

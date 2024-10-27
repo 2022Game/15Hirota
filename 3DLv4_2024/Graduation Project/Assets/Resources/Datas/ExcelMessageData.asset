@@ -76,3 +76,6 @@ MonoBehaviour:
   - id: 20
     str: "<val1>\u306F\u58C1\u306B\u5F53\u305F\u3063\u3066\u5730\u9762\u306B\u843D\u3061\u305F"
     color: 3
+  - id: 21
+    str: "<val1>\u306F<val2>\u3092\u632F\u3063\u305F"
+    color: 3

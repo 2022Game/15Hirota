@@ -42,10 +42,10 @@ public class ItemMovement : ObjectMovement
         {
             Field field = GetComponentInParent<Field>();
             HitActor(tParam, field.GetExistActor(grid.x, grid.z));
-            if (!gameObject.Equals(field.GetExistItem(grid.x, grid.z)))
-                //Destroy(gameObject);
-            DestroyImmediate(gameObject);
-            Debug.Log("Destroying item: " + gameObject.name);
+            // この処理を実装すると何故かポーションが消えないので
+            // コメントアウト。特に問題は無し
+            //if (!gameObject.Equals(field.GetExistItem(grid.x, grid.z)))
+                Destroy(gameObject);
             isPlayingEffect = false;
             return true;
         }

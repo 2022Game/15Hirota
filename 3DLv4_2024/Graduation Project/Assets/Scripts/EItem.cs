@@ -17,5 +17,9 @@ public enum EItem
     POTION02 = 1022,
     POTION03 = 1023,
     POTION04 = 1024,
-    POTION05 = 1025
+    POTION05 = 1025,
+
+    WAND01 = 1041,
+
+    MAGIC01 = 1081
 };

@@ -948,7 +948,7 @@ void CPicoChan::UpdatePutAway()
 			mElapsedTime += Time::DeltaTime();
 		}
 	}
-	CDebugPrint::Print("elapsed:%f\n", mElapsedTime);
+	//CDebugPrint::Print("elapsed:%f\n", mElapsedTime);
 }
 
 // çUåÇèIóπë“Çø

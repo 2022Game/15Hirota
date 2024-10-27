@@ -20,6 +20,7 @@
 #include "CVanguard.h"
 #include "CStageSky.h"
 #include "CBGMManager.h"
+#include "CTutorialUI.h"
 
 // ステージのデータのテーブル
 CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[] = 
@@ -72,6 +73,7 @@ void CStageSelectionStage::UpdateStageMovement()
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
 	: mSelectStageNo(0)
+	, IsTutorial(false)
 {
 	mStageNo = 0;
 }
@@ -279,6 +281,9 @@ void CStageSelectionStage::Load()
 	//mainCamera->AddCollider(field->GetWallCol());
 	
 	/////////////////////////////////////////////////////////////////////////////////////
+
+	mpTutorial = new CTutorialUI();
+	AddTask(mpTutorial);
 }
 
 // ステージ破棄
@@ -318,6 +323,15 @@ void CStageSelectionStage::Update()
 	// プレイヤーが移動中であれば
 	if (player->CanMoveTo())
 	{
+		if (!IsTutorial)
+		{
+			if (!mpTutorial->IsOpened())
+			{
+				mpTutorial->Open();
+				IsTutorial = true;
+			}
+		}
+
 		//[A]もしくは[←]を押したら、前のステージへ移動
 		if (CInput::PushKey('A') || CInput::PushKey(VK_LEFT))
 		{

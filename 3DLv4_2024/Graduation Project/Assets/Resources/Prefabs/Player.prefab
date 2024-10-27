@@ -8786,6 +8786,7 @@ MonoBehaviour:
       hp: 0
       food: 0
       dmg: 0
+      shot: 0
       detail: 
     armor:
       isEquip: 0
@@ -8799,6 +8800,7 @@ MonoBehaviour:
       hp: 0
       food: 0
       dmg: 0
+      shot: 0
       detail: 
   decFoodPt: 0.25
   actorName: "\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
@@ -8817,41 +8819,70 @@ MonoBehaviour:
   itemNumMax: 10
   items:
   - isEquip: 0
-    id: 1021
-    type: 4
-    name: "\u56DE\u5FA9\u85AC(\u5C0F)"
-    sprite: S_ItemHeavyOutline_PotionRed_00
-    prefab: Item1
+    id: 1041
+    type: 5
+    name: "\u706B\u306E\u6756"
+    sprite: weapons_06
+    prefab: Item5
     atk: 0
     def: 0
-    hp: 10
-    food: 0
-    dmg: 0
-    detail: "\u5E8F\u76E4\u306F\u3053\u308C\u3060\u3051\u3067\u5927\u4E08\u592B\u2026\u2026\u306A\u306F\u305A\uFF01(\u4F53\u529B+10)"
-  - isEquip: 0
-    id: 1
-    type: 1
-    name: "\u52631"
-    sprite: sword
-    prefab: Item3
-    atk: 2
-    def: 0
-    hp: 0
+    hp: 5
     food: 0
     dmg: 2
-    detail: "\u666E\u901A\u306E\u5263(\u653B\u6483+2)"
+    shot: 1081
+    detail: "\u706B\u306E\u7389\u3092\u51FA\u3059\u30AA\u30FC\u30BD\u30C9\u30C3\u30AF\u30B9\u306A\u6756(\u653B\u64835\u30015\u56DE)"
   - isEquip: 0
-    id: 1
-    type: 1
-    name: "\u52631"
-    sprite: sword
-    prefab: Item3
-    atk: 2
+    id: 1041
+    type: 5
+    name: "\u706B\u306E\u6756"
+    sprite: weapons_06
+    prefab: Item5
+    atk: 0
     def: 0
-    hp: 0
+    hp: 5
     food: 0
     dmg: 2
-    detail: "\u666E\u901A\u306E\u5263(\u653B\u6483+2)"
+    shot: 1081
+    detail: "\u706B\u306E\u7389\u3092\u51FA\u3059\u30AA\u30FC\u30BD\u30C9\u30C3\u30AF\u30B9\u306A\u6756(\u653B\u64835\u30015\u56DE)"
+  - isEquip: 0
+    id: 1041
+    type: 5
+    name: "\u706B\u306E\u6756"
+    sprite: weapons_06
+    prefab: Item5
+    atk: 0
+    def: 0
+    hp: 5
+    food: 0
+    dmg: 2
+    shot: 1081
+    detail: "\u706B\u306E\u7389\u3092\u51FA\u3059\u30AA\u30FC\u30BD\u30C9\u30C3\u30AF\u30B9\u306A\u6756(\u653B\u64835\u30015\u56DE)"
+  - isEquip: 0
+    id: 1041
+    type: 5
+    name: "\u706B\u306E\u6756"
+    sprite: weapons_06
+    prefab: Item5
+    atk: 0
+    def: 0
+    hp: 5
+    food: 0
+    dmg: 2
+    shot: 1081
+    detail: "\u706B\u306E\u7389\u3092\u51FA\u3059\u30AA\u30FC\u30BD\u30C9\u30C3\u30AF\u30B9\u306A\u6756(\u653B\u64835\u30015\u56DE)"
+  - isEquip: 0
+    id: 1041
+    type: 5
+    name: "\u706B\u306E\u6756"
+    sprite: weapons_06
+    prefab: Item5
+    atk: 0
+    def: 0
+    hp: 5
+    food: 0
+    dmg: 2
+    shot: 1081
+    detail: "\u706B\u306E\u7389\u3092\u51FA\u3059\u30AA\u30FC\u30BD\u30C9\u30C3\u30AF\u30B9\u306A\u6756(\u653B\u64835\u30015\u56DE)"
 --- !u!114 &6971253333704748204
 MonoBehaviour:
   m_ObjectHideFlags: 0

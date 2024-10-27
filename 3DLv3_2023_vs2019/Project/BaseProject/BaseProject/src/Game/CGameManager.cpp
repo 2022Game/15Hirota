@@ -69,7 +69,6 @@ void CGameManager::GameStart()
 
 	// 最初のステージを読み込み
 	CStageManager::LoadStage(Instance()->mStageNo);
-
 	// ゲーム開始
 	Instance()->ChangeState(EGameState::eGame);
 }

@@ -3814,7 +3814,7 @@ CVector CPlayer::Velocity() const
 // 更新
 void CPlayer::Update()
 {
-	CDebugPrint::Print("speed:%f:\n", GetSpikyBallSpeed());
+	//CDebugPrint::Print("speed:%f:\n", GetSpikyBallSpeed());
 	//CDebugPrint::Print("mSpik2:%s\n", mSpik2 ? "true" : "false");
 	//CDebugPrint::Print("strongpos:%f %f %f\n", mAttackStrongPos.X(), mAttackStrongPos.Y(), mAttackStrongPos.Z());
 	mIsStartStage2 = true;
@@ -3861,7 +3861,7 @@ void CPlayer::Update()
 			}
 		}
 	}
-	CDebugPrint::Print("mTime:%f\n", mSpikRechargeTime);
+	//SCDebugPrint::Print("mTime:%f\n", mSpikRechargeTime);
 	// とげボールリチャージ
 	//CDebugPrint::Print("spiktime:%f\n", mSpikRechargeTime);
 
@@ -4382,7 +4382,7 @@ void CPlayer::Update()
 	//CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
 	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
 	//CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
-	CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
+	//CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
 }
 
 // アイテムを取得

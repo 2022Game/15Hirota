@@ -6,7 +6,6 @@
 #include "CGameOverScene.h"
 #include "CClearScene.h"
 #include "CResultScene.h"
-
 #include "Test/CBootMenuScene.h"
 #include "Test/CCollisionTestScene.h"
 
@@ -117,9 +116,9 @@ void CSceneManager::ChangeNextScene()
 	case EScene::eResult:		mpScene = new CResultScene();	break;
 		// スタッフロールシーン
 	case EScene::eStuffedRoll:	mpScene = new CStuffedRollScene();	break;
-		//起動時メニュー
+		// 起動時メニュー
 	case EScene::eBootMenu:		mpScene = new CBootMenuScene();	break;
-		//衝突判定テスト
+		// 衝突判定テスト
 	case EScene::eColTest:		mpScene = new CCollisionTestScene(); break;
 	}
 

@@ -362,6 +362,9 @@
     <Filter Include="ソース ファイル\Game\Field\StageField\Final Stage">
       <UniqueIdentifier>{ab18269c-e776-441b-8e3b-6aac8a98dccd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Tutorial">
+      <UniqueIdentifier>{a31afc56-a910-4022-8f2b-daa8c5f36368}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -1197,6 +1200,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CFinalStageFallCol.cpp">
       <Filter>ソース ファイル\Game\Field\StageField\Final Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CTutorialUI.cpp">
+      <Filter>ソース ファイル\Game\UI\Tutorial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2057,6 +2063,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CFinalStageFallCol.h">
       <Filter>ソース ファイル\Game\Field\StageField\Final Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CTutorialUI.h">
+      <Filter>ソース ファイル\Game\UI\Tutorial</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

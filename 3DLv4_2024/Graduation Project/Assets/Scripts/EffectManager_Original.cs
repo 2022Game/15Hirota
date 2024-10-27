@@ -7,10 +7,12 @@ public class EffectManager_Original : MonoBehaviour
     public enum EType
     {
         Recovery,
-        HitItem
+        HitItem,
+        Magic
     };
     public GameObject recovery;
     public GameObject hititem;
+    public GameObject magic;
 
     private GameObject playingEffect;
 
@@ -38,6 +40,9 @@ public class EffectManager_Original : MonoBehaviour
                 break;
             case EType.HitItem:
                 playingEffect = Instantiate<GameObject>(hititem, target.transform);
+                break;
+            case EType.Magic:
+                playingEffect = Instantiate<GameObject>(magic, target.transform);
                 break;
         }
     }
