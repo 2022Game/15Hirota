@@ -52,7 +52,7 @@ public class ObjectMovement : MonoBehaviour
         return EAct.Move;
     }
 
-    // •â[‚ÅŒvZ‚µ‚Äi‚Ş
+    // •âŠ®‚ÅŒvZ‚µ‚Äi‚Ş
     private Pos2D Move(Pos2D currentPos, Pos2D newPos, ref int frame)
     {
         float px1 = Field.ToWorldX(currentPos.x);

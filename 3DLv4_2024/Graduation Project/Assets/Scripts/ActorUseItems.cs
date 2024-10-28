@@ -17,6 +17,17 @@ public class ActorUseItems : MonoBehaviour
     private EffectManager_Original effect;
     private bool isActive = false;
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        effect = GetComponentInParent<EffectManager_Original>();
+    }
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
     // 文字列に対応するデリゲートを返す
     public UseItem GetDelegate(string method)
     {
@@ -38,7 +49,11 @@ public class ActorUseItems : MonoBehaviour
     // 引数で渡されたアイテムを使う
     public bool Use(Item it)
     {
-        if (!isActive) inventory.Remove(it);
+        if (!isActive)
+        {
+            if (it.type == EItemType.Wand) return UseEffect(it);
+            inventory.Remove(it);
+        }
         return UseEffect(it);
     }
 
@@ -62,7 +77,8 @@ public class ActorUseItems : MonoBehaviour
     {
         if (usingItem == null)
         {
-            Message.Add(13, it.name);
+            if (it.type != EItemType.Magic) Message.Add(13, param.actorName, it.name);
+            //Message.Add(13, it.name);
             GameObject items = GetComponentInParent<Field>().items;
             GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + it.prefab);
             usingItem = Instantiate(itemObj, items.transform);
@@ -114,6 +130,7 @@ public class ActorUseItems : MonoBehaviour
     {
         if (!isActive)
         {
+            if (it.type == EItemType.Wand) return UseEffect(it);
             GameObject item = GetComponentInParent<Field>().GetExistItem(move.grid.x, move.grid.z);
             if (item != null) Destroy(item);
         }
@@ -217,18 +234,6 @@ public class ActorUseItems : MonoBehaviour
         return false;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        effect = GetComponentInParent<EffectManager_Original>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     // 発射する
     private bool Shot(Item it)
     {
@@ -240,6 +245,18 @@ public class ActorUseItems : MonoBehaviour
             Debug.LogWarning("Item not found with id: " + it.shot);
             return Throw(item);
         }
-        return Throw(null);
+        if (Throw(null))
+        {
+            it.hp--;
+            if (it.hp < 1)
+            {
+                Message.Add(19, it.name);
+                if (inventory.Remove(it)) return true;
+                GameObject item = GetComponentInParent<Field>().GetExistItem(move.grid.x, move.grid.z);
+                if (item != null) Destroy(item);
+            }
+            return true;
+        }
+        return false;
     }
 }

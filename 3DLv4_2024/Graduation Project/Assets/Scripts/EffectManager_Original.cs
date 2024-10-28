@@ -20,13 +20,24 @@ public class EffectManager_Original : MonoBehaviour
     public bool IsPlaying()
     {
         if (playingEffect == null) return false;
-        if (playingEffect.GetComponentInChildren<ParticleSystem>().isStopped)
+
+        ParticleSystem particleSystem = playingEffect.GetComponentInChildren<ParticleSystem>();
+        if (particleSystem == null || particleSystem.isStopped)
         {
             Destroy(playingEffect);
             playingEffect = null;
             return false;
         }
         return true;
+
+        //if (playingEffect == null) return false;
+        //if (playingEffect.GetComponentInChildren<ParticleSystem>().isStopped)
+        //{
+        //    Destroy(playingEffect);
+        //    playingEffect = null;
+        //    return false;
+        //}
+        //return true;
     }
 
     // 指定したエフェクトを再生する

@@ -3,25 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Equipment
-{
-    public Item weapon;
-    public Item armor;
-
-    // 全ての身に着けている装備品の攻撃力の合算値を返す
-    public int GetAllAtk()
-    {
-        return (weapon == null ? 0 : weapon.atk) + (armor == null ? 0 : armor.atk);
-    }
-
-    // 全ての身に着けている装備品の防御力の合算値を返す
-    public int GetAllDef()
-    {
-        return (weapon == null ? 0 : weapon.def) + (armor == null ? 0 : armor.def);
-    }
-}
-
 public class ActorParamsController : MonoBehaviour
 {
     public Params parameter;
@@ -193,5 +174,24 @@ public class ActorParamsController : MonoBehaviour
         hp = p < hp ? p : hp;
         Message.Add(15, actorName, hp.ToString());
         parameter.hp += hp;
+    }
+
+    [System.Serializable]
+    public class Equipment
+    {
+        public Item weapon;
+        public Item armor;
+
+        // 全ての身に着けている装備品の攻撃力の合算値を返す
+        public int GetAllAtk()
+        {
+            return (weapon == null ? 0 : weapon.atk) + (armor == null ? 0 : armor.atk);
+        }
+
+        // 全ての身に着けている装備品の防御力の合算値を返す
+        public int GetAllDef()
+        {
+            return (weapon == null ? 0 : weapon.def) + (armor == null ? 0 : armor.def);
+        }
     }
 }

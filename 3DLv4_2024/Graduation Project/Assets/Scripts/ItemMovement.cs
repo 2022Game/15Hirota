@@ -38,15 +38,22 @@ public class ItemMovement : ObjectMovement
         //    isPlayingEffect = false;
         //    return true;
         //}
+        //if (!effect.IsPlaying() && Moving() == EAct.MoveEnd)
+        //{
+        //    Field field = GetComponentInParent<Field>();
+        //    HitActor(tParam, field.GetExistActor(grid.x, grid.z));
+        //    if (!gameObject.Equals(field.GetExistItem(grid.x, grid.z)))
+        //        Destroy(gameObject);
+        //    isThrowing = false;
+        //    if (!(isPlayingEffect = effect.IsPlaying())) return true;
+        //}
         if (isPlayingEffect && !effect.IsPlaying())
         {
             Field field = GetComponentInParent<Field>();
             HitActor(tParam, field.GetExistActor(grid.x, grid.z));
-            // この処理を実装すると何故かポーションが消えないので
-            // コメントアウト。特に問題は無し
-            //if (!gameObject.Equals(field.GetExistItem(grid.x, grid.z)))
-                Destroy(gameObject);
-            isPlayingEffect = false;
+            if (!gameObject.Equals(field.GetExistItem(grid.x, grid.z)))
+                isPlayingEffect = false;
+            Destroy(gameObject);
             return true;
         }
         if (!effect.IsPlaying() && Moving() == EAct.MoveEnd)
@@ -79,7 +86,11 @@ public class ItemMovement : ObjectMovement
     private void HitActor(ActorParamsController tParam, UnityEngine.GameObject actor)
     {
         Item param = GetComponent<ItemParamsController>().parameter;
-        if (actor == null) Message.Add(10, param.name);
+        if (actor == null)
+        {
+            if (param.type == EItemType.Magic) Destroy(gameObject);
+            else Message.Add(15, param.name);
+        }
         else
         {
             if (param.dmg > 0)
@@ -88,7 +99,7 @@ public class ItemMovement : ObjectMovement
                 actor.GetComponent<ActorParamsController>().Damaged(str);
                 if ((int)param.id > 1000)
                 {
-                    Message.Add(13, param.name);
+                    if (param.type != EItemType.Magic) Message.Add(14, param.name);
                     Destroy(gameObject);
                 }
                 else actor.GetComponent<ActorUseItems>().PickUp(param);
@@ -96,7 +107,7 @@ public class ItemMovement : ObjectMovement
             else if (param.hp > 0)
             {
                 effect.Play(EffectManager_Original.EType.Recovery, actor);
-                actor.GetComponent<ActorParamsController>().RecoveryHp(param.hp);
+                actor.GetComponent<ActorParamsController>().RecoveryHp(param.hp);                
             }
             Message.Add(19, param.name);
         }
