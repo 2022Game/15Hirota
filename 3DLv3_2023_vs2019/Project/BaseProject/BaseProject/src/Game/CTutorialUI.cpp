@@ -16,9 +16,9 @@ CTutorialUI::CTutorialUI()
         ETaskPriority::eUI, 0, ETaskPauseType::eGame,
         false, false
     );
-    image1->SetSize(600.0f, 600.0f);
+    image1->SetSize(900.0f, 700.0f);
     image1->SetCenter(CVector2(WINDOW_WIDTH, WINDOW_HEIGHT) * 0.5f);
-    image1->SetPos(CVector2(WINDOW_WIDTH * 0.7f, WINDOW_HEIGHT * 0.5f));
+    image1->SetPos(CVector2(WINDOW_WIDTH * 0.65f, WINDOW_HEIGHT * 0.52f));
     image1->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
     mTutorialItems.push_back(image1);
 
@@ -28,9 +28,9 @@ CTutorialUI::CTutorialUI()
         ETaskPriority::eUI, 0, ETaskPauseType::eGame,
         false, false
     );
-    image2->SetSize(600.0f, 600.0f);
+    image2->SetSize(900.0f, 700.0f);
     image2->SetCenter(CVector2(WINDOW_WIDTH, WINDOW_HEIGHT) * 0.5f);
-    image2->SetPos(CVector2(WINDOW_WIDTH * 0.7f, WINDOW_HEIGHT * 0.5f));
+    image2->SetPos(CVector2(WINDOW_WIDTH * 0.65f, WINDOW_HEIGHT * 0.52f));
     image2->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
     mTutorialItems.push_back(image2);
 
