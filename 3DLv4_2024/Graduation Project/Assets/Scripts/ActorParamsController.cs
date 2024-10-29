@@ -9,10 +9,24 @@ public class ActorParamsController : MonoBehaviour
     public Equipment equipment;
 
     private List<Params> paramsData;
+    public List<ECondition> conditions;
     private int prevLv = 0;
     public float decFoodPt = 0.25f;
+    // float型に変更しても大丈夫
+    public int decPoisonPt = 2;
+    public float normalRecoveryPer = 50;
+    public int firstClearConditionRate = 20;
+    public int subClearConditionRate = 1;
+    public List<int> clearConditionRates = new List<int>();
 
     public string actorName;
+
+    private EffectManager_Original effect;
+
+    private void Start()
+    {
+        effect = GetComponentInParent<EffectManager_Original>();
+    }
 
     void Reset()
     {
@@ -35,8 +49,17 @@ public class ActorParamsController : MonoBehaviour
             parameter = GetParameterFromLv(parameter.lv);
             prevLv = parameter.lv;
         }
+        if (conditions.Count > clearConditionRates.Count)
+        {
+            for (int i = 0; i < conditions.Count - clearConditionRates.Count; i++)
+                clearConditionRates.Add(firstClearConditionRate);
+        }
+        if (conditions.Count < clearConditionRates.Count)
+        {
+            for (int i = 0, end = clearConditionRates.Count - conditions.Count; i < end; i++)
+                clearConditionRates.RemoveAt(clearConditionRates.Count - 1);
+        }
     }
-
 
     // レベルから参照したパラメーターを返す
     private Params GetParameterFromLv(int lv)
@@ -135,6 +158,7 @@ public class ActorParamsController : MonoBehaviour
         parameter.hp -= d;
         if (parameter.id < 1) Message.Add(1, actorName, d.ToString());
         else Message.Add(2, actorName, d.ToString());
+        ClearCondition(ECondition.Sleep);
     }
 
     // ダメージを計算する
@@ -150,6 +174,13 @@ public class ActorParamsController : MonoBehaviour
         {
             parameter.food -= decFoodPt;
             if (parameter.food < 0) parameter.food = 0;
+            if (conditions.Contains(ECondition.Poison))
+            {
+                if (parameter.hpmax == parameter.hp) return;
+                float hp = parameter.hpmax / normalRecoveryPer;
+                parameter.hp += hp;
+                if (parameter.hp > parameter.hpmax) parameter.hp = parameter.hpmax;
+            }
         }
         else parameter.hp--;
     }
@@ -170,7 +201,7 @@ public class ActorParamsController : MonoBehaviour
     // 体力を回復する
     public void RecoveryHp(int p)
     {
-        int hp = parameter.hpmax - parameter.hp;
+        int hp = Mathf.CeilToInt(parameter.hpmax - parameter.hp);
         hp = p < hp ? p : hp;
         Message.Add(15, actorName, hp.ToString());
         parameter.hp += hp;
@@ -194,4 +225,69 @@ public class ActorParamsController : MonoBehaviour
             return (weapon == null ? 0 : weapon.def) + (armor == null ? 0 : armor.def);
         }
     }
+
+    // 状態異常を纏めて設定する
+    public void SetConditions(ECondition[] conditions)
+    {
+        this.conditions = new List<ECondition>();
+        this.conditions.AddRange(conditions);
+    }
+
+    // もし毒にかかっていればダメージを受ける
+    public void DamagedPoison()
+    {
+        if (conditions.Contains(ECondition.Poison))
+        {
+            effect.Play(EffectManager_Original.EType.Poison, gameObject);
+            parameter.hp -= decPoisonPt;
+            // 毒のダメージメッセージ
+            Message.Add(1, actorName, decPoisonPt.ToString());
+        }
+    }
+
+    // 指定した状態異常を解除する
+    public bool ClearCondition(ECondition c)
+    {
+        int index = conditions.IndexOf(c);
+        if (index < 0) return false;
+        conditions.RemoveAt(index);
+        clearConditionRates.RemoveAt(index);
+        if (conditions.Count < 1) Message.Add(22, actorName);
+        return true;
+    }
+
+    // 確率で状態異常を解除する
+    public void ClearConditionWithRate()
+    {
+        for (int i = 0; i < conditions.Count; i++)
+        {
+            int isClear = Random.Range(0, clearConditionRates[i]);
+            if (isClear == 0) ClearCondition(conditions[i]);
+            else
+            {
+                clearConditionRates[i] -= subClearConditionRate;
+                clearConditionRates[i] = clearConditionRates[i] > 1 ? clearConditionRates[i] : 1;
+            }
+        }
+    }
+
+    // 状態異常回復の確率を纏めて設定する
+    public void SetClearConditionRates(int[] clearConditionRates)
+    {
+        this.clearConditionRates = new List<int>();
+        this.clearConditionRates.AddRange(clearConditionRates);
+    }
+
+    // 状態異常の配列を返す
+    public ECondition[] GetConditions() => conditions.ToArray();
+    // 混乱状態かどうか
+    public bool IsConfusion() => conditions.Contains(ECondition.Confusion);
+    // 行動できないかどうか
+    public bool CantAction() => IsParalysis() || IsSleep();
+    // 麻痺状態かどうか
+    public bool IsParalysis() => conditions.Contains(ECondition.Paralysis);
+    // 睡眠状態かどうか
+    public bool IsSleep() => conditions.Contains(ECondition.Sleep);
+    // 状態異常回復の確率の配列を返す
+    public int[] GetClearConditionRates() => clearConditionRates.ToArray();
 }

@@ -14,8 +14,10 @@ public class ActorMovement : ObjectMovement
     private readonly int hashSpeedPara = Animator.StringToHash("Speed");
 
     // ˆÚ“®ŠJn‚Å‚«‚é‚©‚Ç‚¤‚©
-    public bool IsMoveBegin()
+    public bool IsMoveBegin(EDir direction = EDir.Pause)
     {
+        if (direction == EDir.Pause) direction = this.direction;
+        newGrid = grid;
         newGrid = DirUtil.Move(GetComponentInParent<Field>(), grid, direction);
         return !grid.Equals(newGrid);
     }
@@ -40,5 +42,13 @@ public class ActorMovement : ObjectMovement
         {
             animator.SetFloat(hashSpeedPara, 0.0f, speedDampTime, Time.deltaTime);
         }
+    }
+
+    // ˆø”‚Å“n‚³‚ê‚½•û‚ÖU‚èŒü‚­
+    public void TurnAround(EDir d)
+    {
+        bool isParalysis = GetComponent<ActorParamsController>().CantAction();
+        if (isParalysis) return;
+        SetDirection(DirUtil.ReverseDirection(d));
     }
 }

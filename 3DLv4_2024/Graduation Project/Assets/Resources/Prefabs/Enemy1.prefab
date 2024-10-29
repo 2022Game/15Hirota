@@ -3984,6 +3984,7 @@ MonoBehaviour:
   actorOperation: {fileID: 4674998360771244642}
   actorAttack: {fileID: 9159862957443725678}
   actorUseItems: {fileID: 6558828820448414358}
+  actorParamsController: {fileID: -992544589661613256}
 --- !u!114 &4674998360771244642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4015,10 +4016,48 @@ MonoBehaviour:
     lvmax: 10
     hp: 30
     hpmax: 85
+    food: 0
+    foodmax: 0
     str: 5
     def: 5
     exp: 0
     xp: 10
+  equipment:
+    weapon:
+      isEquip: 0
+      id: 0
+      type: 0
+      name: 
+      sprite: 
+      prefab: 
+      atk: 0
+      def: 0
+      hp: 0
+      food: 0
+      dmg: 0
+      shot: 0
+      detail: 
+    armor:
+      isEquip: 0
+      id: 0
+      type: 0
+      name: 
+      sprite: 
+      prefab: 
+      atk: 0
+      def: 0
+      hp: 0
+      food: 0
+      dmg: 0
+      shot: 0
+      detail: 
+  conditions: 03000000
+  decFoodPt: 0.25
+  decPoisonPt: 2
+  normalRecoveryPer: 50
+  firstClearConditionRate: 20
+  subClearConditionRate: 1
+  clearConditionRates: 14000000
   actorName: "\u30DF\u30CE\u30BF\u30A6\u30ED\u30B9"
 --- !u!114 &-6273848224669715841
 MonoBehaviour:

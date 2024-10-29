@@ -59,8 +59,10 @@ public class EnemyOperation : ActorOperation
     }
 
     // éüÇ…çsÇ§ó\íËÇÃçsìÆèÛë‘Çï‘Ç∑
-    public override EAct Operate(ActorMovement actorMovement)
+    public override EAct Operate(ActorMovement actorMovement, ActorParamsController actorParam)
     {
+        if (actorParam.CantAction()) return EAct.TurnEnd;
+        if (actorParam.IsConfusion()) return ConfusionActionAI(actorMovement);
         return AstarActionAI(actorMovement);
     }
 
@@ -102,5 +104,15 @@ public class EnemyOperation : ActorOperation
             if (id == 0) return d;
         }
         return EDir.Pause;
+    }
+
+    // ç¨óêèÛë‘ÇÃçsìÆAI
+    private EAct ConfusionActionAI(ActorMovement actorMovement)
+    {
+        EDir d = GetPlayerDirection(actorMovement);
+        actorMovement.SetDirection(DirUtil.RandomDirection());
+        if (d == EDir.Pause && actorMovement.IsMoveBegin())
+            return EAct.MoveBegin;
+        return EAct.ActBegin;
     }
 }

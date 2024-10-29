@@ -96,7 +96,7 @@ void CTutorialUI::Update()
 {
     if (!mIsOpened) return;
 
-    // キー入力処理（仮想キーコードに応じて適宜変更）
+    // キー入力処理
     if (CInput::PushKey(VK_RIGHT))
     {
         auto it = std::find(mTutorialItems.begin(), mTutorialItems.end(), mCurrentImage);

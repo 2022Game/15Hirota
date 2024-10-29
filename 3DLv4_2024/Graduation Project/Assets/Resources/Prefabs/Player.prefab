@@ -8735,6 +8735,7 @@ MonoBehaviour:
   actorOperation: {fileID: 6658354057550921997}
   actorAttack: {fileID: 144739883336975244}
   actorUseItems: {fileID: 6971253333704748204}
+  actorParamsController: {fileID: 7522716868439318746}
 --- !u!114 &144739883336975244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8802,7 +8803,13 @@ MonoBehaviour:
       dmg: 0
       shot: 0
       detail: 
+  conditions: 01000000
   decFoodPt: 0.25
+  decPoisonPt: 2
+  normalRecoveryPer: 50
+  firstClearConditionRate: 20
+  subClearConditionRate: 1
+  clearConditionRates: 14000000
   actorName: "\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
 --- !u!114 &4052380344925068634
 MonoBehaviour:

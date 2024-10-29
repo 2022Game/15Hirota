@@ -5,5 +5,5 @@ using UnityEngine;
 public abstract class ActorOperation : MonoBehaviour
 {
     // Ÿ‚És‚¤—\’è‚Ìs“®ó‘Ô‚ğ•Ô‚·
-    public abstract EAct Operate(ActorMovement actorMovement);
+    public abstract EAct Operate(ActorMovement actorMovement, ActorParamsController actorParam);
 }

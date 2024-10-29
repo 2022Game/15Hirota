@@ -28,6 +28,10 @@ public class SaveDataManager : MonoBehaviour
         actorSaveData.grid.z = move.grid.z;
         actorSaveData.direction = move.direction;
         actorSaveData.parameter = actor.GetComponent<ActorParamsController>().GetParameter();
+        ActorParamsController param = actor.GetComponent<ActorParamsController>();
+        actorSaveData.parameter = param.GetParameter();
+        actorSaveData.conditions = param.GetConditions();
+        actorSaveData.clearConditionRates = param.GetClearConditionRates();
         actorSaveData.inventory = MakeInventoryData(actor);
         return actorSaveData;
     }
@@ -36,9 +40,13 @@ public class SaveDataManager : MonoBehaviour
     private void LoadActorData(ActorSaveData data, Transform actor)
     {
         ActorMovement move = actor.GetComponent<ActorMovement>();
+        ActorParamsController param = actor.GetComponent<ActorParamsController>();
+        param.SetParameter(data.parameter);
+        param.SetConditions(data.conditions);
         move.SetPosition(data.grid.x, data.grid.z);
         move.SetDirection(data.direction);
         actor.GetComponent<ActorParamsController>().SetParameter(data.parameter);
+        param.SetClearConditionRates(data.clearConditionRates);
         LoadInventoryData(data.inventory, actor);
     }
 

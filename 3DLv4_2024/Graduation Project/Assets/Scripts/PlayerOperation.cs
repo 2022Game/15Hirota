@@ -11,15 +11,40 @@ public class PlayerOperation : ActorOperation
     }
 
     // éüÇ…çsÇ§ó\íËÇÃçsìÆèÛë‘Çï‘Ç∑
-    public override EAct Operate(ActorMovement actorMovement)
+    public override EAct Operate(ActorMovement actorMovement, ActorParamsController actorParam)
     {
         if (!Input.anyKey) return EAct.KeyInput;
-        if (Input.GetKey(KeyCode.Space)) return EAct.ActBegin;
+        bool isConfusion = actorParam.IsConfusion();
+        bool isParalysis = actorParam.CantAction();
+        if (Input.GetKey(KeyCode.Space))
+        {
+            if (isParalysis) return EAct.ActEnd;
+            if (isConfusion) actorMovement.SetDirection(DirUtil.RandomDirection());
+            return EAct.ActBegin;
+        }
         EDir d = DirUtil.KeyToDir();
         if (d != EDir.Pause)
         {
-            actorMovement.SetDirection(d);
-            if (actorMovement.IsMoveBegin()) return EAct.MoveBegin;
+            if (isParalysis) return EAct.ActEnd;
+            if (!actorMovement.IsMoveBegin(d))
+            {
+                actorMovement.SetDirection(d);
+                return EAct.KeyInput;
+            }
+            if (isConfusion)
+            {
+                EDir d2 = DirUtil.RandomDirection();
+                if (actorMovement.IsMoveBegin(d2))
+                {
+                    actorMovement.SetDirection(d2);
+                    return EAct.MoveBegin;
+                }
+            }
+            else
+            {
+                actorMovement.SetDirection(d);
+                return EAct.MoveBegin;
+            }
         }
         return EAct.KeyInput;
     }

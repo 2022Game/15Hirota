@@ -14,6 +14,8 @@ public class SequenceManager : MonoBehaviour
     private List<ActorAction> operatedEnemies = new List<ActorAction>();
     private bool isEnemyDeterminedBehaviour = false;
 
+    private ActorParamsController enemyParam;
+
     // Update is called once per frame
     void Update()
     {
@@ -26,7 +28,8 @@ public class SequenceManager : MonoBehaviour
         EAct pAct = (iAct == EAct.ActEnd || iAct == EAct.TurnEnd) ? iAct : playerAction.GetAction();
         if (pAct == EAct.KeyInput || pAct == EAct.ActBegin || pAct == EAct.Act)
         {
-            inventoryAction.Proc();
+            if (!playerAction.actorParamsController.CantAction())
+                inventoryAction.Proc();
             if (iAct != EAct.KeyInput) return;
             playerAction.Proc();
             AllEnemyStopWalkingAnimation();
@@ -35,6 +38,7 @@ public class SequenceManager : MonoBehaviour
         if (pAct == EAct.TurnEnd)
         {
             AllOperatedProc(iAct == EAct.TurnEnd);
+            ActorCondition();
             isEnemyDeterminedBehaviour = false;
             operatedEnemies.Clear();
             DecreaseFood();
@@ -178,6 +182,19 @@ public class SequenceManager : MonoBehaviour
     // 満腹度を減少させる
     private void DecreaseFood()
     {
-        playerAction.GetComponent<ActorParamsController>().DecreaseFood();
+        playerAction.actorParamsController.DecreaseFood();
+    }
+
+    // 状態異常の処理
+    private void ActorCondition()
+    {
+        playerAction.actorParamsController.DamagedPoison();
+        playerAction.actorParamsController.ClearConditionWithRate();
+        foreach (var enemyParam in enemies.GetComponentsInChildren<ActorParamsController>())
+        {
+            // ここの処理は後々不具合が出る可能性がある
+            enemyParam.DamagedPoison();
+            enemyParam.ClearConditionWithRate();
+        }
     }
 }

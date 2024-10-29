@@ -9,8 +9,15 @@ public class ActorAction : MonoBehaviour
     public ActorOperation actorOperation;
     public ActorAttack actorAttack;
     public ActorUseItems actorUseItems;
+    public ActorParamsController actorParamsController;
 
     private EAct action = EAct.KeyInput;
+    private EffectManager_Original effect;
+
+    private void Start()
+    {
+        effect = GetComponentInParent<EffectManager_Original>();
+    }
 
     // 独自の更新メソッド
     public void Proc()
@@ -34,7 +41,17 @@ public class ActorAction : MonoBehaviour
     // 待機中
     private void KeyInput()
     {
-        action = actorOperation.Operate(actorMovement);
+        action = actorOperation.Operate(actorMovement, actorParamsController);
+        bool isParalysis = actorParamsController.IsParalysis();
+        if (isParalysis && action != EAct.KeyInput)
+            effect.Play(EffectManager_Original.EType.Paralysis, gameObject);
+        bool isSleep = actorParamsController.IsSleep();
+        if (isSleep && action != EAct.KeyInput)
+            effect.Play(EffectManager_Original.EType.Sleep, gameObject);
+        bool isConfusion = actorParamsController.IsConfusion();
+        if (isConfusion && action != EAct.KeyInput)
+            effect.Play(EffectManager_Original.EType.Confusion, gameObject);
+        if (action == EAct.TurnEnd) action = EAct.KeyInput;
         if (action != EAct.MoveBegin) actorMovement.Stop();
     }
 
@@ -86,12 +103,6 @@ public class ActorAction : MonoBehaviour
     private void TurnEnd()
     {
         action = EAct.KeyInput;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame

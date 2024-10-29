@@ -5,8 +5,8 @@ public class Params
     public int id;      // ユニークID
     public int lv;      // レベル
     public int lvmax;   // レベル最大値
-    public int hp;      // HP
-    public int hpmax;   // 最大HP
+    public float hp;      // HP
+    public float hpmax;   // 最大HP
     public float food;    // 満腹度
     public float foodmax; // 満腹度最大値
     public int str;     // 攻撃力

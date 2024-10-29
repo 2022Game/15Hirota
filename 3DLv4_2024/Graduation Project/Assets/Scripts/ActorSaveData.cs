@@ -5,4 +5,6 @@ public class ActorSaveData
     public EDir direction;
     public Params parameter;
     public InventorySaveData inventory;
+    public ECondition[] conditions;
+    public int[] clearConditionRates;
 }

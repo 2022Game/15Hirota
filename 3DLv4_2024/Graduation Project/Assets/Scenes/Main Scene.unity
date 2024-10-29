@@ -1834,7 +1834,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979996584}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.51597804, y: -0.000000020844114, z: 0.000000012555546, w: 0.85660183}
+  m_LocalRotation: {x: 0.51597804, y: 0.000000020844121, z: -0.000000012555551, w: 0.85660183}
   m_LocalPosition: {x: 0, y: 9.17, z: -5.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2763,6 +2763,10 @@ MonoBehaviour:
   recovery: {fileID: 3579310226855593482, guid: c0a6d01b99e54a041b1bff6de1117f59, type: 3}
   hititem: {fileID: 5407381780228877107, guid: dfb6361f74483f240912f29e68d7307d, type: 3}
   magic: {fileID: 6478414811544864809, guid: da9a6842b3e335046aeaac63bbf18e70, type: 3}
+  poison: {fileID: 6753412182820762840, guid: 23d670fbd3ebdf54a804a949e5654ff5, type: 3}
+  confusion: {fileID: 7502971832830276782, guid: a2de2b53ecb4c0f4888f7ebeae057e92, type: 3}
+  paralysis: {fileID: 3528720275456043783, guid: 6e2afa84b55ad0547953d81cedad60f5, type: 3}
+  sleep: {fileID: 6418432859431814556, guid: d02f71a9c240ad342b868a8c427ef4de, type: 3}
 --- !u!224 &1694679835 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5879328508874240778, guid: ba42f503445c7a64e9356f4e08019352, type: 3}
@@ -2936,7 +2940,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1821393096}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.51597804, y: -0.000000020844114, z: 0.000000012555546, w: 0.85660183}
+  m_LocalRotation: {x: 0.51597804, y: 0.000000020844121, z: -0.000000012555551, w: 0.85660183}
   m_LocalPosition: {x: 0, y: 9.17, z: -5.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
