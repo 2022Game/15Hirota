@@ -367,4 +367,5 @@ void CStageSelectionStage::Update()
 			}
 		}
 	}
+	CDebugPrint::Print("IsTutorial:%s\n", IsTutorial ? "true" : "false");
 }

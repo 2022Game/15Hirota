@@ -82,3 +82,15 @@ MonoBehaviour:
   - id: 22
     str: "<val1>\u306F\u6B63\u5E38\u306B\u623B\u3063\u305F"
     color: 2
+  - id: 23
+    str: "<val1>\u306F\u6BD2\u3092\u53D7\u3051\u305F"
+    color: 1
+  - id: 24
+    str: "<val1>\u306F\u6DF7\u4E71\u3057\u305F"
+    color: 1
+  - id: 25
+    str: "<val1>\u306F\u9EBB\u75FA\u3057\u305F"
+    color: 1
+  - id: 26
+    str: "<val1>\u306F\u7720\u3063\u305F"
+    color: 1

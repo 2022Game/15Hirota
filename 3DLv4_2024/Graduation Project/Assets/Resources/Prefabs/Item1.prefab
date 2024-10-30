@@ -132,4 +132,7 @@ MonoBehaviour:
     hp: 0
     food: 0
     dmg: 0
+    condition: 0
+    extra: 
+    shot: 0
     detail: 

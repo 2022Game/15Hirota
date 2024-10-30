@@ -278,6 +278,38 @@ public class ActorParamsController : MonoBehaviour
         this.clearConditionRates.AddRange(clearConditionRates);
     }
 
+    // ‚à‚µ‚Ü‚¾‚©‚©‚Á‚Ä‚¢‚È‚¯‚ê‚ÎAw’è‚µ‚½ó‘ÔˆÙí‚É‚·‚é
+    public void MakeCondition(ECondition c)
+    {
+        if (c == ECondition.Normal) return;
+        int idx = conditions.IndexOf(c);
+        if (idx < 0)
+        {
+            conditions.Add(c);
+            clearConditionRates.Add(firstClearConditionRate);
+        }
+        else clearConditionRates[idx] = firstClearConditionRate;
+        switch (c)
+        {
+            case ECondition.Poison:
+                Message.Add(23, actorName);
+                effect.Play(EffectManager_Original.EType.Poison, gameObject);
+                break;
+            case ECondition.Confusion:
+                Message.Add(24, actorName);
+                effect.Play(EffectManager_Original.EType.Confusion, gameObject);
+                break;
+            case ECondition.Paralysis:
+                Message.Add(25, actorName);
+                effect.Play(EffectManager_Original.EType.Paralysis, gameObject);
+                break;
+            case ECondition.Sleep:
+                Message.Add(26, actorName);
+                effect.Play(EffectManager_Original.EType.Sleep, gameObject);
+                break;
+        }
+    }
+
     // ó‘ÔˆÙí‚Ì”z—ñ‚ğ•Ô‚·
     public ECondition[] GetConditions() => conditions.ToArray();
     // ¬—ó‘Ô‚©‚Ç‚¤‚©

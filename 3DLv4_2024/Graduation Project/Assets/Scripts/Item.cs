@@ -14,6 +14,8 @@ public class Item
     public int hp;
     public int food;
     public int dmg;
+    public ECondition condition;
+    public string extra;
     public EItem shot;
     public string detail;
 
@@ -31,6 +33,8 @@ public class Item
         p.hp = hp;
         p.food = food;
         p.dmg = dmg;
+        p.condition = condition;
+        p.extra = extra;
         p.shot = shot;
         p.detail = detail;
         return p;

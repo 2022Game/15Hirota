@@ -195,17 +195,19 @@ public class ActorUseItems : MonoBehaviour
         return true;
     }
 
-    // 回復する
-    private void Recovery(Item it)
+    // 食べたり飲んだりしたときの効果を発生させる
+    private void Eat(Item it)
     {
         if (it.hp == 0 && it.food == 0)
         {
             Message.Add(16);
             return;
         }
-        effect.Play(EffectManager_Original.EType.Recovery, gameObject);
         if (it.hp > 0) param.RecoveryHp(it.hp);
         if (it.food > 0) param.RecoveryFood(it.food);
+        param.MakeCondition(it.condition);
+        if (it.condition == ECondition.Normal)
+            effect.Play(EffectManager_Original.EType.Recovery, gameObject);
     }
 
     // 使用したアイテムによって処理を分岐させる
@@ -221,11 +223,11 @@ public class ActorUseItems : MonoBehaviour
         {
             case EItemType.Food:
                 Message.Add(5, param.actorName, it.name);
-                Recovery(it);
+                Eat(it);
                 break;
             case EItemType.Potion:
-                Message.Add(16, param.actorName, it.name);
-                Recovery(it);
+                Message.Add(14, param.actorName, it.name);
+                Eat(it);
                 break;
             case EItemType.Wand:
                 return Shot(it);
