@@ -8,6 +8,7 @@
 #include "CExpandButton.h"
 #include "Easing.h"
 #include "CStageManager.h"
+#include "CTaskManager.h"
 
 // 「CLICK TO START」の点滅時間
 #define START_TEXT_BLINK_TIME 1.0f
@@ -20,11 +21,13 @@
 
 // コンストラクタ
 CTitleUI::CTitleUI()
-	: CTask(ETaskPriority::eUI, 0, ETaskPauseType::eDefault)
+	: CTask(ETaskPriority::eUI, 0, ETaskPauseType::eMenu)
 	, mState(EState::eIdle)
 	, mStateStep(0)
 	, mElapsedTime(0.0f)
 	, mIsEnd(false)
+	, mIsOpened(false)
+	, mpTutorialImage(nullptr)
 {
 	// タイトルロゴのフォントデータを生成
 	mpLogoFont = new CFont("res\\Font\\toroman.ttf");
@@ -49,16 +52,20 @@ CTitleUI::CTitleUI()
 	mpTitleLogo->SetEnableOutline(true);
 	mpTitleLogo->SetOutlineColor(CColor(0.9f, 0.9f, 0.9f));
 
-	//// タイトル画面の背景イメージを生成
-	//mpTitleBg = new CImage
-	//(
-	//	"UI/TitleUI/title_bg.png",
-	//	ETaskPriority::eUI,
-	//	0,
-	//	ETaskPauseType::eDefault,
-	//	false,
-	//	false
-	//);
+	// チュートリアル画像を設定
+	mpTutorialImage = new CImage
+	(
+		"UI/Tutorial/Operating Instructions.png",
+		ETaskPriority::eUI,
+		0,
+		ETaskPauseType::eDefault,
+		false,
+		false
+	);
+	mpTutorialImage->SetSize(900.0f, 700.0f);
+	mpTutorialImage->SetCenter(CVector2(WINDOW_WIDTH, WINDOW_HEIGHT) * 0.5f);
+	mpTutorialImage->SetPos(CVector2(WINDOW_WIDTH * 0.65f, WINDOW_HEIGHT * 0.52f));
+	mpTutorialImage->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// 「CLICK TO START」のテキストを生成
 	mpStartText = new CText
@@ -99,7 +106,7 @@ CTitleUI::CTitleUI()
 	// ボタンリストに追加
 	mButtons.push_back(btn1);
 
-	// [OPTION]ボタンを生成
+	// [TUTORIAL]ボタンを生成
 	CExpandButton* btn2 = new CExpandButton
 	(
 		CVector2(WINDOW_WIDTH * 0.5f, 550.0f),
@@ -107,8 +114,8 @@ CTitleUI::CTitleUI()
 		ETaskPriority::eUI, 0, ETaskPauseType::eGame,
 		false, false
 	);
-	btn2->LoadButtonImage("UI/TitleUI/title_option0.png", "UI/TitleUI/title_option1.png");
-	btn2->SetOnClickFunc(std::bind(&CTitleUI::OnClickOption, this));
+	btn2->LoadButtonImage("UI/TitleUI/title_tutorial0.png", "UI/TitleUI/title_tutorial1.png");
+	btn2->SetOnClickFunc(std::bind(&CTitleUI::OnClickTutorial, this));
 	btn2->SetEnable(false);
 	btn2->SetScale(0.0f);
 	mButtons.push_back(btn2);
@@ -134,8 +141,15 @@ CTitleUI::~CTitleUI()
 	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpLogoFont);
 	SAFE_DELETE(mpTitleLogo);
-	//SAFE_DELETE(mpTitleBg);
+	SAFE_DELETE(mpTutorialImage);
 	SAFE_DELETE(mpStartText);
+
+	// 削除されるときにメニューが開いたままであれば
+	// メニューを閉じる
+	if (mIsOpened)
+	{
+		Close();
+	}
 
 	int size = mButtons.size();
 	for (int i = 0; i < size; i++)
@@ -145,6 +159,40 @@ CTitleUI::~CTitleUI()
 		SAFE_DELETE(btn);
 	}
 	mButtons.clear();
+}
+
+// 開く
+void CTitleUI::Open()
+{
+	// 既に開いていたら、処理しない
+	if (mIsOpened) return;
+
+	// メニュー開いたフラグを上げる
+	mIsOpened = true;
+
+	CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
+}
+
+// 閉じる
+void CTitleUI::Close()
+{
+	// すでに閉じていたら、処理しない
+	if (!mIsOpened) return;
+
+	// メニューを開いたフラグを下す
+	mIsOpened = false;
+	// タイトル終了フラグを下す
+	mIsEnd = false;
+
+	//ChangeState(EState::eIdle);
+
+	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
+}
+
+// 開いているかどうか
+bool CTitleUI::IsOpened() const
+{
+	return mIsOpened;
 }
 
 // タイトル画面終了か
@@ -158,6 +206,13 @@ bool CTitleUI::IsStartGame() const
 {
 	// 選択項目が1つ目ならば、ゲーム開始
 	return mSelectIndex == 0;
+}
+
+// 操作説明を開く
+bool CTitleUI::IsTutorial() const
+{
+	// 選択項目が二つ目ならば、操作説明を開く
+	return mSelectIndex == 1;
 }
 
 // ゲームを終了するか
@@ -185,12 +240,13 @@ void CTitleUI::OnClickStart()
 	mIsEnd = true;
 }
 
-// [zzz]クリック時のコールバック関数
-void CTitleUI::OnClickOption()
+// [TUTORIAL]クリック時のコールバック関数
+void CTitleUI::OnClickTutorial()
 {
 	if (mIsEnd) return;
 
 	mSelectIndex = 1;
+	mIsEnd = true;
 }
 
 // [QUIT]クリック時のコールバック関数
@@ -331,12 +387,23 @@ void CTitleUI::Update()
 	}
 
 	mpTitleLogo->Update();
-	//mpTitleBg->Update();
+	mpTutorialImage->Update();
 	mpStartText->Update();
 	for (CButton* btn : mButtons)
 	{
 		btn->Update();
 	}
+
+	if (mIsOpened)
+	{
+		if (CInput::PushKey(VK_LBUTTON))
+		{
+			Close();
+		}
+	}
+
+	CDebugPrint::Print("mIsOpened:%s\n", mIsOpened ? "true" : "false");
+	CDebugPrint::Print("mIsEnd:%s\n", mIsEnd ? "true" : "false");
 }
 
 // 描画
@@ -346,21 +413,37 @@ void CTitleUI::Render()
 	// 背景→タイトルロゴ→「CLICK TO START」かメニューボタン
 
 	// 背景描画
-	//mpTitleBg->Render();
-	// タイトルロゴ描画
-	mpTitleLogo->Render();
-
-	// 待機状態ならば、「CLICK TO START」を表示
-	if (mState == EState::eIdle)
+	if (mIsOpened)
 	{
-		mpStartText->Render();
+		mpTutorialImage->Render();
+		mpTutorialImage->SetShow(true);
+		mpTutorialImage->SetEnable(true);
+
+		mpTitleLogo->SetShow(false);
+		mpTitleLogo->SetEnable(false);
 	}
-	// 待機状態以外は、メニューボタンを表示
 	else
 	{
-		for (CButton* btn : mButtons)
+		// タイトルロゴ描画
+		mpTitleLogo->Render();
+		mpTitleLogo->SetShow(true);
+		mpTitleLogo->SetEnable(true);
+
+		// 待機状態ならば、「CLICK TO START」を表示
+		if (mState == EState::eIdle)
 		{
-			btn->Render();
+			mpStartText->Render();
 		}
+		// 待機状態以外は、メニューボタンを表示
+		else
+		{
+			for (CButton* btn : mButtons)
+			{
+				btn->Render();
+			}
+		}
+
+		mpTutorialImage->SetShow(false);
+		mpTutorialImage->SetEnable(false);
 	}
 }

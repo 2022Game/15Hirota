@@ -97,6 +97,11 @@ void CTitleScene::Update()
 		{
 			CSceneManager::Instance()->LoadScene(EScene::eGame);
 		}
+		// TUTORIALを押すとチュートリアル画像を開く
+		else if (mpTitleUI->IsTutorial())
+		{
+			mpTitleUI->Open();
+		}
 		// ゲーム終了ならば、アプリを閉じる
 		else if (mpTitleUI->IsExitGame())
 		{

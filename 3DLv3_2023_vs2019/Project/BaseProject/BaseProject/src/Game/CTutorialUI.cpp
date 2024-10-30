@@ -51,7 +51,8 @@ CTutorialUI::~CTutorialUI()
     }
 
     for (auto image : mTutorialItems)
-        delete image;
+        SAFE_DELETE(image);
+        //delete image;
     mTutorialItems.clear();
 }
 

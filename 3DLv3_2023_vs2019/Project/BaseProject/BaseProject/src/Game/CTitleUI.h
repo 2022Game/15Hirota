@@ -13,10 +13,19 @@ public:
 	// デストラクタ
 	~CTitleUI();
 
+	// 開く
+	void Open();
+	// 閉じる
+	void Close();
+	// 開いているかどうか
+	bool IsOpened() const;
+
 	// タイトル画面終了か
 	bool IsEnd() const;
 	// ゲームを開始するか
 	bool IsStartGame() const;
+	// 操作説明を開く
+	bool IsTutorial() const;
 	// ゲームを終了するか
 	bool IsExitGame() const;
 
@@ -48,8 +57,8 @@ private:
 
 	// [START]クリック時のコールバック関数
 	void OnClickStart();
-	// [OPTION]クリック時のコールバック関数
-	void OnClickOption();
+	// [TUTORIAL]クリック時のコールバック関数
+	void OnClickTutorial();
 	// [QUIT]クリック時のコールバック関数
 	void OnClickQuit();
 
@@ -64,4 +73,9 @@ private:
 	CImage* mpTitleBg;	// タイトル背景イメージ
 	CText* mpStartText;	// 「CLICK TO START」のテキスト
 	std::vector<CExpandButton*> mButtons;
+
+	// 操作説明画像
+	CImage* mpTutorialImage;
+	// 開いているかどうかのフラグ
+	bool mIsOpened;
 };
