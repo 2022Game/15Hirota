@@ -170,7 +170,7 @@ void CTitleUI::Open()
 	// メニュー開いたフラグを上げる
 	mIsOpened = true;
 
-	CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
+	//CTaskManager::Instance()->Pause(PAUSE_MENU_OPEN);
 }
 
 // 閉じる
@@ -186,7 +186,7 @@ void CTitleUI::Close()
 
 	//ChangeState(EState::eIdle);
 
-	CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
+	//CTaskManager::Instance()->UnPause(PAUSE_MENU_OPEN);
 }
 
 // 開いているかどうか
@@ -396,14 +396,18 @@ void CTitleUI::Update()
 
 	if (mIsOpened)
 	{
-		if (CInput::PushKey(VK_LBUTTON))
+		if (CInput::PullKey(VK_LBUTTON))
+		{
+			Close();
+		}
+		else if (CInput::PullKey(VK_RETURN))
 		{
 			Close();
 		}
 	}
 
-	CDebugPrint::Print("mIsOpened:%s\n", mIsOpened ? "true" : "false");
-	CDebugPrint::Print("mIsEnd:%s\n", mIsEnd ? "true" : "false");
+	//CDebugPrint::Print("mIsOpened:%s\n", mIsOpened ? "true" : "false");
+	//CDebugPrint::Print("mIsEnd:%s\n", mIsEnd ? "true" : "false");
 }
 
 // 描画

@@ -30,10 +30,12 @@
 #include "CResult.h"
 #include "CResultAnnouncement.h"
 #include "CMeat1.h"
+#include "CTutorialUI.h"
 
 //コンストラクタ
 CGameScene::CGameScene()
 	: CSceneBase(EScene::eGame)
+	, mIsTutorial(false)
 	, mpGameMenu(nullptr)
 	, mpTime(nullptr)
 	, mpScore(nullptr)
@@ -171,6 +173,10 @@ void CGameScene::Load()
 	mpResultUI = new CResultAnnouncement();
 	AddTask(mpResultUI);
 
+	// チュートリアル画像(ステージ選択)を作成
+	mpTutorialUI = new CTutorialUI();
+	AddTask(mpTutorialUI);
+
 	CGameManager::GameStart();
 }
 
@@ -223,13 +229,31 @@ void CGameScene::Update()
 
 	////////////////////////////////////////////////////////////////////////////////////
 
+	// ステージ番号
+	int currentStage = CGameManager::StageNo();
+
+	// プレイヤーが存在しなければ、処理しない
+	CPlayer* player = CPlayer::Instance();
+	if (player == nullptr) return;
+
+	// ステージ番号が1だったら
+	if (currentStage == 0)
+	{
+		if (player->CanMoveTo())
+		{
+			if (!mIsTutorial)
+			{
+				if (!mpTutorialUI->IsOpened())
+				{
+					mpTutorialUI->Open();
+					mIsTutorial = true;
+				}
+			}
+		}
+	}
+
 	// ステージの更新
 	CStageManager::Update();
-
-	if (CInput::PushKey('L'))
-	{
-		CSceneManager::Instance()->LoadScene(EScene::eStuffedRoll);
-	}
 
 	/*int stage = CGameManager::StageNo();
 	printf("StageNo:%d\n", stage);*/

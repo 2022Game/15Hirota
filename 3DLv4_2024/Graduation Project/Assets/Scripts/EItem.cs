@@ -17,7 +17,7 @@ public enum EItem
     FOOD07 = 1007,
     FOOD08 = 1008,
     FOOD09 = 1009,
-    FOOD010 = 1010,
+    FOOD10 = 1010,
 
     POTION01 = 1021,
     POTION02 = 1022,
@@ -28,7 +28,7 @@ public enum EItem
     POTION07 = 1027,
     POTION08 = 1028,
     POTION09 = 1029,
-    POTION010 = 1030,
+    POTION10 = 1030,
 
     WAND01 = 1041,
 

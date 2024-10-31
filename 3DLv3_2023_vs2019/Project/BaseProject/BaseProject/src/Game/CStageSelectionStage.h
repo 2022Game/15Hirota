@@ -3,7 +3,6 @@
 #include "CStageBase.h"
 
 class CStageSky;
-class CTutorialUI;
 
 // ステージ選択ステージ
 class CStageSelectionStage : public CStageBase
@@ -43,8 +42,6 @@ private:
 	// 現在のステージ番号
 	int mSelectStageNo;
 	CStageSky* mpSky;
-	bool IsTutorial;
-
-	CTutorialUI* mpTutorial;
+	bool IsTutorial;	
 };
 #endif

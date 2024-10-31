@@ -279,11 +279,6 @@ void CStageSelectionStage::Load()
 	camera->SetFollowTargetTf(player);
 	// スフィアかメッシュぐらい
 	//mainCamera->AddCollider(field->GetWallCol());
-	
-	/////////////////////////////////////////////////////////////////////////////////////
-
-	mpTutorial = new CTutorialUI();
-	AddTask(mpTutorial);
 }
 
 // ステージ破棄
@@ -323,15 +318,6 @@ void CStageSelectionStage::Update()
 	// プレイヤーが移動中であれば
 	if (player->CanMoveTo())
 	{
-		if (!IsTutorial)
-		{
-			if (!mpTutorial->IsOpened())
-			{
-				mpTutorial->Open();
-				IsTutorial = true;
-			}
-		}
-
 		//[A]もしくは[←]を押したら、前のステージへ移動
 		if (CInput::PushKey('A') || CInput::PushKey(VK_LEFT))
 		{
@@ -367,5 +353,5 @@ void CStageSelectionStage::Update()
 			}
 		}
 	}
-	CDebugPrint::Print("IsTutorial:%s\n", IsTutorial ? "true" : "false");
+	//CDebugPrint::Print("IsTutorial:%s\n", IsTutorial ? "true" : "false");
 }

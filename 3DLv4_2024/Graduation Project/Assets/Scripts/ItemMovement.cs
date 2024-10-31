@@ -83,7 +83,7 @@ public class ItemMovement : ObjectMovement
     }
 
     // もしキャラクターにぶつかったらアイテム効果を発生させる
-    private void HitActor(ActorParamsController tParam, UnityEngine.GameObject actor)
+    private void HitActor(ActorParamsController tParam, GameObject actor)
     {
         Item param = GetComponent<ItemParamsController>().parameter;
         if (actor == null)
@@ -93,7 +93,8 @@ public class ItemMovement : ObjectMovement
         }
         else
         {
-            if (param.dmg > 0)
+            ActorParamsController actorParam = actor.GetComponent<ActorParamsController>();
+            if (param.dmg > 0 || param.condition != ECondition.Normal)
             {
                 int str = tParam.parameter.str + param.dmg;
                 actor.GetComponent<ActorParamsController>().Damaged(str);
@@ -106,8 +107,12 @@ public class ItemMovement : ObjectMovement
             }
             else if (param.hp > 0)
             {
-                effect.Play(EffectManager_Original.EType.Recovery, actor);
-                actor.GetComponent<ActorParamsController>().RecoveryHp(param.hp);                
+                actorParam.RecoveryHp(param.hp);
+                if (param.extra.Contains("Recover")) actorParam.ClearAllCondition(false);
+                Message.Add(14, param.name);
+                //effect.Play(EffectManager_Original.EType.Recovery, actor);
+                //actor.GetComponent<ActorParamsController>().RecoveryHp(param.hp);
+                Destroy(gameObject);
             }
             Message.Add(19, param.name);
         }

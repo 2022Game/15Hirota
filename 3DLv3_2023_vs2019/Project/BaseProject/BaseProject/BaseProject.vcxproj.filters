@@ -365,6 +365,12 @@
     <Filter Include="ソース ファイル\Game\UI\Tutorial">
       <UniqueIdentifier>{a31afc56-a910-4022-8f2b-daa8c5f36368}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Character\CharaObject\ItemObject\InventoryItem">
+      <UniqueIdentifier>{a265ccda-199c-4c17-8b92-39c98a913a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Character\CharaObject\WeaponObject">
+      <UniqueIdentifier>{4d53c172-45bb-4272-8da3-2adcbf27f083}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -535,18 +541,6 @@
     <ClCompile Include="src\Test\System.cpp">
       <Filter>ソース ファイル\Test</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CGun.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CWeapon.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CBullet.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CWeaponEnemy.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClCompile>
     <ClCompile Include="src\BaseSystem\CGamePause.cpp">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClCompile>
@@ -561,9 +555,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CYukariGauge.cpp">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CKick.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CResourceManager.cpp">
       <Filter>ソース ファイル\BaseSystem\Resource</Filter>
@@ -610,17 +601,11 @@
     <ClCompile Include="src\Game\CUIGauge.cpp">
       <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CRecoveryObject.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
-    </ClCompile>
     <ClCompile Include="src\BaseSystem\CSoundManager.cpp">
       <Filter>ソース ファイル\BaseSystem\Sound</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CSound.cpp">
       <Filter>ソース ファイル\BaseSystem\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CInvincible.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseSystem\CFade.cpp">
       <Filter>ソース ファイル\BaseSystem\Scene</Filter>
@@ -658,9 +643,6 @@
     <ClCompile Include="src\Game\CInventoryMenu.cpp">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game\CHealingPotion.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game\CScore.cpp">
       <Filter>ソース ファイル\Game\UI\StageUI</Filter>
     </ClCompile>
@@ -687,9 +669,6 @@
     </ClCompile>
     <ClCompile Include="src\Game\CSlash.cpp">
       <Filter>ソース ファイル\Game\Efect\Slash</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Game\CAttackPotion.cpp">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\CStage3.cpp">
       <Filter>ソース ファイル\Game\Stage</Filter>
@@ -1204,6 +1183,33 @@
     <ClCompile Include="src\Game\CTutorialUI.cpp">
       <Filter>ソース ファイル\Game\UI\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CAttackPotion.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\InventoryItem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CHealingPotion.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\InventoryItem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CInvincible.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\InventoryItem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CRecoveryObject.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\InventoryItem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CBullet.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CGun.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CKick.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CWeapon.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CWeaponEnemy.cpp">
+      <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -1395,18 +1401,6 @@
     <ClInclude Include="src\Test\System.h">
       <Filter>ソース ファイル\Test</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CGun.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CWeapon.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CBullet.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CWeaponEnemy.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
-    </ClInclude>
     <ClInclude Include="src\BaseSystem\CGamePause.h">
       <Filter>ソース ファイル\BaseSystem\System</Filter>
     </ClInclude>
@@ -1421,9 +1415,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CYukariGauge.h">
       <Filter>ソース ファイル\Game\UI\EnemyUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CKick.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CResourceManager.h">
       <Filter>ソース ファイル\BaseSystem\Resource</Filter>
@@ -1473,17 +1464,11 @@
     <ClInclude Include="src\Game\CUIGauge.h">
       <Filter>ソース ファイル\Game\UI\PlayerUI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CRecoveryObject.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
-    </ClInclude>
     <ClInclude Include="src\BaseSystem\CSoundManager.h">
       <Filter>ソース ファイル\BaseSystem\Sound</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CSound.h">
       <Filter>ソース ファイル\BaseSystem\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CInvincible.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseSystem\CFade.h">
       <Filter>ソース ファイル\BaseSystem\Scene</Filter>
@@ -1521,9 +1506,6 @@
     <ClInclude Include="src\Game\CInventoryMenu.h">
       <Filter>ソース ファイル\Game\UI\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game\CHealingPotion.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\CScore.h">
       <Filter>ソース ファイル\Game\UI\StageUI</Filter>
     </ClInclude>
@@ -1550,9 +1532,6 @@
     </ClInclude>
     <ClInclude Include="src\Game\CSlash.h">
       <Filter>ソース ファイル\Game\Efect\Slash</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Game\CAttackPotion.h">
-      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CStage3.h">
       <Filter>ソース ファイル\Game\Stage</Filter>
@@ -2066,6 +2045,33 @@
     </ClInclude>
     <ClInclude Include="src\Game\CTutorialUI.h">
       <Filter>ソース ファイル\Game\UI\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CAttackPotion.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\InventoryItem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CHealingPotion.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\InventoryItem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CInvincible.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\InventoryItem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CRecoveryObject.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\ItemObject\InventoryItem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CBullet.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CGun.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CKick.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CWeapon.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CWeaponEnemy.h">
+      <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -310,6 +310,19 @@ public class ActorParamsController : MonoBehaviour
         }
     }
 
+    // ‘S‚Ä‚Ìó‘ÔˆÙí‚ğ‰ğœ‚·‚é
+    public void ClearAllCondition(bool doNothingMessage = true)
+    {
+        if (conditions.Count > 0)
+        {
+            conditions.Clear();
+            clearConditionRates.Clear();
+            Message.Add(22, actorName);
+            return;
+        }
+        if (doNothingMessage) Message.Add(18);
+    }
+
     // ó‘ÔˆÙí‚Ì”z—ñ‚ğ•Ô‚·
     public ECondition[] GetConditions() => conditions.ToArray();
     // ¬—ó‘Ô‚©‚Ç‚¤‚©

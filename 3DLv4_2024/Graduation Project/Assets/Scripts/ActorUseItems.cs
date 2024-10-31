@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ActorUseItems : MonoBehaviour
@@ -200,11 +201,13 @@ public class ActorUseItems : MonoBehaviour
     {
         if (it.hp == 0 && it.food == 0)
         {
+            if (it.extra.Contains("Recover")) param.ClearAllCondition();
             Message.Add(16);
             return;
         }
         if (it.hp > 0) param.RecoveryHp(it.hp);
         if (it.food > 0) param.RecoveryFood(it.food);
+        if (it.extra.Contains("Recover")) param.ClearAllCondition(false);
         param.MakeCondition(it.condition);
         if (it.condition == ECondition.Normal)
             effect.Play(EffectManager_Original.EType.Recovery, gameObject);
