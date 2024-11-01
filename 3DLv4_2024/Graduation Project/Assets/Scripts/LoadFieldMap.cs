@@ -8,9 +8,6 @@ public class LoadFieldMap : MonoBehaviour
 {
     public string mapName;
     public Field field;
-    public ActorMovement player;
-    public GameObject enemies;
-    public GameObject items;
     //List<ActorData> actorDatas = new List<ActorData>();
     // 合っているとは思うが後々問題が出たら直接prefabsからデータを取得する方針にする
     private List<ActorData> actorDatas = new List<ActorData>();
@@ -59,9 +56,9 @@ public class LoadFieldMap : MonoBehaviour
             }
             // ここの処理は本来はDataActorで取得できるがエラーが発生するので
             // そのままプレハブから取得している
-            ExcelActorData actorDatabase = Resources.Load<ExcelActorData>("Datas/ExcelActorData");
-            ExcelActorData.ActorData[] actorDatas = actorDatabase.Data.ToArray();
-            ExcelItemData itemDatabase = Resources.Load<ExcelItemData>("Datas/ExcelItemData");
+            //ExcelActorData actorDatabase = Resources.Load<ExcelActorData>("Datas/ExcelActorData");
+            //ExcelActorData.ActorData[] actorDatas = actorDatabase.Data.ToArray();
+            //ExcelItemData itemDatabase = Resources.Load<ExcelItemData>("Datas/ExcelItemData");
             foreach (var objgp in map.Elements("objectgroup"))
             {
                 switch (objgp.Attribute("id").Value)
@@ -74,40 +71,17 @@ public class LoadFieldMap : MonoBehaviour
                             int pw = int.Parse(obj.Attribute("width").Value);
                             int ph = int.Parse(obj.Attribute("height").Value);
                             string name = obj.Attribute("name").Value;
-                            bool isContinue = false;
-                            foreach (var actorData in actorDatas)
+                            string type = "";
+                            foreach (var prop in obj.Element("properties").Elements("property"))
                             {
-                                if (name == actorData.prefab)
+                                switch (prop.Attribute("name").Value)
                                 {
-                                    if (actorData.id > 0)
-                                    {
-                                        GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + name);
-                                        GameObject enemy = Instantiate(enemyObj, enemies.transform);
-                                        enemy.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
-                                        enemy.GetComponent<EnemyOperation>().target = player;
-                                        isContinue = true;
+                                    case "Type":
+                                        type = prop.Attribute("value").Value;
                                         break;
-                                    }
-                                    player.GetComponent<ActorMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
-                                    isContinue = true;
-                                    break;
                                 }
                             }
-                            if (isContinue) continue;
-                            foreach (EItem itemId in System.Enum.GetValues(typeof(EItem)))
-                            {
-                                if (name == itemId.ToString())
-                                {
-                                    Item itemData;
-                                    if ((int)itemId > 1000) itemData = itemDatabase.Goods.Find(n => n.id == itemId);
-                                    else itemData = itemDatabase.Equipments.Find(n => n.id == itemId);
-                                    if (itemData == null) break;
-                                    GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + itemData.prefab);
-                                    GameObject item = Instantiate(itemObj, items.transform);
-                                    item.GetComponent<ItemMovement>().SetPosition(ToMirrorX(x / pw, w), z / ph);
-                                    item.GetComponent<ItemParamsController>().SetParams(itemData);
-                                }
-                            }
+                            field.SetObject(name, type, ToMirrorX(x / pw, w), z / ph);
                         }
                         break;
                 }

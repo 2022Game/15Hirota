@@ -8,6 +8,8 @@ public class Field : MonoBehaviour
     public ActorMovement playerMovement;
     public GameObject enemies;
     public GameObject items;
+    public ExcelItemData itemDatabase;
+    public GameObject stairs;
 
     private Array2D map;
     private const float oneTile = 1.0f;
@@ -73,25 +75,15 @@ public class Field : MonoBehaviour
     */
     public void Reset()
     {
-        for (int i =0; i < items.transform.childCount; i++)
-        {
+        for (int i = 0; i < items.transform.childCount; i++)
             Destroy(items.transform.GetChild(i).gameObject);
-        }
         for (int i = 0; i < enemies.transform.childCount; i++)
-        {
             Destroy(enemies.transform.GetChild(i).gameObject);
-        }
-
-        Transform walls = floor.transform.GetChild(0);
-        for (int i = 0; i < walls.childCount; i++)
+        for (int i = 0; i < floor.transform.childCount; i++)
         {
-            Destroy(walls.GetChild(i).gameObject);
-        }
-
-        Transform effects = floor.transform.GetChild(1);
-        for (int i = 0; i < effects.childCount; i++)
-        {
-            Destroy(effects.GetChild(i).gameObject);
+            Transform child = floor.transform.GetChild(i);
+            for (int j = 0; j < child.childCount; j++)
+                Destroy(child.GetChild(j).gameObject);
         }
     }
 
@@ -159,5 +151,54 @@ public class Field : MonoBehaviour
                 return itemMovement.gameObject;
         }
         return null;
+    }
+
+    // フィールドにオブジェクトを配置する
+    public void SetObject(string name, string type, int xgrid, int zgrid)
+    {
+        switch (type)
+        {
+            case "Stairs":
+                if (name.Contains("Down"))
+                {
+                    stairs.GetComponentsInChildren<ObjectPosition>()[1].SetPosition(xgrid, zgrid);
+                    playerMovement.SetPosition(xgrid, zgrid);
+                }
+                else
+                    stairs.GetComponentsInChildren<ObjectPosition>()[0].SetPosition(xgrid, zgrid);
+                break;
+            case "Enemy":
+                GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + name);
+                GameObject enemy = Instantiate(enemyObj, enemies.transform);
+                enemy.GetComponent<ActorMovement>().SetPosition(xgrid, zgrid);
+                enemy.GetComponent<EnemyOperation>().target = playerMovement;
+                break;
+            case "Item":
+                Item itemData;
+                EItem itemId;
+                if (!System.Enum.TryParse(name, out itemId)) return;
+                if ((int)itemId > 1000) itemData = itemDatabase.Goods.Find(n => n.id == itemId);
+                else itemData = itemDatabase.Equipments.Find(n => n.id == itemId);
+                if (itemData == null) break;
+                GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + itemData.prefab);
+                GameObject item = Instantiate(itemObj, items.transform);
+                item.GetComponent<ItemMovement>().SetPosition(xgrid, zgrid);
+                item.GetComponent<ItemParamsController>().SetParams(itemData);
+                break;
+        }
+    }
+
+    // 階段とプレイヤーが重なっているかどうか
+    // 登り階段(ゴール地点)なら0、下り階段(スタート地点)なら1
+    // 階段と重なっていなければ-1を返す
+    public int PlayerOnStairs()
+    {
+        Pos2D pPos = playerMovement.grid;
+        for (int i = 0; i< 2; i++)
+        {
+            Pos2D sPos = stairs.GetComponentsInChildren<ObjectPosition>()[i].grid;
+            if (pPos.x == sPos.x && pPos.z == sPos.z) return 1;
+        }
+        return -1;
     }
 }

@@ -98,6 +98,9 @@ public class ItemMovement : ObjectMovement
             {
                 int str = tParam.parameter.str + param.dmg;
                 actor.GetComponent<ActorParamsController>().Damaged(str);
+                if (str > 0) actorParam.Damaged(str);
+                if (param.extra.Contains("AllBad")) actorParam.MakeAllBadCondition();
+                actorParam.MakeCondition(param.condition);
                 if ((int)param.id > 1000)
                 {
                     if (param.type != EItemType.Magic) Message.Add(14, param.name);

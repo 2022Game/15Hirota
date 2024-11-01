@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ObjectMovement : MonoBehaviour
+public class ObjectMovement : ObjectPosition
 {
-    public Pos2D grid = new Pos2D();
+    //public Pos2D grid = new Pos2D();
     public Pos2D newGrid = null;
-    public EDir direction = EDir.Up;
+    //public EDir direction = EDir.Up;
     public float maxPerFrame = 1.67f;
 
     private float compementFrame;
@@ -21,17 +21,17 @@ public class ObjectMovement : MonoBehaviour
     }
 
     // インスペクターの値が変わった時に呼び出される
-    private void OnValidate()
-    {
-        if (grid.x != Field.ToGridX(transform.position.x) || grid.z != Field.ToGridZ(transform.position.z))
-        {
-            transform.position = new Vector3(Field.ToWorldX(grid.x), 0, Field.ToWorldZ(grid.z));
-        }
-        if (direction != DirUtil.RotationToDir(transform.rotation))
-        {
-            transform.rotation = DirUtil.DirToRotation(direction);
-        }
-    }
+    //private void OnValidate()
+    //{
+    //    if (grid.x != Field.ToGridX(transform.position.x) || grid.z != Field.ToGridZ(transform.position.z))
+    //    {
+    //        transform.position = new Vector3(Field.ToWorldX(grid.x), 0, Field.ToWorldZ(grid.z));
+    //    }
+    //    if (direction != DirUtil.RotationToDir(transform.rotation))
+    //    {
+    //        transform.rotation = DirUtil.DirToRotation(direction);
+    //    }
+    //}
 
     // 移動開始
     public bool Move()
@@ -74,20 +74,20 @@ public class ObjectMovement : MonoBehaviour
     }
 
     // 指定したグリッド座標に合わせて位置を変更する
-    public void SetPosition(int xgrid, int zgrid)
-    {
-        grid.x = xgrid;
-        grid.z = zgrid;
-        transform.position = new Vector3(Field.ToWorldX(xgrid), 0, Field.ToWorldZ(zgrid));
-        newGrid = grid;
-    }
+    //public void SetPosition(int xgrid, int zgrid)
+    //{
+    //    grid.x = xgrid;
+    //    grid.z = zgrid;
+    //    transform.position = new Vector3(Field.ToWorldX(xgrid), 0, Field.ToWorldZ(zgrid));
+    //    newGrid = grid;
+    //}
 
     // 指定した向きに合わせて回転ベクトルも変更する
-    public void SetDirection(EDir d)
-    {
-        direction = d;
-        transform.rotation = DirUtil.DirToRotation(d);
-    }
+    //public void SetDirection(EDir d)
+    //{
+    //    direction = d;
+    //    transform.rotation = DirUtil.DirToRotation(d);
+    //}
 
     // Update is called once per frame
     void Update()

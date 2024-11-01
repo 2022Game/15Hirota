@@ -17,6 +17,7 @@ public class ActorParamsController : MonoBehaviour
     public float normalRecoveryPer = 50;
     public int firstClearConditionRate = 20;
     public int subClearConditionRate = 1;
+    public float decHungerHpPer = 0.1f;
     public List<int> clearConditionRates = new List<int>();
 
     public string actorName;
@@ -182,7 +183,7 @@ public class ActorParamsController : MonoBehaviour
                 if (parameter.hp > parameter.hpmax) parameter.hp = parameter.hpmax;
             }
         }
-        else parameter.hp--;
+        else parameter.hp -= parameter.hpmax * decHungerHpPer;
     }
 
     // 満腹度を回復する
@@ -321,6 +322,13 @@ public class ActorParamsController : MonoBehaviour
             return;
         }
         if (doNothingMessage) Message.Add(18);
+    }
+
+    // 全ての不利な状態異常にかかる
+    public void MakeAllBadCondition()
+    {
+        foreach (ECondition c in System.Enum.GetValues(typeof(ECondition)))
+            MakeCondition(c);
     }
 
     // 状態異常の配列を返す

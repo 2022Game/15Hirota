@@ -202,12 +202,14 @@ public class ActorUseItems : MonoBehaviour
         if (it.hp == 0 && it.food == 0)
         {
             if (it.extra.Contains("Recover")) param.ClearAllCondition();
+            else if (it.extra.Contains("AllBad")) param.MakeAllBadCondition();
             Message.Add(16);
             return;
         }
         if (it.hp > 0) param.RecoveryHp(it.hp);
         if (it.food > 0) param.RecoveryFood(it.food);
         if (it.extra.Contains("Recover")) param.ClearAllCondition(false);
+        else if (it.extra.Contains("AllBad")) param.MakeAllBadCondition();
         param.MakeCondition(it.condition);
         if (it.condition == ECondition.Normal)
             effect.Play(EffectManager_Original.EType.Recovery, gameObject);

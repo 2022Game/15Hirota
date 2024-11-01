@@ -9,6 +9,7 @@ public class SaveDataManager : MonoBehaviour
     public GameObject player;
     public GameObject enemies;
     public GameObject items;
+    public GameObject stairs;
     private SaveData saveData;
     private const string saveKey = "GameData";
 
@@ -144,6 +145,16 @@ public class SaveDataManager : MonoBehaviour
     private MapSaveData MakeMapData()
     {
         MapSaveData mapSaveData = new MapSaveData();
+        Pos2D[] stairsPos = new Pos2D[2];
+        for (int i = 0; i < 2; i++)
+        {
+            ObjectPosition objPos = stairs.transform.GetChild(i).GetComponent<ObjectPosition>();
+            Pos2D pos = new Pos2D();
+            pos.x = objPos.grid.x;
+            pos.z = objPos.grid.z;
+            stairsPos[i] = pos;
+        }
+        mapSaveData.stairs = stairsPos;
         mapSaveData.map = field.GetMapData();
         return mapSaveData;
     }
@@ -153,6 +164,11 @@ public class SaveDataManager : MonoBehaviour
     {
         field.Reset();
         field.Create(saveData.mapData.map);
+        for (int i = 0; i < 2; i++)
+        {
+            ObjectPosition objPos = stairs.transform.GetChild(i).GetComponent<ObjectPosition>();
+            objPos.SetPosition(saveData.mapData.stairs[i].x, saveData.mapData.stairs[i].z);
+        }
     }
 
     // ÉfÅ[É^Çï€ë∂Ç∑ÇÈ
