@@ -88,6 +88,8 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("Number2", "GameGimmick\\Gimmick\\NumberFloor\\number2.obj");
 	// 三番目の床ブロック
 	CResourceManager::Load<CModel>("Number3", "GameGimmick\\Gimmick\\NumberFloor\\number3.obj");
+	// 落下する床のコライダー
+	CResourceManager::Load<CModel>("NumberCol", "GameGimmick\\Gimmick\\NumberFloor\\numberCol.obj");
 
 	// 大砲土台モデル
 	CResourceManager::Load<CModel>("CannonFound", "GameGimmick\\Gimmick\\Cannon\\CannonFoundations.obj");
@@ -462,41 +464,20 @@ void CStage3::Load()
 	);
 	AddTask(cline5);
 
-	// 回転する床
+	float xPosArray[7] = { 0.0f, 73.0f, -76.0f, 36.5f, -38.0f, 109.5f, -114.0f };
+	float zPosArray[7] = { 826.0f, 866.0f, 866.0f, 906.0f, 906.0f, 986.0f, 986.0f };
+
 	for (int i = 0; i < 7; ++i) {
-
-		// X軸の位置を設定
-		float xPos = 0.0f;
-		if (i == 1) xPos = 73.0f;
-		if (i == 2) xPos = -76.0f;
-		if (i == 3) xPos = 36.5f;
-		if (i == 4) xPos = -38.0f;
-		if (i == 5) xPos = 109.5f;
-		if (i == 6) xPos = -114.0f;
-		
-		// Y軸の位置を設定
-		//float yPos = 0.0f;
-
-		// Z軸の位置を設定
-		float zPos = 0.0f;
-		if (i == 0) zPos = 826.0f;
-		if (i == 1) zPos = 866.0f;
-		if (i == 2) zPos = 866.0f;
-		if (i == 3) zPos = 906.0f;
-		if (i == 4) zPos = 906.0f;
-		if (i == 5) zPos = 986.0f;
-		if (i == 6) zPos = 986.0f;
-
-		// 回転する床
 		CRotateFloorGimmick* floorGimmick1 = new CRotateFloorGimmick
 		(
-			CVector(xPos, 0.0f, zPos),
+			CVector(xPosArray[i], 0.0f, zPosArray[i]),
 			CVector(4.0f, 4.0f, 4.0f),
 			CVector(0.0f, 0.0f, 0.0f),
 			ETag::ePlayer, ELayer::ePlayer
 		);
 		AddTask(floorGimmick1);
 	}
+
 
 	// 回転する床(反対)
 	for (int i = 0; i < 4; ++i) {

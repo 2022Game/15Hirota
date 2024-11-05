@@ -147,6 +147,7 @@ void CCannon::Update()
                     1500.0f,                                // 最大飛距離
                     initialVerticalSpeed                    // Y軸初期速度
                 );
+                CStageManager::AddTask(cannonBall);
                 mFire = true; // 発射フラグを立てる
             }
             //// 大砲がプレイヤーの方に向いているかどうかを確認

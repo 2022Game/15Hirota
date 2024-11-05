@@ -2,6 +2,7 @@
 #include "CPlayer.h"
 #include "CHorizontalCannonBall.h"
 #include "Maths.h"
+#include "CStageManager.h"
 
 // プレイヤーのインスタンス設定
 #define PLAYER_INSTANCE CPlayer::Instance()
@@ -73,7 +74,7 @@ void CHorizontalCannon::Update()
         if (!mFire)
         {
             // 弾丸を生成
-            new CHorizontalCannonBall
+            CHorizontalCannonBall* cannonBall = new CHorizontalCannonBall
             (
                 // 発射位置
                 Position() + CVector(0.0f, -2.0f, 0.0f) + VectorZ(),
@@ -81,6 +82,7 @@ void CHorizontalCannon::Update()
                 80.0f,	    // 移動距離
                 200.0f		// 飛距離
             );
+            CStageManager::AddTask(cannonBall);
             mFire = true;
         }
 
