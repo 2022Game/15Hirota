@@ -168,6 +168,7 @@ void CGameManager::UpdateReady()
 void CGameManager::UpdateGame()
 {
 	CPlayer* player = CPlayer::Instance();
+	if (player == nullptr) return;
 
 	if (player != nullptr)
 	{

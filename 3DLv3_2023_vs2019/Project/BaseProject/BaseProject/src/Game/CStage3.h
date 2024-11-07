@@ -7,7 +7,7 @@ class CFinalStageFallCol;
 class CStageTime;
 class CStageSky;
 
-// ステージ3「平原マップ」
+// ステージ3「ファイナルステージ」
 class CStage3 : public CStageBase
 {
 public:

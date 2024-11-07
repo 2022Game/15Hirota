@@ -407,6 +407,8 @@ CVector CPicoChan::CalculateDirection(float angleDegrees)
 	return CVector(x, y, z);
 }
 
+// 移動処理内での移動速度
+#define MOVESPEED_MOVE 0.5f
 // 移動処理
 void CPicoChan::Move()
 {
@@ -447,8 +449,10 @@ void CPicoChan::Move()
 
 		// 目的地へのベクトルを計算
 		CVector direction = mCenterPoint - Position();
-		direction.Normalize(); // 方向ベクトルを正規化
+		// 方向ベクトルを正規化
+		direction.Normalize();
 
+		// 向きを反転させる
 		mTargetDir = -mTargetDir;
 
 		// 中心点から半径までの距離
@@ -458,7 +462,7 @@ void CPicoChan::Move()
 		if (mIsLerping)
 		{
 			// 移動速度
-			float moveSpeed = 0.5f;
+			float moveSpeed = MOVESPEED_MOVE;
 			newPosition = Position() + direction * moveSpeed;
 
 			// 目的地に到達したら位置を更新
@@ -468,9 +472,6 @@ void CPicoChan::Move()
 				mIsLerping = false;
 			}
 		}
-
-		/*CDebugPrint::Print("Position:%f %f\n", Position().X(), Position().Z());
-		CDebugPrint::Print("targetPosition:%f %f\n", targetPosition.X(), targetPosition.Z());*/
 
 		// 敵の向きを調整
 		mTargetDir = (mCenterPoint - Position()).Normalized();

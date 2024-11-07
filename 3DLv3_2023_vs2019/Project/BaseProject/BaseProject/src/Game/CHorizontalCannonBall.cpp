@@ -1,4 +1,5 @@
 #include "CHorizontalCannonBall.h"
+#include "CStageManager.h"
 
 // 重力
 #define GRAVITY 0.0625f
@@ -32,6 +33,7 @@ CHorizontalCannonBall::CHorizontalCannonBall(const CVector& pos, const CVector& 
 // デストラクタ
 CHorizontalCannonBall::~CHorizontalCannonBall()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpSpherer);
 }
 

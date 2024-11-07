@@ -1,4 +1,5 @@
 #include "CCannonBall.h"
+#include "CStageManager.h"
 
 // 重力
 #define GRAVITY 0.0625f
@@ -36,6 +37,7 @@ CCannonBall::CCannonBall(const CVector& pos, const CVector& dir,
 // デストラクタ
 CCannonBall::~CCannonBall()
 {
+	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpSpherer);
 }
 

@@ -47,8 +47,10 @@ CPowerfulCannon::~CPowerfulCannon()
 // 更新処理
 void CPowerfulCannon::Update()
 {
+    if (!IsFoundPlayer()) return;
+
     //// 初期設定 ////
-        // プレイヤーのインスタンス
+    // プレイヤーのインスタンス
     CPlayer* player = CPlayer::Instance();
     // プレイヤーの位置
     CVector PlayerPos = player->Position();

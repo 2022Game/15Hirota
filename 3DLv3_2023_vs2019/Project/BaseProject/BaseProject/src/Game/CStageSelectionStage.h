@@ -41,7 +41,7 @@ private:
 	static StageData STAGE_DATA[];
 	// 現在のステージ番号
 	int mSelectStageNo;
+	// ステージ用の空モデル
 	CStageSky* mpSky;
-	bool IsTutorial;	
 };
 #endif

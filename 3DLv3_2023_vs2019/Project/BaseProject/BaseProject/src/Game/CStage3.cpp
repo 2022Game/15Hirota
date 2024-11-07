@@ -655,15 +655,15 @@ void CStage3::Load()
 	player->MaxStatus();
 	// 初期値点 : 0.0f, 10.0f, 0.0f
 	// 回転する床 : 10.0f, 10.0f, 826.0f
-	// セーブポイント2 : 0.0f, 0.0f, 1550.0f
-	CVector playerPos = CVector(0.0f, 10.0f, 1550.0f);
+	// セーブポイント2 : 0.0f, 10.0f, 1550.0f
+	CVector playerPos = CVector(0.0f, 10.0f, 0.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
 		player->Rotation(0.0f, 0.0f, 0.0f);
 	}
 	// カメラの位置と向きを設定
-	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 20.0f, -80.0f);
+	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 14.0f, -60.0f);
 	CCamera* mainCamera = CCamera::MainCamera();
 	mainCamera->LookAt(
 		camPos,

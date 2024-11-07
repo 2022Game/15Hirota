@@ -73,7 +73,6 @@ void CStageSelectionStage::UpdateStageMovement()
 // コンストラクタ
 CStageSelectionStage::CStageSelectionStage()
 	: mSelectStageNo(0)
-	, IsTutorial(false)
 {
 	mStageNo = 0;
 }
@@ -83,7 +82,7 @@ CStageSelectionStage::~CStageSelectionStage()
 {
 }
 
-// プレイヤーんポジション設定
+// プレイヤーのポジション設定
 CVector CStageSelectionStage::GetPlayerStartPosition()
 {
 	// プレイヤーのポジションを返す
@@ -91,6 +90,7 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 
 	// プレイヤーを取得
 	CPlayer* player = CPlayer::Instance();
+
 	// プレイヤーがnulじゃなかったら
 	if (player != nullptr)
 	{
@@ -353,5 +353,4 @@ void CStageSelectionStage::Update()
 			}
 		}
 	}
-	//CDebugPrint::Print("IsTutorial:%s\n", IsTutorial ? "true" : "false");
 }
