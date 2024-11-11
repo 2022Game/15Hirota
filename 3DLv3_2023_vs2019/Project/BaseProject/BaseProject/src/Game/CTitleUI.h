@@ -4,6 +4,7 @@
 class CFont;
 class CImage;
 class CExpandButton;
+class CSound;
 
 class CTitleUI : public CTask
 {
@@ -65,7 +66,14 @@ private:
 	EState mState;		// 現在の状態
 	int mStateStep;		// 状態内でのステップ管理用
 	float mElapsedTime;	// 経過時間計測用
+	// フェードイン用の経過時間計測用
+	float mFadeInTime;
+	// フェードアウト用の経過時間計測用
+	float mFadeOutTime;
+	float mTutorialAlpha;
+	float mTutorialAlphaMax;
 	bool mIsEnd;		// タイトル画面終了フラグ
+	bool mFadeOut;
 	int mSelectIndex;	// 現在選択している項目
 
 	CFont* mpLogoFont;	// タイトルロゴのフォント
@@ -76,6 +84,8 @@ private:
 
 	// 操作説明画像
 	CImage* mpTutorialImage;
+	CSound* mpOpenTutorial;
 	// 開いているかどうかのフラグ
 	bool mIsOpened;
+	bool mTutorialSE;
 };

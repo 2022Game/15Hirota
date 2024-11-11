@@ -121,6 +121,12 @@ void CGameScene::Load()
 	// BGM・SE関連
 	// 剣　スラッシュ
 	CResourceManager::Load<CSound>("SlashSound", "Sound\\SE\\slash.wav");
+	// 跳ねる ぼよよん
+	CResourceManager::Load<CSound>("BoyoyonSound", "Sound\\SE\\Boyoyon.wav");
+	// 跳ねる ぽよん
+	CResourceManager::Load<CSound>("PoyonSound", "Sound\\SE\\Poyon.wav");
+	// 時間サウンド
+	CResourceManager::Load<CSound>("TimeSound", "Sound\\SE\\time limit2.wav");
 	// 8bitの回復音
 	CResourceManager::Load<CSound>("8bitKaifuku", "Sound\\SE\\8bitkaifuku.wav");
 	// 8bitの銃の音(ブロック用に使う)

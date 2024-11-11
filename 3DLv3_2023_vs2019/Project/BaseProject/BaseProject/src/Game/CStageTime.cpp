@@ -5,6 +5,7 @@
 #include "CTaskManager.h"
 #include "CPlayer.h"
 #include "CStageManager.h"
+#include "CSound.h"
 
 // ステージ事の時間
 #define STAGETIME_1 300
@@ -18,6 +19,9 @@
 #define STAGE_2 2
 #define STAGE_3 3
 #define STAGE_4 4
+
+// 残り時間
+#define REMAININGTIME 100
 
 #define START_STAGE_TIME 1.0f
 
@@ -44,6 +48,9 @@ CStageTime::CStageTime()
 {
     // インスタンスの設定
     spInstance = this;
+
+    // 時間SE取得
+    mpTimeSound = CResourceManager::Get<CSound>("TimeSound");
 
     // タイトルロゴのフォントデータを生成
     mpLogoFont = new CFont("res\\Font\\toroman.ttf");
@@ -138,10 +145,25 @@ void CStageTime::Update()
 
             if (startTime <= 0.0f && mTime > 0)
             {
-                mTime--; // タイマーを減らす
-                startTime = START_STAGE_TIME; // タイマーをリセット
+                if (mTime >= REMAININGTIME)
+                {
+                    // 時間SEを再生
+                    mpTimeSound->Play(0.01f, true, 0.0f);
+                }
+                else
+                {
+                    // 時間SEを再生
+                    mpTimeSound->Play(0.1f, true, 0.0f);
+                }
+                // タイマーを減らす
+                mTime--;
+                // タイマーをリセット
+                startTime = START_STAGE_TIME;
                 if (mTime == 0)
-                    player->UpdateDeath(); // タイマーが0ならプレイヤーを死亡させる
+                {
+                    // タイマーが0ならプレイヤーを死亡させる
+                    player->UpdateDeath();
+                }
             }
         }
 

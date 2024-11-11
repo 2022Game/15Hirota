@@ -100,7 +100,7 @@ CPicoChan::CPicoChan()
 	, mDiscovery(false)
 	, mDiscoveryEnd(false)
 	, mBackStep(false)
-	, mIsLerping(false)
+	, mIsReturning(false)
 	, mpRideObject(nullptr)
 	, mDash(false)
 	, mDashTime(0.0f)
@@ -373,7 +373,7 @@ void CPicoChan::ChangeDerection()
 bool CPicoChan::ShouldTransitionWander()
 {
 	// mIsLerpingがtrueの場合、処理をスキップ
-	if (mIsLerping)
+	if (mIsReturning)
 	{
 		return false;
 	}
@@ -409,22 +409,19 @@ CVector CPicoChan::CalculateDirection(float angleDegrees)
 
 // 移動処理内での移動速度
 #define MOVESPEED_MOVE 0.5f
+// 補完割合
+#define TIME 0.125f
 // 移動処理
 void CPicoChan::Move()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	mIsLerping = false;
+	// 半径外のフラグはずっと更新
+	mIsReturning = false;
 
-	if (mIsAttack)
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
-	}
-	else
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
-	}
+	// 武器の変更処理
+	CAttachWeapon();
 
 	// 速度の設定
 	float moveSpeed = MOVE_AUTOMATIC_SPEED;
@@ -445,7 +442,8 @@ void CPicoChan::Move()
 	// 距離が半径を超えた場合の修正
 	if (distance > mMaxRadius)
 	{
-		mIsLerping = true;
+		// フラグオン
+		mIsReturning = true;
 
 		// 目的地へのベクトルを計算
 		CVector direction = mCenterPoint - Position();
@@ -459,7 +457,7 @@ void CPicoChan::Move()
 		CVector targetPosition = mCenterPoint + direction * mMaxRadius;
 
 		// 一定速度で目的地に向かって移動
-		if (mIsLerping)
+		if (mIsReturning)
 		{
 			// 移動速度
 			float moveSpeed = MOVESPEED_MOVE;
@@ -469,7 +467,7 @@ void CPicoChan::Move()
 			if (CVector::Distance(Position(), targetPosition) < moveSpeed)
 			{
 				newPosition = targetPosition;
-				mIsLerping = false;
+				mIsReturning = false;
 			}
 		}
 
@@ -478,7 +476,7 @@ void CPicoChan::Move()
 		mTargetDir.Y(0.0f);
 
 		// 敵を目標方向に回転させる
-		CVector forward = CVector::Slerp(VectorZ(), mTargetDir, 0.125f);
+		CVector forward = CVector::Slerp(VectorZ(), mTargetDir, TIME);
 		Rotation(CQuaternion::LookRotation(forward));
 	}
 
@@ -549,14 +547,7 @@ void CPicoChan::UpdateIdle()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	if (mIsAttack)
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
-	}
-	else
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
-	}
+	CAttachWeapon();
 
 	//プレイヤーを見つけたら、敵発見状態へ移行
 	if (IsFoundPlayer())
@@ -636,14 +627,7 @@ void CPicoChan::UpdateChase()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	if (mIsAttack)
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
-	}
-	else
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
-	}
+	CAttachWeapon();
 	
 	if (!IsFoundPlayer())
 	{
@@ -709,14 +693,7 @@ void CPicoChan::UpdateAttack()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	if (mIsAttack)
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
-	}
-	else
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
-	}
+	CAttachWeapon();
 
 	// プレイヤーのポインタが0以外の時
 	CPlayer* player = CPlayer::Instance();
@@ -794,14 +771,7 @@ void CPicoChan::UpdateWeakAttack()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	if (mIsAttack)
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
-	}
-	else
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
-	}
+	CAttachWeapon();
 
 	ChangeAnimation(EAnimType::eWeakAttack);
 	// プレイヤーのポインタが0以外の時
@@ -831,14 +801,7 @@ void CPicoChan::UpdateSpinAttack()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	if (mIsAttack)
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
-	}
-	else
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
-	}
+	CAttachWeapon();
 	
 	ChangeAnimation(EAnimType::eSpinAttack);
 	// プレイヤーのポインタが0以外の時
@@ -872,14 +835,7 @@ void CPicoChan::UpdateKick()
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
 
-	if (mIsAttack)
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
-	}
-	else
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
-	}
+	CAttachWeapon();
 
 	// プレイヤーのポインタが0以外の時
 	CPlayer* player = CPlayer::Instance();
@@ -928,14 +884,7 @@ void CPicoChan::UpdatePutAway()
 		ChangeState(EState::eIdle);
 	}
 
-	if (mIsAttack)
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
-	}
-	else
-	{
-		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
-	}
+	CAttachWeapon();
 
 	if (IsAnimationFinished())
 	{
@@ -1078,6 +1027,19 @@ bool CPicoChan::IsFoundPlayer() const
 	}
 
 	return false;
+}
+
+// 武器の変更
+void CPicoChan::CAttachWeapon()
+{
+	if (mIsAttack)
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
+	}
+	else
+	{
+		mpSword->AttachMtx(GetFrameMtx("root_HoodMain02"));
+	}
 }
 
 // 更新

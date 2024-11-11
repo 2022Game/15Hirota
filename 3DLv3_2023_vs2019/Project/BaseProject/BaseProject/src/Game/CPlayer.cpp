@@ -144,7 +144,7 @@
 // ステージ3
 #define STARTPOS_X_3 0.0f
 #define STARTPOS_Y_3 10.0f
-#define STARTPOS_Z_3 0.0f
+#define STARTPOS_Z_3 10.0f
 #define SAVEPOINT1POS_X_3 0.0f
 #define SAVEPOINT1POS_Y_3 10.0f
 #define SAVEPOINT1POS_Z_3 453.0f
