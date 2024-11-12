@@ -1,3 +1,19 @@
 ・3Dモデル
+	・Monster1 https://www.mixamo.com/#/
+	・Picolachan https://assetstore.unity.com/packages/3d/characters/humanoids/picochan-220038
+	・Bluemedal https://assetstore.unity.com/packages/3d/props/simple-gems-ultimate-animated-customizable-pack-73764
+	・Star https://assetstore.unity.com/packages/3d/props/simple-gems-ultimate-animated-customizable-pack-73764
+	・Heart https://assetstore.unity.com/packages/3d/props/simple-gems-ultimate-animated-customizable-pack-73764
+	・MajicSword https://assetstore.unity.com/packages/3d/props/weapons/free-magic-swords-97694
+	・ポーション類 https://assetstore.unity.com/packages/3d/props/potions-coin-and-box-of-pandora-pack-71778
 ・2D画像
+	・lightning_bolt https://assetstore.unity.com/packages/tools/particles-effects/lightning-bolt-effect-for-unity-59471#content
+	・Smoke(4) Smoke(2_8_GIMP) https://assetstore.unity.com/packages/vfx/particles/fire-explosions/free-stylized-smoke-effects-pack-226406
+	・flame Smoke 
+	・25201630 https://www.ac-illust.com/main/detail.php?id=25201630&word=%E5%A4%AA%E9%99%BD%E3%81%AE%E5%85%89%E3%81%A8%E9%9B%B2%E3%81%AE%E9%9D%92%E7%A9%BA%E8%83%8C%E6%99%AF%E7%B4%A0%E6%9D%902%E9%9B%B21&searchId=
+	・sky イラストACでダウンロードしたが、行方不明https://www.ac-illust.com/
+	・shibafuV005 https://kenchiku-pers.com/download/63.html
+・フォント
+	・toroman https://inatsuka.com/extra/toroman/
 ・BGM・効果音
+	・基本的にhttps://www.springin.org/　でダウンロードしています。

@@ -16,6 +16,18 @@ public class LoadFieldMap : MonoBehaviour
     void Start()
     {
         //Application.targetFrameRate = 100;
+        //field.Reset();
+        //Array2D mapdata = ReadMapFile(mapName);
+        //if (mapdata != null)
+        //{
+        //    field.Create(mapdata);
+        //}
+        Load();
+    }
+
+    // ƒ}ƒbƒv‚ğ“Ç‚İ‚Ş
+    public void Load()
+    {
         field.Reset();
         Array2D mapdata = ReadMapFile(mapName);
         if (mapdata != null)

@@ -10,6 +10,8 @@ public class Field : MonoBehaviour
     public GameObject items;
     public ExcelItemData itemDatabase;
     public GameObject stairs;
+    public string startStairs = "Down";
+    public static int floorNum = 1;
 
     private Array2D map;
     private const float oneTile = 1.0f;
@@ -160,12 +162,10 @@ public class Field : MonoBehaviour
         {
             case "Stairs":
                 if (name.Contains("Down"))
-                {
                     stairs.GetComponentsInChildren<ObjectPosition>()[1].SetPosition(xgrid, zgrid);
-                    playerMovement.SetPosition(xgrid, zgrid);
-                }
                 else
                     stairs.GetComponentsInChildren<ObjectPosition>()[0].SetPosition(xgrid, zgrid);
+                if (name.Contains(startStairs)) playerMovement.SetPosition(xgrid, zgrid);
                 break;
             case "Enemy":
                 GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + name);
@@ -194,10 +194,10 @@ public class Field : MonoBehaviour
     public int PlayerOnStairs()
     {
         Pos2D pPos = playerMovement.grid;
-        for (int i = 0; i< 2; i++)
+        for (int i = 0; i < 2; i++)
         {
             Pos2D sPos = stairs.GetComponentsInChildren<ObjectPosition>()[i].grid;
-            if (pPos.x == sPos.x && pPos.z == sPos.z) return 1;
+            if (pPos.x == sPos.x && pPos.z == sPos.z) return i;
         }
         return -1;
     }

@@ -8,6 +8,7 @@ public class SequenceManager : MonoBehaviour
     public ActorAction playerAction;
     public GameObject enemies;
     public InventoryAction inventoryAction;
+    public StairsMenuAction stairsMenuAction;
 
     private List<ActorAction> actEnemies = new List<ActorAction>();
     private List<ActorAction> moveEnemies = new List<ActorAction>();
@@ -49,7 +50,21 @@ public class SequenceManager : MonoBehaviour
             AllEnemyDetermineBehaviour();
             return;
         }
-        if (actEnemies.Count < 1 && moveEnemies.Count < 1 && (pAct == EAct.ActEnd || pAct == EAct.MoveEnd))
+        if (actEnemies.Count < 1 && moveEnemies.Count < 1 && pAct == EAct.MoveEnd)
+        {
+            stairsMenuAction.Proc();
+            if (stairsMenuAction.GetAction() == EAct.KeyInput)
+                AllOperatedProc(false);
+            else
+            {
+                playerAction.StopWalkingAnimation();
+                AllEnemyStopWalkingAnimation();
+            }
+            return;
+            //AllOperatedProc(iAct == EAct.ActEnd);
+            //return;
+        }
+        if (actEnemies.Count < 1 && moveEnemies.Count < 1 && pAct == EAct.ActEnd)
         {
             AllOperatedProc(iAct == EAct.ActEnd);
             return;

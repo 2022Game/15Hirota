@@ -136,7 +136,7 @@ void CStageTime::Update()
             else if (!mIsStage4 && currentStage == STAGE_4)
             {
                 mIsStage4 = true; 
-                mTime = stageTimes[4]; 
+                mTime = stageTimes[4];
             }
 
             // ƒQ[ƒ€ŠÔ‚ÌXV
