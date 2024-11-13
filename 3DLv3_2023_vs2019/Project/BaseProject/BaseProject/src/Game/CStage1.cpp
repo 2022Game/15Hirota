@@ -109,6 +109,10 @@ void CStage1::Load()
 	CResourceManager::Load<CModel>("GoalPost", "GameGimmick\\Gimmick\\Goal\\GoalPost.obj");
 	// ゴールブロックモデル
 	CResourceManager::Load<CModel>("GoalCube", "GameGimmick\\Gimmick\\Goal\\GoalCube.obj");
+	// ゴールブロックモデル(FloorCol)							   
+	CResourceManager::Load<CModel>("GoalFloor", "GameGimmick\\Gimmick\\Goal\\FloorCol.obj");
+	// ゴールブロックモデル(WallCol)
+	CResourceManager::Load<CModel>("GoalWall", "GameGimmick\\Gimmick\\Goal\\WallCol.obj");
 	//// 針モデル(上下)
 	//CResourceManager::Load<CModel>("Needle", "GameGimmick\\Gimmick\\Needle\\NeedleObject(needle).obj");
 	//// 針モデルコライダー(上下)

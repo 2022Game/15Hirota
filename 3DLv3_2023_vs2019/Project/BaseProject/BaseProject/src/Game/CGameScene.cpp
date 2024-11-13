@@ -136,6 +136,11 @@ void CGameScene::Load()
 	// クリーチャーの唸り声1
 	CResourceManager::Load<CSound>("CreatureGrowl1", "Sound\\VOICE\\CreatureStereo5.wav");
 
+	// チュートリアルSE
+	CResourceManager::Load<CSound>("TutorialSound", "Sound\\SE\\confirmation2.wav");
+	// ゲームスタートSE
+	CResourceManager::Load<CSound>("GameStateSound", "Sound\\SE\\decision13.wav");
+
 	// ゲーム内のBGM
 	//CBGMManager::Instance()->Play(EBGMType::eGame);
 

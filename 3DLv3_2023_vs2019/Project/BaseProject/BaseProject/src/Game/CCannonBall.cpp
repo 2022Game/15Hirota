@@ -32,12 +32,14 @@ CCannonBall::CCannonBall(const CVector& pos, const CVector& dir,
 	mpSpherer->SetCollisionLayers({ ELayer::eDamageCol });
 	mpSpherer->SetCollisionTags({ ETag::ePlayer });
 	//mpSpherer->Position(0.0f, 1.5f, -5.5f);
+
+	CStageManager::AddTask(this);
 }
 
 // デストラクタ
 CCannonBall::~CCannonBall()
 {
-	CStageManager::RemoveTask(this);
+	CStageManager::RemoveTask(this);	
 	SAFE_DELETE(mpSpherer);
 }
 

@@ -804,9 +804,9 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		{
 			mIsStageClear = true;
 			mpColliderCapsule->SetEnable(false);
-			if (CGameManager::StageNo() == STAGE_1 ||
-				CGameManager::StageNo() == STAGE_2 ||
-				CGameManager::StageNo() == STAGE_3)
+			int currentStage = CGameManager::StageNo();
+			// ステージ番号に応じてプレイヤーの位置を設定
+			if (currentStage >= STAGE_1 && currentStage <= STAGE_4)
 			{
 				if (mIsGrounded && !mIsJumping)
 				{
@@ -1165,6 +1165,8 @@ void CPlayer::CHandleStageClear(bool& stageClearFlag)
 		mpScreenItem->SetShow(true);
 		mpSpikyBallUI->SetShow(true);
 		mpMeat->SetShow(true);
+		mpColliderLine->SetEnable(true);
+		mpColliderCapsule->SetEnable(true);
 		mIsStageClear = false;
 
 		stageClearFlag = false;
@@ -1371,7 +1373,7 @@ bool CPlayer::IsDeath() const
 }
 
 // 死亡したかどうか(mDeath)
-bool CPlayer::IsMDeath() const
+bool CPlayer::IsDeath() const
 {
 	return mDeath;
 }

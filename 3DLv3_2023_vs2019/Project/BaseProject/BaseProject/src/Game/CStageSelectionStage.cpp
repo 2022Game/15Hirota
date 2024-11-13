@@ -21,6 +21,7 @@
 #include "CStageSky.h"
 #include "CBGMManager.h"
 #include "CTutorialUI.h"
+#include "CSound.h"
 
 // ステージのデータのテーブル
 CStageSelectionStage::StageData CStageSelectionStage::STAGE_DATA[] = 
@@ -141,6 +142,9 @@ void CStageSelectionStage::Load()
 	CResourceManager::Load<CModel>("SeesawModel", "GameGimmick\\Gimmick\\SeesawGimmick\\SeesawModel.obj");
 	// ENTERキーの画像
 	CResourceManager::Load<CTexture>("EnterUI", "UI\\GimmickUI\\ENTER.png");
+
+	// ゲーム開始SE取得
+	mpGameState = CResourceManager::Get<CSound>("GameStateSound");
 
 	// 背景色設定
 	System::SetClearColor(0.1921569f, 0.3019608f, 0.4745098f, 1.0f);
@@ -348,6 +352,8 @@ void CStageSelectionStage::Update()
 			// ステージ選択ステージ以外が選択されていたら
 			if (mSelectStageNo > 0)
 			{
+				// ゲームスタートを再生
+				mpGameState->Play(1.0f, false, 0.0f);
 				// プレイヤーにステージ開始を伝える
 				player->StartStage(mSelectStageNo);
 			}

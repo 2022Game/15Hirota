@@ -79,6 +79,10 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("GoalPost", "GameGimmick\\Gimmick\\Goal\\GoalPost.obj");
 	// ゴールブロックモデル
 	CResourceManager::Load<CModel>("GoalCube", "GameGimmick\\Gimmick\\Goal\\GoalCube.obj");
+	// ゴールブロックモデル(FloorCol)							   
+	CResourceManager::Load<CModel>("GoalFloor", "GameGimmick\\Gimmick\\Goal\\FloorCol.obj");
+	// ゴールブロックモデル(WallCol)
+	CResourceManager::Load<CModel>("GoalWall", "GameGimmick\\Gimmick\\Goal\\WallCol.obj");
 
 	// 零番目の床
 	CResourceManager::Load<CModel>("Number0", "GameGimmick\\Gimmick\\NumberFloor\\number0.obj");
@@ -101,6 +105,8 @@ void CStage3::Load()
 	CResourceManager::Load<CModel>("HorizontalCannon", "GameGimmick\\Gimmick\\Cannon\\HorizontalCannon.obj");
 	// 大砲玉モデル
 	CResourceManager::Load<CModel>("CannonBall", "GameGimmick\\Gimmick\\Cannon\\CannonBall.obj");
+	// 大砲玉モデル(上コライダー)
+	CResourceManager::Load<CModel>("CannonUpCol", "GameGimmick\\Gimmick\\Cannon\\CannonBallCol.obj");
 
 	// リングビーマモデル(上)								  
 	CResourceManager::Load<CModel>("RingBeamerUP", "Effect\\BeamObj(Upper).obj");
@@ -656,7 +662,7 @@ void CStage3::Load()
 	// 初期値点 : 0.0f, 10.0f, 0.0f
 	// 回転する床 : 10.0f, 10.0f, 826.0f
 	// セーブポイント2 : 0.0f, 10.0f, 1550.0f
-	CVector playerPos = CVector(0.0f, 10.0f, 0.0f);
+	CVector playerPos = CVector(0.0f, 15.0f, 0.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);

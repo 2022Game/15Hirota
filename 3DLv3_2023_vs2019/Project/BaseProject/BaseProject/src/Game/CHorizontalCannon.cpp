@@ -25,12 +25,15 @@ CHorizontalCannon::CHorizontalCannon(const CVector& pos, const CVector& scale, c
     Position(pos);
     Scale(scale);
     Rotate(rot);
+
+    CStageManager::AddTask(this);
 }
 
 // デストラクタ
 CHorizontalCannon::~CHorizontalCannon()
 {
     // デストラクタ処理
+    CStageManager::RemoveTask(this);
 }
 
 // 衝突処理
@@ -79,7 +82,7 @@ void CHorizontalCannon::Update()
                 // 発射位置
                 Position() + CVector(0.0f, -2.0f, 0.0f) + VectorZ(),
                 VectorZ(),	// 発射方向
-                80.0f,	    // 移動距離
+                50.0f,	    // 移動速度
                 200.0f		// 飛距離
             );
             CStageManager::AddTask(cannonBall);

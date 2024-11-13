@@ -66,6 +66,10 @@ void CStage2::Load()
 	CResourceManager::Load<CModel>("GoalPost",				"GameGimmick\\Gimmick\\Goal\\GoalPost.obj");
 	// ゴールブロックモデル							   
 	CResourceManager::Load<CModel>("GoalCube",				"GameGimmick\\Gimmick\\Goal\\GoalCube.obj");
+	// ゴールブロックモデル(FloorCol)							   
+	CResourceManager::Load<CModel>("GoalFloor",				"GameGimmick\\Gimmick\\Goal\\FloorCol.obj");
+	// ゴールブロックモデル(WallCol)
+	CResourceManager::Load<CModel>("GoalWall",				"GameGimmick\\Gimmick\\Goal\\WallCol.obj");
 	// 跳ねるキノコモデル							    
 	CResourceManager::Load<CModel>("JumpingKinoko",			"GameGimmick\\Gimmick\\Jump\\JumpingKinoko(Base).obj");
 	// 跳ねるキノコモデル2						    

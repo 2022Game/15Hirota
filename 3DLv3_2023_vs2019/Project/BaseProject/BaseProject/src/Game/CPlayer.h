@@ -196,7 +196,7 @@ public:
 	// 死亡したかどうか(mIsDeath)
 	bool IsDeath() const;
 	// 死亡したかどうか(mDeath)
-	bool IsMDeath() const;
+	bool IsDeath() const;
 
 	// ステージ1をクリアしたかどうか
 	bool IsStage1Clear() const;

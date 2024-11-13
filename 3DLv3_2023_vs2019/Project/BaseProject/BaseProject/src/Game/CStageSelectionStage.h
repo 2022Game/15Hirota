@@ -3,6 +3,7 @@
 #include "CStageBase.h"
 
 class CStageSky;
+class CSound;
 
 // ステージ選択ステージ
 class CStageSelectionStage : public CStageBase
@@ -43,5 +44,7 @@ private:
 	int mSelectStageNo;
 	// ステージ用の空モデル
 	CStageSky* mpSky;
+
+	CSound* mpGameState;
 };
 #endif

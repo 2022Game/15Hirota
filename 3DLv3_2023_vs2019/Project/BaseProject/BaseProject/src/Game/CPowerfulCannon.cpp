@@ -6,7 +6,7 @@
 // 重力
 #define GRAVITY 0.0625f
 // 弾の発射待機時間
-#define WEIT_TIME 2.0f
+#define WEIT_TIME 3.0f
 
 // プレイヤーの最小距離
 #define MIN_DISTANCE 10.0f
