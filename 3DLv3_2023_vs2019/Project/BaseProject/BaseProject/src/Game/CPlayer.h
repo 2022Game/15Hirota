@@ -35,6 +35,7 @@ class CMeatUI;
 class CMetalLadder;
 class COperationUI;
 class CSpikyBall;
+class CPicoChan;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -45,6 +46,13 @@ class CSpikyBall;
 class CPlayer : public CXCharacter
 {
 public:
+	// ロックオン用のポインター
+	CXCharacter* mpLockedOnEnemy = nullptr;
+	// 敵の位置を設定
+	void LockOnToNearestEnemy(const std::vector<CPicoChan*>& enemies);
+	void UpdateCameraPosition();
+	void UpdateLockOnAndCameraPosition(const std::vector<CPicoChan*>& enemies);
+
 	// プレイヤーが持っているアイテムのリスト
 	enum class ItemType
 	{
@@ -194,7 +202,7 @@ public:
 	// 攻撃したかどうか
 	bool IsAttack() const;
 	// 死亡したかどうか(mIsDeath)
-	bool IsDeath() const;
+	bool IsMDeath() const;
 	// 死亡したかどうか(mDeath)
 	bool IsDeath() const;
 
@@ -828,6 +836,11 @@ private:
 	bool mIsStartStage3;
 	// ステージ4に入れるか(別クラス用)
 	bool mIsStartStage4;
+
+	// カメラリセット
+	bool mIsCameraReset;
+	// カメラの初期位置設定用のフラグ
+	bool mIsCameraStartPos;
 
 	///////////////////////////////////////////////////////
 };

@@ -46,6 +46,8 @@
 #include "COperationUI.h"
 #include "CBullet.h"
 #include "CSpikyBall.h"
+#include "CPicoChan.h"
+#include "CGameCamera.h"
 
 // プレイヤー関連
 // 高さ
@@ -160,6 +162,7 @@
 // 最初のY軸方向の値
 #define SPIKYBALLVELOCITY_Y 1.4f
 // 最大Y軸方向の値
+
 #define MAXVELOCITY_Y 3.0f
 // 速度
 #define SPIKYSPEED 50.0f
@@ -178,6 +181,111 @@ CPlayer* CPlayer::spInstance = nullptr;
 CPlayer* CPlayer::Instance()
 {
 	return spInstance;
+}
+
+// 敵の位置を設定
+void CPlayer::LockOnToNearestEnemy(const std::vector<CPicoChan*>& enemies)
+{
+	float minDistance = 100.0f;
+	mpLockedOnEnemy = nullptr;
+
+	for (CPicoChan* enemy : enemies)
+	{
+		float distance = (this->Position() - enemy->Position()).Length();
+		if (distance < minDistance) 
+		{
+			minDistance = distance;
+			mpLockedOnEnemy = enemy;
+		}
+	}
+}
+
+// カメラの位置を設定
+void CPlayer::UpdateCameraPosition()
+{
+	CCamera* mainCamera = CCamera::MainCamera();
+	int currentStage = CGameManager::StageNo();
+	// ステージ0では呼ばない
+	if (currentStage == STAGE_0) return;
+
+	if (mpLockedOnEnemy) 
+	{
+		if (CInput::PushKey(VK_MBUTTON) && !mIsCameraReset) 
+		{
+			// ロックオン解除の処理
+			mIsCameraReset = true;
+		}
+		else if (CInput::PushKey(VK_MBUTTON) && mIsCameraReset) 
+		{
+			// ロックオン解除後、mIsCameraReset をリセット
+			mIsCameraReset = false;
+		}
+	}
+	else 
+	{
+		// ロックオンしていない場合はカメラをリセットする必要はない
+		mIsCameraReset = false;
+	}
+
+	if (mIsCameraReset)
+	{
+		// プレイヤーと敵の位置を取得
+		CVector playerPos = Position();
+		CVector enemyPos = mpLockedOnEnemy->Position();
+
+		// プレイヤーと敵の中間位置を求める
+		CVector midPoint = (playerPos + enemyPos) * 0.5f;
+
+		// プレイヤーと敵の方向ベクトルを計算
+		CVector directionToEnemy = enemyPos - playerPos;
+		directionToEnemy.Y(0.0f);  // 高さ方向（Y軸）は無視
+		directionToEnemy.Normalize();
+
+		// カメラ距離と横方向オフセットの設定
+		float cameraDistance = 70.0f; // プレイヤーと敵からの距離
+		float sideOffset = 40.0f; // 横方向のオフセット（視野を広げるため）
+
+		// カメラ位置の計算（横方向にずらす）
+		CVector camOffset = directionToEnemy * -cameraDistance;
+
+		// 右方向へのベクトルを計算し、横方向にオフセット
+		CVector rightOffset = directionToEnemy.Cross(CVector::up) * sideOffset;
+
+		// カメラ位置を中間地点の斜め後方に設定
+		CVector camPos = midPoint + camOffset + rightOffset;
+		camPos.Y(40.0f); // 高さを調整（Y軸）
+
+		// カメラを中間位置に向けて配置
+		mainCamera->LookAt(camPos, midPoint, CVector::up);
+
+		// プレイヤーと敵を常に視野に収めるようにカメラを設定
+		mainCamera->SetFollowTargetTf(this);
+
+		mIsCameraStartPos = false;
+	}
+	else
+	{
+		if (!mIsCameraStartPos)
+		{
+			mIsCameraStartPos = true;
+			// ロックオンが解除された際に、プレイヤー位置に戻す
+			CVector playerPos = Position();
+			CVector camPos = playerPos + Rotation() * CVector(0.0f, 14.0f, -60.0f);
+
+			mainCamera->LookAt(
+				camPos,
+				playerPos,
+				CVector::up
+			);
+			mainCamera->SetFollowTargetTf(this);
+		}
+	}
+}
+
+void CPlayer::UpdateLockOnAndCameraPosition(const std::vector<CPicoChan*>& enemies)
+{
+	LockOnToNearestEnemy(enemies);
+	UpdateCameraPosition();
 }
 
 // プレイヤーのアニメーションデータのテーブル
@@ -410,8 +518,10 @@ CPlayer::CPlayer()
 	, mIsStartStage2(false)
 	, mIsStartStage3(false)
 	, mIsStartStage4(false)
+	, mIsCameraReset(false)
 	, mStaminaDepleted(false)
 	, mIsPlayedSlashSE(false)
+	, mIsCameraStartPos(false)
 	, mStaminaLowerLimit(false)
 	, mIsPlayedHitDamageSE(false)
 	, mIsSpawnedSlashEffect(false)	
@@ -422,6 +532,7 @@ CPlayer::CPlayer()
 	, mpScreenItem(nullptr)
 	, mpSpikyBallUI(nullptr)
 	, mpUnderFootObject(nullptr)
+	, mpLockedOnEnemy(nullptr)
 {
 	ClearItems();
 	// インスタンスの設定
@@ -1367,7 +1478,7 @@ bool CPlayer::IsAttack() const
 }
 
 // 死亡したかどうか
-bool CPlayer::IsDeath() const
+bool CPlayer::IsMDeath() const
 {
 	return mIsDeath;
 }
@@ -1517,6 +1628,7 @@ CVector CPlayer::CalcMoveVec() const
 	{
 		// 上方向ベクトル(設置している場合は、地面の法線)
 		CVector up = mIsGrounded ? mGroundNormal : CVector::up;
+
 		// カメラの向きに合わせた移動ベクトルに変換
 		CCamera* mainCamera = CCamera::MainCamera();
 		CVector camForward = mainCamera->VectorZ();
@@ -2548,13 +2660,13 @@ void CPlayer::UpdateDeath()
 	mMoveSpeedY += GRAVITY;
 
 	mDeath = true;
+	mpDamageCol->SetEnable(false);
 
 	if (mState == EState::eIdle || IsAnimationFinished())
 	{
-		mpDamageCol->SetEnable(false);
 		mpSword->AttackEnd();
 		mMoveSpeed = CVector::zero;
-		mMoveSpeedY = 0.0f;
+		mMoveSpeedY += GRAVITY;
 		if (mpCutInDeath->IsPlaying())
 		{
 			// キャラクターの更新
@@ -4226,6 +4338,21 @@ void CPlayer::Update()
 				target = moveSpeed;
 				target.Y(0.0f);
 				target.Normalize();
+				// ロックオン中は敵の方向を向く
+				if (mpLockedOnEnemy)
+				{
+					// プレイヤーと敵の位置を取得
+					CVector playerPos = Position();
+					CVector enemyPos = mpLockedOnEnemy->Position();
+
+					// プレイヤーから敵への方向ベクトルを計算
+					CVector directionToEnemy = enemyPos - playerPos;
+					directionToEnemy.Y(0.0f); // 高さ方向（Y軸）は無視
+
+					// 敵の方向を向く
+					target = directionToEnemy;
+					target.Normalize();
+				}
 			}
 			CVector forward = CVector::Slerp(current, target, rotationSpeed);
 			Rotation(CQuaternion::LookRotation(forward));

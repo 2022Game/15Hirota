@@ -647,6 +647,8 @@ void CStage3::Load()
 
 	//// キャラクター関連 ///////////////////////////////////////////////////////////////
 
+	CEnemyManager* enemyManager = CEnemyManager::Instance();
+	if (enemyManager == nullptr) return;
 	// キャラクター
 
 	// ピコちゃん
@@ -654,6 +656,7 @@ void CStage3::Load()
 	pico->Position(0.0f, 8.0f, 453.0f);
 	pico->Scale(15.5f, 15.5f, 15.5f);
 	pico->SetCenterPoint(CVector(0.0f, 0.0f, 453.0f), 30.0f);
+	enemyManager->AddEnemy(pico);
 	AddTask(pico);
 	
 	// モンスター(プレイヤー)
@@ -662,7 +665,7 @@ void CStage3::Load()
 	// 初期値点 : 0.0f, 10.0f, 0.0f
 	// 回転する床 : 10.0f, 10.0f, 826.0f
 	// セーブポイント2 : 0.0f, 10.0f, 1550.0f
-	CVector playerPos = CVector(0.0f, 15.0f, 0.0f);
+	CVector playerPos = CVector(0.0f, 10.0f, 422.0f);
 	if (player != nullptr)
 	{
 		player->SetStartPosition(playerPos);
@@ -682,12 +685,27 @@ void CStage3::Load()
 
 }
 
+// 更新処理
+void CStage3::Update()
+{
+	// モンスター(プレイヤー)
+	CPlayer* player = CPlayer::Instance();
+	CEnemyManager* enemyManager = CEnemyManager::Instance();  // インスタンスを取得
+	if (player == nullptr) return;
+
+	std::vector<CPicoChan*> enemies = enemyManager->GetEnemies();  // 敵のリストを取得
+
+	// プレイヤーのロックオンとカメラ位置を更新
+	CPlayer::Instance()->UpdateLockOnAndCameraPosition(enemies);
+}
+
 // ステージ破棄
 void CStage3::Unload()
 {
 	// カメラから衝突するコライダーを取り除く
 	CCamera* mainCamera = CCamera::MainCamera();
 	//mainCamera->RemoveCollider(mpPlainsStageField->GetWallCol());
+
 	// ベースステージ破棄処理
 	CStageBase::Unload();
 }

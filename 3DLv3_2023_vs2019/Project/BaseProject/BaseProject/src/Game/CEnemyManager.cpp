@@ -3,6 +3,31 @@
 int CEnemyManager::enemyCount = 0;
 int CEnemyManager::VanguardCount = 0;
 
+// エネミーマネジャーのインスタンス
+CEnemyManager* CEnemyManager::spInstance = nullptr;
+
+CEnemyManager* CEnemyManager::Instance()
+{
+    if (spInstance == nullptr)
+    {
+        spInstance = new CEnemyManager();
+    }
+    return spInstance;
+}
+
+std::vector<CPicoChan*> CEnemyManager::GetEnemies()
+{
+    return enemies;
+}
+
+void CEnemyManager::AddEnemy(CPicoChan* enemy)
+{
+    if (enemy != nullptr)
+    {
+        enemies.push_back(enemy);
+    }
+}
+
 // ソルジャーの数を増やす
 void CEnemyManager::IncrementSoldierCount()
 {
@@ -37,4 +62,15 @@ void CEnemyManager::DecrementVanguardCount()
 int CEnemyManager::GetVanguardCount()
 {
     return VanguardCount;
+}
+
+CEnemyManager::CEnemyManager()
+{
+    // インスタンスの設定
+    spInstance = this;
+}
+
+CEnemyManager::~CEnemyManager()
+{
+    spInstance = nullptr;
 }

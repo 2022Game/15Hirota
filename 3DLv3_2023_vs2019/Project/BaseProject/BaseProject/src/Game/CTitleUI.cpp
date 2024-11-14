@@ -35,7 +35,6 @@ CTitleUI::CTitleUI()
 	, mTutorialSE(false)
 	, mpTutorialImage(nullptr)
 {
-
 	// チュートリアルSE取得
 	mpOpenTutorial = CResourceManager::Get<CSound>("TutorialSound");
 
