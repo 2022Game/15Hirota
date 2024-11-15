@@ -94,6 +94,8 @@ private:
 	CColliderSphere* mpDamageCol;
 	// ダメージを与えるコライダー
 	CColliderSphere* mpAttackCol;
+	// プレイヤーとの当たり判定を取るコライダー
+	CColliderCapsule* mpPlayerCol;
 
 	// マジックソードモデル
 	CPicoSword* mpSword;

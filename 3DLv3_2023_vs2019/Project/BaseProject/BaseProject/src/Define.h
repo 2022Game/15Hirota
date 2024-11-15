@@ -9,6 +9,8 @@
 #define CAMERA_ZNEAR 1.0f		//カメラの描画最短距離
 #define CAMERA_ZFAR 4000.0f		//カメラの描画最長距離
 
+#define MIN_CAMERADISTANCE 100.0f	// 敵をロックオンする距離
+
 //#define FULL_SCREEN	//フルスクリーンにする場合は定義する
 
 //配列のサイズ取得をマクロ化

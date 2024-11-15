@@ -183,6 +183,18 @@ CPicoChan::CPicoChan()
 	const CMatrix* spineMtxK = GetFrameMtx("root_LeftToe_end");
 	mpAttackCol->SetAttachMtx(spineMtxK);
 
+	// プレイヤーとの当たり判定を取るコライダー
+	mpPlayerCol = new CColliderCapsule
+	(
+		this, ELayer::eEnemyCol,
+		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, 15.0f, 0.0f),
+		7.0f,
+		false
+	);
+	mpPlayerCol->Position(0.0f, 0.5f, 0.0f);
+	mpPlayerCol->SetCollisionLayers({ ELayer::ePlayerCol });
+
 	// マジックソード作成
 	mpSword = new CPicoSword();
 	//mpSword->AttachMtx(GetFrameMtx("root_RightHand"));
@@ -205,6 +217,7 @@ CPicoChan::~CPicoChan()
 	SAFE_DELETE(mpCapsule);
 	SAFE_DELETE(mpDamageCol);
 	SAFE_DELETE(mpAttackCol);
+	SAFE_DELETE(mpPlayerCol);
 
 	// マジックソード破棄
 	mpSword->Kill();
@@ -300,6 +313,15 @@ void CPicoChan::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 			{
 				Position(Position() + hit.adjust);
 			}
+		}
+	}
+
+	// 敵の衝突コライダーとの当たり判定を取るコライダー
+	if (self == mpPlayerCol)
+	{
+		if (other->Layer() == ELayer::ePlayerCol)
+		{
+			Position(Position() + hit.adjust * hit.weight);
 		}
 	}
 }

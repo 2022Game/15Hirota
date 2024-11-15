@@ -36,6 +36,7 @@ class CMetalLadder;
 class COperationUI;
 class CSpikyBall;
 class CPicoChan;
+class CRockOnUI;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -49,9 +50,9 @@ public:
 	// ロックオン用のポインター
 	CXCharacter* mpLockedOnEnemy = nullptr;
 	// 敵の位置を設定
-	void LockOnToNearestEnemy(const std::vector<CPicoChan*>& enemies);
+	void LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies);
 	void UpdateCameraPosition();
-	void UpdateLockOnAndCameraPosition(const std::vector<CPicoChan*>& enemies);
+	void UpdateLockOnAndCameraPosition(const std::vector<CXCharacter*>& enemies);
 
 	// プレイヤーが持っているアイテムのリスト
 	enum class ItemType
@@ -243,6 +244,8 @@ public:
 	float GetSpikyBallDistance() const;
 	float GetSpikyBallInitialVelocityY() const;
 
+	// ロックオンカメラを使用しているかどうか判定
+	bool IsCameraReset() const;
 
 	// 他のクラスで使っている為publicに置いておく
 	// ジャンプ開始1
@@ -301,9 +304,10 @@ private:
 	// コライダー
 	// 縦のコライダーライン
 	CColliderLine* mpColliderLine;
-	// 一時的な当たり判定を取るコライダー
-	// カプセルコライダーが完成したら変更
+	// 壁などと当たり判定を取得するコライダー
 	CColliderCapsule* mpColliderCapsule;
+	// 敵との衝突判定を取得するコライダー
+	CColliderSphere* mpEnemyCollider;
 	//ダメージを受けるコライダ
 	CColliderSphere* mpDamageCol;
 	// 登れるコライダーとの当たり判定を取るコライダー
@@ -328,8 +332,13 @@ private:
 	CSpikyBallUI* mpSpikyBallUI;
 	// 肉アイテム画像
 	CMeatUI* mpMeat;
-
+	// 登るときの画像
 	COperationUI* mpClimbUI;
+
+	// ロックオンができる時の画像
+	CRockOnUI* mpCanRockOnUI;
+	// ロックオン時の画像
+	CRockOnUI* mpRockOnUI;
 
 	// SE
 	// 剣の振りかざし攻撃時のSE
@@ -841,6 +850,8 @@ private:
 	bool mIsCameraReset;
 	// カメラの初期位置設定用のフラグ
 	bool mIsCameraStartPos;
+	// 回避行動時の方向設定用のフラグ
+	bool mIsCameraDirection;
 
 	///////////////////////////////////////////////////////
 };

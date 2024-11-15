@@ -1,5 +1,6 @@
 #include "CGameCamera.h"
 #include "CInput.h"
+#include "CPlayer.h"
 
 // カメラの回転速度
 #define ROTATE_SPEED 0.1f
@@ -18,18 +19,24 @@ CGameCamera::~CGameCamera()
 // 更新
 void CGameCamera::Update()
 {
-	// マウスの横方向の移動量に合わせて、回転値（クォータニオン）を求める
-	CVector2 delta = CInput::GetDeltaMousePos();
-	CQuaternion rot = CQuaternion(0.0f, delta.X() * ROTATE_SPEED, 0.0f);
+	CPlayer* player = CPlayer::Instance();
+	if (player == nullptr) return;
 
-	// 追従時のオフセット位置を回転
-	mFollowOffsetPos = rot * mFollowOffsetPos;
+	if (player->IsCameraReset() == false)
+	{
+		// マウスの横方向の移動量に合わせて、回転値（クォータニオン）を求める
+		CVector2 delta = CInput::GetDeltaMousePos();
+		CQuaternion rot = CQuaternion(0.0f, delta.X() * ROTATE_SPEED, 0.0f);
 
-	// カメラの向きを回転
-	CVector vec = -mEyeVec.Normalized();
-	CVector forward = rot * vec;
-	Rotation(CQuaternion::LookRotation(forward));
+		// 追従時のオフセット位置を回転
+		mFollowOffsetPos = rot * mFollowOffsetPos;
 
-	// カメラのベースの更新処理
-	CCamera::Update();
+		// カメラの向きを回転
+		CVector vec = -mEyeVec.Normalized();
+		CVector forward = rot * vec;
+		Rotation(CQuaternion::LookRotation(forward));
+
+		// カメラのベースの更新処理
+		CCamera::Update();
+	}
 }

@@ -11,6 +11,8 @@ enum class ELayer
 	eStageMenuObject,		// ステージメニューのオブジェクト
 	eFieldWall,
 	eFieldEnemyWall,
+	ePlayerCol,				// プレイヤーのコライダー
+	eEnemyCol,				// 敵のコライダー
 
 	eClimb,					// 登れるコライダー
 	eClimbedTop,			// 登れる壁の頂上コライダー

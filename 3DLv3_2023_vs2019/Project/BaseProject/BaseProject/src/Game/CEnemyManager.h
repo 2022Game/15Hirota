@@ -11,10 +11,10 @@ public:
     //インスタンスのポインタの取得
     static CEnemyManager* Instance();
     // 敵キャラクターを格納するリスト
-    std::vector<CPicoChan*> enemies;
+    std::vector<CXCharacter*> enemies;
     // 敵キャラクターのリストを取得する
-    std::vector<CPicoChan*> GetEnemies();
-    void AddEnemy(CPicoChan* enemy);
+    std::vector<CXCharacter*> GetEnemies();
+    void AddEnemy(CXCharacter* enemy);
 
     // ソルジャーの数を増やす
     static void IncrementSoldierCount();

@@ -117,6 +117,11 @@ void CGameScene::Load()
 	// キーのフレーム画像
 	CResourceManager::Load<CTexture>("Frame", "UI\\GimmickUI\\framework.png");
 
+	// ロックオン可能時の画像
+	CResourceManager::Load<CTexture>("CanRockOn", "UI\\GimmickUI\\CanLock-onImage.png");
+	// ロックオン時の画像
+	CResourceManager::Load<CTexture>("RockOn", "UI\\GimmickUI\\Lock-onImage.png");
+
 	
 	// BGM・SE関連
 	// 剣　スラッシュ

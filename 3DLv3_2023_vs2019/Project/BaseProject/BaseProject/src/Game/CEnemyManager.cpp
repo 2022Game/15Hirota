@@ -15,12 +15,12 @@ CEnemyManager* CEnemyManager::Instance()
     return spInstance;
 }
 
-std::vector<CPicoChan*> CEnemyManager::GetEnemies()
+std::vector<CXCharacter*> CEnemyManager::GetEnemies()
 {
     return enemies;
 }
 
-void CEnemyManager::AddEnemy(CPicoChan* enemy)
+void CEnemyManager::AddEnemy(CXCharacter* enemy)
 {
     if (enemy != nullptr)
     {

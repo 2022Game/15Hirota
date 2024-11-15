@@ -186,6 +186,7 @@
     <ClCompile Include="src\Game\CResultScene.cpp" />
     <ClCompile Include="src\Game\CRingBeamer.cpp" />
     <ClCompile Include="src\Game\CRisingObject.cpp" />
+    <ClCompile Include="src\Game\CRockOnUI.cpp" />
     <ClCompile Include="src\Game\CRotateFloorGimmick.cpp" />
     <ClCompile Include="src\Game\CRotateFloorGimmickOpposition.cpp" />
     <ClCompile Include="src\Game\CRotateFloorTimeGimmick.cpp" />
@@ -475,6 +476,7 @@
     <ClInclude Include="src\Game\CResultScene.h" />
     <ClInclude Include="src\Game\CRingBeamer.h" />
     <ClInclude Include="src\Game\CRisingObject.h" />
+    <ClInclude Include="src\Game\CRockOnUI.h" />
     <ClInclude Include="src\Game\CRotateFloorGimmick.h" />
     <ClInclude Include="src\Game\CRotateFloorGimmickOpposition.h" />
     <ClInclude Include="src\Game\CRotateFloorTimeGimmick.h" />

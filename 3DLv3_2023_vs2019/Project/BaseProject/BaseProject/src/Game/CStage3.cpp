@@ -688,12 +688,12 @@ void CStage3::Load()
 // 更新処理
 void CStage3::Update()
 {
-	// モンスター(プレイヤー)
-	CPlayer* player = CPlayer::Instance();
-	CEnemyManager* enemyManager = CEnemyManager::Instance();  // インスタンスを取得
-	if (player == nullptr) return;
+	// インスタンスを取得
+	CEnemyManager* enemyManager = CEnemyManager::Instance();
+	if (enemyManager == nullptr) return;
 
-	std::vector<CPicoChan*> enemies = enemyManager->GetEnemies();  // 敵のリストを取得
+	// 敵のリストを取得
+	std::vector<CXCharacter*> enemies = enemyManager->GetEnemies();
 
 	// プレイヤーのロックオンとカメラ位置を更新
 	CPlayer::Instance()->UpdateLockOnAndCameraPosition(enemies);

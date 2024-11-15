@@ -48,6 +48,7 @@
 #include "CSpikyBall.h"
 #include "CPicoChan.h"
 #include "CGameCamera.h"
+#include "CRockOnUI.h"
 
 // プレイヤー関連
 // 高さ
@@ -184,19 +185,20 @@ CPlayer* CPlayer::Instance()
 }
 
 // 敵の位置を設定
-void CPlayer::LockOnToNearestEnemy(const std::vector<CPicoChan*>& enemies)
+void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 {
-	float minDistance = 100.0f;
+	float minDistance = MIN_CAMERADISTANCE;
 	mpLockedOnEnemy = nullptr;
 
-	for (CPicoChan* enemy : enemies)
+	for (CXCharacter* enemy : enemies)
 	{
 		float distance = (this->Position() - enemy->Position()).Length();
+
 		if (distance < minDistance) 
 		{
 			minDistance = distance;
 			mpLockedOnEnemy = enemy;
-		}
+		}		
 	}
 }
 
@@ -210,10 +212,16 @@ void CPlayer::UpdateCameraPosition()
 
 	if (mpLockedOnEnemy) 
 	{
+		CVector exclamationMardPos = mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f);
+		mpCanRockOnUI->SetWorldPos(exclamationMardPos);
+		mpCanRockOnUI->SetCeneterRatio(CVector2(0.3f, 0.5f));
+		//mpCanRockOnUI->SetShow(true);
+
 		if (CInput::PushKey(VK_MBUTTON) && !mIsCameraReset) 
 		{
 			// ロックオン解除の処理
 			mIsCameraReset = true;
+
 		}
 		else if (CInput::PushKey(VK_MBUTTON) && mIsCameraReset) 
 		{
@@ -223,12 +231,20 @@ void CPlayer::UpdateCameraPosition()
 	}
 	else 
 	{
-		// ロックオンしていない場合はカメラをリセットする必要はない
+		// ロックオンしていない場合はカメラをリセットする必要無し
 		mIsCameraReset = false;
+		mpCanRockOnUI->SetShow(false);
 	}
 
 	if (mIsCameraReset)
 	{
+		mpCanRockOnUI->SetShow(false);
+
+		CVector exclamationMardPos = mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f);
+		mpRockOnUI->SetWorldPos(exclamationMardPos);
+		mpRockOnUI->SetCeneterRatio(CVector2(0.3f, 0.5f));
+		mpRockOnUI->SetShow(true);
+
 		// プレイヤーと敵の位置を取得
 		CVector playerPos = Position();
 		CVector enemyPos = mpLockedOnEnemy->Position();
@@ -265,6 +281,8 @@ void CPlayer::UpdateCameraPosition()
 	}
 	else
 	{
+		mpRockOnUI->SetShow(false);
+
 		if (!mIsCameraStartPos)
 		{
 			mIsCameraStartPos = true;
@@ -272,17 +290,18 @@ void CPlayer::UpdateCameraPosition()
 			CVector playerPos = Position();
 			CVector camPos = playerPos + Rotation() * CVector(0.0f, 14.0f, -60.0f);
 
-			mainCamera->LookAt(
+			mainCamera->LookAt
+			(
 				camPos,
 				playerPos,
 				CVector::up
 			);
 			mainCamera->SetFollowTargetTf(this);
 		}
-	}
+	}	
 }
 
-void CPlayer::UpdateLockOnAndCameraPosition(const std::vector<CPicoChan*>& enemies)
+void CPlayer::UpdateLockOnAndCameraPosition(const std::vector<CXCharacter*>& enemies)
 {
 	LockOnToNearestEnemy(enemies);
 	UpdateCameraPosition();
@@ -489,14 +508,14 @@ CPlayer::CPlayer()
 	, mDamaged(false)
 	, mIsDeath(false)
 	, mIsAttack(false)
+	, mSpikyBall(false)
 	, mIsJumping(false)
 	, mClimbWall(false)
 	, mIsDashJump(false)
 	, mInvincible(false)
 	, mFallDamage(false)
 	, mSavePoint1(false)
-	, mSavePoint2(false)
-	, mSpikyBall(false)
+	, mSavePoint2(false)	
 	, mStage1Clear(false)
 	, mStage2Clear(false)
 	, mStage3Clear(false)
@@ -523,6 +542,7 @@ CPlayer::CPlayer()
 	, mIsPlayedSlashSE(false)
 	, mIsCameraStartPos(false)
 	, mStaminaLowerLimit(false)
+	, mIsCameraDirection(false)
 	, mIsPlayedHitDamageSE(false)
 	, mIsSpawnedSlashEffect(false)	
 	, mpMeat(nullptr)
@@ -566,6 +586,15 @@ CPlayer::CPlayer()
 	mpClimbUI = new COperationUI("EUI");
 	mpClimbUI->SetSize(100.0f, 100.0f);
 	mpClimbUI->SetShow(false);
+
+	// ロックオン可能時の画像
+	mpCanRockOnUI = new CRockOnUI("CanRockOn");
+	mpCanRockOnUI->SetSize(150.0f, 150.0f);
+	mpCanRockOnUI->SetShow(false);
+	// ロックオン時の画像
+	mpRockOnUI = new CRockOnUI("RockOn");
+	mpCanRockOnUI->SetSize(150.0f, 150.0f);
+	mpRockOnUI->SetShow(false);
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
@@ -611,6 +640,16 @@ CPlayer::CPlayer()
 		ETag::eItemInvincible,ETag::eItemRecover,ETag::eSavePoint1, ETag::eSavePoint2, ETag::eObstacle,ETag::eJumpingObject,
 		ETag::eNeedleObject, ETag::eMeat, ETag::eSeesaw, ETag::eFall,ETag::ePropeller, ETag::eReflection});
 	//mpColliderCapsule->Position(0.0f, 5.0f, 1.0f);
+
+	// 敵との衝突判定を取得するコライダー
+	mpEnemyCollider = new CColliderSphere
+	(
+		this, ELayer::ePlayerCol,
+		1.1f
+	);
+	mpEnemyCollider->SetCollisionLayers({ ELayer::eEnemyCol });
+	const CMatrix* spineMtx2 = GetFrameMtx("Armature_mixamorig_Spine1");
+	mpEnemyCollider->SetAttachMtx(spineMtx2);
 	
 
 	// プレイヤーのリグに付けるかどうか考え中
@@ -693,6 +732,7 @@ CPlayer::~CPlayer()
 	SAFE_DELETE(mpColliderCapsule);
 	SAFE_DELETE(mpDamageCol);
 	SAFE_DELETE(mpClimbCol);
+	SAFE_DELETE(mpEnemyCollider);
 
 	// マジックソードを破棄
 	mpSword->Kill();
@@ -702,6 +742,9 @@ CPlayer::~CPlayer()
 	mpCutInClear->Kill();
 	mpCutInResult->Kill();
 	mpCutInDeathJump->Kill();
+
+	mpCanRockOnUI->Kill();
+	mpRockOnUI->Kill();
 }
 
 // 衝突処理
@@ -978,6 +1021,15 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		}
 	}
 
+	// 敵の衝突コライダーとの当たり判定を取るコライダー
+	if (self == mpEnemyCollider)
+	{
+		if (other->Layer() == ELayer::eEnemyCol)
+		{
+			Position(Position() + hit.adjust * hit.weight);			
+		}
+	}
+
 	// 登れるコライダーとの当たり判定を取るコライダー
 	if (self == mpClimbCol)
 	{
@@ -1148,6 +1200,7 @@ void CPlayer::CHPJudgment()
 	{
 		if (mCharaStatus.hp > MIN_HP)
 		{
+			mIsCameraDirection = false;
 			mDamageEnemy = false;
 			mIsPlayedHitDamageSE = false;
 			ChangeState(EState::eIdle);
@@ -1585,6 +1638,11 @@ float CPlayer::GetSpikyBallInitialVelocityY() const
 	return SPIKYBALLVELOCITY_Y + (Math::Clamp01(mSpikTime / MAXCHARGETIME) * MAXVELOCITY_Y);
 }
 
+bool CPlayer::IsCameraReset() const
+{
+	return mIsCameraReset;
+}
+
 // ステージフラグをfalseにする関数
 void CPlayer::StageFlagfalse()
 {
@@ -1900,6 +1958,7 @@ void CPlayer::UpdateMove()
 		{
 			if (CInput::Key(VK_SHIFT) && mIsGrounded)
 			{
+				mIsCameraDirection = true;
 				// スタミナが0以上かつ、スタミナの下限値フラグがfalseだったら
 				if (mCharaStatus.stamina >= 0 && !mStaminaLowerLimit)
 				{
@@ -1977,6 +2036,7 @@ void CPlayer::UpdateMove()
 				{
 					// 歩く
 					mStartDashTime = 0.0f;
+					mIsCameraDirection = false;
 					mIsDashJump = false;
 					mDash = false;
 					ChangeAnimation(EAnimType::eWalk);
@@ -1993,6 +2053,7 @@ void CPlayer::UpdateMove()
 			else
 			{
 				mStartDashTime = 0.0f;
+				mIsCameraDirection = false;
 				mIsDashJump = false;
 				mDash = false;
 				ChangeAnimation(EAnimType::eWalk);
@@ -2040,6 +2101,7 @@ void CPlayer::UpdateMove()
 			// 待機アニメーションに切り替え
 			ChangeAnimation(EAnimType::eIdle);
 			mStartDashTime = 0.0f;
+			mIsCameraDirection = false;
 			mIsDashJump = false;
 			mDash = false;
 			if (mCharaStatus.stamina < mCharaMaxStatus.stamina && !mDash)
@@ -2342,7 +2404,9 @@ void CPlayer::UpdateDashAttackWait()
 void CPlayer::UpdateRotate()
 {
 	mpDamageCol->SetEnable(false);
+
 	mIsAttack = false;
+	mIsCameraDirection = true;
 	mWeaponTime = 0.0f;
 	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_Spine1"));
 	mMoveSpeed = CVector::zero;
@@ -2364,6 +2428,7 @@ void CPlayer::UpdateRotateEnd()
 {
 	if (IsAnimationFinished())
 	{
+		mIsCameraDirection = false;
 		mpDamageCol->SetEnable(true);
 
 		ChangeState(EState::eIdle);
@@ -4339,7 +4404,7 @@ void CPlayer::Update()
 				target.Y(0.0f);
 				target.Normalize();
 				// ロックオン中は敵の方向を向く
-				if (mpLockedOnEnemy)
+				if (mIsCameraReset && !mIsCameraDirection)
 				{
 					// プレイヤーと敵の位置を取得
 					CVector playerPos = Position();
@@ -4454,6 +4519,7 @@ void CPlayer::Update()
 	// キャラクターの更新
 	CXCharacter::Update();
 	mpDamageCol->Update();
+	mpEnemyCollider->Update();
 	mpColliderCapsule->Update();
 	mpSword->UpdateAttachMtx();
 	
