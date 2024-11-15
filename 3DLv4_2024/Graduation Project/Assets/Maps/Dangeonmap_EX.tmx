@@ -1,8 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="12">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="15">
  <tileset firstgid="1" source="マップチップ画像(仮のダンジョンチップ).tsx"/>
- <layer id="1" name="Tile Layer" width="30" height="30">
-  <data encoding="csv">
+ <group id="4" name="2F">
+  <objectgroup id="6" name="Object Layer">
+   <object id="13" name="DownStairs" x="446" y="610" width="32" height="32">
+    <properties>
+     <property name="Type" value="Stairs"/>
+    </properties>
+   </object>
+   <object id="14" name="UpStairs" x="482" y="705" width="32" height="32">
+    <properties>
+     <property name="Type" value="Stairs"/>
+    </properties>
+   </object>
+  </objectgroup>
+  <layer id="5" name="Tile Layer" width="30" height="30">
+   <data encoding="csv">
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+</data>
+  </layer>
+ </group>
+ <group id="3" name="1F" visible="0">
+  <layer id="1" name="Tile Layer" width="30" height="30">
+   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
@@ -34,52 +83,53 @@
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 </data>
- </layer>
- <objectgroup id="2" name="Object Layer">
-  <object id="2" name="Enemy1" x="224" y="480" width="32" height="32">
-   <properties>
-    <property name="Type" value="Enemy"/>
-   </properties>
-  </object>
-  <object id="3" name="Enemy1" x="224" y="416" width="32" height="32">
-   <properties>
-    <property name="Type" value="Enemy"/>
-   </properties>
-  </object>
-  <object id="4" name="Item1" x="97" y="194" width="32" height="32">
-   <properties>
-    <property name="Type" value="Item"/>
-   </properties>
-  </object>
-  <object id="5" name="WEAPON01" x="257" y="192" width="32" height="32">
-   <properties>
-    <property name="Type" value="Item"/>
-   </properties>
-  </object>
-  <object id="6" name="FOOD01" x="160" y="225" width="32" height="32">
-   <properties>
-    <property name="Type" value="Item"/>
-   </properties>
-  </object>
-  <object id="7" name="ARMOR01" x="288" y="256" width="32" height="32">
-   <properties>
-    <property name="Type" value="Item"/>
-   </properties>
-  </object>
-  <object id="9" name="FOOD06" x="193" y="192" width="32" height="32">
-   <properties>
-    <property name="Type" value="Item"/>
-   </properties>
-  </object>
-  <object id="10" name="DownStairs" x="256" y="129" width="32" height="32">
-   <properties>
-    <property name="Type" value="Stairs"/>
-   </properties>
-  </object>
-  <object id="11" name="UpStairs" x="736" y="256" width="32" height="32">
-   <properties>
-    <property name="Type" value="Stairs"/>
-   </properties>
-  </object>
- </objectgroup>
+  </layer>
+  <objectgroup id="2" name="Object Layer">
+   <object id="2" name="Enemy1" x="224" y="480" width="32" height="32">
+    <properties>
+     <property name="Type" value="Enemy"/>
+    </properties>
+   </object>
+   <object id="3" name="Enemy1" x="224" y="416" width="32" height="32">
+    <properties>
+     <property name="Type" value="Enemy"/>
+    </properties>
+   </object>
+   <object id="4" name="Item1" x="97" y="194" width="32" height="32">
+    <properties>
+     <property name="Type" value="Item"/>
+    </properties>
+   </object>
+   <object id="5" name="WEAPON01" x="257" y="192" width="32" height="32">
+    <properties>
+     <property name="Type" value="Item"/>
+    </properties>
+   </object>
+   <object id="6" name="FOOD01" x="160" y="225" width="32" height="32">
+    <properties>
+     <property name="Type" value="Item"/>
+    </properties>
+   </object>
+   <object id="7" name="ARMOR01" x="288" y="256" width="32" height="32">
+    <properties>
+     <property name="Type" value="Item"/>
+    </properties>
+   </object>
+   <object id="9" name="FOOD06" x="193" y="192" width="32" height="32">
+    <properties>
+     <property name="Type" value="Item"/>
+    </properties>
+   </object>
+   <object id="10" name="DownStairs" x="256" y="129" width="32" height="32">
+    <properties>
+     <property name="Type" value="Stairs"/>
+    </properties>
+   </object>
+   <object id="11" name="UpStairs" x="736" y="256" width="32" height="32">
+    <properties>
+     <property name="Type" value="Stairs"/>
+    </properties>
+   </object>
+  </objectgroup>
+ </group>
 </map>
