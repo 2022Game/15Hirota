@@ -188,17 +188,27 @@ CPlayer* CPlayer::Instance()
 void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 {
 	float minDistance = MIN_CAMERADISTANCE;
-	mpLockedOnEnemy = nullptr;
+
+	// すでにロックオンしている場合はスキップ
+    if (mIsCameraReset)
+    {
+        return;
+    }
+	else
+	{
+		mpLockedOnEnemy = nullptr;
+	}
 
 	for (CXCharacter* enemy : enemies)
 	{
 		float distance = (this->Position() - enemy->Position()).Length();
 
-		if (distance < minDistance) 
+		if (distance < minDistance)
 		{
 			minDistance = distance;
+			mpCanRockOnUI->SetShow(true);
 			mpLockedOnEnemy = enemy;
-		}		
+		}
 	}
 }
 
@@ -210,18 +220,16 @@ void CPlayer::UpdateCameraPosition()
 	// ステージ0では呼ばない
 	if (currentStage == STAGE_0) return;
 
-	if (mpLockedOnEnemy) 
+	if (mpLockedOnEnemy)
 	{
 		CVector exclamationMardPos = mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f);
 		mpCanRockOnUI->SetWorldPos(exclamationMardPos);
-		mpCanRockOnUI->SetCeneterRatio(CVector2(0.3f, 0.5f));
-		//mpCanRockOnUI->SetShow(true);
+		//mpCanRockOnUI->SetCeneterRatio(CVector2(0.3f, 0.5f));
 
 		if (CInput::PushKey(VK_MBUTTON) && !mIsCameraReset) 
 		{
 			// ロックオン解除の処理
 			mIsCameraReset = true;
-
 		}
 		else if (CInput::PushKey(VK_MBUTTON) && mIsCameraReset) 
 		{
@@ -239,10 +247,9 @@ void CPlayer::UpdateCameraPosition()
 	if (mIsCameraReset)
 	{
 		mpCanRockOnUI->SetShow(false);
-
 		CVector exclamationMardPos = mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f);
 		mpRockOnUI->SetWorldPos(exclamationMardPos);
-		mpRockOnUI->SetCeneterRatio(CVector2(0.3f, 0.5f));
+		//mpRockOnUI->SetCeneterRatio(CVector2(0.3f, 0.5f));
 		mpRockOnUI->SetShow(true);
 
 		// プレイヤーと敵の位置を取得
@@ -258,8 +265,10 @@ void CPlayer::UpdateCameraPosition()
 		directionToEnemy.Normalize();
 
 		// カメラ距離と横方向オフセットの設定
-		float cameraDistance = 70.0f; // プレイヤーと敵からの距離
-		float sideOffset = 40.0f; // 横方向のオフセット（視野を広げるため）
+		// プレイヤーと敵からの距離
+		float cameraDistance = 70.0f;
+		// 横方向のオフセット（視野を広げるため）
+		float sideOffset = 40.0f;
 
 		// カメラ位置の計算（横方向にずらす）
 		CVector camOffset = directionToEnemy * -cameraDistance;
@@ -289,7 +298,6 @@ void CPlayer::UpdateCameraPosition()
 			// ロックオンが解除された際に、プレイヤー位置に戻す
 			CVector playerPos = Position();
 			CVector camPos = playerPos + Rotation() * CVector(0.0f, 14.0f, -60.0f);
-
 			mainCamera->LookAt
 			(
 				camPos,
@@ -508,6 +516,7 @@ CPlayer::CPlayer()
 	, mDamaged(false)
 	, mIsDeath(false)
 	, mIsAttack(false)
+	, mIsRockOn(false)
 	, mSpikyBall(false)
 	, mIsJumping(false)
 	, mClimbWall(false)
@@ -589,12 +598,11 @@ CPlayer::CPlayer()
 
 	// ロックオン可能時の画像
 	mpCanRockOnUI = new CRockOnUI("CanRockOn");
-	mpCanRockOnUI->SetSize(150.0f, 150.0f);
-	mpCanRockOnUI->SetShow(false);
+	mpCanRockOnUI->SetSize(150.0f, 450.0f);
 	// ロックオン時の画像
 	mpRockOnUI = new CRockOnUI("RockOn");
-	mpCanRockOnUI->SetSize(150.0f, 150.0f);
-	mpRockOnUI->SetShow(false);
+	mpCanRockOnUI->SetSize(150.0f, 250.0f);
+	mpCanRockOnUI->SetAlpha(0.7f);
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);

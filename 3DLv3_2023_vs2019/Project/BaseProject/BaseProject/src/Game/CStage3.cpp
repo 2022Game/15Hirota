@@ -658,6 +658,14 @@ void CStage3::Load()
 	pico->SetCenterPoint(CVector(0.0f, 0.0f, 453.0f), 30.0f);
 	enemyManager->AddEnemy(pico);
 	AddTask(pico);
+
+	// ピコちゃん
+	CPicoChan* pico1 = new CPicoChan();
+	pico1->Position(0.0f, 8.0f, 463.0f);
+	pico1->Scale(15.5f, 15.5f, 15.5f);
+	pico1->SetCenterPoint(CVector(0.0f, 0.0f, 463.0f), 30.0f);
+	enemyManager->AddEnemy(pico1);
+	AddTask(pico1);
 	
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();

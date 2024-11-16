@@ -852,6 +852,8 @@ private:
 	bool mIsCameraStartPos;
 	// 回避行動時の方向設定用のフラグ
 	bool mIsCameraDirection;
+	// ロックオン中に別の敵に切り替わらないようにするためのフラグ
+	bool mIsRockOn;
 
 	///////////////////////////////////////////////////////
 };
