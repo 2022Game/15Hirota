@@ -1216,6 +1216,9 @@
     <ClCompile Include="src\Game\CRockOnUI.cpp">
       <Filter>ソース ファイル\Game\UI\RockOn</Filter>
     </ClCompile>
+    <ClCompile Include="src\Game\CCanRockOn.cpp">
+      <Filter>ソース ファイル\Game\UI\RockOn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseSystem\CCollider.h">
@@ -2080,6 +2083,9 @@
       <Filter>ソース ファイル\Game\Character\CharaObject\WeaponObject</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\CRockOnUI.h">
+      <Filter>ソース ファイル\Game\UI\RockOn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CCanLockOn.h">
       <Filter>ソース ファイル\Game\UI\RockOn</Filter>
     </ClInclude>
   </ItemGroup>

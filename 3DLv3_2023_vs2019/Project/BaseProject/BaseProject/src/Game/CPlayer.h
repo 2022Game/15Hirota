@@ -37,6 +37,7 @@ class COperationUI;
 class CSpikyBall;
 class CPicoChan;
 class CRockOnUI;
+class CCanLockOn;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -49,6 +50,8 @@ class CPlayer : public CXCharacter
 public:
 	// ロックオン用のポインター
 	CXCharacter* mpLockedOnEnemy = nullptr;
+	CXCharacter* mpNearestEnemy = nullptr;
+	CXCharacter* mpNextEnemy = nullptr;
 	// 敵の位置を設定
 	void LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies);
 	void UpdateCameraPosition();
@@ -339,6 +342,8 @@ private:
 	CRockOnUI* mpCanRockOnUI;
 	// ロックオン時の画像
 	CRockOnUI* mpRockOnUI;
+
+	CCanLockOn* mpCanRockOn;
 
 	// SE
 	// 剣の振りかざし攻撃時のSE
@@ -853,7 +858,7 @@ private:
 	// 回避行動時の方向設定用のフラグ
 	bool mIsCameraDirection;
 	// ロックオン中に別の敵に切り替わらないようにするためのフラグ
-	bool mIsRockOn;
+	bool mIsCanRockOnUI;
 
 	///////////////////////////////////////////////////////
 };

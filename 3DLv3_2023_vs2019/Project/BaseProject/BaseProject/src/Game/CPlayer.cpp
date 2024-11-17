@@ -49,6 +49,7 @@
 #include "CPicoChan.h"
 #include "CGameCamera.h"
 #include "CRockOnUI.h"
+#include "CCanLockOn.h"
 
 // プレイヤー関連
 // 高さ
@@ -189,26 +190,90 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 {
 	float minDistance = MIN_CAMERADISTANCE;
 
-	// すでにロックオンしている場合はスキップ
-    if (mIsCameraReset)
-    {
-        return;
-    }
-	else
-	{
-		mpLockedOnEnemy = nullptr;
-	}
-
+	// 一番近い敵を探す
 	for (CXCharacter* enemy : enemies)
 	{
 		float distance = (this->Position() - enemy->Position()).Length();
 
+		// 最も近い敵を更新
 		if (distance < minDistance)
 		{
+			//mpCanRockOnUI->SetShow(true);
 			minDistance = distance;
-			mpCanRockOnUI->SetShow(true);
-			mpLockedOnEnemy = enemy;
+			mpNearestEnemy = enemy;
 		}
+	}
+
+	// 最も近い敵にロックオン
+	if (mpNearestEnemy != nullptr && mpLockedOnEnemy == nullptr)
+	{
+		mpLockedOnEnemy = mpNearestEnemy;
+	}
+
+	// Qキーが押された場合、ロックオンを変更
+	if (CInput::PushKey('Q'))
+	{
+		// Qキーが押されたときには範囲内の敵に切り替え
+		float range = MIN_CAMERADISTANCE;  // ここで範囲を指定
+		for (CXCharacter* enemy : enemies)
+		{
+			// すでにロックオンしている敵をスキップ
+			if (enemy == mpLockedOnEnemy) continue;
+
+			float distance = (this->Position() - enemy->Position()).Length();
+			// 範囲内の敵をロックオン対象として候補に
+			if (distance < range)
+			{
+				// 次に近い敵を決定
+				mpNextEnemy = enemy;
+				range = distance;
+			}
+		}
+
+		// 新しい敵にロックオン
+		if (mpNextEnemy != nullptr)
+		{
+			mpLockedOnEnemy = mpNextEnemy;
+		}
+
+		// この処理は範囲内の敵且つ一番近い敵の身を取得する処理
+
+		//// もし現在ロックオンしている敵が一番近くないなら、ロックオンを切り替える
+		//if (mpLockedOnEnemy != mpNearestEnemy)
+		//{
+		//	mpLockedOnEnemy = mpNearestEnemy;
+		//}
+		//else
+		//{
+		//	// 現在ロックオンしている敵をそのままにし、範囲内の他の敵に切り替える
+		//	float nextMinDistance = minDistance;
+
+		//	for (CXCharacter* enemy : enemies)
+		//	{
+		//// すでにロックオンしている敵をスキップ
+		//		if (enemy == mpLockedOnEnemy) continue;
+
+		//		float distance = (this->Position() - enemy->Position()).Length();
+		//		if (distance < nextMinDistance)
+		//		{
+		//			nextMinDistance = distance;
+		//			mpNextEnemy = enemy;
+		//		}
+		//	}
+
+		//	// 新しい敵にロックオン
+		//	if (mpNextEnemy != nullptr)
+		//	{
+		//		mpLockedOnEnemy = mpNextEnemy;
+		//	}
+		//}
+	}
+
+	if (mIsCameraReset) return;
+	// Qキーが押されていない場合でも、最も近い敵が変わったらロックオンを更新
+	if (mpNearestEnemy != nullptr && mpLockedOnEnemy != mpNearestEnemy)
+	{
+		mpLockedOnEnemy = mpNearestEnemy;
 	}
 }
 
@@ -222,8 +287,15 @@ void CPlayer::UpdateCameraPosition()
 
 	if (mpLockedOnEnemy)
 	{
-		CVector exclamationMardPos = mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f);
-		mpCanRockOnUI->SetWorldPos(exclamationMardPos);
+		if (!mIsCanRockOnUI)
+		{
+			mIsCanRockOnUI = true;
+			mpCanRockOn = new CCanLockOn(ETag::eBillboard,
+				ETaskPriority::eEffect, mpLockedOnEnemy->Position());
+		}
+		mpCanRockOn->Position(mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f));
+		/*CVector exclamationMardPos = mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f);
+		mpCanRockOnUI->SetWorldPos(exclamationMardPos);*/
 		//mpCanRockOnUI->SetCeneterRatio(CVector2(0.3f, 0.5f));
 
 		if (CInput::PushKey(VK_MBUTTON) && !mIsCameraReset) 
@@ -516,7 +588,7 @@ CPlayer::CPlayer()
 	, mDamaged(false)
 	, mIsDeath(false)
 	, mIsAttack(false)
-	, mIsRockOn(false)
+	, mIsCanRockOnUI(false)
 	, mSpikyBall(false)
 	, mIsJumping(false)
 	, mClimbWall(false)
@@ -602,6 +674,7 @@ CPlayer::CPlayer()
 	// ロックオン時の画像
 	mpRockOnUI = new CRockOnUI("RockOn");
 	mpCanRockOnUI->SetSize(150.0f, 250.0f);
+	mpCanRockOnUI->SetColor(1.0f, 1.0f, 0.0f);
 	mpCanRockOnUI->SetAlpha(0.7f);
 
 	// テーブル内のアニメーションデータを読み込み
@@ -753,6 +826,8 @@ CPlayer::~CPlayer()
 
 	mpCanRockOnUI->Kill();
 	mpRockOnUI->Kill();
+
+	mpCanRockOn->Kill();
 }
 
 // 衝突処理
