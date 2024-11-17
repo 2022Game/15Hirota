@@ -28,6 +28,19 @@ void CEnemyManager::AddEnemy(CXCharacter* enemy)
     }
 }
 
+void CEnemyManager::RemoveEnemy(CXCharacter* enemy)
+{
+    if (enemy == nullptr)
+        return;
+
+    // enemies 配列内で、指定された enemy を探して削除
+    auto it = std::find(enemies.begin(), enemies.end(), enemy);
+    if (it != enemies.end())
+    {
+        enemies.erase(it);  // 見つかった場合、配列から削除
+    }
+}
+
 // ソルジャーの数を増やす
 void CEnemyManager::IncrementSoldierCount()
 {

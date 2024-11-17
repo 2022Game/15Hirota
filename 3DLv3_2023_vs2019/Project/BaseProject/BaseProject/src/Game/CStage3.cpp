@@ -659,7 +659,7 @@ void CStage3::Load()
 	enemyManager->AddEnemy(pico);
 	AddTask(pico);
 
-	// ピコちゃん
+	// ピコちゃん1
 	CPicoChan* pico1 = new CPicoChan();
 	pico1->Position(0.0f, 8.0f, 463.0f);
 	pico1->Scale(15.5f, 15.5f, 15.5f);

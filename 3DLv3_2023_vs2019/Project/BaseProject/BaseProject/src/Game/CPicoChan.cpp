@@ -9,6 +9,7 @@
 #include "CStageManager.h"
 #include "CPicoSword.h"
 #include "CPicoChanUI.h"
+#include "CEnemyManager.h"
 
 // ピコちゃんの頭上
 #define PICO_HEIGHT 1.0f
@@ -960,6 +961,11 @@ void CPicoChan::UpdateHit()
 		}
 		else if (mCharaStatus.hp <= 0)
 		{
+			//CEnemyManager* enemyManager = CEnemyManager::Instance();
+			//if (enemyManager == nullptr) return;
+
+			//// ピコちゃんが死亡した場合など
+			//enemyManager->RemoveEnemy(this);
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eDeath);
 		}
@@ -971,6 +977,7 @@ void CPicoChan::UpdateDeath()
 {
 	mMoveSpeed.X(0.0f);
 	mMoveSpeed.Z(0.0f);
+
 	ChangeAnimation(EAnimType::eDeath1);
 	if (IsAnimationFinished())
 	{

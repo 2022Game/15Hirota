@@ -14,7 +14,10 @@ public:
     std::vector<CXCharacter*> enemies;
     // 敵キャラクターのリストを取得する
     std::vector<CXCharacter*> GetEnemies();
+    // 敵をリストに追加する
     void AddEnemy(CXCharacter* enemy);
+    // 敵をリストから除外する
+    void RemoveEnemy(CXCharacter* enemy);
 
     // ソルジャーの数を増やす
     static void IncrementSoldierCount();

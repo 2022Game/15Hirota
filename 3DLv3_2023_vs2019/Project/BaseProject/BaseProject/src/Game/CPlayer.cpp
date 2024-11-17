@@ -193,23 +193,13 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 	// 一番近い敵を探す
 	for (CXCharacter* enemy : enemies)
 	{
-		float distance = (this->Position() - enemy->Position()).Length();
+		float distance = (Position() - enemy->Position()).Length();
 
 		// 最も近い敵を更新
 		if (distance < minDistance)
 		{
 			minDistance = distance;
 			mpNearestEnemy = enemy;
-		}
-	}
-
-	if (mpLockedOnEnemy != nullptr)
-	{
-		float lockedOnDistance = (this->Position() - mpLockedOnEnemy->Position()).Length();
-		if (lockedOnDistance > MIN_CAMERADISTANCE)
-		{
-			mpLockedOnEnemy = nullptr;
-			mpNearestEnemy = nullptr;
 		}
 	}
 
@@ -222,6 +212,12 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 	// Qキーが押された場合、ロックオンを変更
 	if (CInput::PushKey('Q'))
 	{
+		// 敵が一体だけの場合、ロックオンを解除しない
+		if (enemies.size() <= 1)
+		{
+			return; // 敵が1体だけならロックオン解除しない
+		}
+
 		// Qキーが押されたときには範囲内の敵に切り替え
 		float range = MIN_CAMERADISTANCE;  // ここで範囲を指定
 		for (CXCharacter* enemy : enemies)
@@ -229,7 +225,7 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 			// すでにロックオンしている敵をスキップ
 			if (enemy == mpLockedOnEnemy) continue;
 
-			float distance = (this->Position() - enemy->Position()).Length();
+			float distance = (Position() - enemy->Position()).Length();
 			// 範囲内の敵をロックオン対象として候補に
 			if (distance < range)
 			{
@@ -276,6 +272,17 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 		//		mpLockedOnEnemy = mpNextEnemy;
 		//	}
 		//}
+	}
+
+	// 範囲外に出たらリセット
+	if (mpLockedOnEnemy != nullptr)
+	{
+		float lockedOnDistance = (Position() - mpLockedOnEnemy->Position()).Length();
+		if (lockedOnDistance > MIN_CAMERADISTANCE)
+		{
+			mpLockedOnEnemy = nullptr;
+			mpNearestEnemy = nullptr;
+		}
 	}
 
 	if (mIsCameraReset) return;
@@ -4483,7 +4490,7 @@ void CPlayer::Update()
 				target.Y(0.0f);
 				target.Normalize();
 				// ロックオン中は敵の方向を向く
-				if (mIsCameraReset && !mIsCameraDirection)
+				if (mpLockedOnEnemy || mpNearestEnemy || mpNextEnemy && mIsCameraReset)
 				{
 					// プレイヤーと敵の位置を取得
 					CVector playerPos = Position();
