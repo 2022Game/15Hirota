@@ -1,24 +1,25 @@
-#include "CCanLockOn.h"
+#include "CLockOn.h"
 #include "Maths.h"
 #include "CCamera.h"
 #include "CGameCamera.h"
 
-CCanLockOn::CCanLockOn(ETag tag, ETaskPriority, const CVector& pos)
-	: CBillBoardImage("UI\\GimmickUI\\CanLock-onImage.png", tag, ETaskPauseType::eGame)
+CLockOn::CLockOn(ETag tag, ETaskPriority, const CVector& pos)
+	: CBillBoardImage("UI\\GimmickUI\\Lock-onImage.png", tag, ETaskPauseType::eGame)
 	, mDefaultPos(pos)
 	, mSpeed(1.0f)
 	, mElapsedTime(0.0f)
 	, mRotationAngle(0.0f)
+	, mIsDeath(false)
 {
 	SetPriority(ETaskPriority::eLockOn);
 	SetSize(CVector2(10.0f, 10.0f));
 }
 
-CCanLockOn::~CCanLockOn()
+CLockOn::~CLockOn()
 {
 }
 
-void CCanLockOn::SetColor(const CColor& color)
+void CLockOn::SetColor(const CColor& color)
 {
 	mMaterial.Diffuse()[0] = color.R();
 	mMaterial.Diffuse()[1] = color.G();
@@ -27,13 +28,13 @@ void CCanLockOn::SetColor(const CColor& color)
 	CObjectBase::SetColor(color);
 }
 
-void CCanLockOn::SetBlendType(EBlend type)
+void CLockOn::SetBlendType(EBlend type)
 {
 	mMaterial.SetBlendType(type);
 }
 
 // 更新
-void CCanLockOn::Update()
+void CLockOn::Update()
 {
 	// 基底クラスの更新
 	CBillBoardImage::Update();
@@ -51,8 +52,8 @@ void CCanLockOn::Update()
 	}
 
 	// カメラの前方向
-	CVector camForward = cam->VectorZ();  
-	
+	CVector camForward = cam->VectorZ();
+
 	// カメラの前方向を回転軸として使用
 	CVector localRotationAxis = camForward;
 

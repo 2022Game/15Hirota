@@ -36,8 +36,8 @@ class CMetalLadder;
 class COperationUI;
 class CSpikyBall;
 class CPicoChan;
-class CRockOnUI;
 class CCanLockOn;
+class CLockOn;
 
 #define DEFOLT_CAMERA CVector(0.0f,50.0f,75.0f);
 
@@ -339,11 +339,9 @@ private:
 	COperationUI* mpClimbUI;
 
 	// ロックオンができる時の画像
-	CRockOnUI* mpCanRockOnUI;
+	CCanLockOn* mpCanLockOn;
 	// ロックオン時の画像
-	CRockOnUI* mpRockOnUI;
-
-	CCanLockOn* mpCanRockOn;
+	CLockOn* mpLockOn;
 
 	// SE
 	// 剣の振りかざし攻撃時のSE

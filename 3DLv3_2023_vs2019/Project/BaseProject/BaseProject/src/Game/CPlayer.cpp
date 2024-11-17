@@ -48,8 +48,8 @@
 #include "CSpikyBall.h"
 #include "CPicoChan.h"
 #include "CGameCamera.h"
-#include "CRockOnUI.h"
 #include "CCanLockOn.h"
+#include "CLockOn.h"
 
 // プレイヤー関連
 // 高さ
@@ -198,9 +198,18 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 		// 最も近い敵を更新
 		if (distance < minDistance)
 		{
-			//mpCanRockOnUI->SetShow(true);
 			minDistance = distance;
 			mpNearestEnemy = enemy;
+		}
+	}
+
+	if (mpLockedOnEnemy != nullptr)
+	{
+		float lockedOnDistance = (this->Position() - mpLockedOnEnemy->Position()).Length();
+		if (lockedOnDistance > MIN_CAMERADISTANCE)
+		{
+			mpLockedOnEnemy = nullptr;
+			mpNearestEnemy = nullptr;
 		}
 	}
 
@@ -287,16 +296,8 @@ void CPlayer::UpdateCameraPosition()
 
 	if (mpLockedOnEnemy)
 	{
-		if (!mIsCanRockOnUI)
-		{
-			mIsCanRockOnUI = true;
-			mpCanRockOn = new CCanLockOn(ETag::eBillboard,
-				ETaskPriority::eEffect, mpLockedOnEnemy->Position());
-		}
-		mpCanRockOn->Position(mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f));
-		/*CVector exclamationMardPos = mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f);
-		mpCanRockOnUI->SetWorldPos(exclamationMardPos);*/
-		//mpCanRockOnUI->SetCeneterRatio(CVector2(0.3f, 0.5f));
+		mpCanLockOn->Position(mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f));
+		mpCanLockOn->SetShow(true);
 
 		if (CInput::PushKey(VK_MBUTTON) && !mIsCameraReset) 
 		{
@@ -313,16 +314,14 @@ void CPlayer::UpdateCameraPosition()
 	{
 		// ロックオンしていない場合はカメラをリセットする必要無し
 		mIsCameraReset = false;
-		mpCanRockOnUI->SetShow(false);
+		mpCanLockOn->SetShow(false);
 	}
 
 	if (mIsCameraReset)
 	{
-		mpCanRockOnUI->SetShow(false);
-		CVector exclamationMardPos = mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f);
-		mpRockOnUI->SetWorldPos(exclamationMardPos);
-		//mpRockOnUI->SetCeneterRatio(CVector2(0.3f, 0.5f));
-		mpRockOnUI->SetShow(true);
+		mpCanLockOn->SetShow(false);
+		mpLockOn->Position(mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f));
+		mpLockOn->SetShow(true);
 
 		// プレイヤーと敵の位置を取得
 		CVector playerPos = Position();
@@ -362,7 +361,7 @@ void CPlayer::UpdateCameraPosition()
 	}
 	else
 	{
-		mpRockOnUI->SetShow(false);
+		mpLockOn->SetShow(false);
 
 		if (!mIsCameraStartPos)
 		{
@@ -668,14 +667,13 @@ CPlayer::CPlayer()
 	mpClimbUI->SetSize(100.0f, 100.0f);
 	mpClimbUI->SetShow(false);
 
-	// ロックオン可能時の画像
-	mpCanRockOnUI = new CRockOnUI("CanRockOn");
-	mpCanRockOnUI->SetSize(150.0f, 450.0f);
-	// ロックオン時の画像
-	mpRockOnUI = new CRockOnUI("RockOn");
-	mpCanRockOnUI->SetSize(150.0f, 250.0f);
-	mpCanRockOnUI->SetColor(1.0f, 1.0f, 0.0f);
-	mpCanRockOnUI->SetAlpha(0.7f);
+	mpCanLockOn = new CCanLockOn(ETag::eBillboard,
+		ETaskPriority::eBackground, CVector::zero);
+	mpCanLockOn->SetShow(false);
+	mpLockOn = new CLockOn(ETag::eBillboard,
+		ETaskPriority::eBackground, CVector::zero);
+	mpLockOn->SetShow(false);
+
 
 	// テーブル内のアニメーションデータを読み込み
 	int size = ARRAY_SIZE(ANIM_DATA);
@@ -824,10 +822,8 @@ CPlayer::~CPlayer()
 	mpCutInResult->Kill();
 	mpCutInDeathJump->Kill();
 
-	mpCanRockOnUI->Kill();
-	mpRockOnUI->Kill();
-
-	mpCanRockOn->Kill();
+	mpCanLockOn->Kill();
+	mpLockOn->Kill();
 }
 
 // 衝突処理
