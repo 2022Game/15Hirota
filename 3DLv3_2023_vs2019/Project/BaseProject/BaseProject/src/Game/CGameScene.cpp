@@ -59,7 +59,7 @@ void CGameScene::Load()
 	//リソースの読み込みやクラスの生成を行う
 
 	// キャラクター関連
-	CResourceManager::Load<CModelX>("Player",				"Character\\Monster1\\Monster_1.x");						// プレイヤー
+	CResourceManager::Load<CModelX>("Player","Character\\Monster1\\Monster_1.x");						// プレイヤー
 	// ピコちゃん
 	CResourceManager::Load<CModelX>("Pico", "Character\\PicoChan\\PicoChan.x");
 	// ソルジャー
@@ -77,6 +77,8 @@ void CGameScene::Load()
 	CResourceManager::Load<CModel>("MajicSwordPico", "Item\\MajicSword\\MajicSword(Pico).obj");
 	// とげとげボール
 	CResourceManager::Load<CModel>("SpikyBall", "Item\\AttackItem\\SpikyBall.obj");
+	// 銃モデル
+	CResourceManager::Load<CModel>("Gun_M1G", "Item\\Gun_M1Garand\\Gun_M1Garand.obj");
 
 	// エフェクト関連
 	// 弾のエフェクト

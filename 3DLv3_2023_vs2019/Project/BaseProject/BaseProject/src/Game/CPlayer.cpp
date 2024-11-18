@@ -219,7 +219,7 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 	}
 
 	// Qキーが押された場合、次の敵にロックオン
-	if (CInput::PushKey('Q'))
+	if (CInput::PushKey(VK_TAB))
 	{
 		// 敵が一体しかいない場合はロック解除しない
 		if (enemies.size() == 1)
@@ -275,12 +275,12 @@ void CPlayer::UpdateCameraPosition()
 		mpCanLockOn->Position(mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f));
 		mpCanLockOn->SetShow(true);
 
-		if (CInput::PushKey(VK_MBUTTON) && !mIsCameraReset) 
+		if (CInput::PushKey('Q') && !mIsCameraReset) 
 		{
 			// ロックオン解除の処理
 			mIsCameraReset = true;
 		}
-		else if (CInput::PushKey(VK_MBUTTON) && mIsCameraReset) 
+		else if (CInput::PushKey('Q') && mIsCameraReset)
 		{
 			// ロックオン解除後、mIsCameraReset をリセット
 			mIsCameraReset = false;
@@ -645,12 +645,15 @@ CPlayer::CPlayer()
 	mpClimbUI->SetSize(100.0f, 100.0f);
 	mpClimbUI->SetShow(false);
 
+	// ロックオン可能状態のUI
 	mpCanLockOn = new CCanLockOn(ETag::eBillboard,
 		ETaskPriority::eBackground, CVector::zero);
 	mpCanLockOn->SetShow(false);
+	// ロックオン時のUI
 	mpLockOn = new CLockOn(ETag::eBillboard,
 		ETaskPriority::eBackground, CVector::zero);
 	mpLockOn->SetShow(false);
+	mpLockOn->SetColor(CColor(1.0f, 1.0f, 0.0f));
 
 
 	// テーブル内のアニメーションデータを読み込み
