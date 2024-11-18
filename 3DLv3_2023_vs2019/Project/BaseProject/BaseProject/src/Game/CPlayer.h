@@ -49,9 +49,9 @@ class CPlayer : public CXCharacter
 {
 public:
 	// ロックオン用のポインター
-	CXCharacter* mpLockedOnEnemy = nullptr;
-	CXCharacter* mpNearestEnemy = nullptr;
-	CXCharacter* mpNextEnemy = nullptr;
+	CXCharacter* mpLockedOnEnemy;
+	CXCharacter* mpNearestEnemy;
+	CXCharacter* mpNextEnemy;
 	// 敵の位置を設定
 	void LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies);
 	void UpdateCameraPosition();

@@ -189,13 +189,12 @@ CPlayer* CPlayer::Instance()
 void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 {
 	float minDistance = MIN_CAMERADISTANCE;
-
+	
 	// 一番近い敵を探す
 	for (CXCharacter* enemy : enemies)
 	{
 		float distance = (Position() - enemy->Position()).Length();
 
-		// 最も近い敵を更新
 		if (distance < minDistance)
 		{
 			minDistance = distance;
@@ -203,75 +202,52 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 		}
 	}
 
-	// 最も近い敵にロックオン
-	if (mpNearestEnemy != nullptr && mpLockedOnEnemy == nullptr)
+	// 現在のロックオン対象が範囲外に出た場合、リセット
+	if (mpLockedOnEnemy != nullptr)
+	{
+		float lockedOnDistance = (Position() - mpLockedOnEnemy->Position()).Length();
+		if (lockedOnDistance > MIN_CAMERADISTANCE)
+		{
+			mpLockedOnEnemy = nullptr;
+		}
+	}
+
+	// ロックオン対象がいない場合、一番近い敵をロックオン
+	if (mpLockedOnEnemy == nullptr)
 	{
 		mpLockedOnEnemy = mpNearestEnemy;
 	}
 
-	// Qキーが押された場合、ロックオンを変更
+	// Qキーが押された場合、次の敵にロックオン
 	if (CInput::PushKey('Q'))
 	{
-		// 敵が一体だけの場合、ロックオンを解除しない
-		if (enemies.size() <= 1)
+		// 敵が一体しかいない場合はロック解除しない
+		if (enemies.size() == 1)
 		{
-			return; // 敵が1体だけならロックオン解除しない
+			return;
 		}
 
-		// Qキーが押されたときには範囲内の敵に切り替え
-		float range = MIN_CAMERADISTANCE;  // ここで範囲を指定
+		// 現在のロックオン対象以外で一番近い敵を探す
+		float nextMinDistance = MIN_CAMERADISTANCE;
+		CXCharacter* nextEnemy = nullptr;
+
 		for (CXCharacter* enemy : enemies)
 		{
-			// すでにロックオンしている敵をスキップ
 			if (enemy == mpLockedOnEnemy) continue;
 
 			float distance = (Position() - enemy->Position()).Length();
-			// 範囲内の敵をロックオン対象として候補に
-			if (distance < range)
+			if (distance < nextMinDistance)
 			{
-				// 次に近い敵を決定
-				mpNextEnemy = enemy;
-				range = distance;
+				nextMinDistance = distance;
+				nextEnemy = enemy;
 			}
 		}
 
 		// 新しい敵にロックオン
-		if (mpNextEnemy != nullptr)
+		if (nextEnemy != nullptr)
 		{
-			mpLockedOnEnemy = mpNextEnemy;
+			mpLockedOnEnemy = nextEnemy;
 		}
-
-		// この処理は範囲内の敵且つ一番近い敵の身を取得する処理
-
-		//// もし現在ロックオンしている敵が一番近くないなら、ロックオンを切り替える
-		//if (mpLockedOnEnemy != mpNearestEnemy)
-		//{
-		//	mpLockedOnEnemy = mpNearestEnemy;
-		//}
-		//else
-		//{
-		//	// 現在ロックオンしている敵をそのままにし、範囲内の他の敵に切り替える
-		//	float nextMinDistance = minDistance;
-
-		//	for (CXCharacter* enemy : enemies)
-		//	{
-		//// すでにロックオンしている敵をスキップ
-		//		if (enemy == mpLockedOnEnemy) continue;
-
-		//		float distance = (this->Position() - enemy->Position()).Length();
-		//		if (distance < nextMinDistance)
-		//		{
-		//			nextMinDistance = distance;
-		//			mpNextEnemy = enemy;
-		//		}
-		//	}
-
-		//	// 新しい敵にロックオン
-		//	if (mpNextEnemy != nullptr)
-		//	{
-		//		mpLockedOnEnemy = mpNextEnemy;
-		//	}
-		//}
 	}
 
 	// 範囲外に出たらリセット
@@ -283,13 +259,6 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 			mpLockedOnEnemy = nullptr;
 			mpNearestEnemy = nullptr;
 		}
-	}
-
-	if (mIsCameraReset) return;
-	// Qキーが押されていない場合でも、最も近い敵が変わったらロックオンを更新
-	if (mpNearestEnemy != nullptr && mpLockedOnEnemy != mpNearestEnemy)
-	{
-		mpLockedOnEnemy = mpNearestEnemy;
 	}
 }
 
@@ -640,6 +609,8 @@ CPlayer::CPlayer()
 	, mpSpikyBallUI(nullptr)
 	, mpUnderFootObject(nullptr)
 	, mpLockedOnEnemy(nullptr)
+	, mpNearestEnemy(nullptr)
+	, mpNextEnemy(nullptr)
 {
 	ClearItems();
 	// インスタンスの設定
