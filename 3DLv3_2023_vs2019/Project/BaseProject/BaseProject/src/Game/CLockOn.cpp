@@ -6,7 +6,7 @@
 CLockOn::CLockOn(ETag tag, ETaskPriority, const CVector& pos)
 	: CBillBoardImage("UI\\GimmickUI\\Lock-onImage.png", tag, ETaskPauseType::eGame)
 	, mDefaultPos(pos)
-	, mSpeed(1.0f)
+	, mSpeed(5.0f)
 	, mElapsedTime(0.0f)
 	, mRotationAngle(0.0f)
 	, mIsDeath(false)

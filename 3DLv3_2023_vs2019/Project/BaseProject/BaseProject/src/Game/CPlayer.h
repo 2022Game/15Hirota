@@ -337,6 +337,10 @@ private:
 	CMeatUI* mpMeat;
 	// 登るときの画像
 	COperationUI* mpClimbUI;
+	// ロックオン可能時のキー画像
+	COperationUI* mpQUI;
+	// ロックオン時の変更キー画像
+	COperationUI* mpTABUI;
 
 	// ロックオンができる時の画像
 	CCanLockOn* mpCanLockOn;

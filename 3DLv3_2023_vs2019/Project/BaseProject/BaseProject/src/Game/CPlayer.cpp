@@ -55,7 +55,7 @@
 // 高さ
 #define PLAYER_HEIGHT 16.0f
 // スピード
-#define MOVE_SPEED 1.1f
+#define MOVE_SPEED 1.3f
 // ダッシュジャンプスピード
 #define DASH_JUMP_SPEED 2.0f
 // 移動スピード
@@ -197,8 +197,21 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 
 		if (distance < minDistance)
 		{
+			// Qキーテキスト画像を表示
+			mpQUI->SetShow(true);
+
 			minDistance = distance;
 			mpNearestEnemy = enemy;
+		}
+
+		// 敵が一体以上いたらTABを押せる
+		if (enemies.size() >= 1)
+		{
+			mpTABUI->SetShow(true);
+		}
+		else
+		{
+			mpTABUI->SetShow(false);
 		}
 	}
 
@@ -224,6 +237,7 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 		// 敵が一体しかいない場合はロック解除しない
 		if (enemies.size() == 1)
 		{
+			mpTABUI->SetShow(false);
 			return;
 		}
 
@@ -241,6 +255,16 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 				nextMinDistance = distance;
 				nextEnemy = enemy;
 			}
+
+			// 敵が一体以上いたらTABを押せる
+			if (enemies.size() >= 1)
+			{
+				mpTABUI->SetShow(true);
+			}
+			else
+			{
+				mpTABUI->SetShow(false);
+			}
 		}
 
 		// 新しい敵にロックオン
@@ -256,6 +280,8 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 		float lockedOnDistance = (Position() - mpLockedOnEnemy->Position()).Length();
 		if (lockedOnDistance > MIN_CAMERADISTANCE)
 		{
+			mpQUI->SetShow(false);
+			mpTABUI->SetShow(false);
 			mpLockedOnEnemy = nullptr;
 			mpNearestEnemy = nullptr;
 		}
@@ -645,6 +671,18 @@ CPlayer::CPlayer()
 	mpClimbUI->SetSize(100.0f, 100.0f);
 	mpClimbUI->SetShow(false);
 
+	// Qキーの画像表示
+	mpQUI = new COperationUI("QUI");
+	mpQUI->SetSize(100.0f, 100.0f);
+	mpQUI->SetPos(CVector2(100.0f, 220.0f));
+	mpQUI->SetShow(false);
+
+	// TABキーの画像表示
+	mpTABUI = new COperationUI("TABUI");
+	mpTABUI->SetSize(100.0f, 100.0f);
+	mpTABUI->SetPos(CVector2(100.0f, 320.0f));
+	mpTABUI->SetShow(false);
+
 	// ロックオン可能状態のUI
 	mpCanLockOn = new CCanLockOn(ETag::eBillboard,
 		ETaskPriority::eBackground, CVector::zero);
@@ -674,7 +712,7 @@ CPlayer::CPlayer()
 	mpColliderLine = new CColliderLine
 	(
 		this, ELayer::ePlayer,
-		CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.0f, -1.0f, 0.0f),
 		CVector(0.0f, PLAYER_HEIGHT, 0.0f)
 	);
 	mpColliderLine->SetCollisionLayers({ ELayer::eField,ELayer::eDamageObject, ELayer::eJumpingCol,
@@ -866,7 +904,6 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 					else
 					{
 						mDamageObject = true;
-						mDeath = true;
 						ChangeState(EState::eDeath);
 					}
 				}
@@ -1253,25 +1290,21 @@ void CPlayer::CDamageColorTime()
 	}
 }
 
-// // アニメーション終わりの体力判定処理
+// アニメーション終わりの体力判定処理
 void CPlayer::CHPJudgment()
 {
-	if (IsAnimationFinished())
+	if (mCharaStatus.hp > MIN_HP)
 	{
-		if (mCharaStatus.hp > MIN_HP)
-		{
-			mIsCameraDirection = false;
-			mDamageEnemy = false;
-			mIsPlayedHitDamageSE = false;
-			ChangeState(EState::eIdle);
-		}
-		else if (mCharaStatus.hp <= MIN_HP)
-		{
-			mDeath = true;
-			mFallDamage = false;
-			mpDamageCol->SetEnable(false);
-			ChangeState(EState::eDeath);
-		}
+		mIsCameraDirection = false;
+		mDamageEnemy = false;
+		mIsPlayedHitDamageSE = false;
+		ChangeState(EState::eIdle);
+	}
+	else if (mCharaStatus.hp <= MIN_HP)
+	{
+		mFallDamage = false;
+		mpDamageCol->SetEnable(false);
+		ChangeState(EState::eDeath);
 	}
 }
 
@@ -1280,7 +1313,6 @@ void CPlayer::JumpingHpJudgment()
 {
 	if (mCharaStatus.hp <= MIN_HP)
 	{
-		mDeath = true;
 		ChangeState(EState::eDeath);
 	}
 }
@@ -1417,7 +1449,6 @@ void CPlayer::TakeDamage(int damage)
 	// HPが0になったら
 	if (mCharaStatus.hp <= MIN_HP)
 	{
-		mDeath = true;
 		ChangeState(EState::eDeath);
 	}
 }
@@ -2782,28 +2813,24 @@ void CPlayer::UpdateStartStageJumpEnd()
 void CPlayer::UpdateDeath()
 {
 	mMoveSpeed = CVector::zero;
-	mMoveSpeedY += GRAVITY;
-
-	mDeath = true;
+	mpSword->AttackEnd();
 	mpDamageCol->SetEnable(false);
 
-	if (mState == EState::eIdle || IsAnimationFinished())
+	ChangeAnimation(EAnimType::eDeath);
+	if (mpCutInDeath->IsPlaying())
 	{
-		mpSword->AttackEnd();
-		mMoveSpeed = CVector::zero;
-		mMoveSpeedY += GRAVITY;
-		if (mpCutInDeath->IsPlaying())
-		{
-			// キャラクターの更新
-			CXCharacter::Update();
-			return;
-		}
-		else
-		{
-			mpCutInDeath->Setup(this);
-			mpCutInDeath->Start();
-		}
-		ChangeAnimation(EAnimType::eDeath);
+		//// キャラクターの更新
+		//CXCharacter::Update();
+		return;
+	}
+	else
+	{
+		mpCutInDeath->Setup(this);
+		mpCutInDeath->Start();
+	}
+
+	if (IsAnimationFinished())
+	{
 		ChangeState(EState::eDeathEnd);
 	}
 }
@@ -2812,21 +2839,18 @@ void CPlayer::UpdateDeath()
 void CPlayer::UpdateDeathEnd()
 {
 	mMoveSpeed = CVector::zero;
-	mMoveSpeedY += GRAVITY;
-	if (IsAnimationFinished())
-	{
-		mpCutInDeath->End();
-		mDamaged = false;
-		mDamageObject = false;
-		mDamageEnemy = false;
-		mCharaStatus = mCharaMaxStatus;
-		mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
-		mpDamageCol->SetEnable(true);
-		// 死亡
-		CGameManager::StageOver();
-		// 死亡したら、次のステージ開始まで準備中の状態に変更
-		ChangeState(EState::eReady);
-	}
+	mpCutInDeath->End();
+	mDamaged = false;
+	mDamageObject = false;
+	mDamageEnemy = false;
+	mDeath = true;
+	mCharaStatus = mCharaMaxStatus;
+	mpHpGauge->SetMaxValue(mCharaMaxStatus.hp);
+	mpDamageCol->SetEnable(true);
+	// 死亡
+	CGameManager::StageOver();
+	// 死亡したら、次のステージ開始まで準備中の状態に変更
+	ChangeState(EState::eReady);
 }
 
 // 現在は使用していないので、ダメージを受けるオブジェクトを実装していなければ、
@@ -2867,8 +2891,10 @@ void CPlayer::UpdateHit()
 
 	mpDamageCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eHitJ);
-
-	CHPJudgment();
+	if (IsAnimationFinished())
+	{
+		CHPJudgment();
+	}
 }
 
 // 敵の弾の攻撃を受けた時
@@ -2896,8 +2922,10 @@ void CPlayer::UpdateHitBullet()
 
 	mpDamageCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eHit);
-
-	CHPJudgment();
+	if (IsAnimationFinished())
+	{
+		CHPJudgment();
+	}
 }
 
 // 敵の剣の攻撃を受けた時
@@ -2923,8 +2951,10 @@ void CPlayer::UpdateHitSword()
 
 	mpDamageCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eHit);
-
-	CHPJudgment();
+	if (IsAnimationFinished())
+	{
+		CHPJudgment();
+	}
 }
 
 // ダメージを受ける(オブジェクト)
@@ -2950,8 +2980,10 @@ void CPlayer::UpdateHitObj()
 
 	mpDamageCol->SetEnable(false);
 	ChangeAnimation(EAnimType::eHit);
-
-	CHPJudgment();
+	if (IsAnimationFinished())
+	{
+		CHPJudgment();
+	}
 }
 
 // 落下ダメージ
@@ -2988,7 +3020,6 @@ void CPlayer::UpdateFallDamage()
 		}
 		else if (mCharaStatus.hp <= MIN_HP)
 		{
-			mDeath = true;
 			mFallDamage = false;
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eDeath);
@@ -3770,7 +3801,6 @@ void CPlayer::UpdateReflection()
 		}
 		else if (mCharaStatus.hp <= MIN_HP)
 		{
-			mDeath = true;
 			mFallDamage = false;
 			mpDamageCol->SetEnable(false);
 			mStateStep = 0;
@@ -3803,7 +3833,6 @@ void CPlayer::UpdateDeathJumpStart()
 	ChangeState(EState::eDeathJump);
 
 	mMoveSpeedY = JUMP_DEATH;
-	mIsGrounded = false;
 }
 
 // 死亡ジャンプ
@@ -3813,7 +3842,7 @@ void CPlayer::UpdateDeathJump()
 	CPlayer* player = CPlayer::Instance();
 	CVector playerPos = player->Position();
 	CVector current = VectorZ();
-	CVector targetPos = playerPos + current * 0.5f;
+	CVector targetPos = playerPos + current * 0.3f;
 	float per = mResultElapsedTime / 1.5f;
 	CVector pos = CVector::Lerp(playerPos, targetPos, per);
 	Position(pos);
@@ -3828,7 +3857,7 @@ void CPlayer::UpdateDeathJump()
 	mResultElapsedTime += Time::DeltaTime();
 	mScaleTime += Time::DeltaTime();
 
-	if (mResultElapsedTime > 1.5f)
+	if (mResultElapsedTime >= 1.5f)
 	{
 		if (mIsGrounded)
 		{
@@ -3843,10 +3872,7 @@ void CPlayer::UpdateDeathJump()
 // 死亡ジャンプ終了
 void CPlayer::UpdateDeathJumpEnd()
 {
-	if (mIsGrounded)
-	{
-		ChangeState(EState::eIdle);
-	}
+	ChangeState(EState::eIdle);
 }
 
 // 指定された位置まで移動する
@@ -4402,7 +4428,7 @@ void CPlayer::Update()
 		{
 			mMoveSpeedY -= GRAVITY;
 		}
-		else if (mState != EState::eDeath || mState != EState::eDeathEnd)
+		else if (mState == EState::eDeath || mState == EState::eDeathEnd)
 		{
 			mMoveSpeedY = 0.0f;
 		}
@@ -4608,7 +4634,7 @@ void CPlayer::Update()
 		mpMeat->SetShow(false);
 		mpMeat->Close();
 	}
-
+	CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
 	mIsGrounded = false;
 	mClimbWall = false;
 	mClimbWallTop = false;
@@ -4629,6 +4655,9 @@ void CPlayer::Update()
 	/*CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");*/
 	//CDebugPrint::Print("mSpeedY:%f\n", mMoveSpeedY);
 	//CDebugPrint::Print("Position: %f %f %f\n", Position().X(), Position().Y(), Position().Z());
+
+	CDebugPrint::Print("mIsDeath:%s\n", mIsDeath ? "true" : "false");
+	CDebugPrint::Print("mDeath:%s\n", mDeath ? "true" : "false");
 }
 
 // 描画

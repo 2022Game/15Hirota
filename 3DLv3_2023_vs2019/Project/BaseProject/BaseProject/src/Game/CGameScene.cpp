@@ -116,6 +116,10 @@ void CGameScene::Load()
 	CResourceManager::Load<CTexture>("PicoGauge", "UI\\PicoChan\\PicoChanGauge.png");
 	// Eキーの画像
 	CResourceManager::Load<CTexture>("EUI", "UI\\GimmickUI\\E.png");
+	// Qキーの画像
+	CResourceManager::Load<CTexture>("QUI", "UI\\GimmickUI\\Q.png");
+	// TABキーの画像
+	CResourceManager::Load<CTexture>("TABUI", "UI\\GimmickUI\\TAB.png");
 	// キーのフレーム画像
 	CResourceManager::Load<CTexture>("Frame", "UI\\GimmickUI\\framework.png");
 
