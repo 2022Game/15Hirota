@@ -10,10 +10,8 @@ class CEnemyManager
 public:
     //インスタンスのポインタの取得
     static CEnemyManager* Instance();
-    // 敵キャラクターを格納するリスト
-    std::vector<CXCharacter*> enemies;
     // 敵キャラクターのリストを取得する
-    std::vector<CXCharacter*> GetEnemies();
+    const std::vector<CXCharacter*>& GetEnemies() const;
     // 敵をリストに追加する
     void AddEnemy(CXCharacter* enemy);
     // 敵をリストから除外する
@@ -39,6 +37,9 @@ public:
 private:
     // プレイヤーのインスタンス
     static CEnemyManager* spInstance;
+
+    // 敵キャラクターを格納するリスト
+    std::vector<CXCharacter*> enemies;
 
     // ソルジャーの数
     static int enemyCount;

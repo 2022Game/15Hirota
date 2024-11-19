@@ -40,9 +40,11 @@
 #include "CMeat3.h"
 #include "CCircleLine.h"
 #include "CBGMManager.h"
+#include "CGameManager.h"
 
 // コンストラクタ
 CStage3::CStage3()
+	: mElapsedTime(0.0f)
 {
 	mStageNo = 3;
 }
@@ -667,7 +669,7 @@ void CStage3::Load()
 	enemyManager->AddEnemy(pico1);
 	AddTask(pico1);
 
-	// ピコちゃん2
+	// ソルジャー
 	CSoldier* sol = new CSoldier();
 	sol->Position(0.0f, 8.0f, 443.0f);
 	sol->Scale(1.2f, 1.2f, 1.2f);
@@ -708,8 +710,37 @@ void CStage3::Update()
 	CEnemyManager* enemyManager = CEnemyManager::Instance();
 	if (enemyManager == nullptr) return;
 
-	// 敵のリストを取得
-	std::vector<CXCharacter*> enemies = enemyManager->GetEnemies();
+	// 敵リストを参照で取得
+	const std::vector<CXCharacter*>& enemies = enemyManager->GetEnemies();
+
+	// 削除対象を一時的に保持する
+	std::vector<CXCharacter*> enemiesToRemove;
+
+	if (CGameManager::GameState() == EGameState::eGame)
+	{
+		// 敵を確認
+		for (CXCharacter* enemy : enemies)
+		{
+			if (enemy->HPStatus())
+			{
+				if (mElapsedTime <= 3.0f)
+				{
+					mElapsedTime += Time::DeltaTime();
+				}
+				else
+				{
+					enemiesToRemove.push_back(enemy);
+					mElapsedTime = 0.0f;
+				}
+			}
+		}
+	}
+	
+	// 削除対象を削除
+	for (CXCharacter* enemy : enemiesToRemove)
+	{
+		enemyManager->RemoveEnemy(enemy);
+	}
 
 	// プレイヤーのロックオンとカメラ位置を更新
 	CPlayer::Instance()->UpdateLockOnAndCameraPosition(enemies);

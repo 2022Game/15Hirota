@@ -961,11 +961,6 @@ void CPicoChan::UpdateHit()
 		}
 		else if (mCharaStatus.hp <= 0)
 		{
-			//CEnemyManager* enemyManager = CEnemyManager::Instance();
-			//if (enemyManager == nullptr) return;
-
-			//// ƒsƒR‚¿‚á‚ñ‚ªŽ€–S‚µ‚½ê‡‚È‚Ç
-			//enemyManager->RemoveEnemy(this);
 			mpDamageCol->SetEnable(false);
 			ChangeState(EState::eDeath);
 		}

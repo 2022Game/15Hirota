@@ -31,8 +31,8 @@ public:
 	const CharaStatus& MaxStatus() const;
 	// 現在のステータスを取得
 	const CharaStatus& Status() const;
-	// 現在のHPを取得
-	//const CharaStatus& HPStatus() const;
+
+	bool HPStatus() const;
 
 protected:
 	CharaStatus mCharaMaxStatus;	// 最大ステータス

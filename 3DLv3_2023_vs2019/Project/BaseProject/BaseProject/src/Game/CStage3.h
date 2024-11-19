@@ -28,5 +28,7 @@ private:
 	CFinalStageFallCol* mpFinalStageFallCol;
 
 	CStageSky* mpSky;
+
+	float mElapsedTime;
 };
 #endif

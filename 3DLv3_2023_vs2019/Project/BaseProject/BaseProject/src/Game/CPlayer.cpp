@@ -188,7 +188,7 @@ CPlayer* CPlayer::Instance()
 // 敵の位置を設定
 void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 {
-	float minDistance = MIN_CAMERADISTANCE;
+	float minDistance = MIN_CAMERADISTANCE;	
 	
 	// 一番近い敵を探す
 	for (CXCharacter* enemy : enemies)
@@ -197,21 +197,8 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 
 		if (distance < minDistance)
 		{
-			// Qキーテキスト画像を表示
-			mpQUI->SetShow(true);
-
 			minDistance = distance;
 			mpNearestEnemy = enemy;
-		}
-
-		// 敵が一体以上いたらTABを押せる
-		if (enemies.size() >= 1)
-		{
-			mpTABUI->SetShow(true);
-		}
-		else
-		{
-			mpTABUI->SetShow(false);
 		}
 	}
 
@@ -237,7 +224,6 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 		// 敵が一体しかいない場合はロック解除しない
 		if (enemies.size() == 1)
 		{
-			mpTABUI->SetShow(false);
 			return;
 		}
 
@@ -254,16 +240,6 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 			{
 				nextMinDistance = distance;
 				nextEnemy = enemy;
-			}
-
-			// 敵が一体以上いたらTABを押せる
-			if (enemies.size() >= 1)
-			{
-				mpTABUI->SetShow(true);
-			}
-			else
-			{
-				mpTABUI->SetShow(false);
 			}
 		}
 
@@ -284,6 +260,25 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 			mpTABUI->SetShow(false);
 			mpLockedOnEnemy = nullptr;
 			mpNearestEnemy = nullptr;
+		}
+		else
+		{
+			// 敵の数に応じてUIを設定
+			if (enemies.size() == 0)
+			{
+				mpQUI->SetShow(false);
+				mpTABUI->SetShow(false);
+			}
+			else if (enemies.size() == 1)
+			{
+				mpQUI->SetShow(true);
+				mpTABUI->SetShow(false);
+			}
+			else
+			{
+				mpQUI->SetShow(true);
+				mpTABUI->SetShow(true);
+			}
 		}
 	}
 }
@@ -334,7 +329,7 @@ void CPlayer::UpdateCameraPosition()
 
 		// プレイヤーと敵の方向ベクトルを計算
 		CVector directionToEnemy = enemyPos - playerPos;
-		directionToEnemy.Y(0.0f);  // 高さ方向（Y軸）は無視
+		directionToEnemy.Y(0.0f);
 		directionToEnemy.Normalize();
 
 		// カメラ距離と横方向オフセットの設定
@@ -343,7 +338,7 @@ void CPlayer::UpdateCameraPosition()
 		// 横方向のオフセット（視野を広げるため）
 		float sideOffset = 40.0f;
 
-		// カメラ位置の計算（横方向にずらす）
+		// カメラ位置の計算
 		CVector camOffset = directionToEnemy * -cameraDistance;
 
 		// 右方向へのベクトルを計算し、横方向にオフセット
@@ -2815,6 +2810,8 @@ void CPlayer::UpdateDeath()
 	mMoveSpeed = CVector::zero;
 	mpSword->AttackEnd();
 	mpDamageCol->SetEnable(false);
+	mpCanLockOn->SetShow(false);
+	mpLockOn->SetShow(false);
 
 	ChangeAnimation(EAnimType::eDeath);
 	if (mpCutInDeath->IsPlaying())
@@ -3843,7 +3840,7 @@ void CPlayer::UpdateDeathJump()
 	CVector playerPos = player->Position();
 	CVector current = VectorZ();
 	CVector targetPos = playerPos + current * 0.3f;
-	float per = mResultElapsedTime / 1.5f;
+	float per = mResultElapsedTime / 1.3f;
 	CVector pos = CVector::Lerp(playerPos, targetPos, per);
 	Position(pos);
 
@@ -3857,7 +3854,7 @@ void CPlayer::UpdateDeathJump()
 	mResultElapsedTime += Time::DeltaTime();
 	mScaleTime += Time::DeltaTime();
 
-	if (mResultElapsedTime >= 1.5f)
+	if (mResultElapsedTime >= 1.3f)
 	{
 		if (mIsGrounded)
 		{
@@ -4633,6 +4630,10 @@ void CPlayer::Update()
 		mpSpikyBallUI->Close();
 		mpMeat->SetShow(false);
 		mpMeat->Close();
+		mpCanLockOn->SetShow(false);
+		mpLockOn->SetShow(false);
+		mpQUI->SetShow(false);
+		mpTABUI->SetShow(false);
 	}
 	CDebugPrint::Print("mIsGrounded:%s\n", mIsGrounded ? "true" : "false");
 	mIsGrounded = false;

@@ -15,7 +15,7 @@ CEnemyManager* CEnemyManager::Instance()
     return spInstance;
 }
 
-std::vector<CXCharacter*> CEnemyManager::GetEnemies()
+const std::vector<CXCharacter*>& CEnemyManager::GetEnemies() const
 {
     return enemies;
 }
