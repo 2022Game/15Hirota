@@ -218,6 +218,8 @@ public:
 	bool IsStage3Clear() const;
 	// ステージ4をクリアしたかどうか
 	bool IsStage4Clear() const;
+	// EXステージをクリアしたかどうか
+	bool IsEXStageClear() const;
 	// ステージをクリアしたかどうか
 	bool IsStageClear() const;
 
@@ -231,6 +233,8 @@ public:
 	bool IsStartStage3() const;
 	// ステージ4に入れるかどうかのフラグ
 	bool IsStartStage4() const;
+	// EXステージに入れるかどうかのフラグ
+	bool IsStartEXStage() const;
 
 	// 攻撃力アップアイテムを使用したかどうか
 	bool IsAttackItem() const;
@@ -833,6 +837,10 @@ private:
 	bool mStage4Clear;
 	// マネージャークラスに伝える用
 	bool mIsStage4Clear;
+	// EXステージをクリアしたか
+	bool mEXStageClear;
+	// マネージャークラスに伝える用
+	bool mIsEXStageClear;
 	// (全てのステージ)クリアしたかマネージャークラスに伝えるよう
 	bool mIsStageClear;
 
@@ -844,6 +852,8 @@ private:
 	bool mStartStage3;
 	// ステージ4に入るかどうか
 	bool mStartStage4;
+	// EXステージに入るかどうか
+	bool mStartEXStage;
 
 	// 他クラスで確認用
 	// ステージ2に入れるか(別クラス用)
@@ -852,6 +862,8 @@ private:
 	bool mIsStartStage3;
 	// ステージ4に入れるか(別クラス用)
 	bool mIsStartStage4;
+	// EXステージに入れるか(別クラス用)
+	bool mIsStartEXStage;
 
 	// カメラリセット
 	bool mIsCameraReset;

@@ -163,7 +163,7 @@ void CStage3::Load()
 
 	CInput::ShowCursor(false);
 
-	//// フィールド関連 /////////////////////////////////////////////////////////////////
+	//// フィールド関連 ////
 
 	// フィールド
 	mpFinalStage = new CFinalStageField();
@@ -692,7 +692,8 @@ void CStage3::Load()
 	// カメラの位置と向きを設定
 	CVector camPos = playerPos + player->Rotation() * CVector(0.0f, 14.0f, -60.0f);
 	CCamera* mainCamera = CCamera::MainCamera();
-	mainCamera->LookAt(
+	mainCamera->LookAt
+	(
 		camPos,
 		playerPos,
 		CVector::up
@@ -706,44 +707,7 @@ void CStage3::Load()
 // 更新処理
 void CStage3::Update()
 {
-	// インスタンスを取得
-	CEnemyManager* enemyManager = CEnemyManager::Instance();
-	if (enemyManager == nullptr) return;
-
-	// 敵リストを参照で取得
-	const std::vector<CXCharacter*>& enemies = enemyManager->GetEnemies();
-
-	// 削除対象を一時的に保持する
-	std::vector<CXCharacter*> enemiesToRemove;
-
-	if (CGameManager::GameState() == EGameState::eGame)
-	{
-		// 敵を確認
-		for (CXCharacter* enemy : enemies)
-		{
-			if (enemy->HPStatus())
-			{
-				if (mElapsedTime <= 3.0f)
-				{
-					mElapsedTime += Time::DeltaTime();
-				}
-				else
-				{
-					enemiesToRemove.push_back(enemy);
-					mElapsedTime = 0.0f;
-				}
-			}
-		}
-	}
-	
-	// 削除対象を削除
-	for (CXCharacter* enemy : enemiesToRemove)
-	{
-		enemyManager->RemoveEnemy(enemy);
-	}
-
-	// プレイヤーのロックオンとカメラ位置を更新
-	CPlayer::Instance()->UpdateLockOnAndCameraPosition(enemies);
+	CheckNumberEnemies();
 }
 
 // ステージ破棄

@@ -12,7 +12,7 @@ CLockOn::CLockOn(ETag tag, ETaskPriority, const CVector& pos)
 	, mIsDeath(false)
 {
 	SetPriority(ETaskPriority::eLockOn);
-	SetSize(CVector2(10.0f, 10.0f));
+	SetSize(CVector2(15.0f, 15.0f));
 }
 
 CLockOn::~CLockOn()

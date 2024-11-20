@@ -6,6 +6,7 @@ int CEnemyManager::VanguardCount = 0;
 // エネミーマネジャーのインスタンス
 CEnemyManager* CEnemyManager::spInstance = nullptr;
 
+//インスタンスのポインタの取得
 CEnemyManager* CEnemyManager::Instance()
 {
     if (spInstance == nullptr)
@@ -15,11 +16,13 @@ CEnemyManager* CEnemyManager::Instance()
     return spInstance;
 }
 
+// 敵キャラクターのリストを取得する
 const std::vector<CXCharacter*>& CEnemyManager::GetEnemies() const
 {
     return enemies;
 }
 
+// 敵をリストに追加する
 void CEnemyManager::AddEnemy(CXCharacter* enemy)
 {
     if (enemy != nullptr)
@@ -28,6 +31,7 @@ void CEnemyManager::AddEnemy(CXCharacter* enemy)
     }
 }
 
+// 敵をリストから除外する
 void CEnemyManager::RemoveEnemy(CXCharacter* enemy)
 {
     if (enemy == nullptr)
@@ -37,7 +41,8 @@ void CEnemyManager::RemoveEnemy(CXCharacter* enemy)
     auto it = std::find(enemies.begin(), enemies.end(), enemy);
     if (it != enemies.end())
     {
-        enemies.erase(it);  // 見つかった場合、配列から削除
+        // 見つかった場合、配列から削除
+        enemies.erase(it);
     }
 }
 

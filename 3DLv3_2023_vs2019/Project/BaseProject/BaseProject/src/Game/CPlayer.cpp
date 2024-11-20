@@ -124,6 +124,7 @@
 #define STAGE_2 2
 #define STAGE_3 3
 #define STAGE_4 4
+#define STAGE_EX 5
 
 // ステージ1
 #define STARTPOS_X_1 26.0f
@@ -156,6 +157,17 @@
 #define SAVEPOINT2POS_Y_3 10.0f
 #define SAVEPOINT2POS_Z_3 1550.0f
 
+// EXステージ
+#define STARTPOS_X_EX 0.0f
+#define STARTPOS_Y_EX 10.0f
+#define STARTPOS_Z_EX 10.0f
+#define SAVEPOINT1POS_X_EX 0.0f
+#define SAVEPOINT1POS_Y_EX 10.0f
+#define SAVEPOINT1POS_Z_EX 453.0f
+#define SAVEPOINT2POS_X_EX 0.0f
+#define SAVEPOINT2POS_Y_EX 10.0f
+#define SAVEPOINT2POS_Z_EX 1550.0f
+
 
 // 最大チャージ時間
 #define MAXCHARGETIME 2.0f
@@ -185,16 +197,22 @@ CPlayer* CPlayer::Instance()
 	return spInstance;
 }
 
+// 敵の数
+#define ENEMY_SIZE_0 0
+#define ENEMY_SIZE_1 1
+#define ENEMY_SIZE_2 2
+#define ENEMY_SIZE_3 3
 // 敵の位置を設定
 void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 {
-	float minDistance = MIN_CAMERADISTANCE;	
-	
+	float minDistance = MIN_CAMERADISTANCE;
+
 	// 一番近い敵を探す
 	for (CXCharacter* enemy : enemies)
 	{
 		float distance = (Position() - enemy->Position()).Length();
 
+		// 敵が範囲内に居たら一番近い敵を設定
 		if (distance < minDistance)
 		{
 			minDistance = distance;
@@ -222,7 +240,7 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 	if (CInput::PushKey(VK_TAB))
 	{
 		// 敵が一体しかいない場合はロック解除しない
-		if (enemies.size() == 1)
+		if (enemies.size() == ENEMY_SIZE_1)
 		{
 			return;
 		}
@@ -233,6 +251,7 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 
 		for (CXCharacter* enemy : enemies)
 		{
+			// ロックオンしている敵がいればスキップ
 			if (enemy == mpLockedOnEnemy) continue;
 
 			float distance = (Position() - enemy->Position()).Length();
@@ -250,12 +269,30 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 		}
 	}
 
+	// 範囲内と範囲外の敵のカウント
+	int countInRange = 0;
+	int countOutOfRange = 0;
+
+	for (CXCharacter* enemy : enemies)
+	{
+		float distance = (Position() - enemy->Position()).Length();
+		if (distance <= MIN_CAMERADISTANCE)
+		{
+			countInRange++;
+		}
+		else
+		{
+			countOutOfRange++;
+		}
+	}
+
 	// 範囲外に出たらリセット
 	if (mpLockedOnEnemy != nullptr)
 	{
 		float lockedOnDistance = (Position() - mpLockedOnEnemy->Position()).Length();
 		if (lockedOnDistance > MIN_CAMERADISTANCE)
 		{
+			// 諸々の処理を初期化
 			mpQUI->SetShow(false);
 			mpTABUI->SetShow(false);
 			mpLockedOnEnemy = nullptr;
@@ -263,17 +300,25 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 		}
 		else
 		{
-			// 敵の数に応じてUIを設定
-			if (enemies.size() == 0)
+			// 範囲内に敵がいない場合
+			if (countInRange == 0)
 			{
 				mpQUI->SetShow(false);
 				mpTABUI->SetShow(false);
 			}
-			else if (enemies.size() == 1)
+			// 範囲内に1体しかいない場合
+			else if (countInRange == ENEMY_SIZE_1 && countOutOfRange >= ENEMY_SIZE_1)
 			{
 				mpQUI->SetShow(true);
 				mpTABUI->SetShow(false);
 			}
+			// 敵が一体しかいない場合
+			else if (enemies.size() == ENEMY_SIZE_1)
+			{
+				mpQUI->SetShow(true);
+				mpTABUI->SetShow(false);
+			}
+			// 複数体いる場合
 			else
 			{
 				mpQUI->SetShow(true);
@@ -317,8 +362,8 @@ void CPlayer::UpdateCameraPosition()
 	if (mIsCameraReset)
 	{
 		mpCanLockOn->SetShow(false);
-		mpLockOn->Position(mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f));
 		mpLockOn->SetShow(true);
+		mpLockOn->Position(mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f));
 
 		// プレイヤーと敵の位置を取得
 		CVector playerPos = Position();
@@ -327,7 +372,7 @@ void CPlayer::UpdateCameraPosition()
 		// プレイヤーと敵の中間位置を求める
 		CVector midPoint = (playerPos + enemyPos) * 0.5f;
 
-		// プレイヤーと敵の方向ベクトルを計算
+		// プレイヤーと敵の方向ベクトルを計算(Y軸無視)
 		CVector directionToEnemy = enemyPos - playerPos;
 		directionToEnemy.Y(0.0f);
 		directionToEnemy.Normalize();
@@ -335,22 +380,27 @@ void CPlayer::UpdateCameraPosition()
 		// カメラ距離と横方向オフセットの設定
 		// プレイヤーと敵からの距離
 		float cameraDistance = 70.0f;
-		// 横方向のオフセット（視野を広げるため）
+		// 横方向のオフセット
 		float sideOffset = 40.0f;
 
 		// カメラ位置の計算
 		CVector camOffset = directionToEnemy * -cameraDistance;
 
-		// 右方向へのベクトルを計算し、横方向にオフセット
+		// 右方向へのベクトルを計算して、横方向に配置
 		CVector rightOffset = directionToEnemy.Cross(CVector::up) * sideOffset;
 
 		// カメラ位置を中間地点の斜め後方に設定
 		CVector camPos = midPoint + camOffset + rightOffset;
-		camPos.Y(40.0f); // 高さを調整（Y軸）
+		// 高さを調整(Y軸)
+		camPos.Y(40.0f);
 
 		// カメラを中間位置に向けて配置
-		mainCamera->LookAt(camPos, midPoint, CVector::up);
-
+		mainCamera->LookAt
+		(
+			camPos,
+			midPoint,
+			CVector::up
+		);
 		// プレイヤーと敵を常に視野に収めるようにカメラを設定
 		mainCamera->SetFollowTargetTf(this);
 
@@ -427,6 +477,8 @@ const CPlayer::StagePositions stagePositions[] =
 	{ STARTPOS_X_3, STARTPOS_Y_3, STARTPOS_Z_3, SAVEPOINT1POS_X_3, SAVEPOINT1POS_Y_3, SAVEPOINT1POS_Z_3, SAVEPOINT2POS_X_3, SAVEPOINT2POS_Y_3, SAVEPOINT2POS_Z_3 },
 	// ステージ4
 	//{ 328.0f, -277.0f, -958.0f, 328.0f, -190.0f, -546.0f, 0.0f, 440.0f, -1890.0f }
+	// EXステージ
+	{ STARTPOS_X_EX, STARTPOS_Y_EX, STARTPOS_Z_EX, SAVEPOINT1POS_X_EX, SAVEPOINT1POS_Y_EX, SAVEPOINT1POS_Z_EX, SAVEPOINT2POS_X_EX, SAVEPOINT2POS_Y_EX, SAVEPOINT2POS_Z_EX },
 };
 
 // 復活地点を設定 拡張可能
@@ -597,11 +649,13 @@ CPlayer::CPlayer()
 	, mStage2Clear(false)
 	, mStage3Clear(false)
 	, mStage4Clear(false)
+	, mEXStageClear(false)
 	, mDamageEnemy(false)
 	, mStartStage1(false)
 	, mStartStage2(false)
 	, mStartStage3(false)
 	, mStartStage4(false)
+	, mStartEXStage(false)
 	, mClimbWallTop(false)
 	, mDamageObject(false)
 	, mIsStageClear(false)
@@ -611,9 +665,11 @@ CPlayer::CPlayer()
 	, mIsStage2Clear(false)
 	, mIsStage3Clear(false)
 	, mIsStage4Clear(false)
+	, mIsEXStageClear(false)
 	, mIsStartStage2(false)
 	, mIsStartStage3(false)
 	, mIsStartStage4(false)
+	, mIsStartEXStage(false)
 	, mIsCameraReset(false)
 	, mStaminaDepleted(false)
 	, mIsPlayedSlashSE(false)
@@ -1368,6 +1424,17 @@ void CPlayer::CClearPreviousStage()
 		mIsStage3Clear = false;
 		mStage3Clear = false;
 	}
+	else if (mStage4Clear)
+	{
+		mIsStage4Clear = false;
+		mStage4Clear = false;
+
+	}
+	else if (mEXStageClear)
+	{
+		mIsEXStageClear = false;
+		mEXStageClear = false;
+	}
 }
 
 // ステージクリアの処理を判定
@@ -1388,12 +1455,12 @@ void CPlayer::CCompleteStage(int stageNo)
 		break;
 	case 3:
 		mStage3Clear = true;
-		mIsStartStage2 = false;
-		mIsStartStage4 = false;
+		mIsStartStage4 = true;
 		CGameManager::GameClear();
 		break;
 	case 4:
 		mStage4Clear = true;
+		mIsStartEXStage = true;
 		CGameManager::GameClear();
 		break;
 	}
@@ -1652,6 +1719,11 @@ bool CPlayer::IsStage4Clear() const
 	return mIsStage4Clear;
 }
 
+bool CPlayer::IsEXStageClear() const
+{
+	return mIsEXStageClear;
+}
+
 // ステージをクリアしたか
 bool CPlayer::IsStageClear() const
 {
@@ -1674,6 +1746,11 @@ bool CPlayer::IsStartStage3() const
 bool CPlayer::IsStartStage4() const
 {
 	return mIsStartStage4;
+}
+
+bool CPlayer::IsStartEXStage() const
+{
+	return mIsStartEXStage;
 }
 
 // 攻撃力アップアイテムを使用したか
@@ -1736,15 +1813,19 @@ void CPlayer::StageFlagfalse()
 	mStage2Clear = false;
 	mStage3Clear = false;
 	mStage4Clear = false;
+	mEXStageClear = false;
 
 	mStartStage1 = false;
 	mStartStage2 = false;
 	mStartStage3 = false;
 	mStartStage4 = false;
+	mStartEXStage = false;
 
 	mIsStage1Clear = false;
 	mIsStage2Clear = false;
 	mIsStage3Clear = false;
+	mIsStage4Clear = false;
+	mIsEXStageClear = false;
 }
 
 // アニメーション切り替え
@@ -1939,6 +2020,10 @@ void CPlayer::UpdateIdle()
 			ChangeState(EState::eResult);
 		}
 		else if (mStage4Clear && !mIsStage4Clear)
+		{
+			ChangeState(EState::eResult);
+		}
+		else if (mEXStageClear && !mIsEXStageClear)
 		{
 			ChangeState(EState::eResult);
 		}
@@ -2675,6 +2760,16 @@ void CPlayer::UpdateResultEnd()
 			mIsStage3Clear = true;
 			CHandleStageClear(mStage3Clear);
 		}
+		else if (mStage4Clear)
+		{
+			mIsStage4Clear = true;
+			CHandleStageClear(mStage4Clear);
+		}
+		else if (mEXStageClear)
+		{
+			mIsEXStageClear = true;
+			CHandleStageClear(mEXStageClear);
+		}
 	}
 }
 
@@ -2801,6 +2896,10 @@ void CPlayer::UpdateStartStageJumpEnd()
 		{
 			CGameManager::Stage4();
 		}
+		else if (mStartEXStage)
+		{
+			CGameManager::EXStage();
+		}
 	}
 }
 
@@ -2812,6 +2911,8 @@ void CPlayer::UpdateDeath()
 	mpDamageCol->SetEnable(false);
 	mpCanLockOn->SetShow(false);
 	mpLockOn->SetShow(false);
+	mpQUI->SetShow(false);
+	mpTABUI->SetShow(false);
 
 	ChangeAnimation(EAnimType::eDeath);
 	if (mpCutInDeath->IsPlaying())
@@ -3978,6 +4079,11 @@ void CPlayer::StartStage(int stageNo)
 	{
 		mStartStage4 = true;
 	}
+	// EXステージを開始したら、ステージ4のフラグをオン
+	else if (stageNo == STAGE_EX && mIsStartEXStage)
+	{
+		mStartEXStage = true;
+	}
 	// それ以外は、ステージ移動状態へ進行しない
 	else return;
 
@@ -4140,6 +4246,14 @@ void CPlayer::Update()
 		ChangeState(EState::eReady);
 	}
 	else if (CGameManager::GameState() == EGameState::eStage3)
+	{
+		ChangeState(EState::eReady);
+	}
+	else if (CGameManager::GameState() == EGameState::eStage4)
+	{
+		ChangeState(EState::eReady);
+	}
+	else if (CGameManager::GameState() == EGameState::eEXStage)
 	{
 		ChangeState(EState::eReady);
 	}
@@ -4609,7 +4723,8 @@ void CPlayer::Update()
 	if (CGameManager::StageNo() == 1 ||
 		CGameManager::StageNo() == 2 ||
 		CGameManager::StageNo() == 3 ||
-		CGameManager::StageNo() == 4)
+		CGameManager::StageNo() == 4 ||
+		CGameManager::StageNo() == 5)
 	{
 		mpHpGauge->SetShow(true);
 		mpStaminaGauge->SetShow(true);
@@ -4659,6 +4774,9 @@ void CPlayer::Update()
 
 	CDebugPrint::Print("mIsDeath:%s\n", mIsDeath ? "true" : "false");
 	CDebugPrint::Print("mDeath:%s\n", mDeath ? "true" : "false");
+
+	mIsStartStage4 = true;
+	mIsStartEXStage = true;
 }
 
 // 描画

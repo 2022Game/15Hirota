@@ -96,6 +96,8 @@
     <ClCompile Include="src\Game\CCircleNbFlRight3.cpp" />
     <ClCompile Include="src\Game\CClimbUI.cpp" />
     <ClCompile Include="src\Game\CCutInDeathJump.cpp" />
+    <ClCompile Include="src\Game\CEXStageButton.cpp" />
+    <ClCompile Include="src\Game\CEXStageMenuObject.cpp" />
     <ClCompile Include="src\Game\CFinalStageFallCol.cpp" />
     <ClCompile Include="src\Game\CFinalStageField.cpp" />
     <ClCompile Include="src\Game\CHighKinoko.cpp" />
@@ -278,6 +280,8 @@
     <ClCompile Include="src\Game\CHealingUpBuffs.cpp" />
     <ClCompile Include="src\Game\CPicoChan.cpp" />
     <ClCompile Include="src\Game\CPicoSword.cpp" />
+    <ClCompile Include="src\Game\CEXStage.cpp" />
+    <ClCompile Include="src\Game\CEXStageField.cpp" />
     <ClCompile Include="src\Game\PlayerItem.cpp" />
     <ClCompile Include="src\Game\CResultAnnouncement.cpp" />
     <ClCompile Include="src\Game\CSmoke.cpp" />
@@ -389,6 +393,8 @@
     <ClInclude Include="src\Game\CCircleNbFlRight3.h" />
     <ClInclude Include="src\Game\CClimbUI.h" />
     <ClInclude Include="src\Game\CCutInDeathJump.h" />
+    <ClInclude Include="src\Game\CEXStageButton.h" />
+    <ClInclude Include="src\Game\CEXStageMenuObject.h" />
     <ClInclude Include="src\Game\CFinalStageFallCol.h" />
     <ClInclude Include="src\Game\CFinalStageField.h" />
     <ClInclude Include="src\Game\CHighKinoko.h" />
@@ -571,6 +577,8 @@
     <ClInclude Include="src\Game\CHealingUpBuffs.h" />
     <ClInclude Include="src\Game\CPicoChan.h" />
     <ClInclude Include="src\Game\CPicoSword.h" />
+    <ClInclude Include="src\Game\CEXStage.h" />
+    <ClInclude Include="src\Game\CEXStageField.h" />
     <ClInclude Include="src\Game\PlayerItem.h" />
     <ClInclude Include="src\Game\CResultAnnouncement.h" />
     <ClInclude Include="src\Game\CSmoke.h" />

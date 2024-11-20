@@ -1,4 +1,4 @@
-#include "CStage4MenuObject.h"
+#include "CEXStageMenuObject.h"
 #include "CCollisionManager.h"
 #include "Maths.h"
 #include "Easing.h"
@@ -12,7 +12,7 @@
 #define RETURN_TIME 0.3f
 
 // コンストラクタ
-CStage4MenuObject::CStage4MenuObject(const CVector& pos, const CVector& scale, const CVector& rot,
+CEXStageMenuObject::CEXStageMenuObject(const CVector& pos, const CVector& scale, const CVector& rot,
 	ETag reactionTag, ELayer reactionLayer)
 	: CObjectBase(ETag::eStageMenuObject, ETaskPriority::eBackground, 0, ETaskPauseType::eGame)
 	, mReactionLayer(reactionLayer)
@@ -24,14 +24,14 @@ CStage4MenuObject::CStage4MenuObject(const CVector& pos, const CVector& scale, c
 	, mElapsedTime(0.0f)
 	, mIsCollisionPlayer(false)
 {
-	// シーソーモデルを取得
-	mpSeesawModel = CResourceManager::Get<CModel>("SeesawModel");
+	// 回数制限床モデルを取得
+	mpSkyModel = CResourceManager::Get<CModel>("Meat");
 
-	// シーソーモデルのコライダー作成
+	// 回数制限床モデルのコライダー作成
 	mpColliderSphere = new CColliderSphere
 	(
 		this, ELayer::eStageMenuObject,
-		4.0f
+		3.0f
 	);
 	mpColliderSphere->SetCollisionLayers({ ELayer::eDamageCol });
 	mpColliderSphere->SetCollisionTags({ ETag::ePlayer });
@@ -42,14 +42,14 @@ CStage4MenuObject::CStage4MenuObject(const CVector& pos, const CVector& scale, c
 }
 
 // デストラクタ
-CStage4MenuObject::~CStage4MenuObject()
+CEXStageMenuObject::~CEXStageMenuObject()
 {
 	CStageManager::RemoveTask(this);
 	SAFE_DELETE(mpColliderSphere);
 }
 
 // 衝突処理
-void CStage4MenuObject::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
+void CEXStageMenuObject::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 {
 	CObjectBase* owner = other->Owner();
 	if (owner == nullptr) return;
@@ -60,7 +60,7 @@ void CStage4MenuObject::Collision(CCollider* self, CCollider* other, const CHitI
 	}
 }
 
-void CStage4MenuObject::ChangeState(EState state)
+void CEXStageMenuObject::ChangeState(EState state)
 {
 	if (mState == state) return;
 	mState = state;
@@ -68,7 +68,7 @@ void CStage4MenuObject::ChangeState(EState state)
 	mElapsedTime = 0.0f;
 }
 
-void CStage4MenuObject::UpdateIdle()
+void CEXStageMenuObject::UpdateIdle()
 {
 	if (mIsCollisionPlayer)
 	{
@@ -76,7 +76,7 @@ void CStage4MenuObject::UpdateIdle()
 	}
 }
 
-void CStage4MenuObject::UpdateReaction()
+void CEXStageMenuObject::UpdateReaction()
 {
 	switch (mStateStep)
 	{
@@ -137,7 +137,7 @@ void CStage4MenuObject::UpdateReaction()
 }
 
 // 更新処理
-void CStage4MenuObject::Update()
+void CEXStageMenuObject::Update()
 {
 	// 回転
 	float rot = 1.0f;
@@ -157,8 +157,8 @@ void CStage4MenuObject::Update()
 }
 
 // 描画処理
-void CStage4MenuObject::Render()
+void CEXStageMenuObject::Render()
 {
-	mpSeesawModel->SetColor(mColor);
-	mpSeesawModel->Render(Matrix());
+	mpSkyModel->SetColor(mColor);
+	mpSkyModel->Render(Matrix());
 }

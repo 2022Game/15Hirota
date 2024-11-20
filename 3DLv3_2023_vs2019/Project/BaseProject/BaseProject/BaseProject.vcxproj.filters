@@ -374,6 +374,9 @@
     <Filter Include="ソース ファイル\Game\UI\RockOn">
       <UniqueIdentifier>{1cb630be-9458-4ae7-8cce-bbc93c867453}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Field\StageField\EX Stage">
+      <UniqueIdentifier>{6edf03cc-743a-45cb-b6be-1333d83764f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -1221,6 +1224,18 @@
     </ClCompile>
     <ClCompile Include="src\Game\CLockOn.cpp">
       <Filter>ソース ファイル\Game\UI\RockOn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CEXStage.cpp">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CEXStageField.cpp">
+      <Filter>ソース ファイル\Game\Field\StageField\EX Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CEXStageButton.cpp">
+      <Filter>ソース ファイル\Game\Stage\StageButton</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CEXStageMenuObject.cpp">
+      <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2093,6 +2108,18 @@
     </ClInclude>
     <ClInclude Include="src\Game\CLockOn.h">
       <Filter>ソース ファイル\Game\UI\RockOn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CEXStage.h">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CEXStageField.h">
+      <Filter>ソース ファイル\Game\Field\StageField\EX Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CEXStageButton.h">
+      <Filter>ソース ファイル\Game\Stage\StageButton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CEXStageMenuObject.h">
+      <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
