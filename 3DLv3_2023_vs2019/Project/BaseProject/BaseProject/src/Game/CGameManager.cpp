@@ -220,7 +220,7 @@ void CGameManager::UpdateGame()
 		else if (player->IsDeath() && !mResultSetUp)
 		{
 			mElapsedTime += Time::DeltaTime();
-			if (mElapsedTime > 6.5f)
+			if (mElapsedTime > 5.5f)
 			{
 				mElapsedTime = 0.0f;
 				mResultSetUp = true;
