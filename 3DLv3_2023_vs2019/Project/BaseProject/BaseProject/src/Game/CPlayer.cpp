@@ -365,11 +365,11 @@ void CPlayer::UpdateCameraPosition()
 		mpLockOn->SetShow(true);
 		mpLockOn->Position(mpLockedOnEnemy->Position() + CVector(0.0f, 15.0f, 0.0f));
 
-		// プレイヤーと敵の位置を取得
+		// プレイヤーと敵の位置
 		CVector playerPos = Position();
 		CVector enemyPos = mpLockedOnEnemy->Position();
 
-		// プレイヤーと敵の中間位置を求める
+		// プレイヤーと敵の中間位置
 		CVector midPoint = (playerPos + enemyPos) * 0.5f;
 
 		// プレイヤーと敵の方向ベクトルを計算(Y軸無視)
@@ -384,6 +384,7 @@ void CPlayer::UpdateCameraPosition()
 		float sideOffset = 40.0f;
 
 		// カメラ位置の計算
+		// 反対方向に設定
 		CVector camOffset = directionToEnemy * -cameraDistance;
 
 		// 右方向へのベクトルを計算して、横方向に配置
@@ -393,6 +394,8 @@ void CPlayer::UpdateCameraPosition()
 		CVector camPos = midPoint + camOffset + rightOffset;
 		// 高さを調整(Y軸)
 		camPos.Y(40.0f);
+
+		//CVector CamPos = midPoint + Rotation() * CVector(0.0f, 40.0f, -60.0f);
 
 		// カメラを中間位置に向けて配置
 		mainCamera->LookAt
