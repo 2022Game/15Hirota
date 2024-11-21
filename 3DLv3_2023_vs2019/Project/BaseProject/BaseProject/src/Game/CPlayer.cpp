@@ -331,7 +331,6 @@ void CPlayer::LockOnToNearestEnemy(const std::vector<CXCharacter*>& enemies)
 // カメラの位置を設定
 void CPlayer::UpdateCameraPosition()
 {
-	CCamera* mainCamera = CCamera::MainCamera();
 	int currentStage = CGameManager::StageNo();
 	// ステージ0では呼ばない
 	if (currentStage == STAGE_0) return;
@@ -358,6 +357,8 @@ void CPlayer::UpdateCameraPosition()
 		mIsCameraReset = false;
 		mpCanLockOn->SetShow(false);
 	}
+
+	CCamera* mainCamera = CCamera::MainCamera();
 
 	if (mIsCameraReset)
 	{
@@ -395,6 +396,7 @@ void CPlayer::UpdateCameraPosition()
 		// 高さを調整(Y軸)
 		camPos.Y(40.0f);
 
+		// 一応この処理でも可能、ただし貫通する
 		//CVector CamPos = midPoint + Rotation() * CVector(0.0f, 40.0f, -60.0f);
 
 		// カメラを中間位置に向けて配置

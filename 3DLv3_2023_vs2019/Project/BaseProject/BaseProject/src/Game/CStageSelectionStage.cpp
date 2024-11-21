@@ -172,7 +172,7 @@ void CStageSelectionStage::Load()
 	// ゲーム中はカーソルをオフ
 	CInput::ShowCursor(false);
 
-	//// フィールド関連 /////////////////////////////////////////////////////////////////
+	//// フィールド関連 ////
 	
 	// フィールド
 	CStageSelection* field = new CStageSelection();
@@ -183,9 +183,7 @@ void CStageSelectionStage::Load()
 	mpSky->Scale(150.0f, 150.0f, 150.0f);
 	AddTask(mpSky);
 
-	/////////////////////////////////////////////////////////////////////////////////////
-
-	//// ステージオブジェクト関連 ///////////////////////////////////////////////////////
+	//// ステージオブジェクト関連 ////
 
 	// ステージ1選択ボタン
 	CStage1Button* stage1button = new CStage1Button
@@ -281,15 +279,13 @@ void CStageSelectionStage::Load()
 	CEXStageMenuObject* exmenuobj = new CEXStageMenuObject
 	(
 		CVector(6.0f, 30.0f, -728.0f),
-		CVector(10.0f, 10.0f, 10.0f),
+		CVector(12.0f, 12.0f, 12.0f),
 		CVector(0.0f, 40.0f, 0.0f),
 		ETag::ePlayer, ELayer::eDamageCol
 	);
 	AddTask(exmenuobj);
-
-	/////////////////////////////////////////////////////////////////////////////////////
 	
-	//// プレイヤー関連 /////////////////////////////////////////////////////////////////
+	//// プレイヤー関連 ////
 
 	// モンスター(プレイヤー)
 	CPlayer* player = CPlayer::Instance();
