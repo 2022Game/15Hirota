@@ -50,6 +50,7 @@
 #include "CGameCamera.h"
 #include "CCanLockOn.h"
 #include "CLockOn.h"
+#include "CShockWave_1.h"
 
 // プレイヤー関連
 // 高さ
@@ -68,6 +69,8 @@
 #define JUMP_BOUNCE 2.0f
 // 超大ジャンプ
 #define JUMP_HIGH_BOUNCE 2.5f
+// 範囲攻撃ジャンプ
+#define SMASH_JUMP 2.5f
 // ダッシュジャンプ
 #define JUMP_DASH 1.7f
 // クリアジャンプ
@@ -446,6 +449,7 @@ const CPlayer::AnimData CPlayer::ANIM_DATA[] =
 	{ "Character\\Monster1\\anim\\Warrok_Walking.x",				true,	86.0f	},	// 歩行
 	{ "Character\\Monster1\\anim\\Warrok_Punchi.x",				false,	50.0f	},		// 攻撃
 	{ "Character\\Monster1\\anim\\Warrok_StrongAttack.x",		false,	161.0f	},		// 強攻撃
+	{ "Character\\Monster1\\anim\\JumpAttack_223.x",			false,	223.0f	},		// 範囲攻撃
 	{ "Character\\Monster1\\anim\\Warrok_SpinAttack(1)_79.x",	false,	79.0f	},		// ダッシュアタック
 	{ "Character\\Monster1\\anim\\jump_start1.x",				false,	25.0f	},		// ジャンプ開始
 	{ "Character\\Monster1\\anim\\jump1.x",							true,	1.0f	},	// ジャンプ中
@@ -670,6 +674,8 @@ CPlayer::CPlayer()
 	, mIsStage2Clear(false)
 	, mIsStage3Clear(false)
 	, mIsStage4Clear(false)
+	, mIsSmashAttack(false)
+	, mIsSmashAttackStart(false)
 	, mIsEXStageClear(false)
 	, mIsStartStage2(false)
 	, mIsStartStage3(false)
@@ -1351,6 +1357,7 @@ void CPlayer::CHPJudgment()
 {
 	if (mCharaStatus.hp > MIN_HP)
 	{
+		mIsSmashAttackStart = false;
 		mIsCameraDirection = false;
 		mDamageEnemy = false;
 		mIsPlayedHitDamageSE = false;
@@ -1369,6 +1376,7 @@ void CPlayer::JumpingHpJudgment()
 {
 	if (mCharaStatus.hp <= MIN_HP)
 	{
+		mIsSmashAttackStart = false;
 		ChangeState(EState::eDeath);
 	}
 }
@@ -2073,6 +2081,12 @@ void CPlayer::UpdateIdle()
 			mSpikTime = 0.0f;
 			ChangeState(EState::eAttackStrongStart);
 		}
+		// Eキーで範囲攻撃状態へ移行
+		else if (CInput::PushKey('E'))
+		{
+			mMoveSpeed = CVector::zero;
+			ChangeState(EState::eAttackSmashStart);
+		}
 		// SPACEキーでジャンプ開始へ移行
 		else if (CInput::PushKey(VK_SPACE) && !mIsDashJump)
 		{
@@ -2325,6 +2339,63 @@ void CPlayer::UpdateAttackStrongStart()
 {
 	mAttackStrongPos = Position();
 	ChangeState(EState::eAttackStrong);
+}
+
+// 範囲攻撃開始
+void CPlayer::UpdateSmashAttackStart()
+{
+	mIsAttack = true;
+	mWeaponTime = 0.0f;
+	mpSword->AttachMtx(GetFrameMtx("Armature_mixamorig_RightHandMiddle1"));
+
+	mMoveSpeedY += SMASH_JUMP;
+	mIsJumping = true;
+	mIsGrounded = false;
+
+	JumpingHpJudgment();
+
+	// 攻撃アニメーションを開始
+	ChangeAnimation(EAnimType::eAttackSmash);
+	ChangeState(EState::eAttackSmash);
+}
+
+// 範囲攻撃
+void CPlayer::UpdateSmashAttack()
+{
+	mpSword->SetAlpha(0.0f);
+	JumpingHpJudgment();
+	SetAnimationSpeed(1.3f);
+	if (GetAnimationFrame() >= 20.0f)
+	{
+		mIsSmashAttack = true;
+		mMoveSpeed = CVector::zero;
+		mMoveSpeedY = 0.0f;
+	}
+	
+	if (GetAnimationFrame() >= 60.0f)
+	{
+		mIsSmashAttack = false;
+		ChangeState(EState::eAttackSmashWait);
+	}
+}
+
+// 範囲攻撃終了待ち
+void CPlayer::UpdateSmashAttackEnd()
+{
+	if (mIsGrounded && !mIsSmashAttackStart)
+	{
+		mIsSmashAttackStart = true;
+		SmashEffect();
+	}
+
+	if (IsAnimationFinished())
+	{
+		mpSword->SetAlpha(1.0f);
+		mIsSmashAttackStart = false;
+		SetAnimationSpeed(1.0f);
+		ChangeAnimation(EAnimType::eIdle);
+		ChangeState(EState::eIdle);
+	}
 }
 
 // 強攻撃
@@ -4152,6 +4223,42 @@ bool CPlayer::IsEnableStepSmoke() const
 	return false;
 }
 
+// 範囲攻撃用のエフェクトを表示
+void CPlayer::SmashEffect()
+{
+	// 衝撃波(一旦追加)
+	CShockWave_1* shockwave = new CShockWave_1
+	(
+		this,
+		Position() + CVector(0.0f, 0.0f, 0.0f),
+		CVector(0.3f, 0.3f, 0.3f),
+		CVector(0.5f, 0.5f, 0.5f),
+		VectorZ(),
+		70.0f,
+		100.0f
+	);
+	shockwave->SetColor(CColor(0.9f, 0.8f, 0.7f));
+	CStageManager::AddTask(shockwave);
+
+	CVector PlayerPos = Position();
+	CVector PlayerForward = VectorZ();
+	PlayerPos = PlayerPos + (PlayerForward * 15.0f);
+
+	// 衝撃波(一旦追加)
+	CShockWave_1* shockwave1 = new CShockWave_1
+	(
+		this,
+		PlayerPos,
+		CVector(0.3f, 0.3f, 0.3f),
+		CVector(0.8f, 0.8f, 0.8f),
+		VectorZ(),
+		70.0f,
+		100.0f
+	);
+	shockwave1->SetColor(CColor(0.9f, 0.8f, 0.7f));
+	CStageManager::AddTask(shockwave1);
+}
+
 void CPlayer::CheckUnderFootObject()
 {
 	if (mpUnderFootObject == nullptr) return;
@@ -4318,6 +4425,18 @@ void CPlayer::Update()
 		// 強攻撃
 	case EState::eAttackStrong:
 		UpdateAttackStrong();
+		break;
+		// 範囲攻撃開始
+	case EState::eAttackSmashStart:
+		UpdateSmashAttackStart();
+		break;
+		// 範囲攻撃中
+	case EState::eAttackSmash:
+		UpdateSmashAttack();
+		break;
+		// 範囲攻撃開始
+	case EState::eAttackSmashWait:
+		UpdateSmashAttackEnd();
 		break;
 		// 強攻撃終了待ち
 	case EState::eAttackStrongWait:
@@ -4536,17 +4655,14 @@ void CPlayer::Update()
 	{
 		UpdateMove();
 	}
-
 	// 準備中でなければ、移動処理などを行う
 	if (mState != EState::eReady)
 	{
-		if (!mClimb)
+		if (!mClimb|| !mIsSmashAttack ||
+			mState != EState::eDeath ||
+			mState != EState::eDeathEnd)
 		{
 			mMoveSpeedY -= GRAVITY;
-		}
-		else if (mState == EState::eDeath || mState == EState::eDeathEnd)
-		{
-			mMoveSpeedY = 0.0f;
 		}
 
 		CVector moveSpeed = mMoveSpeed + CVector(0.0f, mMoveSpeedY, 0.0f);

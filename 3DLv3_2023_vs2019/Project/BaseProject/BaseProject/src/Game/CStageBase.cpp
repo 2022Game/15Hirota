@@ -84,8 +84,10 @@ void CStageBase::CheckNumberEnemies()
 		enemyManager->RemoveEnemy(enemy);
 	}
 
+	CPlayer* player = CPlayer::Instance();
+	if (player == nullptr) return;
 	// プレイヤーのロックオンとカメラ位置を更新
-	CPlayer::Instance()->UpdateLockOnAndCameraPosition(enemies);
+	player->UpdateLockOnAndCameraPosition(enemies);
 }
 
 // 更新

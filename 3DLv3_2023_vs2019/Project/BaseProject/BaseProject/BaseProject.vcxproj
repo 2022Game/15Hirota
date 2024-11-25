@@ -205,6 +205,7 @@
     <ClCompile Include="src\Game\CSeesawObject.cpp" />
     <ClCompile Include="src\Game\CSeesawStageFallCol.cpp" />
     <ClCompile Include="src\Game\CShadowMap.cpp" />
+    <ClCompile Include="src\Game\CShockWave_1.cpp" />
     <ClCompile Include="src\Game\CSignboard.cpp" />
     <ClCompile Include="src\Game\CSignboardUI.cpp" />
     <ClCompile Include="src\Game\CSlash.cpp" />
@@ -501,6 +502,7 @@
     <ClInclude Include="src\Game\CSeesawObject.h" />
     <ClInclude Include="src\Game\CSeesawStageFallCol.h" />
     <ClInclude Include="src\Game\CShadowMap.h" />
+    <ClInclude Include="src\Game\CShockWave_1.h" />
     <ClInclude Include="src\Game\CSignboard.h" />
     <ClInclude Include="src\Game\CSignboardUI.h" />
     <ClInclude Include="src\Game\CSlash.h" />

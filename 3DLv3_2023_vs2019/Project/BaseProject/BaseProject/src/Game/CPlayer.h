@@ -399,6 +399,10 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	bool IsEnableStepSmoke() const;
+	/// <summary>
+	/// 範囲攻撃用のエフェクトを表示
+	/// </summary>
+	void SmashEffect();
 
 	// 煙のリスト
 	std::list<CSmoke*> mSmokeList;
@@ -443,6 +447,12 @@ private:
 	void UpdateAttackStrong();
 	// 強攻撃終了待ち
 	void UpdateAttackStrongWait();
+	// 範囲攻撃開始
+	void UpdateSmashAttackStart();
+	// 範囲攻撃中
+	void UpdateSmashAttack();
+	// 範囲攻撃終了待ち
+	void UpdateSmashAttackEnd();
 	// ダッシュアタック
 	void UpdateDashAttack();
 	// ダッシュアタック終了
@@ -552,10 +562,13 @@ private:
 		eClearJump,			 // リザルト前のアニメーション
 		eAttack,			 // 攻撃
 		eAttackStrongStart,	 // 強攻撃開始
-		eAttackStrong,		 // 強攻撃
+		eAttackStrong,		 // 強攻撃開始
+		eAttackSmashStart,	 // 範囲攻撃開始
+		eAttackSmash,		 // 範囲攻撃中
 		eAttackDash,		 // ダッシュアタック
 		eAttackWait,		 // 攻撃終了待ち
 		eAttackStrongWait,	 // 強攻撃終了待ち
+		eAttackSmashWait,	 // 範囲攻撃終了待ち
 		eAttackDashWait,	 // ダッシュアタック終了待ち
 		eJumpStart,			 // ジャンプ開始
 		eJump,				 // ジャンプ中
@@ -630,6 +643,7 @@ private:
 		eWalk,			// 歩行
 		eAttack,		// 攻撃
 		eAttackStrong,	// 強攻撃
+		eAttackSmash,	// 範囲攻撃
 		eAttackDash,	// ダッシュアタック
 		eJumpStart,		// ジャンプ開始
 		eJump,			// ジャンプ中
@@ -874,6 +888,10 @@ private:
 	// ロックオン中に別の敵に切り替わらないようにするためのフラグ
 	bool mIsCanRockOnUI;
 
+	// 範囲攻撃をしているかどうか
+	bool mIsSmashAttack;
+	// 範囲攻撃をするかどうか
+	bool mIsSmashAttackStart;
 
 	///////////////////////////////////////////////////////
 };

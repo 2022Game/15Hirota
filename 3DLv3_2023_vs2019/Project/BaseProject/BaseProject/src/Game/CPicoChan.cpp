@@ -164,8 +164,8 @@ CPicoChan::CPicoChan()
 	);
 	// ダメージを受けるコライダーと
 	// 衝突判定を行うコライダーのレイヤーとタグを設定
-	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy });
-	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy });
+	mpDamageCol->SetCollisionLayers({ ELayer::eAttackCol, ELayer::eDamageCol,ELayer::eEnemy, ELayer::eShockWave });
+	mpDamageCol->SetCollisionTags({ ETag::eWeapon, ETag::eEnemy,ETag::eShockWave });
 	// ダメージを受けるコライダーを少し下へずらす
 	mpDamageCol->Position(0.0f, 1.0f, 0.0f);
 	//const CMatrix* spineMtx = GetFrameMtx("Armature_mixamorig_Spine1");
@@ -291,7 +291,7 @@ void CPicoChan::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 				mTargetDir = vp.Normalized();
 
 				int hitRand = Math::Rand(0, 100);
-				if (hitRand >= 90) // 10%の確率で下の処理を実行
+				if (hitRand >= 90)
 				{
 					int random = Math::Rand(0, 2);
 					if (random == 0 || random == 1 || random == 2)
@@ -299,11 +299,24 @@ void CPicoChan::Collision(CCollider* self, CCollider* other, const CHitInfo& hit
 						mpDamageCol->SetEnable(false);
 						ChangeState(EState::eHit);
 					}
-					/*else if (random == 1)
-					{
-						ChangeState(EState::eHit2);
-					}*/
 				}
+			}
+		}
+
+		if (other->Layer() == ELayer::eShockWave)
+		{
+			bool canBeHit = (mState != EState::eWeakAttack && mState != EState::eSpinAttack);
+			if (canBeHit)
+			{
+				CPlayer* player = CPlayer::Instance();
+				CVector vp = player->Position() - Position();
+				float distancePlayer = vp.Length();
+				vp.Y(0.0f);
+				mTargetDir = vp.Normalized();
+
+				TakeDamage(4);
+				mpDamageCol->SetEnable(false);
+				ChangeState(EState::eHit);
 			}
 		}
 

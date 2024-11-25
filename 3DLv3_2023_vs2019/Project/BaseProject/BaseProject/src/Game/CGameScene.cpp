@@ -83,6 +83,8 @@ void CGameScene::Load()
 	// エフェクト関連
 	// 弾のエフェクト
 	CResourceManager::Load<CTexture>("Laser", "Effect\\laser.png");
+	// 衝撃波1エフェクト
+	CResourceManager::Load<CModel>("ShockWave", "Effect\\ShockWave_1.obj");
 	// スラッシュエフェクト
 	CResourceManager::Load<CModel>("Slash", "Effect\\slash.obj");
 	// キャラクターエフェクト

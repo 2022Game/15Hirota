@@ -377,6 +377,9 @@
     <Filter Include="ソース ファイル\Game\Field\StageField\EX Stage">
       <UniqueIdentifier>{6edf03cc-743a-45cb-b6be-1333d83764f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Efect\ShockWave">
+      <UniqueIdentifier>{03719cdf-81ab-4c41-ab07-530470e04127}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -1236,6 +1239,9 @@
     </ClCompile>
     <ClCompile Include="src\Game\CEXStageMenuObject.cpp">
       <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CShockWave_1.cpp">
+      <Filter>ソース ファイル\Game\Efect\ShockWave</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2120,6 +2126,9 @@
     </ClInclude>
     <ClInclude Include="src\Game\CEXStageMenuObject.h">
       <Filter>ソース ファイル\Game\Field\Object\StageMenuObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\CShockWave_1.h">
+      <Filter>ソース ファイル\Game\Efect\ShockWave</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
