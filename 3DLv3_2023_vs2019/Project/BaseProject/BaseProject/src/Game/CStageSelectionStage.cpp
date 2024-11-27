@@ -124,7 +124,7 @@ CVector CStageSelectionStage::GetPlayerStartPosition()
 		{
 			// ステージをクリアしていない場合の初期位置
 			// pcの不調かどうか分からないが、本来は4.0fで大丈夫
-			playerPos = CVector(65.0f, 20.0f, 30.0f);
+			playerPos = CVector(65.0f, 20.0f, 20.0f);
 			mSelectStageNo = 0;
 		}
 	}

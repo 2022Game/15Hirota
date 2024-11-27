@@ -1148,7 +1148,11 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// 敵のキックコライダー
 		if (other->Layer() == ELayer::eKickCol)
 		{
-			ChangeState(EState::eHit);
+			if (mState != EState::eAttackSmash &&
+				mState != EState::eAttackSmashWait)
+			{
+				ChangeState(EState::eHit);
+			}
 		}
 		else if (other->Layer() == ELayer::eBiribiri)
 		{
@@ -1157,11 +1161,19 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// 敵の弾のコライダー
 		else if (other->Layer() == ELayer::eBulletCol)
 		{
-			ChangeState(EState::eHitBullet);
+			if (mState != EState::eAttackSmash &&
+				mState != EState::eAttackSmashWait)
+			{
+				ChangeState(EState::eHitBullet);
+			}
 		}
 		else if (other->Layer() == ELayer::eAttackCol)
 		{
-			ChangeState(EState::eHitSword);
+			if (mState != EState::eAttackSmash &&
+				mState != EState::eAttackSmashWait)
+			{
+				ChangeState(EState::eHitSword);
+			}
 		}
 		// 針ブロックのコライダー
 		else if (other->Layer() == ELayer::eNeedleCol)
@@ -1171,7 +1183,11 @@ void CPlayer::Collision(CCollider* self, CCollider* other, const CHitInfo& hit)
 		// 炎に当たったら
 		else if (other->Layer() == ELayer::eFlame)
 		{
-			ChangeState(EState::eHit);
+			if (mState != EState::eAttackSmash &&
+				mState != EState::eAttackSmashWait)
+			{
+				ChangeState(EState::eHit);
+			}
 		}
 		// ステージ選択ステージのオブジェクトに当たったら
 		else if (other->Layer() == ELayer::eStageMenuObject)
@@ -3013,6 +3029,10 @@ void CPlayer::UpdateDeath()
 void CPlayer::UpdateDeathEnd()
 {
 	mMoveSpeed = CVector::zero;
+	mpCanLockOn->SetShow(false);
+	mpLockOn->SetShow(false);
+	mpQUI->SetShow(false);
+	mpTABUI->SetShow(false);
 	mpCutInDeath->End();
 	mDamaged = false;
 	mDamageObject = false;
