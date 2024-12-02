@@ -4011,7 +4011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parameter:
-    id: 1
+    id: 0
     lv: 1
     lvmax: 10
     hp: 30

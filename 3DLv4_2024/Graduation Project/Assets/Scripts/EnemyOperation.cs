@@ -100,8 +100,8 @@ public class EnemyOperation : ActorOperation
             grid = DirUtil.GetNewGrid(actorMovement.grid, d);
             GameObject actor = field.GetExistActor(grid.x, grid.z);
             if (actor == null) continue;
-            int id = actor.GetComponent<ActorParamsController>().parameter.id;
-            if (id == 0) return d;
+            EActor id = actor.GetComponent<ActorParamsController>().parameter.id;
+            if (id == EActor.PLAYER) return d;
         }
         return EDir.Pause;
     }

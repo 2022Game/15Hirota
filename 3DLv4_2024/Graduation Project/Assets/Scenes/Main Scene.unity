@@ -3770,6 +3770,7 @@ MonoBehaviour:
   itemDatabase: {fileID: 11400000, guid: d3addf1424441a448a931ef35f8e1256, type: 2}
   stairs: {fileID: 1123152961}
   startStairs: Down
+  actorDatabase: {fileID: 0}
 --- !u!114 &1688660921
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
     name: "\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
     prefab: Player
     status: Player
-  - id: 1
+  - id: 0
     name: "\u30DF\u30CE\u30BF\u30A6\u30ED\u30B9"
     prefab: Enemy1
     status: Enemy1
@@ -146,7 +146,7 @@ MonoBehaviour:
     xp: 10
   - id: 0
     lv: 2
-    lvmax: 0
+    lvmax: 15
     hp: 2
     hpmax: 2
     food: 0
@@ -157,7 +157,7 @@ MonoBehaviour:
     xp: 11
   - id: 0
     lv: 3
-    lvmax: 0
+    lvmax: 20
     hp: 3
     hpmax: 3
     food: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
     xp: 12
   - id: 0
     lv: 4
-    lvmax: 0
+    lvmax: 25
     hp: 2
     hpmax: 2
     food: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
     xp: 13
   - id: 0
     lv: 5
-    lvmax: 0
+    lvmax: 30
     hp: 3
     hpmax: 3
     food: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
     xp: 14
   - id: 0
     lv: 6
-    lvmax: 0
+    lvmax: 35
     hp: 2
     hpmax: 2
     food: 0
@@ -201,7 +201,7 @@ MonoBehaviour:
     xp: 15
   - id: 0
     lv: 7
-    lvmax: 0
+    lvmax: 40
     hp: 3
     hpmax: 3
     food: 0
@@ -212,7 +212,7 @@ MonoBehaviour:
     xp: 16
   - id: 0
     lv: 8
-    lvmax: 0
+    lvmax: 45
     hp: 2
     hpmax: 2
     food: 0
@@ -223,7 +223,7 @@ MonoBehaviour:
     xp: 17
   - id: 0
     lv: 9
-    lvmax: 0
+    lvmax: 50
     hp: 3
     hpmax: 3
     food: 0
@@ -234,7 +234,7 @@ MonoBehaviour:
     xp: 18
   - id: 0
     lv: 10
-    lvmax: 0
+    lvmax: 55
     hp: 2
     hpmax: 2
     food: 0

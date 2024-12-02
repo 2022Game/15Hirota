@@ -25,7 +25,7 @@ public class ExcelActorData : ScriptableObject
     [System.Serializable]
     public class ActorData
     {
-        public int id;
+        public EActor id;
         public string name;
         public string prefab;
         public string status;

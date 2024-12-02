@@ -8813,6 +8813,7 @@ MonoBehaviour:
   normalRecoveryPer: 50
   firstClearConditionRate: 20
   subClearConditionRate: 1
+  decHungerHpPer: 0.1
   clearConditionRates: 14000000
   actorName: "\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
 --- !u!114 &4052380344925068634

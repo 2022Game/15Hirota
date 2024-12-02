@@ -2,7 +2,7 @@
 [System.Serializable]
 public class Params
 {
-    public int id;      // ユニークID
+    public EActor id;      // ユニークID
     public int lv;      // レベル
     public int lvmax;   // レベル最大値
     public float hp;      // HP

@@ -157,7 +157,7 @@ public class ActorParamsController : MonoBehaviour
     {
         int d = CalcDamage(str, parameter.def + equipment.GetAllDef());
         parameter.hp -= d;
-        if (parameter.id < 1) Message.Add(1, actorName, d.ToString());
+        if (parameter.id == EActor.PLAYER) Message.Add(1, actorName, d.ToString());
         else Message.Add(2, actorName, d.ToString());
         ClearCondition(ECondition.Sleep);
     }

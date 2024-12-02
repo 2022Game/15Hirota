@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using static ExcelActorData;
 
 public class Field : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class Field : MonoBehaviour
     public GameObject stairs;
     public string startStairs = "Down";
     public static int floorNum = 1;
+    public ExcelActorData actorDatabase;
 
     private Array2D map;
     private const float oneTile = 1.0f;
@@ -168,7 +171,11 @@ public class Field : MonoBehaviour
                 if (name.Contains(startStairs)) playerMovement.SetPosition(xgrid, zgrid);
                 break;
             case "Enemy":
-                GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + name);
+                EActor actorId;
+                if (!System.Enum.TryParse(name, out actorId)) return;
+                ExcelActorData.ActorData actorData = actorDatabase.Data.Find(n => n.id == actorId);
+                if (actorData == null) break;
+                GameObject enemyObj = (GameObject)Resources.Load("Prefabs/" + actorData.prefab);
                 GameObject enemy = Instantiate(enemyObj, enemies.transform);
                 enemy.GetComponent<ActorMovement>().SetPosition(xgrid, zgrid);
                 enemy.GetComponent<EnemyOperation>().target = playerMovement;

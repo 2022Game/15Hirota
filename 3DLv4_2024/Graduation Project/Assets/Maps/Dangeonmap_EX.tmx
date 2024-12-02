@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="15">
  <tileset firstgid="1" source="マップチップ画像(仮のダンジョンチップ).tsx"/>
- <group id="4" name="2F">
+ <group id="4" name="2F" visible="0">
   <objectgroup id="6" name="Object Layer">
    <object id="13" name="DownStairs" x="446" y="610" width="32" height="32">
     <properties>
@@ -49,7 +49,7 @@
 </data>
   </layer>
  </group>
- <group id="3" name="1F" visible="0">
+ <group id="3" name="1F">
   <layer id="1" name="Tile Layer" width="30" height="30">
    <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
@@ -85,12 +85,12 @@
 </data>
   </layer>
   <objectgroup id="2" name="Object Layer">
-   <object id="2" name="Enemy1" x="224" y="480" width="32" height="32">
+   <object id="2" name="ENEMY1" x="224" y="480" width="32" height="32">
     <properties>
      <property name="Type" value="Enemy"/>
     </properties>
    </object>
-   <object id="3" name="Enemy1" x="224" y="416" width="32" height="32">
+   <object id="3" name="ENEMY1" x="224" y="416" width="32" height="32">
     <properties>
      <property name="Type" value="Enemy"/>
     </properties>
