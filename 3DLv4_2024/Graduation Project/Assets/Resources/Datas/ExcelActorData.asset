@@ -17,7 +17,7 @@ MonoBehaviour:
     name: "\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
     prefab: Player
     status: Player
-  - id: 0
+  - id: 1
     name: "\u30DF\u30CE\u30BF\u30A6\u30ED\u30B9"
     prefab: Enemy1
     status: Enemy1
