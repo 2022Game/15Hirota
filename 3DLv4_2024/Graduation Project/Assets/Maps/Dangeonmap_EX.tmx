@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="15">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="15">
  <tileset firstgid="1" source="マップチップ画像(仮のダンジョンチップ).tsx"/>
+ <group id="7" name="3F" visible="0">
+  <properties>
+   <property name="EnemyNumMax" value="3"/>
+   <property name="EnemyNumMin" value="2"/>
+   <property name="ItemNumMax" value="10"/>
+   <property name="ItemNumMin" value="5"/>
+  </properties>
+ </group>
  <group id="4" name="2F" visible="0">
   <objectgroup id="6" name="Object Layer">
    <object id="13" name="DownStairs" x="446" y="610" width="32" height="32">
@@ -90,7 +98,7 @@
      <property name="Type" value="Enemy"/>
     </properties>
    </object>
-   <object id="3" name="ENEMY1" x="224" y="416" width="32" height="32">
+   <object id="3" name="ENEMY1" x="224" y="415" width="32" height="32">
     <properties>
      <property name="Type" value="Enemy"/>
     </properties>

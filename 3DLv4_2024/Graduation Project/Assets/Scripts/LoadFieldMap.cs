@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Diagnostics.Contracts;
+using Unity.VisualScripting.FullSerializer;
 
 public class LoadFieldMap : MonoBehaviour
 {
@@ -15,12 +16,16 @@ public class LoadFieldMap : MonoBehaviour
         private const int margin = 1;
         private Array2D data;
         private List<Area2D> areas;
+        private int[] enemyNum;
+        private int[] itemNum;
 
         /**
         * ƒ_ƒ“ƒWƒ‡ƒ“‚ğì¬‚·‚é
         */
-        public Array2D Create(int w, int h, Field field)
+        public Array2D Create(int w, int h, Field field, int[] eNum, int[] iNum)
         {
+            enemyNum = eNum;
+            itemNum = iNum;
             data = new Array2D(w, h);
             for (int x = 0; x < data.width; x++)
             {
@@ -217,9 +222,14 @@ public class LoadFieldMap : MonoBehaviour
                 {
                     tmpData.Set(x, y, data.Get(x, y));
                 }
+
+                int num = Random.Range(itemNum[0], itemNum[1] + 1);
+                for (int i = 0; i < num; i++)
+                    SetObject("Random", "Item", field, tmpData);
             }
             SetObject("UpStairs", "Stairs", field, tmpData);
             SetObject("DownStairs", "Stairs", field, tmpData);
+            SetObject("Random", "Item", field, tmpData);
         }
 
 
@@ -298,10 +308,9 @@ public class LoadFieldMap : MonoBehaviour
                     break;
                 }
             }
-            //if (group == null) return new Array2D(1, 1);
+            if (group == null) return null;
             int w = int.Parse(map.Attribute("width").Value);
             int h = int.Parse(map.Attribute("height").Value);
-            if (group == null) return dungeon.Create(w, h, field);
             Array2D data = null;
             foreach (var layer in group.Elements("layer"))
             {
@@ -348,6 +357,31 @@ public class LoadFieldMap : MonoBehaviour
                         }
                         break;
                 }
+            }
+            if (data == null)
+            {
+                int[] enemyNum = new int[2];
+                int[] itemNum = new int[2];
+                foreach (var prop in group.Element("properties").Elements("property"))
+                {
+                    int num = int.Parse(prop.Attribute("value").Value);
+                    switch (prop.Attribute("name").Value)
+                    {
+                        case "EnemyNumMin":
+                            enemyNum[0] = num;
+                            break;
+                        case "EnemyNumMax":
+                            enemyNum[1] = num;
+                            break;
+                        case "ItemNumMin":
+                            itemNum[0] = num;
+                            break;
+                        case "ItemNumMax":
+                            itemNum[1] = num;
+                            break;
+                    }
+                }
+                data = dungeon.Create(w, h, field, enemyNum, itemNum);
             }
             return data;
         }

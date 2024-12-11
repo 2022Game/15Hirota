@@ -15,6 +15,7 @@ public class Field : MonoBehaviour
     public string startStairs = "Down";
     public static int floorNum = 1;
     public ExcelActorData actorDatabase;
+    public ExcelAppearData appearDatabase;
 
     private Array2D map;
     private const float oneTile = 1.0f;
@@ -181,18 +182,50 @@ public class Field : MonoBehaviour
                 enemy.GetComponent<EnemyOperation>().target = playerMovement;
                 break;
             case "Item":
-                Item itemData;
-                EItem itemId;
-                if (!System.Enum.TryParse(name, out itemId)) return;
-                if ((int)itemId > 1000) itemData = itemDatabase.Goods.Find(n => n.id == itemId);
-                else itemData = itemDatabase.Equipments.Find(n => n.id == itemId);
-                if (itemData == null) break;
-                GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + itemData.prefab);
-                GameObject item = Instantiate(itemObj, items.transform);
-                item.GetComponent<ItemMovement>().SetPosition(xgrid, zgrid);
-                item.GetComponent<ItemParamsController>().SetParams(itemData);
+                SetItem(name, xgrid, zgrid);
+                //Item itemData;
+                //EItem itemId;
+                //if (!System.Enum.TryParse(name, out itemId)) return;
+                //if ((int)itemId > 1000) itemData = itemDatabase.Goods.Find(n => n.id == itemId);
+                //else itemData = itemDatabase.Equipments.Find(n => n.id == itemId);
+                //if (itemData == null) break;
+                //GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + itemData.prefab);
+                //GameObject item = Instantiate(itemObj, items.transform);
+                //item.GetComponent<ItemMovement>().SetPosition(xgrid, zgrid);
+                //item.GetComponent<ItemParamsController>().SetParams(itemData);
                 break;
         }
+    }
+
+    // フィールドにアイテムを設置する
+    // nameに「Random」が指定されていた場合はその場所にランダムなアイテムを設置する
+    private void SetItem(string name, int xgrid, int zgrid)
+    {
+        Item itemData;
+        EItem itemId = EItem.NONE;
+        if (name.Equals("Random"))
+        {
+            List<ExcelAppearData.ItemAppearData> cItems =
+                appearDatabase.ItemAppear.FindAll(n => !n.shoponly && n.start <= floorNum && n.end >= floorNum);
+            int maxRate = 0;
+            foreach (var cItem in cItems) maxRate += cItem.rate;
+            int p = Random.Range(1, maxRate + 1);
+            foreach (var cItem in cItems)
+            {
+                Debug.Log(p);
+                p -= cItem.rate;
+                if (p <= 0)
+                {
+                    itemId = cItem.id;
+                    break;
+                }
+            }
+        }
+        else if (!System.Enum.TryParse(name, out itemId)) return;
+        if ((int)itemId > 1000) itemData = itemDatabase.Goods.Find(n => n.id == itemId);
+        else itemData = itemDatabase.Equipments.Find(n => n.id == itemId);
+        /*   省略   */
+        return;
     }
 
     // 階段とプレイヤーが重なっているかどうか
