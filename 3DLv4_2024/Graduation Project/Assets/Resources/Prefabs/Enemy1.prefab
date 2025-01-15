@@ -4011,7 +4011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parameter:
-    id: 0
+    id: 1
     lv: 1
     lvmax: 10
     hp: 30
@@ -4055,7 +4055,7 @@ MonoBehaviour:
       extra: 
       shot: 0
       detail: 
-  conditions: 00000000
+  conditions: 01000000
   decFoodPt: 0.25
   decPoisonPt: 2
   normalRecoveryPer: 50

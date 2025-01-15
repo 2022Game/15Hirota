@@ -221,15 +221,13 @@ public class LoadFieldMap : MonoBehaviour
                 for (int y = 0; y < data.height; y++)
                 {
                     tmpData.Set(x, y, data.Get(x, y));
+                    SetObject("UpStairs", "Stairs", field, tmpData);
+                    SetObject("DownStairs", "Stairs", field, tmpData);
+                    int num = Random.Range(itemNum[0], itemNum[1] + 1);
+                    for (int i = 0; i < num; i++)
+                        SetObject("Random", "Item", field, tmpData);
                 }
-
-                int num = Random.Range(itemNum[0], itemNum[1] + 1);
-                for (int i = 0; i < num; i++)
-                    SetObject("Random", "Item", field, tmpData);
             }
-            SetObject("UpStairs", "Stairs", field, tmpData);
-            SetObject("DownStairs", "Stairs", field, tmpData);
-            SetObject("Random", "Item", field, tmpData);
         }
 
 

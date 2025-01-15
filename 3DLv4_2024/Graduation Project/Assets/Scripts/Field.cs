@@ -183,6 +183,7 @@ public class Field : MonoBehaviour
                 break;
             case "Item":
                 SetItem(name, xgrid, zgrid);
+                break;
                 //Item itemData;
                 //EItem itemId;
                 //if (!System.Enum.TryParse(name, out itemId)) return;
@@ -193,7 +194,6 @@ public class Field : MonoBehaviour
                 //GameObject item = Instantiate(itemObj, items.transform);
                 //item.GetComponent<ItemMovement>().SetPosition(xgrid, zgrid);
                 //item.GetComponent<ItemParamsController>().SetParams(itemData);
-                break;
         }
     }
 
@@ -224,7 +224,7 @@ public class Field : MonoBehaviour
         else if (!System.Enum.TryParse(name, out itemId)) return;
         if ((int)itemId > 1000) itemData = itemDatabase.Goods.Find(n => n.id == itemId);
         else itemData = itemDatabase.Equipments.Find(n => n.id == itemId);
-        /*   è»ó™   */
+        
         return;
     }
 
