@@ -8506,7 +8506,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100338}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e658bfc1e524494b9e54a1c92d8c1e0, type: 3}
   m_Name: 
@@ -8538,7 +8538,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100338}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6514ba86f976d724ab63844a6015b2aa, type: 3}
   m_Name: 
@@ -8670,7 +8670,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100338}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a6149a22cf8a47a192a60b00b3becb3, type: 3}
   m_Name: 
@@ -8807,14 +8807,14 @@ MonoBehaviour:
       extra: 
       shot: 0
       detail: 
-  conditions: 00000000
+  conditions: 
   decFoodPt: 0.25
   decPoisonPt: 2
   normalRecoveryPer: 50
   firstClearConditionRate: 20
   subClearConditionRate: 1
   decHungerHpPer: 0.1
-  clearConditionRates: 14000000
+  clearConditionRates: 
   actorName: "\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
 --- !u!114 &4052380344925068634
 MonoBehaviour:
@@ -8831,20 +8831,35 @@ MonoBehaviour:
   itemNumMax: 10
   items:
   - isEquip: 0
-    id: 1041
-    type: 5
-    name: "\u706B\u306E\u6756"
-    sprite: weapons_06
-    prefab: Item5
-    atk: 0
+    id: 1
+    type: 1
+    name: "\u52631"
+    sprite: sword
+    prefab: item3
+    atk: 2
     def: 0
-    hp: 5
+    hp: 0
     food: 0
     dmg: 2
     condition: 0
     extra: 
-    shot: 1081
-    detail: "\u706B\u306E\u7389\u3092\u51FA\u3059\u30AA\u30FC\u30BD\u30C9\u30C3\u30AF\u30B9\u306A\u6756(\u653B\u64835\u30015\u56DE)"
+    shot: 0
+    detail: "\u666E\u901A\u306E\u5263(\u653B\u6483+2)"
+  - isEquip: 0
+    id: 11
+    type: 2
+    name: "\u5E03\u306E\u93A7"
+    sprite: armor
+    prefab: item4
+    atk: 0
+    def: 2
+    hp: 0
+    food: 0
+    dmg: 1
+    condition: 0
+    extra: 
+    shot: 0
+    detail: "\u8010\u4E45\u6027\u306B\u96E3\u304C\u3042\u308A\u305D\u3046\u306A\u93A7(\u9632\u5FA1+2)"
   - isEquip: 0
     id: 1041
     type: 5
@@ -8861,50 +8876,20 @@ MonoBehaviour:
     shot: 1081
     detail: "\u706B\u306E\u7389\u3092\u51FA\u3059\u30AA\u30FC\u30BD\u30C9\u30C3\u30AF\u30B9\u306A\u6756(\u653B\u64835\u30015\u56DE)"
   - isEquip: 0
-    id: 1041
-    type: 5
-    name: "\u706B\u306E\u6756"
-    sprite: weapons_06
-    prefab: Item5
-    atk: 0
-    def: 0
-    hp: 5
-    food: 0
-    dmg: 2
-    condition: 0
-    extra: 
-    shot: 1081
-    detail: "\u706B\u306E\u7389\u3092\u51FA\u3059\u30AA\u30FC\u30BD\u30C9\u30C3\u30AF\u30B9\u306A\u6756(\u653B\u64835\u30015\u56DE)"
-  - isEquip: 0
-    id: 1041
-    type: 5
-    name: "\u706B\u306E\u6756"
-    sprite: weapons_06
-    prefab: Item5
-    atk: 0
-    def: 0
-    hp: 5
-    food: 0
-    dmg: 2
-    condition: 0
-    extra: 
-    shot: 1081
-    detail: "\u706B\u306E\u7389\u3092\u51FA\u3059\u30AA\u30FC\u30BD\u30C9\u30C3\u30AF\u30B9\u306A\u6756(\u653B\u64835\u30015\u56DE)"
-  - isEquip: 0
-    id: 1021
+    id: 1023
     type: 4
-    name: "\u56DE\u5FA9\u85AC(\u5C0F)"
+    name: "\u56DE\u5FA9\u85AC(\u5927)"
     sprite: S_ItemHeavyOutline_PotionRed_00
     prefab: Item1
     atk: 0
     def: 0
-    hp: 10
+    hp: 50
     food: 0
     dmg: 0
     condition: 0
     extra: 
     shot: 0
-    detail: "\u5E8F\u76E4\u306F\u3053\u308C\u3060\u3051\u3067\u5927\u4E08\u592B\u2026\u2026\u306A\u306F\u305A\uFF01(\u4F53\u529B+10)"
+    detail: "\u304B\u306A\u308A\u6210\u9577\u3057\u305F\u3089\u3053\u306E\u4E00\u672C\uFF01(\u4F53\u529B+50)"
   - isEquip: 0
     id: 1025
     type: 4
@@ -8920,6 +8905,66 @@ MonoBehaviour:
     extra: Recover
     shot: 0
     detail: "\u5B8C\u5168\u56DE\u5FA9\u3059\u308B\u3002\u526F\u4F5C\u7528\u306F\u306A\u3044(\u4F53\u529B+100\u3001\u304A\u8179+100)"
+  - isEquip: 0
+    id: 1026
+    type: 4
+    name: "\u6BD2\u30DD\u30FC\u30B7\u30E7\u30F3"
+    sprite: S_ItemHeavyOutline_PotionRed_00
+    prefab: Item2
+    atk: 0
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 1
+    condition: 1
+    extra: 
+    shot: 0
+    detail: "\u98F2\u3080\u3068\u6BD2\u306B\u306A\u308B\u3002\u53D6\u6271\u6CE8\u610F(+\u6BD2)"
+  - isEquip: 0
+    id: 1027
+    type: 4
+    name: "\u30D3\u30EA\u30D3\u30EA\u30DD\u30FC\u30B7\u30E7\u30F3"
+    sprite: S_ItemHeavyOutline_PotionRed_00
+    prefab: Item3
+    atk: 0
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 1
+    condition: 3
+    extra: 
+    shot: 0
+    detail: "\u9759\u96FB\u6C17\u3092\u84C4\u7A4D\u3057\u305F\u30DD\u30FC\u30B7\u30E7\u30F3(+\u9EBB\u75FA)"
+  - isEquip: 0
+    id: 1028
+    type: 4
+    name: "\u7720\u308A\u30DD\u30FC\u30B7\u30E7\u30F3"
+    sprite: S_ItemHeavyOutline_PotionRed_00
+    prefab: Item4
+    atk: 0
+    def: 0
+    hp: 0
+    food: 0
+    dmg: 1
+    condition: 4
+    extra: 
+    shot: 0
+    detail: "\u4E0D\u7720\u75C7\u306E\u3042\u306A\u305F\u306B\u3002\u30C0\u30F3\u30B8\u30E7\u30F3\u3067\u98F2\u3080\u306E\u306F\u5371\u967A(+\u7761\u7720)"
+  - isEquip: 0
+    id: 1029
+    type: 4
+    name: "\u30D2\u30FC\u30EB\u30DD\u30FC\u30B7\u30E7\u30F3"
+    sprite: S_ItemHeavyOutline_PotionRed_00
+    prefab: Item5
+    atk: 0
+    def: 0
+    hp: 5
+    food: 0
+    dmg: 0
+    condition: 0
+    extra: Recover
+    shot: 0
+    detail: "\u3088\u304B\u308D\u3046\u304C\u60AA\u304B\u308D\u3046\u304C\u3068\u306B\u304B\u304F\u4EE5\u4E0A\u3092\u6CBB\u3059\u85AC(\u72B6\u614B\u7570\u5E38\u89E3\u9664)"
   - isEquip: 0
     id: 1030
     type: 4

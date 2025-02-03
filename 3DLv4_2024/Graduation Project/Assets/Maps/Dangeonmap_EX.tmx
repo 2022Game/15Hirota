@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="15">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="18">
  <tileset firstgid="1" source="マップチップ画像(仮のダンジョンチップ).tsx"/>
- <group id="7" name="3F" visible="0">
+ <group id="7" name="3F">
   <properties>
    <property name="EnemyNumMax" value="3"/>
    <property name="EnemyNumMin" value="2"/>
@@ -17,7 +17,7 @@
    <property name="ItemNumMin" value="5"/>
   </properties>
   <objectgroup id="6" name="Object Layer">
-   <object id="13" name="DownStairs" x="446" y="610" width="32" height="32">
+   <object id="13" name="DownStairs" x="417" y="673" width="32" height="32">
     <properties>
      <property name="Type" value="Stairs"/>
     </properties>
@@ -105,24 +105,39 @@
 </data>
   </layer>
   <objectgroup id="2" name="Object Layer">
-   <object id="2" name="ENEMY1" x="224" y="480" width="32" height="32">
+   <object id="17" name="ENEMY1" x="769" y="833" width="32" height="32">
     <properties>
      <property name="Type" value="Enemy"/>
     </properties>
    </object>
-   <object id="3" name="ENEMY1" x="224" y="415" width="32" height="32">
+   <object id="2" name="ENEMY1" x="769" y="737" width="32" height="32">
     <properties>
      <property name="Type" value="Enemy"/>
     </properties>
    </object>
-   <object id="10" name="DownStairs" x="288" y="254" width="32" height="32">
+   <object id="3" name="ENEMY1" x="224" y="767" width="32" height="32">
+    <properties>
+     <property name="Type" value="Enemy"/>
+    </properties>
+   </object>
+   <object id="10" name="DownStairs" x="222" y="160" width="32" height="32">
     <properties>
      <property name="Type" value="Stairs"/>
     </properties>
    </object>
-   <object id="11" name="UpStairs" x="736" y="256" width="32" height="32">
+   <object id="11" name="UpStairs" x="802" y="160" width="32" height="32">
     <properties>
      <property name="Type" value="Stairs"/>
+    </properties>
+   </object>
+   <object id="15" name="WEAPON01" x="162" y="162" width="32" height="32">
+    <properties>
+     <property name="Type" value="Item"/>
+    </properties>
+   </object>
+   <object id="16" name="FOOD01" x="162" y="225" width="32" height="32">
+    <properties>
+     <property name="Type" value="Item"/>
     </properties>
    </object>
   </objectgroup>

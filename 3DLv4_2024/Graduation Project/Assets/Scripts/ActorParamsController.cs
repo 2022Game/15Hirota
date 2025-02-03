@@ -1,4 +1,4 @@
-using Mono.Cecil;
+//using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -160,6 +160,8 @@ public class ActorParamsController : MonoBehaviour
         if (parameter.id == EActor.PLAYER) Message.Add(1, actorName, d.ToString());
         else Message.Add(2, actorName, d.ToString());
         ClearCondition(ECondition.Sleep);
+
+        EnemyDeath();
     }
 
     // ダメージを計算する
@@ -206,6 +208,14 @@ public class ActorParamsController : MonoBehaviour
         hp = p < hp ? p : hp;
         Message.Add(15, actorName, hp.ToString());
         parameter.hp += hp;
+    }
+
+    public void EnemyDeath()
+    {
+        if (parameter.hp <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     [System.Serializable]

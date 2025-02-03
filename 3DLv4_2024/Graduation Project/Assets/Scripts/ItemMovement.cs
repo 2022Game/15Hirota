@@ -89,7 +89,7 @@ public class ItemMovement : ObjectMovement
         if (actor == null)
         {
             if (param.type == EItemType.Magic) Destroy(gameObject);
-            else Message.Add(15, param.name);
+            //else Message.Add(15, param.name);
         }
         else
         {
@@ -103,7 +103,7 @@ public class ItemMovement : ObjectMovement
                 actorParam.MakeCondition(param.condition);
                 if ((int)param.id > 1000)
                 {
-                    if (param.type != EItemType.Magic) Message.Add(14, param.name);
+                    //if (param.type != EItemType.Magic) Message.Add(14, param.name);
                     Destroy(gameObject);
                 }
                 else actor.GetComponent<ActorUseItems>().PickUp(param);
@@ -112,7 +112,7 @@ public class ItemMovement : ObjectMovement
             {
                 actorParam.RecoveryHp(param.hp);
                 if (param.extra.Contains("Recover")) actorParam.ClearAllCondition(false);
-                Message.Add(14, param.name);
+                //Message.Add(14, param.name);
                 //effect.Play(EffectManager_Original.EType.Recovery, actor);
                 //actor.GetComponent<ActorParamsController>().RecoveryHp(param.hp);
                 Destroy(gameObject);

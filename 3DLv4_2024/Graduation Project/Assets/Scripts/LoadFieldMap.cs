@@ -39,8 +39,8 @@ public class LoadFieldMap : MonoBehaviour
             area.outLine = new Rect2D(0, 0, w - 1, h - 1);
             Split(area, Random.Range(0, 2) == 0);
             CreateRooms();
-            SetObjects(field);
             CreateRoads();
+            SetObjects(field);
             return data;
         }
 
@@ -205,6 +205,7 @@ public class LoadFieldMap : MonoBehaviour
                 int y = Random.Range(room.top, room.bottom + 1);
                 if (data.Get(x, y) != 0) continue;
                 data.Set(x, y, 1);
+                Debug.Log("SetObject前の呼び出し: name=" + name + ", type=" + type + ", x=" + x + ", y=" + y);
                 field.SetObject(name, type, x, y);
                 break;
             }
@@ -215,7 +216,9 @@ public class LoadFieldMap : MonoBehaviour
         */
         private void SetObjects(Field field)
         {
+            Debug.LogError("SetObjects が呼ばれた");
             Array2D tmpData = new Array2D(data.width, data.height);
+
             for (int x = 0; x < data.width; x++)
             {
                 for (int y = 0; y < data.height; y++)
@@ -223,12 +226,19 @@ public class LoadFieldMap : MonoBehaviour
                     tmpData.Set(x, y, data.Get(x, y));
                     SetObject("UpStairs", "Stairs", field, tmpData);
                     SetObject("DownStairs", "Stairs", field, tmpData);
-                    int num = Random.Range(itemNum[0], itemNum[1] + 1);
-                    for (int i = 0; i < num; i++)
-                        SetObject("Random", "Item", field, tmpData);
                 }
             }
+
+            int num = Random.Range(itemNum[0], itemNum[1] + 1);
+            Debug.LogError($"itemNum[0]: {itemNum[0]}, itemNum[1]: {itemNum[1]}, num: {num}");
+
+            for (int i = 0; i < num; i++)
+            {
+                Debug.LogError("呼ばれた");  // ← ここが出るか確認
+                SetObject("Random", "Item", field, tmpData);
+            }
         }
+
 
 
         public class Rect2D
@@ -266,6 +276,7 @@ public class LoadFieldMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
         //Application.targetFrameRate = 100;
         //field.Reset();
         //Array2D mapdata = ReadMapFile(mapName);
@@ -358,6 +369,7 @@ public class LoadFieldMap : MonoBehaviour
             }
             if (data == null)
             {
+                Debug.Log("data is null, creating data...");
                 int[] enemyNum = new int[2];
                 int[] itemNum = new int[2];
                 foreach (var prop in group.Element("properties").Elements("property"))
@@ -381,6 +393,11 @@ public class LoadFieldMap : MonoBehaviour
                 }
                 data = dungeon.Create(w, h, field, enemyNum, itemNum);
             }
+            else
+            {
+                Debug.Log("data already exists.");
+            }
+
             return data;
         }
         catch (System.Exception i_exception)

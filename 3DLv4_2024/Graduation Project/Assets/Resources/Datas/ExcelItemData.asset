@@ -769,7 +769,7 @@ MonoBehaviour:
     type: 4
     name: "\u6BD2\u30DD\u30FC\u30B7\u30E7\u30F3"
     sprite: S_ItemHeavyOutline_PotionRed_00
-    prefab: Item2
+    prefab: Item1
     atk: 0
     def: 0
     hp: 0
@@ -784,7 +784,7 @@ MonoBehaviour:
     type: 4
     name: "\u30D3\u30EA\u30D3\u30EA\u30DD\u30FC\u30B7\u30E7\u30F3"
     sprite: S_ItemHeavyOutline_PotionRed_00
-    prefab: Item3
+    prefab: Item1
     atk: 0
     def: 0
     hp: 0
@@ -799,7 +799,7 @@ MonoBehaviour:
     type: 4
     name: "\u7720\u308A\u30DD\u30FC\u30B7\u30E7\u30F3"
     sprite: S_ItemHeavyOutline_PotionRed_00
-    prefab: Item4
+    prefab: Item1
     atk: 0
     def: 0
     hp: 0
@@ -814,7 +814,7 @@ MonoBehaviour:
     type: 4
     name: "\u30D2\u30FC\u30EB\u30DD\u30FC\u30B7\u30E7\u30F3"
     sprite: S_ItemHeavyOutline_PotionRed_00
-    prefab: Item5
+    prefab: Item1
     atk: 0
     def: 0
     hp: 5
@@ -829,7 +829,7 @@ MonoBehaviour:
     type: 4
     name: "\u51F6\u60AA\u30DD\u30FC\u30B7\u30E7\u30F3"
     sprite: S_ItemHeavyOutline_PotionRed_00
-    prefab: Item6
+    prefab: Item1
     atk: 0
     def: 0
     hp: 0

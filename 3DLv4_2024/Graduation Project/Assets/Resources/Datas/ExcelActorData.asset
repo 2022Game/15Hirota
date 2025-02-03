@@ -136,7 +136,7 @@ MonoBehaviour:
   - id: 0
     lv: 1
     lvmax: 10
-    hp: 30
+    hp: 10
     hpmax: 85
     food: 0
     foodmax: 0

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static ExcelActorData;
 
@@ -162,6 +163,9 @@ public class Field : MonoBehaviour
     // フィールドにオブジェクトを配置する
     public void SetObject(string name, string type, int xgrid, int zgrid)
     {
+        // ここで name を変更していないか確認
+        //Debug.Log("Field.SetObject called: name=" + name + ", type=" + type + ", xgrid=" + xgrid + ", zgrid=" + zgrid);
+
         switch (type)
         {
             case "Stairs":
@@ -203,6 +207,7 @@ public class Field : MonoBehaviour
     {
         Item itemData;
         EItem itemId = EItem.NONE;
+        //Debug.Log("SetItem called: name=" + name + ", xgrid=" + xgrid + ", zgrid=" + zgrid);
         if (name.Equals("Random"))
         {
             List<ExcelAppearData.ItemAppearData> cItems =
@@ -224,7 +229,7 @@ public class Field : MonoBehaviour
         else if (!System.Enum.TryParse(name, out itemId)) return;
         if ((int)itemId > 1000) itemData = itemDatabase.Goods.Find(n => n.id == itemId);
         else itemData = itemDatabase.Equipments.Find(n => n.id == itemId);
-        
+        /*   省略   */
         return;
     }
 

@@ -103,10 +103,10 @@ MonoBehaviour:
   grid:
     x: 0
     z: 0
+  direction: 1
   newGrid:
     x: 0
     z: 0
-  direction: 1
   maxPerFrame: 1.67
 --- !u!114 &349259279673199366
 MonoBehaviour:
@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parameter:
+    isEquip: 0
     id: 0
     type: 0
     name: 
@@ -131,4 +132,7 @@ MonoBehaviour:
     hp: 0
     food: 0
     dmg: 0
+    condition: 0
+    extra: 
+    shot: 0
     detail: 

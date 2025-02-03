@@ -78,10 +78,10 @@ public class ActorUseItems : MonoBehaviour
     {
         if (usingItem == null)
         {
-            if (it.type != EItemType.Magic) Message.Add(13, param.actorName, it.name);
-            //Message.Add(13, it.name);
+            if (it.type != EItemType.Magic) Message.Add(13, it.name, param.actorName);
             GameObject items = GetComponentInParent<Field>().items;
             GameObject itemObj = (GameObject)Resources.Load("Prefabs/" + it.prefab);
+            Debug.Log("Loaded Item Object: " + itemObj);
             usingItem = Instantiate(itemObj, items.transform);
             usingItem.GetComponent<ItemMovement>().SetPosition(move.grid.x, move.grid.z);
             usingItem.GetComponent<ItemParamsController>().SetParams(it);
@@ -138,7 +138,7 @@ public class ActorUseItems : MonoBehaviour
         return UseEffect(it);
     }
 
-    // 引数で渡されたアイテムを地面のアイテムをと交換する
+    // 引数で渡されたアイテムを地面のアイテムと交換する
     public bool Replace(Item it)
     {
         Message.Add(11, it.name);
@@ -231,7 +231,7 @@ public class ActorUseItems : MonoBehaviour
                 Eat(it);
                 break;
             case EItemType.Potion:
-                Message.Add(14, param.actorName, it.name);
+                //Message.Add(14, param.actorName, it.name);
                 Eat(it);
                 break;
             case EItemType.Wand:
@@ -249,7 +249,6 @@ public class ActorUseItems : MonoBehaviour
             Message.Add(21, param.actorName, it.name);
             ExcelItemData database = Resources.Load<ExcelItemData>("Datas/ExcelItemData");
             Item item = database.Goods.Find(n => n.id == it.shot).Get();
-            Debug.LogWarning("Item not found with id: " + it.shot);
             return Throw(item);
         }
         if (Throw(null))

@@ -2088,7 +2088,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979996584}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.51597804, y: -0.000000020844112, z: 0.000000012555546, w: 0.85660183}
+  m_LocalRotation: {x: 0.51597804, y: 0.000000020844121, z: -0.000000012555551, w: 0.85660183}
   m_LocalPosition: {x: 0, y: 9.17, z: -5.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3771,7 +3771,7 @@ MonoBehaviour:
   stairs: {fileID: 1123152961}
   startStairs: Down
   actorDatabase: {fileID: 11400000, guid: dbab189b76987744889f6ace8435803b, type: 2}
-  appearDatabase: {fileID: 11400000, guid: d12639837090b314fb572e0661d9e931, type: 2}
+  appearDatabase: {fileID: 11400000, guid: c566247e33d2da147ae85a31cb38091e, type: 2}
 --- !u!114 &1688660921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3964,7 +3964,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1821393096}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.51597804, y: -0.000000020844112, z: 0.000000012555546, w: 0.85660183}
+  m_LocalRotation: {x: 0.51597804, y: 0.000000020844121, z: -0.000000012555551, w: 0.85660183}
   m_LocalPosition: {x: 0, y: 9.17, z: -5.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

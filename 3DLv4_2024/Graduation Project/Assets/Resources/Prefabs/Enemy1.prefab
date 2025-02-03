@@ -4055,7 +4055,7 @@ MonoBehaviour:
       extra: 
       shot: 0
       detail: 
-  conditions: 01000000
+  conditions: 00000000
   decFoodPt: 0.25
   decPoisonPt: 2
   normalRecoveryPer: 50
